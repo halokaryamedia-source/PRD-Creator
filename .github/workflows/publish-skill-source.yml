@@ -28,8 +28,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat bootstrap/skill.part-*.b64 > /tmp/production-document-builder.b64
-          base64 --decode /tmp/production-document-builder.b64 > /tmp/production-document-builder.zip
+          : > /tmp/production-document-builder.zip
+          for part in bootstrap/skill.part-*.b64; do
+            base64 --decode "$part" >> /tmp/production-document-builder.zip
+          done
           unzip -t /tmp/production-document-builder.zip
 
       - name: Publish extracted files to main
