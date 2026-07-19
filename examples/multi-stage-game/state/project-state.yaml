@@ -1,0 +1,76 @@
+project:
+  id: the-circuit
+  name: THE CIRCUIT
+  workspace_path: examples/multi-stage-game
+  action_mode: render_html
+  document_profile: multi_stage_game
+  specialization: null
+  intended_readers:
+  - reviewer
+  - level_designer
+  - developer
+  primary_language: id
+  output_languages:
+  - id
+  - en
+workflow:
+  current_phase: delivery
+  current_flow: null
+  content_status: frozen
+  content_frozen: true
+  html_status: approved
+  final_status: approved_for_delivery
+sections:
+  document:
+    status: frozen
+    version: '0.1'
+open_questions: []
+blockers: []
+deferred: []
+errors: []
+versions:
+  content: '0.1'
+  template: '1.0'
+  schema: '0.1'
+  golden_sample: aftershock-1.0
+  html: '1.0'
+artifacts:
+  structured_content:
+    latest:
+      version: '0.1'
+      path: content/project-content.yaml
+      status: frozen
+  html:
+    latest:
+      version: '1.0'
+      path: output/the-circuit-production-document-v1.0.html
+      status: approved
+      checksum: ad03fc3d8b30b5e3e58e9c350e77824994473f3db03070e12be67968b1ddf32e
+      created_at: '2026-07-19T11:16:47Z'
+  zip:
+    latest:
+      version: '1.0'
+      path: output/the-circuit-production-document-v1.0.zip
+      status: approved
+      checksum: 52de6203aa1b54823a1ff09ee1aa859eff6db47e53ab64b5b0a6edd6a4c48272
+      created_at: '2026-07-19T11:16:47Z'
+  audits:
+    html:
+      latest:
+        version: '1.0'
+        path: output/html-audit-v1.0.md
+        status: passed
+        checksum: 4076a49e338cc222a1b2d9325268728e1f3a82552d706c9b5f1cb73dfbc24ff9
+        created_at: '2026-07-19T11:16:47Z'
+    render:
+      latest:
+        version: '1.0'
+        path: output/render-report-v1.0.yaml
+        status: passed
+        checksum: 8ffc51dd026245c60c16bca4a0c23ee862ede22a86e70e00f1663ef507c34a0e
+        created_at: '2026-07-19T11:16:47Z'
+next_step:
+  action: Review the approved delivery artifacts
+  reason: Rendering and Final HTML Audit have passed.
+  target_phase: delivery
+  target_flow: null

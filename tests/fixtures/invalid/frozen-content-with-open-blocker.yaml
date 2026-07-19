@@ -1,0 +1,108 @@
+project:
+  id: aftershock
+  name: AFTERSHOCK
+  workspace_path: /projects/aftershock
+  action_mode: render_html
+  document_profile: complete_game_map
+  specialization: null
+  intended_readers:
+  - reviewer
+  - level_designer
+  - developer
+  primary_language: id
+  output_languages:
+  - id
+  - en
+workflow:
+  current_phase: content_freeze
+  current_flow: null
+  content_status: frozen
+  content_frozen: true
+  html_status: not_generated
+  final_status: not_approved
+sections:
+  overview:
+    status: frozen
+    version: '1.0'
+  gameplay_flow:
+    status: frozen
+    version: '1.0'
+  development:
+    development_overview:
+      status: frozen
+      version: '1.0'
+    game_system:
+      status: frozen
+      version: '1.0'
+    data_and_reset:
+      status: frozen
+      version: '1.0'
+    gameplay_development:
+      status: frozen
+      version: '1.0'
+    packages:
+      docks:
+        gameplay_overview:
+          status: frozen
+          version: '1.0'
+        level_design:
+          status: frozen
+          version: '1.0'
+        developer:
+          status: frozen
+          version: '1.0'
+      quarry:
+        gameplay_overview:
+          status: frozen
+          version: '1.0'
+        level_design:
+          status: frozen
+          version: '1.0'
+        developer:
+          status: frozen
+          version: '1.0'
+open_questions:
+- id: Q-014
+  scope: quarry
+  topic: disconnect_behavior
+  question:
+    id: Apa yang terjadi saat disconnect?
+    en: What happens on disconnect?
+  blocking: true
+  status: open
+  affects:
+  - reset
+  - scoring
+  decision_id: null
+blockers:
+- id: B-004
+  source: Q-014
+  scope: quarry
+  reason: Disconnect behavior is unresolved.
+deferred: []
+errors: []
+versions:
+  content: '1.0'
+  template: '1.0'
+  schema: '0.1'
+  golden_sample: aftershock-1.0
+  html: '0.0'
+artifacts:
+  structured_content:
+    latest:
+      version: '1.0'
+      path: content/project-content-v1.0.yaml
+      status: frozen
+      created_at: '2026-07-19T12:00:00+07:00'
+  audits:
+    content:
+      latest:
+        version: '1.0'
+        path: audits/content-audit-v1.0.yaml
+        status: passed
+        created_at: '2026-07-19T12:10:00+07:00'
+next_step:
+  action: Render frozen Structured Content
+  reason: Content Freeze and all validations have passed.
+  target_phase: html_generation
+  target_flow: null

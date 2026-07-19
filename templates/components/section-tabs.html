@@ -1,0 +1,5 @@
+<div class="section-tabs package-tabs" role="navigation" aria-label="Package pages">
+{% for tab in tabs %}
+  <a class="section-tab{% if tab.active %} is-active{% endif %}" href="#{{ tab.target }}"><span class="i18n-text" data-en="{{ tab.label.en }}" data-id="{{ tab.label.id }}">{{ tab.label.en }}</span></a>
+{% endfor %}
+</div>

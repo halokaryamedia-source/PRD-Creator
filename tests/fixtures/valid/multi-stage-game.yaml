@@ -1,0 +1,477 @@
+document:
+  id: the-circuit
+  title: THE CIRCUIT
+  profile: multi_stage_game
+  specialization: null
+  primary_language: id
+  output_languages:
+  - id
+  - en
+  content_version: '0.1'
+  status: approved
+overview:
+  status: approved
+  title:
+    id: Overview
+    en: Overview
+  project_context:
+    id: Player menyelesaikan station dalam satu Session.
+    en: Players complete stations within one Session.
+  main_experience:
+    id: Setiap station menguji performa dan menghasilkan score.
+    en: Each station tests performance and produces a score.
+  game_information:
+  - label:
+      id: Station
+      en: Station
+    value:
+      id: 6 station
+      en: 6 stations
+  journey_overview:
+  - pre_game
+  - station_1
+  - final_result
+  main_systems:
+  - id: global_scoring
+    title:
+      id: Global Scoring
+      en: Global Scoring
+    description:
+      id: Score station digabung menjadi hasil akhir.
+      en: Station scores are combined into the final result.
+  terms: []
+gameplay_flow:
+- id: pre_game
+  title:
+    id: Pre-Game
+    en: Pre-Game
+  status: approved
+  narrative_context:
+    id: Player bergabung ke Session.
+    en: The player joins the Session.
+  player_experience:
+    id: Player menerima briefing dan memilih kit.
+    en: The player receives a briefing and selects a kit.
+  player_result:
+    id: Player siap memulai station.
+    en: The player is ready to start the stations.
+  next_section: station_1
+  terms: []
+- id: station_1
+  title:
+    id: Station 1
+    en: Station 1
+  status: approved
+  narrative_context:
+    id: Player memasuki arena pertama.
+    en: The player enters the first arena.
+  player_experience:
+    id: Player menyelesaikan combat trial.
+    en: The player completes the combat trial.
+  player_result:
+    id: Station Score disimpan.
+    en: The Station Score is saved.
+  next_section: final_result
+  terms: []
+- id: final_result
+  title:
+    id: Final Result
+    en: Final Result
+  status: approved
+  narrative_context:
+    id: Semua station selesai.
+    en: All stations are complete.
+  player_experience:
+    id: Player melihat leaderboard.
+    en: The player views the leaderboard.
+  player_result:
+    id: Final result tersimpan.
+    en: The final result is saved.
+  next_section: null
+  terms: []
+development:
+  session_system:
+    title:
+      id: Session and Arena System
+      en: Session and Arena System
+    status: approved
+    overview:
+      id: Session and Arena System overview.
+      en: Session and Arena System overview.
+    flow:
+    - number: '01'
+      title:
+        id: Session and Arena System setup
+        en: Session and Arena System setup
+      description:
+        id: Set up session and arena system.
+        en: Set up session and arena system.
+    requirements:
+    - number: 1
+      title:
+        id: Session and Arena System requirements
+        en: Session and Arena System requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement session and arena system consistently.
+          en: Implement session and arena system consistently.
+    important_notes:
+    - id: Session and Arena System applies across the project.
+      en: Session and Arena System applies across the project.
+    terms: []
+  global_scoring:
+    title:
+      id: Global Scoring
+      en: Global Scoring
+    status: approved
+    overview:
+      id: Global Scoring overview.
+      en: Global Scoring overview.
+    flow:
+    - number: '01'
+      title:
+        id: Global Scoring setup
+        en: Global Scoring setup
+      description:
+        id: Set up global scoring.
+        en: Set up global scoring.
+    requirements:
+    - number: 1
+      title:
+        id: Global Scoring requirements
+        en: Global Scoring requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement global scoring consistently.
+          en: Implement global scoring consistently.
+    important_notes:
+    - id: Global Scoring applies across the project.
+      en: Global Scoring applies across the project.
+    terms: []
+  data_and_leaderboard:
+    title:
+      id: Data and Leaderboard
+      en: Data and Leaderboard
+    status: approved
+    overview:
+      id: Data and Leaderboard overview.
+      en: Data and Leaderboard overview.
+    flow:
+    - number: '01'
+      title:
+        id: Data and Leaderboard setup
+        en: Data and Leaderboard setup
+      description:
+        id: Set up data and leaderboard.
+        en: Set up data and leaderboard.
+    requirements:
+    - number: 1
+      title:
+        id: Data and Leaderboard requirements
+        en: Data and Leaderboard requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement data and leaderboard consistently.
+          en: Implement data and leaderboard consistently.
+    important_notes:
+    - id: Data and Leaderboard applies across the project.
+      en: Data and Leaderboard applies across the project.
+    terms: []
+  reset_system:
+    title:
+      id: Reset System
+      en: Reset System
+    status: approved
+    overview:
+      id: Reset System overview.
+      en: Reset System overview.
+    flow:
+    - number: '01'
+      title:
+        id: Reset System setup
+        en: Reset System setup
+      description:
+        id: Set up reset system.
+        en: Set up reset system.
+    requirements:
+    - number: 1
+      title:
+        id: Reset System requirements
+        en: Reset System requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement reset system consistently.
+          en: Implement reset system consistently.
+    important_notes:
+    - id: Reset System applies across the project.
+      en: Reset System applies across the project.
+    terms: []
+  stage_packages:
+  - id: station_1
+    title:
+      id: Station 1
+      en: Station 1
+    type: station
+    objective_number: 1
+    status: frozen
+    gameplay_overview:
+      status: frozen
+      context:
+        id: Player memasuki Forge Hub untuk memulihkan The Forge.
+        en: The player enters Forge Hub to restore The Forge.
+      main_objective:
+        id: Proses Bronze, Silver, dan Gold Ore lalu ambil Beacon Core.
+        en: Process Bronze, Silver, and Gold Ore, then take the Beacon Core.
+      result:
+        id: Beacon Core tersedia untuk The Ascent.
+        en: The Beacon Core is ready for The Ascent.
+      gameplay_information:
+        game_purpose:
+          id: Memulihkan produksi Beacon Core.
+          en: Restore Beacon Core production.
+        estimated_time:
+          id: Target sembilan menit.
+          en: Nine-minute target.
+        starting_condition:
+          id: Bronze Cave aktif dan player dapat menambang.
+          en: Bronze Cave is active and the player can mine.
+        end_condition:
+          id: Selesai saat player mengambil Beacon Core.
+          en: Complete when the player takes the Beacon Core.
+        fail_or_blocked_condition:
+          id: Progress terblokir jika Required Ore belum cukup.
+          en: Progress is blocked until enough Required Ore is processed.
+        scoring_criteria:
+          id: Kecepatan dan Surplus Ore menentukan Quarry Score.
+          en: Speed and Surplus Ore determine Quarry Score.
+      gameplay_flow:
+      - number: '01'
+        title:
+          id: Mulai di Forge Hub
+          en: Mulai di Forge Hub
+        description:
+          id: Masuk ke Bronze Cave.
+          en: Masuk ke Bronze Cave.
+      - number: '02'
+        title:
+          id: Proses ore
+          en: Proses ore
+        description:
+          id: Selesaikan Bronze, Silver, lalu Gold.
+          en: Selesaikan Bronze, Silver, lalu Gold.
+      - number: '03'
+        title:
+          id: Ambil Beacon Core
+          en: Ambil Beacon Core
+        description:
+          id: Kembali ke The Forge dan ambil item.
+          en: Kembali ke The Forge dan ambil item.
+      terms:
+      - required_ore
+      - beacon_core
+    level_design:
+      status: frozen
+      overview:
+        id: Forge Hub menghubungkan tiga cave melalui Automatic Lift.
+        en: Forge Hub connects three caves through the Automatic Lift.
+      design_flow:
+      - number: '01'
+        title:
+          id: Blockout Forge Hub
+          en: Blockout Forge Hub
+        description:
+          id: Bangun hub dan landmark The Forge.
+          en: Bangun hub dan landmark The Forge.
+      - number: '02'
+        title:
+          id: Hubungkan cave
+          en: Hubungkan cave
+        description:
+          id: Bangun tiga cave pada level terpisah.
+          en: Bangun tiga cave pada level terpisah.
+      build_requirements:
+      - group_number: 1
+        group_title:
+          id: Forge Hub
+          en: Forge Hub
+        objects:
+        - code: A
+          object:
+            id: The Forge
+            en: The Forge
+          area_size:
+            value:
+              id: Cukup untuk mesin utama dan jalur player.
+              en: Enough for the main machine and player route.
+            required: true
+          build_and_visual:
+            id: Landmark utama yang terlihat dari lift.
+            en: Primary landmark visible from the lift.
+          gameplay_function:
+            id: Memproses ore dan menghasilkan Beacon Core.
+            en: Processes ore and creates the Beacon Core.
+      important_notes:
+      - id: Bronze Cave terbuka terlebih dahulu.
+        en: Bronze Cave opens first.
+      terms:
+      - automatic_lift
+      - the_forge
+    developer:
+      status: frozen
+      overview:
+        id: Implementasikan progres ore, The Forge, scoring, dan reset.
+        en: Implement ore progression, The Forge, scoring, and reset.
+      development_goal:
+        id: Menjalankan The Quarry secara terpisah per Session.
+        en: Run The Quarry independently per Session.
+      expected_result:
+        id: Objective menghasilkan satu Beacon Core dan satu hasil valid.
+        en: The objective creates one Beacon Core and one valid result.
+      development_flow:
+      - number: '01'
+        title:
+          id: Mechanic Setup
+          en: Mechanic Setup
+        description:
+          id: Siapkan cave dan Required Ore.
+          en: Siapkan cave dan Required Ore.
+      - number: '02'
+        title:
+          id: Gameplay Setup
+          en: Gameplay Setup
+        description:
+          id: Kontrol progres Bronze, Silver, dan Gold.
+          en: Kontrol progres Bronze, Silver, dan Gold.
+      - number: '03'
+        title:
+          id: Data Setup
+          en: Data Setup
+        description:
+          id: Catat completion dan score.
+          en: Catat completion dan score.
+      - number: '04'
+        title:
+          id: Reset Mechanic
+          en: Reset Mechanic
+        description:
+          id: Pulihkan state sebelum arena digunakan ulang.
+          en: Pulihkan state sebelum arena digunakan ulang.
+      requirements:
+      - number: 1
+        title:
+          id: Mechanic Setup
+          en: Mechanic Setup
+        items:
+        - code: A
+          title:
+            id: Ore progression
+            en: Ore progression
+          requirements:
+          - id: Validasi Required Ore per cave.
+            en: Validasi Required Ore per cave.
+          - id: Buka cave berikutnya setelah syarat terpenuhi.
+            en: Buka cave berikutnya setelah syarat terpenuhi.
+          result:
+            id: Progress cave konsisten.
+            en: Progress cave konsisten.
+      - number: 2
+        title:
+          id: Reset Mechanic
+          en: Reset Mechanic
+        items:
+        - code: A
+          title:
+            id: Reset and verification
+            en: Reset and verification
+          requirements:
+          - id: Hapus item sementara.
+            en: Hapus item sementara.
+          - id: Pulihkan ore dan The Forge.
+            en: Pulihkan ore dan The Forge.
+          - id: Lepaskan arena setelah verifikasi.
+            en: Lepaskan arena setelah verifikasi.
+          result:
+            id: Arena siap digunakan ulang.
+            en: Arena siap digunakan ulang.
+      important_notes:
+      - id: Semua state harus scoped ke Session.
+        en: All state must be scoped to the Session.
+      terms:
+      - session
+      - assigned_arena
+      scoring:
+        score_name:
+          id: Station 1 Score
+          en: Station 1 Score
+        scale:
+          minimum: 0
+          maximum: 100
+        components:
+        - id: time_score
+          name:
+            id: Skor Waktu
+            en: Time Score
+          weight: 80
+        - id: surplus_score
+          name:
+            id: Skor Surplus
+            en: Surplus Score
+          weight: 20
+        standard_or_target:
+          id: Sembilan menit menghasilkan skor standar.
+          en: Nine minutes produces the standard score.
+        bonus_behavior:
+          id: Lebih cepat menambah skor.
+          en: Faster completion adds score.
+        reduction_behavior:
+          id: Lebih lambat mengurangi skor.
+          en: Slower completion reduces score.
+        timer_start:
+          id: Timer dimulai saat Bronze Cave aktif.
+          en: The timer starts when Bronze Cave is active.
+        timer_stop:
+          id: Timer berhenti saat Beacon Core diambil.
+          en: The timer stops when the Beacon Core is taken.
+        excluded_time:
+        - id: Cinematic dan loading tidak dihitung.
+          en: Cinematics and loading are excluded.
+        no_score_condition:
+          id: Exit atau disconnect tidak menghasilkan skor.
+          en: Exit or disconnect produces no score.
+        recorded_data:
+        - id: completion_time
+          description:
+            id: Waktu penyelesaian.
+            en: Completion time.
+          type: duration
+        duplicate_prevention:
+          id: Skor dibuat satu kali per Session.
+          en: Create the score once per Session.
+        rounding:
+          mode: nearest
+          precision: 0
+        final_result_relationship:
+          id: Quarry Score menjadi bagian dari Final Total.
+          en: Quarry Score contributes to Final Total.
+        critical_inputs:
+        - id: surplus_ore_total
+          value: 12
+          status: approved
+          blocking: false
+    handoff_to: null

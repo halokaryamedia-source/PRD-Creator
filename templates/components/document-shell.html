@@ -1,0 +1,10 @@
+<button aria-controls="docSidebar" aria-expanded="false" class="mobile-sidebar-button" id="mobileSidebarButton" type="button"><span aria-hidden="true">☰</span><span class="i18n-text" data-en="Menu" data-id="Menu">Menu</span></button>
+<button aria-label="Close document navigation" class="sidebar-scrim" hidden id="sidebarScrim" type="button"></button>
+{% include "components/sidebar.html" %}
+<main class="document-main">
+  {{ pages_html | safe }}
+</main>
+<div aria-hidden="true" data-placement="top" id="globalGlossaryTooltip" role="tooltip">
+  <span class="tooltip-term" id="globalGlossaryTooltipTerm"></span>
+  <span class="tooltip-definition" id="globalGlossaryTooltipDefinition"></span>
+</div>

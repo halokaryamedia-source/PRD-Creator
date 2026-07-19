@@ -1,0 +1,67 @@
+document:
+  id: gameplay-only
+  title: GAMEPLAY DESIGN
+  profile: specialized_document
+  specialization: gameplay_design_only
+  primary_language: id
+  output_languages:
+  - id
+  - en
+  content_version: '0.1'
+  status: approved
+specialized_content:
+  gameplay_design:
+    status: approved
+    context:
+      id: Player memasuki Forge Hub untuk memulihkan The Forge.
+      en: The player enters Forge Hub to restore The Forge.
+    main_objective:
+      id: Proses Bronze, Silver, dan Gold Ore lalu ambil Beacon Core.
+      en: Process Bronze, Silver, and Gold Ore, then take the Beacon Core.
+    result:
+      id: Beacon Core tersedia untuk The Ascent.
+      en: The Beacon Core is ready for The Ascent.
+    gameplay_information:
+      game_purpose:
+        id: Memulihkan produksi Beacon Core.
+        en: Restore Beacon Core production.
+      estimated_time:
+        id: Target sembilan menit.
+        en: Nine-minute target.
+      starting_condition:
+        id: Bronze Cave aktif dan player dapat menambang.
+        en: Bronze Cave is active and the player can mine.
+      end_condition:
+        id: Selesai saat player mengambil Beacon Core.
+        en: Complete when the player takes the Beacon Core.
+      fail_or_blocked_condition:
+        id: Progress terblokir jika Required Ore belum cukup.
+        en: Progress is blocked until enough Required Ore is processed.
+      scoring_criteria:
+        id: Kecepatan dan Surplus Ore menentukan Quarry Score.
+        en: Speed and Surplus Ore determine Quarry Score.
+    gameplay_flow:
+    - number: '01'
+      title:
+        id: Mulai di Forge Hub
+        en: Mulai di Forge Hub
+      description:
+        id: Masuk ke Bronze Cave.
+        en: Masuk ke Bronze Cave.
+    - number: '02'
+      title:
+        id: Proses ore
+        en: Proses ore
+      description:
+        id: Selesaikan Bronze, Silver, lalu Gold.
+        en: Selesaikan Bronze, Silver, lalu Gold.
+    - number: '03'
+      title:
+        id: Ambil Beacon Core
+        en: Ambil Beacon Core
+      description:
+        id: Kembali ke The Forge dan ambil item.
+        en: Kembali ke The Forge dan ambil item.
+    terms:
+    - required_ore
+    - beacon_core

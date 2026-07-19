@@ -1,0 +1,3 @@
+<div class="outcome quarry-note-grid">
+{% for note in notes %}<article><b><span class="i18n-text" data-en="{{ note.title.en }}" data-id="{{ note.title.id }}">{{ note.title.en }}</span></b><p><span class="i18n-text" data-en="{{ note.content.en }}" data-id="{{ note.content.id }}">{{ note.content.en }}</span></p></article>{% endfor %}
+</div>

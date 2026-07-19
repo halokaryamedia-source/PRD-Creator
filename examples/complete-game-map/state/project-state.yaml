@@ -1,0 +1,76 @@
+project:
+  id: aftershock
+  name: AFTERSHOCK
+  workspace_path: examples/complete-game-map
+  action_mode: render_html
+  document_profile: complete_game_map
+  specialization: null
+  intended_readers:
+  - reviewer
+  - level_designer
+  - developer
+  primary_language: id
+  output_languages:
+  - id
+  - en
+workflow:
+  current_phase: delivery
+  current_flow: null
+  content_status: frozen
+  content_frozen: true
+  html_status: approved
+  final_status: approved_for_delivery
+sections:
+  document:
+    status: frozen
+    version: '1.0'
+open_questions: []
+blockers: []
+deferred: []
+errors: []
+versions:
+  content: '1.0'
+  template: '1.0'
+  schema: '0.1'
+  golden_sample: aftershock-1.0
+  html: '1.0'
+artifacts:
+  structured_content:
+    latest:
+      version: '1.0'
+      path: content/project-content.yaml
+      status: frozen
+  html:
+    latest:
+      version: '1.0'
+      path: output/aftershock-production-document-v1.0.html
+      status: approved
+      checksum: fa099c8cb240148abc1286b1d1edc36f5713b6c58bab675987909847b039c395
+      created_at: '2026-07-19T11:16:15Z'
+  zip:
+    latest:
+      version: '1.0'
+      path: output/aftershock-production-document-v1.0.zip
+      status: approved
+      checksum: 37700f24da1f9a1d5adc222bb08da6aa0e9e79d5ed58668d1ea33a4a00a2c915
+      created_at: '2026-07-19T11:16:15Z'
+  audits:
+    html:
+      latest:
+        version: '1.0'
+        path: output/html-audit-v1.0.md
+        status: passed
+        checksum: 3e10348edeefd4a929fab29396774a12e584c44bea7f377123d4617ad40d7b82
+        created_at: '2026-07-19T11:16:15Z'
+    render:
+      latest:
+        version: '1.0'
+        path: output/render-report-v1.0.yaml
+        status: passed
+        checksum: 89f95df68e82589a0d1e8af4aa7097a26d204fb37282fc75d412d5609956b2a9
+        created_at: '2026-07-19T11:16:15Z'
+next_step:
+  action: Review the approved delivery artifacts
+  reason: Rendering and Final HTML Audit have passed.
+  target_phase: delivery
+  target_flow: null

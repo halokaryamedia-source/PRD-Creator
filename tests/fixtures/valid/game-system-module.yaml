@@ -1,0 +1,331 @@
+document:
+  id: arena-system
+  title: ARENA SYSTEM
+  profile: game_system_module
+  specialization: null
+  primary_language: id
+  output_languages:
+  - id
+  - en
+  content_version: '0.1'
+  status: approved
+system_overview:
+  title:
+    id: System Overview
+    en: System Overview
+  status: approved
+  overview:
+    id: System Overview overview.
+    en: System Overview overview.
+  flow:
+  - number: '01'
+    title:
+      id: System Overview setup
+      en: System Overview setup
+    description:
+      id: Set up system overview.
+      en: Set up system overview.
+  requirements:
+  - number: 1
+    title:
+      id: System Overview requirements
+      en: System Overview requirements
+    items:
+    - code: A
+      title:
+        id: Core requirement
+        en: Core requirement
+      requirements:
+      - id: Implement system overview consistently.
+        en: Implement system overview consistently.
+  important_notes:
+  - id: System Overview applies across the project.
+    en: System Overview applies across the project.
+  terms: []
+system_flow:
+- number: '01'
+  title:
+    id: Initialize
+    en: Initialize
+  description:
+    id: Load configuration and register arenas.
+    en: Load configuration and register arenas.
+- number: '02'
+  title:
+    id: Assign
+    en: Assign
+  description:
+    id: Assign one arena to one Session.
+    en: Assign one arena to one Session.
+- number: '03'
+  title:
+    id: Release
+    en: Release
+  description:
+    id: Reset and release the arena.
+    en: Reset and release the arena.
+development:
+  architecture:
+    title:
+      id: Architecture
+      en: Architecture
+    status: approved
+    overview:
+      id: Architecture overview.
+      en: Architecture overview.
+    flow:
+    - number: '01'
+      title:
+        id: Architecture setup
+        en: Architecture setup
+      description:
+        id: Set up architecture.
+        en: Set up architecture.
+    requirements:
+    - number: 1
+      title:
+        id: Architecture requirements
+        en: Architecture requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement architecture consistently.
+          en: Implement architecture consistently.
+    important_notes:
+    - id: Architecture applies across the project.
+      en: Architecture applies across the project.
+    terms: []
+  requirements:
+    title:
+      id: Module Requirements
+      en: Module Requirements
+    status: approved
+    overview:
+      id: Module Requirements overview.
+      en: Module Requirements overview.
+    flow:
+    - number: '01'
+      title:
+        id: Module Requirements setup
+        en: Module Requirements setup
+      description:
+        id: Set up module requirements.
+        en: Set up module requirements.
+    requirements:
+    - number: 1
+      title:
+        id: Module Requirements requirements
+        en: Module Requirements requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement module requirements consistently.
+          en: Implement module requirements consistently.
+    important_notes:
+    - id: Module Requirements applies across the project.
+      en: Module Requirements applies across the project.
+    terms: []
+  configuration:
+    title:
+      id: Configuration
+      en: Configuration
+    status: approved
+    overview:
+      id: Configuration overview.
+      en: Configuration overview.
+    flow:
+    - number: '01'
+      title:
+        id: Configuration setup
+        en: Configuration setup
+      description:
+        id: Set up configuration.
+        en: Set up configuration.
+    requirements:
+    - number: 1
+      title:
+        id: Configuration requirements
+        en: Configuration requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement configuration consistently.
+          en: Implement configuration consistently.
+    important_notes:
+    - id: Configuration applies across the project.
+      en: Configuration applies across the project.
+    terms: []
+  integration:
+    title:
+      id: Integration
+      en: Integration
+    status: approved
+    overview:
+      id: Integration overview.
+      en: Integration overview.
+    flow:
+    - number: '01'
+      title:
+        id: Integration setup
+        en: Integration setup
+      description:
+        id: Set up integration.
+        en: Set up integration.
+    requirements:
+    - number: 1
+      title:
+        id: Integration requirements
+        en: Integration requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement integration consistently.
+          en: Implement integration consistently.
+    important_notes:
+    - id: Integration applies across the project.
+      en: Integration applies across the project.
+    terms: []
+  data_handling:
+    title:
+      id: Data Handling
+      en: Data Handling
+    status: approved
+    overview:
+      id: Data Handling overview.
+      en: Data Handling overview.
+    flow:
+    - number: '01'
+      title:
+        id: Data Handling setup
+        en: Data Handling setup
+      description:
+        id: Set up data handling.
+        en: Set up data handling.
+    requirements:
+    - number: 1
+      title:
+        id: Data Handling requirements
+        en: Data Handling requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement data handling consistently.
+          en: Implement data handling consistently.
+    important_notes:
+    - id: Data Handling applies across the project.
+      en: Data Handling applies across the project.
+    terms: []
+  error_handling:
+    title:
+      id: Error Handling
+      en: Error Handling
+    status: approved
+    overview:
+      id: Error Handling overview.
+      en: Error Handling overview.
+    flow:
+    - number: '01'
+      title:
+        id: Error Handling setup
+        en: Error Handling setup
+      description:
+        id: Set up error handling.
+        en: Set up error handling.
+    requirements:
+    - number: 1
+      title:
+        id: Error Handling requirements
+        en: Error Handling requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement error handling consistently.
+          en: Implement error handling consistently.
+    important_notes:
+    - id: Error Handling applies across the project.
+      en: Error Handling applies across the project.
+    terms: []
+  lifecycle:
+    title:
+      id: Lifecycle and Cleanup
+      en: Lifecycle and Cleanup
+    status: approved
+    overview:
+      id: Lifecycle and Cleanup overview.
+      en: Lifecycle and Cleanup overview.
+    flow:
+    - number: '01'
+      title:
+        id: Lifecycle and Cleanup setup
+        en: Lifecycle and Cleanup setup
+      description:
+        id: Set up lifecycle and cleanup.
+        en: Set up lifecycle and cleanup.
+    requirements:
+    - number: 1
+      title:
+        id: Lifecycle and Cleanup requirements
+        en: Lifecycle and Cleanup requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement lifecycle and cleanup consistently.
+          en: Implement lifecycle and cleanup consistently.
+    important_notes:
+    - id: Lifecycle and Cleanup applies across the project.
+      en: Lifecycle and Cleanup applies across the project.
+    terms: []
+  usage_guide:
+    title:
+      id: Usage Guide
+      en: Usage Guide
+    status: approved
+    overview:
+      id: Usage Guide overview.
+      en: Usage Guide overview.
+    flow:
+    - number: '01'
+      title:
+        id: Usage Guide setup
+        en: Usage Guide setup
+      description:
+        id: Set up usage guide.
+        en: Set up usage guide.
+    requirements:
+    - number: 1
+      title:
+        id: Usage Guide requirements
+        en: Usage Guide requirements
+      items:
+      - code: A
+        title:
+          id: Core requirement
+          en: Core requirement
+        requirements:
+        - id: Implement usage guide consistently.
+          en: Implement usage guide consistently.
+    important_notes:
+    - id: Usage Guide applies across the project.
+      en: Usage Guide applies across the project.
+    terms: []

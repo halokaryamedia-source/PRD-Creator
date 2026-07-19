@@ -1,0 +1,6 @@
+<section class="scoring-block">
+  <h3><span class="i18n-text" data-en="{{ scoring.score_name.en }}" data-id="{{ scoring.score_name.id }}">{{ scoring.score_name.en }}</span></h3>
+  <div class="production-table-wrap"><table><thead><tr><th>Component</th><th>Weight</th><th>Rule</th></tr></thead><tbody>
+  {% for component in scoring.components %}<tr><td><b>{{ component.name }}</b></td><td><b>{{ component.weight }}%</b></td><td>{{ component.rule_html | safe }}</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>

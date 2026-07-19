@@ -1,0 +1,58 @@
+score_name:
+  id: Skor Quarry
+  en: Quarry Score
+scale:
+  minimum: 0
+  maximum: 100
+components:
+- id: time_score
+  name:
+    id: Skor Waktu
+    en: Time Score
+  weight: 80
+- id: surplus_score
+  name:
+    id: Skor Surplus
+    en: Surplus Score
+  weight: 30
+standard_or_target:
+  id: Sembilan menit menghasilkan skor standar.
+  en: Nine minutes produces the standard score.
+bonus_behavior:
+  id: Lebih cepat menambah skor.
+  en: Faster completion adds score.
+reduction_behavior:
+  id: Lebih lambat mengurangi skor.
+  en: Slower completion reduces score.
+timer_start:
+  id: Timer dimulai saat Bronze Cave aktif.
+  en: The timer starts when Bronze Cave is active.
+timer_stop:
+  id: Timer berhenti saat Beacon Core diambil.
+  en: The timer stops when the Beacon Core is taken.
+excluded_time:
+- id: Cinematic dan loading tidak dihitung.
+  en: Cinematics and loading are excluded.
+no_score_condition:
+  id: Exit atau disconnect tidak menghasilkan skor.
+  en: Exit or disconnect produces no score.
+recorded_data:
+- id: completion_time
+  description:
+    id: Waktu penyelesaian.
+    en: Completion time.
+  type: duration
+duplicate_prevention:
+  id: Skor dibuat satu kali per Session.
+  en: Create the score once per Session.
+rounding:
+  mode: nearest
+  precision: 0
+final_result_relationship:
+  id: Quarry Score menjadi bagian dari Final Total.
+  en: Quarry Score contributes to Final Total.
+critical_inputs:
+- id: surplus_ore_total
+  value: 12
+  status: approved
+  blocking: false

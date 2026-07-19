@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scoring.schema.json",
+  "title": "Production Document Builder \u2014 Scoring",
+  "type": "object",
+  "required": [
+    "score_name",
+    "scale",
+    "components",
+    "standard_or_target",
+    "bonus_behavior",
+    "reduction_behavior",
+    "timer_start",
+    "timer_stop",
+    "excluded_time",
+    "no_score_condition",
+    "recorded_data",
+    "duplicate_prevention",
+    "rounding",
+    "final_result_relationship"
+  ],
+  "properties": {
+    "score_name": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "scale": {
+      "type": "object",
+      "required": [
+        "minimum",
+        "maximum"
+      ],
+      "properties": {
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "weight"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]*$"
+          },
+          "name": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "description": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          },
+          "input_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "standard_or_target": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "bonus_behavior": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "reduction_behavior": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "timer_start": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "timer_stop": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "excluded_time": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/localizedText"
+      }
+    },
+    "no_score_condition": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "recorded_data": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "description": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "integer",
+              "number",
+              "boolean",
+              "string",
+              "duration",
+              "timestamp",
+              "object",
+              "array"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "duplicate_prevention": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "rounding": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "floor",
+            "ceil",
+            "nearest",
+            "developer_defined"
+          ]
+        },
+        "precision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "final_result_relationship": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "critical_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "value",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "value": {},
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "recommended",
+              "approved"
+            ]
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "common.schema.json#/$defs/sourceRef"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/sourceRef"
+      }
+    }
+  },
+  "additionalProperties": false
+}

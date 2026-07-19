@@ -1,0 +1,16 @@
+fixture: multi-stage-game
+purpose: End-to-end acceptance trace for the installable Skill package.
+phases:
+  project_intake: represented_by_fixture
+  source_audit: represented_by_fixture
+  guided_discussion: represented_by_decision_log
+  decision_consolidation: state/decision-log.yaml
+  structured_content: content/project-content.yaml
+  content_audit: passed_in_fixture
+  consistency_audit: passed_in_fixture
+  user_approval: recorded
+  content_freeze: true
+  html_generation: scripts/run_pipeline.py
+  final_html_audit: scripts/validate_html.py
+  final_delivery: HTML + ZIP + Render Report + HTML Audit
+note: The language-model discussion itself is reviewed behavior, while the artifact pipeline is executable and tested.

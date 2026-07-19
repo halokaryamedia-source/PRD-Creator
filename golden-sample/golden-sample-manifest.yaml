@@ -1,0 +1,131 @@
+golden_sample:
+  id: aftershock
+  version: '1.0'
+  status: locked
+  document_profile: complete_game_map
+source:
+  filename: aftershock-full-document-settings-above-viewmode-v1.8.html
+  source_version: '1.8'
+  sha256: 858923dbd7ef3ad7d0595e4b894bf1bd08b1e73b8b6eb803c88e67348eeaa6a4
+locked_artifact:
+  filename: aftershock-golden-sample-v1.0.html
+  sha256: 6af765b1c40100728b126fe219c88e5f0f734816f6c9a596d1cd90292c380901
+  visible_content_change:
+    from:
+      en: Summary
+      id: Ringkasan
+    to:
+      en: Overview
+      id: Gambaran Umum
+    occurrences: 2
+  template_only_fixes:
+  - Restore desktop sidebar collapse using pre-existing design classes.
+  - Restore mobile sidebar drawer and remove forced 760px page width.
+  - Add accessible sidebar controls and Escape/outside navigation handling.
+  internal_compatibility:
+    overview_section_id: summary
+    reason: Internal ID preserved to avoid breaking approved navigation and scripts.
+hierarchy:
+- code: '01'
+  label:
+    en: Overview
+    id: Gambaran Umum
+  page_ids:
+  - summary
+- code: '02'
+  label:
+    en: Gameplay Flow
+    id: Alur Gameplay
+  page_ids:
+  - flow-start
+  - flow-docks
+  - flow-quarry
+  - flow-ascent
+  - flow-beacon
+  - flow-relay
+  - flow-ending
+- code: '03'
+  label:
+    en: Development
+    id: Pengembangan
+  page_ids:
+  - development-overview
+  - shared-systems
+  - shared-data-reset
+  - phase-development
+  - dev-docks-requirement
+  - dev-docks-level
+  - dev-docks-developer
+  - dev-quarry-requirement
+  - dev-quarry-level
+  - dev-quarry-developer
+  - dev-ascent-requirement
+  - dev-ascent-level
+  - dev-ascent-developer
+  - dev-beacon-requirement
+  - dev-beacon-level
+  - dev-beacon-developer
+  - dev-relay-requirement
+  - dev-relay-level
+  - dev-relay-developer
+  - dev-ending-requirement
+  - dev-ending-level
+  - dev-ending-developer
+content_benchmark:
+  package: quarry
+  objective: 1
+  page_ids:
+  - dev-quarry-requirement
+  - dev-quarry-level
+  - dev-quarry-developer
+features:
+  bilingual_en_id: true
+  light_dark_mode: true
+  view_mode: true
+  desktop_sidebar_collapse: true
+  mobile_sidebar_drawer: true
+  global_tooltip: true
+  collapsible_terms_used: true
+  responsive: true
+  print_ready: true
+versions:
+  golden_sample: '1.0'
+  template_extraction: '0.1'
+  schema_reference: '0.1'
+inventory:
+  pages: 30
+  glossary_terms: 86
+  glossary_scope_counts:
+    docks: 9
+    quarry: 10
+    ascent: 13
+    beacon: 11
+    relay: 12
+    ending: 8
+    system: 12
+    flow: 11
+extraction:
+  style_blocks: 10
+  script_blocks: 3
+  combined_css_bytes: 130129
+  semantic_css_rule_counts:
+    tokens: 5
+    layout: 187
+    components: 577
+    themes: 172
+    responsive: 40
+    print: 31
+validation:
+  structural_passed: true
+  browser_passed: true
+  visual_regression_passed: true
+  critical_findings: 0
+  major_findings: 0
+limitations:
+- aftershock-content.yaml is a locked page inventory, not a semantic replacement for
+  project-content.yaml.
+- golden-sample.css remains the canonical visual fidelity bundle for semantic project
+  rendering.
+- Byte-identical comparison applies only when reproducing the approved AFTERSHOCK
+  Golden Sample; new project content uses the same visual and interaction contract
+  with project-specific content.

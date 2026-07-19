@@ -1,0 +1,1230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-content.schema.json",
+  "title": "Production Document Builder \u2014 Project Content",
+  "type": "object",
+  "required": [
+    "document"
+  ],
+  "properties": {
+    "document": {
+      "$ref": "#/$defs/documentMetadata"
+    },
+    "overview": {
+      "$ref": "#/$defs/overviewPage"
+    },
+    "gameplay_flow": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/gameplayFlowPage"
+      }
+    },
+    "development": {
+      "$ref": "#/$defs/developmentRoot"
+    },
+    "system_overview": {
+      "$ref": "#/$defs/globalPage"
+    },
+    "system_flow": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/flowStep"
+      }
+    },
+    "specialized_content": {
+      "$ref": "#/$defs/specializedContent"
+    }
+  },
+  "$defs": {
+    "documentMetadata": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "profile",
+        "primary_language",
+        "output_languages",
+        "content_version",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subtitle": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "profile": {
+          "$ref": "common.schema.json#/$defs/documentProfile"
+        },
+        "specialization": {
+          "oneOf": [
+            {
+              "$ref": "common.schema.json#/$defs/specialization"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "primary_language": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+        },
+        "output_languages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+          },
+          "uniqueItems": true
+        },
+        "content_version": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/contentStatus"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "statusAndTerms": {
+      "type": "object",
+      "required": [
+        "status",
+        "terms"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      }
+    },
+    "informationItem": {
+      "type": "object",
+      "required": [
+        "label",
+        "value"
+      ],
+      "properties": {
+        "label": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "value": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "systemItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "description": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "overviewPage": {
+      "type": "object",
+      "required": [
+        "status",
+        "title",
+        "project_context",
+        "main_experience",
+        "game_information",
+        "journey_overview",
+        "main_systems",
+        "terms"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "project_context": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "main_experience": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "game_information": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/informationItem"
+          }
+        },
+        "journey_overview": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_-]*$"
+          },
+          "uniqueItems": true
+        },
+        "main_systems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/systemItem"
+          }
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "gameplayFlowPage": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "status",
+        "narrative_context",
+        "player_experience",
+        "player_result",
+        "terms"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "narrative_context": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "player_experience": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "main_obstacle_or_change": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "player_result": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "next_section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "requirementItem": {
+      "type": "object",
+      "required": [
+        "code",
+        "title",
+        "requirements"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          }
+        },
+        "result": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requirementGroup": {
+      "type": "object",
+      "required": [
+        "number",
+        "title",
+        "items"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/requirementItem"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "globalPage": {
+      "type": "object",
+      "required": [
+        "title",
+        "status",
+        "overview",
+        "flow",
+        "requirements",
+        "important_notes",
+        "terms"
+      ],
+      "properties": {
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "overview": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "flow": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/flowStep"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/requirementGroup"
+          }
+        },
+        "important_notes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          }
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "gameplayInformation": {
+      "type": "object",
+      "required": [
+        "game_purpose",
+        "estimated_time",
+        "starting_condition",
+        "end_condition",
+        "fail_or_blocked_condition"
+      ],
+      "properties": {
+        "game_purpose": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "estimated_time": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "starting_condition": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "end_condition": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "fail_or_blocked_condition": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "scoring_criteria": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "completion_criteria": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "scoring_criteria"
+          ],
+          "not": {
+            "required": [
+              "completion_criteria"
+            ]
+          }
+        },
+        {
+          "required": [
+            "completion_criteria"
+          ],
+          "not": {
+            "required": [
+              "scoring_criteria"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "gameplayOverview": {
+      "type": "object",
+      "required": [
+        "status",
+        "context",
+        "main_objective",
+        "result",
+        "gameplay_information",
+        "gameplay_flow",
+        "terms"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "context": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "main_objective": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "result": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "gameplay_information": {
+          "$ref": "#/$defs/gameplayInformation"
+        },
+        "gameplay_flow": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/$defs/flowStep"
+          }
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "areaSize": {
+      "type": "object",
+      "required": [
+        "value",
+        "required"
+      ],
+      "properties": {
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "common.schema.json#/$defs/localizedText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "reason": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "buildObject": {
+      "type": "object",
+      "required": [
+        "code",
+        "object",
+        "area_size",
+        "build_and_visual",
+        "gameplay_function"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "area_size": {
+          "$ref": "#/$defs/areaSize"
+        },
+        "build_and_visual": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "gameplay_function": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    },
+    "buildRequirementGroup": {
+      "type": "object",
+      "required": [
+        "group_number",
+        "group_title",
+        "objects"
+      ],
+      "properties": {
+        "group_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "group_title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "objects": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/buildObject"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "levelDesign": {
+      "type": "object",
+      "required": [
+        "status",
+        "overview",
+        "design_flow",
+        "build_requirements",
+        "important_notes",
+        "terms"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "overview": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "design_flow": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/$defs/flowStep"
+          }
+        },
+        "build_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/buildRequirementGroup"
+          }
+        },
+        "important_notes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          }
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "developer": {
+      "type": "object",
+      "required": [
+        "status",
+        "overview",
+        "development_goal",
+        "expected_result",
+        "development_flow",
+        "requirements",
+        "important_notes",
+        "terms"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "overview": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "development_goal": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "expected_result": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "development_flow": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/$defs/flowStep"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/requirementGroup"
+          }
+        },
+        "scoring": {
+          "$ref": "scoring.schema.json"
+        },
+        "completion_data": {
+          "$ref": "completion-data.schema.json"
+        },
+        "important_notes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          }
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/termRef"
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "scoring"
+          ],
+          "not": {
+            "required": [
+              "completion_data"
+            ]
+          }
+        },
+        {
+          "required": [
+            "completion_data"
+          ],
+          "not": {
+            "required": [
+              "scoring"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "package": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "type",
+        "status",
+        "gameplay_overview",
+        "level_design",
+        "developer"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "title": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "introduction",
+            "objective",
+            "transition",
+            "ending",
+            "stage",
+            "station",
+            "standalone_gameplay"
+          ]
+        },
+        "objective_number": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "gameplay_overview": {
+          "$ref": "#/$defs/gameplayOverview"
+        },
+        "level_design": {
+          "$ref": "#/$defs/levelDesign"
+        },
+        "developer": {
+          "$ref": "#/$defs/developer"
+        },
+        "handoff_to": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "globalPagesCompleteGame": {
+      "type": "object",
+      "required": [
+        "development_overview",
+        "game_system",
+        "data_and_reset",
+        "gameplay_development"
+      ],
+      "properties": {
+        "development_overview": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "game_system": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "data_and_reset": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "gameplay_development": {
+          "$ref": "#/$defs/globalPage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "developmentRoot": {
+      "type": "object",
+      "properties": {
+        "global_pages": {
+          "$ref": "#/$defs/globalPagesCompleteGame"
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/package"
+          }
+        },
+        "session_system": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "global_scoring": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "data_and_leaderboard": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "reset_system": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "stage_packages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/package"
+          }
+        },
+        "gameplay_package": {
+          "$ref": "#/$defs/package"
+        },
+        "architecture": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "requirements": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "configuration": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "integration": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "data_handling": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "error_handling": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/globalPage"
+        },
+        "usage_guide": {
+          "$ref": "#/$defs/globalPage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "specializedContent": {
+      "type": "object",
+      "properties": {
+        "gameplay_design": {
+          "$ref": "#/$defs/gameplayOverview"
+        },
+        "level_design": {
+          "$ref": "#/$defs/levelDesign"
+        },
+        "developer": {
+          "$ref": "#/$defs/developer"
+        },
+        "scoring_and_data": {
+          "type": "object",
+          "required": [
+            "title",
+            "status",
+            "scoring",
+            "terms"
+          ],
+          "properties": {
+            "title": {
+              "$ref": "common.schema.json#/$defs/localizedText"
+            },
+            "status": {
+              "$ref": "common.schema.json#/$defs/sectionStatus"
+            },
+            "scoring": {
+              "$ref": "scoring.schema.json"
+            },
+            "terms": {
+              "type": "array",
+              "items": {
+                "$ref": "common.schema.json#/$defs/termRef"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "audit": {
+          "type": "object",
+          "required": [
+            "scope",
+            "method",
+            "findings",
+            "next_step"
+          ],
+          "properties": {
+            "scope": {
+              "$ref": "common.schema.json#/$defs/localizedText"
+            },
+            "method": {
+              "$ref": "common.schema.json#/$defs/localizedText"
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "next_step": {
+              "$ref": "common.schema.json#/$defs/localizedText"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "complete_game_map"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "overview",
+          "gameplay_flow",
+          "development"
+        ],
+        "properties": {
+          "gameplay_flow": {
+            "minItems": 2
+          },
+          "development": {
+            "required": [
+              "global_pages",
+              "packages"
+            ],
+            "properties": {
+              "packages": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "multi_stage_game"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "overview",
+          "gameplay_flow",
+          "development"
+        ],
+        "properties": {
+          "development": {
+            "required": [
+              "session_system",
+              "global_scoring",
+              "data_and_leaderboard",
+              "reset_system",
+              "stage_packages"
+            ],
+            "properties": {
+              "stage_packages": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "single_gameplay"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "overview",
+          "gameplay_flow",
+          "development"
+        ],
+        "properties": {
+          "development": {
+            "required": [
+              "gameplay_package"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "game_system_module"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "system_overview",
+          "system_flow",
+          "development"
+        ],
+        "properties": {
+          "development": {
+            "required": [
+              "architecture",
+              "requirements",
+              "configuration",
+              "integration",
+              "data_handling",
+              "error_handling",
+              "lifecycle",
+              "usage_guide"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "specialized_document"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "specialized_content"
+        ],
+        "properties": {
+          "document": {
+            "required": [
+              "specialization"
+            ],
+            "properties": {
+              "specialization": {
+                "$ref": "common.schema.json#/$defs/specialization"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "specialized_document"
+              },
+              "specialization": {
+                "const": "gameplay_design_only"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "specialized_content": {
+            "required": [
+              "gameplay_design"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "specialized_document"
+              },
+              "specialization": {
+                "const": "level_design_only"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "specialized_content": {
+            "required": [
+              "level_design"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "specialized_document"
+              },
+              "specialization": {
+                "const": "developer_only"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "specialized_content": {
+            "required": [
+              "developer"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "specialized_document"
+              },
+              "specialization": {
+                "const": "scoring_and_data_only"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "specialized_content": {
+            "required": [
+              "scoring_and_data"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "document": {
+            "properties": {
+              "profile": {
+                "const": "specialized_document"
+              },
+              "specialization": {
+                "const": "audit_only"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "specialized_content": {
+            "required": [
+              "audit"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

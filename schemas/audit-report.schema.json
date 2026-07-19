@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "audit-report.schema.json",
+  "title": "Production Document Builder \u2014 Audit Report",
+  "type": "object",
+  "required": [
+    "audit",
+    "findings",
+    "summary",
+    "next_step"
+  ],
+  "properties": {
+    "audit": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "scope",
+        "status",
+        "created_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^AUD-[0-9]{3,}$"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "mini",
+            "multi_perspective",
+            "consistency",
+            "freeze_readiness",
+            "html"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "in_progress",
+            "passed",
+            "failed",
+            "blocked"
+          ]
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/dateTime"
+        },
+        "content_version": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "html_version": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        }
+      },
+      "additionalProperties": false
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "severity",
+          "audit_type",
+          "scope",
+          "section",
+          "issue",
+          "impact",
+          "recommendation",
+          "affects",
+          "requires_user_decision",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^F-[A-Z0-9-]+$"
+          },
+          "severity": {
+            "$ref": "common.schema.json#/$defs/findingSeverity"
+          },
+          "audit_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "section": {
+            "type": "string",
+            "minLength": 1
+          },
+          "issue": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          },
+          "impact": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          },
+          "recommendation": {
+            "$ref": "common.schema.json#/$defs/localizedText"
+          },
+          "affects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "requires_user_decision": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "common.schema.json#/$defs/findingStatus"
+          },
+          "resolved_by": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "critical",
+        "major",
+        "minor",
+        "suggestion",
+        "blocking_questions"
+      ],
+      "properties": {
+        "critical": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "major": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "minor": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "suggestion": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocking_questions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "accepted_minor": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "next_step": {
+      "$ref": "common.schema.json#/$defs/nextStep"
+    }
+  },
+  "additionalProperties": false
+}

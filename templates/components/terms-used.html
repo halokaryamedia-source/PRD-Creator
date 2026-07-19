@@ -1,0 +1,6 @@
+<details class="terms-used-collapsible" data-terms-used>
+  <summary class="terms-used-summary"><span class="terms-used-title"><span class="i18n-text" data-en="Terms Used" data-id="Istilah yang Digunakan">Terms Used</span></span><span aria-hidden="true" class="terms-used-separator">—</span><span class="terms-used-action"><span class="terms-used-show-label"><span class="i18n-text" data-en="Show Details" data-id="Tampilkan Detail">Show Details</span></span><span class="terms-used-hide-label"><span class="i18n-text" data-en="Hide Details" data-id="Sembunyikan Detail">Hide Details</span></span><span aria-hidden="true" class="terms-used-chevron"></span></span></summary>
+  <div class="terms-used-panel"><div class="definition-list quarry-definition-list glossary-definition-list">
+  {% for term in terms %}<div class="definition-item"><b><span class="i18n-text" data-en="{{ term.term.en }}" data-id="{{ term.term.id }}">{{ term.term.en }}</span></b><p><span class="i18n-text" data-en="{{ term.definition.en }}" data-id="{{ term.definition.id }}">{{ term.definition.en }}</span></p></div>{% endfor %}
+  </div></div>
+</details>

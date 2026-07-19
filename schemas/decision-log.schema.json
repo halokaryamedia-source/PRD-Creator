@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "decision-log.schema.json",
+  "title": "Production Document Builder \u2014 Decision Log",
+  "type": "object",
+  "required": [
+    "decisions"
+  ],
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/decision"
+      }
+    }
+  },
+  "$defs": {
+    "decision": {
+      "type": "object",
+      "required": [
+        "id",
+        "scope",
+        "topic",
+        "decision",
+        "status",
+        "reason",
+        "affects"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^D-[0-9]{3,}$"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_/-]*$"
+        },
+        "decision": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/decisionStatus"
+        },
+        "reason": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "affects": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/sourceRef"
+          },
+          "uniqueItems": true
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^D-[0-9]{3,}$"
+        },
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^D-[0-9]{3,}$"
+        },
+        "notes": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/date"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/date"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "replaced"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "superseded_by"
+            ],
+            "properties": {
+              "superseded_by": {
+                "type": "string",
+                "pattern": "^D-[0-9]{3,}$"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,8 @@
+<div class="production-table-wrap"><table class="quarry-development-table"><thead><tr>
+{% for heading in headings %}<th><span class="i18n-text" data-en="{{ heading.en }}" data-id="{{ heading.id }}">{{ heading.en }}</span></th>{% endfor %}
+</tr></thead><tbody>
+{% for group in groups %}
+<tr class="quarry-group-row"><td><b>{{ group.number }}</b></td><td colspan="{{ headings|length - 1 }}"><b><span class="i18n-text" data-en="{{ group.title.en }}" data-id="{{ group.title.id }}">{{ group.title.en }}</span></b></td></tr>
+{% for item in group.items %}<tr><td><b>{{ item.code }}</b></td><td><b>{{ item.title }}</b></td><td>{{ item.requirement_html | safe }}</td><td>{{ item.result_html | safe }}</td></tr>{% endfor %}
+{% endfor %}
+</tbody></table></div>

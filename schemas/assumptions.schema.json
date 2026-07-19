@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "assumptions.schema.json",
+  "title": "Production Document Builder \u2014 Assumptions",
+  "type": "object",
+  "required": [
+    "assumptions"
+  ],
+  "properties": {
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assumption"
+      }
+    }
+  },
+  "$defs": {
+    "assumption": {
+      "type": "object",
+      "required": [
+        "id",
+        "scope",
+        "topic",
+        "assumption",
+        "status",
+        "blocking",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^A-[0-9]{3,}$"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_/-]*$"
+        },
+        "assumption": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/assumptionStatus"
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "reason": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "decision_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^D-[0-9]{3,}$"
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/date"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/date"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "confirmed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "decision_id"
+            ],
+            "properties": {
+              "decision_id": {
+                "type": "string",
+                "pattern": "^D-[0-9]{3,}$"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

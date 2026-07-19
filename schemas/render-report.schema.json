@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "render-report.schema.json",
+  "title": "Production Document Builder \u2014 Render Report",
+  "type": "object",
+  "required": [
+    "render",
+    "content",
+    "languages",
+    "glossary",
+    "structure",
+    "responsive",
+    "print",
+    "versions"
+  ],
+  "properties": {
+    "render": {
+      "type": "object",
+      "required": [
+        "status",
+        "profile",
+        "pages_created",
+        "sidebar_links",
+        "empty_pages"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "success",
+            "needs_revision",
+            "blocked",
+            "failed"
+          ]
+        },
+        "profile": {
+          "$ref": "common.schema.json#/$defs/documentProfile"
+        },
+        "pages_created": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sidebar_links": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "empty_pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_html": {
+          "type": "string"
+        },
+        "output_zip": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "missing_required_sections",
+        "unresolved_placeholders"
+      ],
+      "properties": {
+        "missing_required_sections": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unresolved_placeholders": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_hash_matches": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "languages": {
+      "type": "object",
+      "required": [
+        "id_missing",
+        "en_missing"
+      ],
+      "properties": {
+        "id_missing": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "en_missing": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "equivalence_audit": {
+          "type": "string",
+          "enum": [
+            "not_run",
+            "passed",
+            "failed"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "glossary": {
+      "type": "object",
+      "required": [
+        "terms_defined",
+        "tooltip_instances",
+        "unused_terms",
+        "unmatched_critical_terms"
+      ],
+      "properties": {
+        "terms_defined": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tooltip_instances": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unused_terms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unmatched_critical_terms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "structure": {
+      "type": "object",
+      "required": [
+        "duplicate_ids",
+        "broken_links",
+        "unreachable_pages"
+      ],
+      "properties": {
+        "duplicate_ids": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "broken_links": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unreachable_pages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "page_order_valid": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "responsive": {
+      "type": "object",
+      "required": [
+        "desktop_16_9",
+        "laptop",
+        "tablet",
+        "mobile",
+        "zoom_125",
+        "zoom_150"
+      ],
+      "properties": {
+        "desktop_16_9": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "laptop": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "tablet": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "mobile": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "zoom_125": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "zoom_150": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "print": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "terms_expanded": {
+          "type": "boolean"
+        },
+        "controls_hidden": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "versions": {
+      "type": "object",
+      "required": [
+        "content",
+        "template",
+        "schema",
+        "golden_sample",
+        "html"
+      ],
+      "properties": {
+        "content": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "template": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "schema": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "golden_sample": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "html": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

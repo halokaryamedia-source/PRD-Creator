@@ -1,0 +1,35 @@
+skill:
+  name: production-document-builder
+  version: 0.1.0
+  status: draft
+versions:
+  template: '1.0'
+  schema: '0.1'
+  golden_sample: aftershock-1.0
+supported_profiles:
+- complete_game_map
+- multi_stage_game
+- single_gameplay
+- game_system_module
+- specialized_document
+supported_actions:
+- create
+- continue
+- update
+- audit
+- render_html
+features:
+  bilingual: true
+  dark_mode: true
+  view_mode: true
+  sidebar_collapse: true
+  global_tooltip: true
+  collapsible_terms: true
+  responsive: true
+  print_ready: true
+content_benchmark:
+  package: quarry
+  pages:
+  - gameplay_overview
+  - level_design
+  - developer

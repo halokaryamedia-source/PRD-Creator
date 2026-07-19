@@ -1,0 +1,24 @@
+document:
+  id: audit-only
+  title: AUDIT REPORT
+  profile: specialized_document
+  specialization: audit_only
+  primary_language: id
+  output_languages:
+  - id
+  - en
+  content_version: '0.1'
+  status: approved
+specialized_content:
+  audit:
+    scope:
+      id: Audit package gameplay.
+      en: Audit the gameplay package.
+    method:
+      id: Periksa dari perspektif player, builder, dan developer.
+      en: Review from player, builder, and developer perspectives.
+    findings:
+    - No Critical findings.
+    next_step:
+      id: Lanjutkan ke approval.
+      en: Proceed to approval.

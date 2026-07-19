@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ primary_language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="document-profile" content="{{ document_profile }}">
+  <meta name="content-version" content="{{ content_version }}">
+  <meta name="template-version" content="{{ template_version }}">
+  <meta name="schema-version" content="{{ schema_version }}">
+  <meta name="golden-sample" content="aftershock-1.0">
+  <title>{{ document_title }} — {{ document_type }}</title>
+  <link rel="stylesheet" href="styles/golden-sample.css">
+</head>
+<body class="theme-normal view-professional">
+  {% include "components/document-shell.html" %}
+  <script src="scripts/document-controls.js"></script>
+  <script src="scripts/glossary-tooltip.js"></script>
+  <script src="scripts/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<section class="sheet {{ page_classes }}" id="{{ page_id }}"{% if page_role %} data-page-role="{{ page_role }}"{% endif %}{% if phase %} data-phase="{{ phase }}"{% endif %}>
+  {% include "components/page-header.html" %}
+  {{ page_body_html | safe }}
+  {% if terms %}{% include "components/terms-used.html" %}{% endif %}
+  {% include "components/page-footer.html" %}
+</section>

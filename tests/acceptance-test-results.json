@@ -1,0 +1,67 @@
+{
+  "status": "passed",
+  "skill_version": "0.2.0",
+  "renderer_version": "0.2",
+  "golden_sample": "aftershock-1.0",
+  "tests": [
+    {
+      "test": "installable-package-inventory",
+      "passed": true,
+      "missing": []
+    },
+    {
+      "command": "/opt/pyvenv/bin/python /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/scripts/validate_package.py --schema-dir /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/schemas file /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/manifest.yaml --schema manifest.schema.json",
+      "returncode": 0,
+      "stdout": "PASSED: /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/manifest.yaml\n",
+      "stderr": "",
+      "passed": true,
+      "test": "package-manifest-validation"
+    },
+    {
+      "test": "locked-golden-sample-hash",
+      "passed": true,
+      "expected": "6af765b1c40100728b126fe219c88e5f0f734816f6c9a596d1cd90292c380901",
+      "actual": "6af765b1c40100728b126fe219c88e5f0f734816f6c9a596d1cd90292c380901"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/tests/run_schema_tests.py",
+      "returncode": 0,
+      "stdout": "PASS valid   assumptions.yaml\nPASS valid   audit-report.yaml\nPASS valid   complete-game-map.yaml\nPASS valid   completion-data.yaml\nPASS valid   decision-log.yaml\nPASS valid   game-system-module.yaml\nPASS valid   glossary.yaml\nPASS valid   manifest.yaml\nPASS valid   multi-stage-game.yaml\nPASS valid   project-state.yaml\nPASS valid   render-report.yaml\nPASS valid   scoring.yaml\nPASS valid   single-gameplay.yaml\nPASS valid   specialized-audit.yaml\nPASS valid   specialized-developer.yaml\nPASS valid   specialized-gameplay-design.yaml\nPASS valid   specialized-level-design.yaml\nPASS valid   specialized-scoring-data.yaml\nPASS invalid scoring-weight-110.yaml -> SCORE_WEIGHT_TOTAL\nPASS invalid missing-timer-stop.yaml -> SCHEMA\nPASS invalid replaced-decision-without-reference.yaml -> SCHEMA\nPASS invalid duplicate-approved-decision.yaml -> DUPLICATE_APPROVED_TOPIC\nPASS invalid frozen-content-with-open-blocker.yaml -> FROZEN_WITH_BLOCKERS, FROZEN_WITH_BLOCKING_QUESTION\nPASS invalid duplicate-glossary-term.yaml -> GLOSSARY_COLLISION\nPASS invalid missing-package-developer.yaml -> SCHEMA\nPASS invalid unconfirmed-assumption-in-frozen-content.yaml -> UNCONFIRMED_ASSUMPTION_IN_FROZEN_CONTENT\nPASS invalid package-handoff-missing-target.yaml -> UNKNOWN_HANDOFF_TARGET\n\nCases passed: 27\nCases failed: 0\n",
+      "stderr": "",
+      "passed": true,
+      "test": "schema-and-semantic-regression"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/tests/run_renderer_tests.py",
+      "returncode": 0,
+      "stdout": "{\n  \"cases\": [\n    {\n      \"case\": \"complete-game-map.yaml\",\n      \"pages\": 13,\n      \"expected\": 13,\n      \"passed\": true\n    },\n    {\n      \"case\": \"multi-stage-game.yaml\",\n      \"pages\": 11,\n      \"expected\": 11,\n      \"passed\": true\n    },\n    {\n      \"case\": \"single-gameplay.yaml\",\n      \"pages\": 5,\n      \"expected\": 5,\n      \"passed\": true\n    },\n    {\n      \"case\": \"game-system-module.yaml\",\n      \"pages\": 10,\n      \"expected\": 10,\n      \"passed\": true\n    },\n    {\n      \"case\": \"specialized-gameplay-design.yaml\",\n      \"pages\": 1,\n      \"expected\": 1,\n      \"passed\": true\n    },\n    {\n      \"case\": \"specialized-level-design.yaml\",\n      \"pages\": 1,\n      \"expected\": 1,\n      \"passed\": true\n    },\n    {\n      \"case\": \"specialized-developer.yaml\",\n      \"pages\": 1,\n      \"expected\": 1,\n      \"passed\": true\n    },\n    {\n      \"case\": \"specialized-scoring-data.yaml\",\n      \"pages\": 1,\n      \"expected\": 1,\n      \"passed\": true\n    },\n    {\n      \"case\": \"specialized-audit.yaml\",\n      \"pages\": 1,\n      \"expected\": 1,\n      \"passed\": true\n    },\n    {\n      \"case\": \"content-freeze-gate\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"invalid-package-rejected\",\n      \"passed\": true\n    }\n  ],\n  \"passed\": 11,\n  \"failed\": 0,\n  \"failures\": []\n}\n",
+      "stderr": "",
+      "passed": true,
+      "test": "profile-renderer-regression"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/tests/run_golden_regression_test.py",
+      "returncode": 0,
+      "stdout": "{\n  \"passed\": true,\n  \"source_sha256\": \"6af765b1c40100728b126fe219c88e5f0f734816f6c9a596d1cd90292c380901\",\n  \"output_sha256\": \"6af765b1c40100728b126fe219c88e5f0f734816f6c9a596d1cd90292c380901\",\n  \"byte_identical\": true,\n  \"failures\": []\n}\n",
+      "stderr": "",
+      "passed": true,
+      "test": "golden-exact-regression"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python /mnt/data/production-document-builder-chatgpt-upload-v0.2.0/production-document-builder/scripts/run_pipeline.py /tmp/tmpa60rrccs/multi-stage-workspace --html-version acceptance --equivalence-audit passed",
+      "returncode": 0,
+      "stdout": "PASSED: /tmp/tmpa60rrccs/multi-stage-workspace/state/project-state.yaml\nPASSED: /tmp/tmpa60rrccs/multi-stage-workspace/state/decision-log.yaml\nPASSED: /tmp/tmpa60rrccs/multi-stage-workspace/state/assumptions.yaml\nPASSED: /tmp/tmpa60rrccs/multi-stage-workspace/content/project-content.yaml\nPASSED: /tmp/tmpa60rrccs/multi-stage-workspace/content/glossary.yaml\n{\n  \"output\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/the-circuit-production-document-vacceptance.html\",\n  \"profile\": \"multi_stage_game\",\n  \"pages\": 11,\n  \"terms_defined\": 8,\n  \"unused_terms\": 2,\n  \"missing_term_refs\": 0,\n  \"id_missing\": 0,\n  \"en_missing\": 0,\n  \"unresolved_placeholders\": 0,\n  \"prototype\": false\n}\n{\n  \"status\": \"success\",\n  \"report\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/render-report-vacceptance.yaml\",\n  \"audit\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/html-audit-vacceptance.md\",\n  \"findings\": []\n}\n{\n  \"zip\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/the-circuit-production-document-vacceptance.zip\",\n  \"sha256\": \"8b7419223a353bec96677724307f838a412d69aa199e58347faa65ddd30df13f\",\n  \"files\": 5,\n  \"root\": \"the-circuit-production-document-vacceptance\"\n}\n{\n  \"status\": \"approved_for_delivery\",\n  \"html\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/the-circuit-production-document-vacceptance.html\",\n  \"zip\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/the-circuit-production-document-vacceptance.zip\",\n  \"render_report\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/render-report-vacceptance.yaml\",\n  \"html_audit\": \"/tmp/tmpa60rrccs/multi-stage-workspace/output/html-audit-vacceptance.md\",\n  \"zip_sha256\": \"8b7419223a353bec96677724307f838a412d69aa199e58347faa65ddd30df13f\",\n  \"project_state_updated\": true\n}\n",
+      "stderr": "",
+      "passed": true,
+      "test": "end-to-end-frozen-content-to-delivery",
+      "artifacts_exist": true,
+      "pages": 11,
+      "has_sidebar": true,
+      "has_view_mode": true,
+      "has_terms": true,
+      "golden_css_embedded": true
+    }
+  ],
+  "passed": 7,
+  "failed": 0
+}

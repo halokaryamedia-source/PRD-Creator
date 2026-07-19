@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-state.schema.json",
+  "title": "Production Document Builder \u2014 Project State",
+  "type": "object",
+  "required": [
+    "project",
+    "workflow",
+    "sections",
+    "open_questions",
+    "blockers",
+    "deferred",
+    "errors",
+    "versions",
+    "artifacts",
+    "next_step"
+  ],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "action_mode",
+        "document_profile",
+        "primary_language",
+        "output_languages"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "workspace_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "action_mode": {
+          "$ref": "common.schema.json#/$defs/actionMode"
+        },
+        "document_profile": {
+          "oneOf": [
+            {
+              "$ref": "common.schema.json#/$defs/documentProfile"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "specialization": {
+          "oneOf": [
+            {
+              "$ref": "common.schema.json#/$defs/specialization"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "intended_readers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "primary_language": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+        },
+        "output_languages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "workflow": {
+      "type": "object",
+      "required": [
+        "current_phase",
+        "current_flow",
+        "content_status",
+        "content_frozen",
+        "html_status",
+        "final_status"
+      ],
+      "properties": {
+        "current_phase": {
+          "$ref": "common.schema.json#/$defs/workflowPhase"
+        },
+        "current_flow": {
+          "oneOf": [
+            {
+              "$ref": "common.schema.json#/$defs/currentFlow"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_status": {
+          "$ref": "common.schema.json#/$defs/contentStatus"
+        },
+        "content_frozen": {
+          "type": "boolean"
+        },
+        "html_status": {
+          "$ref": "common.schema.json#/$defs/htmlStatus"
+        },
+        "final_status": {
+          "$ref": "common.schema.json#/$defs/finalStatus"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sections": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/sectionNode"
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/openQuestion"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/blocker"
+      }
+    },
+    "deferred": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deferredItem"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/errorItem"
+      }
+    },
+    "versions": {
+      "type": "object",
+      "required": [
+        "content",
+        "template",
+        "schema",
+        "golden_sample",
+        "html"
+      ],
+      "properties": {
+        "content": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "template": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "schema": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "golden_sample": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "html": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "structured_content": {
+          "$ref": "#/$defs/artifactGroup"
+        },
+        "html": {
+          "$ref": "#/$defs/artifactGroup"
+        },
+        "zip": {
+          "$ref": "#/$defs/artifactGroup"
+        },
+        "audits": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/artifactGroup"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "next_step": {
+      "oneOf": [
+        {
+          "$ref": "common.schema.json#/$defs/nextStep"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sectionLeaf": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "common.schema.json#/$defs/sectionStatus"
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/dateTime"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sectionNode": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sectionLeaf"
+        },
+        {
+          "type": "object",
+          "not": {
+            "required": [
+              "status"
+            ]
+          },
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/sectionNode"
+          }
+        }
+      ]
+    },
+    "openQuestion": {
+      "type": "object",
+      "required": [
+        "id",
+        "scope",
+        "topic",
+        "question",
+        "blocking",
+        "status",
+        "affects"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^Q-[0-9]{3,}$"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/questionStatus"
+        },
+        "affects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "decision_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^D-[0-9]{3,}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "blocker": {
+      "type": "object",
+      "required": [
+        "id",
+        "source",
+        "scope",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^B-[0-9]{3,}$"
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^(Q|E)-[0-9]{3,}$"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "deferredItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "scope",
+        "topic",
+        "blocking",
+        "resume_after"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^Q-[0-9]{3,}$"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "resume_after": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "errorItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "scope",
+        "status",
+        "blocking",
+        "message",
+        "next_action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^E-[0-9]{3,}$"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "in_progress",
+            "resolved",
+            "accepted"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolved_by": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^D-[0-9]{3,}$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "version",
+        "path",
+        "status"
+      ],
+      "properties": {
+        "version": {
+          "$ref": "common.schema.json#/$defs/versionValue"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checksum": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/dateTime"
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifactGroup": {
+      "type": "object",
+      "required": [
+        "latest"
+      ],
+      "properties": {
+        "latest": {
+          "$ref": "#/$defs/artifact"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "project": {
+            "properties": {
+              "document_profile": {
+                "const": "specialized_document"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "project": {
+            "required": [
+              "specialization"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

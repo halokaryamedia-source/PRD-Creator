@@ -1,0 +1,1237 @@
+document:
+  id: aftershock
+  title: AFTERSHOCK
+  profile: complete_game_map
+  source_document: aftershock-full-document-settings-above-viewmode-v1.8.html
+  golden_sample_version: '1.0'
+  content_extraction_status: locked_html_inventory
+  primary_language: en
+  output_languages:
+  - en
+  - id
+hierarchy:
+- code: '01'
+  label:
+    en: Overview
+    id: Gambaran Umum
+  page_ids:
+  - summary
+- code: '02'
+  label:
+    en: Gameplay Flow
+    id: Alur Gameplay
+  page_ids:
+  - flow-start
+  - flow-docks
+  - flow-quarry
+  - flow-ascent
+  - flow-beacon
+  - flow-relay
+  - flow-ending
+- code: '03'
+  label:
+    en: Development
+    id: Pengembangan
+  page_ids:
+  - development-overview
+  - shared-systems
+  - shared-data-reset
+  - phase-development
+  - dev-docks-requirement
+  - dev-docks-level
+  - dev-docks-developer
+  - dev-quarry-requirement
+  - dev-quarry-level
+  - dev-quarry-developer
+  - dev-ascent-requirement
+  - dev-ascent-level
+  - dev-ascent-developer
+  - dev-beacon-requirement
+  - dev-beacon-level
+  - dev-beacon-developer
+  - dev-relay-requirement
+  - dev-relay-level
+  - dev-relay-developer
+  - dev-ending-requirement
+  - dev-ending-level
+  - dev-ending-developer
+content_benchmark:
+  package: quarry
+  objective: 1
+  page_ids:
+  - dev-quarry-requirement
+  - dev-quarry-level
+  - dev-quarry-developer
+pages:
+- order: 1
+  id: summary
+  classes:
+  - sheet
+  - clean-visible
+  page_role: null
+  phase: null
+  header:
+    en: Gameplay & Development Specification
+    id: Spesifikasi Gameplay & Pengembangan
+  context:
+    en: Production Development Document · v0.2
+    id: Dokumen Pengembangan Produksi · v0.2
+  title:
+    en: AFTERSHOCK
+    id: AFTERSHOCK
+  subtitle:
+    en: Adventure Map
+    id: Map Petualangan
+  tabs: []
+  terms_count: 0
+  footer_title:
+    en: Overview
+    id: Gambaran Umum
+  footer_code:
+    en: '01'
+    id: '01'
+- order: 2
+  id: flow-start
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-flow
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: The Journey Begins
+    id: Perjalanan Dimulai
+  title:
+    en: The Journey Begins
+    id: Perjalanan Dimulai
+  subtitle:
+    en: Emberhold, the approaching storm, and the route into the city
+    id: Emberhold, badai yang mendekat, dan jalur menuju kota
+  tabs: []
+  terms_count: 11
+  footer_title:
+    en: Gameplay Flow · The Journey Begins
+    id: Alur Gameplay · Perjalanan Dimulai
+  footer_code:
+    en: 02A
+    id: 02A
+- order: 3
+  id: flow-docks
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-docks
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: The Docks
+    id: The Docks
+  title:
+    en: Arrival at The Docks
+    id: Tiba di The Docks
+  subtitle:
+    en: Restore the entrance route and receive Brann’s mission
+    id: Pulihkan jalur masuk dan terima misi dari Brann
+  tabs: []
+  terms_count: 9
+  footer_title:
+    en: Gameplay Flow · The Docks
+    id: Alur Gameplay · The Docks
+  footer_code:
+    en: 02B
+    id: 02B
+- order: 4
+  id: flow-quarry
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-quarry
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: The Quarry — Objective 1
+    id: The Quarry — Objective 1
+  title:
+    en: Creating the Beacon Core
+    id: Membuat Beacon Core
+  subtitle:
+    en: Mine three materials and assemble the replacement power core
+    id: Tambang tiga material dan rakit power core pengganti
+  tabs: []
+  terms_count: 10
+  footer_title:
+    en: Gameplay Flow · The Quarry
+    id: Alur Gameplay · The Quarry
+  footer_code:
+    en: 02C
+    id: 02C
+- order: 5
+  id: flow-ascent
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-ascent
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: The Ascent — Objective 2
+    id: The Ascent — Objective 2
+  title:
+    en: The Ascent to the Summit
+    id: Pendakian Menuju Summit
+  subtitle:
+    en: Carry the protected Core through readable mountain hazards
+    id: Bawa Core yang terlindungi melewati hazard pegunungan yang mudah dibaca
+  tabs: []
+  terms_count: 13
+  footer_title:
+    en: Gameplay Flow · The Ascent
+    id: Alur Gameplay · The Ascent
+  footer_code:
+    en: 02D
+    id: 02D
+- order: 6
+  id: flow-beacon
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-beacon
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: The Beacon — Objective 3
+    id: The Beacon — Objective 3
+  title:
+    en: Rebuilding the Main Beacon
+    id: Membangun Kembali Main Beacon
+  subtitle:
+    en: Use the Core as temporary power while the storm reaches the summit
+    id: Gunakan Core sebagai sumber tenaga sementara ketika badai mencapai summit
+  tabs: []
+  terms_count: 11
+  footer_title:
+    en: Gameplay Flow · The Beacon
+    id: Alur Gameplay · The Beacon
+  footer_code:
+    en: 02E
+    id: 02E
+- order: 7
+  id: flow-relay
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-relay
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: Power Relay — Objective 4
+    id: Power Relay — Objective 4
+  title:
+    en: Reconnecting Emberhold
+    id: Menghubungkan Kembali Emberhold
+  subtitle:
+    en: Rebuild five power routes while repeated storms disrupt the network
+    id: Bangun kembali lima jalur tenaga ketika badai berulang mengganggu jaringan
+  tabs: []
+  terms_count: 12
+  footer_title:
+    en: Gameplay Flow · Power Relay
+    id: Alur Gameplay · Power Relay
+  footer_code:
+    en: 02F
+    id: 02F
+- order: 8
+  id: flow-ending
+  classes:
+  - sheet
+  - clean-visible
+  - story-page
+  - glossary-enabled-page
+  page_role: gameplay-flow
+  phase: dev-ending
+  header:
+    en: 02 — Gameplay Flow
+    id: 02 — Alur Gameplay
+  context:
+    en: Emberhold Restored — Ending
+    id: Emberhold Restored — Ending
+  title:
+    en: Emberhold Restored
+    id: Emberhold Pulih
+  subtitle:
+    en: Show the result of the journey and return safely to the lobby
+    id: Tampilkan hasil perjalanan dan kembali ke lobby dengan aman
+  tabs: []
+  terms_count: 8
+  footer_title:
+    en: Gameplay Flow · Emberhold Restored
+    id: Alur Gameplay · Emberhold Pulih
+  footer_code:
+    en: 02G
+    id: 02G
+- order: 9
+  id: development-overview
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - global-development-page
+  - glossary-enabled-page
+  page_role: developer-overview
+  phase: dev-system
+  header:
+    en: 03 — Development
+    id: 03 — Development
+  context:
+    en: Development Overview
+    id: Development Overview
+  title:
+    en: Development Overview
+    id: Development Overview
+  subtitle:
+    en: Project-wide development
+    id: Development seluruh project
+  tabs:
+  - target: development-overview
+    label:
+      en: '1'
+      id: '1'
+  - target: shared-systems
+    label:
+      en: '2'
+      id: '2'
+  - target: shared-data-reset
+    label:
+      en: '3'
+      id: '3'
+  - target: phase-development
+    label:
+      en: '4'
+      id: '4'
+  terms_count: 11
+  footer_title:
+    en: Development · Overview
+    id: Development · Overview
+  footer_code:
+    en: 03A
+    id: 03A
+- order: 10
+  id: shared-systems
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - global-development-page
+  - glossary-enabled-page
+  page_role: developer-overview
+  phase: dev-system
+  header:
+    en: 03 — Development
+    id: 03 — Development
+  context:
+    en: Game System
+    id: Game System
+  title:
+    en: Game System
+    id: Game System
+  subtitle:
+    en: Multi Session, ownership, and objective control
+    id: Multi Session, kepemilikan, dan kontrol objective
+  tabs:
+  - target: development-overview
+    label:
+      en: '1'
+      id: '1'
+  - target: shared-systems
+    label:
+      en: '2'
+      id: '2'
+  - target: shared-data-reset
+    label:
+      en: '3'
+      id: '3'
+  - target: phase-development
+    label:
+      en: '4'
+      id: '4'
+  terms_count: 10
+  footer_title:
+    en: Development · Game System
+    id: Development · Game System
+  footer_code:
+    en: 03B
+    id: 03B
+- order: 11
+  id: shared-data-reset
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - global-development-page
+  - glossary-enabled-page
+  page_role: developer-overview
+  phase: dev-system
+  header:
+    en: 03 — Development
+    id: 03 — Development
+  context:
+    en: Data and Reset
+    id: Data dan Reset
+  title:
+    en: Data and Reset
+    id: Data dan Reset
+  subtitle:
+    en: Timing, valid results, interruptions, and arena recovery
+    id: Timer, hasil valid, interupsi, dan pemulihan arena
+  tabs:
+  - target: development-overview
+    label:
+      en: '1'
+      id: '1'
+  - target: shared-systems
+    label:
+      en: '2'
+      id: '2'
+  - target: shared-data-reset
+    label:
+      en: '3'
+      id: '3'
+  - target: phase-development
+    label:
+      en: '4'
+      id: '4'
+  terms_count: 9
+  footer_title:
+    en: Development · Data and Reset
+    id: Development · Data dan Reset
+  footer_code:
+    en: 03C
+    id: 03C
+- order: 12
+  id: phase-development
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - global-development-page
+  - glossary-enabled-page
+  page_role: developer-overview
+  phase: dev-system
+  header:
+    en: 03 — Development
+    id: 03 — Development
+  context:
+    en: Gameplay Development
+    id: Gameplay Development
+  title:
+    en: Gameplay Development
+    id: Gameplay Development
+  subtitle:
+    en: Implementation packages from The Docks to Ending
+    id: Package implementasi dari The Docks sampai Ending
+  tabs:
+  - target: development-overview
+    label:
+      en: '1'
+      id: '1'
+  - target: shared-systems
+    label:
+      en: '2'
+      id: '2'
+  - target: shared-data-reset
+    label:
+      en: '3'
+      id: '3'
+  - target: phase-development
+    label:
+      en: '4'
+      id: '4'
+  terms_count: 8
+  footer_title:
+    en: Development · Gameplay Development
+    id: Development · Gameplay Development
+  footer_code:
+    en: 03D
+    id: 03D
+- order: 13
+  id: dev-docks-requirement
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - role-gameplay-overview
+  page_role: gameplay-overview
+  phase: dev-docks
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Docks · Gameplay Overview
+    id: The Docks · Gameplay Overview
+  title:
+    en: The Docks
+    id: The Docks
+  subtitle:
+    en: Introduction · Gameplay Overview
+    id: Pendahuluan · Gameplay Overview
+  tabs:
+  - target: dev-docks-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-docks-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-docks-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 9
+  footer_title:
+    en: Development · The Docks · Gameplay Overview
+    id: Pengembangan · The Docks · Gameplay Overview
+  footer_code:
+    en: 04A
+    id: 04A
+- order: 14
+  id: dev-docks-level
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-docks
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Docks · Level Design
+    id: The Docks · Level Design
+  title:
+    en: The Docks
+    id: The Docks
+  subtitle:
+    en: Introduction · Level Design
+    id: Pendahuluan · Level Design
+  tabs:
+  - target: dev-docks-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-docks-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-docks-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Docks · Level Design
+    id: Pengembangan · The Docks · Level Design
+  footer_code:
+    en: 04B
+    id: 04B
+- order: 15
+  id: dev-docks-developer
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-docks
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Docks · Developer
+    id: The Docks · Developer
+  title:
+    en: The Docks
+    id: The Docks
+  subtitle:
+    en: Introduction · Developer
+    id: Pendahuluan · Developer
+  tabs:
+  - target: dev-docks-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-docks-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-docks-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Docks · Developer
+    id: Pengembangan · The Docks · Developer
+  footer_code:
+    en: 04C
+    id: 04C
+- order: 16
+  id: dev-quarry-requirement
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - role-gameplay-overview
+  page_role: gameplay-overview
+  phase: dev-quarry
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Quarry · Gameplay Overview
+    id: The Quarry · Gameplay Overview
+  title:
+    en: The Quarry
+    id: The Quarry
+  subtitle:
+    en: Objective 1 · Gameplay Overview
+    id: Objektif 1 · Gameplay Overview
+  tabs:
+  - target: dev-quarry-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-quarry-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-quarry-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 10
+  footer_title:
+    en: Development · The Quarry · Gameplay Overview
+    id: Pengembangan · The Quarry · Gameplay Overview
+  footer_code:
+    en: 05A
+    id: 05A
+- order: 17
+  id: dev-quarry-level
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  page_role: null
+  phase: dev-quarry
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Quarry · Level Design
+    id: The Quarry · Level Design
+  title:
+    en: The Quarry
+    id: The Quarry
+  subtitle:
+    en: Objective 1 · Level Design
+    id: Objektif 1 · Level Design
+  tabs:
+  - target: dev-quarry-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-quarry-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-quarry-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Quarry · Level Design
+    id: Pengembangan · The Quarry · Level Design
+  footer_code:
+    en: 05B
+    id: 05B
+- order: 18
+  id: dev-quarry-developer
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  page_role: null
+  phase: dev-quarry
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Quarry · Developer
+    id: The Quarry · Developer
+  title:
+    en: The Quarry
+    id: The Quarry
+  subtitle:
+    en: Objective 1 · Developer
+    id: Objektif 1 · Developer
+  tabs:
+  - target: dev-quarry-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-quarry-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-quarry-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Quarry · Developer
+    id: Pengembangan · The Quarry · Developer
+  footer_code:
+    en: 05C
+    id: 05C
+- order: 19
+  id: dev-ascent-requirement
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - role-gameplay-overview
+  page_role: gameplay-overview
+  phase: dev-ascent
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Ascent · Gameplay Overview
+    id: The Ascent · Gameplay Overview
+  title:
+    en: The Ascent
+    id: The Ascent
+  subtitle:
+    en: Objective 2 · Gameplay Overview
+    id: Objektif 2 · Gameplay Overview
+  tabs:
+  - target: dev-ascent-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-ascent-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-ascent-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 13
+  footer_title:
+    en: Development · The Ascent · Gameplay Overview
+    id: Pengembangan · The Ascent · Gameplay Overview
+  footer_code:
+    en: 06A
+    id: 06A
+- order: 20
+  id: dev-ascent-level
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-ascent
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Ascent · Level Design
+    id: The Ascent · Level Design
+  title:
+    en: The Ascent
+    id: The Ascent
+  subtitle:
+    en: Objective 2 · Level Design
+    id: Objektif 2 · Level Design
+  tabs:
+  - target: dev-ascent-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-ascent-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-ascent-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Ascent · Level Design
+    id: Pengembangan · The Ascent · Level Design
+  footer_code:
+    en: 06B
+    id: 06B
+- order: 21
+  id: dev-ascent-developer
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-ascent
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Ascent · Developer
+    id: The Ascent · Developer
+  title:
+    en: The Ascent
+    id: The Ascent
+  subtitle:
+    en: Objective 2 · Developer
+    id: Objektif 2 · Developer
+  tabs:
+  - target: dev-ascent-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-ascent-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-ascent-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Ascent · Developer
+    id: Pengembangan · The Ascent · Developer
+  footer_code:
+    en: 06C
+    id: 06C
+- order: 22
+  id: dev-beacon-requirement
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - role-gameplay-overview
+  page_role: gameplay-overview
+  phase: dev-beacon
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Beacon · Gameplay Overview
+    id: The Beacon · Gameplay Overview
+  title:
+    en: The Beacon
+    id: The Beacon
+  subtitle:
+    en: Objective 3 · Gameplay Overview
+    id: Objektif 3 · Gameplay Overview
+  tabs:
+  - target: dev-beacon-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-beacon-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-beacon-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 11
+  footer_title:
+    en: Development · The Beacon · Gameplay Overview
+    id: Pengembangan · The Beacon · Gameplay Overview
+  footer_code:
+    en: 07A
+    id: 07A
+- order: 23
+  id: dev-beacon-level
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-beacon
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Beacon · Level Design
+    id: The Beacon · Level Design
+  title:
+    en: The Beacon
+    id: The Beacon
+  subtitle:
+    en: Objective 3 · Level Design
+    id: Objektif 3 · Level Design
+  tabs:
+  - target: dev-beacon-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-beacon-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-beacon-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Beacon · Level Design
+    id: Pengembangan · The Beacon · Level Design
+  footer_code:
+    en: 07B
+    id: 07B
+- order: 24
+  id: dev-beacon-developer
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-beacon
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: The Beacon · Developer
+    id: The Beacon · Developer
+  title:
+    en: The Beacon
+    id: The Beacon
+  subtitle:
+    en: Objective 3 · Developer
+    id: Objektif 3 · Developer
+  tabs:
+  - target: dev-beacon-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-beacon-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-beacon-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · The Beacon · Developer
+    id: Pengembangan · The Beacon · Developer
+  footer_code:
+    en: 07C
+    id: 07C
+- order: 25
+  id: dev-relay-requirement
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - role-gameplay-overview
+  page_role: gameplay-overview
+  phase: dev-relay
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: Power Relay · Gameplay Overview
+    id: Power Relay · Gameplay Overview
+  title:
+    en: Power Relay
+    id: Power Relay
+  subtitle:
+    en: Objective 4 · Gameplay Overview
+    id: Objektif 4 · Gameplay Overview
+  tabs:
+  - target: dev-relay-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-relay-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-relay-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 12
+  footer_title:
+    en: Development · Power Relay · Gameplay Overview
+    id: Pengembangan · Power Relay · Gameplay Overview
+  footer_code:
+    en: 08A
+    id: 08A
+- order: 26
+  id: dev-relay-level
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-relay
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: Power Relay · Level Design
+    id: Power Relay · Level Design
+  title:
+    en: Power Relay
+    id: Power Relay
+  subtitle:
+    en: Objective 4 · Level Design
+    id: Objektif 4 · Level Design
+  tabs:
+  - target: dev-relay-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-relay-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-relay-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · Power Relay · Level Design
+    id: Pengembangan · Power Relay · Level Design
+  footer_code:
+    en: 08B
+    id: 08B
+- order: 27
+  id: dev-relay-developer
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-relay
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: Power Relay · Developer
+    id: Power Relay · Developer
+  title:
+    en: Power Relay
+    id: Power Relay
+  subtitle:
+    en: Objective 4 · Developer
+    id: Objektif 4 · Developer
+  tabs:
+  - target: dev-relay-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-relay-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-relay-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · Power Relay · Developer
+    id: Pengembangan · Power Relay · Developer
+  footer_code:
+    en: 08C
+    id: 08C
+- order: 28
+  id: dev-ending-requirement
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  - role-gameplay-overview
+  page_role: gameplay-overview
+  phase: dev-ending
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: Emberhold Restored · Gameplay Overview
+    id: Emberhold Restored · Gameplay Overview
+  title:
+    en: Emberhold Restored
+    id: Emberhold Restored
+  subtitle:
+    en: Ending · Gameplay Overview
+    id: Ending · Gameplay Overview
+  tabs:
+  - target: dev-ending-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-ending-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-ending-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 8
+  footer_title:
+    en: Development · Emberhold Restored · Gameplay Overview
+    id: Pengembangan · Emberhold Restored · Gameplay Overview
+  footer_code:
+    en: 09A
+    id: 09A
+- order: 29
+  id: dev-ending-level
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-ending
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: Emberhold Restored · Level Design
+    id: Emberhold Restored · Level Design
+  title:
+    en: Emberhold Restored
+    id: Emberhold Restored
+  subtitle:
+    en: Ending · Level Design
+    id: Ending · Level Design
+  tabs:
+  - target: dev-ending-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-ending-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-ending-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · Emberhold Restored · Level Design
+    id: Pengembangan · Emberhold Restored · Level Design
+  footer_code:
+    en: 09B
+    id: 09B
+- order: 30
+  id: dev-ending-developer
+  classes:
+  - sheet
+  - professional-only
+  - quarry-package-page
+  - phase-package-page
+  page_role: null
+  phase: dev-ending
+  header:
+    en: Development — Gameplay
+    id: Pengembangan — Gameplay
+  context:
+    en: Emberhold Restored · Developer
+    id: Emberhold Restored · Developer
+  title:
+    en: Emberhold Restored
+    id: Emberhold Restored
+  subtitle:
+    en: Ending · Developer
+    id: Ending · Developer
+  tabs:
+  - target: dev-ending-requirement
+    label:
+      en: '1'
+      id: '1'
+  - target: dev-ending-level
+    label:
+      en: '2'
+      id: '2'
+  - target: dev-ending-developer
+    label:
+      en: '3'
+      id: '3'
+  terms_count: 0
+  footer_title:
+    en: Development · Emberhold Restored · Developer
+    id: Pengembangan · Emberhold Restored · Developer
+  footer_code:
+    en: 09C
+    id: 09C
+glossary:
+  scope_counts:
+    docks: 9
+    quarry: 10
+    ascent: 13
+    beacon: 11
+    relay: 12
+    ending: 8
+    system: 12
+    flow: 11
+  total_terms: 86
+note: This file is a locked page and feature inventory for regression. It is not a replacement for profile-compliant
+  project-content.yaml.
