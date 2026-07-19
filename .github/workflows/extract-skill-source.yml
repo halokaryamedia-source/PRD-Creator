@@ -1,0 +1,67 @@
+name: Extract Production Document Builder source
+
+on:
+  push:
+    branches:
+      - bootstrap-upload
+    paths:
+      - 'bootstrap/skill.part-*.b64'
+      - '.github/workflows/extract-skill-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out bootstrap files
+        uses: actions/checkout@v4
+        with:
+          ref: bootstrap-upload
+          fetch-depth: 0
+
+      - name: Reconstruct and verify ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat bootstrap/skill.part-*.b64 > /tmp/production-document-builder.b64
+          base64 --decode /tmp/production-document-builder.b64 > /tmp/production-document-builder.zip
+          unzip -t /tmp/production-document-builder.zip
+
+      - name: Replace main with extracted source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          unzip -q /tmp/production-document-builder.zip -d .
+
+          # ChatGPT-ready archives normally place SKILL.md at the ZIP root.
+          # Flatten one wrapper directory only when necessary.
+          if [ ! -f SKILL.md ]; then
+            wrapper_count=$(find . -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
+            if [ "$wrapper_count" = "1" ]; then
+              wrapper=$(find . -mindepth 1 -maxdepth 1 -type d | head -n 1)
+              if [ -f "$wrapper/SKILL.md" ]; then
+                shopt -s dotglob
+                mv "$wrapper"/* .
+                rmdir "$wrapper"
+              fi
+            fi
+          fi
+
+          test -f SKILL.md
+          test -d references
+          test -d schemas
+          test -d templates
+          test -d golden-sample
+          test -d scripts
+          test -d tests
+
+          git add -A
+          git commit -m "feat: publish Production Document Builder v0.2.0 source"
+          git push origin main
