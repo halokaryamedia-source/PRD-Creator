@@ -6,6 +6,7 @@ This folder owns durable workflow and product policy. Active task state does not
 
 - `00-product-boundaries.md` — responsibilities and separation between the two kits.
 - `01-production-flow.md` — canonical end-to-end production sequence.
+- `02-source-intake-recovery.md` — source provenance, requirement recovery, conflict, question-economy, and Flow 2 readiness contract.
 - `validation-report.md` — current evidence/implementation status by flow.
 
 ## Rule

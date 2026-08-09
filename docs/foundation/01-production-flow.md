@@ -15,17 +15,25 @@ Required owners:
 - `docs/knowledge/implementation-map.md` — where current behavior lives;
 - `docs/foundation/validation-report.md` — current evidence state.
 
+Status: implemented.
+
 ## Flow 2 — Source Intake & Requirement Recovery
 
-Purpose: normalize incoming source, recover known facts, classify uncertainty, and prevent the user from having to restate information already present in the project.
+Purpose: preserve incoming project source, record provenance/authority, recover known facts/requirements, classify uncertainty, expose conflicts, and prevent the user from having to restate information already present in the project.
 
-This flow is not implemented yet in the repository architecture revision.
+Canonical owners:
+
+- `docs/foundation/02-source-intake-recovery.md` — durable policy;
+- `kits/project-document-generator/SOURCE-INTAKE.md` — executable/project-package procedure;
+- per-project `state/source-inventory.yaml`, `state/requirement-register.yaml`, and `state/intake-state.yaml` — persistent project state.
+
+Status: implemented at contract/kit level; first real-project execution remains proof work for Flow 3 entry.
 
 ## Flow 3 — Project Document / PRD Generation
 
 Purpose: turn recovered requirements into canonical project documentation using Project Document Generator rules and the approved template.
 
-Current baseline was supplied and reviewed, but repository migration is deferred until this flow is implemented.
+Current active kit baseline is now stored under `kits/project-document-generator/`. Flow 3 will audit/reconcile canonical content generation, template adaptation, and renderer behavior without reopening the completed Flow 2 intake contract unless a real defect is proven.
 
 ## Flow 4 — PRD Validation & Team Handoff
 

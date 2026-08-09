@@ -2,6 +2,14 @@
 
 This repository is the project memory. Chat history is supporting context, never the canonical owner of project state.
 
+## Branch Policy
+
+- `Local` is the permanent working/development authority.
+- Perform normal implementation and documentation work directly on `Local`.
+- Do not create per-flow/per-task branches or routine pull requests.
+- `main` remains a stable baseline and is changed only when the user explicitly requests it.
+- Any older `agent/*` branch is non-authoritative unless the user explicitly reactivates it.
+
 ## Mandatory Boot
 
 At the start of every material session:
@@ -20,9 +28,10 @@ Do not broad-read every reference, old output, saved project, or historical note
 - `docs/knowledge/next-action.md` owns the current goal, status, frozen boundaries, completed slice, and exactly one next step.
 - `docs/knowledge/decision-log.md` owns durable decisions and their reasons.
 - `docs/foundation/` owns durable product and workflow policy.
-- kit files own their current executable/document-production instructions.
+- active kit files own their current executable/document-production instructions.
 - project source plus approved project decisions own project-specific factual/design content.
 - generated output is never automatically more authoritative than its source and approved decisions.
+- Archived packages are evidence/reference only and never override an active owner.
 
 Before ending material work, update only the canonical owner whose state actually changed.
 
@@ -34,9 +43,10 @@ Use this order when resolving conflicts:
 2. explicit approved project decisions;
 3. authoritative project source documents;
 4. durable workspace/foundation rules;
-5. affected kit instructions;
+5. active kit instructions;
 6. approved Golden Sample/reference for structure, presentation, and demonstrated quality only;
-7. prior chat/history as supporting context only.
+7. Archived implementation/history as supporting evidence only;
+8. prior chat/history as supporting context only.
 
 A current user instruction can change intent, but do not silently rewrite historical facts or previously approved decisions. Record a material new decision in its canonical owner.
 
@@ -52,6 +62,19 @@ Before asking the user for more information:
 4. complete low-risk gaps from strong context when the active kit allows it;
 5. ask only when a high-impact unresolved decision cannot be recovered safely;
 6. record approved material decisions so later sessions do not ask again.
+
+## Source Intake Baseline
+
+For repository-backed project intake:
+
+- preserve original source files unchanged;
+- inventory provenance and authority before using a source as project fact;
+- keep a traceable requirement register;
+- use `Clarification`, `Completion`, `Proposal`, and `Blocked` as recovery classes;
+- treat material source conflict as an evidence problem that becomes `Blocked` when authority/supersession cannot resolve it;
+- do not turn intake into a questionnaire for facts already recoverable from source.
+
+Canonical procedure: `kits/project-document-generator/SOURCE-INTAKE.md`.
 
 ## Sample / Golden Reference Rule
 
@@ -99,7 +122,7 @@ Do not use these labels ceremonially for routine text edits.
 
 The two current kits have different responsibilities:
 
-- **Project Document Generator** owns requirement recovery, content completion within its approval rules, canonical project documentation, and approved-template rendering.
+- **Project Document Generator** owns source intake, requirement recovery, content completion within its approval rules, canonical project documentation, and approved-template rendering.
 - **Voice Production Kit** consumes sufficiently mature gameplay/story/project facts and produces ElevenLabs-ready voice performance scripts. It must not become a second PRD designer.
 
 Do not solve a PRD/content-definition problem inside the Voice Production Kit merely to make the voice script easier to write.

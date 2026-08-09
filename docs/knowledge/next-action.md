@@ -10,46 +10,42 @@ Adopt the useful repository/workflow architecture learned from BuildIT into the 
 
 ## Current Status
 
-`FLOW_1_REPOSITORY_MEMORY_FOUNDATION_IMPLEMENTED`
+`FLOW_2_SOURCE_INTAKE_REQUIREMENT_RECOVERY_IMPLEMENTED`
 
-## Completed Slice — Flow 1
+## Completed Slice — Flow 2
 
-Implemented repository-level ownership for:
+Implemented:
 
-- working rules and authority (`AGENTS.md`);
-- stable context (`CONTEXT.md`);
-- durable production boundaries and flow (`docs/foundation/`);
-- single active task (`next-action.md`);
-- durable decisions (`decision-log.md`);
-- implementation ownership (`implementation-map.md`);
-- validation/evidence state (`docs/foundation/validation-report.md`);
-- future work separation (`operations/task-board.md`);
-- active/saved project workspace lifecycle (`workspace/`).
+- permanent `Local` development-branch policy; routine per-flow PRs are retired;
+- pre-existing `Production Document Builder/` marked Archived rather than deleted;
+- active Project Document Generator migrated to `kits/project-document-generator/`;
+- immutable original-source rule;
+- persistent `Source Inventory`, `Requirement Register`, and `Intake State` contract;
+- traceable source provenance and source roles;
+- conflict handling without silent newest-file assumptions;
+- `Clarification / Completion / Proposal / Blocked` recovery classes;
+- question economy: recover low-risk supported gaps first; ask only unresolved high-impact decisions;
+- per-project Flow 2 workspace package contract;
+- explicit `ready_for_prd` gate before Flow 3.
 
 ## Preserved Boundaries
 
-Flow 1 intentionally does **not** redesign:
+Flow 2 intentionally does **not** redesign:
 
-- Project Document Generator gap classification or approval behavior;
-- approved HTML template;
-- renderer behavior;
-- Voice Production Kit instructions;
-- Aftershock voice reference;
-- DOCX production behavior;
-- source intake/recovery logic beyond documenting its future boundary.
-
-The supplied kits remain reviewed baseline inputs but are intentionally not migrated during Flow 1.
+- canonical PRD content structure beyond what the current Project Document Generator already defines;
+- approved HTML template presentation;
+- objective-package rendering behavior;
+- PRD development-readiness/team-handoff validation;
+- Voice Production Kit implementation;
+- voice requirement extraction or ElevenLabs scripting.
 
 ## Current Proof
 
-- root memory/navigation owners exist;
-- foundation and active-state documentation are separated;
-- future backlog is separated from the active task;
-- the supplied Project Document Generator and Voice Production Kit were reviewed but intentionally not migrated during Flow 1;
-- the pre-existing `Production Document Builder/` package is preserved unchanged and classified as historical/reference pending later bounded audit.
-
-No new PRD or Voice Production output has been generated in this slice.
+- repository and active kit contain the Flow 2 contract;
+- the active approved HTML template is byte-identical to the historical approved Golden Sample file by SHA-256;
+- Archived builder remains preserved;
+- no real project intake has yet exercised the new Flow 2 state end-to-end, so that remains `EXECUTION PROOF REQUIRED`.
 
 ## Next Step
 
-Implement **Flow 2 — Source Intake & Requirement Recovery**: define how incoming project material is stored, inspected, normalized, classified, and converted into a reliable project brief/state before Project Document Generator begins canonical PRD generation.
+Implement **Flow 3 — Project Document / PRD Generation**: audit and align canonical content generation, document hierarchy, template adaptation, and renderer behavior so a `ready_for_prd` requirement state can become a practical development-ready PRD without reintroducing the Archived builder's unnecessary ceremony.
