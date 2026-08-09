@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
-description: Review incomplete project sources, recover traceable requirements, create development-oriented canonical PRD content, and render it through the approved HTML template without inventing design decisions.
-version: 1.1.0
+description: Recover incomplete project requirements, create canonical development-oriented PRD content, render it through the approved HTML shell, and validate whether the result is development-ready for team handoff without inventing product decisions.
+version: 1.2.0
 ---
 
 # Project Document Generator
@@ -11,18 +11,13 @@ version: 1.1.0
 Use this skill to:
 
 1. preserve and understand incomplete project sources;
-2. recover supported requirements and expose true unresolved decisions;
+2. recover traceable requirements and expose true unresolved decisions;
 3. create practical canonical project documentation for developers, level designers, and production teams;
-4. render the approved content through the fixed HTML presentation shell.
+4. render approved content through the fixed HTML presentation shell;
+5. validate the generated PRD from New Reader, Level Designer, Developer, and Project Consistency perspectives;
+6. produce a concise team handoff only when the accepted revision is actually development-ready.
 
-The skill is not merely an HTML formatter. It owns requirement recovery and PRD content generation, but it does not own downstream Voice Production.
-
-## Required inputs
-
-- project source documents / approved project state;
-- `template/approved-document.html`.
-
-For repository-backed projects, Flow 3 starts only when `state/intake-state.yaml` is `ready_for_prd`.
+The skill owns PRD production through Flow 4. It does not own downstream Voice Requirement extraction or ElevenLabs scripting.
 
 ## Required execution order
 
@@ -31,42 +26,52 @@ For repository-backed projects, Flow 3 starts only when `state/intake-state.yaml
 3. Read `SOURCE-INTAKE.md` when intake/recovery is active.
 4. Read `CONTENT-CONTRACT.md`.
 5. Read `RENDERING.md`.
-6. Follow `WORKFLOW.md`.
-7. Inspect `template/approved-document.html` directly when rendering/template fidelity matters.
-8. Create/update `review.md` until all required high-impact decisions are resolved.
-9. Create canonical `content.md` from traceable source facts, supported recovery, and approved decisions.
-10. Create `render-data.json` only as a derived projection of `content.md`.
-11. Render by cloning the Approved Template shell with `renderer/render.py`.
-12. Stop at generated PRD output; development-readiness/team-handoff validation belongs to Flow 4.
+6. Read `VALIDATION.md` when Flow 4/handoff is in scope.
+7. Follow `WORKFLOW.md`.
+8. Inspect `template/approved-document.html` directly when rendering/template fidelity matters.
+9. Resolve required high-impact decisions before canonical drafting.
+10. Maintain `work/content.md` as canonical PRD meaning.
+11. Maintain `work/render-data.json` only as a derived projection.
+12. Render with `renderer/render.py`.
+13. Validate mechanically with `validator/validate.py` and semantically with the four-perspective audit.
+14. Set `development_ready` only when Critical=0, Major=0, mechanical checks pass, and all four perspectives pass.
+15. Create `output/team-handoff.md`, set `handoff_ready`, then stop Flow 4.
 
 ## Repository-backed project files
 
 Flow 2 state:
 
-- `state/source-inventory.yaml` — provenance and authority for every source;
-- `state/requirement-register.yaml` — traceable recovered requirements/gaps;
-- `state/intake-state.yaml` — resumable intake status and next step.
+- `state/source-inventory.yaml`
+- `state/requirement-register.yaml`
+- `state/intake-state.yaml`
 
 Flow 3 work/output:
 
-- `work/review.md` — human-readable requirement/gap review;
-- `work/content.md` — canonical human-readable PRD content;
-- `work/render-data.json` — derived renderer projection; never independent authority;
-- `output/final.html` — rendered presentation artifact.
+- `work/review.md`
+- `work/content.md` — canonical PRD meaning
+- `work/render-data.json` — derived renderer projection
+- `output/final.html` — rendered PRD artifact
 
-Do not create release reports, checksums, packaging manifests, or additional approval layers unless a concrete requirement needs them.
+Flow 4 acceptance/handoff:
 
-## Completion condition for Flow 3
+- `work/acceptance.md` — concise role-based audit and findings
+- `state/handoff-state.yaml` — current readiness status for the exact accepted revision
+- `output/team-handoff.md` — concise navigation aid for the production team
 
-Stop Flow 3 when:
+Do not create release reports, checksums, packaging manifests, Content Freeze layers, or duplicate PRD summaries unless a concrete requirement needs them.
 
-- Flow 2 is `ready_for_prd`;
-- canonical content follows `CONTENT-CONTRACT.md`;
-- every material statement is traceable to source/recovered requirements/approved decisions;
-- required Gameplay / Level Design / Developer package content is present;
-- scoring or completion behavior is explicit when relevant;
-- `render-data.json` contains no new meaning beyond `content.md`;
-- `final.html` is generated through the approved template shell;
-- generated navigation targets exist and no required placeholder remains.
+## Completion condition for Flow 4
 
-Do not claim the document is development-ready or approved for team handoff yet. That status belongs to Flow 4.
+Stop when:
+
+- Flow 3 artifacts exist for the same current revision;
+- mechanical validation passes;
+- New Reader, Level Designer, Developer, and Project Consistency perspectives pass;
+- Critical findings = 0;
+- Major findings = 0;
+- remaining Minor findings, if any, are intentionally accepted and non-semantic;
+- `work/acceptance.md` records the evidence;
+- `state/handoff-state.yaml` = `handoff_ready`;
+- `output/team-handoff.md` points the team to the accepted canonical/rendered PRD.
+
+Do not claim client approval, implementation completion, QA completion, or Voice Production readiness from this status.

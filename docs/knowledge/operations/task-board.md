@@ -9,18 +9,18 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 - [x] Flow 1 — Repository Boot & Project Memory
 - [x] Flow 2 — Source Intake & Requirement Recovery
 - [x] Flow 3 — Project Document / PRD Generation
-- [ ] Flow 4 — PRD Validation & Team Handoff
+- [x] Flow 4 — PRD Validation & Team Handoff
 - [ ] Flow 5 — Voice Requirement Extraction
 - [ ] Flow 6 — ElevenLabs Performance Script Production redesign/alignment
 - [ ] Flow 7 — Voice Validation & Delivery
 
 ## Later Maintenance
 
-- [ ] exercise Flow 2→3 on a real project and record evidence;
-- [ ] decide final removal of Archived builder only after all useful behavior is migrated/retired;
-- [ ] remove obsolete `agent/*` branches outside this workflow if desired using a Git client/API surface that supports branch deletion;
-- [ ] add automated regression checks only when concrete Flow 4 acceptance failures prove the needed boundaries;
-- [ ] audit template-specific inherited class naming only if it causes maintenance or behavior problems; do not rename classes cosmetically.
+- [ ] exercise Flow 2→3→4 on a real project and record evidence;
+- [ ] decide final removal of Archived builder only after useful behavior is migrated/retired;
+- [ ] remove obsolete `agent/*` branches outside this workflow if desired using a Git client/API supporting branch deletion;
+- [ ] add broader regression automation only after real Flow 4 failures prove a concrete need;
+- [ ] audit template-specific inherited class naming only if it creates real maintenance/behavior issues.
 
 ## Rule
 

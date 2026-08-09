@@ -1,8 +1,8 @@
 # Project Document Generator
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 
-A compact repository-backed system for recovering incomplete project direction, writing practical development-oriented PRD content, and rendering it through the approved HTML presentation shell.
+A compact repository-backed system for recovering incomplete project direction, writing practical development-oriented PRD content, rendering it through the approved HTML presentation shell, and validating whether that exact revision is ready for team handoff.
 
 ## Normal use
 
@@ -14,6 +14,10 @@ Project Source
 → Derived render-data.json
 → Approved Template shell render
 → final.html
+→ Mechanical + 4-perspective acceptance
+→ development_ready
+→ team-handoff.md
+→ handoff_ready
 ```
 
 The skill will:
@@ -23,9 +27,10 @@ The skill will:
 3. resolve supported Clarification/Completion and isolate real Proposal/Blocked decisions;
 4. write canonical PRD content using `CONTENT-CONTRACT.md`;
 5. keep Gameplay, Level Design, and Developer responsibilities separate;
-6. create a derived render projection without adding new meaning;
-7. clone the approved HTML shell and regenerate project-owned navigation/pages deterministically;
-8. stop before development-readiness/team-handoff approval, which belongs to Flow 4.
+6. render through the approved presentation shell without adding new meaning;
+7. run mechanical validation plus New Reader, Level Designer, Developer, and Project Consistency audits;
+8. block handoff on Critical/Major findings;
+9. produce a concise team handoff for an accepted revision.
 
 ## Package structure
 
@@ -38,33 +43,36 @@ kits/project-document-generator/
 ├── SOURCE-INTAKE.md
 ├── CONTENT-CONTRACT.md
 ├── RENDERING.md
+├── VALIDATION.md
 ├── GLOSSARY.md
 ├── template/
 │   └── approved-document.html
-└── renderer/
-    └── render.py
+├── renderer/
+│   ├── render.py
+│   ├── core.py
+│   └── pages.py
+└── validator/
+    └── validate.py
 ```
 
-## Repository-backed project structure
+## Project output after Flow 4
 
 ```text
 workspace/active/<project>/
-├── README.md
 ├── source/originals/
 ├── state/
 │   ├── source-inventory.yaml
 │   ├── requirement-register.yaml
-│   └── intake-state.yaml
+│   ├── intake-state.yaml
+│   └── handoff-state.yaml
 ├── work/
 │   ├── review.md
 │   ├── content.md
-│   └── render-data.json
+│   ├── render-data.json
+│   └── acceptance.md
 └── output/
-    └── final.html
+    ├── final.html
+    └── team-handoff.md
 ```
 
-## Renderer
-
-`renderer/render.py` preserves the Approved Template's shared presentation shell and replaces only project-owned brand metadata, navigation, document pages, and glossary data. It has no external Python dependencies.
-
-The renderer does not validate whether the PRD is truly development-ready; Flow 4 owns that downstream acceptance decision.
+`handoff_ready` is a production-document readiness status, not client approval, implementation completion, QA completion, or release approval.

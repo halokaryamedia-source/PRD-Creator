@@ -8,103 +8,88 @@ Owner: workspace
 
 This workspace supports a two-stage production system:
 
-1. turn incomplete or uneven project direction into documentation that developers, level designers, and the wider production team can use to begin work;
+1. turn incomplete/uneven project direction into documentation that developers, level designers, and the wider production team can actually use;
 2. derive production-ready voice scripts from sufficiently mature project/gameplay/story documentation for ElevenLabs.
 
-## Stable Product Boundaries
+## Project Document Generator
 
-### Project Document Generator
-
-Primary responsibility:
+Current owner: `kits/project-document-generator/`.
 
 ```text
 incomplete project source
 → preserve/inventory source
 → recover traceable requirements
-→ resolve supported gaps / isolate real decisions
 → ready_for_prd
-→ canonical human-readable PRD content
-→ approved-template HTML render
+→ canonical content.md
+→ render-data.json projection
+→ approved-template final.html
+→ mechanical + 4-perspective acceptance
+→ development_ready
+→ concise team-handoff.md
+→ handoff_ready
 ```
 
-The active implementation is `kits/project-document-generator/` (v1.1.0 after Flow 3).
+Flow 4 deliberately separates generated output from production usability. Mechanical checks prove structure; New Reader, Level Designer, Developer, and Project Consistency audits prove whether the documentation is safe enough to start work without inventing product rules.
 
-It is not merely an HTML formatter. It owns requirement recovery and PRD generation, but it does not decide downstream team-handoff readiness or voice production.
+## Voice Production
 
-### PRD Validation & Team Handoff
-
-Flow 4 is a separate downstream acceptance boundary. A generated `final.html` is not automatically development-ready just because rendering succeeded.
-
-### Voice Production
-
-Primary responsibility remains:
+Voice Production remains downstream:
 
 ```text
-mature approved project/gameplay/story documentation
-→ identify justified voice moments
+accepted mature project/gameplay/story documentation
+→ justified voice moments
 → Main Story / Radio Communication
 → ElevenLabs-ready performance text
 → voice production delivery
 ```
 
-Voice Production must preserve official names/sequence/supported facts and must not invent missing gameplay/story decisions that belong upstream.
-
-## Pre-existing Repository Package
-
-`Production Document Builder/` predates the current architecture and is **Archived**. It contains a broader historical implementation, tests, schemas, renderer, and Aftershock Golden Sample. Current flows may inspect it as evidence and migrate bounded useful behavior, but it does not override active kit/foundation owners and must not be extended by default.
+It must not repair missing PRD decisions inside a voice script.
 
 ## Stable Terms
 
-**Project Source**  
-Original user/client/project material used to understand the project.
+**Project Source** — original user/client/project material.
 
-**Source Inventory**  
-Persistent record of project sources, provenance, role, and authority/supersession state.
+**Requirement Register** — normalized traceable project requirements/gaps/decisions from Flow 2.
 
-**Requirement Register**  
-Normalized traceable project requirements, recovered gaps, conflicts, and decisions from Flow 2.
+**Canonical PRD Content** — `work/content.md`; authoritative PRD meaning for Flow 3/4.
 
-**Approved Decision**  
-A material project-specific decision explicitly approved by the user/creative owner.
+**Render Projection** — `work/render-data.json`; derived data only for deterministic rendering.
 
-**Canonical PRD Content**  
-`work/content.md`: the human-readable Flow 3 source of truth for project-document meaning.
+**Rendered PRD** — `output/final.html`; presentation artifact, not automatically accepted.
 
-**Render Projection**  
-`work/render-data.json`: derived structured page/component data used only for deterministic HTML rendering. It must not introduce new meaning.
+**PRD Acceptance** — `work/acceptance.md`; concise evidence/findings from mechanical + four-perspective Flow 4 review.
 
-**Approved Template**  
-`kits/project-document-generator/template/approved-document.html`: fixed shared HTML presentation shell.
+**Handoff State** — `state/handoff-state.yaml`; revision-specific readiness status (`pending_review`, `needs_revision`, `development_ready`, `handoff_ready`, or `blocked`).
 
-**Golden Sample / Approved Reference**  
-A demonstrated structure, presentation, tone, or quality reference. It does not automatically define project-specific requirements.
+**Team Handoff** — `output/team-handoff.md`; concise navigation aid pointing the production team to the accepted PRD. It is not a second PRD.
 
-**Rendered PRD**  
-`output/final.html`: presentation artifact generated from canonical PRD content through the approved shell. Rendering success is not the same as development-ready acceptance.
+**Golden Sample / Approved Reference** — structure/presentation/quality evidence only where explicitly defined; never automatic project facts.
 
-**Voice Requirement**  
-A voice moment justified by mature upstream documentation, such as briefing, story progression, warning, progress update, urgency, encouragement, ending, or reward communication.
+**Voice Requirement** — a voice moment justified by accepted upstream documentation.
 
-**Performance Script**  
-Text prepared for ElevenLabs with controlled voice direction, emphasis, pauses, and line breaks.
+**Performance Script** — ElevenLabs-ready text with controlled direction, emphasis, pauses, and pacing.
+
+## Archived Package
+
+`Production Document Builder/` is Archived. It may provide migration evidence, but it does not override current root/foundation/kit owners and must not be extended by default.
 
 ## Stable Structure
 
 - `docs/foundation/` — durable production policy.
-- `docs/knowledge/` — project continuity, decisions, ownership, and backlog.
-- `kits/project-document-generator/` — active PRD intake/generation implementation.
+- `docs/knowledge/` — continuity, decisions, ownership, backlog.
+- `kits/project-document-generator/` — active PRD Flow 2–4 implementation.
 - `workspace/active/` — active project packages.
-- `workspace/saved/` — intentionally retained completed/saved packages.
+- `workspace/saved/` — intentionally retained project packages.
 - `Production Document Builder/` — Archived historical reference.
 
 ## Architecture Principle
 
 ```text
-Source ≠ Interpretation ≠ Decision ≠ Requirement State ≠ Canonical Content ≠ Rendered Output ≠ Approval
+Source ≠ Interpretation ≠ Decision ≠ Requirement State ≠ Canonical Content ≠ Rendered Output ≠ Acceptance
 ```
 
-A polished document is not evidence that unresolved decisions were approved. A structurally valid HTML render is not evidence that the PRD is development-ready. A generated voice script is not evidence that upstream facts were complete.
+`handoff_ready` does not mean client sign-off, implementation completion, QA completion, or release approval.
 
 ## Current Development State
 
-Flows 1–3 are implemented on permanent branch `Local`. Flow 4 — PRD Validation & Team Handoff — is the next active boundary. Voice Production remains deliberately downstream and unmigrated until Flow 5/6.
+Flows 1–4 are implemented on permanent branch `Local`. Flow 5 — Voice Requirement Extraction — is the next active boundary.

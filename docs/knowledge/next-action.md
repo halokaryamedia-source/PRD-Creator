@@ -10,44 +10,42 @@ Adopt the useful repository/workflow architecture learned from BuildIT into the 
 
 ## Current Status
 
-`FLOW_3_PRD_GENERATION_IMPLEMENTED`
+`FLOW_4_PRD_VALIDATION_HANDOFF_IMPLEMENTED`
 
-## Completed Slice — Flow 3
+## Completed Slice — Flow 4
 
 Implemented:
 
-- `work/content.md` as canonical human-readable PRD content;
-- explicit PRD Content Contract (context → flow → global development → Gameplay/Level Design/Developer package pages);
-- critical-data, scoring, completion-data, role-separation, and local-context rules;
-- `work/render-data.json` as a derived rendering projection rather than a second authority;
-- semantic shell renderer replacing the previous literal-only replacement helper;
-- renderer preserves Approved Template head/CSS/JS/controls/sidebar shell while regenerating project-owned navigation/pages/glossary/metadata;
-- dynamic gameplay package count and automatic A/B/C navigation/page generation;
-- structural renderer checks for IDs, packages, scoring/completion, placeholders, template markers, and nav reachability;
-- active Project Document Generator version advanced to 1.1.0;
-- bounded useful concepts adopted from Archived builder without restoring its schema/content-freeze/release ceremony.
+- explicit distinction between `pending_review`, `needs_revision`, `development_ready`, and `handoff_ready`;
+- mechanical PRD validator for canonical content/render data/rendered HTML;
+- New Reader, Level Designer, Developer, and Project Consistency acceptance perspectives;
+- Critical / Major / Minor / Suggestion severity model;
+- root-owner classification for content vs projection vs renderer/template vs unresolved upstream decision;
+- `work/acceptance.md` concise acceptance record;
+- `state/handoff-state.yaml` revision-specific readiness owner;
+- `output/team-handoff.md` concise production navigation aid;
+- Critical/Major=0 development-ready gate without restoring Archived Content Freeze ceremony;
+- active Project Document Generator version advanced to 1.2.0.
 
 ## Preserved Boundaries
 
-Flow 3 intentionally does **not** define:
+Flow 4 intentionally does **not** define:
 
-- whether the generated PRD is actually development-ready;
-- role-by-role handoff acceptance;
-- cross-page consistency/critical requirement acceptance gate for delivery;
-- Voice Production readiness;
-- Voice Requirement extraction or ElevenLabs scripting.
+- client approval/sign-off;
+- implementation completion or QA completion;
+- release approval;
+- which voice moments are needed;
+- ElevenLabs script content;
+- voice validation/delivery.
 
 ## Current Proof
 
-- renderer Python syntax check passed locally;
-- synthetic non-Aftershock render executed against the exact approved template;
-- generated nav/page structural check passed;
-- generated HTML parsed successfully with Python HTMLParser;
-- no Aftershock project content leaked into generated document content/metadata during the sample run;
-- live Chromium visual/interactions are **not** claimed because headless Chromium hung in the current container environment.
-
-Real project end-to-end PRD generation remains to be exercised when a project is run through the new Flow 2→3 path.
+- Flow 4 validator Python compile passed locally;
+- validator executed against the synthetic non-Aftershock Flow 3 project;
+- sample passed all current mechanical checks;
+- semantic four-perspective contract is implemented, but a real project has not yet exercised full Flow 2→3→4 acceptance/handoff;
+- Archived builder remains preserved and non-authoritative.
 
 ## Next Step
 
-Implement **Flow 4 — PRD Validation & Team Handoff**: define the smallest reliable acceptance contract that checks canonical content and rendered HTML from Player/New Reader, Level Designer, Developer, and project-consistency perspectives, distinguishes generated from development-ready, and produces a concise team handoff without reviving heavy Content Freeze ceremony.
+Implement **Flow 5 — Voice Requirement Extraction**: define the exact handoff from an accepted/mature PRD into a traceable list of justified voice moments (Main Story / Radio Communication / other supported production moments) without allowing the Voice Production Kit to invent upstream gameplay/story decisions.

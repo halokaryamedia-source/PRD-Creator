@@ -12,7 +12,7 @@ project is intentionally finalized/saved
 → workspace/saved/<project>/
 ```
 
-## Active project package after Flow 3
+## Active project package after Flow 4
 
 ```text
 workspace/active/<project>/
@@ -22,16 +22,19 @@ workspace/active/<project>/
 ├── state/
 │   ├── source-inventory.yaml      provenance / source authority
 │   ├── requirement-register.yaml  normalized requirements / gaps / decisions
-│   └── intake-state.yaml          Flow 2 status (`ready_for_prd` gate)
+│   ├── intake-state.yaml          Flow 2 readiness state
+│   └── handoff-state.yaml         Flow 4 revision-specific readiness state
 ├── work/
 │   ├── review.md                  human-readable recovery review
-│   ├── content.md                 canonical PRD content
-│   └── render-data.json           derived rendering projection
+│   ├── content.md                 canonical PRD meaning
+│   ├── render-data.json           derived rendering projection
+│   └── acceptance.md              concise mechanical + role-based Flow 4 acceptance
 └── output/
-    └── final.html                  rendered PRD artifact
+    ├── final.html                  rendered PRD artifact
+    └── team-handoff.md             concise production navigation aid
 ```
 
-Use only files the current project actually needs. Flow 4 will define the development-readiness/handoff state; do not invent additional approval folders or packaging ceremony before that contract exists.
+Use only files the current project needs. `team-handoff.md` is not a second PRD and must not duplicate all requirements.
 
 ## Authority rule
 
@@ -41,6 +44,7 @@ original source / approved decisions
 → content.md
 → render-data.json
 → final.html
+→ acceptance evidence / handoff readiness
 ```
 
-Downstream artifacts never silently outrank upstream authority.
+Acceptance records usability of an exact revision; it never silently changes project meaning.
