@@ -1,4 +1,6 @@
-# Production Document Builder v0.2.0
+# ARCHIVED — Production Document Builder v0.2.0
+
+> **Status: Archived / historical reference.** This package is preserved during the PRD-Creator migration and is no longer the active repository authority. Do not extend or use it as the default workflow unless a current migration/audit explicitly references it. It may be removed only after its useful behavior, tests, templates, and Golden Sample dependencies have been evaluated and migrated or intentionally retired.
 
 This is the complete archival package for **Production Document Builder**.
 It is built around the approved **AFTERSHOCK V1.8 / Golden Sample v1.0**.
