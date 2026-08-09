@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
-description: Review and complete project documentation, obtain approval for design-changing proposals, then reproduce the approved HTML template with project-specific content.
-version: 1.0.0
+description: Review incomplete project sources, recover traceable requirements, create development-oriented canonical PRD content, and render it through the approved HTML template without inventing design decisions.
+version: 1.1.0
 ---
 
 # Project Document Generator
@@ -10,61 +10,63 @@ version: 1.0.0
 
 Use this skill to:
 
-1. review incomplete project documentation;
-2. complete missing information that is supported by the source context;
-3. separate design-changing suggestions for user approval;
-4. produce final HTML by cloning the approved template.
+1. preserve and understand incomplete project sources;
+2. recover supported requirements and expose true unresolved decisions;
+3. create practical canonical project documentation for developers, level designers, and production teams;
+4. render the approved content through the fixed HTML presentation shell.
+
+The skill is not merely an HTML formatter. It owns requirement recovery and PRD content generation, but it does not own downstream Voice Production.
 
 ## Required inputs
 
-- project source documents;
+- project source documents / approved project state;
 - `template/approved-document.html`.
 
-Optional inputs:
-
-- images;
-- additional notes;
-- existing assets.
+For repository-backed projects, Flow 3 starts only when `state/intake-state.yaml` is `ready_for_prd`.
 
 ## Required execution order
 
 1. Read `GLOSSARY.md`.
 2. Read `RULES.md`.
-3. Read `SOURCE-INTAKE.md`.
-4. Follow `WORKFLOW.md`.
-5. Inspect `template/approved-document.html` directly.
-6. Capture and inventory all available project sources before requirement recovery.
-7. Produce the review result before canonical PRD drafting or rendering.
-8. Ask only for unresolved high-impact Proposal or Blocked decisions that cannot be recovered safely.
-9. Produce approved canonical content.
-10. Clone the approved template and replace project-specific content only.
+3. Read `SOURCE-INTAKE.md` when intake/recovery is active.
+4. Read `CONTENT-CONTRACT.md`.
+5. Read `RENDERING.md`.
+6. Follow `WORKFLOW.md`.
+7. Inspect `template/approved-document.html` directly when rendering/template fidelity matters.
+8. Create/update `review.md` until all required high-impact decisions are resolved.
+9. Create canonical `content.md` from traceable source facts, supported recovery, and approved decisions.
+10. Create `render-data.json` only as a derived projection of `content.md`.
+11. Render by cloning the Approved Template shell with `renderer/render.py`.
+12. Stop at generated PRD output; development-readiness/team-handoff validation belongs to Flow 4.
 
-## Required outputs
+## Repository-backed project files
 
-Create only what the task requires. For repository-backed projects, Flow 2 also maintains:
+Flow 2 state:
 
 - `state/source-inventory.yaml` — provenance and authority for every source;
-- `state/requirement-register.yaml` — traceable recovered requirements and gaps;
-- `state/intake-state.yaml` — one resumable intake status and next step.
+- `state/requirement-register.yaml` — traceable recovered requirements/gaps;
+- `state/intake-state.yaml` — resumable intake status and next step.
 
-The normal production outputs remain:
+Flow 3 work/output:
 
-- `review.md` — human-readable gap classification and decisions needed;
-- `content.md` — approved canonical content;
-- `final.html` — rendered document.
+- `work/review.md` — human-readable requirement/gap review;
+- `work/content.md` — canonical human-readable PRD content;
+- `work/render-data.json` — derived renderer projection; never independent authority;
+- `output/final.html` — rendered presentation artifact.
 
-Do not create audit reports, test reports, release notes, or additional process files unless explicitly requested.
+Do not create release reports, checksums, packaging manifests, or additional approval layers unless a concrete requirement needs them.
 
-## Completion condition
+## Completion condition for Flow 3
 
-Stop when:
+Stop Flow 3 when:
 
-- every available source has been inventoried or explicitly marked unavailable;
-- every material requirement is traceable to source evidence or an approved decision;
-- every identified gap has been classified;
-- all required approvals have been received;
-- approved content has been applied;
-- the final HTML preserves the approved template;
-- the requested files have been delivered.
+- Flow 2 is `ready_for_prd`;
+- canonical content follows `CONTENT-CONTRACT.md`;
+- every material statement is traceable to source/recovered requirements/approved decisions;
+- required Gameplay / Level Design / Developer package content is present;
+- scoring or completion behavior is explicit when relevant;
+- `render-data.json` contains no new meaning beyond `content.md`;
+- `final.html` is generated through the approved template shell;
+- generated navigation targets exist and no required placeholder remains.
 
-Do not continue improving the document after these conditions are met unless the user explicitly requests another revision.
+Do not claim the document is development-ready or approved for team handoff yet. That status belongs to Flow 4.

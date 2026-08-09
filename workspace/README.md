@@ -6,36 +6,41 @@ This folder stores project-specific production packages. Reusable kit behavior b
 
 ```text
 project is being worked on
-→ workspace/active/<project-slug>/
+→ workspace/active/<project>/
 
 project is intentionally finalized/saved
-→ workspace/saved/<project-slug>/
+→ workspace/saved/<project>/
 ```
 
-## Flow 2 Project Package
-
-When a real project begins intake, create only the directories/files it needs:
+## Active project package after Flow 3
 
 ```text
-workspace/active/<project-slug>/
+workspace/active/<project>/
 ├── README.md
 ├── source/
-│   └── originals/
+│   └── originals/                 immutable supplied source
 ├── state/
-│   ├── source-inventory.yaml
-│   ├── requirement-register.yaml
-│   └── intake-state.yaml
-└── work/
-    └── review.md
+│   ├── source-inventory.yaml      provenance / source authority
+│   ├── requirement-register.yaml  normalized requirements / gaps / decisions
+│   └── intake-state.yaml          Flow 2 status (`ready_for_prd` gate)
+├── work/
+│   ├── review.md                  human-readable recovery review
+│   ├── content.md                 canonical PRD content
+│   └── render-data.json           derived rendering projection
+└── output/
+    └── final.html                  rendered PRD artifact
 ```
 
-Rules:
+Use only files the current project actually needs. Flow 4 will define the development-readiness/handoff state; do not invent additional approval folders or packaging ceremony before that contract exists.
 
-- `source/originals/` preserves supplied project files unchanged;
-- state files are maintained by the active Project Document Generator intake workflow;
-- `work/review.md` is a concise human-readable view of gaps/decisions;
-- Flow 3 may add canonical content/rendering files later;
-- do not place final deliverables in `source/`;
-- do not pre-create empty process files that a project does not need.
+## Authority rule
 
-Field details live in `../kits/project-document-generator/SOURCE-INTAKE.md`.
+```text
+original source / approved decisions
+→ requirement state
+→ content.md
+→ render-data.json
+→ final.html
+```
+
+Downstream artifacts never silently outrank upstream authority.

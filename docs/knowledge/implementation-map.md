@@ -2,33 +2,48 @@
 
 Updated: 2026-08-10
 
-Use this note to answer where current behavior or policy lives. It is not the active task tracker.
+Use this note to answer where current behavior/policy lives. It is not the active task tracker.
 
 ## Repository Areas
 
 | Boundary | Current owner |
 |---|---|
-| Permanent working branch | `Local` |
-| Repository-wide work rules / authority | `AGENTS.md` |
+| Repository-wide rules / branch policy / authority | `AGENTS.md` |
 | Stable product context / terminology | `CONTEXT.md` |
 | Durable product boundaries | `docs/foundation/00-product-boundaries.md` |
 | End-to-end production sequence | `docs/foundation/01-production-flow.md` |
-| Source intake / recovery policy | `docs/foundation/02-source-intake-recovery.md` |
-| Source intake executable procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
-| Project Document Generator current kit | `kits/project-document-generator/` |
+| Flow 2 intake/recovery policy | `docs/foundation/02-source-intake-recovery.md` |
+| Flow 3 PRD generation policy | `docs/foundation/03-prd-generation.md` |
 | Current evidence/implementation status | `docs/foundation/validation-report.md` |
 | Active continuation state | `docs/knowledge/next-action.md` |
-| Durable decisions and reasons | `docs/knowledge/decision-log.md` |
+| Durable decisions/reasons | `docs/knowledge/decision-log.md` |
+| Active PRD kit | `kits/project-document-generator/` |
+| PRD canonical content contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
+| PRD rendering contract | `kits/project-document-generator/RENDERING.md` |
+| PRD shell renderer | `kits/project-document-generator/renderer/render.py` + `renderer/core.py` + `renderer/pages.py` |
+| Approved HTML presentation shell | `kits/project-document-generator/template/approved-document.html` |
 | Active project packages | `workspace/active/` |
-| Saved/completed project packages | `workspace/saved/` |
-| Archived historical document-builder package | `Production Document Builder/` |
+| Saved project packages | `workspace/saved/` |
+| Archived historical builder | `Production Document Builder/` |
 
-## Current Baseline State
+## Project-level authority after Flow 3
 
-- **Project Document Generator** — migrated into `kits/project-document-generator/`; Flow 2 intake/recovery integrated. Flow 3 canonical content/rendering audit is next.
-- **Voice Production Kit** — supplied and reviewed; migrate/reconcile only when Flow 5/6 is active.
-- **Production Document Builder** — Archived. Preserve for bounded migration/reference until useful behavior/dependencies are evaluated and migrated or intentionally retired.
+```text
+source/originals/*
+      ↓
+state/source-inventory.yaml
+state/requirement-register.yaml
+state/intake-state.yaml
+      ↓
+work/content.md              canonical PRD meaning
+      ↓
+work/render-data.json        derived renderer projection
+      ↓
+output/final.html            presentation artifact
+```
 
-## Current Boundary
+## Pending downstream migration
 
-Flow 2 is complete at repository/kit contract level. It does not claim a real project has already passed intake. Flow 3 is the next active boundary and must consume the recovered requirement state rather than restarting source discovery from scratch.
+- Flow 4 development-readiness/team-handoff acceptance is not implemented yet.
+- Voice Production Kit remains reviewed but unmigrated until Flow 5/6.
+- Archived builder is not an active owner even when a current flow cites it as historical evidence.

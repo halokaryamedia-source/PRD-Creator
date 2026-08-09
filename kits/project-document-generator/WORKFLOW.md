@@ -4,82 +4,117 @@
 
 Follow `SOURCE-INTAKE.md`.
 
-1. Resolve the active project package or create `workspace/active/<project-slug>/` when beginning a new repository-backed project.
-2. Preserve supplied files as original source; do not rewrite them during intake.
-3. Record each available source in `state/source-inventory.yaml`, including provenance, role, and whether it is current, superseded, reference-only, unreadable, or missing.
-4. Inspect the Approved Template directly so required document coverage is known, but do not use template/sample-specific content as project fact.
-5. Read every available authoritative and supporting Source file before asking detailed questions.
+1. Resolve/create `workspace/active/<project-slug>/`.
+2. Preserve supplied files as original source.
+3. Record source provenance/authority in `state/source-inventory.yaml`.
+4. Inspect the Approved Template to understand required coverage without promoting sample content into project facts.
+5. Read available authoritative/supporting source before detailed questions.
 
-**Exit condition:** every available source is inventoried and inspected or explicitly marked unavailable/unreadable.
+**Exit:** available sources inventoried and inspected or explicitly unavailable/unreadable.
 
 ## Stage 2 — Requirement Recovery
 
-Normalize material project facts, constraints, terminology, sequences, requirements, and open decisions into `state/requirement-register.yaml`. Every material entry must remain traceable to source evidence or an approved decision.
+Normalize material facts, constraints, terminology, sequences, requirements, and decisions into `state/requirement-register.yaml`.
 
-For each gap, use exactly one recovery class:
+Use exactly one recovery class for each gap:
 
-### Clarification
-Use when the meaning already exists but needs clearer wording or fuller explanation.
+- **Clarification** — meaning exists; wording/explanation is weak.
+- **Completion** — missing detail can be recovered safely from strong context.
+- **Proposal** — a material design decision would be introduced/changed.
+- **Blocked** — evidence is insufficient/conflicting for a reliable answer.
 
-### Completion
-Use when missing content can be completed from strong contextual support without changing design intent.
+Update `work/review.md` and `state/intake-state.yaml`.
 
-### Proposal
-Use when the addition changes or defines a design decision, including gameplay, mechanics, scoring logic, progression, learning objectives, win conditions, required quantities, or another material production choice.
+**Exit:** material requirements are traceable and identified gaps are classified.
 
-### Blocked
-Use when source evidence is insufficient or materially conflicting and a reliable decision cannot be recovered.
+## Stage 3 — Decision Resolution
 
-A source conflict is an evidence condition, not a fifth recovery class. Resolve it from explicit authority/supersession when possible; otherwise the affected requirement becomes Blocked.
+- Apply supported Clarification/Completion.
+- Ask only unresolved high-impact Proposal/Blocked decisions.
+- Record approved material decisions.
+- Do not force a discussion round when evidence already supports a reliable answer.
 
-Write/update `review.md` with concise entries containing:
+Set intake status to `ready_for_prd` only when required blockers are resolved or explicitly outside requested scope.
 
-- location / requirement ID;
-- classification;
-- issue;
-- supporting source IDs;
-- proposed text or required decision;
-- impact when material.
+**Exit:** `state/intake-state.yaml` = `ready_for_prd`.
 
-Update `state/intake-state.yaml` with one current status and one next step.
+## Stage 4 — Canonical PRD Content
 
-**Exit condition:** every material requirement is traceable, and every identified gap has exactly one recovery class.
+Read `CONTENT-CONTRACT.md`.
 
-## Stage 3 — Approval
+Create/update `work/content.md` from:
 
-- Clarification and Completion are ready-to-apply when directly supported and non-design-changing.
-- Present only unresolved high-impact Proposal and Blocked items that require user/creative-owner judgment.
-- Apply user corrections and record approved material decisions.
-- Do not proceed past unresolved Blocked items that affect required output.
-- Do not force a discussion round when the source already supports a reliable completion.
+- authoritative Source;
+- recovered requirement register;
+- supported Clarification/Completion;
+- approved project decisions.
 
-**Exit condition:** all required design decisions are approved, explicitly deferred, or isolated outside the requested output.
+Use the canonical hierarchy:
 
-## Stage 4 — Canonical Content
+```text
+Overview
+→ Gameplay Flow
+→ Global Development
+→ Gameplay Package(s)
+     → Gameplay Overview
+     → Level Design
+     → Developer
+```
 
-Create `content.md` from:
+Critical information must be explicit. A package that does not score uses Completion Data instead of an artificial score.
 
-- supported Source content;
-- approved Clarification;
-- approved Completion;
-- approved Proposal.
+If writing the canonical PRD exposes a real unresolved design decision, return that requirement to Flow 2 rather than guessing inside Flow 3.
 
-Keep the content aligned with the Approved Template's section hierarchy and Objective Package.
+**Exit:** required canonical sections are complete and contain no unresolved required design decision/placeholder.
 
-**Exit condition:** every required template section has approved content or an explicitly approved omission.
+## Stage 5 — Rendering Projection
 
-## Stage 5 — Render
+Read `RENDERING.md`.
 
-1. Copy `template/approved-document.html` to the requested output path.
-2. Replace project-specific content in the copy.
-3. Duplicate the existing Objective Package when the objective count differs.
-4. Update IDs, anchors, navigation, labels, and page numbering affected by duplicated objectives.
-5. Preserve all unrelated HTML, CSS, JavaScript, classes, and components.
+Create/update `work/render-data.json` as a structured projection of `content.md`.
 
-The renderer helper may be used for exact literal replacements. Dynamic objective editing must still reuse the existing Objective Package from the cloned template.
+Rules:
 
-**Exit condition:** `final.html` opens with valid navigation, complete approved content, and the unchanged presentation system of the Approved Template.
+- projection may reorganize but not reinterpret content;
+- stable IDs are lowercase kebab-case;
+- package IDs are unique;
+- each rendered package contains Gameplay, Level Design, and Developer objects;
+- Developer uses scoring or completion data as appropriate;
+- project terms/aliases are included only when they exist in canonical content.
 
-## Stage 6 — Stop
+**Exit:** render-data contains no meaning absent from `content.md` and passes renderer input checks.
 
-Deliver the requested files. Do not continue redesigning or extending the document unless the user requests another revision.
+## Stage 6 — Render
+
+Run:
+
+```bash
+python kits/project-document-generator/renderer/render.py \
+  workspace/active/<project>/work/render-data.json \
+  workspace/active/<project>/output/final.html
+```
+
+The renderer:
+
+1. reads the approved HTML shell;
+2. preserves shared styles/scripts/controls;
+3. replaces project brand metadata;
+4. regenerates navigation from the current project structure;
+5. generates overview/flow/global/package pages using approved component classes;
+6. injects project glossary data;
+7. blocks invalid IDs, missing package role objects, missing scoring/completion behavior, unresolved placeholders, broken nav targets, or missing template markers.
+
+**Exit:** `output/final.html` is generated structurally without changing project meaning.
+
+## Stage 7 — Flow 3 Stop Gate
+
+Flow 3 is complete when canonical content and rendered HTML exist and the renderer's structural checks pass.
+
+Do **not** claim:
+
+- development-ready;
+- team-handoff approved;
+- final delivery approved;
+- Voice Production ready.
+
+Those downstream claims belong to Flow 4+.

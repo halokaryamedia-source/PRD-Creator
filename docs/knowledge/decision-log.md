@@ -4,52 +4,56 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
-### `Local` is the permanent development branch
-
-- **Decision:** normal repository work continues directly on `Local`; do not create per-flow branches or routine PRs to `main`.
-- **Reason:** this project is being developed iteratively by the same production workflow and per-flow PR ceremony adds friction without useful review value.
-- **Boundary:** `main` remains a stable baseline and changes only when the user explicitly requests it.
-- **Date:** 2026-08-10
-
 ### Repository is project memory
 
 - **Decision:** repository state is authoritative for continuity; old chat is supporting context only.
-- **Reason:** a new ChatGPT/Codex/developer session must be able to resume work without asking the user to reconstruct the full history.
+- **Reason:** a new ChatGPT/Codex/developer session must resume without reconstructing full history from the user.
 - **Owners:** `AGENTS.md`, `CONTEXT.md`, `docs/knowledge/next-action.md`.
 - **Date:** 2026-08-10
 
-### Project Document Generator and Voice Production Kit remain separate production owners
+### `Local` is the permanent development branch
 
-- **Decision:** keep PRD/document design recovery upstream and voice performance production downstream.
+- **Decision:** normal work happens directly on `Local`; no routine per-flow branches/PRs.
+- **Reason:** the user prefers one practical continuous working branch similar to BuildIT Local.
+- **Date:** 2026-08-10
+
+### Project Document Generator and Voice Production remain separate production owners
+
+- **Decision:** keep PRD/content-definition work upstream and voice performance production downstream.
 - **Reason:** missing project decisions should be resolved in project documentation rather than invented in voice scripts.
 - **Owner:** `docs/foundation/00-product-boundaries.md`.
 - **Date:** 2026-08-10
 
-### Source intake uses one slim persistent recovery model
-
-- **Decision:** Flow 2 keeps original sources, one Source Inventory, one Requirement Register, one Intake State, and a concise human `review.md`.
-- **Recovered from old package:** persistent state, source audit, conflict visibility, and explicit approval boundaries.
-- **Not retained as default:** mandatory 12-phase ceremony, forced Guided Discussion rounds, or asking three-to-five questions when source evidence already supports completion.
-- **Reason:** the user wants the system to fill obvious gaps itself and ask only when a real high-impact decision is missing.
-- **Owner:** `docs/foundation/02-source-intake-recovery.md` and `kits/project-document-generator/SOURCE-INTAKE.md`.
-- **Date:** 2026-08-10
-
-### `Production Document Builder/` is Archived during migration
-
-- **Decision:** preserve the package but do not treat it as active workflow authority or extend it by default.
-- **Reason:** it contains useful historical tests/schemas/rendering/reference evidence, but deleting it before bounded migration would lose potentially useful proof and lineage.
-- **Removal condition:** useful behavior/dependencies are migrated or intentionally retired in the owning flows.
-- **Date:** 2026-08-10
-
 ### Golden Samples are references, not project requirements
 
-- **Decision:** Golden Samples/approved references define demonstrated structure, presentation, tone, density, or quality only where explicitly stated.
+- **Decision:** Golden Samples define demonstrated structure/presentation/tone/density/quality only where explicitly stated.
 - **Reason:** sample-specific objectives, mechanics, characters, or lines must not leak into unrelated projects.
-- **Owner:** root `AGENTS.md`.
+- **Owner:** `AGENTS.md`.
 - **Date:** 2026-08-10
 
 ### Adopt BuildIT principles, not BuildIT domain structure 1:1
 
-- **Decision:** reuse the ownership, continuity, validation, minimal-navigation, and anti-slop principles without copying Blockbench/MCP-specific architecture.
+- **Decision:** reuse ownership, continuity, validation, minimal-navigation, and anti-slop principles without copying Blockbench/MCP-specific architecture.
 - **Reason:** this workspace has a different production domain and should remain compact.
+- **Date:** 2026-08-10
+
+### Archived Production Document Builder is preserved until bounded migration completes
+
+- **Decision:** do not delete the old package yet; mark it Archived and adopt useful behavior only from the owning flow.
+- **Reason:** it contains potentially useful renderer/tests/contracts, but treating it as current authority would create parallel systems and unnecessary ceremony.
+- **Date:** 2026-08-10
+
+### Canonical PRD content is human-readable `content.md`
+
+- **Decision:** `work/content.md` owns Flow 3 project-document meaning; `work/render-data.json` is derived and `output/final.html` is presentation only.
+- **Reason:** developers/level designers need a readable canonical source while deterministic rendering still benefits from a small structured projection.
+- **Owner:** `docs/foundation/03-prd-generation.md` and active kit content/rendering contracts.
+- **Date:** 2026-08-10
+
+### Renderer preserves the approved shell but dynamically regenerates project-owned pages
+
+- **Decision:** clone the Approved Template, preserve shared head/CSS/JS/controls/sidebar shell, and regenerate only project brand metadata, navigation, main pages, glossary data, and local-storage namespace.
+- **Reason:** literal replacement/manual objective duplication was too fragile, while rebuilding the whole visual system would break template fidelity.
+- **Adopted from Archived builder:** dynamic hierarchy/component vocabulary and renderer meaning-safety.
+- **Not adopted:** mandatory schema registry, content freeze, Guided Discussion rounds, release/checksum/ZIP ceremony.
 - **Date:** 2026-08-10

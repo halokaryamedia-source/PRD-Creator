@@ -6,46 +6,48 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Adopt the useful repository/workflow architecture learned from BuildIT into the Project Document Generator + Voice Production Kit production system, one production flow at a time from upstream to downstream.
+Adopt the useful repository/workflow architecture learned from BuildIT into the Project Document Generator + Voice Production system, one production flow at a time from upstream to downstream.
 
 ## Current Status
 
-`FLOW_2_SOURCE_INTAKE_REQUIREMENT_RECOVERY_IMPLEMENTED`
+`FLOW_3_PRD_GENERATION_IMPLEMENTED`
 
-## Completed Slice — Flow 2
+## Completed Slice — Flow 3
 
 Implemented:
 
-- permanent `Local` development-branch policy; routine per-flow PRs are retired;
-- pre-existing `Production Document Builder/` marked Archived rather than deleted;
-- active Project Document Generator migrated to `kits/project-document-generator/`;
-- immutable original-source rule;
-- persistent `Source Inventory`, `Requirement Register`, and `Intake State` contract;
-- traceable source provenance and source roles;
-- conflict handling without silent newest-file assumptions;
-- `Clarification / Completion / Proposal / Blocked` recovery classes;
-- question economy: recover low-risk supported gaps first; ask only unresolved high-impact decisions;
-- per-project Flow 2 workspace package contract;
-- explicit `ready_for_prd` gate before Flow 3.
+- `work/content.md` as canonical human-readable PRD content;
+- explicit PRD Content Contract (context → flow → global development → Gameplay/Level Design/Developer package pages);
+- critical-data, scoring, completion-data, role-separation, and local-context rules;
+- `work/render-data.json` as a derived rendering projection rather than a second authority;
+- semantic shell renderer replacing the previous literal-only replacement helper;
+- renderer preserves Approved Template head/CSS/JS/controls/sidebar shell while regenerating project-owned navigation/pages/glossary/metadata;
+- dynamic gameplay package count and automatic A/B/C navigation/page generation;
+- structural renderer checks for IDs, packages, scoring/completion, placeholders, template markers, and nav reachability;
+- active Project Document Generator version advanced to 1.1.0;
+- bounded useful concepts adopted from Archived builder without restoring its schema/content-freeze/release ceremony.
 
 ## Preserved Boundaries
 
-Flow 2 intentionally does **not** redesign:
+Flow 3 intentionally does **not** define:
 
-- canonical PRD content structure beyond what the current Project Document Generator already defines;
-- approved HTML template presentation;
-- objective-package rendering behavior;
-- PRD development-readiness/team-handoff validation;
-- Voice Production Kit implementation;
-- voice requirement extraction or ElevenLabs scripting.
+- whether the generated PRD is actually development-ready;
+- role-by-role handoff acceptance;
+- cross-page consistency/critical requirement acceptance gate for delivery;
+- Voice Production readiness;
+- Voice Requirement extraction or ElevenLabs scripting.
 
 ## Current Proof
 
-- repository and active kit contain the Flow 2 contract;
-- the active approved HTML template is byte-identical to the historical approved Golden Sample file by SHA-256;
-- Archived builder remains preserved;
-- no real project intake has yet exercised the new Flow 2 state end-to-end, so that remains `EXECUTION PROOF REQUIRED`.
+- renderer Python syntax check passed locally;
+- synthetic non-Aftershock render executed against the exact approved template;
+- generated nav/page structural check passed;
+- generated HTML parsed successfully with Python HTMLParser;
+- no Aftershock project content leaked into generated document content/metadata during the sample run;
+- live Chromium visual/interactions are **not** claimed because headless Chromium hung in the current container environment.
+
+Real project end-to-end PRD generation remains to be exercised when a project is run through the new Flow 2→3 path.
 
 ## Next Step
 
-Implement **Flow 3 — Project Document / PRD Generation**: audit and align canonical content generation, document hierarchy, template adaptation, and renderer behavior so a `ready_for_prd` requirement state can become a practical development-ready PRD without reintroducing the Archived builder's unnecessary ceremony.
+Implement **Flow 4 — PRD Validation & Team Handoff**: define the smallest reliable acceptance contract that checks canonical content and rendered HTML from Player/New Reader, Level Designer, Developer, and project-consistency perspectives, distinguishes generated from development-ready, and produces a concise team handoff without reviving heavy Content Freeze ceremony.
