@@ -31,18 +31,21 @@ Production Verify 31372363843  PASS
 Repository Verify 31372363802  PASS
 ```
 
-P0.1 deliberately does not claim browser visual quality, rendered DOCX page quality, generated audio, or arbitrary-project semantic readiness.
+### P0.2 — Technical Ownership Refinement — COMPLETE
 
-### P0.2 — Technical Ownership Refinement — IMPLEMENTED / PROOF PENDING
+Source/governance head:
 
-Audit result:
+`a0a51d97523ab07f87ef6deeffdafc8094febea4`
+
+Result:
 
 - no new root technical specialist is justified;
 - `development-brief`, `project-document-production`, and `voice-production` remain the canonical root skills;
 - Project Document / Voice root specialists are narrowed to semantic/product-contract ownership;
 - pure renderer/template/validator/builder mechanics route to nearest kit owners;
 - shared dependency/test/CI mechanics route to repository engineering (`requirements.lock.txt`, `tests/`, `tools/`, workflows);
-- pure technical Maintenance may use no root specialist.
+- pure technical Maintenance may use no root specialist;
+- both kit-local `AGENTS.md` files now define contributor/verification contracts.
 
 Canonical evidence:
 
@@ -52,31 +55,35 @@ Durable decision:
 
 `../decisions/technical-ownership-boundary.md`
 
-Contributor/verification rules were strengthened in both kit-local `AGENTS.md` files without adding nested skills or changing Flow 2–7 semantics.
-
-P0.2 is complete only when the source revision passes:
+Proof:
 
 ```text
-Repository Verify
-Production Verify
+Repository Verify 31374226049  PASS
+Production Verify 31374226078  PASS
 ```
 
-Do not start P1 source-quality remediation before this proof is recorded.
+Production Verify sub-gates passed for locked dependencies, compile, PRD contracts, Voice contracts, and fail-closed aggregation.
 
-## P1 — Production Engineering Quality Audit
+## P1 — Production Engineering Quality Audit — ACTIVE NEXT
 
-After P0.2 proof, run a deep source-backed review of:
+Run a deep source-backed review of:
 
 - PRD renderer/template mutation contracts;
 - PRD mechanical validator gaps;
 - Voice parser/builder/validator contracts;
 - dependency and environment assumptions;
 - deterministic/derived artifact behavior;
-- failure handling and evidence boundaries.
-
-Convert findings into an ordered plan; fix one bounded slice at a time.
+- failure handling and evidence boundaries;
+- focused test adequacy for real public/high-risk contracts.
 
 P1 is an **audit first**, not permission to refactor all executable code.
+
+Required output:
+
+- source-backed findings with severity, owner, and evidence;
+- explicit `No change required` where appropriate;
+- ordered remediation slices only for justified findings;
+- no broad framework/test-coverage project.
 
 ## P1.5 — Module Governance
 

@@ -35,7 +35,7 @@ Production Flow 1–7 is implemented and real-project proven on The Clockwork Va
 
 ## BuildIT Parity State
 
-The governance/routing work from the earlier parity phases remains valid evidence, but **overall full relevant parity is open** after a deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`).
+The governance/routing work from the earlier parity phases remains valid evidence, but **overall full relevant parity remains open** after a deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`).
 
 Current audit:
 
@@ -77,11 +77,16 @@ The gate executes:
 - Voice ID/Type negative parity contracts;
 - fail-closed aggregate result.
 
-Proof on source head `0eb0485f117fa6ed419572a66539331f99114002`:
+Proof:
 
 ```text
-Production Verify  run 31372363843  PASS
-Repository Verify  run 31372363802  PASS
+P0.1 source head  0eb0485f117fa6ed419572a66539331f99114002
+Production Verify 31372363843  PASS
+Repository Verify 31372363802  PASS
+
+P0.2 source head  a0a51d97523ab07f87ef6deeffdafc8094febea4
+Production Verify 31374226078  PASS
+Repository Verify 31374226049  PASS
 ```
 
 These gates do **not** replace PRD semantic review, browser visual inspection, rendered DOCX page QA, or generated-audio review.
@@ -117,7 +122,7 @@ Canonical decision:
 
 ## Kit-Local Contributor Contracts
 
-P0.2 strengthens both nearest `AGENTS.md` files:
+Both nearest `AGENTS.md` files now act as contributor/verification contracts:
 
 - Project Document Generator — exact renderer/template/validator ownership, contributor rules, and verification commands;
 - Voice Production Kit — exact builder/validator ownership, dependency contract, contributor rules, and verification commands.
@@ -149,4 +154,4 @@ Generated artifacts and successful tooling never silently become higher authorit
 
 ## Current Work
 
-P0.1 is complete. P0.2 is implemented and waiting on `Repository Verify` + `Production Verify` proof for the P0.2 source revision. Only after both pass does the active boundary advance to **P1 — Production Engineering Quality Audit**.
+P0.1 and P0.2 are complete. The active next slice is **P1 — Production Engineering Quality Audit**. See `docs/knowledge/next-action.md` for the exact audit boundary.

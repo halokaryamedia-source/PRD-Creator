@@ -87,7 +87,21 @@ Flow validators / semantic audits / visual/audio review
 = project-specific readiness and evidence
 ```
 
-P0.1 Production Verify is proven on source head `0eb0485f117fa6ed419572a66539331f99114002` by run `31372363843`; Repository Verify on the same source head passed as run `31372363802`.
+P0.1 proof:
+
+```text
+source head       0eb0485f117fa6ed419572a66539331f99114002
+Production Verify 31372363843  PASS
+Repository Verify 31372363802  PASS
+```
+
+P0.2 proof:
+
+```text
+source head       a0a51d97523ab07f87ef6deeffdafc8094febea4
+Production Verify 31374226078  PASS
+Repository Verify 31374226049  PASS
+```
 
 Neither gate replaces browser visual inspection, rendered DOCX page QA, or audio review.
 
@@ -116,4 +130,4 @@ state/voice-state.yaml             voice_delivery_ready / lifecycle state
 
 Production Flow 1–7 remains real-project proven. Overall BuildIT parity remains open.
 
-P0.1 executable production verification is complete. P0.2 technical ownership refinement is implemented and awaiting `Repository Verify` + `Production Verify` proof before the active boundary advances to P1.
+P0.1 executable production verification and P0.2 technical ownership refinement are complete. The active boundary is **P1 — Production Engineering Quality Audit**; audit the executable source/contracts first, then derive ordered remediation without broad implementation changes during the audit.

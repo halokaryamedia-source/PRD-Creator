@@ -45,7 +45,7 @@ Governing plan: `buildit-parity-remediation-plan.md`.
   - [x] fail-closed Production Verify workflow;
   - [x] Production Verify run `31372363843` PASS on `0eb0485f117fa6ed419572a66539331f99114002`;
   - [x] Repository Verify run `31372363802` PASS on the same source head.
-- [ ] **P0.2 — Technical Ownership Refinement** ← implementation complete / proof pending
+- [x] **P0.2 — Technical Ownership Refinement**
   - [x] semantic-vs-technical ownership audit;
   - [x] candidate technical root skill rejected from current evidence;
   - [x] three root semantic skills retained with narrowed ownership wording;
@@ -53,9 +53,15 @@ Governing plan: `buildit-parity-remediation-plan.md`.
   - [x] shared dependency/test/CI routed to repository engineering;
   - [x] Project Document nearest `AGENTS.md` strengthened as contributor/verification contract;
   - [x] Voice nearest `AGENTS.md` strengthened as contributor/verification/dependency contract;
-  - [ ] P0.2 `Repository Verify` PASS;
-  - [ ] P0.2 `Production Verify` PASS.
-- [ ] **P1 — Production Engineering Quality Audit**
+  - [x] Repository Verify run `31374226049` PASS on `a0a51d97523ab07f87ef6deeffdafc8094febea4`;
+  - [x] Production Verify run `31374226078` PASS on the same source head.
+- [ ] **P1 — Production Engineering Quality Audit** ← active next slice
+  - inspect PRD renderer/template contracts;
+  - inspect PRD validator blind spots;
+  - inspect Voice parser/builder/validator contracts;
+  - inspect dependency/environment/determinism/failure handling;
+  - assess focused test adequacy;
+  - record source-backed findings + ordered remediation only.
 - [ ] **P1.5 — Module Governance**
 - [ ] **P2 — Knowledge / Operations Maturity**
 - [ ] **P3 — Conditional Helper Routing**

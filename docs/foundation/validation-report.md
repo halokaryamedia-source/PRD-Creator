@@ -29,15 +29,13 @@ Audio evidence for the real proof remains `not_provided`.
 
 ## Agent Governance Status
 
-The Phase 1–3 work remains valid evidence for deterministic boot, Plan / Developing / Maintenance routing, mandatory non-trivial `development-brief`, goal/method separation, Dual POV, at-most-one specialist budget, root-cause Maintenance, ownership/source/review routing, and historical review integrity.
+The earlier governance work remains valid evidence for deterministic boot, Plan / Developing / Maintenance routing, mandatory non-trivial `development-brief`, goal/method separation, Dual POV, at-most-one specialist budget, root-cause Maintenance, ownership/source/review routing, and historical review integrity.
 
-The earlier full-parity conclusion is no longer current; see the current BuildIT gap audit.
+Overall full relevant BuildIT parity remains **open**; governance acceptance is a narrower completed subset.
 
-## Overall BuildIT Parity Reassessment
+## Current BuildIT Parity Evidence
 
-Overall relevant parity remains **open**.
-
-Canonical audit:
+Canonical current-gap audit:
 
 `docs/knowledge/reviews/buildit-current-parity-gap-audit.md`
 
@@ -45,9 +43,7 @@ Ordered remediation:
 
 `docs/knowledge/operations/buildit-parity-remediation-plan.md`
 
-The previous `OPERATING_PARITY_ACCEPTED` record is historical partial acceptance for the governance/routing subset only.
-
-## Static Repository Verify
+## Repository Verify
 
 Canonical owners:
 
@@ -67,13 +63,7 @@ Current role:
 - exact dependency-pin/lock alignment;
 - Python source/test syntax.
 
-P0.1 source-head proof:
-
-- run `31372363802`;
-- head `0eb0485f117fa6ed419572a66539331f99114002`;
-- conclusion: **success**.
-
-## P0.1 — Production Verify — COMPLETE
+## P0.1 — Executable Production Verify — COMPLETE
 
 Canonical implementation:
 
@@ -84,14 +74,15 @@ tests/test_prd_contracts.py
 tests/test_voice_contracts.py
 ```
 
-GitHub Actions proof:
+Proof:
 
-- Workflow: `Production Verify`
-- Run: `31372363843`
-- Head: `0eb0485f117fa6ed419572a66539331f99114002`
-- Conclusion: **success**
+```text
+source head       0eb0485f117fa6ed419572a66539331f99114002
+Repository Verify 31372363802  PASS
+Production Verify 31372363843  PASS
+```
 
-All fail-closed steps passed:
+All Production Verify sub-gates passed:
 
 ```text
 locked dependency install + pip check  PASS
@@ -101,9 +92,9 @@ Voice Production contracts             PASS
 final aggregate                         PASS
 ```
 
-P0.1 repository-side production engineering baseline is therefore `CURRENT-PROJECT VERIFIED` at the contract level claimed.
+P0.1 is `CURRENT-PROJECT VERIFIED` at the repository-side contract level claimed.
 
-## P0.2 — Technical Ownership Refinement — IMPLEMENTED / PROOF PENDING
+## P0.2 — Technical Ownership Refinement — COMPLETE
 
 Canonical audit:
 
@@ -113,7 +104,7 @@ Durable decision:
 
 `docs/knowledge/decisions/technical-ownership-boundary.md`
 
-Current ownership result:
+Current routing:
 
 ```text
 semantic/product contract wrong
@@ -128,25 +119,29 @@ shared dependency/test/CI contract wrong
 → requirements.lock.txt / tests / tools / workflows
 ```
 
-Skill audit result:
+Skill result:
 
-- `development-brief` — `KEEP`;
-- `project-document-production` — `KEEP`, narrowed to Flow 2–4 semantic/product-contract ownership;
-- `voice-production` — `KEEP`, narrowed to Flow 5–7 semantic/product-contract ownership;
-- candidate Python / production-tooling / artifact-engineering root skill — `DROP AS ROOT SKILL + MOVE TO MODULE-LOCAL / REPOSITORY ENGINEERING`.
+- `development-brief` — KEEP;
+- `project-document-production` — KEEP as Flow 2–4 semantic/product-contract specialist;
+- `voice-production` — KEEP as Flow 5–7 semantic/product-contract specialist;
+- candidate Python / production-tooling / artifact-engineering root skill — DROP AS ROOT SKILL + MOVE TO MODULE-LOCAL / REPOSITORY ENGINEERING.
 
-The three-skill freeze remains valid after P0.2, but earlier wording that every renderer/validator/builder mechanical failure automatically belonged to a semantic specialist is superseded.
+Both kit-local `AGENTS.md` files now define module structure, technical owner routing, contributor rules, and exact verification commands.
 
-Both kit-local `AGENTS.md` files now define:
+P0.2 source/governance head:
 
-- module structure;
-- semantic-vs-technical handoff;
-- exact implementation owners;
-- contributor/canonical-derived rules;
-- exact focused verification commands;
-- visual/audio proof boundaries.
+`a0a51d97523ab07f87ef6deeffdafc8094febea4`
 
-P0.2 becomes `CURRENT-PROJECT VERIFIED` only after the P0.2 source revision passes both `Repository Verify` and `Production Verify`.
+Proof:
+
+```text
+Repository Verify 31374226049  PASS
+Production Verify 31374226078  PASS
+```
+
+Production Verify sub-gates all passed: locked dependencies, compile, Project Document contracts, Voice Production contracts, and fail-closed aggregate.
+
+P0.2 is therefore `CURRENT-PROJECT VERIFIED` for the ownership/routing contract claimed.
 
 ## Explicit Non-Claims
 
@@ -169,4 +164,4 @@ Those remain Flow-specific evidence boundaries.
 
 ## Current Boundary
 
-P0.1 is complete. P0.2 is implemented and awaiting source-head gate proof. Do not begin P1 source-quality remediation until both P0.2 gates pass and the proof is recorded.
+P0.1 and P0.2 are complete. The active remediation boundary is **P1 — Production Engineering Quality Audit**. P1 is audit-first: inspect the current executable engine, record source-backed findings, and derive ordered fixes without broad refactoring during the audit.

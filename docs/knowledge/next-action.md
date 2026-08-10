@@ -6,20 +6,20 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Complete proof for **P0.2 — Technical Ownership Refinement** from the current BuildIT parity remediation plan.
+Execute **P1 — Production Engineering Quality Audit** from the current BuildIT parity remediation plan.
 
-P0.2 has completed its ownership audit and implemented the smallest routing/governance correction. Acceptance now depends on the repository and production gates passing on the P0.2 source revision.
+Audit the current executable production engine deeply enough to find real contract, determinism, failure-handling, dependency, and validation gaps before any further refactor or framework change.
 
 ## Current Status
 
-`BUILD_IT_PARITY_P0_2_IMPLEMENTED_PROOF_PENDING`
+`BUILD_IT_PARITY_P0_2_COMPLETE_P1_ENGINEERING_QUALITY_AUDIT_NEXT`
 
 Execution channel: **ChatGPT → GitHub**.  
 Working branch: **`Local` only**.
 
 ## Governing Evidence
 
-Current comparison audit:
+Current BuildIT comparison:
 
 `docs/knowledge/reviews/buildit-current-parity-gap-audit.md`
 
@@ -27,11 +27,11 @@ Ordered remediation:
 
 `docs/knowledge/operations/buildit-parity-remediation-plan.md`
 
-P0.2 audit:
+P0.2 ownership audit:
 
 `docs/knowledge/reviews/technical-ownership-refinement-audit.md`
 
-Durable P0.2 decision:
+P0.2 durable ownership decision:
 
 `docs/knowledge/decisions/technical-ownership-boundary.md`
 
@@ -50,30 +50,13 @@ Repository Verify 31372363802  PASS
 
 P0.1 established exact dependency verification, executable PRD renderer/validator contracts, executable Voice builder/validator contracts, negative contract regressions, and fail-closed CI aggregation.
 
-## P0.2 Ownership Decision
+## Completed P0.2 — Technical Ownership Refinement
 
-P0.2 audited whether renderer/validator/builder/tooling failures need a new root technical specialist.
+Source/governance commit:
 
-Result:
+`a0a51d97523ab07f87ef6deeffdafc8094febea4` — `docs: refine semantic and technical ownership boundaries`
 
-```text
-candidate technical root skill
-→ DROP AS ROOT SKILL
-→ MOVE pure mechanics to nearest kit owners
-→ MOVE shared dependency/test/CI to repository engineering
-```
-
-Current root skills remain:
-
-```text
-development-brief
-project-document-production
-voice-production
-```
-
-Their ownership is now explicitly semantic/product-contract focused.
-
-### Routing
+Decision:
 
 ```text
 semantic/product contract wrong
@@ -88,38 +71,66 @@ shared dependency/test/CI contract wrong
 → requirements.lock.txt / tests / tools / workflows
 ```
 
-## P0.2 Implementation
+Skill result:
 
-Changed operating owners include:
+- `development-brief` — KEEP;
+- `project-document-production` — KEEP as Flow 2–4 semantic/product-contract specialist;
+- `voice-production` — KEEP as Flow 5–7 semantic/product-contract specialist;
+- candidate Python / production-tooling / artifact-engineering root skill — DROP AS ROOT SKILL + MOVE TO MODULE-LOCAL / REPOSITORY ENGINEERING.
 
-- root `AGENTS.md` semantic-vs-technical rule;
-- both root production specialist descriptions/procedures;
-- skill activation matrix and skill map;
-- module map;
-- Project Document nearest `AGENTS.md` contributor/verification contract;
-- Voice nearest `AGENTS.md` contributor/verification/dependency contract;
-- P0.2 audit + durable decision/current evidence routing.
+Both nearest kit `AGENTS.md` files now act as contributor/verification contracts with exact module ownership and commands.
 
-No Flow 2–7 production semantics, renderer code, validator code, DOCX builder code, test logic, or dependency pins were redesigned in P0.2.
-
-## Acceptance Required Before P1
+### P0.2 proof
 
 ```text
-Repository Verify  PASS
-Production Verify  PASS
+Repository Verify
+run: 31374226049
+head: a0a51d97523ab07f87ef6deeffdafc8094febea4
+result: PASS
+
+Production Verify
+run: 31374226078
+head: a0a51d97523ab07f87ef6deeffdafc8094febea4
+result: PASS
 ```
 
-`Production Verify` is required because `kits/**` governance changed and the repository must prove those changes did not break the watched production surface.
+Production Verify sub-gates all passed: locked dependencies, compile, Project Document contracts, Voice Production contracts, and fail-closed aggregate.
+
+## P1 Boundary — Audit First
+
+P1 must inspect current source/contracts before changing implementation.
+
+Audit:
+
+1. PRD renderer/template mutation and determinism contracts;
+2. PRD mechanical validator blind spots / false-pass / false-fail risks;
+3. Voice Markdown parser / DOCX builder contracts;
+4. Voice mechanical validator blind spots;
+5. dependency/environment assumptions;
+6. canonical → derived artifact determinism/freshness expectations;
+7. error handling, partial-output, and failure-state behavior;
+8. where current tests prove too little or duplicate implementation rather than locking public/high-risk contracts;
+9. what remains semantic/visual/local proof and must not be pushed into CI.
+
+Required P1 output:
+
+- one source-backed **Production Engineering Quality Audit** review;
+- severity/owner/evidence for each material finding;
+- an ordered remediation plan if fixes are justified;
+- `No change required` for surfaces that already satisfy the relevant contract.
+
+Do not fix multiple findings during the audit itself unless a tiny correction is strictly required to make the audit evidence valid.
 
 ## Preserved Boundaries
 
-- three-skill invariant remains enforced;
-- no Python/tooling/artifact root skill was added;
-- P0.1 tests/gates remain intact;
-- Flow 2–7 semantics stay unchanged;
-- no P1 source quality fixes are pulled into P0.2;
+- Flow 2–7 product semantics stay unchanged during the audit;
+- P0.1 tests/gates remain authoritative for the contracts they actually prove;
+- P0.2 three-skill ownership decision remains current unless P1 produces repeated evidence for a missing reusable owner;
+- no broad test coverage project;
+- no packaging/schema/freeze framework revival;
+- no browser/DOCX visual/audio claim from static CI;
 - no change to `main`.
 
 ## Next Step
 
-Run and record the P0.2 `Repository Verify` + `Production Verify` results. If both pass, mark P0.2 complete and advance exactly to **P1 — Production Engineering Quality Audit**.
+Run **P1 — Production Engineering Quality Audit** only: inspect the actual PRD renderer/validator and Voice parser/builder/validator source plus P0.1 tests/gates, record concrete source-backed findings and their smallest owners, then derive the ordered remediation slices without implementing them yet.

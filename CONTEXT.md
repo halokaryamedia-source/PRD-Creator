@@ -36,7 +36,7 @@ Canonical repository-wide skills remain:
 - `project-document-production`;
 - `voice-production`.
 
-P0.2 re-audited the three-skill baseline after executable production verification and kept it, but narrowed the production specialists to **semantic/product-contract ownership**.
+P0.2 re-audited the three-skill baseline after executable production verification and kept it, while narrowing the production specialists to **semantic/product-contract ownership**.
 
 Current routing:
 
@@ -95,23 +95,30 @@ requirements.lock.txt
 → .github/workflows/production-verify.yml
 ```
 
-Proof on source head `0eb0485f117fa6ed419572a66539331f99114002`:
+P0.1 proof:
 
-- Production Verify `31372363843` — PASS;
-- Repository Verify `31372363802` — PASS.
+```text
+source head       0eb0485f117fa6ed419572a66539331f99114002
+Production Verify 31372363843  PASS
+Repository Verify 31372363802  PASS
+```
 
-Production Verify executes the real PRD renderer/validator and Voice DOCX builder/validator on minimal generic fixtures, including negative high-risk contracts and the prior DOCX page-break regression.
+P0.2 routing/governance proof:
 
-These gates do not replace semantic, browser, rendered-page, or audio evidence.
+```text
+source head       a0a51d97523ab07f87ef6deeffdafc8094febea4
+Production Verify 31374226078  PASS
+Repository Verify 31374226049  PASS
+```
 
-## Kit-Local Technical Governance — P0.2
+Production Verify executes the real PRD renderer/validator and Voice DOCX builder/validator on minimal generic fixtures. These gates do not replace semantic, browser, rendered-page, or audio evidence.
 
-Both executable kits now use nearest `AGENTS.md` as contributor/verification contracts:
+## Kit-Local Technical Governance
+
+Both executable kits use nearest `AGENTS.md` as contributor/verification contracts:
 
 - Project Document kit: module structure, renderer/template/validator technical ownership, exact commands, canonical-vs-derived rules;
 - Voice kit: module structure, builder/validator technical ownership, exact dependency/verification commands, canonical-script-vs-derived-DOCX rules.
-
-P0.2 does not redesign Flow 2–7 production semantics or executable code.
 
 ## Stable Authority Chain
 
@@ -134,4 +141,4 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
 
 ## Current Development State
 
-P0.1 is complete. P0.2 technical ownership refinement is implemented and awaiting `Repository Verify` + `Production Verify` proof on the P0.2 source revision before the active remediation boundary advances to **P1 — Production Engineering Quality Audit**.
+P0.1 and P0.2 are complete. The active remediation slice is **P1 — Production Engineering Quality Audit**: inspect the actual executable production engine, record source-backed findings and smallest owners, then derive ordered remediation without broad refactoring during the audit.
