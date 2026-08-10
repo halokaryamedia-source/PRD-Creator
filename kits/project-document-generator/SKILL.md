@@ -29,11 +29,15 @@ Do not ask the user to manage slugs, folders, YAML, JSON, renderer files, or val
 
 Read `SOURCE-INTAKE.md` plus only relevant current source/state.
 
-- inspect all available source before asking questions;
+- inventory supplied/current source, then triage relevance/authority before deep reading;
+- deep-read material authoritative source; targeted-read supporting/reference/generated source only to the depth needed for current scope;
+- if a source could materially change the PRD and relevance is uncertain, inspect it rather than skipping it;
 - recover production-relevant requirements;
 - apply safe Clarification/Completion automatically;
 - batch remaining material Proposal/Blocked decisions;
 - when needed, use `Recommended / Reason / Impact` so the user can approve all or override named exceptions.
+
+Do not interpret “inspect all source” as “load every byte of every source.” Completeness is about production meaning and conflict coverage.
 
 Exit truthfully as `ready_for_prd`, `needs_decision`, or `blocked`.
 
@@ -82,6 +86,8 @@ mechanical validator
 
 For review, do not load the entire generated HTML source. The validator owns full-file mechanical inspection. Semantic review uses canonical content/relevant requirement state; visual review uses the actual rendered page/browser when available. Inspect HTML source only for a concrete bounded defect.
 
+For a large document or bounded revision, review only the relevant package + required global/cross-reference context unless the change invalidates wider consistency.
+
 ## Revision fast path
 
 ```text
@@ -96,21 +102,31 @@ approved bounded change
 
 Do not re-inventory unchanged source, re-ask resolved decisions, or replay unrelated packages/reviews.
 
-## Internal artifacts
+## Internal artifact lifecycle
 
-These are system artifacts, not user chores:
+Artifacts are system-owned and appear only when their Flow needs them.
 
-- `state/source-inventory.yaml`
-- `state/requirement-register.yaml`
-- `state/intake-state.yaml`
-- `work/review.md` only when useful
-- `work/content.md` — canonical meaning
-- `work/render-data.json` — derived projection
-- `output/final.html` — derived PRD
-- `work/acceptance.md`
-- current handoff artifacts under repository policy
+```text
+CORE
+Flow 2 → source/originals + source-inventory + requirement-register + intake-state
+Flow 3 → content.md
+Flow 4 → acceptance + current handoff state/artifact under repository policy
 
-Do not create checksums, packaging manifests, template profiles, duplicate summaries, or additional quality reports without a concrete need.
+CONDITIONAL
+review.md → only when user decision/recovery summary is useful
+project README → only when project-specific navigation/context helps
+
+DERIVED
+render-data.json
+final.html
+
+DOWNSTREAM
+Voice state/work/output → only after entering Voice Flow
+```
+
+Use sparse state: omit empty/default fields where the owning contract defines safe defaults; always persist exceptions such as conflicts, pending approvals, blocked state, supersession, and explicit positive readiness.
+
+Do not pre-create empty downstream files, checksums, packaging manifests, template profiles, duplicate summaries, or additional quality reports merely to make a package look complete.
 
 ## Default user-facing delivery
 

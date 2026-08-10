@@ -9,13 +9,80 @@ active project → workspace/active/<project>/
 saved project  → workspace/saved/<project>/
 ```
 
-## Active project package after Flow 7
+Project packages grow **by Flow**, not by pre-creating the final folder tree.
+
+## Artifact classes
+
+### Core
+
+Create when the owning Flow actually needs the artifact.
+
+Flow 2:
+
+```text
+source/originals/
+state/source-inventory.yaml
+state/requirement-register.yaml
+state/intake-state.yaml
+```
+
+Flow 3:
+
+```text
+work/content.md              canonical PRD meaning
+```
+
+Flow 4/current handoff boundary:
+
+```text
+work/acceptance.md
+state/handoff-state.yaml
+output/team-handoff.md       concise navigation aid under current policy
+```
+
+### Conditional
+
+Create only when the condition exists:
+
+```text
+README.md                    project-specific navigation/context only when useful
+work/review.md               user decision/recovery summary only when useful
+actual audio/evidence files  only when current scope supplies or produces them
+```
+
+Do not create empty placeholder files to make project packages look uniform.
+
+### Derived
+
+Generate from canonical/current state; never hand-edit as authority:
+
+```text
+work/render-data.json        derived from canonical PRD
+output/final.html            rendered Golden PRD
+output/Voice Production.docx derived from canonical Voice Production script
+```
+
+### Downstream
+
+Do not create until the downstream Flow is requested/entered:
+
+```text
+state/voice-state.yaml
+work/voice-requirements.md
+work/voice-production.md
+work/voice-acceptance.md
+output/Voice Production.docx
+```
+
+A PRD-only project does not need Voice files merely because the repository supports Voice later.
+
+## Typical package after Flow 7
+
+A project that actually used the complete PRD + Voice sequence may eventually contain:
 
 ```text
 workspace/active/<project>/
-├── README.md
-├── source/
-│   └── originals/
+├── source/originals/
 ├── state/
 │   ├── source-inventory.yaml
 │   ├── requirement-register.yaml
@@ -23,20 +90,20 @@ workspace/active/<project>/
 │   ├── handoff-state.yaml
 │   └── voice-state.yaml
 ├── work/
-│   ├── review.md
+│   ├── review.md                # only if needed
 │   ├── content.md
 │   ├── render-data.json
 │   ├── acceptance.md
-│   ├── voice-requirements.md       Flow 5 canonical voice scope
-│   ├── voice-production.md         Flow 6 canonical spoken/performance text
-│   └── voice-acceptance.md         Flow 7 current revision evidence/findings
+│   ├── voice-requirements.md
+│   ├── voice-production.md
+│   └── voice-acceptance.md
 └── output/
     ├── final.html
     ├── team-handoff.md
-    └── Voice Production.docx       derived Voice production artifact
+    └── Voice Production.docx
 ```
 
-Actual generated audio files are project outputs/evidence only when the current task includes them. Do not invent a mandatory audio folder for script/DOCX-only projects.
+This is an **eventual example**, not a bootstrap checklist.
 
 ## Authority rule
 
@@ -48,9 +115,7 @@ original source / approved decisions
 → voice-requirements.md
 → voice-production.md
 → Voice Production.docx
-→ voice-acceptance.md / voice-state delivery readiness
+→ voice-acceptance.md / voice-state
 ```
 
-`state/voice-state.yaml` records lifecycle status/revision/paths; it does not replace canonical Voice content.
-
-A DOCX may be regenerated from the canonical performance script. Do not patch the DOCX as source of truth. If audio exists, it does not replace the script/requirements as project authority.
+Derived artifacts may be regenerated. Do not patch `final.html` or DOCX as source of truth. Generated audio, when present, is evidence/output and does not replace canonical requirements or script meaning.

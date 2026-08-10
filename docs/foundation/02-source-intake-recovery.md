@@ -4,32 +4,21 @@ Status: active Flow 2 policy
 
 ## Purpose
 
-Turn incomplete, uneven, duplicated, or partially conflicting project material into a reliable, traceable intake state before canonical PRD generation begins.
+Turn uneven, duplicated, incomplete, or partially conflicting project material into a reliable intake state before canonical PRD generation, while minimizing unnecessary user questions and model context.
 
-Flow 2 answers:
-
-- what source exists;
-- which source is authoritative, supporting, reference-only, generated, superseded, unavailable, or conflicting;
-- what facts/requirements can be recovered directly;
-- what can be clarified or completed safely;
-- what is a real proposal requiring approval;
-- what is blocked;
-- whether the project is ready to enter Flow 3.
-
-## Canonical Intake Sequence
+## Canonical sequence
 
 ```text
 Incoming project material
 ↓
-Preserve originals
+Preserve + inventory originals
 ↓
-Source Inventory
+Relevance/authority triage
 ↓
-Read all available authoritative/supporting source
+Deep-read material authoritative source
++ targeted-read supporting/reference/generated source as needed
 ↓
-Requirement Register
-↓
-Gap + conflict detection
+Requirement recovery
 ↓
 Clarification / Completion / Proposal / Blocked
 ↓
@@ -37,84 +26,72 @@ Resolve low-risk supported gaps automatically
 ↓
 Ask only unresolved high-impact decisions
 ↓
-Intake State
-↓
 ready_for_prd | needs_decision | blocked
 ```
 
-## Source Roles
+Inventory completeness and reading depth are different concerns. All material sources are tracked, but the model does not need to consume every byte of every supporting/reference/generated file. If a source could materially alter current scope and relevance is uncertain, inspect it rather than assuming it is irrelevant.
+
+## Source roles
 
 - `authoritative` — intended to define project facts/requirements;
 - `supporting` — explains or supplements authoritative material;
 - `reference` — sample/Golden/reference material; not project fact by default;
 - `generated` — prior generated output retained for continuity/audit, not automatic authority.
 
-## Source Precedence
-
-Within a project:
+## Source precedence
 
 1. current explicit user/creative-owner instruction;
 2. approved project-specific decisions;
-3. explicitly authoritative project source;
-4. source explicitly established as superseding an older source;
+3. authoritative current project source;
+4. source explicitly established as superseding older material;
 5. supporting material;
 6. generated prior output;
 7. reference/Golden material for demonstrated structure/quality only.
 
-Do not use file date alone to silently resolve a material contradiction.
+Do not use file date alone to resolve material contradictions.
 
-## Recovery Classes
+## Recovery classes
 
-### Clarification
+- **Clarification** — improve explanation without changing existing meaning.
+- **Completion** — one low-risk completion is strongly supported by surrounding evidence.
+- **Proposal** — a material project decision must be chosen; approval is required.
+- **Blocked** — evidence is insufficient or materially conflicting.
 
-Meaning already exists. Improve wording/explanation without changing intent.
+Conflict is an evidence condition, not a fifth recovery class.
 
-### Completion
+## Persistent state
 
-Information is missing but strong surrounding evidence supports one reliable completion without defining a new material design choice.
+Repository-backed Flow 2 uses:
 
-### Proposal
+- `state/source-inventory.yaml` — compact source identity/provenance/exception state;
+- `state/requirement-register.yaml` — compact traceable requirements and only non-default recovery/approval exceptions;
+- `state/intake-state.yaml` — one current status, explicit positive readiness, and one next step;
+- `work/review.md` — conditional human-facing decision/recovery summary only when useful.
 
-The agent must define or choose a material project decision. Proposal requires approval and never self-approves.
+Do not persist empty/default fields merely to make records look uniform. Sparse state must preserve the same semantics and must never hide a conflict, pending approval, or material gap.
 
-### Blocked
+Detailed field/default contract: `kits/project-document-generator/SOURCE-INTAKE.md`.
 
-Evidence is insufficient or materially conflicting and a reliable decision cannot be recovered.
-
-`Conflict` is an evidence condition, not a fifth recovery class. If authority/supersession cannot resolve the conflict, the affected requirement is Blocked.
-
-## Persistent Project State
-
-Repository-backed projects use:
-
-- `state/source-inventory.yaml` — source provenance and role;
-- `state/requirement-register.yaml` — traceable requirement/gap/approval state;
-- `state/intake-state.yaml` — one status and one next step;
-- `work/review.md` — concise human-readable view.
-
-Detailed field contract: `kits/project-document-generator/SOURCE-INTAKE.md`.
-
-## Question Economy
+## Question economy
 
 Before asking the user:
 
-1. inspect all available source;
-2. inspect approved state/decisions;
-3. recover obvious terminology and supported relationships;
-4. use Clarification/Completion for low-risk supported gaps;
-5. ask only unresolved high-impact Proposal/Blocked decisions.
+1. triage all current source;
+2. inspect material authoritative source and only the supporting/reference/generated portions needed for current scope;
+3. inspect approved state/decisions;
+4. apply low-risk Clarification/Completion;
+5. ask only unresolved high-impact Proposal/Blocked decisions, grouped when possible.
 
-Do not require a guided discussion merely because source wording is incomplete.
+Zero questions is preferred when the project is already sufficiently defined.
 
-## Flow 2 Completion Gate
+## Flow 2 completion gate
 
 Flow 2 is complete only when:
 
-- every available source is inventoried and inspected or explicitly unavailable/unreadable;
+- every source that can materially affect current scope is inventoried and inspected to sufficient depth or explicitly unavailable/unreadable;
 - every material requirement is traceable to source evidence or approved state;
-- each identified gap has exactly one recovery class;
-- conflicts are resolved or visibly Blocked;
-- `intake-state.yaml` truthfully reports readiness;
-- `ready_for_prd: true` is impossible while unresolved material Proposal/Blocked items still affect required output.
+- material gaps/conflicts are resolved or visibly Proposal/Blocked;
+- intake state truthfully reports readiness;
+- `ready_for_prd: true` cannot coexist with an unresolved material Proposal/Blocked item affecting required output.
 
 Flow 2 does not produce final PRD content or final HTML. Those belong to Flow 3.
