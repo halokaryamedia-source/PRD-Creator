@@ -4,11 +4,12 @@ This folder owns durable workflow/product policy. Active task state belongs in `
 
 ## Current Notes
 
-- `00-product-boundaries.md` — responsibilities/separation between PRD and Voice Production.
+- `00-product-boundaries.md` — responsibilities/separation between PRD, voice extraction, and script production.
 - `01-production-flow.md` — canonical end-to-end sequence.
-- `02-source-intake-recovery.md` — source provenance, recovery, conflict, question-economy, and Flow 2 readiness.
-- `03-prd-generation.md` — canonical PRD content/rendering boundary.
-- `04-prd-validation-handoff.md` — development-readiness and team-handoff acceptance boundary.
+- `02-source-intake-recovery.md` — Flow 2 source/recovery/readiness.
+- `03-prd-generation.md` — Flow 3 canonical PRD/rendering boundary.
+- `04-prd-validation-handoff.md` — Flow 4 development-readiness/team-handoff boundary.
+- `05-voice-requirement-extraction.md` — Flow 5 accepted-PRD → justified voice-moment boundary.
 - `validation-report.md` — current implementation/evidence state by flow.
 
 ## Rule

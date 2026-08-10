@@ -4,6 +4,35 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Flow 5 separates voice requirements from performance scripts
+
+- **Decision:** `work/voice-requirements.md` owns which voice moments are justified and what each must communicate; final spoken wording/performance notation remains Flow 6.
+- **Reason:** voice requirements are upstream production meaning, while performance wording is an implementation/art-direction layer. Combining them lets script polish silently invent or change project facts.
+- **State:** `state/voice-state.yaml` stores status/revision/next step only.
+- **Owners:** `docs/foundation/05-voice-requirement-extraction.md`, `kits/voice-production-kit/VOICE-EXTRACTION.md`.
+- **Date:** 2026-08-10
+
+### Flow 5 normally starts only from `handoff_ready`
+
+- **Decision:** the normal downstream voice pipeline consumes the same accepted PRD revision already cleared for team handoff.
+- **Reason:** the repository flow is intentionally sequential; using arbitrary generated/newer/older PRD content would make voice requirements drift from the production team document.
+- **Revision rule:** if accepted PRD meaning changes, reset Flow 5 and re-check affected voice moments.
+- **Date:** 2026-08-10
+
+### Voice roles are functional patterns, not quotas
+
+- **Decision:** Main Story and Radio Communication are standard roles demonstrated by the approved Voice Production reference, but no package is required to contain a fixed number of entries—or any voice at all.
+- **Radio rule:** Radio requires an approved communicator/remote channel and must stay brief/useful during active play rather than repeat the full objective.
+- **Other voice:** another type is allowed only when the PRD explicitly defines the speaker/channel; never use a generic invented `Other` role.
+- **Reason:** Aftershock demonstrates varying counts and functions; copying its counts would turn a reference into a project requirement.
+- **Date:** 2026-08-10
+
+### `no_voice_required` is a valid Flow 5 result
+
+- **Decision:** if accepted upstream evidence does not define or justify voice production for the current scope, stop with `no_voice_required` rather than inventing a narrator or dialogue system.
+- **Reason:** the pipeline must serve project intent, not force every project through every artifact type.
+- **Date:** 2026-08-10
+
 ### Flow 4 uses one development-readiness gate instead of Content Freeze ceremony
 
 - **Decision:** generated PRD becomes `development_ready` only after mechanical validation plus New Reader, Level Designer, Developer, and Project Consistency audits pass with Critical=0 and Major=0.
@@ -66,7 +95,7 @@ Use this note only for durable decisions whose reasons must survive future sessi
 ### Golden Samples are references, not project requirements
 
 - **Decision:** Golden Samples define demonstrated structure/presentation/tone/density/quality only where explicitly stated.
-- **Reason:** sample-specific objectives, mechanics, characters, scoring, or lines must not leak into unrelated projects.
+- **Reason:** sample-specific objectives, mechanics, characters, scoring, counts, or lines must not leak into unrelated projects.
 - **Owner:** `AGENTS.md`.
 - **Date:** 2026-08-10
 

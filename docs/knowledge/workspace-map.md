@@ -9,7 +9,8 @@
 - `decision-log.md` — durable decisions/reasons.
 - `implementation-map.md` — current owner/location map.
 - `operations/task-board.md` — future/non-active work.
-- `../../kits/project-document-generator/` — active PRD intake/generation implementation.
+- `../../kits/project-document-generator/` — active PRD Flow 2–4 implementation.
+- `../../kits/voice-production-kit/` — active Flow 5 voice-requirement owner; Flow 6 baseline follows next.
 - `../../workspace/` — per-project source/state/canonical work/output.
 - `../../Production Document Builder/` — Archived historical reference only.
 
@@ -20,7 +21,7 @@ new session
 → AGENTS
 → CONTEXT
 → next-action
-→ smallest relevant foundation/kit/project source
+→ smallest relevant foundation/kit/project owner
 ```
 
-Do not treat rendered output, old reference content, Archived implementation, or saved project packages as the default source of current project state.
+Do not treat rendered output, performance output, old reference content, Archived implementation, or saved project packages as the default source of current project state.

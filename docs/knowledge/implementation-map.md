@@ -14,22 +14,20 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Flow 2 intake/recovery policy | `docs/foundation/02-source-intake-recovery.md` |
 | Flow 3 PRD generation policy | `docs/foundation/03-prd-generation.md` |
 | Flow 4 validation/handoff policy | `docs/foundation/04-prd-validation-handoff.md` |
+| Flow 5 voice extraction policy | `docs/foundation/05-voice-requirement-extraction.md` |
 | Current evidence status | `docs/foundation/validation-report.md` |
 | Active continuation state | `docs/knowledge/next-action.md` |
 | Durable decisions/reasons | `docs/knowledge/decision-log.md` |
 | Active PRD kit | `kits/project-document-generator/` |
-| Source intake procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
-| Canonical PRD contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
-| Rendering contract | `kits/project-document-generator/RENDERING.md` |
-| Flow 4 acceptance/handoff contract | `kits/project-document-generator/VALIDATION.md` |
-| PRD shell renderer | `kits/project-document-generator/renderer/` |
-| PRD mechanical validator | `kits/project-document-generator/validator/validate.py` |
-| Approved HTML shell | `kits/project-document-generator/template/approved-document.html` |
+| PRD source intake / content / rendering / validation | `kits/project-document-generator/` owners |
+| Active Voice Production kit | `kits/voice-production-kit/` |
+| Voice requirement extraction procedure | `kits/voice-production-kit/VOICE-EXTRACTION.md` |
+| Flow 6 baseline instructions | `kits/voice-production-kit/INSTRUCTIONS.md` |
 | Active project packages | `workspace/active/` |
 | Saved project packages | `workspace/saved/` |
 | Archived historical builder | `Production Document Builder/` |
 
-## Project-level authority after Flow 4
+## Project-level authority after Flow 5
 
 ```text
 source/originals/*
@@ -44,16 +42,19 @@ work/render-data.json           derived renderer projection
       ↓
 output/final.html               rendered PRD artifact
       ↓
-work/acceptance.md              Flow 4 evidence/findings
-state/handoff-state.yaml        revision-specific readiness state
+work/acceptance.md
+state/handoff-state.yaml        accepted PRD revision / readiness
+output/team-handoff.md
       ↓
-output/team-handoff.md          concise team navigation aid
+work/voice-requirements.md      canonical voice-moment requirements
+state/voice-state.yaml          Flow 5 revision/status/next step
 ```
 
-`acceptance.md` and handoff state do not replace canonical PRD meaning; they record whether that exact revision is usable by the production team.
+`voice-requirements.md` does not contain final spoken scripts. It defines justified voice scope and required communication facts for Flow 6.
 
 ## Pending downstream migration
 
-- Flow 5 Voice Requirement Extraction is next.
-- Voice Production Kit remains reviewed but unmigrated until Flow 5/6.
-- Archived builder is not an active owner even when cited as historical evidence.
+- Flow 6 ElevenLabs Performance Script Production is next.
+- Original Voice Production v1.0 script instructions are preserved as a baseline but not yet aligned to the new canonical voice-requirement handoff.
+- Flow 7 validation/delivery remains unimplemented.
+- Archived builder remains non-authoritative.

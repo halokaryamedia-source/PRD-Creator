@@ -10,42 +10,47 @@ Adopt the useful repository/workflow architecture learned from BuildIT into the 
 
 ## Current Status
 
-`FLOW_4_PRD_VALIDATION_HANDOFF_IMPLEMENTED`
+`FLOW_5_VOICE_REQUIREMENT_EXTRACTION_IMPLEMENTED`
 
-## Completed Slice — Flow 4
+## Completed Slice — Flow 5
 
 Implemented:
 
-- explicit distinction between `pending_review`, `needs_revision`, `development_ready`, and `handoff_ready`;
-- mechanical PRD validator for canonical content/render data/rendered HTML;
-- New Reader, Level Designer, Developer, and Project Consistency acceptance perspectives;
-- Critical / Major / Minor / Suggestion severity model;
-- root-owner classification for content vs projection vs renderer/template vs unresolved upstream decision;
-- `work/acceptance.md` concise acceptance record;
-- `state/handoff-state.yaml` revision-specific readiness owner;
-- `output/team-handoff.md` concise production navigation aid;
-- Critical/Major=0 development-ready gate without restoring Archived Content Freeze ceremony;
-- active Project Document Generator version advanced to 1.2.0.
+- active repository-owned `kits/voice-production-kit/`;
+- explicit `handoff_ready` PRD entry gate for normal downstream voice extraction;
+- canonical `work/voice-requirements.md` voice-moment owner;
+- revision/status owner `state/voice-state.yaml`;
+- Main Story / Radio Communication / explicit source-defined other voice classification;
+- functional classification for briefing, arrival, transition, reveal, warning, progress, urgency, encouragement, reminder, setback/recovery, completion, reward, and farewell;
+- required/supporting necessity distinction;
+- candidate and duplicate filters preventing redundant or unsupported voice;
+- explicit rule that a package may have zero voice moments;
+- explicit `no_voice_required` valid outcome;
+- upstream return rule for missing speaker/channel/trigger/story decisions;
+- original v1.0 script-writing instructions preserved as the Flow 6 baseline rather than executed early;
+- active Voice Production Kit version advanced to 1.1.0.
 
 ## Preserved Boundaries
 
-Flow 4 intentionally does **not** define:
+Flow 5 intentionally does **not** define:
 
-- client approval/sign-off;
-- implementation completion or QA completion;
-- release approval;
-- which voice moments are needed;
-- ElevenLabs script content;
-- voice validation/delivery.
+- final spoken wording;
+- square-bracket performance directions;
+- CAPS emphasis;
+- pause/line-break strategy;
+- estimated duration;
+- ElevenLabs voice/model/settings;
+- final `Voice Production.docx` formatting;
+- voice continuity/final delivery acceptance.
 
 ## Current Proof
 
-- Flow 4 validator Python compile passed locally;
-- validator executed against the synthetic non-Aftershock Flow 3 project;
-- sample passed all current mechanical checks;
-- semantic four-perspective contract is implemented, but a real project has not yet exercised full Flow 2→3→4 acceptance/handoff;
-- Archived builder remains preserved and non-authoritative.
+- original Voice Production Kit source package was re-read before migration;
+- original Aftershock gameplay/voice reference pair was re-inspected to verify the demonstrated functional split between Main Story and Radio Communication;
+- Flow 5 contract/kit/state structure is implemented in the repository;
+- no real project has yet exercised a full `handoff_ready` → voice-requirements extraction, so real-project execution remains `EXECUTION PROOF REQUIRED`;
+- Aftershock binary/layout reference migration is deliberately deferred to Flow 6 because formatting/performance quality is not a Flow 5 concern.
 
 ## Next Step
 
-Implement **Flow 5 — Voice Requirement Extraction**: define the exact handoff from an accepted/mature PRD into a traceable list of justified voice moments (Main Story / Radio Communication / other supported production moments) without allowing the Voice Production Kit to invent upstream gameplay/story decisions.
+Implement **Flow 6 — ElevenLabs Performance Script Production**: align the original v1.0 Voice Production instructions to consume `voice_requirements_ready`, migrate/reconcile the Aftershock production reference, define the final Voice Production document structure, and produce performance-ready wording without adding voice moments or upstream project facts outside Flow 5 scope.

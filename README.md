@@ -21,16 +21,18 @@ Flow 3 — Project Document / PRD Generation            ✓ implemented
     ↓
 Flow 4 — PRD Validation & Team Handoff                ✓ implemented
     ↓
-Flow 5 — Voice Requirement Extraction                 next
+Flow 5 — Voice Requirement Extraction                 ✓ implemented
     ↓
-Flow 6 — ElevenLabs Performance Script Production
+Flow 6 — ElevenLabs Performance Script Production     next
     ↓
 Flow 7 — Voice Validation & Delivery
 ```
 
-The active Project Document Generator now owns Flow 2–4 under `kits/project-document-generator/`: source recovery, canonical PRD generation, approved-shell rendering, role-based development-readiness validation, and concise team handoff.
+The active Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`.
 
-The Voice Production Kit remains a reviewed external baseline until Flow 5/6. The pre-existing `Production Document Builder/` remains **Archived** and non-authoritative.
+The active Voice Production Kit now lives under `kits/voice-production-kit/`. Flow 5 extracts traceable voice requirements from a `handoff_ready` PRD and stops before performance-script writing. Flow 6 remains the next boundary.
+
+The pre-existing `Production Document Builder/` remains **Archived** and non-authoritative.
 
 ## Mandatory Session Boot
 
@@ -47,6 +49,7 @@ The Voice Production Kit remains a reviewed external baseline until Flow 5/6. Th
 - `docs/foundation/` — durable production policy.
 - `docs/knowledge/` — current state, decisions, navigation, ownership, and backlog.
 - `kits/project-document-generator/` — active PRD intake/generation/validation kit.
+- `kits/voice-production-kit/` — active downstream voice-requirement kit; Flow 6 script production follows next.
 - `workspace/active/` — project packages currently in production.
 - `workspace/saved/` — intentionally retained completed/saved project packages.
 - `Production Document Builder/` — Archived historical package retained only for bounded migration/reference.
@@ -54,7 +57,7 @@ The Voice Production Kit remains a reviewed external baseline until Flow 5/6. Th
 ## Core Rule
 
 ```text
-Source ≠ Interpretation ≠ Decision ≠ Requirement State ≠ Canonical Content ≠ Rendered Output ≠ Acceptance
+Source ≠ Interpretation ≠ Decision ≠ Requirement State ≠ Canonical PRD ≠ Rendered Output ≠ PRD Acceptance ≠ Voice Requirements ≠ Performance Script ≠ Delivery
 ```
 
-Rendering success is not development-readiness. `handoff_ready` is revision-specific production-document readiness, not client approval or implementation completion.
+Rendering success is not development-readiness. `handoff_ready` is revision-specific production-document readiness, not client approval or implementation completion. Voice requirements define **what communication is justified**; they are not final spoken scripts.
