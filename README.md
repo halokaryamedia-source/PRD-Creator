@@ -1,82 +1,65 @@
-# Project Production Workspace
+# PRD-Creator
 
-A repository-first workspace for turning incomplete project direction into development-ready project documentation, then deriving validated ElevenLabs-ready Voice Production.
+PRD-Creator turns incomplete project material into development-ready project documentation and, when needed, downstream Voice Production assets.
 
-The repository is project memory. Chat history is supporting context, not current-state authority.
+## Working branch
 
-## Branch model
-
-- `Local` — permanent working/development authority.
-- `main` — stable baseline; change only when explicitly requested.
-- no routine per-task/per-flow branches or PRs.
+`Local` is the permanent development authority. `main` stays stable unless explicitly requested.
 
 ## Production flow
 
 ```text
-Source Intake
-→ PRD
-→ Validate / Handoff
-→ Voice Requirements
-→ Voice Script
-→ Build DOCX
-→ Validate / Deliver
+Flow 1  Repository Boot & Project Memory
+Flow 2  Source Intake & Requirement Recovery
+Flow 3  Project Document / PRD Generation
+Flow 4  PRD Validation & Team Handoff
+Flow 5  Voice Requirement Extraction
+Flow 6  ElevenLabs Performance Script Production
+Flow 7  Voice Validation & Delivery
 ```
 
-Flow 1–7 is implemented and real-project proven.
-
-## Operating flow
+The core authoring path is intentionally simple:
 
 ```text
-Plan | Developing | Maintenance
-→ correct owner
-→ smallest complete change
-→ minimum useful proof
+source
+→ recover production-relevant requirements
+→ canonical PRD
+→ render HTML
+→ validate / hand off
+→ optional Voice production
 ```
 
-Canonical root skills:
+## PRD quality principles
+
+The PRD side prioritizes:
+
+- source fidelity before polish;
+- production-relevant requirement granularity instead of sentence-by-sentence extraction;
+- decision-focused user review;
+- minimum sufficient detail for New Reader, Level Designer, and Developer use;
+- plain, concrete technical writing without promotional or formulaic AI filler;
+- stable terminology, numbers, scoring, triggers, and other authoritative values;
+- no new machinery unless a real project proves a need.
+
+## Main owners
 
 ```text
-development-brief
-project-document-production
-voice-production
+.agents/skills/development-brief/
+.agents/skills/project-document-production/
+.agents/skills/voice-production/
+
+kits/project-document-generator/
+kits/voice-production-kit/
 ```
 
-## Keep it simple
+`project-document-production` owns Flow 2–4 semantic/product judgment. Detailed PRD production procedure lives under `kits/project-document-generator/`.
 
-BuildIT is used as a reference for repository discipline, not as a checklist of mechanisms to copy.
+`voice-production` owns Flow 5–7 semantic/product judgment. Voice review remains downstream of an accepted PRD.
 
-Current anti-overdevelopment decision:
+## Current direction
 
-`docs/knowledge/decisions/anti-overdevelopment-simplification.md`
+Do not extend BuildIT parity or add generic framework layers automatically. BuildIT is a reference for discipline, ownership, proof, and anti-slop behavior, not a feature checklist.
 
-Normal project work must not require manual checksum/revision metadata. Derived files are regenerated from canonical inputs when needed.
+Use the current system on real project work. When a concrete friction or defect appears, fix the smallest owning contract instead of adding preventive architecture around hypothetical failures.
 
-The cleanup that removed unnecessary PRD/Voice revision machinery is:
-
-`08b6f9d6a98641c5f93932df015cb0d2dffe9a42`
-
-with Repository Verify and Production Verify both passing.
-
-## Verification layers
-
-- **Repository Verify** — static repository/routing/navigation/syntax checks.
-- **Production Verify** — locked dependencies, compile, focused real PRD/Voice executable contracts.
-- **Semantic / visual / audio evidence** — performed only where the production claim actually requires it.
-
-CI is a guard, not a reason to keep adding engineering machinery.
-
-## Repository map
-
-- `AGENTS.md` — repository-wide work rules;
-- `CONTEXT.md` — stable current context;
-- `.agents/skills/` — semantic routing/judgment skills;
-- `docs/foundation/` — durable production policy;
-- `docs/knowledge/` — current state, ownership, decisions, reviews, operations;
-- `kits/project-document-generator/` — Flow 2–4 implementation;
-- `kits/voice-production-kit/` — Flow 5–7 implementation;
-- `tests/`, `tools/`, `.github/workflows/` — focused repository engineering;
-- `workspace/` — project-specific production packages.
-
-## Current work
-
-No automatic parity-hardening phase is active. See `docs/knowledge/next-action.md` for the single current continuation point.
+Current continuation state: `docs/knowledge/next-action.md`.
