@@ -4,7 +4,7 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_FLOW2_GITHUB_BOUNDARY_REFINED_LOCAL_TEST_DEFERRED`
+`PRD_FLOW2_GITHUB_STATIC_AUDIT_COMPLETE_LOCAL_TEST_DEFERRED`
 
 Working branch: **`Local` only**.
 
@@ -66,34 +66,37 @@ When no clear default exists, use a concise `Pilihan` + tradeoff explanation ins
 
 Humanize is presentation behavior only. It must not alter official terminology, quantities, timings, formulas, mechanics, triggers, uncertainty, provenance, or approval status. No new Humanize root skill is added.
 
-## Flow 2 → Flow 3 boundary
+## Flow 2 → Flow 3/4 boundary
 
-Flow 3 may organize/clarify approved meaning, but it must return material gaps to Flow 2 when drafting exposes:
-
-- topology/global-local ownership/transition/final-result ambiguity;
-- lifecycle gaps;
-- contradictory numbers/timing/scoring;
-- materially vague behavior;
-- shared/global rule versus package-exception conflict;
-- authoritative known-constraint conflict;
-- missing cross-role implication;
-- exclusion/terminology ambiguity;
-- another unresolved product/design choice.
+Flow 3 may organize/clarify approved meaning, but it must return material gaps to Flow 2 when drafting exposes topology/lifecycle/numeric/operational-clarity/global-local/known-constraint/cross-role/exclusion/terminology ambiguity or another unresolved product/design choice.
 
 Flow 4 uses the same fallback rule if review finds one of these issues later. Wording may be fixed downstream only when the underlying approved meaning is already clear.
 
+## GitHub-side safeguards now active
+
+`tools/verify_repository.py` now protects two concrete repository invariants demonstrated by this audit:
+
+- mandatory root `AGENTS.md` retains its required tail sections (`Execution channel`, `User-facing communication`, `Product boundaries`);
+- Project Document Generator `SKILL.md` and kit `README.md` must report the same version.
+
+These are small static guards based on observed defects, not a generic documentation-schema framework.
+
 ## Efficiency boundary
 
-Do not add topology/coverage/lifecycle/quantitative/clarity reports, dependency graphs, mandatory checklists, source indexers, Humanize skill layers, or new validators merely to represent these checks. Keep them as reasoning over existing source/requirement state.
+Do not add topology/coverage/lifecycle/quantitative/clarity reports, dependency graphs, mandatory checklists, source indexers, Humanize skill layers, new validators, or documentation schemas merely to represent reasoning already owned by Flow 2.
 
-No local/manual real-project test is allowed yet per current user direction.
+## Testing boundary
 
-## Evidence boundary
+Per current user direction, **do not run local/manual real-project tests yet**.
 
-Current GitHub-side work changes semantic/procedure contracts only. Golden HTML, renderer behavior, Flow 4 validator code, `content.md → render-data.json`, handoff semantics, and Voice behavior remain unchanged.
+GitHub/static/CI evidence can prove repository routing, documentation consistency, static invariants, and existing regression contracts. It cannot prove practical recovery quality, local render behavior, browser visual fidelity, or measured usage.
 
-GitHub CI can prove repository/procedure consistency only. It does not prove practical recovery quality, local render behavior, visual fidelity, or measured usage.
+## GitHub audit result
+
+The current Flow 2 → Flow 3 → Flow 4 semantic/routing owners have been aligned for the strengthened recovery/problem-solving boundary. High-level README/context/foundation/skill/procedure wording and the small observed static invariants are synchronized.
+
+No additional GitHub-side Flow 2 mechanism is currently justified without a new concrete defect. Do not add preventive architecture merely because more checks are imaginable.
 
 ## Next Step
 
-Continue **GitHub-only static audit** for remaining Flow 2/3/4 owner drift or low-cost repository safeguards. If no concrete GitHub-side defect remains, record that boundary as complete and wait; do not start local/manual testing until the user explicitly allows it.
+Wait for the next user-directed GitHub-side task or new concrete repository evidence. Do **not** start local/manual real-project testing until the user explicitly allows it.

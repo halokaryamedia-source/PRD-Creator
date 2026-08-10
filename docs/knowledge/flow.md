@@ -1,6 +1,6 @@
 # Agent Work Routing Flow
 
-Updated: 2026-08-10
+Updated: 2026-08-11
 
 Use this note as the single **agent work-routing map**. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
 
@@ -131,7 +131,7 @@ voice-production
 → kits/voice-production-kit/ active Flow owner
 ```
 
-Keep user effort low: auto-bootstrap internal project state, inspect before asking, batch decisions, use delta revision paths, and deliver only the requested artifact plus concise material information.
+Keep user effort low: auto-bootstrap internal project state, inspect before asking, use Flow 2 solve-before-ask recovery/problem solving, batch only the material decisions still unresolved, use delta revision paths, and deliver only the requested artifact plus concise material information.
 
 ## Developing Mode
 
@@ -184,7 +184,7 @@ New session:
 
 `AGENTS.md` → `CONTEXT.md` → `next-action.md`
 
-Open the activation matrix only when selecting a skill. Do not load the task board, review graph, or every kit during normal boot unless the active boundary requires them.
+Open the activation matrix **only when the correct owner/skill is genuinely ambiguous**. Do not load the task board, review graph, or every kit during normal boot unless the active boundary requires them.
 
 ## Related
 

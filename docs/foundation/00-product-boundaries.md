@@ -4,9 +4,10 @@ Status: active policy
 
 ## Project Document Generator Owns
 
-- project-source intake and requirement recovery;
-- supported completion vs true decision boundaries;
-- canonical PRD content and approved-shell rendering;
+- project-source intake, production requirement recovery, and Flow 2 problem solving;
+- safe Clarification/Completion vs Proposal/Blocked decision boundaries;
+- clear user-facing explanation of material unresolved decisions without changing technical meaning;
+- canonical PRD content and deterministic rendering through the approved Golden hierarchy, page composition, component language, and presentation foundation;
 - development-readiness validation and concise team handoff.
 
 It does not own downstream voice wording or generated audio.
@@ -49,4 +50,4 @@ The normal kit deliverable is the accepted **Voice Production script + DOCX for 
 
 ## Shared Boundary Rule
 
-When downstream work exposes a missing or contradictory upstream decision, reopen the correct owner. Do not hide the decision inside polished script/audit text.
+When downstream work exposes a missing or contradictory upstream decision, reopen the correct owner. Do not hide the decision inside polished PRD/script/audit text or derived presentation output.
