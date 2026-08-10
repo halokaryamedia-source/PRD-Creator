@@ -26,7 +26,7 @@ Source:
 
 Final integration:
 
-`3841c21e4ec723acc3664723bad585ce44d5c7b7` — `docs: finalize PRD usability integration`
+`81f6541a62d20c597ec7b790b0602d30640afeab` — `docs: merge refined PRD usability state`
 
 The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
 
