@@ -4,7 +4,7 @@ Status: active Flow 2 policy
 
 ## Purpose
 
-Turn uneven project material into a trustworthy production requirement state before PRD drafting. Flow 2 must recover explicit meaning, project structure, required implications, exclusions, terminology, missing material behavior, and practical resolutions without inventing unsupported design choices.
+Turn uneven project material into a trustworthy production requirement state before PRD drafting. Flow 2 must recover explicit meaning, project structure, required implications, exclusions, terminology, missing material behavior, practical resolutions, and known constraint conflicts without inventing unsupported design choices.
 
 ## Canonical sequence
 
@@ -19,7 +19,7 @@ Recover project topology + terminology
 ↓
 Cross-role implication pass
 ↓
-Production coverage + mechanic lifecycle + quantitative coherence
+Production coverage + lifecycle + quantitative + clarity/coherence checks
 ↓
 Problem framing + Resolution Ladder
 ↓
@@ -56,7 +56,7 @@ Persist reading coverage compactly (`targeted` + scope or `full`) when it materi
 - For each material mechanic/system, inspect necessary implications for Gameplay, Level Design, Developer, and result/reset/handoff.
 - Record only implications logically required by source/approved state; do not invent exact quantities, timings, objects, dimensions, implementation architecture, or decorative detail.
 
-## Coverage, lifecycle, and quantitative coherence
+## Coverage and coherence
 
 Before readiness, scan only applicable concerns for:
 
@@ -66,9 +66,15 @@ Before readiness, scan only applicable concerns for:
 - Developer activation/state/completion-or-score/timing/data/reset/interruption/result;
 - critical counts, timing boundaries, scoring, handoff, reset/disconnect, and final-result rules.
 
-For each material mechanic, inspect relevant lifecycle stages: precondition, trigger, active behavior, success, fail/timeout/interruption, result/transition, and retry/reset. Missing lifecycle stages are material only when a downstream role cannot proceed safely without them.
+For material mechanics, inspect relevant lifecycle stages: precondition, trigger, active behavior, success, fail/timeout/interruption, result/transition, and retry/reset. Missing stages are material only when downstream production cannot proceed safely without them.
 
-When related numeric facts exist, check that they can coexist: total duration vs phase durations, capacity/count assumptions, scoring weights, repeated object/stage counts, and other directly related values. A mismatch is evidence to resolve, not permission to silently change a number.
+When related numeric facts exist, check that they can coexist. A mismatch is evidence to resolve, not permission to silently change a value.
+
+Also check whether material wording is operationally clear enough that two competent roles would not produce materially different product behavior while both reasonably claiming compliance. Do not invent numeric thresholds merely to make qualitative direction look measurable.
+
+Reconcile shared/global defaults with explicit local exceptions. A package must not silently contradict a global rule, and legitimate local differences must not be erased merely for consistency.
+
+When authoritative project/platform/production constraints are known, check material requirements against them. A conflict is surfaced and resolved through normal authority/Proposal rules; speculative external limitations or generic best practice are not project authority.
 
 This is not a mandatory-field form. Irrelevant or intentionally unspecified detail is not a gap.
 
@@ -80,10 +86,13 @@ First frame the actual problem using observed issue, consequence, project constr
 
 1. existing authority resolves it → recover;
 2. one necessary evidence-backed result exists → Completion;
-3. multiple options exist but one responsible recommendation follows from project goals/constraints → Proposal with one recommendation;
-4. no responsible resolution can be made → Blocked/direct decision.
+3. one option is materially better supported by project goals/constraints → Proposal with one recommendation;
+4. options are genuinely balanced → Proposal with the smallest useful tradeoff set and no fake recommendation;
+5. no responsible resolution/options can be formed → Blocked/direct decision.
 
-A source can also expose a concrete gameplay/production concern even when documentation is complete. Such concern is advisory only until approved; it does not become a new recovery class.
+Reference/previous-project patterns may help generate an option, but they do not become current-project authority.
+
+A source can also expose a concrete gameplay/production concern even when documentation is complete. Such concern is advisory only until approved. Optional improvements should stay out of the user's way unless requested or unusually valuable.
 
 ## Safe Completion and materiality
 
@@ -101,17 +110,19 @@ Use existing requirements + `affects`; do not create a dependency-graph artifact
 
 ## User-facing resolution communication
 
-Group related issues into one solution package when one root decision resolves them. Default to one recommended option; add at most 1–2 alternatives only when they represent meaningful tradeoffs.
+Group related issues into one solution package only when one root decision genuinely resolves them. Do not bundle independent decisions merely to reduce question count.
 
 Use a bounded Humanize pass on Flow 2 user-facing explanations:
 
 ```text
 Masalah
-Saran
+Saran — only when one option is genuinely recommended
 Kenapa
 Dampak
 Alternatif — only when useful
 ```
+
+When evidence does not support a clear default, use a concise `Pilihan`/tradeoff presentation instead of pretending one option is recommended.
 
 Humanize improves clarity/order and hides unnecessary internal jargon. It must never alter official terminology, quantities, timings, formulas, triggers, mechanics, uncertainty, provenance, or approval state. It is presentation behavior, not a new authority/recovery class/root skill.
 
@@ -130,7 +141,7 @@ Detailed contract: `kits/project-document-generator/SOURCE-INTAKE.md`.
 
 ## Question economy
 
-Ask only after explicit recovery, topology/terminology/exclusion reconciliation, cross-role implications, coverage/lifecycle/quantitative checks, problem framing, and the Resolution Ladder have been attempted. Group related Proposal/Blocked items into one understandable decision package when possible. Zero questions is preferred when evidence is sufficient.
+Ask only after explicit recovery, topology/terminology/exclusion reconciliation, cross-role implications, coverage/lifecycle/quantitative/clarity/coherence checks, problem framing, and the Resolution Ladder have been attempted. Group related Proposal/Blocked items into one understandable decision package when possible. Zero questions is preferred when evidence is sufficient.
 
 ## Flow 2 completion gate
 
@@ -143,6 +154,9 @@ Ask only after explicit recovery, topology/terminology/exclusion reconciliation,
 - material terminology ambiguity resolved or surfaced;
 - necessary cross-role implications recovered;
 - applicable lifecycle and quantitative coherence checked;
+- material wording operationally clear enough for production;
+- shared/global rules and local exceptions reconciled;
+- authoritative known constraints do not silently conflict with required behavior;
 - production coverage scan complete for applicable concerns;
 - every material issue passed through the Resolution Ladder before escalation;
 - every recovered/approved resolution propagated to affected meaning;
@@ -150,4 +164,6 @@ Ask only after explicit recovery, topology/terminology/exclusion reconciliation,
 - every Completion within the safe-completion boundary;
 - no unresolved material Proposal/Blocked item affecting requested output.
 
-Flow 3 may organize and polish approved meaning, but must not become the first place required product structure, lifecycle behavior, numeric consistency, implications, or decisions are invented.
+Once this gate passes, stop generating optional redesign ideas. Flow 2 is a production-recovery/problem-solving stage, not an endless design workshop.
+
+Flow 3 may organize and polish approved meaning, but must not become the first place required product structure, lifecycle behavior, numeric consistency, global/local coherence, known feasibility conflict, implications, or decisions are invented.

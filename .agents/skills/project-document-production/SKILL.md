@@ -51,7 +51,8 @@ source authority + inspection
 → project topology + terminology
 → cross-role implications
 → production coverage
-→ mechanic lifecycle + quantitative coherence
+→ lifecycle + quantitative + operational clarity
+→ global/local coherence + known-constraint feasibility
 → problem framing
 → Resolution Ladder
 → impact propagation
@@ -67,10 +68,15 @@ Key boundaries:
 - a missing detail is material only when a downstream role would otherwise have to choose product behavior/scope;
 - relevant Gameplay / Level Design / Developer implications are recovered when logically required, without inventing implementation choices;
 - related numbers/timings/counts are checked for direct contradictions before drafting;
+- vague wording is resolved only when it would create materially different production outcomes; qualitative intent is not forced into fake metrics;
+- shared/global defaults and local exceptions must be explicit and mutually coherent;
+- authoritative known platform/project constraints are checked without turning generic best practice into authority;
 - each material issue is framed and taken through the least-assumptive Resolution Ladder before asking the user;
+- use `Recommended` only when evidence/goals/constraints genuinely favor one option; balanced tradeoffs must be presented honestly;
 - one recovered/approved resolution is propagated to all actually affected requirements instead of being fixed in only one section;
-- related decisions are grouped for the user when one root resolution controls them;
-- irrelevant/optional detail remains open instead of being filled for completeness.
+- related decisions are grouped only when one root resolution genuinely controls them;
+- irrelevant/optional detail remains open instead of being filled for completeness;
+- once production-ready, stop generating optional redesign ideas.
 
 ### Humanized user communication
 
@@ -80,13 +86,15 @@ Flow 2 user-facing decision/recovery explanations should use clear plain product
 Masalah → Saran → Kenapa → Dampak → Alternatif (only if useful)
 ```
 
+When there is no clear recommended default, use a concise `Pilihan` + tradeoff explanation instead of inventing confidence.
+
 This Humanize behavior changes presentation only. It must not change official terminology, numbers, timing, formulas, mechanics, triggers, uncertainty, provenance, or approval state. Do not expose internal `SRC/REQ`/YAML/recovery jargon unless requested or needed to explain a blocker.
 
 ## Flow 3 judgment
 
 Use minimum sufficient detail, keep Gameplay / Level Design / Developer meaning distinct, preserve Golden document language without copying Golden project facts, and use `CONTENT-CONTRACT.md` as the single prose-quality/content-density owner.
 
-If drafting discovers a material topology, terminology, exclusion, lifecycle, quantitative, cross-role, or product-decision gap that Flow 2 should have resolved, return that requirement upstream rather than hiding it with polished wording or HTML.
+If drafting discovers a material topology, terminology, exclusion, lifecycle, quantitative, operational-clarity, global/local, feasibility, cross-role, or product-decision gap that Flow 2 should have resolved, return that requirement upstream rather than hiding it with polished wording or HTML.
 
 ## Context economy
 

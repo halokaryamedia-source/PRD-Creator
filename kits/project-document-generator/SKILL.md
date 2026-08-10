@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
 description: Recover project requirements, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness without inventing product decisions.
-version: 1.8.0
+version: 1.9.0
 ---
 
 # Project Document Generator
@@ -28,7 +28,8 @@ inventory + authority/relevance inspection
 → topology + terminology
 → cross-role implications
 → production coverage
-→ mechanic lifecycle + quantitative coherence
+→ lifecycle + quantitative + operational clarity
+→ global/local coherence + known-constraint feasibility
 → problem framing + Resolution Ladder
 → impact propagation
 → one humanized grouped decision package only if needed
@@ -46,10 +47,16 @@ Rules:
 - recover necessary Gameplay / Level Design / Developer implications of material mechanics;
 - scan applicable lifecycle stages so missing activation/completion/fail/result/reset behavior is noticed when material;
 - check directly related numeric facts (duration/count/capacity/scoring/etc.) for contradictions before drafting;
-- frame the real problem and try authority → Completion → recommended Proposal → Blocked before asking the user;
+- detect materially vague requirements, but do not invent numeric thresholds merely to make qualitative direction measurable;
+- reconcile shared/global defaults with explicit local exceptions;
+- check material requirements against authoritative known project/platform constraints without importing generic best practice as authority;
+- frame the real problem and try authority → Completion → supported recommendation → balanced tradeoff → Blocked before asking the user;
+- use `Recommended` only when evidence/goals/constraints genuinely favor one option;
 - propagate recovered/approved resolutions to all actually affected requirements;
-- group related issues when one root decision resolves them;
-- missing optional/irrelevant detail stays open/neutral rather than becoming filler or a question.
+- group related issues only when one root decision genuinely resolves them;
+- keep optional advisory ideas out of the user's way by default;
+- missing optional/irrelevant detail stays open/neutral rather than becoming filler or a question;
+- stop Flow 2 once production readiness is reached instead of continuing speculative optimization.
 
 ### User-facing decisions
 
@@ -57,11 +64,13 @@ Use a bounded Humanize pass so decisions are easy to understand:
 
 ```text
 Masalah
-Saran
+Saran — only when one option is genuinely recommended
 Kenapa
 Dampak
 Alternatif — only when meaningful
 ```
+
+When no clear default exists, use a concise `Pilihan` + tradeoff explanation instead of pretending one option is recommended.
 
 Humanize changes presentation only. Preserve official names, numbers, timings, formulas, mechanics, triggers, uncertainty, provenance, and approval state. Do not expose internal IDs/YAML/recovery jargon by default.
 
@@ -91,7 +100,7 @@ Rules:
 - package term `roles` metadata is written only when visibility differs from the default;
 - read `RENDERING.md` only when projection/HTML mechanics are actually relevant.
 
-If Flow 3 is forced to choose missing topology, lifecycle, role implication, numeric correction, exclusion meaning, terminology, or another material product rule, return that gap to Flow 2.
+If Flow 3 is forced to choose missing topology, lifecycle, role implication, numeric correction, operational-clarity meaning, global/local exception, known feasibility conflict, exclusion meaning, terminology, or another material product rule, return that gap to Flow 2.
 
 ## 3. REVIEW — Flow 4
 
@@ -114,7 +123,7 @@ Review the relevant document/package slice once and evaluate New Reader, Level D
 approved bounded change
 → persist authoritative instruction if needed
 → affected requirement + topology/terminology/exclusion/implication checks
-→ lifecycle/quantitative/impact checks only where invalidated
+→ lifecycle/quantitative/clarity/global-local/feasibility checks only where invalidated
 → affected canonical content + required cross-references
 → affected render projection
 → rerender

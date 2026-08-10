@@ -262,7 +262,46 @@ A mismatch is evidence to resolve, not permission to silently edit a number. Use
 
 Do not "balance" numbers merely because they look unusual.
 
-## 9. Problem framing before proposing a solution
+## 9. Operational clarity scan
+
+A requirement can exist in source and still be too ambiguous for production. For material rules, ask:
+
+> Could two competent production roles implement materially different outcomes while both reasonably claiming they followed this wording?
+
+If yes, inspect whether the surrounding evidence already narrows the meaning. Common signals include vague terms such as `fast`, `easy`, `clear`, `challenging`, `near`, `large`, `smooth`, or `enough`, and verbs that do not define an observable result.
+
+Do not convert every qualitative direction into a number. A qualitative requirement may remain valid when it intentionally defines experience/visual direction and downstream roles can act on it safely. If the ambiguity changes product behavior/scope, use the normal Resolution Ladder; propose a measurable/observable boundary only when it is supported or genuinely needed.
+
+## 10. Global-vs-local coherence scan
+
+Before readiness, reconcile shared/default rules with package-specific behavior:
+
+```text
+shared/global default
+→ applies to relevant packages
+→ explicit local exception only where evidence requires it
+```
+
+Check for:
+
+- a package silently contradicting a global rule;
+- two packages using different meanings for what source presents as one shared rule;
+- a local exception that is real but not explicitly recorded;
+- global rules duplicated as slightly different local requirements.
+
+Prefer one shared requirement plus explicit exceptions. Do not flatten legitimate package differences into one global rule merely for consistency.
+
+## 11. Feasibility and known-constraint scan
+
+When the project/source already defines platform, technical, capacity, production, or other hard constraints, check material requirements against them before proposing a solution.
+
+Examples include known player/arena limits, session limits, platform capabilities, required runtime boundaries, or explicit production constraints supplied by the project.
+
+If a requirement conflicts with an authoritative known constraint, surface the conflict and use the Resolution Ladder. A workaround or redesign is a Proposal unless existing authority already determines it.
+
+Do not import speculative external limitations or generic "best practice" as project authority. Reference/previous-project patterns may help generate a Proposal, but they never convert that Proposal into a recovered fact.
+
+## 12. Problem framing before proposing a solution
 
 When a material issue remains, identify the real production problem before choosing a fix.
 
@@ -284,13 +323,19 @@ Constraint: objective remains time-limited and collapse mechanic remains.
 Goal: reduce frustration without removing failure consequence.
 ```
 
-Do not manufacture a "design problem" merely to justify changing an already-valid preference.
+Do not manufacture a design problem merely to justify changing an already-valid preference.
 
-### Advisory production concerns
+### Advisory noise control
 
-A source can be complete yet still expose a concrete gameplay/production risk. When evidence supports it, Flow 2 may surface a **material concern** or **optional improvement** to the user, but this does not become a new recovery class and does not alter approved requirements automatically.
+A source can be complete yet expose a concrete gameplay/production risk. Flow 2 may surface it, but distinguish:
 
-## 10. Resolution Ladder
+- **must resolve** — material ambiguity/conflict that blocks `ready_for_prd`;
+- **material concern** — non-blocking issue worth showing because it could materially affect quality/feasibility;
+- **optional improvement** — keep internal by default unless the user asks for ideas or it is unusually valuable and can be shown without distracting from required decisions.
+
+These are communication priorities, not new recovery classes or mandatory state fields.
+
+## 13. Resolution Ladder
 
 Before asking the user, try the least-assumptive route that can solve the issue:
 
@@ -301,12 +346,21 @@ Before asking the user, try the least-assumptive route that can solve the issue:
 2. One necessary evidence-backed completion exists?
    → Completion.
 
-3. Several designs are possible, but one responsible recommendation can be made from project goal + constraints + existing rules?
+3. Several designs are possible, but one option is materially better supported by project goal + constraints + existing rules?
    → Proposal with one recommended option.
 
-4. No responsible resolution/recommendation can be made?
+4. Options are genuinely balanced and evidence does not support a clear default?
+   → Proposal with 2 concise tradeoff options; state that there is no clear default.
+
+5. No responsible resolution/options can be formed?
    → Blocked / direct user decision.
 ```
+
+### Recommendation honesty
+
+Use **Recommended** only when evidence, project goals, or constraints actually favor one option. Do not create false confidence merely to make approval easier.
+
+If no option is clearly favored, present the smallest useful tradeoff set—normally two options—and explain the consequence of each. Reference patterns may inspire an option, but project-specific authority/constraints must remain the basis for the decision.
 
 ### Safe Completion test
 
@@ -326,7 +380,7 @@ A missing detail is material when leaving it unresolved would force Gameplay, Le
 
 If the role can proceed safely while the detail remains intentionally open/neutral, it is not material. Omit it instead of creating filler, a question, or a fake requirement.
 
-## 11. Impact propagation after a resolution
+## 14. Impact propagation after a resolution
 
 A recovered Completion or approved Proposal must update all **actually affected** meaning, not only the sentence where the issue was found.
 
@@ -347,7 +401,7 @@ Use existing REQs + `affects` where useful. Do not create a dependency-graph art
 
 If a new approved resolution invalidates an older claim, resolve/supersede the affected requirement at claim level instead of deleting unrelated valid source meaning.
 
-## 12. Group related issues into one solution package
+## 15. Group related issues into one solution package
 
 Do not ask several questions when they are consequences of one root problem.
 
@@ -364,13 +418,13 @@ may be one **Failure & Collapse** solution package when one coherent decision co
 
 Internally, keep requirements separate when provenance/acceptance can differ. User-facing communication may group them when one decision can resolve them together.
 
-Default: one recommended solution. Add at most 1–2 alternatives only when they represent meaningful tradeoffs.
+Default to one recommended solution only when recommendation honesty allows it. Otherwise present the smallest balanced tradeoff set. Do not bundle independent decisions merely to reduce the number of questions.
 
-## 13. Humanized decision communication
+## 16. Humanized decision communication
 
 Use a bounded **Humanize pass** for Flow 2 user-facing explanations so technical recovery is easy to understand. This is presentation behavior, not a new authority, recovery class, or root skill.
 
-Preferred structure:
+Preferred structure when one recommendation is justified:
 
 ```text
 <short issue title>
@@ -390,6 +444,8 @@ Dampak
 Alternatif
 <only when a meaningful alternative exists>
 ```
+
+When there is no clear default, replace `Saran` with a concise `Pilihan` block and explain the tradeoff honestly instead of pretending one option is recommended.
 
 Humanize may improve:
 
@@ -412,7 +468,7 @@ Do not expose `SRC-###`, `REQ-###`, recovery-class jargon, YAML, or internal sta
 
 Recommendations remain pending until approved. The user may approve all recommendations or override named exceptions.
 
-## 14. Intake state
+## 17. Intake state
 
 Keep one status and one practical next step.
 
@@ -441,7 +497,8 @@ A bounded approved revision does not restart Flow 2 when project identity/author
 approved change
 → persist material instruction as source when needed
 → affected REQ(s), exclusions, terminology, topology, cross-role implications
-→ lifecycle + quantitative coherence + impact checks only where invalidated
+→ lifecycle + quantitative + clarity + global/local + feasibility checks only where invalidated
+→ impact propagation
 → downstream revision path
 ```
 
@@ -458,6 +515,9 @@ Flow 2 is ready only when:
 - material terminology ambiguity is resolved or surfaced;
 - material mechanics have been checked for necessary cross-role implications and applicable lifecycle gaps;
 - related quantitative facts have no unresolved material contradiction;
+- material requirements are operationally clear enough that production roles do not need to choose hidden product behavior;
+- shared/global rules and local exceptions are reconciled;
+- authoritative known constraints do not silently conflict with required behavior;
 - the production coverage scan found no hidden material gap;
 - every material issue has gone through problem framing + Resolution Ladder before becoming a user question;
 - recovered/approved resolutions have been propagated to affected meaning;
@@ -466,4 +526,8 @@ Flow 2 is ready only when:
 - unresolved material Proposal/Blocked items prevent readiness;
 - intake state truthfully reports `ready_for_prd: true`.
 
-Flow 3 may improve wording and presentation, but it must not be the first place where required project topology, lifecycle behavior, role implications, numeric consistency, or material product decisions are invented/discovered.
+## Stop rule
+
+When the readiness gate passes, stop expanding Flow 2. Do not keep generating optional redesign ideas, extra alternatives, metrics, or hypothetical edge cases merely because more analysis is possible. Flow 2 is a production-recovery/problem-solving stage, not an endless design workshop.
+
+Flow 3 may improve wording and presentation, but it must not be the first place where required project topology, lifecycle behavior, role implications, numeric consistency, global/local coherence, feasibility conflict, or material product decisions are invented/discovered.
