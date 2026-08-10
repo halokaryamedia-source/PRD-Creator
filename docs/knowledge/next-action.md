@@ -111,6 +111,7 @@ If visual inspection is unavailable, record `NOT PROVEN` and do not claim visual
 
 ```text
 AGENTS.md
+CONTEXT.md
 README.md
 .agents/skills/development-brief/SKILL.md
 docs/knowledge/flow.md
