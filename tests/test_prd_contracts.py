@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -91,6 +92,17 @@ def render_data() -> dict:
     }
 
 
+def fingerprint(data: dict) -> str:
+    canonical = json.dumps(
+        data,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
 class ProjectDocumentContracts(unittest.TestCase):
     def make_project(self, data: dict) -> Path:
         temp = tempfile.TemporaryDirectory()
@@ -102,11 +114,14 @@ class ProjectDocumentContracts(unittest.TestCase):
             "# Contract Fixture\n\nCanonical fixture content with no unresolved placeholders.\n",
             encoding="utf-8",
         )
+        self.write_data(project, data)
+        return project
+
+    def write_data(self, project: Path, data: object) -> None:
         (project / "work" / "render-data.json").write_text(
             json.dumps(data, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
-        return project
 
     def render(self, project: Path) -> subprocess.CompletedProcess[str]:
         return run_cli(
@@ -119,11 +134,16 @@ class ProjectDocumentContracts(unittest.TestCase):
         return run_cli(VALIDATOR, project)
 
     def test_renderer_and_validator_happy_path(self) -> None:
-        project = self.make_project(render_data())
+        data = render_data()
+        project = self.make_project(data)
 
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        self.assertTrue((project / "output" / "final.html").is_file())
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn(
+            f'<meta content="{fingerprint(data)}" name="render-data-sha256"/>',
+            html,
+        )
 
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
@@ -138,6 +158,67 @@ class ProjectDocumentContracts(unittest.TestCase):
                 "dev-core-developer",
             ],
         )
+
+    def test_validator_rejects_stale_html_after_render_data_changes(self) -> None:
+        data = render_data()
+        project = self.make_project(data)
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+        data["overview"]["project_context"] = "This projection changed after the last render."
+        self.write_data(project, data)
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        joined = "\n".join(result["errors"])
+        self.assertIn("render_data_revision_matches_html", joined)
+
+    def test_validator_returns_structured_fail_for_malformed_collection_item(self) -> None:
+        data = render_data()
+        project = self.make_project(data)
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+        malformed = render_data()
+        malformed["gameplay_flow"] = ["not-an-object"]
+        self.write_data(project, malformed)
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertNotIn("Traceback", validated.stderr)
+        result = json.loads(validated.stdout)
+        self.assertEqual(result["status"], "fail")
+        self.assertIn(
+            "gameplay_flow[0]: item must be an object",
+            "\n".join(result["errors"]),
+        )
+
+    def test_validator_rejects_extra_generated_page(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+        html_path = project / "output" / "final.html"
+        html = html_path.read_text(encoding="utf-8")
+        self.assertIn("</main>", html)
+        html_path.write_text(
+            html.replace(
+                "</main>",
+                '<section class="sheet" id="stale-extra"></section></main>',
+                1,
+            ),
+            encoding="utf-8",
+        )
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        self.assertIn(
+            "generated_page_set_matches_current_render_data",
+            "\n".join(result["errors"]),
+        )
+        self.assertIn("stale-extra", "\n".join(result["errors"]))
 
     def test_validator_rejects_scoring_completion_conflict_and_bad_weight(self) -> None:
         data = render_data()

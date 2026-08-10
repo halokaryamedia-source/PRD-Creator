@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render derived PRD JSON into the approved HTML shell without redesigning it."""
 from __future__ import annotations
-import argparse, json, re, sys
+import argparse, hashlib, json, re, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -11,6 +11,17 @@ from pages import flow_pages, global_pages, glossary, navigation, overview, pack
 
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 OPEN_RE = re.compile(r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]", re.I)
+
+
+def render_data_fingerprint(data: dict) -> str:
+    canonical = json.dumps(
+        data,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def validate(data: dict) -> None:
@@ -48,6 +59,7 @@ def replace_inner(src: str, marker: str, tag: str, inner: str) -> str:
 def render(template: Path, render_data: Path, output: Path) -> None:
     if not template.is_file(): raise FileNotFoundError(f"Approved template not found: {template}")
     data = json.loads(render_data.read_text(encoding="utf-8")); validate(data)
+    fingerprint = render_data_fingerprint(data)
     src = template.read_text(encoding="utf-8")
     pages = [overview(data)] + flow_pages(data) + global_pages(data) + package_pages(data)
     nav = navigation(data)
@@ -70,6 +82,9 @@ def render(template: Path, render_data: Path, output: Path) -> None:
     desc = txt(doc.get("description") or data["overview"].get("project_context") or page_title)["en"]
     src = re.sub(r'<meta\s+content="[^"]*"\s+name="description"\s*/?>', f'<meta content="{esc(desc)}" name="description"/>', src, count=1, flags=re.I)
     src = re.sub(r'<meta\s+content="[^"]*"\s+name="specification-version"\s*/?>', f'<meta content="prd-{namespace}-v{esc(doc.get("version", "1.0"))}" name="specification-version"/>', src, count=1, flags=re.I)
+    revision_meta = f'<meta content="{fingerprint}" name="render-data-sha256"/>'
+    src, count = re.subn(r"</head>", revision_meta + "\n</head>", src, count=1, flags=re.I)
+    if count != 1: raise ValueError("Template head closing marker not found deterministically")
     src = src.replace("aftershock-document-", f"prd-{namespace}-").replace("aftershock-sidebar-collapsed", f"prd-{namespace}-sidebar-collapsed")
 
     ids = set(re.findall(r'<section\b[^>]*\bid="([^"]+)"', src)); targets = set(re.findall(r'data-target="([^"]+)"', nav))

@@ -2,13 +2,14 @@
 """Mechanical Flow 4 validation for a repository-backed PRD project.
 
 This tool checks file presence, unresolved placeholders, render-data invariants,
-scoring/completion exclusivity, generated page IDs, duplicate HTML IDs, and
+current render identity, exact generated page IDs, duplicate HTML IDs, and
 fragment navigation reachability. It does not judge semantic development-readiness;
 that remains the role-based Flow 4 audit recorded in work/acceptance.md.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html as html_lib
 import json
 import re
@@ -27,21 +28,35 @@ class HtmlFacts(HTMLParser):
         self.ids: list[str] = []
         self.fragment_hrefs: list[str] = []
         self.title_parts: list[str] = []
+        self.document_section_ids: list[str] = []
+        self.render_fingerprints: list[str] = []
         self._in_title = False
+        self._in_document_main = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         data = dict(attrs)
+        classes = str(data.get("class") or "").split()
+        if tag.lower() == "main" and "document-main" in classes:
+            self._in_document_main = True
         if data.get("id"):
             self.ids.append(str(data["id"]))
+        if tag.lower() == "section" and self._in_document_main and data.get("id"):
+            self.document_section_ids.append(str(data["id"]))
         href = data.get("href")
         if isinstance(href, str) and href.startswith("#") and len(href) > 1:
             self.fragment_hrefs.append(href[1:])
+        if tag.lower() == "meta" and data.get("name") == "render-data-sha256":
+            content = data.get("content")
+            if isinstance(content, str):
+                self.render_fingerprints.append(content)
         if tag.lower() == "title":
             self._in_title = True
 
     def handle_endtag(self, tag: str) -> None:
         if tag.lower() == "title":
             self._in_title = False
+        if tag.lower() == "main" and self._in_document_main:
+            self._in_document_main = False
 
     def handle_data(self, data: str) -> None:
         if self._in_title:
@@ -52,6 +67,17 @@ def text_en(value: Any) -> str:
     if isinstance(value, dict):
         value = value.get("en") or value.get("id") or ""
     return str(value or "")
+
+
+def render_data_fingerprint(data: dict[str, Any]) -> str:
+    canonical = json.dumps(
+        data,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
@@ -93,24 +119,45 @@ def validate(project: Path) -> dict[str, Any]:
         errors.append(f"render_data_json: {exc}")
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
+    if not isinstance(data, dict):
+        errors.append("render_data_root: render-data must be an object")
+        return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
+
     doc = data.get("document")
     check("document_object", isinstance(doc, dict), "render-data.document must be an object")
     title = text_en(doc.get("title")) if isinstance(doc, dict) else ""
     check("document_title", bool(title.strip()), "document title is present")
+    check("overview_object", isinstance(data.get("overview"), dict), "render-data.overview must be an object")
 
-    packages = data.get("packages")
-    check("packages_array", isinstance(packages, list) and len(packages) > 0, "at least one gameplay package is required for this template profile")
-    packages = packages if isinstance(packages, list) else []
+    structure_ok = True
+    collections: dict[str, list[dict[str, Any]]] = {}
+    for key in ("gameplay_flow", "global_development", "packages"):
+        value = data.get(key, [])
+        if not isinstance(value, list):
+            errors.append(f"{key}: must be an array")
+            structure_ok = False
+            collections[key] = []
+            continue
+        typed: list[dict[str, Any]] = []
+        for index, item in enumerate(value):
+            if not isinstance(item, dict):
+                errors.append(f"{key}[{index}]: item must be an object")
+                structure_ok = False
+                continue
+            item_id = item.get("id")
+            if not isinstance(item_id, str) or not ID_RE.fullmatch(item_id):
+                errors.append(f"{key}[{index}]: invalid stable id {item_id!r}")
+                structure_ok = False
+                continue
+            typed.append(item)
+        collections[key] = typed
+
+    packages = collections["packages"]
+    check("packages_array", len(packages) > 0, "at least one gameplay package is required for this template profile")
 
     seen_pkg: set[str] = set()
-    for index, pkg in enumerate(packages, 1):
-        if not isinstance(pkg, dict):
-            errors.append(f"package_{index}: package must be an object")
-            continue
-        pid = pkg.get("id")
-        if not isinstance(pid, str) or not ID_RE.fullmatch(pid):
-            errors.append(f"package_{index}: invalid id {pid!r}")
-            continue
+    for pkg in packages:
+        pid = pkg["id"]
         if pid in seen_pkg:
             errors.append(f"package_{pid}: duplicate package id")
         seen_pkg.add(pid)
@@ -124,11 +171,20 @@ def validate(project: Path) -> dict[str, Any]:
             errors.append(f"package_{pid}: developer must define exactly one of scoring or completion_data")
         if has_score:
             components = dev["scoring"].get("components", [])
-            numeric_weights = [c.get("weight") for c in components if isinstance(c, dict) and isinstance(c.get("weight"), (int, float))]
-            if numeric_weights and len(numeric_weights) == len(components):
+            numeric_weights = [c.get("weight") for c in components if isinstance(c, dict) and isinstance(c.get("weight"), (int, float))] if isinstance(components, list) else []
+            if numeric_weights and isinstance(components, list) and len(numeric_weights) == len(components):
                 total = sum(numeric_weights)
                 if abs(total - 100.0) > 1e-9:
                     errors.append(f"package_{pid}: numeric scoring weights total {total}, expected 100")
+
+    if not structure_ok:
+        return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
+
+    try:
+        expected_fingerprint = render_data_fingerprint(data)
+    except (TypeError, ValueError) as exc:
+        errors.append(f"render_data_fingerprint: {exc}")
+        return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
     html_text = html_path.read_text(encoding="utf-8")
     facts = HtmlFacts()
@@ -140,11 +196,35 @@ def validate(project: Path) -> dict[str, Any]:
     duplicates = sorted(k for k, count in Counter(facts.ids).items() if count > 1)
     check("html_ids_unique", not duplicates, f"duplicate ids: {duplicates}" if duplicates else "no duplicate HTML ids")
 
-    id_set = set(facts.ids)
-    expected = expected_page_ids(data)
-    missing_expected = [page_id for page_id in expected if page_id not in id_set]
-    check("expected_pages_present", not missing_expected, f"missing page ids: {missing_expected}" if missing_expected else f"{len(expected)} expected pages present")
+    check(
+        "render_revision_marker_unique",
+        len(facts.render_fingerprints) == 1,
+        f"found {len(facts.render_fingerprints)} render-data revision markers",
+    )
+    if len(facts.render_fingerprints) == 1:
+        actual_fingerprint = facts.render_fingerprints[0]
+        check(
+            "render_data_revision_matches_html",
+            actual_fingerprint == expected_fingerprint,
+            "final.html render-data fingerprint matches current render-data.json"
+            if actual_fingerprint == expected_fingerprint
+            else f"final.html fingerprint {actual_fingerprint!r} does not match current render-data {expected_fingerprint!r}",
+        )
 
+    expected = expected_page_ids(data)
+    actual_pages = facts.document_section_ids
+    missing_expected = [page_id for page_id in expected if page_id not in actual_pages]
+    extra_generated = [page_id for page_id in actual_pages if page_id not in expected]
+    exact_pages = actual_pages == expected
+    check(
+        "generated_page_set_matches_current_render_data",
+        exact_pages,
+        f"generated pages match expected order/set: {len(expected)} pages"
+        if exact_pages
+        else f"expected {expected}; actual {actual_pages}; missing {missing_expected}; extra {extra_generated}",
+    )
+
+    id_set = set(facts.ids)
     broken = sorted(set(target for target in facts.fragment_hrefs if target not in id_set))
     check("fragment_navigation_reachable", not broken, f"broken targets: {broken}" if broken else "all fragment links resolve")
 
