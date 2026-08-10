@@ -112,6 +112,23 @@ Check especially:
 - interruption/disconnect/reset behavior;
 - final-result relationship.
 
+### Writing quality inside the existing review
+
+Do not create a fifth semantic perspective, AI score, detector, or separate writing gate.
+
+While reviewing the four perspectives above, flag prose only when it reduces usability, for example:
+
+- inflated or promotional wording instead of concrete behavior;
+- vague comments such as `important`, `immersive`, `seamless`, or `engaging` that add no production information;
+- repeated filler, fake analysis, or decorative `-ing` clauses;
+- synonym cycling that makes one project term look like several different concepts;
+- rhetorical patterns or repeated sentence shapes that make instructions harder to scan;
+- stylistic rewriting that changes or obscures IDs, names, quantities, timings, scoring, triggers, conditions, state names, or other technical facts.
+
+If the meaning is already clear and precise, leave the sentence alone. Writing polish is not a reason to rewrite every paragraph.
+
+Writing-quality findings are normally `Minor` or `Suggestion`. Escalate to `Major` only when vague or misleading prose forces a production role to guess a material rule.
+
 ## Severity
 
 - **Critical** — can produce incorrect gameplay, scoring, data, build, ownership, reset, or implementation behavior.
@@ -228,6 +245,7 @@ Set `development_ready` only when:
 - Major findings = 0;
 - no unresolved Proposal/Blocked requirement affects the handed-off scope;
 - scoring/completion and handoff/reset behavior are implementable where relevant;
+- explanatory prose is clear enough that the intended role does not need to decode filler or ambiguous stylistic wording;
 - requested language coverage is usable for the intended team.
 
 Then create the concise team handoff and set `handoff_ready`.

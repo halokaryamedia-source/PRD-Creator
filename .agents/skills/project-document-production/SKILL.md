@@ -5,7 +5,7 @@ description: Semantic/product-contract specialist for PRD-Creator Flow 2–4. Us
 
 # Project Document Production
 
-Own semantic/product-contract judgment around Project Document Generator Flow 2–4. Detailed production and executable mechanics remain in `kits/project-document-generator/`; this skill protects the authority, representation, and acceptance contract instead of becoming a generic Python/HTML/tooling owner.
+Own semantic/product-contract judgment around Project Document Generator Flow 2–4. Detailed production and executable mechanics remain in `kits/project-document-generator/`; this skill protects the authority, representation, writing quality, and acceptance contract instead of becoming a generic Python/HTML/tooling owner.
 
 ## Trigger
 
@@ -78,6 +78,33 @@ Rules:
 - preserve the approved HTML shell instead of redesigning it opportunistically;
 - decide what the renderer must represent, but leave pure implementation mechanics to the kit-local owner when semantics are already correct.
 
+### PRD prose quality
+
+Apply the writing-quality contract in `CONTENT-CONTRACT.md` to explanatory prose. The goal is not to make technical writing decorative or "more human" at the expense of precision; it is to remove formulaic AI-style filler while keeping the PRD easy to read.
+
+Use these rules:
+
+- prefer plain technical sentences over inflated wording;
+- state the concrete mechanic, condition, action, or consequence instead of telling the reader that something is important, immersive, seamless, dynamic, or engaging;
+- remove fake analysis, promotional wording, throat-clearing, and filler that does not change meaning;
+- keep stable project terminology stable; do not rotate synonyms merely for style;
+- do not force ideas into artificial groups of three or repeated sentence patterns;
+- make the minimum effective edit and leave already-clear sentences alone;
+- never rewrite IDs, official names, numbers, coordinates, timings, formulas, weights, triggers, conditions, state names, code/API names, or approved terminology for stylistic reasons;
+- apply this most strongly to Overview, Gameplay explanation, narrative/context, Level Design explanation, Developer explanation, and notes; do not aggressively "humanize" tables, formulas, requirement lists, configuration values, or code.
+
+Example:
+
+```text
+Avoid:
+This mechanic plays a crucial role in creating an engaging and immersive gameplay experience.
+
+Prefer:
+When the timer ends, the bridge collapses. The player must cross before that happens.
+```
+
+Writing quality is subordinate to source fidelity and implementation clarity. If a smoother sentence changes product meaning, keep the precise sentence.
+
 ## Flow 4 Judgment
 
 Audit from the perspectives that determine production usefulness:
@@ -87,6 +114,8 @@ Audit from the perspectives that determine production usefulness:
 - Developer;
 - Project Consistency;
 - rendered-artifact integrity at the level actually proven.
+
+While performing those existing reviews, also flag explanatory prose that is vague, inflated, repetitive, or formulaically AI-sounding when it makes the PRD harder to use. Do not create a separate AI score or writing gate.
 
 Critical/Major findings block development readiness. Minor/Suggestion findings may remain only when they do not change material meaning or prevent the downstream role from working reliably.
 
@@ -128,6 +157,7 @@ Before completion verify the relevant original development-brief criteria, inclu
 - no unresolved material gap was hidden;
 - canonical content and derived artifact do not materially disagree;
 - role-specific output is usable;
+- explanatory prose is plain, concrete, and free of unnecessary AI-style filler without altering technical meaning;
 - structural/visual/runtime claims do not exceed actual evidence.
 
 ## Handoff Boundary
