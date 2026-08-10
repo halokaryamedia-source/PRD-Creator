@@ -1,130 +1,68 @@
-# BuildIT Parity Remediation Plan
+# BuildIT Parity Remediation
 
 Updated: 2026-08-10
-Status: approved ordered remediation direction
+Status: **closed as an automatic remediation program**
 
-Governing evidence:
+## Why this changed
 
-`../reviews/buildit-current-parity-gap-audit.md`
+BuildIT was used to improve PRD-Creator's operating discipline. That was useful for repository memory, work-mode routing, ownership, root-cause Maintenance, and focused verification.
 
-This plan converts the current BuildIT comparison into bounded work. `../next-action.md` owns the single active slice.
+The later remediation track began treating differences from BuildIT as gaps that should be engineered away even when PRD-Creator did not need the same machinery. That conflicts with the repository's anti-overdevelopment rules.
 
-## P0 — Production Engineering Enforcement
+Current durable decision:
 
-### P0.1 — Executable Production Verify — COMPLETE
+`../decisions/anti-overdevelopment-simplification.md`
 
-Implemented:
+## What remains adopted
 
-- exact Python dependency lock for executable Voice tooling;
-- PRD renderer → generated HTML → PRD validator focused contracts;
-- PRD negative scoring/completion contracts;
-- Voice requirements → script → DOCX builder → Voice validator focused contracts;
-- real DOCX page-break regression;
-- negative Voice ID and Type parity contracts;
-- fail-closed GitHub Actions aggregation.
+- repository-first continuity;
+- Plan / Developing / Maintenance routing;
+- small ownership surfaces;
+- `development-brief` for non-trivial Developing work;
+- root-cause-first Maintenance;
+- at most one relevant specialist;
+- focused executable verification;
+- explicit semantic / mechanical / visual / audio proof boundaries;
+- `No change required` as a valid result.
 
-Proof:
+## What is not a parity requirement
 
-```text
-source head       0eb0485f117fa6ed419572a66539331f99114002
-Production Verify 31372363843  PASS
-Repository Verify 31372363802  PASS
-```
+PRD-Creator does not need to reproduce BuildIT's:
 
-### P0.2 — Technical Ownership Refinement — COMPLETE
+- domain-specific skills;
+- module depth;
+- review count;
+- test architecture;
+- revision/checksum machinery;
+- generated-doc freshness systems;
+- CI depth;
+- planning layers;
+- tooling stack.
 
-Source/governance head:
+Those may only be introduced when a real PRD-Creator task independently proves the need.
 
-`a0a51d97523ab07f87ef6deeffdafc8094febea4`
+## Current result
 
-Result:
+The overdeveloped checksum/revision additions were removed in:
 
-- no new root technical specialist is justified;
-- three canonical root skills remain;
-- semantic/product-contract failures route to matching root specialist;
-- pure renderer/template/validator/builder mechanics route to nearest kit owner;
-- shared dependency/test/CI mechanics route to repository engineering;
-- both kit-local `AGENTS.md` files define contributor/verification contracts.
+`08b6f9d6a98641c5f93932df015cb0d2dffe9a42`
 
-Evidence:
-
-`../reviews/technical-ownership-refinement-audit.md`
-
-Decision:
-
-`../decisions/technical-ownership-boundary.md`
-
-Proof:
+with:
 
 ```text
-Repository Verify 31374226049  PASS
-Production Verify 31374226078  PASS
+Repository Verify 31381677940  PASS
+Production Verify 31381677946  PASS
 ```
 
-## P1 — Production Engineering Quality — AUDIT COMPLETE / REMEDIATION ACTIVE
+## Future rule
 
-Canonical audit:
+Do not create another numbered parity phase by default.
 
-`../reviews/production-engineering-quality-audit.md`
+Use BuildIT as a comparison source when useful, then ask:
 
-Ordered source-remediation plan:
+1. does PRD-Creator have a real failure or repeated friction here?
+2. can the current owner solve it more simply?
+3. will this make normal project production easier or harder?
+4. what is the minimum useful proof?
 
-`production-engineering-remediation-plan.md`
-
-The audit found material remaining gaps in:
-
-- PRD render revision/freshness identity;
-- PRD validator malformed-input fail-closed behavior;
-- glossary JavaScript-context safety;
-- PRD shell/metadata mechanical integrity;
-- Voice requirements/script/DOCX revision identity;
-- DOCX per-entry binding validation;
-- Voice empty-section controlled failure;
-- contract-test discovery;
-- conditional derived-output atomicity.
-
-### P1.1 — PRD Mechanical Revision Integrity — ACTIVE NEXT
-
-Fix only the first dependency slice:
-
-- structured fail-closed preflight for malformed render-data;
-- deterministic current render-data → final HTML revision/fingerprint evidence;
-- stale current HTML must fail;
-- stale extra generated sections/pages must fail;
-- focused regressions.
-
-Do not automate semantic canonical-content judgement or browser visual approval.
-
-Later P1 slices are ordered in `production-engineering-remediation-plan.md`; do not skip ahead merely because another fix is easier.
-
-## P1.5 — Module Governance
-
-After required P1 source findings are repaired/re-audited, strengthen module ownership only where complexity proves it useful:
-
-- purpose/boundary/inputs/outputs/dependencies/risks;
-- exact development and verification commands;
-- canonical/generated artifact rules;
-- module-local proof boundaries.
-
-Do not create per-directory governance files by default.
-
-## P2 — Knowledge / Operations Maturity
-
-Evaluate and add only useful equivalents of:
-
-- operations index;
-- broad roadmap;
-- meaningful change log;
-- trigger-based documentation audit;
-- repository-wide glossary;
-- optional Obsidian vault ergonomics.
-
-## P3 — Conditional Helper Routing
-
-Make conditional diagnosis/testing/review/research/design/skill-authoring escalation explicit without copying global helpers into the repository.
-
-## Acceptance Principle
-
-The target is **relevant operating parity**, not tree similarity.
-
-A BuildIT mechanism is adopted only when it protects a real PRD-Creator boundary. Domain-specific MCP/Blockbench structure is not copied.
+If there is no concrete benefit, the result is **No change required**.

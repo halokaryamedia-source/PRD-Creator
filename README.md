@@ -1,63 +1,39 @@
 # Project Production Workspace
 
-A repository-first production workspace for turning incomplete project direction into development-ready project documentation, then deriving validated ElevenLabs-ready Voice Production deliverables.
+A repository-first workspace for turning incomplete project direction into development-ready project documentation, then deriving validated ElevenLabs-ready Voice Production.
 
-The repository is project memory. Chat history is supporting context, not the authority for current state.
+The repository is project memory. Chat history is supporting context, not current-state authority.
 
-## Branch Model
+## Branch model
 
 - `Local` — permanent working/development authority.
 - `main` — stable baseline; change only when explicitly requested.
-- routine per-task/per-flow branches and PRs are not used.
+- no routine per-task/per-flow branches or PRs.
 
-## Architecture
-
-```text
-Agent Operating Layer
-Plan / Developing / Maintenance
-→ development-brief for Developing
-→ at most one specialist
-→ owner/root-cause/proof routing
-
-Product Production Layer
-Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7
-```
-
-Production Flow 1–7 is implemented and real-project proven on The Clockwork Vault. The retired `Production Document Builder/` is not a live owner.
-
-## Mandatory Session Boot
-
-1. read `AGENTS.md`;
-2. read `CONTEXT.md`;
-3. read `docs/knowledge/next-action.md`;
-4. open only the smallest relevant foundation/source/kit owner;
-5. use ownership/skill maps only when needed.
-
-## BuildIT Parity State
-
-Overall full relevant parity remains open. Current governing evidence:
+## Production flow
 
 ```text
-docs/knowledge/reviews/buildit-current-parity-gap-audit.md
-docs/knowledge/reviews/production-engineering-quality-audit.md
-docs/knowledge/operations/production-engineering-remediation-plan.md
+Source Intake
+→ PRD
+→ Validate / Handoff
+→ Voice Requirements
+→ Voice Script
+→ Build DOCX
+→ Validate / Deliver
 ```
 
-The earlier `OPERATING_PARITY_ACCEPTED` record remains historical partial acceptance for the governance/routing subset only.
+Flow 1–7 is implemented and real-project proven.
 
-## Verification Layers
+## Operating flow
 
-### Repository Verify
+```text
+Plan | Developing | Maintenance
+→ correct owner
+→ smallest complete change
+→ minimum useful proof
+```
 
-Static repository/routing/navigation/dependency-pin/syntax invariants.
-
-### Production Verify
-
-Exact dependency install + Python compile + focused executable PRD and Voice production contracts + fail-closed aggregation.
-
-Neither gate replaces semantic review, browser visual inspection, rendered DOCX page QA, pronunciation/performance judgement, or actual audio review.
-
-## Current Root Skills
+Canonical root skills:
 
 ```text
 development-brief
@@ -65,68 +41,42 @@ project-document-production
 voice-production
 ```
 
-P0.2 keeps these as semantic/product-contract owners. Pure renderer/validator/builder mechanics route to nearest kit owners; shared dependency/test/CI mechanics route to repository engineering.
+## Keep it simple
 
-## P1 Engineering Progress
+BuildIT is used as a reference for repository discipline, not as a checklist of mechanisms to copy.
 
-### P1.1 — COMPLETE
+Current anti-overdevelopment decision:
 
-Source `04f306f8589528ccc8cb03e89333dba174a3d276`.
+`docs/knowledge/decisions/anti-overdevelopment-simplification.md`
 
-```text
-Production Verify 31377375929  PASS
-Repository Verify 31377377036  PASS
-```
+Normal project work must not require manual checksum/revision metadata. Derived files are regenerated from canonical inputs when needed.
 
-Closed generic PRD stale-render revision and malformed render-data failure paths.
+The cleanup that removed unnecessary PRD/Voice revision machinery is:
 
-### P1.2 — COMPLETE
+`08b6f9d6a98641c5f93932df015cb0d2dffe9a42`
 
-Source `802904856b69fd50008999f196cb72d48303e0ba`.
+with Repository Verify and Production Verify both passing.
 
-```text
-Repository Verify 31378603894  PASS
-Production Verify 31378603848  PASS
-```
+## Verification layers
 
-Closed glossary `<script>`-context safety/alias-shape and minimum approved-shell marker/metadata trust gaps. Browser runtime/visual quality remains a separate evidence level.
+- **Repository Verify** — static repository/routing/navigation/syntax checks.
+- **Production Verify** — locked dependencies, compile, focused real PRD/Voice executable contracts.
+- **Semantic / visual / audio evidence** — performed only where the production claim actually requires it.
 
-### P1.3 — COMPLETE
+CI is a guard, not a reason to keep adding engineering machinery.
 
-Source `dcb9bdf54a5749d04be2362b9d33918ab332f4f2`.
+## Repository map
 
-```text
-Repository Verify 31379718341  PASS
-Production Verify 31379718339  PASS
-```
-
-Voice production now mechanically binds the current Flow 5 requirements revision to the canonical Flow 6 script, binds current requirements + current script fingerprints into the derived DOCX, and validates DOCX entries as bound Type/ID-title/duration/performance units rather than global tokens.
-
-This does not automate semantic `Must communicate` coverage, rendered-page quality, pronunciation/performance judgement, or audio quality.
-
-## Repository Map
-
-- `AGENTS.md` — repository-wide work modes, authority, proof, anti-slop baseline;
-- `CONTEXT.md` — stable workspace/product state;
-- `.agents/skills/` — repository-wide semantic routing/judgment skills;
-- `.github/workflows/` — repeatable static/production gates;
-- `requirements.lock.txt`, `tests/`, `tools/` — shared repository engineering contracts;
-- `docs/foundation/` — durable production policy + validation matrix;
-- `docs/knowledge/` — current state, routing, reviews, decisions, operations;
-- `kits/project-document-generator/` — Flow 2–4 implementation + module-local mechanics;
-- `kits/voice-production-kit/` — Flow 5–7 implementation + module-local mechanics;
+- `AGENTS.md` — repository-wide work rules;
+- `CONTEXT.md` — stable current context;
+- `.agents/skills/` — semantic routing/judgment skills;
+- `docs/foundation/` — durable production policy;
+- `docs/knowledge/` — current state, ownership, decisions, reviews, operations;
+- `kits/project-document-generator/` — Flow 2–4 implementation;
+- `kits/voice-production-kit/` — Flow 5–7 implementation;
+- `tests/`, `tools/`, `.github/workflows/` — focused repository engineering;
 - `workspace/` — project-specific production packages.
 
-## Core Authority Rule
+## Current work
 
-```text
-Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
-≠ Voice Requirements ≠ Voice Production Script ≠ DOCX
-≠ Voice Acceptance ≠ Audio
-```
-
-Generated artifacts and successful tooling never silently become higher authority than the canonical work/evidence that produced them.
-
-## Current Work
-
-P1.1, P1.2, and P1.3 are complete. The active next source slice is **P1.4 — Voice Parser / Failure-State Hardening**. See `docs/knowledge/next-action.md` for the exact implementation/acceptance boundary.
+No automatic parity-hardening phase is active. See `docs/knowledge/next-action.md` for the single current continuation point.
