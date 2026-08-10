@@ -8,9 +8,9 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 
 | Evidence / review | Current meaning |
 |---|---|
-| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Active historical execution evidence.** It established that Flow 1–7 production was complete but BuildIT-style operating discipline was incomplete. Phase 1–2 implemented the architectural gaps; Phase 3 now exercises them. |
-| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Active execution evidence.** Representative routing scenarios pass and a real Project Document broad-read Maintenance defect was found. Final acceptance is waiting for the first successful Repository Verify run. |
-| [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and one real defect→root-fix→revalidation cycle. |
+| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical active evidence.** It established that production completion did not equal BuildIT-style operating parity and justified Phases 1–3. Its gap findings are now implemented/accepted; use the Phase 3 acceptance for current status. |
+| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Current operating acceptance evidence.** Representative routing passed, a real Maintenance defect was corrected, nearest-agent decisions were grounded, and Repository Verify run `31367001967` passed. Current result: `OPERATING_PARITY_ACCEPTED`. |
+| [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and a real defect→root-fix→revalidation cycle. |
 | [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** It justified deleting the old `Production Document Builder/` live tree. Do not use it as current production procedure. |
 | [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It summarizes current production and operating evidence, not historical reasoning. |
 | [Review Template](review-template.md) | Reusable review shape when a dedicated review is actually justified. |
@@ -21,6 +21,7 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 - `active execution evidence` — finding directly controls current work order;
 - `implemented` — corresponding current-owner change exists;
 - `current production evidence` — current production capability is supported by recorded proof;
+- `current operating acceptance evidence` — current operating architecture has explicit acceptance proof;
 - `historical` — retained for reasoning/provenance, not current routing;
 - `local proof required` — source/implementation exists but material local/browser/audio/runtime proof remains;
 - `superseded` — a later decision/source replaced the old method or conclusion.

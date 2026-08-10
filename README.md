@@ -54,7 +54,23 @@ Operating owners:
 - `docs/knowledge/sources/source-map.md` — source/authority routing;
 - `docs/knowledge/reviews/review-graph.md` — current meaning of historical review evidence;
 - `docs/knowledge/decisions/change-decision-guide.md` — durable decision / cross-owner change threshold;
-- `docs/knowledge/operations/context-boot-baseline.md` — expected efficient boot/routing scenarios.
+- `docs/knowledge/operations/context-boot-baseline.md` — exercised boot/routing baseline;
+- `docs/knowledge/operations/operating-parity-acceptance.md` — final operating acceptance evidence.
+
+## Repository Verify
+
+A narrow static engineering gate protects repeatable repository invariants:
+
+```text
+tools/verify_repository.py
+→ .github/workflows/repository-verify.yml
+```
+
+It verifies canonical owner paths, the frozen three-skill set, relative Markdown navigation, one-next-step continuity, retired-builder containment, and Python syntax in production kits.
+
+The first `Repository Verify` run passed on `Local` commit `5970c47c15c8e9e83df185be7c5472e976739062` (run `31367001967`).
+
+This gate does **not** replace PRD semantic validation, browser/HTML visual inspection, DOCX visual QA, or actual generated-audio review.
 
 ## Production Flow
 
@@ -74,7 +90,7 @@ Flow 6 — ElevenLabs Performance Script Production     ✓ implemented
 Flow 7 — Voice Validation & Delivery                  ✓ implemented
 ```
 
-Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`.
+Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`. Its nearest `AGENTS.md` and Flow-first `SKILL.md` keep Flow-local reads scoped.
 
 Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable Voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
 
@@ -96,6 +112,7 @@ Do not load the task board, review history, every kit, or saved projects during 
 - `AGENTS.md` — repository-wide work modes, authority, independent judgment, root-cause/proof/anti-slop baseline.
 - `CONTEXT.md` — stable purpose, terminology, architecture boundaries.
 - `.agents/skills/` — canonical repository-wide routing/judgment skills.
+- `.github/workflows/` + `tools/` — narrow automated repository invariants.
 - `docs/foundation/` — durable production policy + current proof matrix.
 - `docs/knowledge/` — current state, routing, ownership, sources, skills, decisions, maintenance, reviews, operations.
 - `kits/project-document-generator/` — detailed PRD intake/generation/validation procedure and implementation.
@@ -111,12 +128,13 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requ
 
 Generated artifacts and successful tooling never silently become higher authority than the canonical work/evidence that produced them.
 
-## Current Proof / Parity State
+## Current State
 
-- Product Flow 1–7: implemented.
-- Real-project Flow 2–7 integration: verified on The Clockwork Vault.
+- Product Flow 1–7: implemented and real-project proven.
 - Retired Production Document Builder migration: complete.
-- BuildIT-style operating parity Phase 1 — Agent Routing + Skill Architecture: implemented.
-- BuildIT-style operating parity Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure: implemented in repository architecture.
+- BuildIT-style operating parity Phase 1–3: **accepted**.
+- First Repository Verify execution: **PASS**.
 
-Final operating-parity acceptance still requires representative boot/routing/Maintenance scenarios and a final owner/link/proof audit. Do not add CI or another framework merely to mimic BuildIT; add an engineering gate only if current failure evidence justifies it.
+`BUILD_IT_STYLE_OPERATING_PARITY_ACCEPTED`
+
+No Phase 4 is planned for parity itself. The normal next step is to use the active pipeline on the next real project and route any future change through Plan / Developing / Maintenance based on actual evidence.

@@ -1,17 +1,17 @@
 # Operating Parity Acceptance Decisions
 
 Updated: 2026-08-10
-Status: active durable decision
+Status: accepted durable decision
 
 ## Context
 
 Phase 3 exercised the BuildIT-style operating architecture added in Phase 1–2. The acceptance run found one real routing defect: Project Document Generator's kit `SKILL.md` forced broad reading across Flow 2–4 even when only one Flow was active.
 
-The repository also now depends on stable structural invariants: a frozen root skill set, canonical ownership/source routes, one active next step, executable Python production tools, and permanent retirement of the old builder tree.
+The repository also depends on stable structural invariants: a frozen root skill set, canonical ownership/source routes, one active next step, executable Python production tools, and permanent retirement of the old builder tree.
 
 ## Decision 1 — Project Document Generator gets nearest `AGENTS.md`
 
-Add `kits/project-document-generator/AGENTS.md` and make the kit `SKILL.md` Flow-first.
+Keep `kits/project-document-generator/AGENTS.md` and the Flow-first kit `SKILL.md`.
 
 Why:
 
@@ -22,9 +22,9 @@ Why:
 
 Voice Production's existing local `AGENTS.md` remains sufficient. Do not add nearest agent files to every directory by default.
 
-## Decision 2 — Add one small repository verification gate
+## Decision 2 — Keep one small repository verification gate
 
-Adopt:
+Canonical gate:
 
 ```text
 tools/verify_repository.py
@@ -46,10 +46,24 @@ The gate fails closed on stable repository contracts only:
 This is not copied because BuildIT has CI. It is justified because:
 
 1. Phase 3 found actual routing drift after architecture changes;
-2. continuity now depends on several linked owner documents;
+2. continuity depends on several linked owner documents;
 3. root skill inventory is explicitly frozen;
 4. production uses executable Python code;
 5. these checks are cheap, deterministic, and meaningful on every commit.
+
+## Execution Proof
+
+The first GitHub Actions execution passed without weakening the gate:
+
+- Workflow: `Repository Verify`
+- Event: push to `Local`
+- Commit: `5970c47c15c8e9e83df185be7c5472e976739062`
+- Run ID: `31367001967`
+- Run number: `1`
+- Conclusion: `success`
+- Completed: `2026-08-10T07:43:21Z`
+
+This satisfies the Phase 3 execution requirement.
 
 ## Tradeoffs / Boundaries
 
@@ -67,14 +81,12 @@ Those remain owned by Flow-specific validators and actual visual/audio evidence.
 
 Do not expand this workflow into a large test/packaging framework unless a future real failure demonstrates a missing repeatable invariant.
 
-## Evidence / Validation Boundary
+## Final Decision
 
-Phase 3 routing scenarios and the Maintenance finding are recorded in:
+`OPERATING_PARITY_ACCEPTED`
 
-`docs/knowledge/operations/operating-parity-acceptance.md`
-
-Final operating-parity acceptance additionally requires the first `Repository Verify` run on `Local` to pass.
+Phase 1–3 establish the relevant BuildIT-style operating discipline for PRD-Creator without copying BuildIT's MCP/Blockbench domain architecture.
 
 ## Follow-up
 
-After the first successful workflow run, update the current acceptance/status owners and return the repository to normal project operation. Future operating changes are evidence-driven Maintenance, not another parity phase by default.
+Return to normal project operation. Future operating changes are ordinary Plan / Developing / Maintenance work and are added only when real project evidence or a repeatable invariant failure proves a missing capability.

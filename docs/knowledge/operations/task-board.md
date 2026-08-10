@@ -25,16 +25,16 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 
 - [x] Phase 1 — Agent Routing + Skill Architecture.
 - [x] Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure.
-- [ ] Phase 3 — Operating Parity Acceptance.
-  - [x] exercise representative Developing routes for Project Document and Voice;
-  - [x] exercise a real Maintenance route;
-  - [x] identify and correct Project Document broad-read routing defect;
-  - [x] decide nearest/local `AGENTS.md` value from evidence;
-  - [x] audit owner/navigation structure;
-  - [x] decide whether an automated engineering gate is justified;
-  - [x] implement narrow `Repository Verify` script + workflow;
-  - [ ] observe first successful `Local` Repository Verify run;
-  - [ ] record final parity acceptance/current normal-operating next step.
+- [x] Phase 3 — Operating Parity Acceptance.
+  - [x] representative Project Document / Voice routing scenarios;
+  - [x] real Maintenance scenario;
+  - [x] Project Document broad-read defect corrected at owner;
+  - [x] nearest/local `AGENTS.md` decision from evidence;
+  - [x] owner/navigation audit;
+  - [x] evidence-backed engineering-gate decision;
+  - [x] narrow `Repository Verify` script + workflow;
+  - [x] first `Local` Repository Verify run PASS — run `31367001967`;
+  - [x] final parity matrix + normal operational next step.
 
 ## Other Maintenance
 
@@ -43,4 +43,4 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 
 ## Rule
 
-Do not copy BuildIT domain inventory for appearance. Preserve its operating discipline through PRD-Creator's own semantic owners, minimal routing, fail-closed evidence, and smallest useful proof.
+Operating-parity work is complete. Do not create another parity phase merely to imitate BuildIT structure. Future changes must follow the accepted routing and be driven by actual project evidence or a repeatable repository invariant failure.

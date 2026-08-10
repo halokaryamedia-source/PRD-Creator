@@ -6,79 +6,87 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Complete **Phase 3 — Operating Parity Acceptance** by proving the BuildIT-style routing/ownership architecture in actual repository use without reopening completed Flow 1–7 production semantics.
+Operate the completed PRD + Voice Production pipeline under the accepted BuildIT-style agent operating architecture.
 
 ## Current Status
 
-`OPERATING_PARITY_PHASE_3_REPOSITORY_VERIFY_PENDING`
+`BUILD_IT_STYLE_OPERATING_PARITY_ACCEPTED`
 
-## Completed — Phase 1
+## Completed Production System
 
-- Plan / Developing / Maintenance mode routing;
+- Flow 1–7 implemented on permanent branch `Local`;
+- The Clockwork Vault completed real Flow 2→7 integration proof;
+- real DOCX blank-page defect was found by visual QA, fixed at the builder root, rebuilt, and revalidated;
+- old `Production Document Builder/` was audited `SAFE_TO_DELETE` and removed from the live tree;
+- generated audio remains a separate evidence dimension and is never inferred from script/DOCX quality.
+
+## Completed Operating Architecture
+
+### Phase 1 — Agent Routing + Skill Architecture
+
+- Plan / Developing / Maintenance modes;
 - mandatory non-trivial `development-brief`;
 - Build POV + Acceptance POV;
 - 2–5 acceptance criteria + proof budget;
-- frozen root `.agents/skills/` architecture:
+- frozen root skills:
   - `development-brief`;
   - `project-document-production`;
   - `voice-production`;
-- skill activation matrix / skill map;
+- activation matrix + skill map;
 - agent flow + Developing flow.
 
-## Completed — Phase 2
+### Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure
 
 - module ownership map;
 - source-authority map;
-- Maintenance flow/template;
-- review evidence lifecycle / review graph;
-- durable-decision / coordinated-change threshold;
+- Maintenance workflow/template;
+- review graph / historical-evidence lifecycle;
+- durable decision / coordinated-change threshold;
 - context-boot baseline;
 - production + operating validation matrix.
 
-## Phase 3 Evidence Completed
+### Phase 3 — Operating Parity Acceptance
 
-Representative routes were exercised for:
+- representative Project Document and Voice routing scenarios passed;
+- real Project Document broad-read routing defect found and corrected;
+- nearest `kits/project-document-generator/AGENTS.md` added from evidence;
+- existing Voice nearest `AGENTS.md` retained;
+- narrow repository engineering gate implemented;
+- first `Repository Verify` GitHub Actions run passed on commit `5970c47c15c8e9e83df185be7c5472e976739062`, run `31367001967`.
 
-- new/incomplete project → `development-brief` + `project-document-production` → Flow 2;
-- PRD content/rendering change → Project Document semantic owner;
-- Voice scope/script change → `development-brief` + `voice-production`;
-- documentation/routing Maintenance.
-
-The Maintenance run found a real defect: Project Document Generator's kit `SKILL.md` forced broad reading across Flow 2–4. The root correction is prepared as Flow-first routing plus a nearest `kits/project-document-generator/AGENTS.md`.
-
-Nearest-owner decision:
-
-- Project Document local `AGENTS.md` → justified and added;
-- existing Voice local `AGENTS.md` → retained; no extra local layer.
-
-Engineering-gate decision:
-
-- add one small `Repository Verify` gate because current architecture depends on frozen skill/owner/navigation invariants and executable Python sources;
-- do not add a broad testing/packaging framework;
-- CI does not substitute for PRD semantic, HTML visual, DOCX visual, or generated-audio proof.
-
-Canonical Phase 3 evidence:
+Canonical acceptance evidence:
 
 `docs/knowledge/operations/operating-parity-acceptance.md`
 
-Durable gate decision:
+## Current Operating Rule
 
-`docs/knowledge/decisions/operating-parity-gates.md`
+```text
+boot
+AGENTS → CONTEXT → next-action
+↓
+mode
+Plan | Developing | Maintenance
+↓
+smallest semantic owner
+↓
+Developing only: development-brief + at most one specialist
+↓
+smallest complete change
+↓
+minimum useful proof
+↓
+update only the canonical state/decision/review owner that actually changed
+```
+
+`Repository Verify` protects static repository invariants only. PRD semantic, HTML visual, DOCX visual, and generated-audio claims still require their own evidence.
 
 ## Preserved Boundaries
 
-Phase 3 does not:
-
-- change Project Document or Voice production meaning;
-- add a new root skill;
-- create another project state hierarchy;
-- treat static CI as visual/audio acceptance;
-- revive retired schemas/profiles/freeze/package architecture.
-
-## Remaining Gate
-
-The Phase 3 implementation must be committed to `Local`, then the first GitHub Actions **Repository Verify** run must pass before final `OPERATING_PARITY_ACCEPTED` status is recorded.
+- no Phase 4 is created merely to continue parity work;
+- no BuildIT MCP/Blockbench domain structure is copied into this repository;
+- no new skill/module/workflow is added without a proved current ownership or repeatable-invariant need;
+- `main` remains untouched unless explicitly requested.
 
 ## Next Step
 
-Observe the first **Repository Verify** run for the Phase 3 `Local` commit. If it fails, fix only the reported invariant/root owner; if it passes, record final operating-parity acceptance and return to normal project operation.
+Use the active pipeline on the **next real project**, starting at the smallest correct Flow (normally Flow 2 for new/incomplete source). Any future defect or architecture change must follow the accepted Plan / Developing / Maintenance routing and be evidence-driven.

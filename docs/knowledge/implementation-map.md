@@ -19,7 +19,8 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Source/authority routing | `docs/knowledge/sources/source-map.md` |
 | Review evidence current meaning | `docs/knowledge/reviews/review-graph.md` |
 | Durable cross-owner decision threshold | `docs/knowledge/decisions/change-decision-guide.md` |
-| Operating parity Phase 3 evidence | `docs/knowledge/operations/operating-parity-acceptance.md` |
+| Operating parity acceptance evidence | `docs/knowledge/operations/operating-parity-acceptance.md` |
+| Operating parity gate decisions | `docs/knowledge/decisions/operating-parity-gates.md` |
 | Repository engineering gate | `tools/verify_repository.py` + `.github/workflows/repository-verify.yml` |
 | Active continuation state | `docs/knowledge/next-action.md` |
 
@@ -92,6 +93,8 @@ Actual generated audio, when supplied, is evidence/delivery material only and ne
 
 ## Current Engineering Boundary
 
-Phase 1–2 operating architecture is implemented. Phase 3 routing/Maintenance acceptance has been exercised and the Project Document broad-read defect is corrected in the current change.
+Production Flow 1–7 and BuildIT-style operating parity are accepted on `Local`.
 
-Final operating-parity status still depends on the first successful `Repository Verify` GitHub Actions run for the Phase 3 `Local` commit.
+Phase 3 representative routing/Maintenance acceptance passed, and the first `Repository Verify` GitHub Actions run (`31367001967`) succeeded on commit `5970c47c15c8e9e83df185be7c5472e976739062`.
+
+No additional parity phase is planned. Future engineering starts from the smallest current owner and changes only when a real project defect, capability gap, or repeatable invariant failure provides evidence.

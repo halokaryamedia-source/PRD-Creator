@@ -11,7 +11,7 @@ This workspace supports a two-stage production system:
 1. turn incomplete/uneven project direction into documentation that developers, level designers, and the wider production team can use;
 2. derive validated ElevenLabs-ready Voice Production from accepted project/gameplay/story documentation without inventing upstream design.
 
-The production pipeline and the agent operating layer are separate:
+The production pipeline and agent operating layer are separate:
 
 ```text
 Agent Operating Layer
@@ -39,9 +39,23 @@ Detailed routing/ownership is owned by:
 - `docs/knowledge/sources/source-map.md` — authority/source routing;
 - `docs/knowledge/maintenance/maintenance-flow.md` — bug/regression/cleanup route;
 - `docs/knowledge/reviews/review-graph.md` — current meaning of historical review evidence;
-- `docs/knowledge/decisions/change-decision-guide.md` — durable decision / cross-owner change threshold.
+- `docs/knowledge/decisions/change-decision-guide.md` — durable decision / cross-owner change threshold;
+- `docs/knowledge/operations/operating-parity-acceptance.md` — final operating acceptance evidence.
 
 The root skill architecture is intentionally small and frozen. Detailed production procedure remains inside the existing kits rather than being duplicated into root skills.
+
+## Repository Verification
+
+Static repository invariants are protected by:
+
+```text
+tools/verify_repository.py
+→ .github/workflows/repository-verify.yml
+```
+
+The first `Repository Verify` run passed on `Local` commit `5970c47c15c8e9e83df185be7c5472e976739062` (run `31367001967`).
+
+This gate verifies repository/skill/navigation/Python-syntax contracts only. It never substitutes for PRD semantic review, HTML visual proof, DOCX visual QA, or actual generated-audio review.
 
 ## Project Document Generator
 
@@ -56,6 +70,8 @@ project source
 → PRD acceptance
 → handoff_ready
 ```
+
+Nearest `kits/project-document-generator/AGENTS.md` owns Flow-local read/edit discipline. The kit `SKILL.md` is Flow-first rather than requiring a broad read of every procedure.
 
 ## Voice Production Kit
 
@@ -87,6 +103,8 @@ Flow 5 owns **which communications exist and what they must communicate**. Flow 
 **Maintenance Flow** — root-cause-first route for bugs/regressions/cleanup that does not automatically invoke `development-brief`.
 
 **Source Authority Map** — routing note that identifies which current owner can support a claim without becoming another source of truth.
+
+**Repository Verify** — narrow automated gate for stable repository invariants; not semantic/visual/audio acceptance.
 
 **Canonical PRD Content** — `work/content.md`; accepted project meaning used by downstream production.
 
@@ -125,6 +143,7 @@ The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; cu
 ## Stable Structure
 
 - `.agents/skills/` — canonical repository-wide agent skill root.
+- `.github/workflows/` + `tools/` — narrow repeatable repository invariants.
 - `docs/foundation/` — durable production policy and current proof matrix.
 - `docs/knowledge/` — continuity, routing, skills, ownership, sources, maintenance, reviews, decisions, operations.
 - `kits/project-document-generator/` — active PRD Flow 2–4 production owner.
@@ -142,12 +161,8 @@ A successful tool/artifact never silently becomes higher authority than the cano
 
 ## Current Development State
 
-Production Flow 1–7, The Clockwork Vault real-project integration proof, and retirement of the old Production Document Builder are complete.
+Production Flow 1–7, The Clockwork Vault real-project integration proof, retired-builder migration, and BuildIT-style operating parity Phase 1–3 are complete and accepted.
 
-BuildIT-style operating parity is a separate improvement track:
+Current operating status: `BUILD_IT_STYLE_OPERATING_PARITY_ACCEPTED`.
 
-- **Phase 1 — Agent Routing + Skill Architecture:** implemented;
-- **Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure:** implemented in repository architecture;
-- representative boot/routing/Maintenance scenarios still need to be exercised before final operating-parity acceptance.
-
-Production behavior itself is not reopened unless parity acceptance exposes a concrete conflict or missing capability.
+Future work returns to normal project operation. No Phase 4 is planned merely to continue parity work; architecture changes occur only when real project evidence or a repeatable invariant failure proves a distinct need.

@@ -17,22 +17,22 @@ Manual baseline for checking whether repository boot/routing stays efficient. Ex
 
 ## Scenarios
 
-| Scenario | Expected initial route | Expected owner/skill | Phase 3 status |
+| Scenario | Expected initial route | Expected owner/skill | Phase 3 result |
 |---|---|---|---|
-| New project from incomplete source | boot → active project/source → Flow 2 policy | `development-brief` + `project-document-production` | **PASS — route exercised** |
-| Existing PRD content/structure change | boot → affected project canonical content/requirements | `development-brief` + `project-document-production` | **PASS — route exercised** |
-| PRD renderer/HTML defect | boot → reproduce/inspect projection/render owner | Maintenance + `project-document-production` if useful | **PASS — owner route confirmed; no defect mutation required** |
-| Voice scope/script change | boot → accepted PRD / Voice state | `development-brief` + `voice-production` | **PASS — route exercised** |
-| DOCX builder/layout defect | boot → concrete DOCX defect → builder owner | Maintenance + `voice-production` if useful | **PASS — historical real defect remains supporting evidence** |
-| Ambiguous cross-owner architecture request | boot → current ownership/decision evidence | Plan first; coordinated-change threshold only if justified | **PASS — Phase 1–3 parity work used explicit phased contract** |
-| Documentation/routing cleanup | boot → stale owner/link → smallest correction | Maintenance, usually no specialist | **PASS — real Project Document broad-read defect found** |
+| New project from incomplete source | boot → active project/source → Flow 2 policy | `development-brief` + `project-document-production` | **PASS** |
+| Existing PRD content/structure change | boot → affected project canonical content/requirements | `development-brief` + `project-document-production` | **PASS** |
+| PRD renderer/HTML defect | boot → reproduce/inspect projection/render owner | Maintenance + `project-document-production` if useful | **PASS** |
+| Voice scope/script change | boot → accepted PRD / Voice state | `development-brief` + `voice-production` | **PASS** |
+| DOCX builder/layout defect | boot → concrete DOCX defect → builder owner | Maintenance + `voice-production` if useful | **PASS — historical real defect supports same route** |
+| Ambiguous cross-owner architecture request | boot → current ownership/decision evidence | Plan first; coordinated-change threshold only if justified | **PASS** |
+| Documentation/routing cleanup | boot → stale owner/link → smallest correction | Maintenance, usually no specialist | **PASS — real broad-read defect found/fixed** |
 
 ## Phase 3 Measurements
 
 ### Developing — Project Document
 
-- boot state: already current from the active Phase 2 continuation;
-- additional routing reads before semantic owner confirmation: `development-brief`, activation matrix, `project-document-production`;
+- boot state remained current from repository continuity;
+- routing reads before semantic owner confirmation: `development-brief`, activation matrix, `project-document-production`;
 - correct owner found: yes;
 - unnecessary broad scan: no;
 - proof boundary clear: yes;
@@ -41,7 +41,7 @@ Manual baseline for checking whether repository boot/routing stays efficient. Ex
 
 ### Developing — Voice
 
-- additional routing reads before semantic owner confirmation: activation matrix + `voice-production`;
+- routing reads before semantic owner confirmation: activation matrix + `voice-production` after the Developing front door;
 - correct owner found: yes;
 - unnecessary Project Document/reference scan: no;
 - proof boundary clear: yes;
@@ -56,6 +56,12 @@ Manual baseline for checking whether repository boot/routing stays efficient. Ex
 - new root skill required: no;
 - production semantics changed: no.
 
+## Repository Gate Proof
+
+`Repository Verify` run `31367001967` passed on commit `5970c47c15c8e9e83df185be7c5472e976739062`.
+
+This confirms the accepted routing/ownership tree also satisfies the automated static invariants without weakening the gate.
+
 ## Pass Condition
 
 A scenario passes when:
@@ -68,11 +74,11 @@ A scenario passes when:
 
 ## Current Result
 
-Representative boot/routing scenarios satisfy the Phase 3 routing acceptance. The remaining Phase 3 external proof is the first successful `Repository Verify` GitHub Actions run after the maintenance/gate implementation is committed.
+Representative boot/routing scenarios and the repository static gate pass. The baseline supports final `OPERATING_PARITY_ACCEPTED` status.
 
 ## Update Rule
 
-Update this note only after an actual scenario is exercised. Do not mark expected routes as verified merely because the documentation exists.
+Future scenarios are added only when a real task exposes a new routing pattern or failure. Do not maintain ceremonial telemetry.
 
 ## Related
 
