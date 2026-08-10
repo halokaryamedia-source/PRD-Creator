@@ -32,7 +32,7 @@ Project Document Generator owns Flow 2–4 under `kits/project-document-generato
 
 Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
 
-The replacement Flow 2–7 pipeline has now passed one real-project integration proof using **The Clockwork Vault**. `Production Document Builder/` remains **Archived** and non-authoritative until the final retirement audit confirms that no useful dependency still requires it.
+The replacement Flow 2–7 pipeline has passed real-project integration proof using **The Clockwork Vault**. The final retirement audit concluded `Production Document Builder/` has no remaining active dependency, so the live Archived tree is removed from `Local`; Git history remains the historical recovery path.
 
 ## Mandatory Session Boot
 
@@ -51,7 +51,6 @@ The replacement Flow 2–7 pipeline has now passed one real-project integration 
 - `kits/voice-production-kit/` — Voice extraction/script/DOCX/final acceptance.
 - `workspace/active/` — active project packages.
 - `workspace/saved/` — retained project packages.
-- `Production Document Builder/` — Archived historical reference.
 
 ## Core Rule
 
@@ -63,4 +62,4 @@ Generated artifacts and successful tooling never silently become higher authorit
 
 ## Current Proof State
 
-`docs/knowledge/operations/system-integration-proof.md` records the first full real-project Flow 2→7 run, including a real DOCX builder defect, root-owner fix, rebuild, and revalidation cycle. The next active boundary is the final Archived-package retirement audit.
+`docs/knowledge/operations/system-integration-proof.md` records the first full real-project Flow 2→7 run, including a real DOCX builder defect, root-owner fix, rebuild, and revalidation cycle. The migration is complete. Future work should start from the active Flow 2–7 owners and change only when a real project provides evidence.

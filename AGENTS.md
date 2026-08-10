@@ -20,7 +20,7 @@ At the start of material work:
 4. inspect the affected kit and project source/state/canonical work/output;
 5. use `docs/knowledge/minimal-nav.md` when ownership is unclear.
 
-Do not broad-read every reference, saved project, old output, or Archived file by default.
+Do not broad-read every reference, saved project, old output, or retired Git history by default.
 
 ## Repository Continuity
 
@@ -105,7 +105,7 @@ Before creating/moving/changing a file:
 - inspect whether an existing file already owns that responsibility;
 - extend/correct before creating a parallel system;
 - keep source, state, canonical work, derived data, evidence, and final output separate;
-- do not revive Archived schemas/process layers without a proved current need.
+- do not revive retired schemas/process layers without a proved current need.
 
 `No change required` is valid.
 
@@ -136,7 +136,7 @@ Use only when they resolve real uncertainty:
 
 - Project Document Generator owns Flow 2–4.
 - Voice Production Kit owns Flow 5–7.
-- After Flow 7, the remaining work is system-integration proof/maintenance, not another production flow.
+- Flow 1–7 plus real-project integration proof are complete; future changes are evidence-driven maintenance, not another production flow.
 
 ## User-Facing Reporting
 

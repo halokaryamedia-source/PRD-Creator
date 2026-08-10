@@ -44,7 +44,7 @@ Status: implemented and exercised on the real The Clockwork Vault integration pr
 
 There is no Flow 8 in the canonical production sequence.
 
-System Integration Proof is complete on **The Clockwork Vault**. The next engineering boundary is the final audit deciding whether `Production Document Builder/` has any remaining useful dependency and can be retired/deleted safely.
+System Integration Proof is complete on **The Clockwork Vault** and the final retirement audit concluded the old `Production Document Builder/` has no remaining active dependency. The live Archived tree is retired; there is no migration Flow 8.
 
 ## Architecture Rule
 

@@ -4,6 +4,21 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Production Document Builder v0.2.0 is retired from the live tree
+
+- **Decision:** remove `Production Document Builder/` from `Local` after final retirement audit.
+- **Reason:** real Flow 2→7 integration proof passed; every material archive category is mapped to an active owner or intentionally retired; no active runtime dependency remains.
+- **Golden safety:** archived and active approved HTML use identical Git blob `e1dccd77d7a5335213caea7a09d74ba78b2ae8e1`.
+- **Historical access:** Git history remains the recovery mechanism; do not keep a live duplicate solely for archaeology.
+- **Owner:** `docs/knowledge/operations/archived-retirement-audit.md`.
+- **Date:** 2026-08-10
+
+### Old multi-profile/schema/freeze/packaging architecture is intentionally retired
+
+- **Decision:** do not migrate the old generic document-profile framework, JSON Schema state stack, Content Freeze ceremony, ZIP/render-report/checksum pipeline, or old browser validator as compatibility layers.
+- **Reason:** they validate/operate the retired v0.2.0 architecture, are not active dependencies, and would reintroduce complexity the current product deliberately removed. Future capabilities are added only when a real project proves a concrete need.
+- **Date:** 2026-08-10
+
 ### Real integration proof validates the Flow 2–7 replacement pipeline
 
 - **Decision:** The Clockwork Vault is the first canonical real-project System Integration Proof for the replacement architecture.
@@ -95,11 +110,6 @@ Use this note only for durable decisions whose reasons must survive future sessi
 ### Approved PRD template is preserved as a shell
 
 - **Decision:** preserve the approved HTML presentation shell and regenerate only project-owned content surfaces.
-- **Date:** 2026-08-10
-
-### `Production Document Builder/` is Archived during migration
-
-- **Decision:** preserve but do not extend/treat as active authority. Delete only after replacement pipeline real-project proof and final retirement audit.
 - **Date:** 2026-08-10
 
 ### Golden Samples are references, not project requirements

@@ -12,7 +12,6 @@
 - `../../kits/project-document-generator/` — active PRD Flow 2–4 implementation.
 - `../../kits/voice-production-kit/` — active Voice Flow 5–7 implementation.
 - `../../workspace/` — per-project source/state/canonical work/evidence/output.
-- `../../Production Document Builder/` — Archived historical reference only.
 
 ## Fast Rule
 
@@ -24,4 +23,4 @@ new session
 → smallest relevant foundation/kit/project owner
 ```
 
-Do not treat rendered output, audio, old reference content, Archived implementation, or saved project packages as the default source of current project meaning.
+Historical implementation details are recovered from Git history only when genuinely needed; current project meaning comes from active owners.

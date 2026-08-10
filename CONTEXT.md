@@ -74,9 +74,9 @@ Flow 5 owns **which communications exist and what they must communicate**. Flow 
 
 The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; current accepted project PRDs own upstream facts.
 
-## Archived Package
+## Retired Historical Package
 
-`Production Document Builder/` remains Archived and non-authoritative. The required real-project proof has now completed; deletion is still blocked until the final retirement audit confirms no useful dependency remains.
+`Production Document Builder/` v0.2.0 has been removed from the live `Local` tree after real-project integration proof and final retirement audit. Its Golden Sample is preserved byte-identically by the active approved template, and Git history is the recovery path for old implementation details.
 
 ## Stable Structure
 
@@ -86,7 +86,6 @@ The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; cu
 - `kits/voice-production-kit/` — active Voice Flow 5–7 owner.
 - `workspace/active/` — active project packages.
 - `workspace/saved/` — retained project packages.
-- `Production Document Builder/` — Archived historical reference.
 
 ## Architecture Principle
 
@@ -98,4 +97,4 @@ A mechanically valid or visually correct DOCX is not generated-audio proof. A fi
 
 ## Current Development State
 
-Flows 1–7 are implemented on permanent branch `Local` and have now been exercised end-to-end on the real **The Clockwork Vault** project. The proof produced `handoff_ready` PRD state and `voice_delivery_ready` script/DOCX state, while truthfully recording `audio_evidence: not_provided`. The next active boundary is the final `Production Document Builder/` retirement audit.
+Flows 1–7 are implemented on permanent branch `Local` and have now been exercised end-to-end on the real **The Clockwork Vault** project. The proof produced `handoff_ready` PRD state and `voice_delivery_ready` script/DOCX state, while truthfully recording `audio_evidence: not_provided`. Migration is complete. The next operational step is to use the active pipeline for the next project and apply only evidence-backed fixes.

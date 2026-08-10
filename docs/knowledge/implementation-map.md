@@ -28,7 +28,7 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Active project packages | `workspace/active/` |
 | Saved project packages | `workspace/saved/` |
 | Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
-| Archived historical builder | `Production Document Builder/` |
+| Archived retirement evidence | `docs/knowledge/operations/archived-retirement-audit.md` |
 
 ## Project-level authority after Flow 7
 
@@ -55,4 +55,4 @@ Actual generated audio, when supplied, is evidence/delivery material only and ne
 
 ## Next engineering boundary
 
-All seven production flows are implemented and the **The Clockwork Vault** real-project System Integration Proof has passed with one resolved builder defect. The next engineering boundary is the final `Production Document Builder/` retirement audit.
+All seven production flows are implemented, The Clockwork Vault real-project proof passed, and the old Production Document Builder live tree is retired. Future engineering should target the smallest active owner only when real project evidence identifies a defect or missing capability.

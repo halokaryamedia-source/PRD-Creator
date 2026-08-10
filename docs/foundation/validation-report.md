@@ -1,7 +1,7 @@
 # Production Validation Report
 
 Updated: 2026-08-10
-Scope: current `Local` architecture, complete Flow 1–7 implementation, first real-project System Integration Proof, and final Archived-package retirement decision still pending.
+Scope: current `Local` architecture, complete Flow 1–7 implementation, first real-project System Integration Proof, and completed Archived-package retirement.
 
 ## Status Labels
 
@@ -52,6 +52,8 @@ Key evidence:
 
 `INT-002` — Flow 6 DOCX section page-break handling could create a blank page at a natural page boundary. The root builder was corrected and the artifact was rebuilt/revalidated. This finding is resolved and is evidence that mechanical success alone is insufficient without Flow 7 visual inspection.
 
-## Archived Package Status
+## Retired Package Status
 
-The precondition for retirement review is now satisfied: the replacement pipeline has real end-to-end proof and a real correction cycle. `Production Document Builder/` remains Archived **until the final retirement audit explicitly maps its remaining assets/behaviors against active owners and concludes whether deletion is safe**.
+Final audit: `docs/knowledge/operations/archived-retirement-audit.md`.
+
+Result: `SAFE_TO_DELETE`. The live `Production Document Builder/` v0.2.0 tree is removed from `Local`. Its useful behavior is mapped to active owners or explicitly retired; the approved Golden HTML remains preserved by the byte-identical active template. Git history remains available for forensic comparison.
