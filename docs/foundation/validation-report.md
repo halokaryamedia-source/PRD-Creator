@@ -29,31 +29,23 @@ Audio evidence for the real proof remains `not_provided`.
 
 ## Agent Governance Status
 
-The Phase 1–3 work remains valid evidence for:
+The Phase 1–3 work remains valid evidence for deterministic boot, Plan / Developing / Maintenance routing, mandatory non-trivial `development-brief`, goal/method separation, Dual POV, at-most-one specialist budget, root-cause Maintenance, ownership/source/review routing, and historical review integrity.
 
-- deterministic repository boot;
-- Plan / Developing / Maintenance routing;
-- mandatory non-trivial `development-brief`;
-- goal/method separation and Dual POV;
-- at-most-one specialist budget;
-- root-cause-first Maintenance;
-- ownership/source/review routing;
-- historical review integrity;
-- static `Repository Verify` execution.
-
-Representative routing/Maintenance acceptance and Repository Verify runs genuinely passed.
+The earlier full-parity conclusion is no longer current; see the current BuildIT gap audit.
 
 ## Overall BuildIT Parity Reassessment
 
-Overall relevant parity is **not currently accepted**.
+Overall relevant parity remains **open**.
 
-Canonical current audit:
+Canonical audit:
 
 `docs/knowledge/reviews/buildit-current-parity-gap-audit.md`
 
-It compared current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`) with PRD-Creator and found material remaining gaps in executable engineering enforcement, technical ownership depth, module governance, and operations maturity.
+Ordered remediation:
 
-The earlier `OPERATING_PARITY_ACCEPTED` body is therefore historical **partial** acceptance for the governance/routing subset, not current proof of full repository parity.
+`docs/knowledge/operations/buildit-parity-remediation-plan.md`
+
+The previous `OPERATING_PARITY_ACCEPTED` record is historical partial acceptance for the governance/routing subset only.
 
 ## Static Repository Verify
 
@@ -75,11 +67,15 @@ Current role:
 - exact dependency-pin/lock alignment;
 - Python source/test syntax.
 
-This remains a static repository contract gate.
+P0.1 source-head proof:
 
-## P0.1 — Production Verify
+- run `31372363802`;
+- head `0eb0485f117fa6ed419572a66539331f99114002`;
+- conclusion: **success**.
 
-Implementation in the pending P0.1 change:
+## P0.1 — Production Verify — COMPLETE
+
+Canonical implementation:
 
 ```text
 requirements.lock.txt
@@ -88,32 +84,39 @@ tests/test_prd_contracts.py
 tests/test_voice_contracts.py
 ```
 
-Expected executable gates:
+GitHub Actions proof:
 
-1. exact dependency install + `pip check`;
-2. Python compile;
-3. PRD renderer/validator focused contracts;
-4. Voice builder/validator focused contracts;
-5. fail-closed aggregate result.
+- Workflow: `Production Verify`
+- Run: `31372363843`
+- Head: `0eb0485f117fa6ed419572a66539331f99114002`
+- Conclusion: **success**
+
+All fail-closed steps passed:
+
+```text
+locked dependency install + pip check  PASS
+Python compile                         PASS
+Project Document contracts             PASS
+Voice Production contracts             PASS
+final aggregate                         PASS
+```
 
 ### PRD regression contracts
 
-- renderer CLI builds from minimal generic fixture using approved template;
-- generated project passes PRD validator;
-- scoring + completion_data conflict fails;
-- numeric scoring weights not totaling 100 fail.
+- real renderer CLI builds from a minimal generic fixture through the approved template;
+- real PRD validator passes the generated project;
+- scoring + completion_data conflict is rejected;
+- numeric scoring weights not totaling 100 are rejected.
 
 ### Voice regression contracts
 
-- builder creates DOCX from canonical requirements/script;
-- generated project passes Voice validator;
-- later section uses heading `page_break_before`, locking the real blank-page root fix;
-- missing Voice ID parity fails;
-- Voice Type mismatch fails.
+- real builder creates DOCX from canonical requirements/script;
+- real Voice validator passes the generated project;
+- later section heading uses `page_break_before`, locking the real blank-page root fix;
+- missing Voice ID parity is rejected;
+- Voice Type mismatch is rejected.
 
-### Current P0.1 proof state
-
-`LOCAL PROOF REQUIRED` until the first `Production Verify` GitHub Actions run on the P0.1 commit completes successfully.
+P0.1 repository-side production engineering baseline is therefore `CURRENT-PROJECT VERIFIED` at the contract level claimed.
 
 ## Explicit Non-Claims
 
@@ -136,8 +139,4 @@ Those remain Flow-specific evidence boundaries.
 
 ## Current Boundary
 
-Ordered BuildIT parity remediation is owned by:
-
-`docs/knowledge/operations/buildit-parity-remediation-plan.md`
-
-P0.1 must pass its executable gate before work advances to P0.2.
+P0.1 is complete. The active parity-remediation boundary is **P0.2 — Technical Ownership Refinement**. Do not alter the root skill architecture until that ownership audit produces evidence for a smaller/better boundary.

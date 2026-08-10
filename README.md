@@ -10,7 +10,7 @@ The repository is project memory. Chat history is supporting context, not the au
 - `main` — stable baseline; change only when explicitly requested.
 - routine per-task/per-flow branches and PRs are not used.
 
-## Two Architecture Layers
+## Architecture
 
 ```text
 Agent Operating Layer
@@ -33,23 +33,9 @@ Production Flow 1–7 is implemented and real-project proven on The Clockwork Va
 4. open only the smallest relevant foundation/source/kit owner;
 5. use ownership/skill maps only when needed.
 
-## Current Agent Governance
+## BuildIT Parity State
 
-Canonical root skills:
-
-```text
-development-brief
-project-document-production
-voice-production
-```
-
-The previous Phase 1–3 work genuinely established and exercised repository boot, Plan/Developing/Maintenance routing, mandatory development brief, Dual POV, one-specialist budget, root-cause Maintenance, ownership/review lifecycle, and static Repository Verify.
-
-## Current BuildIT Parity Status
-
-**Overall full parity is reopened.**
-
-A deeper audit against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`) found relevant mechanisms still missing or weaker in PRD-Creator, especially executable engineering enforcement, technical ownership depth, module-local governance, and operations maturity.
+The governance/routing work from the earlier parity phases remains valid evidence, but **overall full relevant parity is reopened** after a deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`).
 
 Current audit:
 
@@ -59,7 +45,7 @@ Ordered remediation:
 
 `docs/knowledge/operations/buildit-parity-remediation-plan.md`
 
-The earlier `OPERATING_PARITY_ACCEPTED` record remains historical **partial acceptance** for the governance/routing subset; it is no longer the current overall status.
+The earlier `OPERATING_PARITY_ACCEPTED` record is historical partial acceptance for the governance/routing subset, not current proof of full parity.
 
 ## Verification Layers
 
@@ -70,9 +56,9 @@ tools/verify_repository.py
 .github/workflows/repository-verify.yml
 ```
 
-Static invariants only: required owners, root skill containment, navigation, dependency-pin alignment, syntax, one-next-step continuity, and retired-builder containment.
+Static invariants: required owners, root skill containment, navigation, dependency-pin alignment, syntax, one-next-step continuity, and retired-builder containment.
 
-### Production Verify — P0.1
+### Production Verify — P0.1 COMPLETE
 
 ```text
 requirements.lock.txt
@@ -81,18 +67,34 @@ tests/test_prd_contracts.py
 tests/test_voice_contracts.py
 ```
 
-Executable contracts:
+The gate executes:
 
 - exact dependency install + `pip check`;
 - Python compile;
-- real PRD renderer + validator happy path;
-- PRD scoring/completion + scoring-weight negative contracts;
-- real Voice builder + validator happy path;
-- DOCX section page-break regression for the previously fixed blank-page defect;
-- Voice ID and Type parity negative contracts;
+- real PRD renderer + validator contracts;
+- real Voice builder + validator contracts;
+- regression for the previously fixed DOCX page-break defect;
+- Voice ID/Type negative parity contracts;
 - fail-closed aggregate result.
 
+Proof on source head `0eb0485f117fa6ed419572a66539331f99114002`:
+
+```text
+Production Verify  run 31372363843  PASS
+Repository Verify  run 31372363802  PASS
+```
+
 These gates do **not** replace PRD semantic review, browser visual inspection, rendered DOCX page QA, or generated-audio review.
+
+## Current Root Skills
+
+```text
+development-brief
+project-document-production
+voice-production
+```
+
+The current three-skill freeze is still the implemented baseline, but P0.2 must audit whether semantic and technical failures are represented by the smallest correct owners before that architecture is treated as final.
 
 ## Repository Map
 
@@ -119,4 +121,4 @@ Generated artifacts and successful tooling never silently become higher authorit
 
 ## Current Work
 
-P0.1 — Executable Production Verify is active. Check `docs/knowledge/next-action.md` for the single current slice and proof state.
+P0.1 is complete. The active next slice is **P0.2 — Technical Ownership Refinement**. See `docs/knowledge/next-action.md` for the exact boundary.

@@ -6,11 +6,13 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Close **P0.1 — Executable Production Verify** from the current BuildIT parity reassessment without changing Flow 2–7 product semantics.
+Execute **P0.2 — Technical Ownership Refinement** from the current BuildIT parity remediation plan.
+
+Determine whether PRD-Creator's current three-skill freeze still represents the smallest correct ownership boundaries once semantic/product failures are separated from technical renderer/validator/builder/tooling failures.
 
 ## Current Status
 
-`BUILD_IT_PARITY_REASSESSMENT_P0_1_PRODUCTION_VERIFY_PENDING`
+`BUILD_IT_PARITY_P0_1_COMPLETE_P0_2_TECHNICAL_OWNERSHIP_NEXT`
 
 Execution channel: **ChatGPT → GitHub**.  
 Working branch: **`Local` only**.
@@ -25,64 +27,68 @@ Ordered remediation:
 
 `docs/knowledge/operations/buildit-parity-remediation-plan.md`
 
-The previous Phase 3 `OPERATING_PARITY_ACCEPTED` evidence remains historical proof for agent-governance/routing acceptance, but its overall full-parity conclusion is superseded by the deeper comparison against current BuildIT.
+## Completed P0.1 — Executable Production Verify
 
-## P0.1 Implementation Boundary
+Source/test commit:
 
-This slice adds:
+`0eb0485f117fa6ed419572a66539331f99114002` — `test: add executable production verification gate`
+
+### Production Verify proof
+
+- Workflow: `Production Verify`
+- Run: `31372363843`
+- Head: `0eb0485f117fa6ed419572a66539331f99114002`
+- Conclusion: **success**
+
+Every fail-closed gate completed successfully:
 
 ```text
-requirements.lock.txt
-kits/voice-production-kit/requirements.txt exact direct pin
-
-tests/test_prd_contracts.py
-tests/test_voice_contracts.py
-
-.github/workflows/production-verify.yml
+locked dependency install + pip check  PASS
+Python compile                         PASS
+Project Document contracts             PASS
+Voice Production contracts             PASS
+final aggregate                         PASS
 ```
 
-`Repository Verify` remains the static repository/routing gate. `Production Verify` is a separate executable engineering gate.
+The PRD contracts execute the real renderer and validator. The Voice contracts execute the real DOCX builder and validator and lock the previously fixed section `page_break_before` behavior plus Voice ID/Type parity failures.
 
-### PRD contracts
+### Repository Verify proof
 
-- real renderer CLI builds HTML from a minimal generic fixture using the approved template;
-- real PRD validator must PASS the generated project;
-- negative fixture must fail scoring/completion exclusivity;
-- negative fixture must fail numeric scoring weights that do not total 100.
+- Workflow: `Repository Verify`
+- Run: `31372363802`
+- Run number: `3`
+- Head: `0eb0485f117fa6ed419572a66539331f99114002`
+- Conclusion: **success**
 
-### Voice contracts
+Static owner/navigation/skill/dependency-pin/syntax/retired-boundary checks therefore also passed for the same P0.1 source head.
 
-- real DOCX builder runs from canonical requirements + performance script;
-- real Voice validator must PASS the generated project;
-- second section must retain `Heading 1.page_break_before = True`, locking the real blank-page root fix;
-- missing Voice ID parity must fail;
-- Voice Type mismatch must fail.
+## P0.1 Proof Boundary
 
-### Dependency contract
+P0.1 proves repeatable repository-side execution of the focused generic production contracts. It does **not** prove arbitrary-project semantic readiness, browser visual quality, rendered DOCX page quality, or generated-audio quality.
 
-Production Verify installs an exact Python 3.11 dependency lock and runs `pip check` before executable contracts.
+Those remain Flow-specific evidence requirements.
 
-## Proof Boundary
+## P0.2 Boundary
 
-GitHub Actions can prove dependency installation, Python compilation, CLI execution, structural render/DOCX contracts, and focused regression behavior.
+P0.2 is an **ownership audit first**, not permission to add skills.
 
-It does **not** prove:
+Required questions:
 
-- PRD semantic development-readiness for an arbitrary project;
-- browser visual appearance;
-- DOCX rendered-page visual quality;
-- generated-audio quality.
+1. when a defect is semantic/product meaning, which current specialist owns it?
+2. when semantics are correct but renderer/validator/builder/tooling mechanics are wrong, is the current specialist still the smallest reusable owner?
+3. are technical failures shared enough across PRD + Voice to justify a distinct technical owner, or should they remain module-local?
+4. what should kit-local `AGENTS.md` own as contributor/verification contract?
+5. which current three-skill freeze statements must remain, be narrowed, or be superseded?
 
-Those remain Flow-specific evidence boundaries.
+Use KEEP / RENAME / MERGE / MOVE / DROP / RECOVER. Do not add a technical skill merely to resemble BuildIT.
 
 ## Preserved Boundaries
 
-- no new root skill in P0.1;
-- no renderer/validator/builder redesign;
-- no test coverage target;
-- no browser or audio framework;
+- Flow 2–7 semantics stay unchanged unless the audit exposes a concrete contract defect;
+- P0.1 tests/gates remain intact;
+- no broad module-governance or operations work yet;
 - no change to `main`.
 
 ## Next Step
 
-Run and inspect the first **Production Verify** workflow on the P0.1 `Local` commit. If it passes without weakening checks, record P0.1 complete and advance only to **P0.2 — Technical Ownership Refinement**; if it fails, fix the reported root contract and rerun.
+Audit **P0.2 — Technical Ownership Refinement** only: compare actual renderer/validator/builder/tooling failure ownership against the current three root skills and kit-local owners, then record the smallest evidence-backed ownership decision before changing any skill architecture.

@@ -33,26 +33,26 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Flow 2 intake/recovery | `docs/foundation/02-source-intake-recovery.md` + Project Document Generator |
 | Flow 3 PRD generation | `docs/foundation/03-prd-generation.md` + Project Document Generator |
 | Flow 4 PRD validation/handoff | `docs/foundation/04-prd-validation-handoff.md` + `kits/project-document-generator/VALIDATION.md` |
-| Project Document kit-local routing/edit rules | `kits/project-document-generator/AGENTS.md` |
+| Project Document kit-local rules | `kits/project-document-generator/AGENTS.md` |
 | Project Document production procedure | `kits/project-document-generator/SKILL.md` |
 | Project Document renderer | `kits/project-document-generator/renderer/` |
 | Project Document mechanical validator | `kits/project-document-generator/validator/validate.py` |
 | Project Document focused regression | `tests/test_prd_contracts.py` |
 | Flow 5 Voice Requirement Extraction | `docs/foundation/05-voice-requirement-extraction.md` + `kits/voice-production-kit/VOICE-EXTRACTION.md` |
 | Flow 6 performance-script production | `docs/foundation/06-elevenlabs-script-production.md` + `kits/voice-production-kit/SCRIPT-PRODUCTION.md` |
-| Flow 6 DOCX format/build | `kits/voice-production-kit/DOCX-FORMAT.md` + `builder/build_docx.py` |
+| Flow 6 DOCX build | `kits/voice-production-kit/DOCX-FORMAT.md` + `kits/voice-production-kit/builder/build_docx.py` |
 | Flow 7 Voice validation/delivery | `docs/foundation/07-voice-validation-delivery.md` + `kits/voice-production-kit/VOICE-VALIDATION.md` |
 | Voice mechanical validator | `kits/voice-production-kit/validator/validate.py` |
 | Voice focused regression | `tests/test_voice_contracts.py` |
 | Voice direct dependency declaration | `kits/voice-production-kit/requirements.txt` |
-| Exact Production Verify dependency environment | `requirements.lock.txt` |
-| Current production + operating evidence status | `docs/foundation/validation-report.md` |
+| Exact Production Verify environment | `requirements.lock.txt` |
+| Current production + parity evidence | `docs/foundation/validation-report.md` |
 | Active project packages | `workspace/active/` |
 | Saved project packages | `workspace/saved/` |
 | Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
 | Retired-builder evidence | `docs/knowledge/operations/archived-retirement-audit.md` |
 
-## Layer Separation
+## Verification Separation
 
 ```text
 Repository Verify
@@ -65,7 +65,9 @@ Flow validators / semantic audits / visual/audio review
 = project-specific readiness and evidence
 ```
 
-Production Verify does not replace browser visual inspection, rendered DOCX page QA, or audio review.
+P0.1 Production Verify is proven on source head `0eb0485f117fa6ed419572a66539331f99114002` by run `31372363843`; Repository Verify on the same source head passed as run `31372363802`.
+
+Neither gate replaces browser visual inspection, rendered DOCX page QA, or audio review.
 
 ## Project-Level Authority After Flow 7
 
@@ -90,6 +92,6 @@ state/voice-state.yaml             voice_delivery_ready / lifecycle state
 
 ## Current Engineering Boundary
 
-Production Flow 1–7 remains real-project proven.
+Production Flow 1–7 remains real-project proven. Overall BuildIT parity remains open.
 
-Full relevant BuildIT parity is reopened by the current gap audit. P0.1 source/contracts are prepared, but executable acceptance remains pending until the first `Production Verify` GitHub Actions run succeeds.
+P0.1 executable production verification is complete. The active boundary is **P0.2 — Technical Ownership Refinement**; current skill ownership must be audited before any root-skill architecture change.

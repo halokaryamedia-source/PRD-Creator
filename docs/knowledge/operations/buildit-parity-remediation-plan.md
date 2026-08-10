@@ -11,11 +11,9 @@ This plan converts the current BuildIT comparison into bounded work. `../next-ac
 
 ## P0 — Production Engineering Enforcement
 
-### P0.1 — Executable Production Verify
+### P0.1 — Executable Production Verify — COMPLETE
 
-Goal: make high-risk production contracts fail closed in GitHub instead of relying on Python syntax/static structure only.
-
-Required:
+Implemented:
 
 - exact Python dependency lock for executable Voice tooling;
 - PRD renderer → generated HTML → PRD validator happy-path contract;
@@ -25,19 +23,28 @@ Required:
 - negative Voice ID and Type parity contracts;
 - fail-closed GitHub Actions aggregation.
 
-Non-goals:
+Proof:
 
-- browser visual automation;
-- DOCX page rendering in GitHub Actions;
-- generated audio;
-- broad coverage targets;
-- new production semantics.
+```text
+source head       0eb0485f117fa6ed419572a66539331f99114002
+Production Verify 31372363843  PASS
+Repository Verify 31372363802  PASS
+```
 
-### P0.2 — Technical Ownership Refinement
+P0.1 deliberately does not claim browser visual quality, rendered DOCX page quality, generated audio, or arbitrary-project semantic readiness.
+
+### P0.2 — Technical Ownership Refinement — ACTIVE NEXT
 
 Audit whether renderer/validator/builder/tooling failures need a distinct reusable technical owner or whether current product specialists remain the smallest correct owners.
 
-Do not add skills first. Use actual failure/caller boundaries and the KEEP/RENAME/MERGE/MOVE/DROP/RECOVER discipline.
+Do not add skills first. Use actual failure/caller boundaries and the KEEP / RENAME / MERGE / MOVE / DROP / RECOVER discipline.
+
+Required output:
+
+- explicit semantic-vs-technical ownership map for current executable surfaces;
+- evidence-backed decision on the current three-skill freeze;
+- any justified kit-local contributor/verification-rule strengthening;
+- no production redesign unless a concrete contract defect is found.
 
 ## P1 — Production Engineering Quality Audit
 

@@ -36,17 +36,19 @@ The previous Phase 3 full-parity conclusion is superseded by the current BuildIT
 
 Governing plan: `buildit-parity-remediation-plan.md`.
 
-- [ ] **P0.1 — Executable Production Verify**
-  - [x] exact Voice direct dependency pin prepared;
-  - [x] exact Python dependency lock prepared;
-  - [x] focused PRD renderer/validator contracts prepared;
-  - [x] focused Voice builder/validator contracts prepared;
-  - [x] real DOCX page-break root-fix regression prepared;
-  - [x] fail-closed Production Verify workflow prepared;
-  - [ ] first Production Verify run PASS on `Local`.
-- [ ] **P0.2 — Technical Ownership Refinement**
+- [x] **P0.1 — Executable Production Verify**
+  - [x] exact Voice direct dependency pin;
+  - [x] exact Python dependency lock;
+  - [x] focused PRD renderer/validator contracts;
+  - [x] focused Voice builder/validator contracts;
+  - [x] real DOCX page-break root-fix regression;
+  - [x] fail-closed Production Verify workflow;
+  - [x] Production Verify run `31372363843` PASS on `0eb0485f117fa6ed419572a66539331f99114002`;
+  - [x] Repository Verify run `31372363802` PASS on the same source head.
+- [ ] **P0.2 — Technical Ownership Refinement** ← active next slice
   - audit current three-skill freeze against semantic vs technical failure ownership;
-  - strengthen kit-local contributor/verification contracts where evidence supports it.
+  - decide whether technical execution needs a distinct reusable owner or remains module-local;
+  - strengthen kit-local contributor/verification contracts only where the audit proves value.
 - [ ] **P1 — Production Engineering Quality Audit**
 - [ ] **P1.5 — Module Governance**
 - [ ] **P2 — Knowledge / Operations Maturity**

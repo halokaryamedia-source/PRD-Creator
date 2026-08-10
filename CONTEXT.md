@@ -1,7 +1,7 @@
 # Workspace Context
 
 Last verified: 2026-08-10
-Stability: stable production system; parity remediation active
+Stability: stable production system; BuildIT parity remediation active
 Owner: workspace
 
 ## Purpose
@@ -11,7 +11,7 @@ This repository supports a two-stage production system:
 1. turn incomplete/uneven project direction into documentation developers, level designers, and production teams can use;
 2. derive validated ElevenLabs-ready Voice Production from accepted project documentation without inventing upstream design.
 
-The production pipeline and agent operating layer remain separate:
+Production and agent-operation layers remain separate:
 
 ```text
 Agent Operating Layer
@@ -26,34 +26,23 @@ Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7
 
 Production Flow 1–7 is implemented. The Clockwork Vault completed real Flow 2→7 integration proof, including a real DOCX blank-page defect discovered by visual QA, fixed at the builder root, rebuilt, and revalidated.
 
-`Production Document Builder/` v0.2.0 remains retired from the live `Local` tree. Git history is the recovery path for old implementation details.
+`Production Document Builder/` v0.2.0 remains retired from the live `Local` tree.
 
 ## Agent Governance Layer
 
-Canonical repository-wide skills remain under `.agents/skills/`:
+Canonical repository-wide skills currently remain:
 
-- `development-brief` — mandatory front door for non-trivial Developing work;
-- `project-document-production` — current Flow 2–4 semantic specialist;
-- `voice-production` — current Flow 5–7 semantic specialist.
+- `development-brief`;
+- `project-document-production`;
+- `voice-production`.
 
-Current routing/continuity owners:
+The governance/routing subset—boot, Plan/Developing/Maintenance, development brief, Dual POV, one-specialist budget, root-cause Maintenance, ownership/review lifecycle—has real acceptance evidence.
 
-- `docs/knowledge/flow.md`;
-- `docs/knowledge/skills/activation-matrix.md`;
-- `docs/knowledge/skills/skill-map.md`;
-- `docs/knowledge/modules/module-map.md`;
-- `docs/knowledge/sources/source-map.md`;
-- `docs/knowledge/maintenance/maintenance-flow.md`;
-- `docs/knowledge/reviews/review-graph.md`;
-- `docs/knowledge/next-action.md`.
-
-The current three-skill freeze remains the implemented baseline, but P0.2 will audit whether semantic and technical failure ownership is still correctly represented. Do not add a skill before that evidence-driven audit.
+The current three-skill freeze is an implemented baseline, **not a final answer**. P0.2 will audit semantic vs technical ownership before any skill architecture change.
 
 ## BuildIT Parity Reassessment
 
-The previous Phase 3 operating acceptance remains valid for the **agent-governance/routing subset**: boot, mode routing, development brief, one-specialist budget, Maintenance route, ownership/review lifecycle, and static Repository Verify were actually exercised.
-
-A deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`) found additional relevant gaps. Therefore overall full parity is reopened.
+A deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`) reopened overall full parity.
 
 Canonical audit:
 
@@ -62,6 +51,8 @@ Canonical audit:
 Ordered remediation:
 
 `docs/knowledge/operations/buildit-parity-remediation-plan.md`
+
+The previous Phase 3 acceptance remains historical partial evidence for the governance/routing subset.
 
 ## Engineering Gates
 
@@ -74,9 +65,7 @@ tools/verify_repository.py
 
 Owns static repository invariants: required owners, skill-root containment, navigation, exact dependency-pin alignment, syntax, next-action structure, and retired-builder containment.
 
-### Production Verify
-
-P0.1 adds:
+### Production Verify — P0.1 COMPLETE
 
 ```text
 requirements.lock.txt
@@ -87,7 +76,14 @@ requirements.lock.txt
 → .github/workflows/production-verify.yml
 ```
 
-This gate executes the real PRD renderer/validator and Voice builder/validator paths on minimal generic fixtures. It does not replace semantic, browser, rendered-page, or audio evidence.
+Proof on source head `0eb0485f117fa6ed419572a66539331f99114002`:
+
+- Production Verify `31372363843` — PASS;
+- Repository Verify `31372363802` — PASS.
+
+Production Verify executes the real PRD renderer/validator and Voice DOCX builder/validator on minimal generic fixtures, including negative high-risk contracts and the prior DOCX page-break regression.
+
+These gates do not replace semantic, browser, rendered-page, or audio evidence.
 
 ## Stable Authority Chain
 
@@ -96,8 +92,6 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
 ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX
 ≠ Voice Acceptance ≠ Audio
 ```
-
-A successful tool/artifact never silently becomes higher authority than the canonical work/evidence that produced it.
 
 ## Stable Structure
 
@@ -112,4 +106,4 @@ A successful tool/artifact never silently becomes higher authority than the cano
 
 ## Current Development State
 
-P0.1 — Executable Production Verify is the active BuildIT-parity remediation slice. Its implementation is prepared, but it is not complete until the GitHub Actions Production Verify run passes without weakening checks.
+P0.1 is complete. The next active remediation slice is **P0.2 — Technical Ownership Refinement**: audit actual semantic vs technical failure ownership before changing the current root skill freeze or broadening module governance.
