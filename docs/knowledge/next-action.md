@@ -6,13 +6,13 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Execute **P1.3 — Voice Revision + DOCX Entry Integrity** from the Production Engineering Remediation Plan.
+Execute **P1.4 — Voice Parser / Failure-State Hardening** from the Production Engineering Remediation Plan.
 
-Make the Voice mechanical chain prove that the current Flow 5 requirements, Flow 6 canonical script, and derived DOCX belong to the same current revision, and that every DOCX entry remains mechanically bound to the correct Voice ID rather than merely containing the right tokens somewhere in the document.
+Close the remaining known Voice parser/build failure-state gap without creating a generic Markdown parser: a `##` Voice section with zero entries can currently reach builder logic that assumes at least one entry.
 
 ## Current Status
 
-`BUILD_IT_PARITY_P1_2_COMPLETE_P1_3_VOICE_REVISION_DOCX_INTEGRITY_NEXT`
+`BUILD_IT_PARITY_P1_3_COMPLETE_P1_4_VOICE_PARSER_FAILURE_STATE_NEXT`
 
 Execution channel: **ChatGPT → GitHub**.  
 Working branch: **`Local` only**.
@@ -37,125 +37,139 @@ Top-level parity plan:
 
 ## Completed P1.1 — PRD Mechanical Revision Integrity
 
-Source commit:
+Source:
 
-`04f306f8589528ccc8cb03e89333dba174a3d276` — `fix: enforce PRD render revision integrity`
-
-Proof:
+`04f306f8589528ccc8cb03e89333dba174a3d276`
 
 ```text
 Production Verify 31377375929  PASS
 Repository Verify 31377377036  PASS
 ```
 
-Implemented:
-
-- structured render-data collection/item/stable-ID preflight;
-- deterministic render-data SHA-256 embedded in `final.html`;
-- stale render-data ↔ HTML mismatch rejection;
-- exact generated page order/set validation.
-
-P1-F01 and P1-F02 are implemented at the mechanical level claimed.
+P1-F01 and P1-F02 are implemented at the mechanical boundary claimed.
 
 ## Completed P1.2 — PRD Renderer Script/Shell Safety
 
-Source commit:
+Source:
 
-`802904856b69fd50008999f196cb72d48303e0ba` — `fix: harden PRD renderer script and shell safety`
+`802904856b69fd50008999f196cb72d48303e0ba`
 
-Implemented:
+```text
+Production Verify 31378603848  PASS
+Repository Verify 31378603894  PASS
+```
 
-- glossary JSON uses script-context-safe serialization before insertion into the inherited executable `<script>` block;
-- literal `<`, `>`, `&`, U+2028, and U+2029 are escaped in the script payload, so project text such as `</script>` remains data;
-- package glossary aliases are preflighted as `list[str]` or an `en`/`id` object whose supplied values are `list[str]`;
-- required unique shell surfaces now fail closed when missing or ambiguous;
-- description and specification-version metadata replacements are explicit required contracts;
-- inherited local-storage namespace tokens must exist before project namespacing;
-- renderer contract failures return controlled non-zero CLI failure instead of a traceback for the covered paths;
-- `RENDERING.md` now documents the exact script/shell contract.
+P1-F03 and P1-F07 are implemented at the static/mechanical boundary claimed. Browser runtime/visual approval remains separate evidence.
 
-Focused PRD regressions cover:
+## Completed P1.3 — Voice Revision + DOCX Entry Integrity
 
-- raw `</script>` glossary payload remains script-safe;
-- malformed aliases fail in a controlled way;
-- missing/ambiguous sidebar navigation marker fails;
-- missing description metadata marker fails;
-- current happy render + validator still passes;
-- all P1.1 regressions remain active.
+Source:
 
-### P1.2 proof
+`dcb9bdf54a5749d04be2362b9d33918ab332f4f2` — `fix: bind voice revisions and DOCX entries`
+
+Implemented revision chain:
+
+```text
+current work/voice-requirements.md
+→ normalized-text SHA-256
+→ canonical work/voice-production.md declares Source Voice Requirements SHA-256
+→ builder requires exact current hash + Flow 5 ID/Type parity
+→ builder computes current script SHA-256
+→ derived DOCX core identifier stores requirements + script fingerprints
+→ Flow 7 validator requires current requirements == script declaration == DOCX identifier
+```
+
+The state YAML remains lifecycle/readiness ownership; hashes are not duplicated into another revision registry.
+
+DOCX validation now parses the builder's visible structure and validates every entry as one bound unit:
+
+```text
+section
+→ Type
+→ Voice ID + title
+→ Estimated Duration
+→ performance paragraph
+```
+
+It also requires section order and Voice-entry order to match the canonical script.
+
+Focused regressions now prove:
+
+- current requirements + script + DOCX → PASS;
+- builder rejects a stale requirements hash before writing DOCX;
+- requirements changed after build → Flow 7 FAIL;
+- script changed after build → Flow 7 FAIL;
+- swapping two DOCX performance blocks fails even though all global Voice ID/content tokens remain present;
+- existing ID/Type parity and section page-break regressions remain active.
+
+### P1.3 proof
 
 ```text
 Repository Verify
-run: 31378603894
-head: 802904856b69fd50008999f196cb72d48303e0ba
+run: 31379718341
+head: dcb9bdf54a5749d04be2362b9d33918ab332f4f2
 result: PASS
 
 Production Verify
-run: 31378603848
-head: 802904856b69fd50008999f196cb72d48303e0ba
+run: 31379718339
+head: dcb9bdf54a5749d04be2362b9d33918ab332f4f2
 result: PASS
 ```
 
 Production Verify sub-gates all passed: locked dependencies, compile, Project Document contracts, Voice Production contracts, and fail-closed aggregate.
 
-P1-F03 and P1-F07 are therefore **implemented** at the static/mechanical contract level claimed. Browser runtime/visual acceptance remains separate evidence.
+P1-F04 and P1-F05 are therefore **implemented** at the mechanical revision/entry-binding level claimed. Semantic, visual, pronunciation/performance, and audio evidence remain separate.
 
-## P1.3 Boundary
+## P1.4 Boundary
 
-Findings:
+Finding:
 
-- **P1-F04 MAJOR** — Voice Requirements, canonical script, and DOCX revision identity are not mechanically linked strongly enough;
-- **P1-F05 MAJOR** — DOCX validation currently proves global token presence rather than binding each Voice ID to its own Type/title/duration/performance block.
+- **P1-F06 MEDIUM** — canonical Voice Markdown may contain a section heading with zero entries; current parser accepts the section but later builder subtitle logic assumes `section.entries` is non-empty, producing an uncontrolled failure path.
 
 Owners:
 
 ```text
 kits/voice-production-kit/builder/build_docx.py
-kits/voice-production-kit/validator/validate.py
-kits/voice-production-kit/SCRIPT-PRODUCTION.md / VOICE-VALIDATION.md only where the mechanical revision contract must be documented
+kits/voice-production-kit/validator/validate.py only if the same explicit section rule must be checked at Flow 7
 tests/test_voice_contracts.py
-state/voice-state.yaml format only if a narrow current-revision field is actually required
+kits/voice-production-kit/SCRIPT-PRODUCTION.md only where the canonical section rule must be documented
 ```
 
-Required P1.3 work:
+Required P1.4 work:
 
-1. define the smallest deterministic current Voice Requirements revision/fingerprint contract;
-2. require the canonical script/build path to identify the exact current requirements revision without making DOCX authoritative;
-3. make Flow 7 mechanical validation reject stale requirements/script/DOCX combinations;
-4. parse the generated DOCX into the builder's current visible section/entry structure;
-5. validate each entry as one bound unit: Type + Voice ID/title + duration + performance;
-6. reject swapped/misbound entry content even when all expected tokens still exist globally;
-7. add focused regressions for stale requirements and swapped DOCX entry content;
-8. preserve the current happy path and existing Voice ID/Type/page-break regressions.
+1. establish one explicit Flow 6 rule for zero-entry `##` sections from current product semantics;
+2. reject or intentionally omit them **before** builder presentation helpers assume entries exist;
+3. return a controlled non-zero builder failure for invalid canonical script shape rather than `IndexError`/traceback;
+4. inspect only directly adjacent parser/builder exception paths exposed by the same focused regression;
+5. add focused empty-section/failure-state regressions;
+6. preserve P1.3 revision and per-entry integrity contracts;
+7. pass both repository gates.
 
 ## Explicit Out Of Scope
 
-- semantic `Must communicate` sentence matching;
-- pronunciation or performance-quality judgement;
-- rendered-page visual approval;
-- generated audio verification;
-- general Markdown/DOCX parser framework;
-- P1.4 empty-section hardening unless directly required by P1.3 evidence;
-- output atomicity;
+- general Markdown parser framework;
+- redesigning the Voice Markdown format;
+- semantic `Must communicate` automation;
+- DOCX visual approval;
+- pronunciation/performance or audio validation;
+- P1.5 test-discovery change;
+- P1.6 output atomicity;
 - root skill changes;
 - `main` changes.
 
 ## Acceptance
 
-P1.3 is complete only when:
+P1.4 is complete only when:
 
 ```text
-current requirements + script + DOCX → mechanical PASS
-requirements changed without rebuilding downstream artifacts → FAIL
-DOCX entries swapped/misbound while global tokens remain → FAIL
-existing Voice ID/Type regressions → PASS
+zero-entry section → explicit controlled behavior, never IndexError
+covered malformed adjacent parser state → controlled failure
+current Voice happy path → PASS
+P1.3 stale-revision and per-entry regressions → PASS
 Production Verify → PASS
 Repository Verify → PASS
 ```
 
-Semantic, visual, pronunciation/performance, and audio evidence remain separate.
-
 ## Next Step
 
-Implement **P1.3 — Voice Revision + DOCX Entry Integrity** only: add the smallest current-revision contract and per-entry DOCX mechanical binding, add focused regressions, then run both repository gates before proceeding to P1.4.
+Implement **P1.4 — Voice Parser / Failure-State Hardening** only: establish the explicit zero-entry section contract at the smallest parser/builder owner, add focused regression, and run both gates before proceeding to P1.5.

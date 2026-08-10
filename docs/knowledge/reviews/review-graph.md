@@ -8,8 +8,8 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 
 | Evidence / review | Current meaning |
 |---|---|
-| [Production Engineering Quality Audit](production-engineering-quality-audit.md) | **Active execution evidence.** P1-F01/F02 are implemented by P1.1; P1-F03/F07 are implemented by P1.2. P1-F04/F05 now govern active P1.3 Voice revision/DOCX integrity work. Remaining F06/F08/F09 stay ordered behind it. |
-| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active evidence.** Overall relevant parity remains open; the broad gap classification still governs the top-level remediation track. |
+| [Production Engineering Quality Audit](production-engineering-quality-audit.md) | **Active execution evidence.** P1-F01/F02 are implemented by P1.1; P1-F03/F07 by P1.2; P1-F04/F05 by P1.3. P1-F06 now governs active P1.4 Voice parser/failure-state work. F08 remains ordered for P1.5 and F09 remains conditional for P1.6. |
+| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active evidence.** Overall relevant parity remains open; broad gap classification still governs the top-level remediation track. |
 | [Technical Ownership Refinement Audit](technical-ownership-refinement-audit.md) | **Implemented/current evidence.** Keep three semantic root skills; route pure mechanics to nearest kit owner and shared dependency/test/CI to repository engineering. |
 | [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** Correctly identified the original governance/routing gap. |
 | [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Agent-governance results remain valid; overall parity conclusion is superseded. |
@@ -17,6 +17,19 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 | [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** Justified retiring `Production Document Builder/`. |
 | [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** Owns current production and parity-remediation evidence status. |
 | [Review Template](review-template.md) | Reusable review shape when a dedicated review adds durable evidence. |
+
+## Current P1 Execution Meaning
+
+```text
+P1.1  F01/F02  implemented
+P1.2  F03/F07  implemented
+P1.3  F04/F05  implemented
+P1.4  F06      active next
+P1.5  F08      ordered
+P1.6  F09      conditional
+```
+
+P1.3 source `dcb9bdf54a5749d04be2362b9d33918ab332f4f2` passed Repository Verify `31379718341` and Production Verify `31379718339` for the requirements/script/DOCX revision and per-entry binding contract claimed.
 
 ## Review Labels
 

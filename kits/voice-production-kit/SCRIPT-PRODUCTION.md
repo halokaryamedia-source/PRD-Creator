@@ -33,7 +33,8 @@ Use:
 ```text
 # <Project> Voice Production
 Version: <script version>
-Source Voice Requirements: <revision/reference>
+Source Voice Requirements: work/voice-requirements.md
+Source Voice Requirements SHA-256: <current normalized-text SHA-256>
 
 ## 01. <Gameplay Section>
 
@@ -47,6 +48,10 @@ Estimated Duration: <range>
 Spoken text...
 ```
 ```
+
+The SHA-256 line is mechanical revision identity, not project meaning. Compute it from the current UTF-8 text of `work/voice-requirements.md` using normalized text reading. The builder and Flow 7 validator must reject the script when this declared hash differs from the current requirements file.
+
+Do not place the script hash in canonical prose. The builder computes the current script fingerprint during DOCX generation and stores both the requirements and script fingerprints in the derived DOCX core identifier.
 
 Every Flow 5 voice ID must appear exactly once unless upstream scope is explicitly reopened. Do not create additional IDs in Flow 6.
 
@@ -68,13 +73,7 @@ If the requirement cannot be satisfied without inventing a fact, set the voice s
 
 Main Story may carry more context than Radio Communication. Use it for narrative briefing, arrival, transition, reveal, completion, reward, or farewell when the corresponding Flow 5 moment exists.
 
-Prefer:
-
-- clear spoken sentences;
-- one communication purpose per entry;
-- progressive information order;
-- character-appropriate but restrained wording;
-- enough context to understand the moment without narrating every implementation detail.
+Prefer clear spoken sentences, one communication purpose per entry, progressive information order, restrained character voice, and enough context to understand the moment without narrating every implementation detail.
 
 Do not turn a developer specification into dialogue.
 
@@ -82,12 +81,7 @@ Do not turn a developer specification into dialogue.
 
 Radio Communication must stay concise and useful during active play.
 
-Prefer:
-
-- immediate warning/actionable feedback;
-- short progress acknowledgement;
-- urgency or encouragement tied to the approved trigger;
-- reminder/recovery wording that repeats only the minimum needed fact.
+Prefer immediate warning/actionable feedback, short progress acknowledgement, urgency/encouragement tied to the approved trigger, and concise reminder/recovery wording.
 
 Do not repeat the full objective briefing. Do not add `[radio transmission]` or another radio effect unless that production direction is appropriate to the approved channel.
 
@@ -105,19 +99,9 @@ Use square brackets for concise performance direction, for example:
 
 Directions describe how the line should be performed. They must not introduce a new event, action, sound effect, speaker, or project fact.
 
-Use only as many direction changes as the performance needs. Avoid decorative or contradictory tags.
-
 ### CAPS
 
-Use selective CAPS only for words that genuinely need spoken emphasis.
-
-Good:
-
-```text
-We MUST restore the beacon.
-```
-
-Avoid full-sentence CAPS or emphasizing every project term by default.
+Use selective CAPS only for words that genuinely need spoken emphasis. Avoid full-sentence CAPS or emphasizing every project term by default.
 
 ### Ellipses
 
@@ -125,15 +109,15 @@ Use `...` for purposeful hesitation, transition, suspense, or breathing room. Do
 
 ### Line breaks
 
-Use short line breaks to support phrasing and breath. Do not break every few words merely to imitate the reference. A line break should improve delivery when pasted into ElevenLabs.
+Use short line breaks to support phrasing and breath. Do not break every few words merely to imitate the reference.
 
 ## Estimated duration
 
 Every entry requires an `Estimated Duration` range. It is an estimate, not measured audio.
 
-Estimate from the intended natural delivery of the spoken text, excluding bracketed performance directions. Account for purposeful pauses and the performance tone. Do not claim exact audio duration before generation/playback.
+Estimate from intended natural delivery of the spoken text, excluding bracketed performance directions. Account for purposeful pauses and performance tone. Do not claim exact audio duration before generation/playback.
 
-No fixed duration quota is inherited from Aftershock. Radio is normally shorter than Main Story because of its gameplay function, not because of a hard numeric rule.
+No fixed duration quota is inherited from Aftershock.
 
 ## Section ordering
 
@@ -145,9 +129,10 @@ The final DOCX displays the explicit type before each entry, so Main Story and R
 
 Before building DOCX:
 
+- `Source Voice Requirements SHA-256` matches the current `work/voice-requirements.md` text fingerprint;
 - every Flow 5 voice ID appears exactly once;
 - no extra voice ID exists;
-- type matches the Flow 5 requirement;
+- Type matches the Flow 5 requirement;
 - title, duration, and performance block are present;
 - no `TBD`, `TODO`, `FIXME`, or `[OPEN]` placeholder remains;
 - no required fact is knowingly omitted;
@@ -161,6 +146,14 @@ python kits/voice-production-kit/builder/build_docx.py \
   workspace/active/<project>/output/Voice\ Production.docx \
   --requirements workspace/active/<project>/work/voice-requirements.md
 ```
+
+`--requirements` is required. Builder success mechanically proves current requirements hash parity + Voice ID/Type parity at build time and writes this derived DOCX revision identifier:
+
+```text
+voice-requirements-sha256=<requirements hash>;voice-script-sha256=<script hash>
+```
+
+The identifier is evidence for mechanical freshness only. It never makes the DOCX authoritative over the Markdown sources.
 
 ## Voice state after Flow 6
 
@@ -177,6 +170,8 @@ unresolved_upstream: 0
 next_step: flow_7_voice_validation_delivery
 ```
 
+The state file remains lifecycle/status ownership. Do not duplicate the requirements/script SHA-256 contract into YAML merely to create another revision registry.
+
 Allowed Flow 6 statuses:
 
 - `script_drafting`
@@ -191,8 +186,9 @@ Allowed Flow 6 statuses:
 Flow 6 stops when:
 
 - canonical performance wording exists for every justified voice moment;
+- the current requirements revision is mechanically bound to the canonical script;
 - the mechanical gate passes;
-- `Voice Production.docx` is generated from the canonical script;
+- `Voice Production.docx` is generated from the current canonical script and carries the current requirements + script revision identifier;
 - the DOCX structure/layout is visually inspected during actual project production;
 - voice state is `voice_script_ready`.
 

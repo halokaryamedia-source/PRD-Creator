@@ -43,12 +43,14 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Project Document mechanical validator | `kits/project-document-generator/validator/validate.py` |
 | Project Document focused regression | `tests/test_prd_contracts.py` |
 | Flow 5 Voice semantic scope | `docs/foundation/05-voice-requirement-extraction.md` + `.agents/skills/voice-production/SKILL.md` |
-| Flow 6 performance/artifact semantic contract | `docs/foundation/06-elevenlabs-script-production.md` + `.agents/skills/voice-production/SKILL.md` |
+| Flow 6 performance/revision contract | `docs/foundation/06-elevenlabs-script-production.md` + `kits/voice-production-kit/SCRIPT-PRODUCTION.md` |
 | Voice kit-local contributor/technical routing | `kits/voice-production-kit/AGENTS.md` |
 | Flow 6 DOCX presentation contract | `kits/voice-production-kit/DOCX-FORMAT.md` |
+| Voice requirements→script revision binding | `work/voice-production.md` `Source Voice Requirements SHA-256` + `builder/build_docx.py` |
+| Voice DOCX derived revision identifier | `builder/build_docx.py` core `identifier` property |
 | Voice DOCX builder mechanics | `kits/voice-production-kit/builder/build_docx.py` |
-| Flow 7 Voice readiness/evidence semantics | `docs/foundation/07-voice-validation-delivery.md` + `.agents/skills/voice-production/SKILL.md` |
-| Voice mechanical validator | `kits/voice-production-kit/validator/validate.py` |
+| Flow 7 Voice readiness/evidence semantics | `docs/foundation/07-voice-validation-delivery.md` + `kits/voice-production-kit/VOICE-VALIDATION.md` |
+| Voice mechanical revision + per-entry validator | `kits/voice-production-kit/validator/validate.py` |
 | Voice focused regression | `tests/test_voice_contracts.py` |
 | Voice direct dependency declaration | `kits/voice-production-kit/requirements.txt` |
 | Exact Production Verify environment | `requirements.lock.txt` |
@@ -80,8 +82,6 @@ Production Verify 31377375929  PASS
 Repository Verify 31377377036  PASS
 ```
 
-Current PRD mechanical validator now proves current render-data ↔ HTML revision identity and exact generated page order/set, while malformed current projection collections fail structurally.
-
 P1.2:
 
 ```text
@@ -90,9 +90,17 @@ Production Verify 31378603848  PASS
 Repository Verify 31378603894  PASS
 ```
 
-Current renderer now owns script-context-safe glossary serialization, supported alias-shape preflight, exact required shell-marker/metadata checks, inherited namespace-token checks, and controlled covered contract failures.
+P1.3:
 
-Neither proof replaces semantic PRD readiness, browser visual/runtime inspection, rendered DOCX page QA, pronunciation/performance judgement, or audio review.
+```text
+source head       dcb9bdf54a5749d04be2362b9d33918ab332f4f2
+Production Verify 31379718339  PASS
+Repository Verify 31379718341  PASS
+```
+
+Current Voice mechanical chain proves current requirements fingerprint linkage, current script fingerprint linkage into the derived DOCX, exact section/entry order, and per-entry Type/ID-title/duration/performance binding. `voice-state.yaml` remains lifecycle state rather than duplicate revision authority.
+
+None of these repository-side proofs replaces semantic PRD/Voice readiness, browser visual inspection, rendered DOCX page QA, pronunciation/performance judgement, or audio review.
 
 ## Project-Level Authority After Flow 7
 
@@ -111,9 +119,9 @@ PRD acceptance / handoff_ready
       ↓
 work/voice-requirements.md         canonical voice-moment scope
       ↓
-work/voice-production.md           canonical spoken/performance wording
+work/voice-production.md           canonical spoken/performance wording + requirements revision declaration
       ↓
-output/Voice Production.docx       derived Voice presentation artifact
+output/Voice Production.docx       derived Voice presentation + requirements/script revision identifier
       ↓
 work/voice-acceptance.md           Flow 7 evidence/findings
 state/voice-state.yaml             Voice lifecycle state
@@ -123,4 +131,4 @@ state/voice-state.yaml             Voice lifecycle state
 
 Production Flow 1–7 remains real-project proven for the recorded Clockwork Vault revision. Overall BuildIT parity remains open.
 
-P1.1 and P1.2 are complete. The active source slice is **P1.3 — Voice Revision + DOCX Entry Integrity**.
+P1.1, P1.2, and P1.3 are complete. The active source slice is **P1.4 — Voice Parser / Failure-State Hardening**.

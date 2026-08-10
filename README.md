@@ -71,9 +71,7 @@ P0.2 keeps these as semantic/product-contract owners. Pure renderer/validator/bu
 
 ### P1.1 — COMPLETE
 
-Source:
-
-`04f306f8589528ccc8cb03e89333dba174a3d276`
+Source `04f306f8589528ccc8cb03e89333dba174a3d276`.
 
 ```text
 Production Verify 31377375929  PASS
@@ -84,9 +82,7 @@ Closed generic PRD stale-render revision and malformed render-data failure paths
 
 ### P1.2 — COMPLETE
 
-Source:
-
-`802904856b69fd50008999f196cb72d48303e0ba`
+Source `802904856b69fd50008999f196cb72d48303e0ba`.
 
 ```text
 Repository Verify 31378603894  PASS
@@ -94,6 +90,19 @@ Production Verify 31378603848  PASS
 ```
 
 Closed glossary `<script>`-context safety/alias-shape and minimum approved-shell marker/metadata trust gaps. Browser runtime/visual quality remains a separate evidence level.
+
+### P1.3 — COMPLETE
+
+Source `dcb9bdf54a5749d04be2362b9d33918ab332f4f2`.
+
+```text
+Repository Verify 31379718341  PASS
+Production Verify 31379718339  PASS
+```
+
+Voice production now mechanically binds the current Flow 5 requirements revision to the canonical Flow 6 script, binds current requirements + current script fingerprints into the derived DOCX, and validates DOCX entries as bound Type/ID-title/duration/performance units rather than global tokens.
+
+This does not automate semantic `Must communicate` coverage, rendered-page quality, pronunciation/performance judgement, or audio quality.
 
 ## Repository Map
 
@@ -120,4 +129,4 @@ Generated artifacts and successful tooling never silently become higher authorit
 
 ## Current Work
 
-P1.1 and P1.2 are complete. The active next source slice is **P1.3 — Voice Revision + DOCX Entry Integrity**. See `docs/knowledge/next-action.md` for the exact implementation/acceptance boundary.
+P1.1, P1.2, and P1.3 are complete. The active next source slice is **P1.4 — Voice Parser / Failure-State Hardening**. See `docs/knowledge/next-action.md` for the exact implementation/acceptance boundary.
