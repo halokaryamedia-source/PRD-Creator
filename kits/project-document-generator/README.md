@@ -1,8 +1,8 @@
 # Project Document Generator
 
-**Version:** 1.2.0
+**Version:** 1.5.0
 
-A compact repository-backed system for recovering incomplete project direction, writing practical development-oriented PRD content, rendering it through the approved HTML presentation shell, and validating whether that exact revision is ready for team handoff.
+A compact repository-backed system for recovering incomplete project direction, writing practical development-oriented PRD content, projecting it through the approved Golden Sample hierarchy and page composition, and validating whether the current revision is ready for team handoff.
 
 ## Normal use
 
@@ -12,7 +12,7 @@ Project Source
 → ready_for_prd
 → Canonical content.md
 → Derived render-data.json
-→ Approved Template shell render
+→ Golden Sample projection / render
 → final.html
 → Mechanical + 4-perspective acceptance
 → development_ready
@@ -27,10 +27,13 @@ The skill will:
 3. resolve supported Clarification/Completion and isolate real Proposal/Blocked decisions;
 4. write canonical PRD content using `CONTENT-CONTRACT.md`;
 5. keep Gameplay, Level Design, and Developer responsibilities separate;
-6. render through the approved presentation shell without adding new meaning;
-7. run mechanical validation plus New Reader, Level Designer, Developer, and Project Consistency audits;
-8. block handoff on Critical/Major findings;
-9. produce a concise team handoff for an accepted revision.
+6. render project facts through the approved Golden hierarchy, component composition, and presentation foundation without adding new meaning;
+7. keep project language availability explicit instead of presenting an unavailable translation as supported;
+8. run mechanical validation plus New Reader, Level Designer, Developer, and Project Consistency audits;
+9. block handoff on Critical/Major findings;
+10. produce a concise team handoff for an accepted revision.
+
+Cross-project rendering keeps the Golden visual language while allowing content-driven variation: journey/flow grids use the available Golden width instead of assuming Aftershock's exact item count, and package Terms Used remain role-specific rather than repeating automatically on every role page.
 
 ## Package structure
 

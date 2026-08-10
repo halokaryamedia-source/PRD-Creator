@@ -14,8 +14,6 @@ def present(v: Any) -> bool:
 def txt(v: Any) -> dict[str, str]:
     if isinstance(v, dict):
         en, ind = v.get("en"), v.get("id")
-        en = ind if en is None else en
-        ind = en if ind is None else ind
         return {"en": "" if en is None else str(en), "id": "" if ind is None else str(ind)}
     s = "" if v is None else str(v)
     return {"en": s, "id": s}
@@ -112,7 +110,8 @@ def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
         title = item.get("title") or item.get("stage") or item.get("trigger") or ""
         description = item.get("description") or item.get("details") or item.get("action") or item.get("behavior") or ""
         body.append(f'<article><b>{i18n(str(step).zfill(2))}</b><strong>{i18n(title)}</strong><p>{i18n(description)}</p></article>')
-    return f'<div class="flow {esc(cls)}">{"".join(body)}</div>'
+    columns = min(len(body), 4)
+    return f'<div class="flow {esc(cls)}" style="--prd-flow-columns:{columns}">{"".join(body)}</div>'
 
 
 def sequence(items: list[dict[str, Any]]) -> str:

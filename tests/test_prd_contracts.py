@@ -236,6 +236,14 @@ class ProjectDocumentContracts(unittest.TestCase):
             '<meta content="prd-contract-fixture-v1.0" name="specification-version"/>',
             html,
         )
+        self.assertIn('data-document-languages="en"', html)
+        self.assertIn('id="prd-renderer-contract-style"', html)
+        self.assertIn('id="prd-single-language-enforcer"', html)
+        self.assertIn('style="--prd-journey-columns:1"', html)
+        self.assertIn('style="--prd-flow-columns:1"', html)
+        self.assertIn('dev-core-requirement-terms-used-details', html)
+        self.assertNotIn('dev-core-level-terms-used-details', html)
+        self.assertNotIn('dev-core-developer-terms-used-details', html)
         for marker in (
             "narrative-sequence",
             "section-tabs package-tabs",
@@ -271,6 +279,85 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
         composition = next(check for check in result["checks"] if check["check"] == "golden_page_composition")
         self.assertEqual(composition["status"], "pass")
+
+    def test_renderer_adapts_golden_grid_columns_to_content_count(self) -> None:
+        data = render_data()
+        data["overview"]["journey"] = [
+            {"title": f"Stage {index}", "description": f"Stage {index} result."}
+            for index in range(1, 6)
+        ]
+        data["global_development"][0]["flow"] = [
+            {"step": index, "title": f"Step {index}", "description": f"Do step {index}."}
+            for index in range(1, 4)
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn('style="--prd-journey-columns:5"', html)
+        self.assertIn('style="--prd-flow-columns:3"', html)
+        self.assertIn(
+            '.document-main .journey{grid-template-columns:repeat(var(--prd-journey-columns,6),1fr)}',
+            html,
+        )
+        self.assertIn(
+            '.document-main .flow{grid-template-columns:repeat(var(--prd-flow-columns,4),1fr)}',
+            html,
+        )
+
+    def test_renderer_enforces_explicit_bilingual_localized_values(self) -> None:
+        data = render_data()
+        data["document"]["languages"] = ["en", "id"]
+        data["overview"]["project_context"] = {"en": "English only."}
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertNotIn("Traceback", rendered.stderr)
+        self.assertIn(
+            "render_data.overview.project_context.id is required for bilingual document",
+            rendered.stderr,
+        )
+        self.assertFalse((project / "output" / "final.html").exists())
+
+    def test_renderer_keeps_bilingual_switch_only_for_declared_bilingual_document(self) -> None:
+        data = render_data()
+        data["document"]["languages"] = ["en", "id"]
+        data["overview"]["project_context"] = {
+            "en": "A bilingual contract fixture.",
+            "id": "Fixture kontrak bilingual.",
+        }
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn('data-document-languages="en,id"', html)
+        self.assertNotIn('id="prd-single-language-enforcer"', html)
+        self.assertIn('data-id="Fixture kontrak bilingual."', html)
+
+    def test_renderer_applies_role_specific_terms_visibility(self) -> None:
+        data = render_data()
+        data["packages"][0]["terms"][0]["roles"] = ["gameplay", "developer"]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn('dev-core-requirement-terms-used-details', html)
+        self.assertNotIn('dev-core-level-terms-used-details', html)
+        self.assertIn('dev-core-developer-terms-used-details', html)
+
+    def test_renderer_rejects_unknown_term_role(self) -> None:
+        data = render_data()
+        data["packages"][0]["terms"][0]["roles"] = ["qa"]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertNotIn("Traceback", rendered.stderr)
+        self.assertIn("roles contains unsupported role: qa", rendered.stderr)
 
     def test_validator_rejects_missing_golden_composition_marker(self) -> None:
         project = self.make_project(render_data())

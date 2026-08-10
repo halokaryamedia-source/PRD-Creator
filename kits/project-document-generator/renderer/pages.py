@@ -27,6 +27,17 @@ def heading(value: Any) -> str:
     return f'<h3 class="package-section-heading">{i18n(value)}</h3>'
 
 
+def _visible_package_terms(pkg: dict[str, Any], role: str) -> list[dict[str, Any]]:
+    visible = []
+    for term in pkg.get("terms", []):
+        roles = term.get("roles")
+        if roles is None:
+            roles = ["gameplay"]
+        if role in roles:
+            visible.append(term)
+    return visible
+
+
 def overview(data: dict[str, Any]) -> str:
     d, o = data["document"], data["overview"]
     brand = d.get("brand") or d["title"]
@@ -59,7 +70,11 @@ def overview(data: dict[str, Any]) -> str:
     if facts:
         body += f'<div class="facts{" three" if len(o.get("facts", [])) == 3 else ""}">{facts}</div>'
     if journey:
-        body += f'<h3>{i18n(bi("Complete Gameplay Journey", "Perjalanan Gameplay Lengkap"))}</h3><div class="journey">{journey}</div>'
+        journey_columns = min(len(journey_src), 6)
+        body += (
+            f'<h3>{i18n(bi("Complete Gameplay Journey", "Perjalanan Gameplay Lengkap"))}</h3>'
+            f'<div class="journey" style="--prd-journey-columns:{journey_columns}">{journey}</div>'
+        )
     if systems:
         body += f'<div class="summary-note"><strong>{i18n(bi("Main Systems", "Sistem Utama"))}</strong>{ul(systems)}</div>'
     body += terms(o.get("terms", []), "summary-terms-used-details")
@@ -339,7 +354,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         gp_flow = [entry for entry in gp.get("player_flow", []) if isinstance(entry, dict)]
         if gp_flow:
             gp_body += heading(bi("Gameplay Flow", "Alur Gameplay")) + sequence(gp_flow)
-        gp_body += terms(pkg.get("terms", []), f"dev-{pid}-requirement-terms-used-details")
+        gp_body += terms(_visible_package_terms(pkg, "gameplay"), f"dev-{pid}-requirement-terms-used-details")
         out.append(
             page(
                 f"dev-{pid}-requirement",
@@ -376,7 +391,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             )
         if ld.get("notes"):
             ld_body += heading(bi("Important Build Notes", "Catatan Build Penting")) + note_grid(ld["notes"])
-        ld_body += terms(pkg.get("terms", []), f"dev-{pid}-level-terms-used-details")
+        ld_body += terms(_visible_package_terms(pkg, "level_design"), f"dev-{pid}-level-terms-used-details")
         out.append(
             page(
                 f"dev-{pid}-level",
@@ -424,7 +439,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             )
         if dev.get("notes"):
             dev_body += heading(bi("Important Development Notes", "Catatan Development Penting")) + note_grid(dev["notes"])
-        dev_body += terms(pkg.get("terms", []), f"dev-{pid}-developer-terms-used-details")
+        dev_body += terms(_visible_package_terms(pkg, "developer"), f"dev-{pid}-developer-terms-used-details")
         out.append(
             page(
                 f"dev-{pid}-developer",

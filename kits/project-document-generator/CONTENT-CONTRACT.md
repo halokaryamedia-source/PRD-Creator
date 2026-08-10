@@ -209,6 +209,18 @@ Prefer:
 Completing this objective opens the next area and starts the following phase.
 ```
 
+## Document language
+
+Document language availability must reflect what the project actually provides.
+
+- English-only is the default when no bilingual output has been approved or produced.
+- Expose Indonesian as a selectable document language only when the document is intentionally EN + ID.
+- In a bilingual document, content represented explicitly as an `en` / `id` localized value must contain both sides; do not silently reuse the available language as the missing translation.
+- Proper names, codes, numbers, formulas, IDs, and other intentionally language-neutral values may remain identical across languages.
+- Do not create translation-memory, localization-service, or duplicate-document machinery merely to support this boundary.
+
+The production owner remains responsible for writing an actual Indonesian translation when bilingual output is requested. A language switch is presentation of available content, not evidence that translation work has been completed.
+
 ## Scoring contract
 
 If a package produces a score, define only the scoring facts the product actually needs:
@@ -245,7 +257,7 @@ Do not invent analytics, counters, persistence, or duplicate-prevention systems 
 
 Use Terms Used only for project-specific or production-critical terminology.
 
-Each term has a stable key, label, concise definition, and optional aliases. Package-wide terms may power glossary/tooltips, but a Level Design or Developer page should only render a Terms Used block when that role actually benefits from it. Do not repeat the same visible glossary block on every role page by default.
+Each term has a stable key, label, concise definition, and optional aliases. Package terms remain one glossary/tooltips source. By default, a package term is shown in the Gameplay Overview Terms Used block; show it on Level Design or Developer only when that role actually benefits from it. A term may remain glossary/tooltips-only when no visible role block needs it. Do not duplicate the same visible glossary block across all three role pages by default.
 
 ## Critical information
 

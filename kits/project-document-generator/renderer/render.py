@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render derived PRD JSON into the approved HTML shell without redesigning it."""
+"""Render derived PRD JSON into the approved Golden Sample composition."""
 from __future__ import annotations
 import argparse, json, re, sys
 from pathlib import Path
@@ -18,6 +18,16 @@ TITLE_RE = re.compile(r"<title>.*?</title>", re.S | re.I)
 DESCRIPTION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="description"\s*/?>', re.I)
 SPEC_VERSION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="specification-version"\s*/?>', re.I)
 GLOSSARY_ASSIGN_RE = re.compile(r"const glossary = .*?;\n\s*const tooltip =", re.S)
+HTML_TAG_RE = re.compile(r"<html\b[^>]*>", re.I)
+TERM_ROLES = {"gameplay", "level_design", "developer"}
+
+RENDERER_CONTRACT_STYLE = """<style id="prd-renderer-contract-style">
+@media(min-width:761px){
+  .document-main .journey{grid-template-columns:repeat(var(--prd-journey-columns,6),1fr)}
+  .document-main .flow{grid-template-columns:repeat(var(--prd-flow-columns,4),1fr)}
+}
+html[data-document-languages="en"] .language-panel{display:none!important}
+</style>"""
 
 
 def script_safe_json(value: Any) -> str:
@@ -30,6 +40,29 @@ def script_safe_json(value: Any) -> str:
         .replace("\u2028", "\\u2028")
         .replace("\u2029", "\\u2029")
     )
+
+
+def document_languages(data: dict[str, Any]) -> list[str]:
+    raw = data["document"].get("languages", ["en"])
+    if raw not in (["en"], ["en", "id"]):
+        raise ValueError('document.languages must be ["en"] or ["en", "id"]')
+    return list(raw)
+
+
+def validate_bilingual_values(value: Any, path: str) -> None:
+    if isinstance(value, dict):
+        keys = set(value)
+        if keys and keys.issubset({"en", "id"}):
+            for language in ("en", "id"):
+                current = value.get(language)
+                if current in (None, "", []):
+                    raise ValueError(f"{path}.{language} is required for bilingual document")
+            return
+        for key, child in value.items():
+            validate_bilingual_values(child, f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            validate_bilingual_values(child, f"{path}[{index}]")
 
 
 def validate_aliases(aliases: Any, context: str) -> None:
@@ -51,13 +84,29 @@ def validate_aliases(aliases: Any, context: str) -> None:
     raise ValueError(f"{context}.aliases must be an array of strings or an en/id object")
 
 
-def validate(data: dict) -> None:
+def validate_term_roles(roles: Any, context: str) -> None:
+    if roles is None:
+        return
+    if not isinstance(roles, list) or not all(isinstance(role, str) for role in roles):
+        raise ValueError(f"{context}.roles must be an array")
+    if len(roles) != len(set(roles)):
+        raise ValueError(f"{context}.roles must not contain duplicates")
+    invalid = sorted(set(roles) - TERM_ROLES)
+    if invalid:
+        raise ValueError(f"{context}.roles contains unsupported role: {invalid[0]}")
+
+
+def validate(data: dict) -> list[str]:
     if not isinstance(data, dict):
         raise ValueError("render data root must be an object")
     if not isinstance(data.get("document"), dict) or not txt(data["document"].get("title"))["en"].strip():
         raise ValueError("document.title is required")
     if not isinstance(data.get("overview"), dict):
         raise ValueError("overview is required")
+
+    languages = document_languages(data)
+    if "id" in languages:
+        validate_bilingual_values(data, "render_data")
 
     collections: dict[str, list[dict[str, Any]]] = {}
     for key in ("gameplay_flow", "global_development", "packages"):
@@ -92,10 +141,13 @@ def validate(data: dict) -> None:
         for index, term in enumerate(terms):
             if not isinstance(term, dict):
                 raise ValueError(f'Package {pkg["id"]}.terms[{index}] must be an object')
-            validate_aliases(term.get("aliases"), f'Package {pkg["id"]}.terms[{index}]')
+            context = f'Package {pkg["id"]}.terms[{index}]'
+            validate_aliases(term.get("aliases"), context)
+            validate_term_roles(term.get("roles"), context)
 
     if OPEN_RE.search(json.dumps(data, ensure_ascii=False)):
         raise ValueError("Render data contains unresolved placeholder text")
+    return languages
 
 
 def require_exact_once(src: str, marker: str, label: str) -> None:
@@ -137,13 +189,39 @@ def require_namespace_tokens(src: str) -> None:
             raise ValueError(f"Template missing required {label}: {token}")
 
 
+def apply_document_runtime_contract(src: str, languages: list[str]) -> str:
+    html_matches = list(HTML_TAG_RE.finditer(src))
+    if len(html_matches) != 1:
+        raise ValueError(f"Template requires exactly one html tag; found {len(html_matches)}")
+    opening = html_matches[0].group(0)
+    if "data-document-languages=" in opening:
+        raise ValueError("Template html tag must not define project language availability")
+    language_value = ",".join(languages)
+    updated = opening[:-1] + f' data-document-languages="{esc(language_value)}">'
+    src = src[:html_matches[0].start()] + updated + src[html_matches[0].end():]
+    require_exact_once(src, "</head>", "head closing marker")
+    return src.replace("</head>", RENDERER_CONTRACT_STYLE + "\n</head>", 1)
+
+
+def single_language_enforcer(namespace: str) -> str:
+    return (
+        '<script id="prd-single-language-enforcer">(function(){'
+        "document.documentElement.lang='en';"
+        "document.querySelectorAll('.i18n-text').forEach(function(node){"
+        "if(typeof node.dataset.en==='string'){node.textContent=node.dataset.en;}});"
+        f"try{{localStorage.setItem('prd-{namespace}-language','en');}}catch(e){{}}"
+        '})();</script>'
+    )
+
+
 def render(template: Path, render_data: Path, output: Path) -> None:
     if not template.is_file():
         raise FileNotFoundError(f"Approved template not found: {template}")
     data = json.loads(render_data.read_text(encoding="utf-8"))
-    validate(data)
+    languages = validate(data)
     src = template.read_text(encoding="utf-8")
     require_namespace_tokens(src)
+    src = apply_document_runtime_contract(src, languages)
 
     pages = [overview(data)] + flow_pages(data) + global_pages(data) + package_pages(data)
     nav = navigation(data)
@@ -189,6 +267,9 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
     src = src.replace("aftershock-document-", f"prd-{namespace}-")
     src = src.replace("aftershock-sidebar-collapsed", f"prd-{namespace}-sidebar-collapsed")
+    if languages == ["en"]:
+        require_exact_once(src, "</body>", "body closing marker")
+        src = src.replace("</body>", single_language_enforcer(namespace) + "\n</body>", 1)
 
     ids = set(re.findall(r'<section\b[^>]*\bid="([^"]+)"', src))
     targets = set(re.findall(r'data-target="([^"]+)"', nav))
