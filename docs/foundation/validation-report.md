@@ -3,13 +3,13 @@
 Updated: 2026-08-10
 Scope: current `Local` production Flow 1–7, real-project proof, retired-builder migration, and current BuildIT parity remediation.
 
-## Current Evidence Labels
+## Evidence Labels
 
 Use root `AGENTS.md` labels:
 
-- `CURRENT-PROJECT VERIFIED` — exact/equivalent claim proven in the current project/environment at the level claimed;
-- `AUTHORITATIVE-SOURCE VERIFIED` — authoritative source/policy supports the claim, but current execution/output may remain unproven;
-- `LOCAL PROOF REQUIRED` — implementation/support is plausible, but a material local/browser/audio/runtime check remains;
+- `CURRENT-PROJECT VERIFIED` — exact/equivalent claim proven at the level stated;
+- `AUTHORITATIVE-SOURCE VERIFIED` — authoritative source/policy supports the claim but execution/output may remain unproven;
+- `LOCAL PROOF REQUIRED` — material local/browser/audio/runtime proof remains;
 - `UNSUPPORTED` — available evidence shows the method/capability should not be relied on;
 - `UNKNOWN` — evidence is insufficient or materially conflicting.
 
@@ -17,21 +17,21 @@ Use root `AGENTS.md` labels:
 
 | Flow | Status | Evidence |
 |---|---|---|
-| 1. Repository Boot & Project Memory | `CURRENT-PROJECT VERIFIED` | Continuity and permanent `Local` authority persisted across migration and operating work. |
-| 2. Source Intake & Requirement Recovery | `CURRENT-PROJECT VERIFIED` | The Clockwork Vault: 2 sources, 129 material requirements, 0 material conflicts/blockers, `ready_for_prd`. |
-| 3. Project Document / PRD Generation | `CURRENT-PROJECT VERIFIED` | Canonical content + derived projection; 29 expected PRD pages. |
-| 4. PRD Validation & Team Handoff | `CURRENT-PROJECT VERIFIED` for the proven Clockwork Vault revision; generic mechanical revision integrity now hardened by P1.1 | Real revision passed mechanical + four semantic perspectives. P1.1 closes stale HTML/current render-data and malformed collection-item false-pass/crash paths. |
+| 1. Repository Boot & Project Memory | `CURRENT-PROJECT VERIFIED` | Continuity and permanent `Local` authority persisted across migration/operating work. |
+| 2. Source Intake & Requirement Recovery | `CURRENT-PROJECT VERIFIED` | Clockwork Vault: 2 sources, 129 material requirements, no material blockers. |
+| 3. Project Document / PRD Generation | `CURRENT-PROJECT VERIFIED` | Canonical content + derived projection; real 29-page render. |
+| 4. PRD Validation & Team Handoff | `CURRENT-PROJECT VERIFIED` for the proven Clockwork Vault revision | Mechanical + semantic perspectives passed for that revision; P1.1/P1.2 have since hardened generic mechanical renderer/validator trust boundaries. |
 | 5. Voice Requirement Extraction | `CURRENT-PROJECT VERIFIED` | 21 justified moments across 6 sections. |
-| 6. ElevenLabs Performance Script Production | `CURRENT-PROJECT VERIFIED` for the proven Clockwork Vault revision | 21 entries with exact Flow 5 ID/Type parity and generated DOCX; generic Voice revision/parser gaps remain ordered for P1.3/P1.4. |
-| 7. Voice Validation & Delivery | `CURRENT-PROJECT VERIFIED` for the proven Clockwork Vault revision | Visual QA found/fixed a real blank-page defect; generic DOCX revision/entry-binding gaps remain ordered for P1.3. |
-
-The P1 findings do not invalidate the recorded Clockwork Vault proof. They constrain which generic claims can be made for arbitrary future revisions until each finding is remediated.
+| 6. ElevenLabs Performance Script Production | `CURRENT-PROJECT VERIFIED` for the proven Clockwork Vault revision | 21 exact ID/Type entries + generated DOCX; generic revision-integrity hardening remains active in P1.3. |
+| 7. Voice Validation & Delivery | `CURRENT-PROJECT VERIFIED` for the proven Clockwork Vault revision | Real blank-page defect found/fixed/revalidated; generic per-entry DOCX binding hardening remains active in P1.3. |
 
 Audio evidence for the real proof remains `not_provided`.
 
-## Agent Governance Status
+The P1 findings do not invalidate the recorded Clockwork Vault proof. They limit what can be generalized to arbitrary future revisions until each generic trust boundary is hardened.
 
-The governance layer remains proven for deterministic boot, Plan / Developing / Maintenance routing, mandatory non-trivial `development-brief`, Dual POV, one-specialist budget, root-cause Maintenance, ownership/source/review routing, and historical review integrity.
+## Agent Governance
+
+The governance layer remains proven for deterministic boot, Plan / Developing / Maintenance routing, non-trivial `development-brief`, Dual POV, one-specialist budget, root-cause Maintenance, ownership/source/review routing, and historical review integrity.
 
 Overall full relevant BuildIT parity remains **open**.
 
@@ -43,11 +43,17 @@ Repository Verify 31372363802  PASS
 Production Verify 31372363843  PASS
 ```
 
-P0.1 remains `CURRENT-PROJECT VERIFIED` for the focused generic production contracts it actually proves.
+P0.1 remains `CURRENT-PROJECT VERIFIED` for its focused repository-side contracts.
 
 ## P0.2 — Technical Ownership Refinement — COMPLETE
 
-Current routing:
+```text
+source head       a0a51d97523ab07f87ef6deeffdafc8094febea4
+Repository Verify 31374226049  PASS
+Production Verify 31374226078  PASS
+```
+
+Current rule:
 
 ```text
 semantic/product contract wrong
@@ -56,15 +62,8 @@ semantic/product contract wrong
 semantic contract correct + executable mechanics wrong
 → nearest kit AGENTS + exact implementation owner
 
-shared dependency/test/CI contract wrong
+shared dependency/test/CI wrong
 → requirements.lock.txt / tests / tools / workflows
-```
-
-Proof on `a0a51d97523ab07f87ef6deeffdafc8094febea4`:
-
-```text
-Repository Verify 31374226049  PASS
-Production Verify 31374226078  PASS
 ```
 
 ## P1 — Production Engineering Quality Audit — COMPLETE
@@ -77,56 +76,61 @@ Ordered remediation:
 
 `docs/knowledge/operations/production-engineering-remediation-plan.md`
 
-## P1.1 — PRD Mechanical Revision Integrity — COMPLETE
+## P1 Finding Status
 
-Source head:
+| Finding | Severity | Current status | Owner |
+|---|---|---|---|
+| P1-F01 PRD stale/current render revision not linked | Major | **implemented P1.1** | PRD renderer/validator |
+| P1-F02 malformed render-data could escape structured FAIL | Major | **implemented P1.1** | PRD validator |
+| P1-F03 glossary script-context / alias-shape safety | Major | **implemented P1.2** | PRD renderer |
+| P1-F04 Voice requirements/script/DOCX revision identity | Major | **open — P1.3 active** | Voice builder/validator/state contract |
+| P1-F05 DOCX global-token check vs per-entry binding | Major | **open — P1.3 active** | Voice validator |
+| P1-F06 empty Voice section uncaught failure | Medium | open — P1.4 | Voice builder |
+| P1-F07 PRD shell/metadata contract partial | Medium | **implemented P1.2** | PRD renderer/shell contract |
+| P1-F08 explicit test-module enumeration | Medium | open — P1.5 | Production Verify workflow |
+| P1-F09 non-atomic derived output writes | Low/Medium | conditional — P1.6 | renderer/builder |
+
+## P1.1 Proof
+
+Source:
 
 `04f306f8589528ccc8cb03e89333dba174a3d276`
-
-Implemented mechanical contracts:
-
-- root `gameplay_flow`, `global_development`, and `packages` collections/items/stable IDs are preflighted before expected-page calculation;
-- malformed collection items return structured validator FAIL instead of a traceback path;
-- renderer computes SHA-256 from canonical sorted render-data and embeds one `render-data-sha256` marker in `final.html`;
-- Flow 4 validator computes the same current fingerprint and rejects stale/missing/multiple render revision markers;
-- generated `<main class="document-main">` section list must exactly match the current expected page order/set, so stale extra/missing/reordered generated pages fail mechanically.
-
-Focused regressions prove:
-
-```text
-current render + current validator                PASS
-render-data changed without rerender              FAIL
-malformed collection item                         structured FAIL
-stale extra generated section                     FAIL
-existing scoring/completion/weight regression     remains PASS
-```
-
-Source-head proof:
 
 ```text
 Production Verify 31377375929  PASS
 Repository Verify 31377377036  PASS
 ```
 
-Production Verify sub-gates all passed: locked dependency install, Python compile, Project Document contracts, Voice Production contracts, and fail-closed aggregate.
+Verified mechanical contract:
 
-P1-F01 and P1-F02 are therefore **implemented** at the mechanical contract level claimed.
+- malformed collection/item/stable-ID data fails structurally;
+- current render-data ↔ generated HTML revision fingerprint must match;
+- generated page order/set must exactly match current projection.
 
-## Remaining P1 Findings
+## P1.2 Proof
 
-| Finding | Severity | Current state | Next owner |
-|---|---|---|---|
-| P1-F03 — glossary script-context / alias-shape safety | Major | **active next** | PRD renderer/pages + focused tests |
-| P1-F04 — Voice Requirements/script/DOCX revision identity | Major | open | Voice builder/validator/state contract |
-| P1-F05 — DOCX global token presence vs per-entry binding | Major | open | Voice validator |
-| P1-F06 — empty Voice section uncaught failure path | Medium | open | Voice builder |
-| P1-F07 — PRD shell/metadata mechanical contract partial | Medium | **active next with F03** | PRD renderer/template/validator |
-| P1-F08 — Production Verify enumerates test modules explicitly | Medium | open | workflow |
-| P1-F09 — derived output writes are non-atomic | Low/Medium | conditional | renderer/builder |
+Source:
 
-## Boundaries Retained
+`802904856b69fd50008999f196cb72d48303e0ba`
 
-Repository/Production Verify still do not replace:
+```text
+Repository Verify 31378603894  PASS
+Production Verify 31378603848  PASS
+```
+
+Verified static/mechanical contract:
+
+- glossary payload containing literal `</script>` is serialized without terminating executable script context;
+- malformed alias shape is rejected before browser execution;
+- missing/ambiguous required shell markers fail closed;
+- description/specification-version metadata are required/replaced explicitly;
+- current happy PRD renderer + validator remains passing.
+
+This proof does **not** claim browser visual/runtime acceptance. Actual browser behavior remains a separate evidence level when claimed.
+
+## Explicit Non-Claims
+
+Repository Verify / Production Verify do not replace:
 
 - semantic source → canonical PRD correctness;
 - New Reader / Level Designer / Developer readiness judgement;
@@ -135,16 +139,14 @@ Repository/Production Verify still do not replace:
 - pronunciation/performance judgement;
 - generated audio quality.
 
-The remediation does not authorize a generic schema/parser/tooling framework or another root skill.
-
 ## System Integration Proof
 
-`docs/knowledge/operations/system-integration-proof.md` remains current evidence for the real replacement Flow 2→7 execution and the Clockwork Vault defect→root-fix→revalidation cycle.
+`docs/knowledge/operations/system-integration-proof.md` remains current evidence for the real replacement Flow 2→7 execution and Clockwork Vault defect→root-fix→revalidation cycle.
 
-## Retired Package Status
+## Retired Package
 
 `Production Document Builder/` remains removed after `SAFE_TO_DELETE` audit. Git history is forensic evidence only.
 
 ## Current Boundary
 
-P1.1 is complete. The active source-remediation slice is **P1.2 — PRD Renderer Script/Shell Safety**. Full relevant BuildIT parity remains open until ordered engineering remediation is completed and re-audited.
+P1.1 and P1.2 are complete. The active source-remediation slice is **P1.3 — Voice Revision + DOCX Entry Integrity**. Full relevant BuildIT parity remains open until ordered remediation and re-audit finish.

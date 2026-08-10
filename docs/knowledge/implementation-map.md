@@ -20,6 +20,8 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Review evidence current meaning | `docs/knowledge/reviews/review-graph.md` |
 | Durable cross-owner decision threshold | `docs/knowledge/decisions/change-decision-guide.md` |
 | Current BuildIT parity gap evidence | `docs/knowledge/reviews/buildit-current-parity-gap-audit.md` |
+| Top-level parity remediation | `docs/knowledge/operations/buildit-parity-remediation-plan.md` |
+| P0.2 technical ownership evidence | `docs/knowledge/reviews/technical-ownership-refinement-audit.md` + `docs/knowledge/decisions/technical-ownership-boundary.md` |
 | P1 production engineering audit | `docs/knowledge/reviews/production-engineering-quality-audit.md` |
 | P1 ordered source remediation | `docs/knowledge/operations/production-engineering-remediation-plan.md` |
 | Static repository gate | `tools/verify_repository.py` + `.github/workflows/repository-verify.yml` |
@@ -35,10 +37,10 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Flow 3 PRD semantic/product contract | `docs/foundation/03-prd-generation.md` + `.agents/skills/project-document-production/SKILL.md` |
 | Flow 4 PRD readiness/handoff semantics | `docs/foundation/04-prd-validation-handoff.md` + `.agents/skills/project-document-production/SKILL.md` |
 | Project Document kit-local contributor/technical routing | `kits/project-document-generator/AGENTS.md` |
-| Project Document renderer mechanics + render identity emission | `kits/project-document-generator/renderer/render.py` |
-| Project Document page/helper rendering | `kits/project-document-generator/renderer/core.py` + `renderer/pages.py` |
+| Project Document production/rendering contract | `kits/project-document-generator/SKILL.md` + `kits/project-document-generator/RENDERING.md` |
+| Project Document renderer mechanics | `kits/project-document-generator/renderer/` |
 | Project Document approved shell | `kits/project-document-generator/template/approved-document.html` |
-| Project Document mechanical validator + current-render identity/page-set checks | `kits/project-document-generator/validator/validate.py` |
+| Project Document mechanical validator | `kits/project-document-generator/validator/validate.py` |
 | Project Document focused regression | `tests/test_prd_contracts.py` |
 | Flow 5 Voice semantic scope | `docs/foundation/05-voice-requirement-extraction.md` + `.agents/skills/voice-production/SKILL.md` |
 | Flow 6 performance/artifact semantic contract | `docs/foundation/06-elevenlabs-script-production.md` + `.agents/skills/voice-production/SKILL.md` |
@@ -48,11 +50,12 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Flow 7 Voice readiness/evidence semantics | `docs/foundation/07-voice-validation-delivery.md` + `.agents/skills/voice-production/SKILL.md` |
 | Voice mechanical validator | `kits/voice-production-kit/validator/validate.py` |
 | Voice focused regression | `tests/test_voice_contracts.py` |
+| Voice direct dependency declaration | `kits/voice-production-kit/requirements.txt` |
 | Exact Production Verify environment | `requirements.lock.txt` |
 | Current production + parity evidence | `docs/foundation/validation-report.md` |
-| Active project packages | `workspace/active/` |
-| Saved project packages | `workspace/saved/` |
+| Active/saved project packages | `workspace/active/` / `workspace/saved/` |
 | Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
+| Retired-builder evidence | `docs/knowledge/operations/archived-retirement-audit.md` |
 
 ## Semantic / Technical / Repository-Engineering Separation
 
@@ -67,26 +70,29 @@ shared dependency/regression/CI
 = requirements.lock.txt + tests/ + tools/ + workflows
 ```
 
-## P1.1 Mechanical PRD Identity
+## P1 Engineering Proof
 
-Current generic mechanical chain:
-
-```text
-work/render-data.json
-→ canonical sorted JSON SHA-256
-→ output/final.html meta[name="render-data-sha256"]
-→ validator exact fingerprint match
-→ exact document-main generated section order/set
-```
-
-Proof on source head `04f306f8589528ccc8cb03e89333dba174a3d276`:
+P1.1:
 
 ```text
+source head       04f306f8589528ccc8cb03e89333dba174a3d276
 Production Verify 31377375929  PASS
 Repository Verify 31377377036  PASS
 ```
 
-This proves current render-data ↔ final HTML mechanical identity for the contract implemented. It does not prove semantic `content.md` → render-data equivalence or browser visual quality.
+Current PRD mechanical validator now proves current render-data ↔ HTML revision identity and exact generated page order/set, while malformed current projection collections fail structurally.
+
+P1.2:
+
+```text
+source head       802904856b69fd50008999f196cb72d48303e0ba
+Production Verify 31378603848  PASS
+Repository Verify 31378603894  PASS
+```
+
+Current renderer now owns script-context-safe glossary serialization, supported alias-shape preflight, exact required shell-marker/metadata checks, inherited namespace-token checks, and controlled covered contract failures.
+
+Neither proof replaces semantic PRD readiness, browser visual/runtime inspection, rendered DOCX page QA, pronunciation/performance judgement, or audio review.
 
 ## Project-Level Authority After Flow 7
 
@@ -110,11 +116,11 @@ work/voice-production.md           canonical spoken/performance wording
 output/Voice Production.docx       derived Voice presentation artifact
       ↓
 work/voice-acceptance.md           Flow 7 evidence/findings
-state/voice-state.yaml             voice_delivery_ready / lifecycle state
+state/voice-state.yaml             Voice lifecycle state
 ```
 
 ## Current Engineering Boundary
 
 Production Flow 1–7 remains real-project proven for the recorded Clockwork Vault revision. Overall BuildIT parity remains open.
 
-P1 audit and P1.1 are complete. The active source slice is **P1.2 — PRD Renderer Script/Shell Safety**.
+P1.1 and P1.2 are complete. The active source slice is **P1.3 — Voice Revision + DOCX Entry Integrity**.

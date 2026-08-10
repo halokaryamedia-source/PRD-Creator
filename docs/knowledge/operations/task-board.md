@@ -30,6 +30,8 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 - [x] representative routing/Maintenance scenarios;
 - [x] static Repository Verify gate.
 
+The previous Phase 3 full-parity conclusion is superseded by the current BuildIT gap audit; the governance work above remains valid implemented evidence.
+
 ## Current BuildIT Parity Remediation
 
 Top-level plan: `buildit-parity-remediation-plan.md`.
@@ -38,20 +40,25 @@ Top-level plan: `buildit-parity-remediation-plan.md`.
 - [x] **P0.2 — Technical Ownership Refinement**
 - [x] **P1 — Production Engineering Quality Audit**
 - [x] **P1.1 — PRD Mechanical Revision Integrity**
-  - [x] structured malformed render-data failure;
-  - [x] deterministic render-data fingerprint in final HTML;
-  - [x] stale current render-data ↔ HTML mismatch rejection;
-  - [x] exact generated page-set/order validation;
-  - [x] stale/malformed focused regressions;
-  - [x] Production Verify `31377375929` PASS on `04f306f8589528ccc8cb03e89333dba174a3d276`;
-  - [x] Repository Verify `31377377036` PASS on the same source head.
-- [ ] **P1.2 — PRD Renderer Script/Shell Safety** ← active execution slice
-  - script-safe glossary serialization;
-  - glossary alias-shape preflight;
-  - minimum approved-shell marker/metadata contract;
-  - focused regressions;
+  - [x] fail-closed render-data preflight;
+  - [x] render-data ↔ final HTML fingerprint;
+  - [x] exact generated page set/order;
+  - [x] Production Verify `31377375929` PASS;
+  - [x] Repository Verify `31377377036` PASS.
+- [x] **P1.2 — PRD Renderer Script/Shell Safety**
+  - [x] script-safe glossary serialization including literal `</script>` payload;
+  - [x] glossary alias-shape preflight;
+  - [x] required shell-marker uniqueness checks;
+  - [x] explicit description/specification-version metadata contract;
+  - [x] controlled renderer failure for covered invalid contracts;
+  - [x] Production Verify `31378603848` PASS;
+  - [x] Repository Verify `31378603894` PASS.
+- [ ] **P1.3 — Voice Revision + DOCX Entry Integrity** ← active execution slice
+  - current Voice Requirements revision/fingerprint contract;
+  - stale requirements/script/DOCX rejection;
+  - per-entry DOCX binding validation;
+  - stale-requirement + swapped-entry focused regressions;
   - both gates PASS.
-- [ ] **P1.3 — Voice Revision + DOCX Entry Integrity**
 - [ ] **P1.4 — Voice Parser / Failure-State Hardening**
 - [ ] **P1.5 — Contract Test Discovery**
 - [ ] **P1.6 — Derived Output Atomicity** — conditional
@@ -65,4 +72,4 @@ Top-level plan: `buildit-parity-remediation-plan.md`.
 
 ## Rule
 
-Do not restore a full-parity claim until the current gap/remediation track is completed and re-audited. Do not copy BuildIT domain-specific structure merely for visual similarity.
+Do not restore a full-parity claim until the current gap audit/remediation boundaries have been completed and re-audited. Do not copy BuildIT domain-specific structure merely for visual similarity.

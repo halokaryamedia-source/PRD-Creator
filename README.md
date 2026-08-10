@@ -67,32 +67,33 @@ voice-production
 
 P0.2 keeps these as semantic/product-contract owners. Pure renderer/validator/builder mechanics route to nearest kit owners; shared dependency/test/CI mechanics route to repository engineering.
 
-## P1.1 — PRD Mechanical Revision Integrity — COMPLETE
+## P1 Engineering Progress
 
-Source head:
+### P1.1 — COMPLETE
+
+Source:
 
 `04f306f8589528ccc8cb03e89333dba174a3d276`
-
-Implemented:
-
-```text
-render-data.json
-→ canonical sorted JSON
-→ SHA-256 render identity
-→ final.html render-data-sha256 marker
-→ Flow 4 validator exact match
-```
-
-The validator also fails structurally before page calculation for malformed root collection items and requires the generated document section list to match the current expected page order/set exactly.
-
-Proof:
 
 ```text
 Production Verify 31377375929  PASS
 Repository Verify 31377377036  PASS
 ```
 
-This closes P1-F01 and P1-F02 at the mechanical level claimed without pretending to prove semantic or visual correctness.
+Closed generic PRD stale-render revision and malformed render-data failure paths.
+
+### P1.2 — COMPLETE
+
+Source:
+
+`802904856b69fd50008999f196cb72d48303e0ba`
+
+```text
+Repository Verify 31378603894  PASS
+Production Verify 31378603848  PASS
+```
+
+Closed glossary `<script>`-context safety/alias-shape and minimum approved-shell marker/metadata trust gaps. Browser runtime/visual quality remains a separate evidence level.
 
 ## Repository Map
 
@@ -107,6 +108,16 @@ This closes P1-F01 and P1-F02 at the mechanical level claimed without pretending
 - `kits/voice-production-kit/` — Flow 5–7 implementation + module-local mechanics;
 - `workspace/` — project-specific production packages.
 
+## Core Authority Rule
+
+```text
+Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
+≠ Voice Requirements ≠ Voice Production Script ≠ DOCX
+≠ Voice Acceptance ≠ Audio
+```
+
+Generated artifacts and successful tooling never silently become higher authority than the canonical work/evidence that produced them.
+
 ## Current Work
 
-P1.1 is complete. The active next source slice is **P1.2 — PRD Renderer Script/Shell Safety**. See `docs/knowledge/next-action.md` for the exact boundary.
+P1.1 and P1.2 are complete. The active next source slice is **P1.3 — Voice Revision + DOCX Entry Integrity**. See `docs/knowledge/next-action.md` for the exact implementation/acceptance boundary.

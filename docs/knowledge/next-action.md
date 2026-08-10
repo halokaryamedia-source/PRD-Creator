@@ -6,13 +6,13 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Execute **P1.2 — PRD Renderer Script/Shell Safety** from the Production Engineering Remediation Plan.
+Execute **P1.3 — Voice Revision + DOCX Entry Integrity** from the Production Engineering Remediation Plan.
 
-Close the remaining PRD renderer trust gaps around project glossary data entering executable `<script>` context and around the minimum approved-shell markers/metadata that the renderer assumes.
+Make the Voice mechanical chain prove that the current Flow 5 requirements, Flow 6 canonical script, and derived DOCX belong to the same current revision, and that every DOCX entry remains mechanically bound to the correct Voice ID rather than merely containing the right tokens somewhere in the document.
 
 ## Current Status
 
-`BUILD_IT_PARITY_P1_1_COMPLETE_P1_2_RENDERER_SCRIPT_SHELL_SAFETY_NEXT`
+`BUILD_IT_PARITY_P1_2_COMPLETE_P1_3_VOICE_REVISION_DOCX_INTEGRITY_NEXT`
 
 Execution channel: **ChatGPT → GitHub**.  
 Working branch: **`Local` only**.
@@ -41,102 +41,121 @@ Source commit:
 
 `04f306f8589528ccc8cb03e89333dba174a3d276` — `fix: enforce PRD render revision integrity`
 
-Implemented contract:
+Proof:
 
 ```text
-current render-data.json
-→ canonical sorted JSON serialization
-→ SHA-256 render fingerprint
-→ final.html render-data-sha256 marker
-→ Flow 4 validator requires exact fingerprint match
+Production Verify 31377375929  PASS
+Repository Verify 31377377036  PASS
 ```
 
-The validator now also:
+Implemented:
 
-- preflights `gameplay_flow`, `global_development`, and `packages` array/item/stable-ID shape before expected-page calculation;
-- returns structured `status: fail` for malformed collection items instead of allowing a traceback path;
-- requires exactly one render revision marker;
-- requires the generated `<main class="document-main">` section list to match the current expected page list exactly, including order and no stale extra pages.
+- structured render-data collection/item/stable-ID preflight;
+- deterministic render-data SHA-256 embedded in `final.html`;
+- stale render-data ↔ HTML mismatch rejection;
+- exact generated page order/set validation.
 
-Focused regressions cover:
+P1-F01 and P1-F02 are implemented at the mechanical level claimed.
 
-- current happy render + validator PASS;
-- render-data changed without rerender → FAIL;
-- malformed collection item → structured FAIL;
-- stale extra generated page → FAIL;
-- existing scoring/completion + weight regression remains intact.
+## Completed P1.2 — PRD Renderer Script/Shell Safety
 
-### P1.1 proof
+Source commit:
+
+`802904856b69fd50008999f196cb72d48303e0ba` — `fix: harden PRD renderer script and shell safety`
+
+Implemented:
+
+- glossary JSON uses script-context-safe serialization before insertion into the inherited executable `<script>` block;
+- literal `<`, `>`, `&`, U+2028, and U+2029 are escaped in the script payload, so project text such as `</script>` remains data;
+- package glossary aliases are preflighted as `list[str]` or an `en`/`id` object whose supplied values are `list[str]`;
+- required unique shell surfaces now fail closed when missing or ambiguous;
+- description and specification-version metadata replacements are explicit required contracts;
+- inherited local-storage namespace tokens must exist before project namespacing;
+- renderer contract failures return controlled non-zero CLI failure instead of a traceback for the covered paths;
+- `RENDERING.md` now documents the exact script/shell contract.
+
+Focused PRD regressions cover:
+
+- raw `</script>` glossary payload remains script-safe;
+- malformed aliases fail in a controlled way;
+- missing/ambiguous sidebar navigation marker fails;
+- missing description metadata marker fails;
+- current happy render + validator still passes;
+- all P1.1 regressions remain active.
+
+### P1.2 proof
 
 ```text
-Production Verify
-run: 31377375929
-head: 04f306f8589528ccc8cb03e89333dba174a3d276
+Repository Verify
+run: 31378603894
+head: 802904856b69fd50008999f196cb72d48303e0ba
 result: PASS
 
-Repository Verify
-run: 31377377036
-head: 04f306f8589528ccc8cb03e89333dba174a3d276
+Production Verify
+run: 31378603848
+head: 802904856b69fd50008999f196cb72d48303e0ba
 result: PASS
 ```
 
 Production Verify sub-gates all passed: locked dependencies, compile, Project Document contracts, Voice Production contracts, and fail-closed aggregate.
 
-P1-F01 and P1-F02 are therefore **implemented** at the mechanical contract level claimed.
+P1-F03 and P1-F07 are therefore **implemented** at the static/mechanical contract level claimed. Browser runtime/visual acceptance remains separate evidence.
 
-## P1.2 Boundary
+## P1.3 Boundary
 
 Findings:
 
-- **P1-F03 MAJOR** — glossary JSON is inserted directly into HTML `<script>` context without script-safe serialization; malformed alias shape can also violate the runtime contract;
-- **P1-F07 MEDIUM** — renderer/template shell and metadata assumptions are only partially enforced.
+- **P1-F04 MAJOR** — Voice Requirements, canonical script, and DOCX revision identity are not mechanically linked strongly enough;
+- **P1-F05 MAJOR** — DOCX validation currently proves global token presence rather than binding each Voice ID to its own Type/title/duration/performance block.
 
 Owners:
 
 ```text
-kits/project-document-generator/renderer/render.py
-kits/project-document-generator/renderer/pages.py only if glossary shape normalization belongs there
-kits/project-document-generator/template/approved-document.html only if the shell itself is defective
-tests/test_prd_contracts.py
+kits/voice-production-kit/builder/build_docx.py
+kits/voice-production-kit/validator/validate.py
+kits/voice-production-kit/SCRIPT-PRODUCTION.md / VOICE-VALIDATION.md only where the mechanical revision contract must be documented
+tests/test_voice_contracts.py
+state/voice-state.yaml format only if a narrow current-revision field is actually required
 ```
 
-Required P1.2 work:
+Required P1.3 work:
 
-1. serialize project glossary data safely for JavaScript `<script>` context, including content containing `</script>`;
-2. preflight the alias shape actually required by the inherited glossary runtime instead of allowing malformed shapes to reach browser execution;
-3. define the smallest stable approved-shell marker set required by the renderer;
-4. fail clearly when a required shell marker is absent or ambiguous;
-5. make intended metadata replacement explicit and tested; do not invent new shell metadata merely for coverage;
-6. add focused regressions for script-context content, malformed aliases, and required shell markers;
-7. keep browser visual/runtime approval separate from static mechanical proof.
+1. define the smallest deterministic current Voice Requirements revision/fingerprint contract;
+2. require the canonical script/build path to identify the exact current requirements revision without making DOCX authoritative;
+3. make Flow 7 mechanical validation reject stale requirements/script/DOCX combinations;
+4. parse the generated DOCX into the builder's current visible section/entry structure;
+5. validate each entry as one bound unit: Type + Voice ID/title + duration + performance;
+6. reject swapped/misbound entry content even when all expected tokens still exist globally;
+7. add focused regressions for stale requirements and swapped DOCX entry content;
+8. preserve the current happy path and existing Voice ID/Type/page-break regressions.
 
 ## Explicit Out Of Scope
 
-- sanitizer/framework rewrite;
-- full HTML snapshot testing;
-- approved-template redesign;
-- semantic content validation;
-- Voice revision/DOCX work (P1.3+);
-- output atomicity (P1.6 conditional);
+- semantic `Must communicate` sentence matching;
+- pronunciation or performance-quality judgement;
+- rendered-page visual approval;
+- generated audio verification;
+- general Markdown/DOCX parser framework;
+- P1.4 empty-section hardening unless directly required by P1.3 evidence;
+- output atomicity;
 - root skill changes;
 - `main` changes.
 
 ## Acceptance
 
-P1.2 is complete only when:
+P1.3 is complete only when:
 
 ```text
-glossary text containing </script> → generated HTML remains script-safe
-malformed glossary alias shape → controlled failure
-missing/ambiguous required shell marker → controlled failure
-current happy PRD render + validator → PASS
-focused PRD regressions → PASS
+current requirements + script + DOCX → mechanical PASS
+requirements changed without rebuilding downstream artifacts → FAIL
+DOCX entries swapped/misbound while global tokens remain → FAIL
+existing Voice ID/Type regressions → PASS
 Production Verify → PASS
 Repository Verify → PASS
 ```
 
-Browser visual/runtime behavior remains separate evidence where that level is claimed.
+Semantic, visual, pronunciation/performance, and audio evidence remain separate.
 
 ## Next Step
 
-Implement **P1.2 — PRD Renderer Script/Shell Safety** only: harden glossary script-context serialization and the minimum renderer shell-marker contract, add focused regressions, then run both repository gates before proceeding to P1.3.
+Implement **P1.3 — Voice Revision + DOCX Entry Integrity** only: add the smallest current-revision contract and per-entry DOCX mechanical binding, add focused regressions, then run both repository gates before proceeding to P1.4.

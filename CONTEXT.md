@@ -34,7 +34,7 @@ Canonical repository-wide skills remain:
 - `project-document-production`;
 - `voice-production`.
 
-P0.2 keeps semantic/product-contract ownership in root specialists and routes pure executable mechanics to nearest kit owners. Shared dependency/test/CI work belongs to repository engineering.
+P0.2 keeps semantic/product-contract ownership in root specialists, routes pure executable mechanics to nearest kit owners, and keeps shared dependency/test/CI work under repository engineering.
 
 ## BuildIT Parity State
 
@@ -51,6 +51,8 @@ Production engineering audit:
 Ordered engineering remediation:
 
 `docs/knowledge/operations/production-engineering-remediation-plan.md`
+
+The previous Phase 3 acceptance remains historical partial evidence for the governance/routing subset.
 
 ## Verification Baseline
 
@@ -72,16 +74,16 @@ Repository Verify 31374226049  PASS
 
 ## P1.1 — PRD Mechanical Revision Integrity — COMPLETE
 
-Source head:
+Source:
 
 `04f306f8589528ccc8cb03e89333dba174a3d276`
 
-Current mechanical PRD contract now includes:
+Implemented:
 
-- structured fail-closed collection/item/stable-ID preflight before page calculation;
-- deterministic SHA-256 render-data fingerprint embedded in `final.html`;
-- validator rejection when current render-data and final HTML fingerprint differ;
-- exact generated document section/page order/set validation.
+- structured fail-closed render-data collection/item/stable-ID preflight;
+- deterministic render-data SHA-256 embedded in generated HTML;
+- stale render-data ↔ HTML rejection;
+- exact generated page order/set validation.
 
 Proof:
 
@@ -90,9 +92,32 @@ Production Verify 31377375929  PASS
 Repository Verify 31377377036  PASS
 ```
 
-P1-F01 stale PRD HTML false-PASS and P1-F02 malformed render-data traceback path are implemented at the mechanical level claimed.
+P1-F01 and P1-F02 are implemented at the mechanical level claimed.
 
-This does not automate semantic `content.md` → render-data correctness and does not replace browser visual review.
+## P1.2 — PRD Renderer Script/Shell Safety — COMPLETE
+
+Source:
+
+`802904856b69fd50008999f196cb72d48303e0ba`
+
+Implemented:
+
+- script-context-safe project glossary serialization;
+- glossary alias-shape preflight;
+- exact required shell-marker checks;
+- explicit description/specification-version metadata replacement contracts;
+- required inherited local-storage namespace tokens;
+- controlled renderer failure for covered invalid contracts;
+- focused safety regressions while preserving current happy render/validator behavior.
+
+Proof:
+
+```text
+Repository Verify 31378603894  PASS
+Production Verify 31378603848  PASS
+```
+
+P1-F03 and P1-F07 are implemented at the static/mechanical level claimed. Browser runtime/visual quality remains separate evidence.
 
 ## Stable Authority Chain
 
@@ -102,6 +127,17 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
 ≠ Voice Acceptance ≠ Audio
 ```
 
+## Stable Structure
+
+- `.agents/skills/` — repository-wide semantic routing/judgment skills;
+- `.github/workflows/` — repeatable repository/production gates;
+- `requirements.lock.txt` + `tests/` + `tools/` — repository engineering contracts;
+- `docs/foundation/` — durable production policy + proof matrix;
+- `docs/knowledge/` — continuity, routing, ownership, reviews, decisions, operations;
+- `kits/project-document-generator/` — active PRD Flow 2–4 owner + module-local mechanics;
+- `kits/voice-production-kit/` — active Voice Flow 5–7 owner + module-local mechanics;
+- `workspace/active/` / `workspace/saved/` — project-specific packages.
+
 ## Current Development State
 
-P0.1, P0.2, P1 audit, and P1.1 are complete. The active source-remediation slice is **P1.2 — PRD Renderer Script/Shell Safety**, covering glossary `<script>`-context safety, alias-shape preflight, and the minimum approved-shell marker/metadata contract.
+P0.1, P0.2, P1 audit, P1.1, and P1.2 are complete. The active source-remediation slice is **P1.3 — Voice Revision + DOCX Entry Integrity**: add current Voice requirements/script/DOCX revision linkage and per-entry DOCX mechanical binding before advancing to P1.4.
