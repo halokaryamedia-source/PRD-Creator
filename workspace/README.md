@@ -9,7 +9,7 @@ active project → workspace/active/<project>/
 saved project  → workspace/saved/<project>/
 ```
 
-## Active project package after Flow 6
+## Active project package after Flow 7
 
 ```text
 workspace/active/<project>/
@@ -28,14 +28,15 @@ workspace/active/<project>/
 │   ├── render-data.json
 │   ├── acceptance.md
 │   ├── voice-requirements.md       Flow 5 canonical voice scope
-│   └── voice-production.md         Flow 6 canonical spoken/performance text
+│   ├── voice-production.md         Flow 6 canonical spoken/performance text
+│   └── voice-acceptance.md         Flow 7 current revision evidence/findings
 └── output/
     ├── final.html
     ├── team-handoff.md
-    └── Voice Production.docx       Flow 6 derived production artifact
+    └── Voice Production.docx       derived Voice production artifact
 ```
 
-Use only files the current project actually needs.
+Actual generated audio files are project outputs/evidence only when the current task includes them. Do not invent a mandatory audio folder for script/DOCX-only projects.
 
 ## Authority rule
 
@@ -47,9 +48,9 @@ original source / approved decisions
 → voice-requirements.md
 → voice-production.md
 → Voice Production.docx
-→ Flow 7 delivery state
+→ voice-acceptance.md / voice-state delivery readiness
 ```
 
-`state/voice-state.yaml` is the downstream lifecycle owner across Flow 5–7. It records status/revision/paths; it does not replace canonical voice content.
+`state/voice-state.yaml` records lifecycle status/revision/paths; it does not replace canonical Voice content.
 
-A DOCX may be regenerated at any time from the canonical performance script. Do not patch the DOCX as the source of truth.
+A DOCX may be regenerated from the canonical performance script. Do not patch the DOCX as source of truth. If audio exists, it does not replace the script/requirements as project authority.

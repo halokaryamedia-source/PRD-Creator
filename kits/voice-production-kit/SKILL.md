@@ -1,7 +1,7 @@
 ---
 name: voice-production-kit
-description: Extract traceable voice requirements from accepted PRDs, then convert approved voice moments into ElevenLabs-ready performance scripts and a reference-styled Voice Production DOCX without inventing upstream project facts.
-version: 1.2.0
+description: Extract traceable voice requirements from accepted PRDs, create ElevenLabs-ready performance scripts and a reference-styled Voice Production DOCX, then validate the final script/DOCX revision without inventing upstream project facts.
+version: 1.3.0
 ---
 
 # Voice Production Kit
@@ -10,31 +10,32 @@ version: 1.2.0
 
 1. **Flow 5 — Voice Requirement Extraction**: accepted PRD → `work/voice-requirements.md`.
 2. **Flow 6 — ElevenLabs Performance Script Production**: voice requirements → `work/voice-production.md` + `output/Voice Production.docx`.
-3. **Flow 7 — Voice Validation & Delivery**: downstream final acceptance/delivery.
+3. **Flow 7 — Voice Validation & Delivery**: current script/DOCX → `work/voice-acceptance.md` + `voice_delivery_ready`.
 
-## Flow 6 entry gate
+## Routing
 
-Start Flow 6 only when `state/voice-state.yaml` is `voice_requirements_ready` for the current accepted PRD revision.
+- Flow 5: read `VOICE-EXTRACTION.md`.
+- Flow 6: read `SCRIPT-PRODUCTION.md` and `DOCX-FORMAT.md`.
+- Flow 7: read `VOICE-VALIDATION.md`.
 
-## Flow 6 required order
+Do not skip the current project's state gate.
 
-1. Read `SCRIPT-PRODUCTION.md`.
-2. Read `DOCX-FORMAT.md`.
-3. Read `work/voice-requirements.md`.
-4. Read accepted PRD content only for required context/terminology.
-5. Draft `work/voice-production.md` without changing the Flow 5 Voice ID set or type.
-6. Check required facts/guardrails and remove unsupported wording.
-7. Build `output/Voice Production.docx` with `builder/build_docx.py` and `--requirements`.
-8. Update `state/voice-state.yaml` to `voice_script_ready`.
-9. Stop. Flow 7 owns final voice validation/delivery.
+## Canonical owners
+
+- `work/voice-requirements.md` — which voice moments exist and what they must communicate;
+- `work/voice-production.md` — final spoken wording/performance notation;
+- `output/Voice Production.docx` — derived production presentation;
+- `work/voice-acceptance.md` — revision-specific Flow 7 evidence/findings;
+- `state/voice-state.yaml` — lifecycle status/revision/next step across Flow 5–7.
 
 ## Non-negotiable rules
 
-- No new voice moment in Flow 6 unless Flow 5 scope is explicitly reopened.
-- Preserve official names, speaker, channel, trigger, sequence, mechanics, outcomes, and rewards.
-- Do not repair an unresolved PRD decision inside spoken wording.
-- Performance directions describe delivery, not new events or facts.
-- Selective CAPS, pauses, and line breaks are production tools, not decoration.
-- Estimated Duration is an estimate until audio exists.
-- `work/voice-production.md` owns spoken wording; the DOCX is derived.
-- Aftershock is a quality/layout reference only, never a project requirement or quota.
+- Voice scope cannot change silently after Flow 5.
+- Script polish cannot create a new project fact, speaker, channel, trigger, mechanic, reward, or outcome.
+- DOCX is generated from canonical Markdown and is never the editable authority.
+- Flow 7 must validate the current revision, not an older DOCX against newer script text.
+- Critical/Major findings block `voice_delivery_ready`.
+- Pronunciation is not called verified without evidence.
+- Generated-audio quality is never claimed unless actual audio was supplied and reviewed.
+- `voice_delivery_ready` normally refers to script + DOCX delivery scope; audio is a separate evidence dimension unless explicitly included.
+- Aftershock remains a demonstrated quality/layout reference only, never project content or quota.

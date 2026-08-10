@@ -1,8 +1,8 @@
 # Project Production Workspace
 
-A repository-first production workspace for turning incomplete project direction into development-ready project documentation, then deriving production-ready voice scripts for ElevenLabs.
+A repository-first production workspace for turning incomplete project direction into development-ready project documentation, then deriving validated ElevenLabs-ready Voice Production deliverables.
 
-The repository is the project memory. Chat history may help, but it is not the authority for current project state.
+The repository is project memory. Chat history is supporting context, not the authority for current state.
 
 ## Branch Model
 
@@ -25,14 +25,14 @@ Flow 5 — Voice Requirement Extraction                 ✓ implemented
     ↓
 Flow 6 — ElevenLabs Performance Script Production     ✓ implemented
     ↓
-Flow 7 — Voice Validation & Delivery                  next
+Flow 7 — Voice Validation & Delivery                  ✓ implemented
 ```
 
 Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`.
 
-Voice Production Kit owns Flow 5–6 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived reference-styled `Voice Production.docx`.
+Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
 
-The pre-existing `Production Document Builder/` remains **Archived** and non-authoritative.
+The pre-existing `Production Document Builder/` remains **Archived** and non-authoritative until the full new pipeline has real-project proof and a final retirement audit is performed.
 
 ## Mandatory Session Boot
 
@@ -48,7 +48,7 @@ The pre-existing `Production Document Builder/` remains **Archived** and non-aut
 - `docs/foundation/` — durable production policy.
 - `docs/knowledge/` — current state, decisions, navigation, ownership, backlog.
 - `kits/project-document-generator/` — PRD intake/generation/validation.
-- `kits/voice-production-kit/` — Voice requirement extraction + performance-script/DOCX production.
+- `kits/voice-production-kit/` — Voice extraction/script/DOCX/final acceptance.
 - `workspace/active/` — active project packages.
 - `workspace/saved/` — retained project packages.
 - `Production Document Builder/` — Archived historical reference.
@@ -56,7 +56,7 @@ The pre-existing `Production Document Builder/` remains **Archived** and non-aut
 ## Core Rule
 
 ```text
-Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX ≠ Delivery
+Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX ≠ Voice Acceptance ≠ Audio
 ```
 
-Generated artifacts never silently become higher authority than the canonical work that produced them.
+Generated artifacts and successful tooling never silently become higher authority than the canonical work/evidence that produced them.

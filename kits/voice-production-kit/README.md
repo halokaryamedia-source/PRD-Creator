@@ -1,50 +1,54 @@
-# Voice Production Kit v1.2.0
+# Voice Production Kit v1.3.0
 
-Repository-backed Voice Production workflow for turning accepted PRD communication requirements into ElevenLabs-ready performance scripts and a reference-styled `Voice Production.docx`.
+Repository-backed voice workflow for turning an accepted PRD into traceable communication requirements, ElevenLabs-ready performance wording, a reference-styled `Voice Production.docx`, and revision-specific delivery acceptance.
 
-## Current flow
+## Full voice flow
 
 ```text
 handoff_ready PRD
 → Flow 5 voice requirements
 → voice_requirements_ready
-→ Flow 6 performance script
-→ work/voice-production.md
-→ output/Voice Production.docx
+→ Flow 6 canonical performance script
+→ Voice Production.docx
 → voice_script_ready
 → Flow 7 validation/delivery
+→ voice_delivery_ready
 ```
 
 ## Canonical owners
 
-- `VOICE-EXTRACTION.md` — which voice moments exist and what they must communicate;
-- `SCRIPT-PRODUCTION.md` — how justified moments become spoken/performance text;
-- `work/voice-requirements.md` — project-specific Flow 5 source of truth;
-- `work/voice-production.md` — project-specific Flow 6 source of truth for final spoken wording;
-- `output/Voice Production.docx` — derived production artifact;
-- `state/voice-state.yaml` — current downstream voice lifecycle status.
+- `VOICE-EXTRACTION.md` — Flow 5 procedure;
+- `SCRIPT-PRODUCTION.md` — Flow 6 wording/performance procedure;
+- `DOCX-FORMAT.md` — derived DOCX presentation contract;
+- `VOICE-VALIDATION.md` — Flow 7 final validation/delivery procedure;
+- `work/voice-requirements.md` — project Voice scope;
+- `work/voice-production.md` — final spoken/performance wording;
+- `work/voice-acceptance.md` — current revision validation evidence;
+- `state/voice-state.yaml` — Flow 5–7 lifecycle owner.
 
-## DOCX builder
-
-Install:
+## Build DOCX
 
 ```bash
 python -m pip install -r kits/voice-production-kit/requirements.txt
-```
-
-Build:
-
-```bash
 python kits/voice-production-kit/builder/build_docx.py \
   workspace/active/<project>/work/voice-production.md \
   workspace/active/<project>/output/Voice\ Production.docx \
   --requirements workspace/active/<project>/work/voice-requirements.md
 ```
 
-Read `DOCX-FORMAT.md` for the reference styling contract.
+## Validate current voice package
+
+```bash
+python kits/voice-production-kit/validator/validate.py \
+  workspace/active/<project>/
+```
+
+The validator checks mechanical parity/integrity. Final Flow 7 acceptance still requires semantic review and DOCX page-image inspection.
+
+## Delivery scope
+
+Default `voice_delivery_ready` scope is the accepted **script + DOCX** for downstream ElevenLabs use. If actual audio is not supplied, the system records `audio_evidence: not_provided` and does not claim audio quality.
 
 ## Reference
 
-`REFERENCE/Aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. Its demonstrated formatting/performance contract is codified in `DOCX-FORMAT.md` and the builder; the source binary is not required at runtime and is not duplicated through the current GitHub write surface.
-
-The original paired `Gameplay.html` v1.2 is intentionally not duplicated here because active projects must use their own accepted PRD revision as upstream authority.
+`REFERENCE/Aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. The active builder/validation workflow does not depend on that binary at runtime.

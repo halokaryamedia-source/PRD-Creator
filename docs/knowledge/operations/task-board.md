@@ -12,16 +12,17 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 - [x] Flow 4 — PRD Validation & Team Handoff
 - [x] Flow 5 — Voice Requirement Extraction
 - [x] Flow 6 — ElevenLabs Performance Script Production
-- [ ] Flow 7 — Voice Validation & Delivery
+- [x] Flow 7 — Voice Validation & Delivery
 
-## Later Maintenance
+## Next Integration / Maintenance
 
-- [ ] exercise Flow 2→6 on a real project and record evidence;
-- [ ] decide final removal of Archived builder only after useful behavior is migrated/retired;
-- [ ] remove obsolete non-authoritative branches outside this workflow when a delete-ref surface is available;
-- [ ] add broader regression automation only after real production failures prove a concrete need;
-- [ ] audit inherited template/reference naming only if it creates real maintenance/behavior issues.
+- [ ] execute one real project through Flow 2→7 and record evidence;
+- [ ] exercise a real finding → canonical fix → regenerate/rebuild → re-audit cycle;
+- [ ] run final retirement audit for `Production Document Builder/` only after end-to-end proof;
+- [ ] delete Archived builder only when useful behavior/dependencies are migrated or intentionally retired;
+- [ ] remove obsolete non-authoritative work branches when a supported delete-ref surface is available/desirable;
+- [ ] add broader regression automation only when real project failures prove a concrete need.
 
 ## Rule
 
-One active flow belongs in `next-action.md`. This board is not permission to skip the current boundary.
+The completed flow checklist is not permission to delete Archived history before the replacement system has real-project proof.

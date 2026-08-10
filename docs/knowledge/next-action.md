@@ -10,46 +10,46 @@ Adopt the useful repository/workflow architecture learned from BuildIT into the 
 
 ## Current Status
 
-`FLOW_6_ELEVENLABS_PERFORMANCE_SCRIPT_PRODUCTION_IMPLEMENTED`
+`FLOW_7_VOICE_VALIDATION_DELIVERY_IMPLEMENTED`
 
-## Completed Slice — Flow 6
+## Completed Slice — Flow 7
 
 Implemented:
 
-- active Voice Production Kit advanced to v1.2.0;
-- `work/voice-production.md` as canonical final spoken/performance-script owner;
-- strict Flow 5 Voice ID/type parity rule;
-- Main Story / Radio writing contract tied to approved purpose/trigger rather than reference quotas;
-- performance-direction, selective CAPS, ellipsis, line-break, and Estimated Duration rules;
-- explicit upstream-return behavior when a requirement cannot be scripted without invention;
-- deterministic reference-styled DOCX builder using `python-docx`;
-- Flow 6 DOCX format contract;
-- original Aftershock `Voice Production.docx` re-read, rendered, visually inspected, and recorded by SHA-256; its demonstrated layout/performance contract is codified in-repo without duplicating the binary through the current GitHub write surface;
-- legacy paired Aftershock Gameplay HTML V1.2 intentionally not duplicated because accepted project PRD is current upstream authority;
-- same `state/voice-state.yaml` extended as the Flow 5–7 lifecycle owner;
-- `voice_script_ready` stop gate before final Flow 7 acceptance.
+- active Voice Production Kit advanced to v1.3.0;
+- `VOICE-VALIDATION.md` final validation/delivery procedure;
+- `work/voice-acceptance.md` revision-specific acceptance owner;
+- mechanical requirements → script → DOCX validator;
+- exact Voice ID/type/artifact-parity checks;
+- requirement-coverage and factual-fidelity gate;
+- material terminology/pronunciation risk gate;
+- speaker/channel/trigger consistency gate;
+- whole-project performance continuity/pacing/notation gate;
+- mandatory current-project DOCX render + every-page visual QA contract;
+- Critical/Major/Minor/Suggestion severity + root-owner fix routing;
+- truthful audio evidence model (`not_provided`, `partial_review`, `reviewed_passed`, `reviewed_with_findings`);
+- `voice_delivery_ready` default script/DOCX delivery scope without false generated-audio claims;
+- explicit invalidation/revalidation behavior after later script/requirement/builder changes.
 
 ## Preserved Boundaries
 
-Flow 6 intentionally does **not** define:
+Flow 7 intentionally does **not** claim:
 
-- final terminology/pronunciation acceptance;
-- narrator/voice continuity acceptance across a whole project;
-- generated-audio quality;
-- final delivery approval;
-- implementation/QA/release approval.
+- generated audio exists when none was supplied;
+- voice/model/settings are universally correct;
+- client sign-off;
+- implementation completion;
+- QA/release approval.
 
 ## Current Proof
 
-- original Voice Production Kit v1.0.0 text files were re-read;
-- original Aftershock DOCX was rendered to 8 pages and visually inspected as the benchmark;
-- reference SHA-256 verified as `c76ce2562ee1839ae9174373f510b26da09e7b05f90e43a3e1de820633c34020`;
-- builder Python compile passed;
-- synthetic non-Aftershock script with Main Story + Radio built successfully;
-- generated synthetic DOCX rendered to 3 PNG pages and all pages were visually inspected cleanly;
-- parity tests correctly rejected an extra Voice ID, Type mismatch, and unresolved placeholder;
-- no real project has yet exercised Flow 5→6, so real-project execution remains `EXECUTION PROOF REQUIRED`.
+- Flow 7 validator Python compile passed;
+- synthetic two-entry Voice project passed full mechanical parity/integrity validation;
+- validator rejected extra Voice ID, Flow 5/6 Type mismatch, and DOCX ID drift;
+- synthetic DOCX rendered through the standard DOCX render workflow;
+- rendered page was visually inspected without clipping/overlap/missing content;
+- semantic/pronunciation/continuity/audio contract is implemented, but no real project has yet exercised the entire Flow 2→7 chain.
 
 ## Next Step
 
-Implement **Flow 7 — Voice Validation & Delivery**: define final revision-specific checks for voice-requirement coverage, terminology/pronunciation risk, speaker/channel consistency, pacing/notation continuity, DOCX visual readiness, and final delivery state without claiming generated-audio behavior that has not actually been tested.
+Run **System Integration Proof** on one real project through Flow 2→7, record at least one real review/revision cycle if findings appear, then perform the final `Production Document Builder/` retirement audit. Delete Archived files only after this proof shows their useful behavior/dependencies have been migrated or intentionally retired.

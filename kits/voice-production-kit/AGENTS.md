@@ -5,14 +5,16 @@ Read `SKILL.md` first.
 Flow routing:
 
 - Flow 5: `VOICE-EXTRACTION.md` — accepted PRD → voice requirements.
-- Flow 6: `SCRIPT-PRODUCTION.md` + `DOCX-FORMAT.md` — voice requirements → performance script/DOCX.
-- Flow 7: downstream validation/delivery; do not self-approve it during Flow 6.
+- Flow 6: `SCRIPT-PRODUCTION.md` + `DOCX-FORMAT.md` — voice requirements → canonical performance script/DOCX.
+- Flow 7: `VOICE-VALIDATION.md` — current script/DOCX → final script/DOCX delivery acceptance.
 
-For Flow 6:
+For Flow 7:
 
-- require `state/voice-state.yaml: voice_requirements_ready`;
-- preserve the exact Flow 5 Voice ID set and type;
-- `work/voice-production.md` owns spoken wording/performance notation;
-- build the DOCX from canonical Markdown; do not use the DOCX as the editable source of truth;
-- use the Aftershock DOCX only as a demonstrated quality/layout reference;
-- return unresolved project facts upstream rather than improvising them.
+- require the current voice state to originate from `voice_script_ready`;
+- run `validator/validate.py` before semantic acceptance;
+- compare every Voice ID to Flow 5 requirements;
+- review terminology/pronunciation risk, speaker/channel/trigger consistency, and whole-project performance continuity;
+- render the DOCX and inspect every page before visual acceptance;
+- treat actual audio as optional evidence unless the task explicitly includes audio delivery;
+- fix the canonical/root owner rather than patching the DOCX or audit report;
+- do not claim generated-audio quality without actually reviewing audio.

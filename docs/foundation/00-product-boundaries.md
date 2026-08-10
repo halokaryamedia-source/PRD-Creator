@@ -2,45 +2,51 @@
 
 Status: active policy
 
-## Project Document Generator Owns — Flow 2–4
+## Project Document Generator Owns
 
-- source intake/provenance;
-- requirement recovery and real decision isolation;
-- canonical PRD content;
-- approved-shell HTML rendering;
-- PRD development-readiness/team handoff.
+- project-source intake and requirement recovery;
+- supported completion vs true decision boundaries;
+- canonical PRD content and approved-shell rendering;
+- development-readiness validation and concise team handoff.
 
-It does not create voice performance text to compensate for unresolved PRD decisions.
+It does not own downstream voice wording or generated audio.
 
-## Voice Production Kit Owns — Flow 5–7
+## Voice Production Kit Owns
 
-### Flow 5 — Voice Requirement Extraction
+### Flow 5
 
-- identify justified player-facing voice moments from a `handoff_ready` PRD;
-- define Voice ID, type, speaker, channel, trigger, purpose, required facts, and guardrails;
-- allow valid `no_voice_required`;
-- route missing upstream decisions back to PRD owners.
+- extracting justified voice moments from accepted PRD content;
+- preserving speaker/channel/trigger/purpose and required facts;
+- preventing redundant/unsupported voice scope.
 
-### Flow 6 — Performance Script Production
+### Flow 6
 
-- convert the exact accepted Voice ID/type set into final spoken wording;
-- add production-appropriate performance direction, emphasis, pauses, line breaks, and Estimated Duration;
-- produce canonical `work/voice-production.md`;
-- generate derived `output/Voice Production.docx` using the approved formatting reference.
+- final spoken wording and performance notation for accepted Voice IDs;
+- Estimated Duration as an estimate;
+- deterministic `Voice Production.docx` generation.
 
-Flow 6 may not add/drop voice moments or project facts without reopening the owning upstream scope.
+### Flow 7
 
-### Flow 7 — Voice Validation & Delivery
+- exact-revision Voice ID/type/DOCX integrity validation;
+- requirement coverage/factual fidelity review;
+- terminology/pronunciation risk review;
+- speaker/channel/trigger consistency review;
+- whole-project performance continuity/pacing/notation review;
+- current DOCX visual QA;
+- truthful delivery state and optional actual-audio evidence recording.
 
-- final terminology/pronunciation/continuity/coverage/readability/delivery acceptance;
-- final current-revision delivery status.
+## Voice Production Does Not Own
 
-Flow 7 is not yet implemented.
+- repairing unresolved project/PRD decisions by invention;
+- adding new voice moments during script polishing or final audit;
+- claiming pronunciation is verified without evidence;
+- claiming generated audio sounds correct when no audio was reviewed;
+- treating DOCX/audio as higher authority than canonical script/requirements.
+
+## Default Delivery Scope
+
+The normal kit deliverable is the accepted **Voice Production script + DOCX for ElevenLabs use**. Actual generated audio is a separate evidence/delivery dimension unless the user explicitly includes it in the task.
 
 ## Shared Boundary Rule
 
-If downstream voice work exposes a missing speaker, channel, trigger, story outcome, reward, mechanic, or other product decision, return it to the correct upstream owner. Do not hide the missing decision inside polished dialogue.
-
-## Reference Rule
-
-Aftershock demonstrates layout/performance quality. It does not define another project's speaker, communicator, voice count, duration, script structure, or content.
+When downstream work exposes a missing or contradictory upstream decision, reopen the correct owner. Do not hide the decision inside polished script/audit text.

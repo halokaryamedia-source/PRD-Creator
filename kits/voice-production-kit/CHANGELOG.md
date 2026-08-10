@@ -1,24 +1,27 @@
 # Changelog
 
-## 1.2.0
+## 1.3.0 — 2026-08-10
 
-- Implements Flow 6 ElevenLabs Performance Script Production.
-- Adds canonical `work/voice-production.md` contract.
-- Adds reference-styled deterministic DOCX builder.
-- Enforces Voice ID/type parity against Flow 5 requirements.
-- Audits the original Aftershock `Voice Production.docx`, records its SHA-256, and codifies its demonstrated layout/performance contract without making runtime depend on a copied binary.
-- Keeps the legacy paired Aftershock Gameplay HTML out of the active Voice kit because project PRDs are the current upstream authority.
-- Flow 7 remains responsible for final voice validation/delivery.
+- implemented Flow 7 Voice Validation & Delivery;
+- added `VOICE-VALIDATION.md`;
+- added mechanical voice package validator;
+- added requirement coverage, terminology/pronunciation, speaker/channel/trigger, performance continuity, and DOCX visual gates;
+- added truthful optional audio-evidence model;
+- added `work/voice-acceptance.md` / `voice_delivery_ready` lifecycle contract;
+- kept script/DOCX delivery separate from unverified generated-audio claims.
 
-## 1.1.0
+## 1.2.0 — 2026-08-10
 
-- Implements Flow 5 Voice Requirement Extraction.
-- Adds traceable `work/voice-requirements.md` and downstream voice state.
-- Separates required/supporting moments and allows `no_voice_required`.
+- implemented Flow 6 canonical performance-script production;
+- added DOCX format contract and deterministic builder;
+- enforced Flow 5 Voice ID/type parity;
+- audited/codified Aftershock reference layout/performance behavior.
+
+## 1.1.0 — 2026-08-10
+
+- implemented Flow 5 Voice Requirement Extraction;
+- introduced canonical voice requirements and voice lifecycle state.
 
 ## 1.0.0
 
-- Stable initial Voice Production workflow.
-- Main Story and Radio Communication grouped by gameplay section.
-- Performance text uses clear direction, selective emphasis, purposeful pauses, and readable line breaks.
-- Aftershock established as production reference.
+- original Voice Production Kit baseline.

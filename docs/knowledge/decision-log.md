@@ -4,40 +4,50 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Flow 7 delivery readiness is script/DOCX scope by default
+
+- **Decision:** `voice_delivery_ready` means the accepted canonical performance script and derived DOCX are ready for downstream ElevenLabs production unless the current task explicitly includes generated audio.
+- **Reason:** this kit's core deliverable is the production script/document. Audio quality cannot be inferred when no audio exists.
+- **Audio rule:** record `not_provided`, `partial_review`, `reviewed_passed`, or `reviewed_with_findings`; never claim more evidence than exists.
+- **Owners:** `docs/foundation/07-voice-validation-delivery.md`, `kits/voice-production-kit/VOICE-VALIDATION.md`.
+- **Date:** 2026-08-10
+
+### Flow 7 uses one final acceptance gate
+
+- **Decision:** mechanical integrity + requirement coverage + terminology/pronunciation + speaker/channel/trigger + performance continuity + current DOCX visual QA must pass with Critical=0 and Major=0 before `voice_delivery_ready`.
+- **Reason:** a successful builder or attractive DOCX is insufficient evidence of production correctness, while multiple freeze/release ceremonies would add process without value.
+- **Date:** 2026-08-10
+
+### Pronunciation is evidence-based, not guessed as verified
+
+- **Decision:** only material pronunciation risks are tracked; unusual/high-risk terms require confirmation or intentional acceptance before delivery. Ordinary terms do not require a large pronunciation catalog.
+- **Reason:** spelling alone is not proof of generated pronunciation, and unnecessary pronunciation bureaucracy would overcomplicate production.
+- **Date:** 2026-08-10
+
 ### Flow 6 canonical performance wording stays human-readable; DOCX is derived
 
 - **Decision:** `work/voice-production.md` owns final spoken wording/performance notation; `output/Voice Production.docx` is generated presentation only.
-- **Reason:** production wording needs an editable/reviewable canonical owner, while the team still needs a polished DOCX for ElevenLabs workflow.
-- **Owner:** `docs/foundation/06-elevenlabs-script-production.md`, `kits/voice-production-kit/SCRIPT-PRODUCTION.md`.
 - **Date:** 2026-08-10
 
 ### Flow 6 cannot change Flow 5 voice scope silently
 
-- **Decision:** every Flow 5 Voice ID must appear exactly once with the same Type in Flow 6 unless Flow 5 is explicitly reopened.
-- **Reason:** script polish must not become a hidden mechanism for adding/removing communication scope or changing a channel.
-- **Mechanical proof:** `builder/build_docx.py --requirements` checks exact ID/type parity.
+- **Decision:** every Flow 5 Voice ID appears exactly once with the same Type in Flow 6 unless Flow 5 is explicitly reopened.
 - **Date:** 2026-08-10
 
 ### Aftershock Voice Production reference is audited and codified, not duplicated
 
-- **Decision:** use the original v1.0.0 `Voice Production.docx` as the audited Flow 6 layout/performance benchmark, record its SHA-256, and codify the demonstrated contract in `DOCX-FORMAT.md` + the builder rather than duplicating the binary through the current GitHub write connector.
+- **Decision:** use the original v1.0.0 `Voice Production.docx` as audited Flow 6 layout/performance benchmark and record SHA-256 instead of making runtime depend on the binary.
 - **SHA-256:** `c76ce2562ee1839ae9174373f510b26da09e7b05f90e43a3e1de820633c34020`.
-- **Reason:** the source binary was re-read, rendered, and visually inspected, but the current GitHub connector does not provide a safe direct binary-file upload path. Runtime/build behavior should not depend on a reference binary.
-- **Boundary:** the reference defines quality/formatting only, not another project's speaker, voice count, wording, or duration quota.
-- **Owner:** `kits/voice-production-kit/DOCX-FORMAT.md`, `REFERENCE/Aftershock/README.md`, and `builder/build_docx.py`.
 - **Date:** 2026-08-10
 
 ### Legacy paired Aftershock Gameplay HTML is not duplicated into active Voice kit
 
-- **Decision:** keep the old `Gameplay.html` V1.2 out of the active Voice kit.
-- **Reason:** active projects already have an accepted PRD as current factual authority; duplicating a stale paired gameplay document would create a competing source of truth.
-- **Historical availability:** recoverable from the original v1.0.0 Voice kit/source when needed for audit.
+- **Decision:** current accepted project PRD is factual upstream authority; stale paired V1.2 gameplay reference is not duplicated into active Voice implementation.
 - **Date:** 2026-08-10
 
 ### Flow 4 uses one development-readiness gate instead of Content Freeze ceremony
 
 - **Decision:** generated PRD becomes development-ready only after mechanical + four-perspective audit passes with Critical=0 and Major=0.
-- **Reason:** structure success is not production usability, but the old multi-layer Freeze ceremony is unnecessary.
 - **Date:** 2026-08-10
 
 ### `Local` is the permanent development branch
@@ -53,7 +63,6 @@ Use this note only for durable decisions whose reasons must survive future sessi
 ### Project Document Generator and Voice Production remain separate owners
 
 - **Decision:** upstream project definition/PRD work stays separate from downstream voice production.
-- **Reason:** unresolved product decisions must not be invented inside voice text.
 - **Date:** 2026-08-10
 
 ### Source intake uses one slim persistent recovery model
@@ -73,7 +82,7 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ### `Production Document Builder/` is Archived during migration
 
-- **Decision:** preserve but do not extend/treat as active authority.
+- **Decision:** preserve but do not extend/treat as active authority. Delete only after replacement pipeline real-project proof and final retirement audit.
 - **Date:** 2026-08-10
 
 ### Golden Samples are references, not project requirements
