@@ -113,6 +113,18 @@ Repository Verify 31374226049  PASS
 
 Production Verify executes the real PRD renderer/validator and Voice DOCX builder/validator on minimal generic fixtures. These gates do not replace semantic, browser, rendered-page, or audio evidence.
 
+## P1 Production Engineering Audit
+
+The P1 audit is complete and recorded in:
+
+`docs/knowledge/reviews/production-engineering-quality-audit.md`
+
+It found material generic trust gaps that do not invalidate the specific Clockwork Vault proof, but must be fixed before the executable engine can generalize the same confidence to future revisions. Highest-priority findings include PRD stale-artifact revision identity, validator malformed-input failure handling, glossary script-context safety, Voice revision identity, and DOCX per-entry binding validation.
+
+Ordered source remediation:
+
+`docs/knowledge/operations/production-engineering-remediation-plan.md`
+
 ## Kit-Local Technical Governance
 
 Both executable kits use nearest `AGENTS.md` as contributor/verification contracts:
@@ -141,4 +153,4 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
 
 ## Current Development State
 
-P0.1 and P0.2 are complete. The active remediation slice is **P1 — Production Engineering Quality Audit**: inspect the actual executable production engine, record source-backed findings and smallest owners, then derive ordered remediation without broad refactoring during the audit.
+P0.1 and P0.2 are complete. The P1 Production Engineering Quality Audit is complete. The active source-remediation slice is **P1.1 — PRD Mechanical Revision Integrity**: make malformed render-data fail in a structured way and prove that `output/final.html` belongs to the current `work/render-data.json` revision before mechanical PASS.

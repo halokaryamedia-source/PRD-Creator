@@ -8,10 +8,11 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 
 | Evidence / review | Current meaning |
 |---|---|
-| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active execution evidence.** Compared current BuildIT `e4330f7…` against PRD-Creator and reopened overall parity because engineering enforcement, technical ownership depth, module governance, and operations maturity remain incomplete. It continues to govern the ordered remediation track. |
-| [Technical Ownership Refinement Audit](technical-ownership-refinement-audit.md) | **Implemented / current P0.2 evidence.** Re-audited renderer/validator/builder/tooling ownership after P0.1. Result: keep three semantic root skills, route pure executable mechanics module-locally, and keep dependency/test/CI under repository engineering. P0.2 source head `a0a51d9…` passed Repository Verify `31374226049` and Production Verify `31374226078`. |
-| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** It correctly identified the missing governance/routing layer and justified Phases 1–3. |
-| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Representative routing/Maintenance and Repository Verify genuinely passed. Its agent-governance conclusions remain useful, but its overall `OPERATING_PARITY_ACCEPTED` conclusion is superseded by the deeper current-BuildIT audit. |
+| [Production Engineering Quality Audit](production-engineering-quality-audit.md) | **Active execution evidence.** P1 source audit found material false-pass/failure-state gaps after P0.1: PRD stale-artifact/revision identity, validator malformed-input crash paths, glossary script-context safety, Voice revision identity, DOCX entry binding, plus bounded medium/conditional gaps. It governs P1.1+ execution through the Production Engineering Remediation Plan. |
+| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active evidence.** Compared current BuildIT `e4330f7…` against PRD-Creator and reopened overall parity. Its broad gap classification remains current, while P1 engineering detail is now owned by the Production Engineering Quality Audit. |
+| [Technical Ownership Refinement Audit](technical-ownership-refinement-audit.md) | **Implemented / current P0.2 evidence.** Keep three semantic root skills, route pure executable mechanics module-locally, and keep dependency/test/CI under repository engineering. P0.2 source head `a0a51d9…` passed both gates. |
+| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** It identified the missing governance/routing layer and justified Phases 1–3. |
+| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Its agent-governance results remain useful; its overall parity conclusion is superseded. |
 | [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and a real defect→root-fix→revalidation cycle. |
 | [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** It justified deleting the old `Production Document Builder/` live tree. |
 | [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It owns current production + parity-remediation evidence status. |
@@ -64,5 +65,6 @@ Use this graph only when historical evidence/review status materially affects th
 
 - [Knowledge Dashboard](../index.md)
 - [BuildIT Parity Remediation Plan](../operations/buildit-parity-remediation-plan.md)
+- [Production Engineering Remediation Plan](../operations/production-engineering-remediation-plan.md)
 - [Technical Ownership Decision](../decisions/technical-ownership-boundary.md)
 - [Module Map](../modules/module-map.md)

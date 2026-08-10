@@ -37,11 +37,11 @@ Production Flow 1–7 is implemented and real-project proven on The Clockwork Va
 
 The governance/routing work from the earlier parity phases remains valid evidence, but **overall full relevant parity remains open** after a deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`).
 
-Current audit:
+Current broad audit:
 
 `docs/knowledge/reviews/buildit-current-parity-gap-audit.md`
 
-Ordered remediation:
+Top-level remediation:
 
 `docs/knowledge/operations/buildit-parity-remediation-plan.md`
 
@@ -114,20 +114,32 @@ shared dependency/test/CI contract wrong
 → requirements.lock.txt / tests / tools / workflows
 ```
 
-A candidate Python / production-tooling / artifact-engineering root skill was rejected from current evidence. Shared implementation language is not enough to create a reusable specialist.
+A candidate Python / production-tooling / artifact-engineering root skill was rejected from current evidence.
 
 Canonical decision:
 
 `docs/knowledge/decisions/technical-ownership-boundary.md`
 
+## P1 Production Engineering Quality Audit
+
+P1 performed a source-backed audit of the renderer/template/validators, Voice parser/builder/validator, dependency environment, and focused contract gate.
+
+Canonical audit:
+
+`docs/knowledge/reviews/production-engineering-quality-audit.md`
+
+Ordered source remediation:
+
+`docs/knowledge/operations/production-engineering-remediation-plan.md`
+
+The audit found high-priority generic trust gaps in PRD current-render revision identity, malformed render-data fail-closed behavior, glossary script-context safety, Voice revision identity, and DOCX per-entry binding. These findings limit generalization to future project revisions; they do not rewrite the historical Clockwork Vault evidence.
+
 ## Kit-Local Contributor Contracts
 
-Both nearest `AGENTS.md` files now act as contributor/verification contracts:
+Both nearest `AGENTS.md` files act as contributor/verification contracts:
 
 - Project Document Generator — exact renderer/template/validator ownership, contributor rules, and verification commands;
 - Voice Production Kit — exact builder/validator ownership, dependency contract, contributor rules, and verification commands.
-
-This gives pure technical Maintenance a real owner without creating new root skill layers.
 
 ## Repository Map
 
@@ -154,4 +166,4 @@ Generated artifacts and successful tooling never silently become higher authorit
 
 ## Current Work
 
-P0.1 and P0.2 are complete. The active next slice is **P1 — Production Engineering Quality Audit**. See `docs/knowledge/next-action.md` for the exact audit boundary.
+P0.1 and P0.2 are complete. P1 audit is complete. The active next source slice is **P1.1 — PRD Mechanical Revision Integrity**. See `docs/knowledge/next-action.md` for the exact implementation/acceptance boundary.

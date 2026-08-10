@@ -20,9 +20,11 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Review evidence current meaning | `docs/knowledge/reviews/review-graph.md` |
 | Durable cross-owner decision threshold | `docs/knowledge/decisions/change-decision-guide.md` |
 | Current BuildIT parity gap evidence | `docs/knowledge/reviews/buildit-current-parity-gap-audit.md` |
-| Ordered parity remediation | `docs/knowledge/operations/buildit-parity-remediation-plan.md` |
+| Top-level parity remediation | `docs/knowledge/operations/buildit-parity-remediation-plan.md` |
 | P0.2 technical ownership audit | `docs/knowledge/reviews/technical-ownership-refinement-audit.md` |
 | P0.2 durable ownership decision | `docs/knowledge/decisions/technical-ownership-boundary.md` |
+| P1 production engineering audit | `docs/knowledge/reviews/production-engineering-quality-audit.md` |
+| P1 ordered source remediation | `docs/knowledge/operations/production-engineering-remediation-plan.md` |
 | Static repository gate | `tools/verify_repository.py` + `.github/workflows/repository-verify.yml` |
 | Executable production gate | `.github/workflows/production-verify.yml` + `tests/` + `requirements.lock.txt` |
 | Active continuation state | `docs/knowledge/next-action.md` |
@@ -70,9 +72,7 @@ shared dependency/regression/CI
 = requirements.lock.txt + tests/ + tools/ + workflows
 ```
 
-A pure technical Maintenance task may have no root specialist. If the semantic contract is already correct, do not load a semantic specialist simply because the failing implementation belongs to that production chain.
-
-If a mechanical implementation change alters what the artifact is supposed to represent or accept, that boundary becomes semantic/product-contract work again and routes to the matching root specialist.
+A pure technical Maintenance task may have no root specialist. If a mechanical change alters what the artifact is supposed to represent or accept, route back to the matching semantic/product-contract owner.
 
 ## Verification Separation
 
@@ -103,7 +103,7 @@ Production Verify 31374226078  PASS
 Repository Verify 31374226049  PASS
 ```
 
-Neither gate replaces browser visual inspection, rendered DOCX page QA, or audio review.
+P1 audit now records the generic contract gaps those focused gates do not yet cover. Neither gate replaces browser visual inspection, rendered DOCX page QA, semantic readiness judgement, or audio review.
 
 ## Project-Level Authority After Flow 7
 
@@ -114,13 +114,17 @@ requirement state
       ↓
 work/content.md                    canonical PRD
       ↓
+work/render-data.json              derived PRD projection
+      ↓
+output/final.html                  derived PRD presentation
+      ↓
 PRD acceptance / handoff_ready
       ↓
 work/voice-requirements.md         canonical voice-moment scope
       ↓
 work/voice-production.md           canonical spoken/performance wording
       ↓
-output/Voice Production.docx       derived production artifact
+output/Voice Production.docx       derived Voice presentation artifact
       ↓
 work/voice-acceptance.md           Flow 7 evidence/findings
 state/voice-state.yaml             voice_delivery_ready / lifecycle state
@@ -128,6 +132,6 @@ state/voice-state.yaml             voice_delivery_ready / lifecycle state
 
 ## Current Engineering Boundary
 
-Production Flow 1–7 remains real-project proven. Overall BuildIT parity remains open.
+Production Flow 1–7 remains real-project proven for the recorded Clockwork Vault revision. Overall BuildIT parity remains open.
 
-P0.1 executable production verification and P0.2 technical ownership refinement are complete. The active boundary is **P1 — Production Engineering Quality Audit**; audit the executable source/contracts first, then derive ordered remediation without broad implementation changes during the audit.
+P1 source audit is complete and found material generic trust gaps. The active source slice is **P1.1 — PRD Mechanical Revision Integrity**.

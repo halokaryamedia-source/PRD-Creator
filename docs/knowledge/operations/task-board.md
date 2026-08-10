@@ -34,35 +34,38 @@ The previous Phase 3 full-parity conclusion is superseded by the current BuildIT
 
 ## Current BuildIT Parity Remediation
 
-Governing plan: `buildit-parity-remediation-plan.md`.
+Top-level plan: `buildit-parity-remediation-plan.md`.
 
 - [x] **P0.1 — Executable Production Verify**
-  - [x] exact Voice direct dependency pin;
-  - [x] exact Python dependency lock;
-  - [x] focused PRD renderer/validator contracts;
-  - [x] focused Voice builder/validator contracts;
-  - [x] real DOCX page-break root-fix regression;
-  - [x] fail-closed Production Verify workflow;
-  - [x] Production Verify run `31372363843` PASS on `0eb0485f117fa6ed419572a66539331f99114002`;
-  - [x] Repository Verify run `31372363802` PASS on the same source head.
+  - [x] exact verification dependency lock;
+  - [x] focused executable PRD + Voice contracts;
+  - [x] fail-closed Production Verify;
+  - [x] source-head Production Verify / Repository Verify PASS.
 - [x] **P0.2 — Technical Ownership Refinement**
   - [x] semantic-vs-technical ownership audit;
-  - [x] candidate technical root skill rejected from current evidence;
-  - [x] three root semantic skills retained with narrowed ownership wording;
-  - [x] pure renderer/validator/builder mechanics routed to nearest kit owners;
-  - [x] shared dependency/test/CI routed to repository engineering;
-  - [x] Project Document nearest `AGENTS.md` strengthened as contributor/verification contract;
-  - [x] Voice nearest `AGENTS.md` strengthened as contributor/verification/dependency contract;
-  - [x] Repository Verify run `31374226049` PASS on `a0a51d97523ab07f87ef6deeffdafc8094febea4`;
-  - [x] Production Verify run `31374226078` PASS on the same source head.
-- [ ] **P1 — Production Engineering Quality Audit** ← active next slice
-  - inspect PRD renderer/template contracts;
-  - inspect PRD validator blind spots;
-  - inspect Voice parser/builder/validator contracts;
-  - inspect dependency/environment/determinism/failure handling;
-  - assess focused test adequacy;
-  - record source-backed findings + ordered remediation only.
-- [ ] **P1.5 — Module Governance**
+  - [x] no new technical root skill;
+  - [x] three semantic root skills retained/narrowed;
+  - [x] pure mechanics routed module-locally;
+  - [x] repository engineering owns shared dependency/test/CI;
+  - [x] both source-head gates PASS.
+- [x] **P1 — Production Engineering Quality Audit**
+  - [x] PRD renderer/template/validator inspected;
+  - [x] Voice parser/builder/validator inspected;
+  - [x] dependency/gate/test assumptions inspected;
+  - [x] source-backed severity/owner findings recorded;
+  - [x] ordered remediation created in `production-engineering-remediation-plan.md`.
+- [ ] **P1.1 — PRD Mechanical Revision Integrity** ← active execution slice
+  - structured fail-closed render-data preflight;
+  - current render-data ↔ final HTML identity/freshness;
+  - stale extra generated page rejection;
+  - focused stale/malformed regressions;
+  - both gates PASS.
+- [ ] **P1.2 — PRD Renderer Script/Shell Safety**
+- [ ] **P1.3 — Voice Revision + DOCX Entry Integrity**
+- [ ] **P1.4 — Voice Parser / Failure-State Hardening**
+- [ ] **P1.5 — Contract Test Discovery**
+- [ ] **P1.6 — Derived Output Atomicity** — conditional
+- [ ] **Top-level P1.5 — Module Governance** after required P1 engineering remediation/re-audit
 - [ ] **P2 — Knowledge / Operations Maturity**
 - [ ] **P3 — Conditional Helper Routing**
 

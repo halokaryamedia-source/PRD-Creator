@@ -16,10 +16,10 @@ This plan converts the current BuildIT comparison into bounded work. `../next-ac
 Implemented:
 
 - exact Python dependency lock for executable Voice tooling;
-- PRD renderer → generated HTML → PRD validator happy-path contract;
-- PRD negative contract for scoring/completion exclusivity and scoring-weight total;
-- Voice requirements → script → DOCX builder → Voice validator happy-path contract;
-- regression for the real DOCX section page-break fix;
+- PRD renderer → generated HTML → PRD validator focused contracts;
+- PRD negative scoring/completion contracts;
+- Voice requirements → script → DOCX builder → Voice validator focused contracts;
+- real DOCX page-break regression;
 - negative Voice ID and Type parity contracts;
 - fail-closed GitHub Actions aggregation.
 
@@ -40,18 +40,17 @@ Source/governance head:
 Result:
 
 - no new root technical specialist is justified;
-- `development-brief`, `project-document-production`, and `voice-production` remain the canonical root skills;
-- Project Document / Voice root specialists are narrowed to semantic/product-contract ownership;
-- pure renderer/template/validator/builder mechanics route to nearest kit owners;
-- shared dependency/test/CI mechanics route to repository engineering (`requirements.lock.txt`, `tests/`, `tools/`, workflows);
-- pure technical Maintenance may use no root specialist;
-- both kit-local `AGENTS.md` files now define contributor/verification contracts.
+- three canonical root skills remain;
+- semantic/product-contract failures route to matching root specialist;
+- pure renderer/template/validator/builder mechanics route to nearest kit owner;
+- shared dependency/test/CI mechanics route to repository engineering;
+- both kit-local `AGENTS.md` files define contributor/verification contracts.
 
-Canonical evidence:
+Evidence:
 
 `../reviews/technical-ownership-refinement-audit.md`
 
-Durable decision:
+Decision:
 
 `../decisions/technical-ownership-boundary.md`
 
@@ -62,32 +61,45 @@ Repository Verify 31374226049  PASS
 Production Verify 31374226078  PASS
 ```
 
-Production Verify sub-gates passed for locked dependencies, compile, PRD contracts, Voice contracts, and fail-closed aggregation.
+## P1 — Production Engineering Quality — AUDIT COMPLETE / REMEDIATION ACTIVE
 
-## P1 — Production Engineering Quality Audit — ACTIVE NEXT
+Canonical audit:
 
-Run a deep source-backed review of:
+`../reviews/production-engineering-quality-audit.md`
 
-- PRD renderer/template mutation contracts;
-- PRD mechanical validator gaps;
-- Voice parser/builder/validator contracts;
-- dependency and environment assumptions;
-- deterministic/derived artifact behavior;
-- failure handling and evidence boundaries;
-- focused test adequacy for real public/high-risk contracts.
+Ordered source-remediation plan:
 
-P1 is an **audit first**, not permission to refactor all executable code.
+`production-engineering-remediation-plan.md`
 
-Required output:
+The audit found material remaining gaps in:
 
-- source-backed findings with severity, owner, and evidence;
-- explicit `No change required` where appropriate;
-- ordered remediation slices only for justified findings;
-- no broad framework/test-coverage project.
+- PRD render revision/freshness identity;
+- PRD validator malformed-input fail-closed behavior;
+- glossary JavaScript-context safety;
+- PRD shell/metadata mechanical integrity;
+- Voice requirements/script/DOCX revision identity;
+- DOCX per-entry binding validation;
+- Voice empty-section controlled failure;
+- contract-test discovery;
+- conditional derived-output atomicity.
+
+### P1.1 — PRD Mechanical Revision Integrity — ACTIVE NEXT
+
+Fix only the first dependency slice:
+
+- structured fail-closed preflight for malformed render-data;
+- deterministic current render-data → final HTML revision/fingerprint evidence;
+- stale current HTML must fail;
+- stale extra generated sections/pages must fail;
+- focused regressions.
+
+Do not automate semantic canonical-content judgement or browser visual approval.
+
+Later P1 slices are ordered in `production-engineering-remediation-plan.md`; do not skip ahead merely because another fix is easier.
 
 ## P1.5 — Module Governance
 
-Where complexity proves it useful, strengthen module ownership with:
+After required P1 source findings are repaired/re-audited, strengthen module ownership only where complexity proves it useful:
 
 - purpose/boundary/inputs/outputs/dependencies/risks;
 - exact development and verification commands;
