@@ -1,35 +1,44 @@
 ---
 name: project-document-production
-description: Semantic specialist for PRD-Creator Flow 2–4. Use when the active boundary is source intake/recovery, canonical PRD generation, approved-template rendering, PRD validation, or team handoff, including maintenance of the renderer/validator when those surfaces are the root owner. Preserve source authority and project meaning; never use rendering or polished prose to invent unresolved design. Do not use for Voice-only work.
+description: Semantic/product-contract specialist for PRD-Creator Flow 2–4. Use when the active boundary is source intake/recovery, canonical PRD meaning, render-projection meaning, approved-template product contract, PRD validation/readiness, or team handoff. Do not select merely because renderer/template/validator mechanics fail when semantics are already correct; pure technical Maintenance may route directly to the nearest kit implementation owner. Preserve source authority and project meaning; never use rendering or polished prose to invent unresolved design. Do not use for Voice-only work.
 ---
 
 # Project Document Production
 
-Own the semantic procedure around Project Document Generator Flow 2–4. Detailed production contracts remain in `kits/project-document-generator/`; this skill selects and protects the correct owner instead of duplicating every kit rule.
+Own semantic/product-contract judgment around Project Document Generator Flow 2–4. Detailed production and executable mechanics remain in `kits/project-document-generator/`; this skill protects the authority, representation, and acceptance contract instead of becoming a generic Python/HTML/tooling owner.
 
 ## Trigger
 
-Use when the actual boundary is one of:
+Use when the actual wrong contract is one of:
 
 - incomplete/uneven source → recovered requirements;
 - requirement/provenance/conflict handling;
 - `ready_for_prd` → canonical `work/content.md`;
-- canonical PRD → derived render projection / `final.html`;
+- what canonical PRD data/pages must represent;
+- approved-template/product presentation contract;
 - PRD role/readiness validation;
-- team handoff;
-- renderer/validator maintenance where the defect belongs to Flow 2–4.
+- team handoff semantics;
+- a renderer/validator change whose required behavior changes or misrepresents the Flow 2–4 product contract.
 
-Do not select merely because a task mentions HTML, Markdown, JSON, or a document. Select because the semantic owner is Project Document production.
+Do **not** select merely because:
+
+- a task mentions HTML, JSON, Markdown, Python, or a document;
+- `renderer/render.py` crashes while the semantic render contract is already correct;
+- `validator/validate.py` has a mechanical implementation bug;
+- CI/test/dependency tooling fails.
+
+Pure technical Maintenance may route directly through `kits/project-document-generator/AGENTS.md` to the exact implementation owner without a root specialist.
 
 ## Required Routing
 
 1. Read the relevant Flow state/project package first.
-2. Identify the active Flow owner:
+2. Identify whether the defect is semantic/product-contract or executable mechanics.
+3. For semantic/product-contract work, identify the active Flow owner:
    - Flow 2 → `SOURCE-INTAKE.md` + source/requirement state;
-   - Flow 3 → `CONTENT-CONTRACT.md`, `RENDERING.md`, canonical content + renderer;
+   - Flow 3 → `CONTENT-CONTRACT.md`, `RENDERING.md`, canonical content + affected representation contract;
    - Flow 4 → `VALIDATION.md`, acceptance/handoff state.
-3. Read only the smallest relevant kit procedure/source.
-4. Preserve the authority chain; never repair an upstream definition problem in a downstream rendering/validation layer.
+4. Read only the smallest relevant kit procedure/source.
+5. Preserve the authority chain; never repair an upstream definition problem in downstream rendering/validation.
 
 ## Authority Guard
 
@@ -66,7 +75,8 @@ Rules:
 - preserve Gameplay Overview / Level Design / Developer separation;
 - scoring and completion-data semantics must remain implementation-ready;
 - critical information must be explicit before final rendering;
-- preserve the approved HTML shell instead of redesigning it opportunistically.
+- preserve the approved HTML shell instead of redesigning it opportunistically;
+- decide what the renderer must represent, but leave pure implementation mechanics to the kit-local owner when semantics are already correct.
 
 ## Flow 4 Judgment
 
@@ -80,19 +90,35 @@ Audit from the perspectives that determine production usefulness:
 
 Critical/Major findings block development readiness. Minor/Suggestion findings may remain only when they do not change material meaning or prevent the downstream role from working reliably.
 
+## Technical Handoff Rule
+
+If investigation proves:
+
+```text
+canonical meaning/representation contract is correct
++ executable renderer/template/validator mechanics are wrong
+```
+
+then route Maintenance to:
+
+`kits/project-document-generator/AGENTS.md` → exact implementation source.
+
+Do not keep this root specialist loaded solely as a Python/HTML debugging wrapper. Shared dependency/test/CI failures belong to root repository-engineering owners (`requirements.lock.txt`, `tests/`, `tools/`, workflows).
+
 ## Maintenance Rule
 
-For a renderer/validator/document artifact defect:
+For a Project Document defect:
 
 ```text
 observe concrete defect
-→ determine whether cause is content, projection, renderer, validator, or template
-→ fix the smallest owning layer
+→ classify semantic/product contract vs executable mechanics
+→ semantic wrong: use this specialist + smallest Flow owner
+→ semantics correct, mechanics wrong: nearest kit AGENTS + exact implementation owner
 → regenerate derived output when needed
 → run the cheapest proof that can falsify the fix
 ```
 
-Do not patch `final.html` directly when the canonical content/projection/renderer is wrong.
+Do not patch `final.html` directly when canonical content/projection/renderer is wrong.
 
 ## Acceptance Gate
 

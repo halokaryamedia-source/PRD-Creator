@@ -4,6 +4,15 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### P0.2 keeps three root semantic skills and moves pure technical mechanics to smaller owners
+
+- **Decision:** keep `development-brief`, `project-document-production`, and `voice-production` as the only root repository skills. Narrow the two production specialists to semantic/product-contract ownership. Pure renderer/template/validator/builder mechanics route to nearest kit `AGENTS.md` + exact implementation owner; shared dependency/test/CI mechanics route to `requirements.lock.txt`, `tests/`, `tools/`, and workflows.
+- **Reason:** P0.1 proved shared repository engineering without proving a distinct cross-kit artifact/runtime specialist. PRD HTML and Voice DOCX mechanics differ materially, while a Python/tooling skill would be selected by implementation technology rather than the first wrong contract.
+- **Skill audit:** candidate Python / production-tooling / artifact-engineering root skill = `DROP AS ROOT SKILL + MOVE TO MODULE-LOCAL / REPOSITORY ENGINEERING`.
+- **Boundary:** a mechanical change that alters what an artifact is required to represent/accept becomes semantic/product-contract work again and routes to the matching root specialist.
+- **Owner:** `docs/knowledge/decisions/technical-ownership-boundary.md`.
+- **Date:** 2026-08-10
+
 ### Review bodies preserve captured evidence; review graph owns current interpretation
 
 - **Decision:** dedicated review/audit bodies are time-captured evidence and are not rewritten merely because later implementation changes their status. `docs/knowledge/reviews/review-graph.md` owns the current interpretation (`active evidence`, `implemented`, `historical`, `superseded`, etc.).
@@ -13,8 +22,9 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ### Maintenance is root-cause-first and does not automatically use development-brief
 
-- **Decision:** bug/regression/cleanup work follows `docs/knowledge/maintenance/maintenance-flow.md`; it starts from observed drift/root cause and uses the smallest semantic owner. `development-brief` remains mandatory for non-trivial Developing work, not Maintenance by default.
+- **Decision:** bug/regression/cleanup work follows `docs/knowledge/maintenance/maintenance-flow.md`; it starts from observed drift/root cause and uses the smallest owner. `development-brief` remains mandatory for non-trivial Developing work, not Maintenance by default.
 - **Reason:** forcing create/change ceremony onto every defect increases context and risks turning repair into redesign.
+- **P0.2 refinement:** a pure technical Maintenance task may use no root specialist when nearest module rules + exact implementation owner are sufficient.
 - **Date:** 2026-08-10
 
 ### Module map, source map, and implementation map have separate jobs
@@ -40,16 +50,17 @@ Use this note only for durable decisions whose reasons must survive future sessi
 ### Production completion and BuildIT-style operating parity are separate milestones
 
 - **Decision:** completing Flow 1–7, real-project integration, and retired-builder migration does not mean PRD-Creator has achieved BuildIT-style agent operating parity.
-- **Reason:** the production pipeline answers how project artifacts are produced; BuildIT-style operating architecture also requires work-mode routing, semantic skill ownership, pre-implementation contracts, root-cause/proof discipline, and explicit review/ownership lifecycle.
-- **Result:** operating parity is tracked as a separate phased improvement without reopening completed production semantics by default.
+- **Reason:** the production pipeline answers how project artifacts are produced; BuildIT-style operating architecture also requires work-mode routing, semantic skill ownership, pre-implementation contracts, root-cause/proof discipline, review/ownership lifecycle, and executable engineering enforcement.
+- **Result:** overall relevant parity remains a separate ordered remediation track.
 - **Date:** 2026-08-10
 
-### Root skill architecture is three semantic owners and is frozen after Phase 1
+### Root skill architecture is three semantic/product-contract owners after P0.2 re-audit
 
-- **Decision:** canonical repository-wide skill root is `.agents/skills/` with exactly `development-brief`, `project-document-production`, and `voice-production` after Phase 1.
-- **Reason:** these are the smallest reusable semantic ownership boundaries. Renderer, validator, DOCX builder, evidence classification, and references are implementation/policy surfaces inside those owners rather than distinct skills.
-- **Freeze:** do not rename/split/merge/add a root skill unless current repeated work proves a reusable ownership gap that cannot be represented by root policy, foundation, an existing kit, or one current specialist.
-- **Owners:** `docs/knowledge/skills/skill-map.md`, `docs/knowledge/skills/activation-matrix.md`.
+- **Decision:** canonical repository-wide skill root remains `.agents/skills/` with exactly `development-brief`, `project-document-production`, and `voice-production`.
+- **Reason:** these remain the smallest reusable root procedures after P0.2. Product/representation semantics stay with root production specialists; pure renderer/template/validator/builder mechanics stay module-local; shared dependency/test/CI mechanics stay repository-engineering owned.
+- **Supersedes:** the Phase 1 wording that renderer/validator/DOCX builder mechanics automatically belonged to the semantic specialist whenever those files were involved.
+- **Freeze:** do not rename/split/merge/add a root skill unless repeated work proves a reusable ownership/procedure gap that cannot be represented by root policy, foundation, nearest kit procedure/AGENTS, repository engineering, or one current specialist.
+- **Owners:** `docs/knowledge/skills/skill-map.md`, `docs/knowledge/skills/activation-matrix.md`, `docs/knowledge/decisions/technical-ownership-boundary.md`.
 - **Date:** 2026-08-10
 
 ### Developing uses a mandatory brief plus at most one specialist
@@ -59,10 +70,10 @@ Use this note only for durable decisions whose reasons must survive future sessi
 - **Fast path:** trivial unambiguous changes may keep the visible brief minimal but still obey the same goal/scope/proof gate.
 - **Date:** 2026-08-10
 
-### Root skills route work; kit SKILL files remain production procedures
+### Root skills route semantic work; kit SKILL/AGENTS files remain production/contributor procedures
 
-- **Decision:** `.agents/skills/` and `kits/*/SKILL.md` are different layers and must not be merged mechanically.
-- **Reason:** root skills own how the agent frames/routes/validates repository work; kit-local SKILL files own detailed Flow 2–7 production procedure and implementation context.
+- **Decision:** `.agents/skills/` and `kits/*/SKILL.md` / nearest `AGENTS.md` are different layers and must not be merged mechanically.
+- **Reason:** root skills own reusable semantic work judgment; kit-local files own detailed Flow procedure plus module-local contributor/technical rules.
 - **Date:** 2026-08-10
 
 ### Evidence status is baseline behavior, not a standalone skill

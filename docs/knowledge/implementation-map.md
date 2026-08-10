@@ -21,6 +21,8 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Durable cross-owner decision threshold | `docs/knowledge/decisions/change-decision-guide.md` |
 | Current BuildIT parity gap evidence | `docs/knowledge/reviews/buildit-current-parity-gap-audit.md` |
 | Ordered parity remediation | `docs/knowledge/operations/buildit-parity-remediation-plan.md` |
+| P0.2 technical ownership audit | `docs/knowledge/reviews/technical-ownership-refinement-audit.md` |
+| P0.2 durable ownership decision | `docs/knowledge/decisions/technical-ownership-boundary.md` |
 | Static repository gate | `tools/verify_repository.py` + `.github/workflows/repository-verify.yml` |
 | Executable production gate | `.github/workflows/production-verify.yml` + `tests/` + `requirements.lock.txt` |
 | Active continuation state | `docs/knowledge/next-action.md` |
@@ -31,17 +33,20 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 |---|---|
 | End-to-end product sequence | `docs/foundation/01-production-flow.md` |
 | Flow 2 intake/recovery | `docs/foundation/02-source-intake-recovery.md` + Project Document Generator |
-| Flow 3 PRD generation | `docs/foundation/03-prd-generation.md` + Project Document Generator |
-| Flow 4 PRD validation/handoff | `docs/foundation/04-prd-validation-handoff.md` + `kits/project-document-generator/VALIDATION.md` |
-| Project Document kit-local rules | `kits/project-document-generator/AGENTS.md` |
+| Flow 3 PRD semantic/product contract | `docs/foundation/03-prd-generation.md` + `.agents/skills/project-document-production/SKILL.md` |
+| Flow 4 PRD readiness/handoff semantics | `docs/foundation/04-prd-validation-handoff.md` + `.agents/skills/project-document-production/SKILL.md` |
+| Project Document kit-local contributor/technical routing | `kits/project-document-generator/AGENTS.md` |
 | Project Document production procedure | `kits/project-document-generator/SKILL.md` |
-| Project Document renderer | `kits/project-document-generator/renderer/` |
+| Project Document renderer mechanics | `kits/project-document-generator/renderer/` |
+| Project Document approved shell mechanics | `kits/project-document-generator/template/approved-document.html` |
 | Project Document mechanical validator | `kits/project-document-generator/validator/validate.py` |
 | Project Document focused regression | `tests/test_prd_contracts.py` |
-| Flow 5 Voice Requirement Extraction | `docs/foundation/05-voice-requirement-extraction.md` + `kits/voice-production-kit/VOICE-EXTRACTION.md` |
-| Flow 6 performance-script production | `docs/foundation/06-elevenlabs-script-production.md` + `kits/voice-production-kit/SCRIPT-PRODUCTION.md` |
-| Flow 6 DOCX build | `kits/voice-production-kit/DOCX-FORMAT.md` + `kits/voice-production-kit/builder/build_docx.py` |
-| Flow 7 Voice validation/delivery | `docs/foundation/07-voice-validation-delivery.md` + `kits/voice-production-kit/VOICE-VALIDATION.md` |
+| Flow 5 Voice semantic scope | `docs/foundation/05-voice-requirement-extraction.md` + `.agents/skills/voice-production/SKILL.md` |
+| Flow 6 performance/artifact semantic contract | `docs/foundation/06-elevenlabs-script-production.md` + `.agents/skills/voice-production/SKILL.md` |
+| Voice kit-local contributor/technical routing | `kits/voice-production-kit/AGENTS.md` |
+| Flow 6 DOCX presentation contract | `kits/voice-production-kit/DOCX-FORMAT.md` |
+| Voice DOCX builder mechanics | `kits/voice-production-kit/builder/build_docx.py` |
+| Flow 7 Voice readiness/evidence semantics | `docs/foundation/07-voice-validation-delivery.md` + `.agents/skills/voice-production/SKILL.md` |
 | Voice mechanical validator | `kits/voice-production-kit/validator/validate.py` |
 | Voice focused regression | `tests/test_voice_contracts.py` |
 | Voice direct dependency declaration | `kits/voice-production-kit/requirements.txt` |
@@ -51,6 +56,23 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Saved project packages | `workspace/saved/` |
 | Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
 | Retired-builder evidence | `docs/knowledge/operations/archived-retirement-audit.md` |
+
+## Semantic / Technical / Repository-Engineering Separation
+
+```text
+semantic/product contract
+= root semantic specialist + matching Flow policy/project authority
+
+pure executable mechanics
+= nearest kit AGENTS + exact renderer/template/validator/builder source
+
+shared dependency/regression/CI
+= requirements.lock.txt + tests/ + tools/ + workflows
+```
+
+A pure technical Maintenance task may have no root specialist. If the semantic contract is already correct, do not load a semantic specialist simply because the failing implementation belongs to that production chain.
+
+If a mechanical implementation change alters what the artifact is supposed to represent or accept, that boundary becomes semantic/product-contract work again and routes to the matching root specialist.
 
 ## Verification Separation
 
@@ -94,4 +116,4 @@ state/voice-state.yaml             voice_delivery_ready / lifecycle state
 
 Production Flow 1–7 remains real-project proven. Overall BuildIT parity remains open.
 
-P0.1 executable production verification is complete. The active boundary is **P0.2 — Technical Ownership Refinement**; current skill ownership must be audited before any root-skill architecture change.
+P0.1 executable production verification is complete. P0.2 technical ownership refinement is implemented and awaiting `Repository Verify` + `Production Verify` proof before the active boundary advances to P1.

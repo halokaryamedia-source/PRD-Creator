@@ -30,15 +30,34 @@ Production Flow 1–7 is implemented. The Clockwork Vault completed real Flow 2�
 
 ## Agent Governance Layer
 
-Canonical repository-wide skills currently remain:
+Canonical repository-wide skills remain:
 
 - `development-brief`;
 - `project-document-production`;
 - `voice-production`.
 
-The governance/routing subset—boot, Plan/Developing/Maintenance, development brief, Dual POV, one-specialist budget, root-cause Maintenance, ownership/review lifecycle—has real acceptance evidence.
+P0.2 re-audited the three-skill baseline after executable production verification and kept it, but narrowed the production specialists to **semantic/product-contract ownership**.
 
-The current three-skill freeze is an implemented baseline, **not a final answer**. P0.2 will audit semantic vs technical ownership before any skill architecture change.
+Current routing:
+
+```text
+semantic/product contract wrong
+→ matching root semantic specialist
+
+semantic contract correct
++ renderer/validator/builder mechanics wrong
+→ nearest kit AGENTS + exact implementation owner
+→ no root specialist required by default
+
+shared dependency/test/CI contract wrong
+→ requirements.lock.txt / tests / tools / workflows
+```
+
+This avoids creating a Python/tooling/artifact specialist merely because executable files share an implementation language.
+
+Canonical P0.2 decision:
+
+`docs/knowledge/decisions/technical-ownership-boundary.md`
 
 ## BuildIT Parity Reassessment
 
@@ -85,6 +104,15 @@ Production Verify executes the real PRD renderer/validator and Voice DOCX builde
 
 These gates do not replace semantic, browser, rendered-page, or audio evidence.
 
+## Kit-Local Technical Governance — P0.2
+
+Both executable kits now use nearest `AGENTS.md` as contributor/verification contracts:
+
+- Project Document kit: module structure, renderer/template/validator technical ownership, exact commands, canonical-vs-derived rules;
+- Voice kit: module structure, builder/validator technical ownership, exact dependency/verification commands, canonical-script-vs-derived-DOCX rules.
+
+P0.2 does not redesign Flow 2–7 production semantics or executable code.
+
 ## Stable Authority Chain
 
 ```text
@@ -95,15 +123,15 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
 
 ## Stable Structure
 
-- `.agents/skills/` — repository-wide agent routing/judgment skills;
+- `.agents/skills/` — repository-wide semantic routing/judgment skills;
 - `.github/workflows/` — repeatable repository/production gates;
+- `requirements.lock.txt` + `tests/` + `tools/` — repository engineering contracts;
 - `docs/foundation/` — durable production policy + proof matrix;
 - `docs/knowledge/` — continuity, routing, ownership, reviews, decisions, operations;
-- `kits/project-document-generator/` — active PRD Flow 2–4 owner;
-- `kits/voice-production-kit/` — active Voice Flow 5–7 owner;
-- `tests/` — focused high-risk production contract regressions;
+- `kits/project-document-generator/` — active PRD Flow 2–4 owner + module-local mechanics;
+- `kits/voice-production-kit/` — active Voice Flow 5–7 owner + module-local mechanics;
 - `workspace/active/` / `workspace/saved/` — project-specific packages.
 
 ## Current Development State
 
-P0.1 is complete. The next active remediation slice is **P0.2 — Technical Ownership Refinement**: audit actual semantic vs technical failure ownership before changing the current root skill freeze or broadening module governance.
+P0.1 is complete. P0.2 technical ownership refinement is implemented and awaiting `Repository Verify` + `Production Verify` proof on the P0.2 source revision before the active remediation boundary advances to **P1 — Production Engineering Quality Audit**.

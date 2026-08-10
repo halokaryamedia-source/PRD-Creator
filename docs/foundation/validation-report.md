@@ -101,22 +101,52 @@ Voice Production contracts             PASS
 final aggregate                         PASS
 ```
 
-### PRD regression contracts
-
-- real renderer CLI builds from a minimal generic fixture through the approved template;
-- real PRD validator passes the generated project;
-- scoring + completion_data conflict is rejected;
-- numeric scoring weights not totaling 100 are rejected.
-
-### Voice regression contracts
-
-- real builder creates DOCX from canonical requirements/script;
-- real Voice validator passes the generated project;
-- later section heading uses `page_break_before`, locking the real blank-page root fix;
-- missing Voice ID parity is rejected;
-- Voice Type mismatch is rejected.
-
 P0.1 repository-side production engineering baseline is therefore `CURRENT-PROJECT VERIFIED` at the contract level claimed.
+
+## P0.2 — Technical Ownership Refinement — IMPLEMENTED / PROOF PENDING
+
+Canonical audit:
+
+`docs/knowledge/reviews/technical-ownership-refinement-audit.md`
+
+Durable decision:
+
+`docs/knowledge/decisions/technical-ownership-boundary.md`
+
+Current ownership result:
+
+```text
+semantic/product contract wrong
+→ matching root semantic specialist
+
+semantic contract correct
++ renderer/validator/builder mechanics wrong
+→ nearest kit AGENTS + exact implementation owner
+→ no root specialist required by default
+
+shared dependency/test/CI contract wrong
+→ requirements.lock.txt / tests / tools / workflows
+```
+
+Skill audit result:
+
+- `development-brief` — `KEEP`;
+- `project-document-production` — `KEEP`, narrowed to Flow 2–4 semantic/product-contract ownership;
+- `voice-production` — `KEEP`, narrowed to Flow 5–7 semantic/product-contract ownership;
+- candidate Python / production-tooling / artifact-engineering root skill — `DROP AS ROOT SKILL + MOVE TO MODULE-LOCAL / REPOSITORY ENGINEERING`.
+
+The three-skill freeze remains valid after P0.2, but earlier wording that every renderer/validator/builder mechanical failure automatically belonged to a semantic specialist is superseded.
+
+Both kit-local `AGENTS.md` files now define:
+
+- module structure;
+- semantic-vs-technical handoff;
+- exact implementation owners;
+- contributor/canonical-derived rules;
+- exact focused verification commands;
+- visual/audio proof boundaries.
+
+P0.2 becomes `CURRENT-PROJECT VERIFIED` only after the P0.2 source revision passes both `Repository Verify` and `Production Verify`.
 
 ## Explicit Non-Claims
 
@@ -139,4 +169,4 @@ Those remain Flow-specific evidence boundaries.
 
 ## Current Boundary
 
-P0.1 is complete. The active parity-remediation boundary is **P0.2 — Technical Ownership Refinement**. Do not alter the root skill architecture until that ownership audit produces evidence for a smaller/better boundary.
+P0.1 is complete. P0.2 is implemented and awaiting source-head gate proof. Do not begin P1 source-quality remediation until both P0.2 gates pass and the proof is recorded.

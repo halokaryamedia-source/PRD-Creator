@@ -9,6 +9,7 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 | Evidence / review | Current meaning |
 |---|---|
 | [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active execution evidence.** Compared current BuildIT `e4330f7…` against PRD-Creator and reopened overall parity because engineering enforcement, technical ownership depth, module governance, and operations maturity remain incomplete. |
+| [Technical Ownership Refinement Audit](technical-ownership-refinement-audit.md) | **Active P0.2 execution evidence.** Re-audited renderer/validator/builder/tooling ownership after P0.1. Result: keep the three semantic root skills, route pure executable mechanics module-locally, and keep dependency/test/CI under repository engineering. P0.2 proof is pending the current source gates. |
 | [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** It correctly identified the missing governance/routing layer and justified Phases 1–3. |
 | [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Representative routing/Maintenance and Repository Verify genuinely passed. Its agent-governance conclusions remain useful, but its overall `OPERATING_PARITY_ACCEPTED` conclusion is superseded by the deeper current-BuildIT audit. |
 | [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and a real defect→root-fix→revalidation cycle. |
@@ -28,6 +29,18 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 - `superseded` — a later decision/source replaced the old method or conclusion.
 
 A review may carry more than one meaning over time; this graph owns its **current** interpretation.
+
+## Review Rules
+
+When adding a review, answer:
+
+1. what concrete failure/decision is being reviewed;
+2. which current owner/source is relevant;
+3. what evidence can disprove the conclusion;
+4. what is observed vs inferred vs proposed;
+5. what later implementation/decision should move out of review prose into its canonical owner.
+
+Do not create a review for routine bounded work whose evidence fits directly in the changed owner/commit/validation note.
 
 ## Historical Integrity Rule
 
@@ -51,4 +64,5 @@ Use this graph only when historical evidence/review status materially affects th
 
 - [Knowledge Dashboard](../index.md)
 - [BuildIT Parity Remediation Plan](../operations/buildit-parity-remediation-plan.md)
+- [Technical Ownership Decision](../decisions/technical-ownership-boundary.md)
 - [Module Map](../modules/module-map.md)

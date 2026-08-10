@@ -135,13 +135,37 @@ After the brief, add **at most one** repository specialist when it provides real
 
 - **Plan:** repository-grounded analysis first; use no repository specialist by default.
 - **Developing:** mandatory `development-brief` + at most one specialist.
-- **Maintenance:** diagnose the concrete failure first; use the smallest owning specialist only when its procedure adds material value.
+- **Maintenance:** diagnose the concrete failure first; use the smallest owning specialist only when its procedure adds material value. A root specialist is optional.
 
 Do not stack specialists merely because a task touches several file types or implementation surfaces.
 
 Detailed routing lives in `docs/knowledge/skills/activation-matrix.md`.
 
 Maintenance procedure lives in `docs/knowledge/maintenance/maintenance-flow.md`.
+
+## Semantic vs Technical Ownership
+
+P0.2 distinguishes **semantic/product-contract ownership** from **pure executable mechanics**.
+
+```text
+semantic/product contract wrong
+→ matching root semantic specialist
+
+semantic contract already correct
++ renderer/validator/builder mechanics wrong
+→ nearest kit AGENTS + exact implementation owner
+→ no root specialist required by default
+
+shared dependency / contract-test / CI behavior wrong
+→ requirements.lock.txt / tests / tools / .github/workflows
+→ no production specialist required by default
+```
+
+Use a root production specialist when the defect changes or misrepresents what the artifact/Flow is supposed to mean, represent, or accept. Do not keep a semantic specialist loaded merely as a Python/HTML/DOCX debugging wrapper when the product contract is already established.
+
+If investigation exposes both semantic and mechanical defects, resolve or explicitly reframe them as separate boundaries rather than stacking specialists.
+
+Canonical decision: `docs/knowledge/decisions/technical-ownership-boundary.md`.
 
 ## Execution Channels
 
@@ -163,6 +187,7 @@ Before changing behavior, establish:
 
 - what actually happens;
 - which owner/cause is responsible;
+- whether the first wrong contract is semantic/product meaning or executable mechanics;
 - why the proposed change addresses that cause;
 - what proof could falsify the change.
 
@@ -224,9 +249,10 @@ Validation is evidence, not ceremony. Use the cheapest check that can disprove t
 - **Text/docs/routing:** exact changed paths + link/ownership consistency.
 - **Bounded repository source change:** changed owner + directly affected contract/caller + targeted check where available.
 - **PRD content change:** canonical content + requirement traceability + role/readiness gate relevant to the change.
-- **Renderer/HTML change:** structural validation; browser/live visual claims require actual browser/visual proof.
+- **Renderer/HTML change:** focused contract test/mechanical validation; browser/live visual claims require actual browser/visual proof.
 - **Voice requirement/script change:** exact requirement/script parity + relevant semantic review.
-- **DOCX change:** builder/mechanical validation + rendered-page inspection for visual acceptance.
+- **DOCX builder/validator change:** focused contract test + builder/mechanical validation; rendered-page inspection is still required for visual acceptance.
+- **Shared dependency/test/CI change:** repository engineering gate that actually exercises the changed contract.
 - **Generated audio claim:** actual audio must exist and be reviewed.
 - **Cross-owner change:** verify only the boundaries that actually changed.
 
@@ -248,7 +274,9 @@ Static inspection cannot upgrade a live/browser/audio claim to `CURRENT-PROJECT 
 
 - Project Document Generator owns Flow 2–4.
 - Voice Production Kit owns Flow 5–7.
-- Root `.agents/skills/` owns agent work routing/judgment, not the detailed production procedure.
+- Root `.agents/skills/` owns reusable semantic work routing/judgment, not every executable implementation surface.
+- Nearest kit `AGENTS.md` files own scoped contributor/verification rules and pure technical Maintenance routing inside their modules.
+- Root repository engineering (`requirements.lock.txt`, `tests/`, `tools/`, workflows) owns shared dependency/regression/CI contracts.
 - Production Flow 1–7 and agent work modes are separate layers; do not confuse them.
 
 ## Canonical Skill Architecture
@@ -256,12 +284,14 @@ Static inspection cannot upgrade a live/browser/audio claim to `CURRENT-PROJECT 
 The frozen repository-wide skill set is:
 
 - `.agents/skills/development-brief/` — mandatory Developing front door;
-- `.agents/skills/project-document-production/` — semantic specialist for Flow 2–4 and their renderer/validator surfaces;
-- `.agents/skills/voice-production/` — semantic specialist for Flow 5–7 and their builder/validator surfaces.
+- `.agents/skills/project-document-production/` — semantic/product-contract specialist for Flow 2–4;
+- `.agents/skills/voice-production/` — semantic/product-contract specialist for Flow 5–7.
 
-Do not create separate renderer, validator, DOCX, research, evidence-gate, or generic writing skills merely because those implementation surfaces exist.
+P0.2 re-audited a possible renderer/validator/DOCX/Python/artifact-engineering specialist and **did not add one**. Pure implementation mechanics stay module-local; shared dependency/test/CI mechanics stay repository-engineering owned.
 
-Do not rename, split, merge, duplicate, or add a repository skill unless current work proves a distinct reusable ownership gap that cannot be represented cleanly by this baseline, foundation policy, a kit procedure, or one existing specialist.
+Do not create separate renderer, validator, DOCX, Python/tooling, artifact-engineering, research, evidence-gate, or generic writing skills merely because those surfaces exist.
+
+Do not rename, split, merge, duplicate, or add a repository skill unless current repeated work proves a distinct reusable ownership gap that cannot be represented cleanly by this baseline, foundation policy, a nearest kit procedure/AGENTS, repository engineering, or one existing specialist.
 
 Skill inventory/lineage: `docs/knowledge/skills/skill-map.md`.
 Skill routing: `docs/knowledge/skills/activation-matrix.md`.
@@ -271,7 +301,7 @@ Skill routing: `docs/knowledge/skills/activation-matrix.md`.
 - Flow 5 defines `work/voice-requirements.md` from a current `handoff_ready` PRD.
 - Flow 6 preserves the exact Voice ID/type set and creates `work/voice-production.md` + derived DOCX.
 - Flow 7 validates the exact current script/DOCX revision through `VOICE-VALIDATION.md`.
-- Flow 7 may reopen a root owner when a defect is found; it must not hide the fix in acceptance prose or patch the DOCX directly.
+- Flow 7 may reopen a semantic root owner when a product-contract defect is found; a pure builder/validator mechanical defect routes directly to the Voice kit owner.
 - Critical/Major findings block `voice_delivery_ready`.
 - DOCX visual acceptance requires rendered-page inspection.
 - generated-audio quality is never claimed unless actual audio was supplied and reviewed.
@@ -313,5 +343,6 @@ Use exactly one next step. Explain decisions, not internal machinery, unless the
 - Maintenance procedure → `docs/knowledge/maintenance/maintenance-flow.md`;
 - skill inventory → `docs/knowledge/skills/skill-map.md`;
 - skill routing → `docs/knowledge/skills/activation-matrix.md`;
-- production procedures → affected `kits/*` owner;
+- shared dependency/regression/CI contracts → `requirements.lock.txt` + `tests/` + `tools/` + `.github/workflows/`;
+- production procedures and pure module mechanics → affected `kits/*` owner;
 - actual project behavior/content → project source/state/canonical work + relevant proof.

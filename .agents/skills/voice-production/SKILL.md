@@ -1,33 +1,42 @@
 ---
 name: voice-production
-description: Semantic specialist for PRD-Creator Flow 5–7. Use when the active boundary is Voice Requirement Extraction, ElevenLabs performance-script production, Voice Production DOCX generation/formatting, or final Voice validation/delivery, including maintenance of the Voice builder/validator when those surfaces are the root owner. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, or audio evidence.
+description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is Voice Requirement scope, performance-script meaning, what the Voice Production artifact must represent, or final Voice validation/delivery semantics. Do not select merely because DOCX builder/validator mechanics fail when canonical Voice semantics are already correct; pure technical Maintenance may route directly to the nearest kit implementation owner. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, or audio evidence.
 ---
 
 # Voice Production
 
-Own the semantic procedure around Voice Production Kit Flow 5–7. Detailed production contracts remain in `kits/voice-production-kit/`; this skill routes work to the correct Flow and protects upstream authority.
+Own semantic/product-contract judgment around Voice Production Kit Flow 5–7. Detailed production and executable mechanics remain in `kits/voice-production-kit/`; this skill protects the accepted-PRD → Voice scope → wording → artifact → acceptance contract instead of becoming a generic Python/DOCX/tooling owner.
 
 ## Trigger
 
-Use when the actual boundary is one of:
+Use when the actual wrong contract is one of:
 
 - accepted PRD → Voice Requirements;
+- Voice moment scope / ID / Type / speaker / channel / trigger;
 - Voice Requirements → final spoken/performance wording;
-- canonical script → `Voice Production.docx`;
-- script/DOCX validation and delivery readiness;
-- Voice builder/validator maintenance where the defect belongs to Flow 5–7.
+- what the canonical script / DOCX is required to represent;
+- script/DOCX acceptance and delivery-readiness semantics;
+- a builder/validator change whose required behavior changes or misrepresents the Flow 5–7 product contract.
 
-Do not select merely because a task mentions ElevenLabs, DOCX, narration, dialogue, or audio. Select because the semantic owner is the Voice production chain.
+Do **not** select merely because:
+
+- a task mentions ElevenLabs, DOCX, narration, dialogue, audio, or Python;
+- `builder/build_docx.py` has a pagination/parser/formatting implementation bug while canonical script semantics are already correct;
+- `validator/validate.py` has a mechanical implementation bug;
+- CI/test/dependency tooling fails.
+
+Pure technical Maintenance may route directly through `kits/voice-production-kit/AGENTS.md` to the exact implementation owner without a root specialist.
 
 ## Required Routing
 
 1. Verify the upstream accepted PRD revision before Voice extraction.
-2. Identify the active Flow owner:
+2. Identify whether the defect is semantic/product-contract or executable mechanics.
+3. For semantic/product-contract work, identify the active Flow owner:
    - Flow 5 → `VOICE-EXTRACTION.md` + `work/voice-requirements.md`;
-   - Flow 6 → `SCRIPT-PRODUCTION.md`, `DOCX-FORMAT.md`, `work/voice-production.md`, builder;
-   - Flow 7 → `VOICE-VALIDATION.md`, validator, acceptance/delivery state.
-3. Read only the smallest relevant kit procedure/source.
-4. Route missing project facts upstream instead of repairing them in dialogue.
+   - Flow 6 → `SCRIPT-PRODUCTION.md`, `DOCX-FORMAT.md`, `work/voice-production.md`, artifact representation contract;
+   - Flow 7 → `VOICE-VALIDATION.md`, acceptance/delivery state.
+4. Read only the smallest relevant kit procedure/source.
+5. Route missing project facts upstream instead of repairing them in dialogue or formatting.
 
 ## Authority Guard
 
@@ -65,7 +74,8 @@ Rules:
 - CAPS, ellipsis, and line breaks are purposeful performance notation, not decoration;
 - estimated duration is an expectation, not measured audio proof;
 - wording must preserve official terminology and project facts;
-- builder output must be regenerated from canonical Markdown rather than edited directly.
+- builder output must be regenerated from canonical Markdown rather than edited directly;
+- decide what the Voice artifact must represent, but leave pure parser/DOCX implementation mechanics to the kit-local owner when semantics are already correct.
 
 ## Flow 7 Judgment
 
@@ -82,14 +92,32 @@ Validate the exact current revision for:
 
 Critical/Major findings block `voice_delivery_ready`.
 
+## Technical Handoff Rule
+
+If investigation proves:
+
+```text
+Voice scope/wording/artifact contract is correct
++ executable builder/validator mechanics are wrong
+```
+
+then route Maintenance to:
+
+`kits/voice-production-kit/AGENTS.md` → exact implementation source.
+
+Do not keep this root specialist loaded solely as a Python/DOCX debugging wrapper. Shared dependency/test/CI failures belong to root repository-engineering owners (`requirements.lock.txt`, `tests/`, `tools/`, workflows).
+
+The real blank-page defect is the model example: Voice semantics were correct; builder pagination mechanics owned the correction.
+
 ## Maintenance Rule
 
-For a Voice artifact defect:
+For a Voice defect:
 
 ```text
 observe defect
-→ classify owner: requirement / script / builder / validator / evidence
-→ fix the smallest root owner
+→ classify semantic/product contract vs executable mechanics
+→ semantic wrong: use this specialist + smallest Flow owner
+→ semantics correct, mechanics wrong: nearest kit AGENTS + exact implementation owner
 → rebuild derived artifact when needed
 → rerun only the proof invalidated by the change
 ```

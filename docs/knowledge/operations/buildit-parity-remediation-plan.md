@@ -33,22 +33,39 @@ Repository Verify 31372363802  PASS
 
 P0.1 deliberately does not claim browser visual quality, rendered DOCX page quality, generated audio, or arbitrary-project semantic readiness.
 
-### P0.2 — Technical Ownership Refinement — ACTIVE NEXT
+### P0.2 — Technical Ownership Refinement — IMPLEMENTED / PROOF PENDING
 
-Audit whether renderer/validator/builder/tooling failures need a distinct reusable technical owner or whether current product specialists remain the smallest correct owners.
+Audit result:
 
-Do not add skills first. Use actual failure/caller boundaries and the KEEP / RENAME / MERGE / MOVE / DROP / RECOVER discipline.
+- no new root technical specialist is justified;
+- `development-brief`, `project-document-production`, and `voice-production` remain the canonical root skills;
+- Project Document / Voice root specialists are narrowed to semantic/product-contract ownership;
+- pure renderer/template/validator/builder mechanics route to nearest kit owners;
+- shared dependency/test/CI mechanics route to repository engineering (`requirements.lock.txt`, `tests/`, `tools/`, workflows);
+- pure technical Maintenance may use no root specialist.
 
-Required output:
+Canonical evidence:
 
-- explicit semantic-vs-technical ownership map for current executable surfaces;
-- evidence-backed decision on the current three-skill freeze;
-- any justified kit-local contributor/verification-rule strengthening;
-- no production redesign unless a concrete contract defect is found.
+`../reviews/technical-ownership-refinement-audit.md`
+
+Durable decision:
+
+`../decisions/technical-ownership-boundary.md`
+
+Contributor/verification rules were strengthened in both kit-local `AGENTS.md` files without adding nested skills or changing Flow 2–7 semantics.
+
+P0.2 is complete only when the source revision passes:
+
+```text
+Repository Verify
+Production Verify
+```
+
+Do not start P1 source-quality remediation before this proof is recorded.
 
 ## P1 — Production Engineering Quality Audit
 
-Run a deep source-backed review of:
+After P0.2 proof, run a deep source-backed review of:
 
 - PRD renderer/template mutation contracts;
 - PRD mechanical validator gaps;
@@ -58,6 +75,8 @@ Run a deep source-backed review of:
 - failure handling and evidence boundaries.
 
 Convert findings into an ordered plan; fix one bounded slice at a time.
+
+P1 is an **audit first**, not permission to refactor all executable code.
 
 ## P1.5 — Module Governance
 

@@ -35,7 +35,7 @@ Production Flow 1–7 is implemented and real-project proven on The Clockwork Va
 
 ## BuildIT Parity State
 
-The governance/routing work from the earlier parity phases remains valid evidence, but **overall full relevant parity is reopened** after a deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`).
+The governance/routing work from the earlier parity phases remains valid evidence, but **overall full relevant parity is open** after a deeper comparison against current BuildIT `Local` (`e4330f769486bcd0cee96d76fbce10f694cba2ba`).
 
 Current audit:
 
@@ -86,7 +86,7 @@ Repository Verify  run 31372363802  PASS
 
 These gates do **not** replace PRD semantic review, browser visual inspection, rendered DOCX page QA, or generated-audio review.
 
-## Current Root Skills
+## Current Root Skills — P0.2 Re-Audited
 
 ```text
 development-brief
@@ -94,19 +94,47 @@ project-document-production
 voice-production
 ```
 
-The current three-skill freeze is still the implemented baseline, but P0.2 must audit whether semantic and technical failures are represented by the smallest correct owners before that architecture is treated as final.
+P0.2 kept the three-skill set but narrowed the two production specialists to semantic/product-contract ownership.
+
+```text
+semantic/product contract wrong
+→ matching root semantic specialist
+
+semantic contract correct
++ renderer/validator/builder mechanics wrong
+→ nearest kit AGENTS + exact implementation owner
+→ no root specialist required by default
+
+shared dependency/test/CI contract wrong
+→ requirements.lock.txt / tests / tools / workflows
+```
+
+A candidate Python / production-tooling / artifact-engineering root skill was rejected from current evidence. Shared implementation language is not enough to create a reusable specialist.
+
+Canonical decision:
+
+`docs/knowledge/decisions/technical-ownership-boundary.md`
+
+## Kit-Local Contributor Contracts
+
+P0.2 strengthens both nearest `AGENTS.md` files:
+
+- Project Document Generator — exact renderer/template/validator ownership, contributor rules, and verification commands;
+- Voice Production Kit — exact builder/validator ownership, dependency contract, contributor rules, and verification commands.
+
+This gives pure technical Maintenance a real owner without creating new root skill layers.
 
 ## Repository Map
 
-- `AGENTS.md` — repository-wide work modes, authority, proof, anti-slop baseline;
+- `AGENTS.md` — repository-wide work modes, authority, proof, semantic-vs-technical routing, anti-slop baseline;
 - `CONTEXT.md` — stable workspace/product state;
-- `.agents/skills/` — repository-wide routing/judgment skills;
+- `.agents/skills/` — repository-wide semantic routing/judgment skills;
 - `.github/workflows/` — repeatable static/production gates;
+- `requirements.lock.txt`, `tests/`, `tools/` — shared repository engineering contracts;
 - `docs/foundation/` — durable production policy + validation matrix;
 - `docs/knowledge/` — current state, routing, reviews, decisions, operations;
-- `kits/project-document-generator/` — Flow 2–4 implementation;
-- `kits/voice-production-kit/` — Flow 5–7 implementation;
-- `tests/` — focused high-risk production regression contracts;
+- `kits/project-document-generator/` — Flow 2–4 implementation + module-local mechanics;
+- `kits/voice-production-kit/` — Flow 5–7 implementation + module-local mechanics;
 - `workspace/` — project-specific production packages.
 
 ## Core Authority Rule
@@ -121,4 +149,4 @@ Generated artifacts and successful tooling never silently become higher authorit
 
 ## Current Work
 
-P0.1 is complete. The active next slice is **P0.2 — Technical Ownership Refinement**. See `docs/knowledge/next-action.md` for the exact boundary.
+P0.1 is complete. P0.2 is implemented and waiting on `Repository Verify` + `Production Verify` proof for the P0.2 source revision. Only after both pass does the active boundary advance to **P1 — Production Engineering Quality Audit**.

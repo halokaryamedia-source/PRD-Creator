@@ -45,10 +45,16 @@ Governing plan: `buildit-parity-remediation-plan.md`.
   - [x] fail-closed Production Verify workflow;
   - [x] Production Verify run `31372363843` PASS on `0eb0485f117fa6ed419572a66539331f99114002`;
   - [x] Repository Verify run `31372363802` PASS on the same source head.
-- [ ] **P0.2 — Technical Ownership Refinement** ← active next slice
-  - audit current three-skill freeze against semantic vs technical failure ownership;
-  - decide whether technical execution needs a distinct reusable owner or remains module-local;
-  - strengthen kit-local contributor/verification contracts only where the audit proves value.
+- [ ] **P0.2 — Technical Ownership Refinement** ← implementation complete / proof pending
+  - [x] semantic-vs-technical ownership audit;
+  - [x] candidate technical root skill rejected from current evidence;
+  - [x] three root semantic skills retained with narrowed ownership wording;
+  - [x] pure renderer/validator/builder mechanics routed to nearest kit owners;
+  - [x] shared dependency/test/CI routed to repository engineering;
+  - [x] Project Document nearest `AGENTS.md` strengthened as contributor/verification contract;
+  - [x] Voice nearest `AGENTS.md` strengthened as contributor/verification/dependency contract;
+  - [ ] P0.2 `Repository Verify` PASS;
+  - [ ] P0.2 `Production Verify` PASS.
 - [ ] **P1 — Production Engineering Quality Audit**
 - [ ] **P1.5 — Module Governance**
 - [ ] **P2 — Knowledge / Operations Maturity**
