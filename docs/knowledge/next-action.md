@@ -6,7 +6,7 @@ This is the single active-task snapshot.
 
 ## Current Status
 
-`PRD_WRITING_QUALITY_REFINED_PRD_SKILL_REVIEW_NEXT`
+`PRD_CONTENT_USABILITY_REFINED_REAL_SAMPLE_REVIEW_NEXT`
 
 Working branch: **`Local` only**.
 
@@ -16,63 +16,65 @@ Source:
 
 `a1c59f45c52d4213adff41a236ae0265dcf91868` — `docs: improve PRD writing quality rules`
 
-The useful Humanizer-style behavior was **merged into the existing PRD owner**, not added as another root skill.
+The useful Humanizer-style behavior was merged into the existing PRD owner instead of adding another root skill.
+
+## Completed — PRD content/usability refinement
+
+Source:
+
+`2c8cc015ec5d544d2899f554b9a4b9378d221456` — `docs: simplify PRD intake and content density`
+
+The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
+
+- Flow 2 requirement granularity now tracks production-relevant requirements, constraints, conflicts, and decisions instead of mirroring every source sentence/fact into `REQ-###` entries;
+- `work/review.md` is explicitly decision-focused, so detailed traceability stays in the requirement register while the user sees confirmed scope, meaningful completion/clarification, and only Proposal/Blocked items that need attention;
+- Flow 3 uses minimum sufficient detail: include content when it helps a role understand, build, implement, validate, or avoid guessing; do not fill optional fields/sections merely because the template has a place for them.
 
 Changed owners:
 
 ```text
 .agents/skills/project-document-production/SKILL.md
+kits/project-document-generator/SOURCE-INTAKE.md
 kits/project-document-generator/CONTENT-CONTRACT.md
-kits/project-document-generator/VALIDATION.md
 ```
 
-Added only the writing rules that materially help technical PRD work:
+No renderer, validator, CI, schema, new root skill, or additional persistent project state was added.
 
-- plain, concrete technical prose;
-- remove inflated/promotional/fake-analysis filler;
-- keep official terminology stable instead of synonym cycling;
-- avoid artificial rhetorical patterns and forced rule-of-three phrasing;
-- use the minimum effective edit and leave already-clear sentences alone;
-- never alter IDs, names, numbers, coordinates, timings, formulas, scoring weights, triggers, conditions, states, code/API names, or approved terminology for style;
-- apply prose cleanup mainly to explanatory paragraphs, not aggressively to tables, formulas, configuration, requirement lists, or code.
+## Current quality boundary
 
-Flow 4 checks writing quality **inside the existing four-perspective review**. There is no fifth gate, AI score, detector, or separate evaluation framework.
+The PRD skill now explicitly protects:
 
-## Proof
-
-```text
-Repository Verify #19
-run: 31394321004
-head: a1c59f45c52d4213adff41a236ae0265dcf91868
-result: PASS
-
-Production Verify #8
-run: 31394320900
-head: a1c59f45c52d4213adff41a236ae0265dcf91868
-result: PASS
-```
-
-These gates prove repository/executable consistency only. They do not prove subjective writing quality.
+- source fidelity and supported completion;
+- decision economy during intake;
+- production-relevant requirement granularity;
+- context before detail;
+- Gameplay / Level Design / Developer ownership separation;
+- minimum sufficient detail and information density;
+- plain, concrete, non-promotional technical prose;
+- stable terminology and technical values;
+- development-readiness from the existing four Flow 4 perspectives.
 
 ## Current limitation
 
-`workspace/active/` and `workspace/saved/` currently contain no real PRD project package to use as a before/after writing sample.
+`workspace/active/` and `workspace/saved/` currently contain no real PRD project package to use as a before/after quality sample.
 
-Do not create synthetic prose evaluation machinery merely to fill this gap.
+Do not create synthetic prose/usability scoring or detector machinery to fill this gap.
 
 ## Current direction
 
-Focus on **PRD skill quality first**. Voice skill review comes only after the PRD side is considered good enough.
+PRD policy/skill refinement is complete enough to stop adding rules speculatively.
+
+Voice skill review remains intentionally deferred until the PRD side is checked against a real project/sample or the user explicitly chooses to proceed.
 
 Continue using the anti-overdevelopment rule:
 
 ```text
-reuse existing owner
-→ merge only proven useful behavior
-→ no new skill unless a distinct reusable ownership gap exists
-→ no detector / score / framework unless a real need proves it
+real source/project
+→ use current PRD flow
+→ observe actual friction or quality gap
+→ smallest owner/fix only when needed
 ```
 
 ## Next Step
 
-Review the remaining `project-document-production` skill and Project Document Generator procedures for any **real content-quality/usability gap** beyond writing style. Keep `No change required` as a valid result. When a real PRD/sample is available, use it for a small before/after quality check instead of creating an automated AI-writing detector.
+Use the refined PRD skill on one real PRD/project sample and review the actual result for clarity, completeness, information density, and role usability. If the result is good, do not add more PRD machinery; move on to the Voice skill review only after that practical check or explicit user direction.
