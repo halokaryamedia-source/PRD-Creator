@@ -23,36 +23,37 @@ Every source slice must:
 
 ---
 
-## P1.1 — PRD Mechanical Revision Integrity — ACTIVE NEXT
+## P1.1 — PRD Mechanical Revision Integrity — COMPLETE
 
 Findings:
 
-- P1-F01 — stale/current render revision is not mechanically linked;
-- P1-F02 — malformed render-data can escape structured validator failure.
+- P1-F01 — stale/current render revision was not mechanically linked;
+- P1-F02 — malformed render-data could escape structured validator failure.
 
-Scope:
+Source head:
 
-- complete validator preflight for root arrays/items/stable IDs before page calculation;
-- add deterministic current render-data → final HTML revision/fingerprint evidence;
-- reject stale HTML whose embedded render identity differs from current render-data;
-- reject stale extra generated sections/pages where current generated-page identity differs;
-- add focused stale-artifact and malformed-shape regressions.
+`04f306f8589528ccc8cb03e89333dba174a3d276`
 
-Out of scope:
+Implemented:
 
-- semantic `content.md` → render-data meaning automation;
-- browser visual approval;
-- generic JSON Schema framework;
-- template redesign.
+- root collection/item/stable-ID preflight before expected-page calculation;
+- structured FAIL for malformed collection items;
+- deterministic SHA-256 of canonical sorted render-data;
+- `final.html` embeds exactly one `render-data-sha256` marker;
+- validator requires exact current render fingerprint;
+- generated document section list must exactly match current expected pages/order;
+- focused stale-artifact, malformed-item, and stale-extra-page regressions.
 
-Acceptance:
+Proof:
 
-- malformed current render-data returns structured validator FAIL, not traceback;
-- editing render-data without rerendering causes mechanical FAIL;
-- current happy fixture still PASS;
-- exact production gates PASS.
+```text
+Production Verify 31377375929  PASS
+Repository Verify 31377377036  PASS
+```
 
-## P1.2 — PRD Renderer Script/Shell Safety
+P1-F01 and P1-F02 are implemented at the mechanical contract level claimed. Semantic `content.md` → render-data correctness and browser visual approval remain separate.
+
+## P1.2 — PRD Renderer Script/Shell Safety — ACTIVE NEXT
 
 Findings:
 
@@ -72,6 +73,14 @@ Out of scope:
 - sanitizer framework;
 - full template snapshot tests;
 - redesign of the approved shell.
+
+Acceptance:
+
+- glossary content cannot terminate/inject the inherited script block;
+- malformed glossary alias shape fails in a controlled way;
+- required shell marker absence/ambiguity fails clearly;
+- current happy render + validator PASS;
+- focused PRD regressions + both repository gates PASS.
 
 ## P1.3 — Voice Revision + DOCX Entry Integrity
 

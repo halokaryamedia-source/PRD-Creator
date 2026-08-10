@@ -8,11 +8,11 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 
 | Evidence / review | Current meaning |
 |---|---|
-| [Production Engineering Quality Audit](production-engineering-quality-audit.md) | **Active execution evidence.** P1 source audit found material false-pass/failure-state gaps after P0.1: PRD stale-artifact/revision identity, validator malformed-input crash paths, glossary script-context safety, Voice revision identity, DOCX entry binding, plus bounded medium/conditional gaps. It governs P1.1+ execution through the Production Engineering Remediation Plan. |
-| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active evidence.** Compared current BuildIT `e4330f7…` against PRD-Creator and reopened overall parity. Its broad gap classification remains current, while P1 engineering detail is now owned by the Production Engineering Quality Audit. |
-| [Technical Ownership Refinement Audit](technical-ownership-refinement-audit.md) | **Implemented / current P0.2 evidence.** Keep three semantic root skills, route pure executable mechanics module-locally, and keep dependency/test/CI under repository engineering. P0.2 source head `a0a51d9…` passed both gates. |
-| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** It identified the missing governance/routing layer and justified Phases 1–3. |
-| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Its agent-governance results remain useful; its overall parity conclusion is superseded. |
+| [Production Engineering Quality Audit](production-engineering-quality-audit.md) | **Active execution evidence.** P1 identified nine material/conditional production-engineering findings. P1-F01 and P1-F02 are now implemented by P1.1 source head `04f306f8…`, which passed Production Verify `31377375929` and Repository Verify `31377377036`. P1-F03 and P1-F07 now govern active P1.2; Voice and remaining findings stay ordered behind them. |
+| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active evidence.** Reopened overall relevant parity against current BuildIT. Its broad gap classification remains current while detailed production-engineering execution is owned by the P1 audit/remediation plan. |
+| [Technical Ownership Refinement Audit](technical-ownership-refinement-audit.md) | **Implemented / current P0.2 evidence.** Keep three semantic root skills, route pure executable mechanics module-locally, and keep dependency/test/CI under repository engineering. |
+| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** It identified the missing governance/routing layer and justified the earlier operating work. |
+| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Its governance/routing results remain valid; its overall parity conclusion is superseded. |
 | [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and a real defect→root-fix→revalidation cycle. |
 | [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** It justified deleting the old `Production Document Builder/` live tree. |
 | [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It owns current production + parity-remediation evidence status. |
@@ -28,20 +28,6 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 - `historical` — retained for reasoning/provenance, not current routing;
 - `local proof required` — source/implementation exists but material local/browser/audio/runtime proof remains;
 - `superseded` — a later decision/source replaced the old method or conclusion.
-
-A review may carry more than one meaning over time; this graph owns its **current** interpretation.
-
-## Review Rules
-
-When adding a review, answer:
-
-1. what concrete failure/decision is being reviewed;
-2. which current owner/source is relevant;
-3. what evidence can disprove the conclusion;
-4. what is observed vs inferred vs proposed;
-5. what later implementation/decision should move out of review prose into its canonical owner.
-
-Do not create a review for routine bounded work whose evidence fits directly in the changed owner/commit/validation note.
 
 ## Historical Integrity Rule
 
