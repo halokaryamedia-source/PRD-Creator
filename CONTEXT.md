@@ -1,47 +1,72 @@
 # PRD-Creator Context
 
-## Stable workspace facts
+Status: active production repository
+Working branch: `Local`
 
-- `Local` is the permanent development/working authority.
-- `main` changes only when explicitly requested.
-- Repository state is authoritative for continuation; chat is supporting context.
-- Production Flow remains 1–7: repository boot → source intake/recovery → PRD generation → PRD validation/handoff → Voice requirements → ElevenLabs performance script/DOCX → Voice validation/delivery.
+## Product
 
-## Current PRD direction
+PRD-Creator converts uneven project material into development-ready PRD documentation and, when needed, downstream Voice Production assets.
 
-The PRD side is intentionally optimized for simple, high-quality production use rather than maximum process detail.
-
-Core principles:
+## Production sequence
 
 ```text
-source fidelity
-→ production-relevant requirement recovery
-→ decision-focused review
-→ canonical PRD with minimum sufficient detail
-→ approved HTML render
-→ existing four-perspective development-readiness review
+Flow 1  Repository Boot & Project Memory
+Flow 2  Source Intake & Requirement Recovery
+Flow 3  Project Document / PRD Generation
+Flow 4  PRD Validation & Team Handoff
+Flow 5  Voice Requirement Extraction
+Flow 6  ElevenLabs Performance Script Production
+Flow 7  Voice Validation & Delivery
 ```
 
-The active `project-document-production` skill includes PRD-specific anti-AI-slop writing guidance. It prefers plain, concrete technical prose and stable terminology while protecting IDs, names, numbers, timings, scoring, triggers, states, formulas, and other authoritative values.
+## Current PRD operating direction
 
-Flow 2 does not mirror source text sentence-by-sentence into requirement IDs. The requirement register tracks production-relevant requirements, constraints, conflicts, and decisions. `work/review.md` remains a concise user-facing decision view rather than a duplicate register.
+Normal project production is **Production Execution**, not repository Developing.
 
-Flow 3 uses minimum sufficient detail. Optional sections/fields are not filled just because the template provides a place for them. Content stays when it helps a target role understand, build, implement, validate, or avoid guessing.
+```text
+new/revised PRD project
+→ project-document-production / Project Document Generator directly
+→ no development-brief
+```
 
-## Anti-overdevelopment boundary
+`development-brief` is reserved for changing or extending PRD-Creator itself.
 
-BuildIT remains a reference for discipline, ownership, proof, and anti-slop behavior, not a feature checklist.
+The PRD user experience should minimize user effort:
 
-Do not add checksum/revision protocols, generic schema/profile frameworks, new root skills, extra gates, writing detectors/scores, test infrastructure, or similar machinery without a concrete current project need.
+- auto-bootstrap project/workspace/internal IDs;
+- inspect all source before asking questions;
+- apply safe Clarification/Completion automatically;
+- batch remaining material decisions with a recommended option/reason/impact when responsible;
+- allow one approve-all response with named exceptions;
+- use delta-first revision handling for bounded approved changes;
+- keep internal state/evidence internal during normal delivery;
+- deliver the final PRD plus only concise material changes/attention items;
+- perform one visual sanity pass inside Flow 4 when actual visual inspection is available, without creating another gate.
 
-`No change required` is a valid result.
+## Golden Sample authority
 
-## Current verification boundary
+The approved Golden Sample remains the required template/output foundation for this gameplay PRD family.
 
-Repository/Production Verify prove repository and executable consistency only. They do not prove subjective writing quality, browser visual quality, DOCX visual quality, or audio quality.
+Preserve:
 
-PRD writing/usability quality should be checked against a real project/sample when available, not via synthetic AI-writing scoring machinery.
+```text
+Overview
+→ Gameplay Flow
+→ Global Development
+→ Gameplay Package(s)
+     → Gameplay Overview
+     → Level Design
+     → Developer
+```
+
+Efficiency improvements belong in generation flow and information density, not in removing this structure or replacing the template with a generic minimal shell.
+
+## Anti-overdevelopment
+
+Prefer the smallest complete solution. Do not add new skills, schemas, workflow engines, approval layers, checksums, generic parsers, or template systems without a proved need.
+
+BuildIT remains a reference for discipline/ownership/proof, not a feature checklist.
 
 ## Current continuation
 
-Read `docs/knowledge/next-action.md` for the single active next step.
+Read `docs/knowledge/next-action.md` for the single active task and remaining pre-sample audit boundary.
