@@ -1,12 +1,10 @@
 # Canonical PRD Content Contract
 
-This file defines what `work/content.md` must contain after Flow 2 reaches `ready_for_prd`.
+`work/content.md` is the human-readable source of truth for PRD meaning. `work/render-data.json` is a derived projection and `output/final.html` is a derived presentation artifact.
 
-`content.md` is the canonical human-readable project document content. It owns project meaning for Flow 3. `render-data.json` is only a derived projection used by the renderer, and `final.html` is only a presentation artifact.
+## Golden Sample is the output contract
 
-## Golden Sample structure is the output contract
-
-The approved Golden Sample is not merely a loose visual reference. Its document foundation is the required production structure for this gameplay-document family.
+For this gameplay-document family, the approved Golden Sample defines both the document hierarchy **and the reusable page composition**. Future projects replace project facts; they do not invent a different page language.
 
 Preserve:
 
@@ -20,45 +18,186 @@ Overview
      → Developer
 ```
 
-For a Gameplay Package, the three role surfaces remain part of the document foundation even when one role has little package-specific work. **Do not remove a role page just to make the document shorter.**
+Do not remove a role page merely because local work is small. Keep it concise and point to a shared/global rule when appropriate. Do not fill empty visual space with invented mechanics, dimensions, architecture, tracking, lore, or implementation detail.
 
-Efficiency is achieved by keeping each role page focused and by avoiding invented or duplicated detail, not by changing the approved Golden Sample hierarchy.
+## Golden page-composition contract
 
-If a role has no meaningful package-specific requirement beyond an already-defined global/shared rule:
+The renderer must project canonical content into the existing Golden Sample component families below. These are the default structures for this document family, not optional styling suggestions.
 
-- keep the page concise;
-- state only the local implication or dependency that the role needs;
-- reference the applicable global/shared rule when useful;
-- do not invent objects, dimensions, mechanics, APIs, architecture, scoring, persistence, or other work just to fill the page.
+### Overview
 
-If the user later requests a materially different document family, treat that as an explicit template/output decision. Do not silently mutate the Golden Sample contract.
+Use the Golden overview rhythm:
 
-## Core principles
+```text
+project identity / context
+→ key production facts
+→ complete gameplay journey
+→ main shared systems
+→ Terms Used when needed
+```
 
-1. **Context before detail.** A reader should understand the project and player journey before implementation detail.
-2. **Critical data is explicit.** Important counts, timings, conditions, scoring, handoffs, reset behavior, and state rules must be stated when they affect production.
-3. **One rule, one meaning.** A mechanic or term may be repeated for local context, but its meaning cannot drift between pages.
-4. **Role ownership stays separate.** Gameplay explains intended experience; Level Design explains what must be built; Developer explains runtime behavior and data.
-5. **Local pages are usable alone.** A developer or level designer should not need to read the whole document to understand one assigned package.
-6. **No filler.** Do not repeat narrative or requirements merely to make a page look complete.
-7. **No unresolved design decisions.** Flow 3 may clarify wording, but it cannot invent a decision that Flow 2 left unresolved.
-8. **Plain technical prose.** Prefer direct, concrete language. Writing quality must improve readability without changing project meaning or technical precision.
-9. **Minimum sufficient detail inside the fixed structure.** Include enough information for the target role to work without guessing, but do not fill fields with content that does not affect understanding, production action, or acceptance.
+Overview explains the project to a new team member before implementation detail appears.
+
+### Gameplay Flow
+
+Gameplay Flow is storytelling-first, not an implementation table.
+
+```text
+stage title / narrative context
+→ ordered narrative beats
+→ result / transition to next destination
+→ Terms Used when needed
+```
+
+Use the Golden narrative component family (`narrative-page`, `narrative-sequence`, narrative beats, transition treatment). Keep implementation checklists in Development pages.
+
+### Global Development
+
+Global Development pages share one Golden development-navigation family. Each page uses:
+
+```text
+Development title / subtitle
+→ shared section tabs
+→ context block
+→ Development Flow cards when a flow exists
+→ grouped Development Requirements production table when requirements exist
+→ Important Development Notes card grid when notes exist
+→ Terms Used when needed
+```
+
+Typical global owners include Development Overview, Game/Session System, Data and Reset, and Shared Gameplay Development. Only create global pages the project actually needs; do not duplicate their full rules inside every gameplay package.
+
+### Gameplay Package — A. Gameplay Overview
+
+Every package keeps the Golden three-tab navigation: `1 Gameplay Overview / 2 Level Design / 3 Developer`.
+
+Gameplay Overview uses:
+
+```text
+package title / package label
+→ Golden 1/2/3 tabs
+→ 3 context cards:
+     Gameplay Context
+     Main Objective
+     Result
+→ Gameplay Information production table
+→ Gameplay Flow role-sequence
+→ Terms Used when needed
+```
+
+Gameplay Information uses project-relevant rows from this Golden family:
+
+- Game Purpose;
+- Gameplay Time;
+- Starting Condition;
+- End Condition;
+- Fail Condition;
+- Scoring Criteria or completion behavior.
+
+Do not add a row when the project has no meaningful value for it. Do not replace the entire Golden information block with generic prose/cards.
+
+The Gameplay Flow is an ordered player-facing sequence, not a developer trigger/data table.
+
+### Gameplay Package — B. Level Design
+
+Level Design uses:
+
+```text
+package title / package label
+→ Golden 1/2/3 tabs
+→ Level Design Overview context block
+→ Design Flow cards when meaningful
+→ Build Requirements Golden production table
+→ Important Build Notes card grid when meaningful
+→ role-specific Terms Used only when useful
+```
+
+The Golden Build Requirements table uses:
+
+```text
+No.
+Object
+Area Size
+Build and Visual Requirements
+Gameplay Function
+```
+
+For each meaningful object/area, preserve the difference between what must be built and why gameplay needs it. `Area Size` may remain unspecified/neutral when no authoritative size exists; never invent exact dimensions just to populate the column.
+
+The projection may use grouped rows, object subtitles, and child rows where the content naturally has them. Do not flatten meaningful hierarchy into one generic `Group / Object / Requirement / Result` table.
+
+### Gameplay Package — C. Developer
+
+Developer uses:
+
+```text
+package title / package label
+→ Golden 1/2/3 tabs
+→ Developer Overview context block
+→ Development Flow cards when meaningful
+→ grouped Development Requirements Golden production table
+     → scoring/completion integrated inside the relevant requirement hierarchy
+     → reset/interruption integrated inside the hierarchy when relevant
+→ Important Development Notes card grid when meaningful
+→ role-specific Terms Used only when useful
+```
+
+The Golden Developer production table uses:
+
+```text
+No.
+Setup
+Development Requirements
+Gameplay Function
+```
+
+Preserve meaningful requirement groups such as Mechanic Setup, Gameplay Setup, Scoring/Completion, and Reset where the project actually has those concerns. A requirement cell may contain several concise rules; do not flatten grouped implementation logic into unrelated standalone tables.
+
+Scoring or completion presentation uses the Golden inline score/completion summary + inline detail-table treatment. It must stay inside the Developer requirement structure rather than becoming an unrelated generic table after the requirements.
+
+## Content authority and role ownership
+
+1. **Source fidelity first.** Only source, supported recovery, and approved decisions may define project meaning.
+2. **Context before detail.** A New Reader understands the experience before role implementation pages.
+3. **One rule, one meaning.** Repetition for local context is allowed; semantic drift is not.
+4. **Gameplay / Level Design / Developer stay separate.** Gameplay = intended player experience; Level Design = what must be built; Developer = runtime behavior/data/result.
+5. **Local pages are usable alone.** A production role can work from its assigned package plus relevant global rules.
+6. **No filler.** Fixed Golden structure does not authorize invented content.
+7. **No unresolved material decisions.** Return a true unresolved decision to Flow 2.
+
+## Information density
+
+Use minimum sufficient detail **inside the fixed Golden composition**.
+
+Keep a detail when it:
+
+- explains project/player context needed to understand the work;
+- changes what Level Design must build;
+- changes what Developer must implement or record;
+- defines a trigger, condition, quantity, timing, score, handoff, reset, or acceptance rule;
+- prevents a production role from guessing a product decision.
+
+Otherwise omit it, compress it, or reference the existing global/shared rule.
+
+Do not:
+
+- populate every possible field because the template has visual space;
+- repeat a global rule in full across several packages;
+- invent metrics, persistence, APIs, architecture, dimensions, objects, or decorative requirements;
+- expand background/lore that has no gameplay or production effect.
 
 ## PRD writing quality
 
-The PRD should read like a clear production document written by a competent team member, not promotional copy and not formulaic AI prose.
+Write like a competent production team member, not promotional copy and not formulaic AI prose.
 
-Use these rules for explanatory prose:
-
-1. **State the concrete behavior.** Explain what happens, when it happens, and what result follows. Do not add generic comments about importance, immersion, engagement, seamlessness, or quality unless the source explicitly requires that claim.
-2. **Prefer simple words when they are equally precise.** Avoid inflated vocabulary such as `pivotal`, `crucial`, `robust`, `intricate`, `transformative`, `showcase`, or `foster` when a direct technical phrase communicates the same meaning.
-3. **Remove fake analysis.** Avoid trailing phrases such as `highlighting`, `underscoring`, `showcasing`, or `ensuring` when they only restate or decorate the mechanic instead of adding a real consequence.
-4. **Keep terminology stable.** Reuse approved terms consistently. Do not rotate synonyms merely to make prose look varied.
-5. **Do not force rhetorical patterns.** Avoid artificial rule-of-three phrasing, dramatic fragments, repeated contrast formulas, and generic setup lines that delay the actual requirement.
-6. **Use the minimum effective wording.** Remove filler and duplicated interpretation, but do not compress away context that a New Reader, Level Designer, or Developer needs.
-7. **Protect technical facts.** A writing-quality pass must never alter IDs, approved names, numbers, coordinates, timings, formulas, scoring weights, trigger conditions, completion/fail conditions, state names, code/API names, or other authoritative values.
-8. **Apply judgment by content type.** Rewrite narrative and explanatory paragraphs when needed. Leave tables, formulas, requirement lists, configuration values, code, and already-clear technical statements mostly untouched.
+- State concrete behavior, condition, action, and consequence.
+- Prefer simple precise words over inflated terms such as `pivotal`, `crucial`, `robust`, `intricate`, `transformative`, `showcase`, or `foster` when they add no precision.
+- Remove fake analysis and decorative `highlighting / showcasing / ensuring` tails that merely restate the mechanic.
+- Keep approved terminology stable instead of synonym cycling.
+- Do not force rule-of-three phrasing or repeated rhetorical patterns.
+- Make the minimum effective wording edit; leave already-clear technical text alone.
+- Never rewrite IDs, approved names, numbers, coordinates, timings, formulas, weights, triggers, conditions, state names, code/API names, or other authoritative values for style.
+- Apply prose polishing mainly to explanation/narrative; do not aggressively humanize tables, formulas, configuration, code, or concise requirements.
 
 Example:
 
@@ -70,180 +209,43 @@ Prefer:
 Completing this objective opens the next area and starts the following phase.
 ```
 
-If a smoother sentence would make a precise rule less explicit, keep the precise rule.
-
-## Information density
-
-Use the smallest amount of content that still makes every required Golden Sample surface useful.
-
-Include a detail when it does at least one of these jobs:
-
-- explains the project/player context needed to understand the work;
-- changes what the Level Designer must build;
-- changes what the Developer must implement or record;
-- defines a trigger, condition, quantity, score, handoff, reset, or acceptance rule;
-- prevents a target role from having to invent a product decision.
-
-Otherwise, omit it, compress it, or reference the existing shared/global rule.
-
-Additional rules:
-
-- Do not remove required Golden Sample role pages merely because their local content is short.
-- Do not fill a field, note, table row, or paragraph merely because there is visual space for it.
-- Do not repeat the same global rule in full across several packages. State the global rule once and repeat only the local implication needed by the package.
-- Prefer one explicit requirement over several paraphrases of the same requirement.
-- Background/lore may stay when it helps the reader understand gameplay or production intent; do not expand it when it has no downstream effect.
-- Brevity is not the goal by itself. If removing a detail would make a production role guess, keep the detail.
-
-## 1. Overview
-
-Must explain enough for a new team member to understand the project:
-
-- project context;
-- player/user role;
-- main experience;
-- game/project information that materially affects production;
-- complete journey or stage overview;
-- main shared systems;
-- final result or end state when relevant;
-- stable terms needed to understand the overview.
-
-Avoid implementation class names, coordinates, per-package reset detail, and long formulas here unless the project specifically requires them at overview level.
-
-## 2. Gameplay Flow
-
-Explain the journey chronologically. Each material stage should make clear:
-
-- where the player is / what context they enter;
-- what they experience or do;
-- the main obstacle, change, or interaction;
-- the result of that stage;
-- where progression goes next.
-
-This section communicates the experience and handoff between stages. It is not the developer implementation checklist.
-
-## 3. Global Development
-
-Use only the global pages the project actually needs. Typical owners include:
-
-- Development Overview;
-- Game / Session System;
-- Data and Reset;
-- Shared Gameplay Development;
-- another genuinely global system.
-
-Global pages own rules shared by multiple packages. Do not duplicate the full global rule inside every package; repeat only the local implication needed by that role.
-
-## 4+. Gameplay Package
-
-A Gameplay Package represents a production-relevant gameplay section such as an Introduction, Objective, Transition, Ending, Stage, Station, or standalone gameplay unit.
-
-Every package uses the approved three-role Golden Sample structure.
-
-### A. Gameplay Overview
-
-Explain **what the player experiences and what counts as success**.
-
-Use relevant information such as:
-
-- local context;
-- package type / label;
-- main objective;
-- intended result and purpose;
-- estimated time when meaningful;
-- start condition;
-- valid end condition;
-- blocked/fail/retry condition when relevant;
-- ordered player flow;
-- scoring summary or completion behavior;
-- handoff to the next package;
-- local Terms Used.
-
-Do not add fields that have no project meaning merely to make the page look full.
-
-### B. Level Design
-
-This page remains part of the package structure and explains **what must be built and why it exists**.
-
-Use relevant information such as:
-
-- concise local overview;
-- Level Design flow in production order;
-- grouped build requirements;
-- Build & Visual requirement for each meaningful object/area;
-- Gameplay Function for each meaningful object/area;
-- only dimensions/quantities that materially affect gameplay or production;
-- important build notes and constraints;
-- local Terms Used when they materially help this role.
-
-If the package has little local Level Design work, keep the page concise and point to applicable shared/global layout rules. Do not invent decorative build requirements to fill it.
-
-### C. Developer
-
-This page remains part of the package structure and explains **runtime behavior, data, and result**.
-
-Use relevant information such as:
-
-- concise local overview;
-- chronological trigger → behavior → data → result flow;
-- grouped implementation requirements;
-- scoring or completion data;
-- recording/persistence requirements when applicable;
-- duplicate-prevention behavior when applicable;
-- interruption / disconnect behavior when applicable;
-- reset behavior;
-- verification/acceptance behavior;
-- important implementation notes;
-- local Terms Used when they materially help this role.
-
-Describe product/runtime behavior. Do not invent class names, file names, APIs, architecture, persistence, or tracking requirements unless the source/product rule requires them.
-
-For non-scoring packages, use the completion-data surface to state the valid product outcome and any genuinely required recorded data. Do not manufacture extra metrics merely to populate the table.
-
 ## Scoring contract
 
-If a package produces a score, define enough to implement it without guessing:
+If a package produces a score, define only the scoring facts the product actually needs:
 
-- score name and scale;
-- score components;
-- component weights when weighted scoring is used;
-- target/standard or success basis;
-- bonus/reduction behavior when applicable;
-- timer start and stop;
-- excluded time when applicable;
-- no-score / invalid-run condition;
-- recorded data;
-- duplicate prevention;
-- relationship to final result;
-- exact formula only when exact math is actually product-critical.
+- score name and scale when defined;
+- score components and weights when weighted scoring is used;
+- target/standard or success basis when relevant;
+- bonus/reduction behavior when relevant;
+- timer start/stop and excluded time when relevant;
+- invalid/no-score condition;
+- recorded data when genuinely required;
+- duplicate prevention when genuinely required;
+- relationship to the package/final result;
+- exact formula only when the exact math is product-critical.
 
-If numeric component weights are used, they must total 100% unless the approved design explicitly defines another model.
+Numeric component weights must total 100% unless an approved design explicitly defines another model.
 
 ## Completion-data contract
 
-A package that does **not** produce an Objective Score must not receive an artificial score just to fill the template. Use completion data to document only the product outcome that actually matters:
+A non-scoring package must not receive an artificial score just to look like a scoring objective.
+
+Use completion data for the actual product outcome:
 
 - `produces_score: false`;
 - valid completion condition;
-- recorded completion/progress data only when it genuinely exists or is required;
+- recorded completion/progress data only when genuinely required;
 - interruption behavior when relevant;
 - duplicate prevention when relevant;
 - handoff result.
 
-Do not invent persistence, analytics, counters, or duplicate-prevention systems if the product does not require them.
+Do not invent analytics, counters, persistence, or duplicate-prevention systems merely to fill the Golden surface.
 
 ## Terms Used
 
 Use Terms Used only for project-specific or production-critical terminology.
 
-Each term should have:
-
-- stable key;
-- label (EN and ID when available/required by the project);
-- concise definition;
-- optional aliases when the same term appears in another approved form.
-
-Do not over-tag ordinary language and do not add definitions solely to fill the component.
+Each term has a stable key, label, concise definition, and optional aliases. Package-wide terms may power glossary/tooltips, but a Level Design or Developer page should only render a Terms Used block when that role actually benefits from it. Do not repeat the same visible glossary block on every role page by default.
 
 ## Critical information
 
@@ -251,7 +253,7 @@ Treat these as critical when they affect the project:
 
 - player/session/arena count;
 - package/stage order;
-- important quantities;
+- important quantities and dimensions;
 - target time and timer boundaries;
 - scoring weights/inputs;
 - completion and invalid/no-score conditions;
@@ -260,17 +262,19 @@ Treat these as critical when they affect the project:
 - reset behavior;
 - final-result rules.
 
-Flow 3 must not hide missing critical information behind vague text such as “use the configured amount.” If required critical information is still unresolved, return the affected requirement to Flow 2 instead of rendering a polished guess.
+If required critical information remains unresolved, return that requirement to Flow 2 rather than hiding the gap behind vague text or a polished Golden-looking component.
 
 ## Canonical-content gate
 
-`content.md` is ready for rendering when:
+`content.md` is ready for projection when:
 
-- Flow 2 state is `ready_for_prd`;
-- every included material statement is supported by source/recovered requirements/approved decisions;
-- Golden Sample document structure is preserved for this document family;
-- required package role surfaces have enough local context for their target role without invented filler;
-- scoring or completion behavior is explicit where relevant;
-- explanatory prose is plain, concrete, and free of unnecessary filler without altering technical meaning;
-- no unresolved high-impact Proposal or Blocked item affects the requested document;
-- no visible placeholder such as `TBD`, `TODO`, `FIXME`, `[OPEN]`, or equivalent remains in required content.
+- Flow 2 is truthfully `ready_for_prd`;
+- material statements trace to source/recovery/approved decisions;
+- Golden Sample hierarchy and page-composition contract are represented;
+- each role surface contains enough local context to work without invented filler;
+- scoring/completion behavior is explicit where relevant;
+- explanatory prose is plain and concrete;
+- no material Proposal/Blocked item affects requested scope;
+- no unresolved placeholder remains.
+
+A semantically correct PRD that cannot be projected into the Golden page composition is **not** finished Flow 3 content for this document family.

@@ -1,211 +1,201 @@
 # PRD Validation & Team Handoff
 
-Flow 4 decides whether a generated PRD is actually usable by the production team. Rendering success is necessary but not sufficient.
-
-The review stays simple:
+Flow 4 decides whether the generated Golden Sample PRD is usable by the production team. Rendering success is necessary but not sufficient.
 
 ```text
-current PRD + HTML
+current PRD + Golden-rendered HTML
 → mechanical check
-→ visual sanity when inspection is available
-→ one integrated four-lens review
+→ one integrated semantic + visual review
 → fix only real findings
 → development_ready
-→ concise team handoff
-→ handoff_ready
+→ concise handoff under the current repository sequence
 ```
 
-Do not turn mechanical, visual, or four-lens review into separate user approval ceremonies.
+Do not turn review lenses or visual sanity into separate approval ceremonies.
 
 ## Status model
 
-Use exactly one current PRD status in `state/handoff-state.yaml`:
+`state/handoff-state.yaml` uses one current status:
 
-- `pending_review` — Flow 3 output exists but Flow 4 audit is incomplete;
-- `needs_revision` — one or more Critical/Major findings remain;
-- `development_ready` — mechanical checks pass and all four semantic lenses pass with Critical=0 and Major=0;
-- `handoff_ready` — `development_ready` plus `output/team-handoff.md` exists and points the team to the accepted PRD;
-- `blocked` — required artifacts/evidence are unavailable or a required upstream decision must return to Flow 2.
+- `pending_review`;
+- `needs_revision`;
+- `development_ready`;
+- `handoff_ready`;
+- `blocked`.
 
-`handoff_ready` means the documentation is ready for production use. It does **not** mean client sign-off, release approval, or implementation completion.
+`handoff_ready` means documentation is ready for the current production handoff boundary. It does not mean client sign-off, implementation completion, QA completion, or release approval.
 
 ## Required inputs
 
 Audit the same current revision of:
 
-- `state/requirement-register.yaml` — traceability / unresolved requirement state;
-- `work/content.md` — canonical PRD meaning;
-- `work/render-data.json` — derived rendering projection;
-- `output/final.html` — rendered presentation.
+- `state/requirement-register.yaml`;
+- `work/content.md`;
+- `work/render-data.json`;
+- `output/final.html`.
 
-Do not audit an old HTML file against newer canonical content.
+Do not compare an old rendered file with newer canonical meaning.
 
 ## Step 1 — Mechanical validation
 
-Run once for the finished current revision:
+Run:
 
 ```bash
 python kits/project-document-generator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-This check covers file presence, visible placeholders, render-data invariants, package role objects, scoring/completion exclusivity, numeric scoring weights, expected generated pages, duplicate HTML IDs, navigation reachability, and project browser title.
+Mechanical validation covers:
 
-Mechanical `pass` is structural evidence only. It cannot issue `development_ready` by itself.
+- required artifact presence;
+- unresolved placeholders;
+- render-data root/collection/package invariants;
+- scoring/completion exclusivity and numeric weight total;
+- exact generated page IDs/order;
+- duplicate HTML IDs;
+- navigation reachability;
+- project browser title;
+- a small **Golden page-composition marker contract**.
 
-## Visual sanity inside the same review
+### Golden composition marker contract
 
-When the execution channel provides actual rendered/browser/page inspection, inspect the current HTML once for obvious presentation defects that would make the Golden Sample output harder to use.
+The validator does not attempt visual equivalence. It only prevents a renderer from silently replacing the approved Golden composition with generic pages.
 
-Check only practical failure surfaces:
+Examples:
 
-- clipped/overflowing content;
-- broken or unreadable tables/cards/tabs;
-- broken visible navigation or controls;
-- accidental blank/near-empty presentation caused by rendering/layout failure rather than intentionally concise content;
-- text density that is visibly unreadable;
-- responsive/print/page-break defects in the mode actually inspected.
+- Gameplay Flow → `narrative-page` + `narrative-sequence`;
+- Global Development → `package-tabs` + `section-context`, plus Golden flow/table markers when those blocks exist;
+- Gameplay Overview → `package-tabs` + `phase-context-grid` + `phase-overview-table`, plus `role-sequence` when player flow exists;
+- Level Design → `package-tabs` + `section-context`, plus `quarry-design-flow`, `quarry-build-table`, and note grid when their source blocks exist;
+- Developer → `package-tabs` + `section-context` + `quarry-development-table` + inline score/completion summary, plus flow/note markers when used.
 
-Rules:
+This is intentionally small. Do not expand it into screenshot regression, pixel comparison, DOM snapshotting, component scoring, or a general HTML schema.
 
-- visual sanity is part of Flow 4 REVIEW, not a new Flow, score, or screenshot-report system;
-- do not create pixel-diff or Golden regression machinery without a proved need;
-- visual inspection does not need a separate user approval round;
-- if rendered/browser inspection is unavailable, record `NOT PROVEN` and do not claim visual quality was verified;
-- semantic `development_ready` may still be evaluated from available evidence, but any visual-quality claim remains limited to what was actually inspected.
+Mechanical PASS proves only these structural contracts. It does not prove the page looks correct.
 
-## Step 2 — One integrated four-lens review
+## Step 2 — One integrated review
 
-Read the current PRD once, then assess it through four lenses. A finding may affect more than one lens, but record the finding **once** in the findings table.
+Read the current document once and assess four lenses:
 
-### A. New Reader / Player Context
+1. **New Reader / Player Context**
+2. **Level Designer**
+3. **Developer**
+4. **Project Consistency**
 
-Assume the reviewer reads Overview + Gameplay Flow + the relevant Gameplay Overview page only.
+Record each finding once even when several lenses are affected.
 
-They must be able to answer without guessing:
+### New Reader
 
-- What is this project / experience?
-- What is the player/user role?
-- What happens in what order?
-- What starts this package?
-- What counts as valid completion?
-- What can fail, block, or retry?
-- What result/handoff continues forward?
-- Are project-specific terms understandable where first needed?
+Overview + Gameplay Flow + relevant Gameplay Overview must answer without guessing:
 
-### B. Level Designer
+- what the experience is;
+- the player role;
+- progression order;
+- local objective/result;
+- start/end/fail or retry behavior;
+- handoff forward;
+- important terminology.
 
-Assume the level designer reads Gameplay Overview → Level Design for an assigned package.
+Also confirm the page reads like the Golden Sample family rather than a generic report: context before detail, narrative Gameplay Flow, and clear package hierarchy.
 
-They must be able to begin blockout/build work without inventing the main production requirements:
+### Level Designer
 
-- required areas, objects, landmarks, routes, or relationships;
-- entry, exit, return, or handoff path where relevant;
-- build order / level-design flow;
-- material dimensions and quantities where gameplay depends on them;
-- visual/build requirement separated from gameplay function;
-- interaction space/readability needed by the mechanic;
-- package-local constraints that differ from global rules.
+Gameplay Overview → Level Design must allow blockout/build work without inventing material production requirements:
 
-The Golden Sample Level Design page remains part of the package structure. If little package-specific build work exists, the page may be concise and rely on the relevant shared/global rule. Do not invent cosmetic dimensions or build requirements just to fill the page.
+- required areas/objects/routes/relationships;
+- build/design flow when meaningful;
+- Area Size only when known or materially constrained;
+- Build and Visual requirement separated from Gameplay Function;
+- local constraints vs shared/global rules;
+- notes only when actionable.
 
-### C. Developer
+The Golden 5-column Build Requirements structure must remain legible. Do not invent dimensions or decorative requirements to make it look full.
 
-Assume the developer reads Gameplay Overview → Level Design → Developer plus relevant Global Development pages.
+### Developer
 
-They must be able to form an implementation plan without inventing product rules:
+Gameplay Overview → Level Design → Developer + relevant Global Development must allow an implementation plan without inventing product rules:
 
-- activation/start trigger;
-- progression/state transitions;
-- valid completion validation;
-- quantities/items/resources/state ownership when relevant;
-- timer start/stop/excluded time when applicable;
-- scoring **or** completion-data behavior;
-- recorded/persistent data only when actually required;
-- duplicate prevention when actually required;
-- interruption/disconnect behavior when relevant;
-- reset behavior;
-- handoff/result to the next package;
-- verification/acceptance behavior.
+- activation/start;
+- progression/state transition;
+- completion validation;
+- quantities/items/resources where relevant;
+- timing when relevant;
+- scoring or completion behavior;
+- recording/duplicate/interruption/reset only when actually required;
+- handoff/result;
+- verification behavior.
 
-The Golden Sample Developer page remains part of the package structure. When a package has little local runtime complexity, keep the page focused on the actual trigger/behavior/result and do not invent architecture, persistence, analytics, APIs, or tracking merely to fill the surface.
+Developer requirements should preserve Golden grouped hierarchy. Scoring/completion belongs inside that hierarchy instead of being detached as a generic appendix table.
 
-### D. Project Consistency
+### Project Consistency
 
-Compare Overview, Gameplay Flow, Global Development, all package pages, scoring/completion, reset, and handoffs.
+Compare Overview, Gameplay Flow, Global Development, package pages, scoring/completion, reset, and handoffs.
 
 Different wording is allowed. Different meaning is not.
 
-Check especially:
+Check official names, package order, counts, quantities, start/end/fail conditions, timer boundaries, scoring, data ownership where relevant, handoff, interruption, reset, and final-result relationship.
 
-- official names and terminology;
-- package order / progression;
-- player/session/arena counts;
-- quantities and important dimensions;
-- start/end/fail/retry conditions;
-- timer boundaries;
-- score components/weights/inputs;
-- recorded data and ownership where relevant;
-- handoff items/state/results;
-- interruption/disconnect/reset behavior;
-- final-result relationship.
+## Visual sanity inside the same REVIEW
 
-## Writing quality and information density inside the same review
+When actual rendered/browser/page inspection is available, inspect the Golden output for:
 
-Do not create a fifth perspective, AI score, detector, brevity score, or separate writing gate.
+- page/component composition matching the approved Golden family;
+- broken or missing package/global tabs;
+- wrong footer project brand/page title/code;
+- table overflow or unreadable density;
+- visibly broken grouped/child rows;
+- scoring/completion block placement;
+- note grids/Terms Used behavior;
+- responsive/print/page-break defects at the level actually inspected.
 
-While reviewing the four lenses, flag prose/content only when it reduces usability, for example:
+Do not create another Flow, visual score, screenshot report, pixel-diff gate, or automated “looks like Golden” evaluator.
 
-- inflated/promotional wording instead of concrete behavior;
-- vague comments such as `important`, `immersive`, `seamless`, or `engaging` that add no production information;
-- repeated filler or fake analysis;
-- synonym cycling that makes one project term look like several concepts;
-- duplicated global rules that hide the package-specific requirement;
-- role pages padded with invented or non-actionable detail merely to fill visual space;
-- stylistic rewriting that changes or obscures IDs, names, quantities, timings, scoring, triggers, conditions, state names, or other technical facts.
+If visual inspection is unavailable, record `NOT PROVEN` and do not claim Golden visual fidelity was verified.
 
-If the meaning is already clear and precise, leave it alone.
+## Writing quality and density
 
-Writing/density findings are normally `Minor` or `Suggestion`. Escalate to `Major` only when vague, misleading, duplicated, or missing information forces a production role to invent a material rule.
+Inside the same four-lens review, flag only prose/density issues that reduce usability:
+
+- promotional/inflated language instead of concrete behavior;
+- vague AI-style filler/fake analysis;
+- terminology drift;
+- duplicated global rules hiding local requirements;
+- pages padded with invented/non-actionable content;
+- stylistic rewriting that changes technical meaning.
+
+Do not add an AI score, detector, brevity score, or fifth review lens.
 
 ## Severity
 
-- **Critical** — can produce incorrect gameplay, scoring, data, build, ownership, reset, or implementation behavior.
-- **Major** — required information is missing/contradictory enough that the role would need to invent a product decision.
-- **Minor** — meaning is implementable but local clarity/consistency can improve without changing the product rule.
-- **Suggestion** — optional polish; never blocks readiness.
+- **Critical** — can produce incorrect gameplay/build/scoring/data/reset/implementation behavior.
+- **Major** — required information or Golden composition is wrong enough that a production role must invent a material rule or cannot reliably use the page.
+- **Minor** — implementable, but local clarity/fidelity can improve without changing meaning.
+- **Suggestion** — optional polish.
 
-Critical and Major always block `development_ready`.
-
-A Minor may remain only when it does not change meaning, its owner/location is recorded, and leaving it open is intentional.
+Critical/Major block `development_ready`.
 
 ## Finding ownership
 
-Classify the root owner before fixing:
+- requirement/project meaning defect → upstream requirement state + `work/content.md`;
+- Golden representation/composition defect → `CONTENT-CONTRACT.md` / `work/render-data.json` as appropriate;
+- renderer/helper defect → `renderer/core.py` / `renderer/pages.py` / `renderer/render.py`;
+- shared template defect → approved template only when the Golden shell itself is proven wrong;
+- unresolved product decision → Flow 2.
 
-- project meaning / requirement defect → fix `work/content.md` (and upstream requirement/decision state when needed), regenerate render-data, rerender;
-- derived projection defect → regenerate/fix `work/render-data.json` from canonical content;
-- renderer/template presentation defect → fix active renderer/template, then rerender;
-- unresolved product decision → return the requirement to Flow 2; do not solve it during audit.
-
-Never patch `final.html` as the source of truth.
+Never patch `final.html` as source of truth.
 
 ## Acceptance record
 
-Create/update `work/acceptance.md` as a concise integrated review.
-
-When findings exist:
+Keep `work/acceptance.md` compact:
 
 ```text
 # PRD Acceptance
-
 Status: needs_revision | development_ready | handoff_ready
-Reviewed revision: <content/html version or commit/reference>
+Reviewed revision: ...
 
 Mechanical: PASS / FAIL
 Visual sanity: PASS / FAIL / NOT PROVEN
 
-Perspective Summary
 New Reader: PASS / FAIL
 Level Designer: PASS / FAIL
 Developer: PASS / FAIL
@@ -214,121 +204,42 @@ Project Consistency: PASS / FAIL
 Findings
 ID | Lens | Severity | Owner | Location | Finding | Resolution Status
 
-Gate
 Critical: N
 Major: N
-Minor: N
 Result: ...
 ```
 
-When everything passes and there are no findings, keep the record compact:
-
-```text
-Status: development_ready
-Mechanical: PASS
-Visual sanity: PASS | NOT PROVEN
-New Reader: PASS
-Level Designer: PASS
-Developer: PASS
-Project Consistency: PASS
-Critical: 0
-Major: 0
-Findings: none
-```
-
-Do not duplicate a finding under several perspective headings and then repeat it again in the table. Do not copy the PRD into the audit.
-
-## Targeted re-review after revisions
-
-An approved bounded revision should invalidate only the evidence that depends on it.
-
-After the revision fast path:
-
-- rerun the current mechanical validator for the regenerated output;
-- visually re-inspect only when the changed output could affect presentation and visual inspection is available;
-- re-review the changed package/section and directly dependent global/cross-reference meaning;
-- preserve unaffected accepted findings/lenses instead of replaying the entire semantic review.
-
-Use a full Flow 4 semantic review only when the change affects broad/shared meaning, multiple package dependencies, or the overall journey/consistency contract.
-
-## Handoff state
-
-Maintain `state/handoff-state.yaml`:
-
-```yaml
-flow: 4
-status: handoff_ready
-content: work/content.md
-render_data: work/render-data.json
-html: output/final.html
-acceptance: work/acceptance.md
-handoff: output/team-handoff.md
-mechanical: passed
-visual: passed_or_not_proven
-perspectives:
-  new_reader: passed
-  level_designer: passed
-  developer: passed
-  project_consistency: passed
-findings:
-  critical: 0
-  major: 0
-  minor: 0
-next_step: flow_5_voice_requirement_extraction
-```
-
-Use project-relative paths. Do not store chat-only claims in the state.
-
-## Team handoff
-
-After the gate passes, create `output/team-handoff.md` as a navigation aid, not a second PRD and not another authoring phase.
-
-It should contain only:
-
-- project / accepted PRD version or revision;
-- canonical PRD path and rendered HTML path;
-- short project purpose / current production scope;
-- recommended reading route for Level Designer and Developer;
-- package/stage inventory;
-- genuinely global systems that affect multiple packages;
-- accepted Minor findings or explicit non-blocking caveats, if any;
-- statement that Critical=0 / Major=0 at the accepted revision.
-
-Do not copy every requirement into the handoff file.
+If everything passes, do not expand the report merely to look rigorous.
 
 ## Development-ready gate
 
 Set `development_ready` only when:
 
 - mechanical validation passes;
-- New Reader lens passes;
-- Level Designer lens passes;
-- Developer lens passes;
-- Project Consistency lens passes;
-- Critical findings = 0;
-- Major findings = 0;
-- no unresolved Proposal/Blocked requirement affects the handed-off scope;
-- scoring/completion and handoff/reset behavior are implementable where relevant;
-- Golden Sample document structure remains intact for this document family;
-- explanatory prose and information density are clear enough that the intended role does not need to decode filler or guess missing rules;
-- requested language coverage is usable for the intended team.
+- Golden composition markers pass;
+- all four semantic lenses pass;
+- Critical=0 and Major=0;
+- no material Proposal/Blocked requirement affects scope;
+- scoring/completion/handoff/reset behavior is implementable where relevant;
+- Golden Sample hierarchy and page composition are preserved;
+- writing/density are usable without filler or guessing;
+- requested language coverage is usable;
+- visual claims do not exceed actual inspection evidence.
 
-Visual quality is claim-specific: mark it `PASS` only after actual current-output inspection; otherwise preserve `NOT PROVEN` rather than inventing evidence.
-
-Then create the concise team handoff and set `handoff_ready`.
+The current repository sequence may then create its concise team handoff and mark `handoff_ready`.
 
 ## Revisions after handoff
 
-Prefer the revision fast path:
+Use the delta path:
 
 ```text
-approved bounded change
-→ update affected requirement/decision owner when needed
-→ update affected content.md section + necessary cross-references
-→ regenerate render-data.json / final.html
-→ reopen only invalidated review evidence
-→ targeted re-review
-→ updated handoff state
+approved change
+→ update affected requirement/content
+→ regenerate affected projection + final HTML
+→ reopen affected review boundary
+→ one current mechanical check
+→ targeted semantic/visual re-review
+→ updated accepted PRD
 ```
 
-Escalate to broader re-audit only when the change invalidates broader project meaning. Do not silently keep an old `handoff_ready` status against a newer PRD revision.
+Do not replay unrelated source intake or unchanged findings.

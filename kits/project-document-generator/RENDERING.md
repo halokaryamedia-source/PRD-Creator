@@ -1,59 +1,50 @@
 # Rendering Contract
 
-The approved Golden Sample is the presentation and document-structure authority for this PRD family. It is intentionally preserved because it defines the output style, layout behavior, section foundation, navigation behavior, and component vocabulary the user wants future projects to reproduce.
+The approved Golden Sample is the presentation **and page-composition authority** for this PRD family. The renderer must reproduce its reusable document language with project-specific content; merely injecting generic pages into the Golden CSS/JS shell is not sufficient.
 
-Do **not** treat the Golden Sample as legacy baggage that should be reduced into a different minimal template.
+Do not replace the Golden Sample with a reduced/minimal shell.
 
 ## Rendering model
 
 ```text
 work/content.md                    canonical project meaning
         ↓
-work/render-data.json              derived rendering projection
+work/render-data.json              derived Golden projection
         ↓
-template/approved-document.html    approved Golden Sample template authority
+template/approved-document.html    approved Golden Sample authority
         ↓
-renderer/render.py
+renderer/render.py + renderer/pages.py
         ↓
 output/final.html                  derived project document
 ```
 
-`render-data.json` and `final.html` are derived. When canonical content changes, regenerate the projection and render again. Do not add a second revision/checksum protocol just to track derived files.
+`render-data.json` and `final.html` are derived. When canonical meaning changes, regenerate them. Do not add revision/checksum machinery.
 
-## Golden Sample preservation rule
+## What “preserve Golden” means
 
-For this document family, preserve the Golden Sample foundation unless the user explicitly approves a different template family.
+Preservation includes:
 
-This includes the approved behavior and visual foundation such as:
-
-- overall document hierarchy and page rhythm;
+- document hierarchy and page rhythm;
 - Overview / Gameplay Flow / Global Development / Gameplay Package organization;
 - Gameplay Overview → Level Design → Developer package structure;
-- sidebar/navigation behavior;
-- shared typography, spacing, colors, tables, cards, callouts, tabs, glossary interactions, controls, responsive behavior, and print behavior;
-- bilingual interaction behavior when the project supplies the relevant language content;
-- the established visual density and professional presentation style.
+- Golden package titles/subtitles and 1/2/3 package tabs;
+- storytelling-first Gameplay Flow composition;
+- context blocks/cards;
+- Golden production-table families and grouped rows;
+- Level Design `Area Size / Build and Visual / Gameplay Function` separation;
+- Developer grouped requirements with inline scoring/completion treatment;
+- Important Notes card grids;
+- Terms Used accordion treatment when used;
+- project-branded footers and page codes;
+- sidebar/navigation, typography, spacing, colors, controls, glossary interaction, responsive and print foundation.
 
-Efficiency work must focus on **how project content is produced and projected into this template**, not on redesigning, extracting, or pruning the Golden Sample simply to make the template file smaller.
+The renderer may omit an optional block when the project has no meaningful content for it. It may **not** replace the Golden composition with unrelated generic cards/tables merely because that is easier to render.
 
-A template cleanup is justified only when there is a proven template defect that changes or breaks the approved output. File size or unused-looking CSS alone is not a product defect.
+## Projection rules
 
-## What the renderer may replace
+`render-data.json` remains a small structured projection, not another semantic authority.
 
-Only project-owned content surfaces:
-
-- browser/document title and project metadata;
-- sidebar project brand text;
-- navigation entries and targets;
-- generated document pages inside `.document-main`;
-- project glossary data used by the inherited tooltip script;
-- project-specific local-storage namespace.
-
-The renderer must preserve the Golden Sample's approved shared structure and behavior while replacing project-specific meaning.
-
-## Basic input contract
-
-`render-data.json` contains:
+Root shape:
 
 ```json
 {
@@ -65,9 +56,7 @@ The renderer must preserve the Golden Sample's approved shared structure and beh
 }
 ```
 
-Each generated collection item uses a stable lowercase kebab-case `id`.
-
-Each gameplay package preserves the approved three-role structure:
+Each package keeps:
 
 ```text
 gameplay
@@ -75,75 +64,91 @@ level_design
 developer
 ```
 
-Developer data uses scoring for a scoring package or completion data for a non-scoring package according to the content contract. Do not use these surfaces to invent metrics or persistence that the project does not require.
+The projection may carry fields needed to fill Golden surfaces, including:
 
-## Projection efficiency
+- Gameplay purpose/time/start/end/fail/scoring summary/player flow;
+- Level Design flow, object subtitle, area size, build/visual requirement, gameplay function, optional child rows, titled notes;
+- Developer flow, grouped requirements, scoring/completion, reset, titled notes;
+- page/role-specific Terms Used when needed.
 
-`render-data.json` should be produced as part of the BUILD PRD step, not treated as a separate user-facing phase.
+Missing optional project facts remain absent/neutral. Do not synthesize exact dimensions, metrics, mechanics, persistence, architecture, or lore to populate a Golden component.
 
-Projection rules:
+## Golden component ownership
 
-- copy only meaning already present in canonical `content.md`;
-- omit empty optional rows/components where the renderer supports omission;
-- do not repeat a global rule in full when the local page only needs its local implication;
-- do not add text merely to fill Golden Sample visual space;
-- preserve the fixed page/role structure while keeping local content concise where appropriate.
+`renderer/core.py` owns reusable Golden HTML helpers.
 
-The renderer may organize approved content into existing component families, but it may never invent missing project facts, resolve open decisions, change scoring/completion meaning, or patch `final.html` as the source of truth.
+`renderer/pages.py` owns the current Golden page composition:
+
+```text
+Gameplay Flow
+→ narrative page / narrative sequence
+
+Global Development
+→ shared tabs
+→ context block
+→ flow cards
+→ grouped production table
+→ notes cards
+
+Gameplay Overview
+→ package title/subtitle + 1/2/3 tabs
+→ Gameplay Context / Main Objective / Result
+→ Gameplay Information table
+→ role sequence
+
+Level Design
+→ package title/subtitle + tabs
+→ context block
+→ Design Flow cards
+→ Golden 5-column build table
+→ notes cards
+
+Developer
+→ package title/subtitle + tabs
+→ context block
+→ Development Flow cards
+→ grouped Golden development table
+   including inline scoring/completion/reset
+→ notes cards
+```
+
+Do not create another renderer profile/component framework to express this one approved document family.
+
+## Golden fidelity guard
+
+Mechanical validation checks a **small semantic marker set** for the generated pages, such as:
+
+- `narrative-sequence` on Gameplay Flow pages;
+- `package-tabs` on Golden development/package pages;
+- `phase-context-grid`, `phase-overview-table`, and `role-sequence` on Gameplay Overview;
+- `section-context`, `quarry-design-flow`, and `quarry-build-table` where applicable on Level Design;
+- `section-context`, `quarry-development-flow`, `quarry-development-table`, and inline score/completion summary on Developer;
+- Golden note grid when notes exist.
+
+This protects against accidental regression back to generic page composition. It is **not** a pixel-diff system and does not prove visual quality.
+
+Actual visual quality still requires final rendered/browser/page inspection when that claim is made.
 
 ## Glossary safety
 
-Package `terms[]` may define aliases as either:
+Package glossary aliases may be a string array or an `en`/`id` object of string arrays. Malformed shapes fail before rendering.
 
-```json
-["Alias One", "Alias Two"]
-```
+Glossary data is inserted into an executable `<script>` block, so renderer serialization must remain script-context safe for `<`, `>`, `&`, U+2028, and U+2029.
 
-or:
-
-```json
-{
-  "en": ["English Alias"],
-  "id": ["Alias Indonesia"]
-}
-```
-
-Malformed alias shapes fail before rendering.
-
-Glossary data is inserted into an executable `<script>` block, so the renderer serializes it safely for script context. Literal `<`, `>`, `&`, U+2028, and U+2029 are escaped; project text such as `</script>` remains data.
-
-This is a focused script-safety rule, not a general sanitizer framework.
+This is a focused script-safety rule, not a sanitizer framework.
 
 ## Approved template mechanics
 
-The renderer checks only template surfaces it actually mutates. Required unique surfaces include:
+The renderer mutates only project-owned surfaces:
 
-- sidebar brand anchor;
-- `<nav class="sidebar-nav">`;
-- `<main class="document-main">`;
-- glossary JavaScript assignment anchor;
-- document `<title>`;
-- description metadata;
-- specification-version metadata.
+- title/metadata;
+- sidebar project brand;
+- generated navigation;
+- generated pages inside `.document-main`;
+- project glossary data;
+- project-specific local-storage namespace.
 
-The inherited local-storage namespace tokens used by the approved template must also remain available for project namespacing.
-
-Do not expand this into a full-template snapshot or attempt to normalize the Golden Sample into a different visual system.
-
-## Renderer checks
-
-The renderer blocks on concrete invalid input such as:
-
-- missing required root structures;
-- invalid/duplicate stable IDs;
-- missing package role objects required by the Golden Sample structure;
-- missing scoring/completion data where the document contract requires it;
-- unsupported glossary alias shape;
-- unresolved placeholder tokens;
-- broken generated navigation targets;
-- missing/ambiguous template markers that the renderer must mutate.
-
-These checks protect generation mechanics. They do not replace Flow 4 semantic review or browser visual QA.
+Required template markers are checked only where the renderer actually mutates the Golden Sample. Do not create a full-template snapshot framework.
 
 ## Commands
 
@@ -153,27 +158,17 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-Optional alternate approved template:
-
-```bash
-python kits/project-document-generator/renderer/render.py \
-  <render-data.json> <final.html> \
-  --template <approved-template.html>
-```
-
-Use an alternate template only when that template is explicitly approved for the project/document family.
+Use an alternate template only when the user explicitly approves a different document family.
 
 ## Boundary
 
-If content changes, fix canonical content/projection and render again. If shared presentation mechanics fail, fix the template/renderer owner.
+Renderer code may organize approved project meaning into the Golden composition. It may never invent missing project facts, approve an unresolved decision, change scoring/completion meaning, or patch `final.html` as source of truth.
 
-Keep the user-facing process simple:
+Keep production simple:
 
 ```text
 canonical PRD
-→ derive projection internally
-→ render through Golden Sample
+→ derive Golden projection
+→ render Golden composition
 → validate
 ```
-
-Do not simplify the process by changing the final Golden Sample foundation the user expects.

@@ -6,17 +6,18 @@ This is the single active-task snapshot.
 
 ## Current Status
 
-`PRD_USER_EFFICIENCY_REFINEMENT_IMPLEMENTED_CONTINUE_PRE_SAMPLE_AUDIT`
+`PRD_GOLDEN_OUTPUT_FIDELITY_REMEDIATED_PRE_SAMPLE_AUDIT_CONTINUES`
 
 Working branch: **`Local` only**.
 
 ## Golden Sample decision
 
-The approved Golden Sample remains the required template authority for this PRD family.
+The approved Golden Sample remains the required output authority for this gameplay-document family.
 
-Preserve its output foundation:
+Preserve both:
 
 ```text
+Hierarchy
 Overview
 → Gameplay Flow
 → Global Development
@@ -26,121 +27,123 @@ Overview
      → Developer
 ```
 
-Efficiency work belongs in the production process and content density, not in removing this structure or replacing the template with a smaller generic shell.
+and its reusable page composition/component language.
 
-## Implemented — user-efficiency routing
+Do not replace it with a smaller shell, adaptive template family, or generic report layout.
 
-Normal project production is now explicitly separated from repository/system Developing work.
+## Root cause found — Golden drift
 
-```text
-normal PRD / Voice project production
-→ Production Execution
-→ matching production owner directly
-→ no development-brief
+The previous renderer used the Golden HTML mostly as a CSS/JS shell, but replaced `.document-main` with simplified generic page composition.
 
-change PRD-Creator itself
-→ Developing
-→ development-brief
-```
+This allowed a document to use the Golden stylesheet while still diverging materially in:
 
-This prevents meta planning from appearing before ordinary PRD production.
+- package title/subtitle and tabs;
+- narrative Gameplay Flow composition;
+- context blocks/cards;
+- Gameplay Information table;
+- role-sequence treatment;
+- Level Design `Area Size / Build and Visual / Gameplay Function` structure;
+- grouped Developer requirements;
+- inline scoring/completion treatment;
+- Important Notes card grids;
+- Terms Used markup;
+- project-branded footers.
 
-## Implemented — automatic PRD project bootstrap
+Mechanical validation previously checked page existence/navigation but did not protect these Golden composition contracts.
 
-For a new PRD project the agent now owns:
+## Implemented — Golden page composition
 
-- project name/slug derivation;
-- active workspace creation/reuse;
-- original-source preservation;
-- internal SRC/REQ ID assignment;
-- minimum current-Flow state/work setup.
+The active PRD contract now treats Golden page composition as part of Flow 3 correctness, not optional styling.
 
-The user should not be asked to manage repository structure unless project identity is genuinely ambiguous.
-
-## Implemented — grouped decision interaction
-
-Flow 2 now finishes source inspection/recovery first, then groups only real high-impact decisions.
-
-When a responsible recommendation exists, each decision includes:
+Current renderer projection is aligned to these Golden families:
 
 ```text
-Recommended
-Reason
-Impact
+Gameplay Flow
+→ narrative sequence / transition
+
+Global Development
+→ shared tabs
+→ context block
+→ Development Flow cards
+→ grouped production table
+→ notes card grid
+
+Gameplay Overview
+→ package title/subtitle + 1/2/3 tabs
+→ Gameplay Context / Main Objective / Result
+→ Gameplay Information production table
+→ role-sequence
+
+Level Design
+→ package title/subtitle + tabs
+→ Level Design Overview
+→ Design Flow cards
+→ Golden 5-column Build Requirements table
+→ notes card grid
+
+Developer
+→ package title/subtitle + tabs
+→ Developer Overview
+→ Development Flow cards
+→ grouped Golden Development Requirements table
+   with scoring/completion/reset integrated
+→ notes card grid
 ```
 
-The user may approve all recommendations in one response or override only named exceptions. Recommendations remain pending until explicitly approved.
+Footer identity now derives from the project rather than a hardcoded MIVUBI footer brand.
 
-## Implemented — revision fast path
+## Implemented — lightweight fidelity guard
 
-Bounded approved changes to an existing PRD use a delta path:
+The existing mechanical Flow 4 validator now checks a small set of Golden semantic DOM/class markers per generated page.
 
-```text
-approved change
-→ affected requirements/sections only
-→ necessary cross-references
-→ regenerate render data / HTML
-→ one current mechanical check
-→ targeted semantic/visual re-review only where invalidated
-→ updated final PRD
-```
+This catches regression back to generic page composition without adding:
 
-Unchanged sources, resolved decisions, unrelated packages, and unaffected review evidence are not replayed by default.
+- pixel diff;
+- screenshot baseline;
+- visual score;
+- AI "looks like Golden" evaluator;
+- schema/profile framework;
+- full DOM snapshot.
 
-## Implemented — minimal user-facing delivery
+Actual Golden visual quality still requires real final browser/page inspection when manual testing begins.
 
-Normal PRD completion should surface only:
+## Existing user-efficiency rules remain active
 
-```text
-Final PRD
-+ material adjustments/recovered decisions worth knowing
-+ any real remaining attention item
-```
+- normal PRD creation/revision = Production Execution, no `development-brief`;
+- automatic project bootstrap;
+- inspect all source before grouped decisions;
+- `Recommended / Reason / Impact` decision batches;
+- revision delta fast path;
+- minimal user-facing delivery;
+- one integrated REVIEW with visual sanity when actual visual inspection is available.
 
-Internal YAML/state, IDs, render data, acceptance tables, validator JSON, CI logs, and repository mechanics stay internal unless requested or needed to explain a blocker.
+## Template boundary
 
-## Implemented — visual sanity inside REVIEW
+The approved Golden Sample HTML template itself was intentionally **not changed** by the fidelity remediation.
 
-Flow 4 keeps one REVIEW stage. When actual rendered/browser/page inspection is available, it includes one practical visual sanity pass for overflow, broken components/navigation, unreadable density, and inspected responsive/print/page-break defects.
-
-This is not a new Flow, score, detector, pixel-diff system, or extra user approval round.
-
-If visual inspection is unavailable, record `NOT PROVEN` and do not claim visual quality was verified.
-
-## Changed owners
-
-```text
-AGENTS.md
-CONTEXT.md
-README.md
-.agents/skills/development-brief/SKILL.md
-docs/knowledge/flow.md
-docs/knowledge/flows/development-flow.md
-docs/knowledge/skills/activation-matrix.md
-kits/project-document-generator/SKILL.md
-kits/project-document-generator/WORKFLOW.md
-kits/project-document-generator/SOURCE-INTAKE.md
-kits/project-document-generator/VALIDATION.md
-```
-
-The approved Golden Sample template, renderer implementation, validator code, and production tests are intentionally unchanged by this workflow-efficiency batch.
+The fix is in the canonical page-composition contract and renderer projection, because that was the first wrong owner.
 
 ## Testing cadence
 
-Per current user direction, do **not** perform repeated manual/local project tests after each small refinement.
+Per current user direction:
 
-Finish the remaining PRD workflow/skill readiness audit first. Use repository/CI consistency verification for repository changes as appropriate, then perform practical/manual real-project testing only when the PRD side is ready as one coherent system.
+- do not run repeated manual/local project tests during refinement;
+- finish PRD pre-sample readiness first;
+- repository/CI verification may run once after a coherent repository batch;
+- perform one practical/manual real-project test only when the PRD side is ready as a coherent system.
 
-## Remaining pre-sample audit items
+## Remaining pre-sample audit
 
-Before manual/real-project testing, review only unresolved workflow issues that could still materially burden the user or produce misleading output, especially:
+Do not reopen Golden structure unless a new concrete defect proves it necessary.
 
-- language/bilingual behavior and silent fallback semantics;
-- whether any remaining mandatory handoff state/artifact should be changed only together with the later Voice boundary review;
-- any direct routing/documentation drift exposed by the current efficiency changes.
+Remaining PRD-side review should now focus only on unresolved user-facing risks, especially:
 
-Do not reopen Golden Sample structure, add new skills/frameworks, or refactor `content.md → render-data.json` without real evidence.
+1. language/bilingual behavior and silent fallback semantics;
+2. direct routing/documentation drift, if any remains;
+3. handoff-state/artifact simplification only together with the later Voice boundary review.
+
+Do not refactor `content.md → render-data.json`, create another template system, or add another skill/framework without real evidence.
 
 ## Next Step
 
-Continue the PRD pre-sample audit for the remaining user-facing workflow risks above. Do not start manual real-project testing yet.
+Complete the remaining PRD pre-sample audit above. Do not start manual/real-project testing yet.

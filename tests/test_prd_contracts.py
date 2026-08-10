@@ -40,8 +40,48 @@ def render_data() -> dict:
                 {"label": "Mode", "value": "Contract Test"},
             ],
         },
-        "gameplay_flow": [],
-        "global_development": [],
+        "gameplay_flow": [
+            {
+                "id": "arrival",
+                "title": "Arrival",
+                "narrative_context": "The player enters the controlled fixture.",
+                "player_experience": "Follow the marked route into the test space.",
+                "main_obstacle_or_change": "The trial becomes available.",
+                "player_result": "The player reaches the Core Trial.",
+                "next_destination": "Core Trial",
+            }
+        ],
+        "global_development": [
+            {
+                "id": "game-system",
+                "title": "Game System",
+                "subtitle": "Shared fixture behavior",
+                "overview": "One shared system owns the fixture session.",
+                "flow": [
+                    {
+                        "step": 1,
+                        "title": "Initialize",
+                        "description": "Create the fixture state.",
+                        "result": "The trial is ready.",
+                    }
+                ],
+                "requirements": [
+                    {
+                        "title": "Session Setup",
+                        "items": [
+                            {
+                                "title": "Ownership",
+                                "details": ["Use one isolated fixture session."],
+                                "result": "State remains isolated.",
+                            }
+                        ],
+                    }
+                ],
+                "notes": [
+                    {"title": "Shared Rule", "description": "Use the same fixture owner for the complete run."}
+                ],
+            }
+        ],
         "packages": [
             {
                 "id": "core",
@@ -50,6 +90,8 @@ def render_data() -> dict:
                 "gameplay": {
                     "context": "The player enters a controlled test arena.",
                     "main_objective": "Complete the trial.",
+                    "purpose": "Prove the Golden Sample package composition with one deterministic trial.",
+                    "gameplay_time": "Short controlled run.",
                     "start_condition": "Player enters the arena.",
                     "end_condition": "Trial completion is recorded.",
                     "blocked_or_fail_condition": "The trial is interrupted.",
@@ -64,16 +106,54 @@ def render_data() -> dict:
                     "result": "The trial records one completion result.",
                 },
                 "level_design": {
-                    "overview": "One readable test space.",
-                    "flow": [],
-                    "requirements": [],
+                    "overview": "Build one readable test space.",
+                    "flow": [
+                        {"step": 1, "title": "Build the Trial", "details": "Create the single fixture route."}
+                    ],
+                    "requirements": [
+                        {
+                            "title": "Trial Area",
+                            "items": [
+                                {
+                                    "object": "Core Trial Space",
+                                    "subtitle": "Primary gameplay area",
+                                    "area_size": "Fit one controlled interaction route.",
+                                    "build_and_visual": "Keep the route readable and the target visible.",
+                                    "gameplay_function": "Supports the complete fixture trial.",
+                                }
+                            ],
+                        }
+                    ],
+                    "notes": [
+                        {"title": "Readable Route", "description": "The player must see the required destination."}
+                    ],
                 },
                 "developer": {
                     "overview": "Track one score result deterministically.",
-                    "flow": [],
-                    "requirements": [],
+                    "flow": [
+                        {
+                            "step": 1,
+                            "trigger": "Trial starts",
+                            "behavior": "Activate the fixture objective.",
+                            "data": "Fixture state",
+                            "result": "Trial becomes active.",
+                        }
+                    ],
+                    "requirements": [
+                        {
+                            "title": "Mechanic Setup",
+                            "items": [
+                                {
+                                    "title": "Trial Activation",
+                                    "details": ["Activate once when the player enters the trial."],
+                                    "result": "The objective starts once.",
+                                }
+                            ],
+                        }
+                    ],
                     "scoring": {
                         "score_name": "Fixture Score",
+                        "scale": "0–100",
                         "components": [
                             {
                                 "name": "Completion",
@@ -87,7 +167,18 @@ def render_data() -> dict:
                         "duplicate_prevention": "Record once per run.",
                         "final_result_relationship": "Fixture Score is the package result.",
                     },
+                    "reset": ["Restore the fixture trial to its initial state."],
+                    "notes": [
+                        {"title": "One Result", "description": "A valid run creates one Fixture Score."}
+                    ],
                 },
+                "terms": [
+                    {
+                        "key": "fixture-score",
+                        "label": "Fixture Score",
+                        "definition": "The score created by the Core Trial.",
+                    }
+                ],
             }
         ],
     }
@@ -145,6 +236,23 @@ class ProjectDocumentContracts(unittest.TestCase):
             '<meta content="prd-contract-fixture-v1.0" name="specification-version"/>',
             html,
         )
+        for marker in (
+            "narrative-sequence",
+            "section-tabs package-tabs",
+            "development-package-title",
+            "phase-context-grid",
+            "phase-overview-table quarry-overview-table",
+            "role-sequence quarry-sequence",
+            "context-block section-context",
+            "flow quarry-design-flow",
+            "production-table quarry-build-table",
+            "flow quarry-development-flow",
+            "production-table quarry-development-table",
+            "quarry-score-summary phase-score-summary",
+            "outcome quarry-note-grid",
+        ):
+            self.assertIn(marker, html)
+        self.assertNotIn('<span class="footer-brand">MIVUBI</span>', html)
 
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
@@ -154,11 +262,29 @@ class ProjectDocumentContracts(unittest.TestCase):
             result["expected_pages"],
             [
                 "summary",
+                "flow-arrival",
+                "global-game-system",
                 "dev-core-requirement",
                 "dev-core-level",
                 "dev-core-developer",
             ],
         )
+        composition = next(check for check in result["checks"] if check["check"] == "golden_page_composition")
+        self.assertEqual(composition["status"], "pass")
+
+    def test_validator_rejects_missing_golden_composition_marker(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+        html_path = project / "output" / "final.html"
+        html = html_path.read_text(encoding="utf-8")
+        html_path.write_text(html.replace("phase-overview-table", "phase-overview-table-broken", 1), encoding="utf-8")
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        self.assertIn("golden_page_composition", "\n".join(result["errors"]))
 
     def test_renderer_keeps_glossary_script_context_safe(self) -> None:
         data = render_data()

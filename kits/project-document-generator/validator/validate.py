@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Mechanical Flow 4 validation for a repository-backed PRD project.
 
-This tool checks file presence, unresolved placeholders, render-data invariants,
-exact generated page IDs, duplicate HTML IDs, and fragment navigation reachability.
-It does not judge semantic development-readiness; that remains the role-based
-Flow 4 audit recorded in work/acceptance.md.
+Checks current artifact structure, render-data invariants, navigation, and a small
+set of Golden Sample composition markers. It does not judge semantic or visual
+quality; those remain part of the Flow 4 review.
 """
 from __future__ import annotations
 
@@ -28,28 +27,39 @@ class HtmlFacts(HTMLParser):
         self.fragment_hrefs: list[str] = []
         self.title_parts: list[str] = []
         self.document_section_ids: list[str] = []
+        self.section_classes: dict[str, set[str]] = {}
         self._in_title = False
         self._in_document_main = False
+        self._current_document_section: str | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         data = dict(attrs)
-        classes = str(data.get("class") or "").split()
-        if tag.lower() == "main" and "document-main" in classes:
+        classes = set(str(data.get("class") or "").split())
+        tag_name = tag.lower()
+        if tag_name == "main" and "document-main" in classes:
             self._in_document_main = True
         if data.get("id"):
             self.ids.append(str(data["id"]))
-        if tag.lower() == "section" and self._in_document_main and data.get("id"):
-            self.document_section_ids.append(str(data["id"]))
+        if tag_name == "section" and self._in_document_main and data.get("id"):
+            section_id = str(data["id"])
+            self.document_section_ids.append(section_id)
+            self._current_document_section = section_id
+            self.section_classes.setdefault(section_id, set()).update(classes)
+        elif self._current_document_section:
+            self.section_classes.setdefault(self._current_document_section, set()).update(classes)
         href = data.get("href")
         if isinstance(href, str) and href.startswith("#") and len(href) > 1:
             self.fragment_hrefs.append(href[1:])
-        if tag.lower() == "title":
+        if tag_name == "title":
             self._in_title = True
 
     def handle_endtag(self, tag: str) -> None:
-        if tag.lower() == "title":
+        tag_name = tag.lower()
+        if tag_name == "title":
             self._in_title = False
-        if tag.lower() == "main" and self._in_document_main:
+        if tag_name == "section" and self._current_document_section:
+            self._current_document_section = None
+        if tag_name == "main" and self._in_document_main:
             self._in_document_main = False
 
     def handle_data(self, data: str) -> None:
@@ -71,6 +81,57 @@ def expected_page_ids(data: dict[str, Any]) -> list[str]:
         pid = pkg["id"]
         ids += [f"dev-{pid}-requirement", f"dev-{pid}-level", f"dev-{pid}-developer"]
     return ids
+
+
+def golden_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[str]:
+    failures: list[str] = []
+
+    def require(section_id: str, required: set[str]) -> None:
+        available = facts.section_classes.get(section_id, set())
+        missing = sorted(required - available)
+        if missing:
+            failures.append(f"{section_id} missing {missing}")
+
+    for item in data.get("gameplay_flow", []):
+        require(f'flow-{item["id"]}', {"narrative-page", "narrative-sequence"})
+
+    for item in data.get("global_development", []):
+        section_id = f'global-{item["id"]}'
+        required = {"package-tabs", "section-context"}
+        if item.get("flow"):
+            required.add("quarry-development-flow")
+        if item.get("requirements"):
+            required.add("production-table")
+        require(section_id, required)
+
+    for pkg in data.get("packages", []):
+        pid = pkg["id"]
+        gameplay = pkg.get("gameplay") if isinstance(pkg.get("gameplay"), dict) else {}
+        level = pkg.get("level_design") if isinstance(pkg.get("level_design"), dict) else {}
+        developer = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
+
+        gameplay_required = {"package-tabs", "phase-context-grid", "phase-overview-table"}
+        if gameplay.get("player_flow"):
+            gameplay_required.add("role-sequence")
+        require(f"dev-{pid}-requirement", gameplay_required)
+
+        level_required = {"package-tabs", "section-context"}
+        if level.get("flow"):
+            level_required.add("quarry-design-flow")
+        if level.get("requirements"):
+            level_required.add("quarry-build-table")
+        if level.get("notes"):
+            level_required.add("quarry-note-grid")
+        require(f"dev-{pid}-level", level_required)
+
+        developer_required = {"package-tabs", "section-context", "quarry-development-table", "quarry-score-summary"}
+        if developer.get("flow"):
+            developer_required.add("quarry-development-flow")
+        if developer.get("notes"):
+            developer_required.add("quarry-note-grid")
+        require(f"dev-{pid}-developer", developer_required)
+
+    return failures
 
 
 def validate(project: Path) -> dict[str, Any]:
@@ -184,6 +245,13 @@ def validate(project: Path) -> dict[str, Any]:
         f"generated pages match expected order/set: {len(expected)} pages"
         if exact_pages
         else f"expected {expected}; actual {actual_pages}; missing {missing_expected}; extra {extra_generated}",
+    )
+
+    composition = golden_composition_errors(data, facts)
+    check(
+        "golden_page_composition",
+        not composition,
+        "Golden Sample composition markers present on generated pages" if not composition else "; ".join(composition),
     )
 
     id_set = set(facts.ids)
