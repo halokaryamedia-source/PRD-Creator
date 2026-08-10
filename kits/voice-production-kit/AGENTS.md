@@ -1,13 +1,18 @@
-# Voice Production Kit — Agent Instructions
+# Voice Production Kit Agent Rules
 
-Start from `SKILL.md`.
+Read `SKILL.md` first.
 
-For Flow 5:
+Flow routing:
 
-1. read `VOICE-EXTRACTION.md`;
-2. require the current PRD handoff state to be `handoff_ready`;
-3. extract only justified, traceable player-facing voice moments;
-4. write `work/voice-requirements.md` and `state/voice-state.yaml`;
-5. stop before performance-script drafting.
+- Flow 5: `VOICE-EXTRACTION.md` — accepted PRD → voice requirements.
+- Flow 6: `SCRIPT-PRODUCTION.md` + `DOCX-FORMAT.md` — voice requirements → performance script/DOCX.
+- Flow 7: downstream validation/delivery; do not self-approve it during Flow 6.
 
-`INSTRUCTIONS.md` is the original Flow 6 script-production baseline and must not be used to skip Flow 5.
+For Flow 6:
+
+- require `state/voice-state.yaml: voice_requirements_ready`;
+- preserve the exact Flow 5 Voice ID set and type;
+- `work/voice-production.md` owns spoken wording/performance notation;
+- build the DOCX from canonical Markdown; do not use the DOCX as the editable source of truth;
+- use the Aftershock DOCX only as a demonstrated quality/layout reference;
+- return unresolved project facts upstream rather than improvising them.

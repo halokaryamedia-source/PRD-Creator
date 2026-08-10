@@ -4,63 +4,62 @@ Status: active architecture
 
 ## Flow 1 — Repository Boot & Project Memory
 
-Purpose: make the repository independently resumable without relying on old chat context.
+Purpose: make the repository independently resumable.
 
 Status: implemented.
 
 ## Flow 2 — Source Intake & Requirement Recovery
 
-Purpose: preserve project source, record provenance/authority, recover requirements, expose conflicts, and ask only for real high-impact decisions.
+Purpose: preserve source/provenance, recover requirements, expose conflicts, and isolate real decisions.
 
-Owners: `docs/foundation/02-source-intake-recovery.md`, active Project Document Generator intake procedure, and per-project intake state.
+Canonical owner: Project Document Generator intake state/contracts.
 
 Status: implemented.
 
 ## Flow 3 — Project Document / PRD Generation
 
-Purpose: turn `ready_for_prd` requirement state into canonical PRD content and approved-shell HTML without adding new project meaning.
-
-Owners: `docs/foundation/03-prd-generation.md`, `CONTENT-CONTRACT.md`, `RENDERING.md`, and active renderer.
+Purpose: turn `ready_for_prd` into canonical PRD content and deterministic approved-shell HTML.
 
 Status: implemented.
 
 ## Flow 4 — PRD Validation & Team Handoff
 
-Purpose: distinguish generated PRD from development-ready PRD and issue a concise team handoff for an accepted revision.
+Purpose: distinguish generated PRD from production-usable PRD and issue revision-specific handoff readiness.
 
-Owners: `docs/foundation/04-prd-validation-handoff.md`, Project Document Generator `VALIDATION.md`, validator, acceptance/handoff state.
-
-Critical/Major findings block handoff. Mechanical pass alone never establishes semantic readiness.
-
-Status: implemented at contract/tool level; first real-project handoff remains execution proof.
+Status: implemented at contract/tool level; real-project execution proof remains ongoing.
 
 ## Flow 5 — Voice Requirement Extraction
 
-Purpose: convert a current accepted `handoff_ready` PRD into a traceable set of justified voice moments without writing final scripts or inventing upstream facts.
+Purpose: derive justified, traceable voice moments from a `handoff_ready` PRD without writing final dialogue.
 
 Canonical owners:
 
 - `docs/foundation/05-voice-requirement-extraction.md`;
 - `kits/voice-production-kit/VOICE-EXTRACTION.md`;
-- per-project `work/voice-requirements.md`;
-- per-project `state/voice-state.yaml`.
+- project `work/voice-requirements.md` + `state/voice-state.yaml`.
 
-A valid result is either `voice_requirements_ready` or `no_voice_required`. Missing material speaker/channel/trigger/story decisions return upstream.
-
-Status: implemented at contract/kit level; first real-project extraction remains execution proof.
+Status: implemented.
 
 ## Flow 6 — ElevenLabs Performance Script Production
 
-Purpose: turn accepted voice requirements into natural, production-ready Main Story / Radio Communication / other approved voice scripts with controlled ElevenLabs notation and final DOCX structure.
+Purpose: convert `voice_requirements_ready` into final spoken/performance wording and a reference-styled Voice Production DOCX without changing upstream scope.
 
-The original Voice Production Kit v1.0 instructions are preserved as a reviewed baseline; Flow 6 redesign/alignment is the next active boundary.
+Canonical owners:
+
+- `docs/foundation/06-elevenlabs-script-production.md`;
+- `kits/voice-production-kit/SCRIPT-PRODUCTION.md`;
+- `kits/voice-production-kit/DOCX-FORMAT.md`;
+- `kits/voice-production-kit/builder/build_docx.py`;
+- project `work/voice-production.md` + `state/voice-state.yaml` + `output/Voice Production.docx`.
+
+Status: implemented at contract/tool level; first real project remains execution proof.
 
 ## Flow 7 — Voice Validation & Delivery
 
-Purpose: validate terminology, coverage, pacing, hierarchy, continuity, and delivery state before voice production is declared complete.
+Purpose: validate final script/DOCX continuity, terminology, pronunciation risk, coverage, pacing/readability, and delivery state for the current revision.
 
-Not yet implemented.
+This is the next active boundary.
 
 ## Architecture Rule
 
-Implement one flow boundary at a time. Do not change a downstream flow to compensate for an unresolved upstream contract.
+Implement one flow boundary at a time. Do not change downstream output to compensate for unresolved upstream meaning.

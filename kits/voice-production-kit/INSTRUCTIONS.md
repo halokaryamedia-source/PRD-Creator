@@ -1,45 +1,54 @@
-# Voice Production Instructions — Flow 6 Baseline
-
-> This file preserves the original v1.0 script-production behavior for the next flow. During Flow 5, use `VOICE-EXTRACTION.md` and stop before drafting performance scripts. Flow 6 must start from `state/voice-state.yaml: voice_requirements_ready`.
+# Voice Production Instructions
 
 ## Role
 
-You are a senior voice production specialist. The user is the creative director. You own production; the user owns approval.
+You are a senior voice production specialist. The user/creative owner owns project approval. You own script production quality inside the accepted scope.
 
-## Input
+## Entry
 
-Read the accepted voice requirements plus the supplied gameplay, story, or design documentation when needed for context. Preserve official names, terminology, sequence, and supported details. Do not invent unsupported mechanics, lore, triggers, or rewards.
+For Flow 6, start only from `state/voice-state.yaml: voice_requirements_ready` and read `work/voice-requirements.md` before drafting.
 
-## Output
+## Required procedure
 
-Create one polished file named `Voice Production.docx`. Group content by gameplay section. Within each section, place **Main Story** and **Radio Communication** together where those types are justified by Flow 5.
+1. Read `SCRIPT-PRODUCTION.md`.
+2. Read `DOCX-FORMAT.md`.
+3. Read the accepted `work/voice-requirements.md`.
+4. Use accepted PRD content only when additional context is needed.
+5. Create/update canonical `work/voice-production.md`.
+6. Preserve every Flow 5 Voice ID exactly once; do not add new voice moments.
+7. Build `output/Voice Production.docx` with `builder/build_docx.py`.
+8. Update `state/voice-state.yaml` to `voice_script_ready` only after the Flow 6 gate passes.
+9. Stop before final delivery/continuity approval; Flow 7 owns that boundary.
 
-Every voice entry contains only:
+## Performance text
 
-- Title
-- Estimated Duration
-- Performance Script
+Performance Script may use:
 
-The Performance Script must be ready to paste into ElevenLabs and may use:
-
-- clear voice directions in square brackets;
-- selective CAPS for spoken emphasis;
+- concise voice directions in square brackets;
+- selective CAPS for genuine spoken emphasis;
 - `...` for purposeful pauses;
 - short line breaks that improve delivery.
 
-Use these devices carefully. Do not turn full sentences into CAPS, overuse pauses, or add strange/non-contextual commands.
+Use these devices intentionally. Do not turn full sentences into CAPS, overuse pauses, or add non-contextual directions.
 
-Radio Communication is spoken through an approved remote communication channel such as the player's communicator. It must be brief, natural, and useful while the player is alone/actively playing. It should add warnings, progress updates, urgency, encouragement, reminders, or recovery without repeating the full objective.
+## Main Story and Radio
 
-## How to Work
+Main Story may carry briefing/story progression when justified by Flow 5.
 
-1. Perform analysis, planning, drafting, review, and polishing internally. Do not expose intermediate work unless explicitly requested.
-2. Do not add a voice moment absent from `work/voice-requirements.md` unless upstream scope is explicitly reopened.
-3. If a required fact cannot be resolved from accepted upstream state, stop and return it upstream rather than improvising.
-4. Finish only when the requested DOCX is immediately usable: complete sections, clear wording, consistent official names, natural pacing, appropriate voice roles, and clean readable layout.
+Radio Communication must be concise and useful during active play, and only exists when the approved project defines the channel. It may warn, update progress, add urgency/encouragement, remind, or support recovery without repeating the full objective.
 
-Avoid overdevelopment. Do not create extra frameworks, libraries, reports, or companion documents unless explicitly requested.
+## Output
+
+The production artifact is `Voice Production.docx`, grouped by gameplay section. Each visible voice entry contains only:
+
+- Title;
+- Estimated Duration;
+- Performance Script.
+
+The canonical editable source is `work/voice-production.md`; DOCX is derived presentation.
 
 ## Reference
 
-The original Aftershock Voice Production reference remains the production-quality baseline for hierarchy, section grouping, formatting, voice directions, emphasis, pauses, and readable layout. Active reference files will be reconciled/migrated in Flow 6 so Flow 5 remains limited to extraction.
+Use `DOCX-FORMAT.md` and `REFERENCE/Aftershock/README.md` as the active benchmark contract for hierarchy, spacing, performance directions, emphasis, pauses, line-break readability, and script-panel layout. The original Aftershock DOCX was audited during Flow 6 and its SHA-256 is recorded there; the builder does not depend on the binary at runtime.
+
+Do not copy Aftershock facts, lines, voice counts, or section structure into another project merely because they exist in the reference.

@@ -10,47 +10,46 @@ Adopt the useful repository/workflow architecture learned from BuildIT into the 
 
 ## Current Status
 
-`FLOW_5_VOICE_REQUIREMENT_EXTRACTION_IMPLEMENTED`
+`FLOW_6_ELEVENLABS_PERFORMANCE_SCRIPT_PRODUCTION_IMPLEMENTED`
 
-## Completed Slice — Flow 5
+## Completed Slice — Flow 6
 
 Implemented:
 
-- active repository-owned `kits/voice-production-kit/`;
-- explicit `handoff_ready` PRD entry gate for normal downstream voice extraction;
-- canonical `work/voice-requirements.md` voice-moment owner;
-- revision/status owner `state/voice-state.yaml`;
-- Main Story / Radio Communication / explicit source-defined other voice classification;
-- functional classification for briefing, arrival, transition, reveal, warning, progress, urgency, encouragement, reminder, setback/recovery, completion, reward, and farewell;
-- required/supporting necessity distinction;
-- candidate and duplicate filters preventing redundant or unsupported voice;
-- explicit rule that a package may have zero voice moments;
-- explicit `no_voice_required` valid outcome;
-- upstream return rule for missing speaker/channel/trigger/story decisions;
-- original v1.0 script-writing instructions preserved as the Flow 6 baseline rather than executed early;
-- active Voice Production Kit version advanced to 1.1.0.
+- active Voice Production Kit advanced to v1.2.0;
+- `work/voice-production.md` as canonical final spoken/performance-script owner;
+- strict Flow 5 Voice ID/type parity rule;
+- Main Story / Radio writing contract tied to approved purpose/trigger rather than reference quotas;
+- performance-direction, selective CAPS, ellipsis, line-break, and Estimated Duration rules;
+- explicit upstream-return behavior when a requirement cannot be scripted without invention;
+- deterministic reference-styled DOCX builder using `python-docx`;
+- Flow 6 DOCX format contract;
+- original Aftershock `Voice Production.docx` re-read, rendered, visually inspected, and recorded by SHA-256; its demonstrated layout/performance contract is codified in-repo without duplicating the binary through the current GitHub write surface;
+- legacy paired Aftershock Gameplay HTML V1.2 intentionally not duplicated because accepted project PRD is current upstream authority;
+- same `state/voice-state.yaml` extended as the Flow 5–7 lifecycle owner;
+- `voice_script_ready` stop gate before final Flow 7 acceptance.
 
 ## Preserved Boundaries
 
-Flow 5 intentionally does **not** define:
+Flow 6 intentionally does **not** define:
 
-- final spoken wording;
-- square-bracket performance directions;
-- CAPS emphasis;
-- pause/line-break strategy;
-- estimated duration;
-- ElevenLabs voice/model/settings;
-- final `Voice Production.docx` formatting;
-- voice continuity/final delivery acceptance.
+- final terminology/pronunciation acceptance;
+- narrator/voice continuity acceptance across a whole project;
+- generated-audio quality;
+- final delivery approval;
+- implementation/QA/release approval.
 
 ## Current Proof
 
-- original Voice Production Kit source package was re-read before migration;
-- original Aftershock gameplay/voice reference pair was re-inspected to verify the demonstrated functional split between Main Story and Radio Communication;
-- Flow 5 contract/kit/state structure is implemented in the repository;
-- no real project has yet exercised a full `handoff_ready` → voice-requirements extraction, so real-project execution remains `EXECUTION PROOF REQUIRED`;
-- Aftershock binary/layout reference migration is deliberately deferred to Flow 6 because formatting/performance quality is not a Flow 5 concern.
+- original Voice Production Kit v1.0.0 text files were re-read;
+- original Aftershock DOCX was rendered to 8 pages and visually inspected as the benchmark;
+- reference SHA-256 verified as `c76ce2562ee1839ae9174373f510b26da09e7b05f90e43a3e1de820633c34020`;
+- builder Python compile passed;
+- synthetic non-Aftershock script with Main Story + Radio built successfully;
+- generated synthetic DOCX rendered to 3 PNG pages and all pages were visually inspected cleanly;
+- parity tests correctly rejected an extra Voice ID, Type mismatch, and unresolved placeholder;
+- no real project has yet exercised Flow 5→6, so real-project execution remains `EXECUTION PROOF REQUIRED`.
 
 ## Next Step
 
-Implement **Flow 6 — ElevenLabs Performance Script Production**: align the original v1.0 Voice Production instructions to consume `voice_requirements_ready`, migrate/reconcile the Aftershock production reference, define the final Voice Production document structure, and produce performance-ready wording without adding voice moments or upstream project facts outside Flow 5 scope.
+Implement **Flow 7 — Voice Validation & Delivery**: define final revision-specific checks for voice-requirement coverage, terminology/pronunciation risk, speaker/channel consistency, pacing/notation continuity, DOCX visual readiness, and final delivery state without claiming generated-audio behavior that has not actually been tested.

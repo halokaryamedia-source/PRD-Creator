@@ -10,51 +10,47 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 |---|---|
 | Repository-wide rules / branch policy / authority | `AGENTS.md` |
 | Stable product context / terminology | `CONTEXT.md` |
-| End-to-end production sequence | `docs/foundation/01-production-flow.md` |
-| Flow 2 intake/recovery policy | `docs/foundation/02-source-intake-recovery.md` |
-| Flow 3 PRD generation policy | `docs/foundation/03-prd-generation.md` |
-| Flow 4 validation/handoff policy | `docs/foundation/04-prd-validation-handoff.md` |
-| Flow 5 voice extraction policy | `docs/foundation/05-voice-requirement-extraction.md` |
+| End-to-end sequence | `docs/foundation/01-production-flow.md` |
+| Flow 2 intake/recovery | `docs/foundation/02-source-intake-recovery.md` + Project Document Generator |
+| Flow 3 PRD generation | `docs/foundation/03-prd-generation.md` + Project Document Generator |
+| Flow 4 PRD validation/handoff | `docs/foundation/04-prd-validation-handoff.md` + `VALIDATION.md` |
+| Flow 5 voice requirement extraction | `docs/foundation/05-voice-requirement-extraction.md` + `VOICE-EXTRACTION.md` |
+| Flow 6 performance-script production | `docs/foundation/06-elevenlabs-script-production.md` + `SCRIPT-PRODUCTION.md` |
+| Flow 6 DOCX format/build | `kits/voice-production-kit/DOCX-FORMAT.md` + `builder/build_docx.py` |
 | Current evidence status | `docs/foundation/validation-report.md` |
 | Active continuation state | `docs/knowledge/next-action.md` |
 | Durable decisions/reasons | `docs/knowledge/decision-log.md` |
 | Active PRD kit | `kits/project-document-generator/` |
-| PRD source intake / content / rendering / validation | `kits/project-document-generator/` owners |
-| Active Voice Production kit | `kits/voice-production-kit/` |
-| Voice requirement extraction procedure | `kits/voice-production-kit/VOICE-EXTRACTION.md` |
-| Flow 6 baseline instructions | `kits/voice-production-kit/INSTRUCTIONS.md` |
+| Active Voice kit | `kits/voice-production-kit/` |
+| Active Voice reference contract | `kits/voice-production-kit/DOCX-FORMAT.md` + `REFERENCE/Aftershock/README.md` |
 | Active project packages | `workspace/active/` |
 | Saved project packages | `workspace/saved/` |
 | Archived historical builder | `Production Document Builder/` |
 
-## Project-level authority after Flow 5
+## Project-level authority after Flow 6
 
 ```text
 source/originals/*
       ↓
-state/source-inventory.yaml
-state/requirement-register.yaml
-state/intake-state.yaml
+requirement state
       ↓
-work/content.md                 canonical PRD meaning
+work/content.md                    canonical PRD
       ↓
-work/render-data.json           derived renderer projection
+PRD acceptance / handoff_ready
       ↓
-output/final.html               rendered PRD artifact
+work/voice-requirements.md         canonical voice-moment scope
       ↓
-work/acceptance.md
-state/handoff-state.yaml        accepted PRD revision / readiness
-output/team-handoff.md
+work/voice-production.md           canonical spoken/performance wording
       ↓
-work/voice-requirements.md      canonical voice-moment requirements
-state/voice-state.yaml          Flow 5 revision/status/next step
+output/Voice Production.docx       derived production artifact
+      ↓
+Flow 7 final validation/delivery
 ```
 
-`voice-requirements.md` does not contain final spoken scripts. It defines justified voice scope and required communication facts for Flow 6.
+`state/voice-state.yaml` records lifecycle status/revision/next step across Flow 5–7; it does not replace canonical voice content.
 
-## Pending downstream migration
+## Pending downstream boundary
 
-- Flow 6 ElevenLabs Performance Script Production is next.
-- Original Voice Production v1.0 script instructions are preserved as a baseline but not yet aligned to the new canonical voice-requirement handoff.
-- Flow 7 validation/delivery remains unimplemented.
+- Flow 7 Voice Validation & Delivery is next.
+- Real-project execution remains needed across the full Flow 2→6 chain.
 - Archived builder remains non-authoritative.

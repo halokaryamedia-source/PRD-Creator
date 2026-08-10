@@ -6,9 +6,9 @@ The repository is the project memory. Chat history may help, but it is not the a
 
 ## Branch Model
 
-- `Local` — permanent working/development authority. Normal project work is committed directly here.
-- `main` — stable baseline. Do not open routine per-flow PRs or merge into `main` unless the user explicitly requests it.
-- old `agent/*` branches are non-authoritative leftovers and must not be used for continuation.
+- `Local` — permanent working/development authority.
+- `main` — stable baseline; change only when explicitly requested.
+- routine per-flow branches/PRs are not used.
 
 ## Production Flow
 
@@ -23,14 +23,14 @@ Flow 4 — PRD Validation & Team Handoff                ✓ implemented
     ↓
 Flow 5 — Voice Requirement Extraction                 ✓ implemented
     ↓
-Flow 6 — ElevenLabs Performance Script Production     next
+Flow 6 — ElevenLabs Performance Script Production     ✓ implemented
     ↓
-Flow 7 — Voice Validation & Delivery
+Flow 7 — Voice Validation & Delivery                  next
 ```
 
-The active Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`.
+Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`.
 
-The active Voice Production Kit now lives under `kits/voice-production-kit/`. Flow 5 extracts traceable voice requirements from a `handoff_ready` PRD and stops before performance-script writing. Flow 6 remains the next boundary.
+Voice Production Kit owns Flow 5–6 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived reference-styled `Voice Production.docx`.
 
 The pre-existing `Production Document Builder/` remains **Archived** and non-authoritative.
 
@@ -39,25 +39,24 @@ The pre-existing `Production Document Builder/` remains **Archived** and non-aut
 1. read `AGENTS.md`;
 2. read `CONTEXT.md`;
 3. read `docs/knowledge/next-action.md`;
-4. open only the relevant foundation/kit/source owner;
-5. do not ask the user to reconstruct prior work until these owners have been checked.
+4. open only the relevant foundation/kit/project owner.
 
 ## Repository Map
 
-- `AGENTS.md` — repository-wide rules, branch policy, authority, proof, and anti-slop baseline.
-- `CONTEXT.md` — stable purpose, terminology, and boundaries.
+- `AGENTS.md` — repository-wide rules, branch policy, authority, proof, anti-slop baseline.
+- `CONTEXT.md` — stable purpose, terminology, boundaries.
 - `docs/foundation/` — durable production policy.
-- `docs/knowledge/` — current state, decisions, navigation, ownership, and backlog.
-- `kits/project-document-generator/` — active PRD intake/generation/validation kit.
-- `kits/voice-production-kit/` — active downstream voice-requirement kit; Flow 6 script production follows next.
-- `workspace/active/` — project packages currently in production.
-- `workspace/saved/` — intentionally retained completed/saved project packages.
-- `Production Document Builder/` — Archived historical package retained only for bounded migration/reference.
+- `docs/knowledge/` — current state, decisions, navigation, ownership, backlog.
+- `kits/project-document-generator/` — PRD intake/generation/validation.
+- `kits/voice-production-kit/` — Voice requirement extraction + performance-script/DOCX production.
+- `workspace/active/` — active project packages.
+- `workspace/saved/` — retained project packages.
+- `Production Document Builder/` — Archived historical reference.
 
 ## Core Rule
 
 ```text
-Source ≠ Interpretation ≠ Decision ≠ Requirement State ≠ Canonical PRD ≠ Rendered Output ≠ PRD Acceptance ≠ Voice Requirements ≠ Performance Script ≠ Delivery
+Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX ≠ Delivery
 ```
 
-Rendering success is not development-readiness. `handoff_ready` is revision-specific production-document readiness, not client approval or implementation completion. Voice requirements define **what communication is justified**; they are not final spoken scripts.
+Generated artifacts never silently become higher authority than the canonical work that produced them.

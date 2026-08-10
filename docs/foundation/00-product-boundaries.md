@@ -2,46 +2,45 @@
 
 Status: active policy
 
-## Project Document Generator Owns
+## Project Document Generator Owns — Flow 2–4
 
-- source intake and traceable requirement recovery;
-- clarifying/completing supported gaps without inventing design choices;
+- source intake/provenance;
+- requirement recovery and real decision isolation;
 - canonical PRD content;
-- approved-shell rendering;
-- PRD development-readiness validation and concise team handoff through Flow 4.
+- approved-shell HTML rendering;
+- PRD development-readiness/team handoff.
 
-## Project Document Generator Does Not Own
+It does not create voice performance text to compensate for unresolved PRD decisions.
 
-- silently changing project design;
-- treating its own proposal as approved;
-- writing voice performance text as a substitute for project documentation;
-- deciding final voice wording, ElevenLabs notation, or audio production settings.
+## Voice Production Kit Owns — Flow 5–7
 
-## Voice Production Kit — Flow 5 Owns
+### Flow 5 — Voice Requirement Extraction
 
-- consuming a current accepted `handoff_ready` PRD revision;
-- locating justified player-facing voice moments;
-- determining approved speaker/channel/trigger/purpose from upstream evidence;
-- classifying Main Story, Radio Communication, or another explicitly supported source-defined voice type;
-- preventing redundant/unsupported voice moments;
-- producing canonical `work/voice-requirements.md` and `state/voice-state.yaml`.
+- identify justified player-facing voice moments from a `handoff_ready` PRD;
+- define Voice ID, type, speaker, channel, trigger, purpose, required facts, and guardrails;
+- allow valid `no_voice_required`;
+- route missing upstream decisions back to PRD owners.
 
-## Voice Production Kit — Flow 5 Does Not Own
+### Flow 6 — Performance Script Production
 
-- final spoken wording;
-- ElevenLabs performance directions/tags;
-- emphasis/pause/duration decisions;
-- voice/model/settings selection;
-- inventing narrators, communication systems, lore, mechanics, triggers, rewards, or objectives;
-- forcing voice into every gameplay package.
+- convert the exact accepted Voice ID/type set into final spoken wording;
+- add production-appropriate performance direction, emphasis, pauses, line breaks, and Estimated Duration;
+- produce canonical `work/voice-production.md`;
+- generate derived `output/Voice Production.docx` using the approved formatting reference.
 
-## Voice Production Kit — Flow 6 Owns (next boundary)
+Flow 6 may not add/drop voice moments or project facts without reopening the owning upstream scope.
 
-- converting accepted voice requirements into natural performance-ready text for ElevenLabs;
-- grouping voice entries by gameplay/project section;
-- applying appropriate Main Story/Radio/other approved role treatment;
-- producing the Voice Production deliverable.
+### Flow 7 — Voice Validation & Delivery
+
+- final terminology/pronunciation/continuity/coverage/readability/delivery acceptance;
+- final current-revision delivery status.
+
+Flow 7 is not yet implemented.
 
 ## Shared Boundary Rule
 
-If downstream voice work discovers that a required story/gameplay/speaker/channel/trigger fact is genuinely missing and cannot be recovered safely, route the issue upstream. Do not invent the missing decision inside voice production.
+If downstream voice work exposes a missing speaker, channel, trigger, story outcome, reward, mechanic, or other product decision, return it to the correct upstream owner. Do not hide the missing decision inside polished dialogue.
+
+## Reference Rule
+
+Aftershock demonstrates layout/performance quality. It does not define another project's speaker, communicator, voice count, duration, script structure, or content.

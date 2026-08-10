@@ -1,54 +1,55 @@
 # Project Workspace
 
-This folder stores project-specific production packages. Reusable kit behavior belongs under `kits/`; durable workflow policy belongs under `docs/foundation/`.
+This folder stores project-specific production packages. Reusable behavior belongs under `kits/`; durable workflow policy belongs under `docs/foundation/`.
 
 ## Lifecycle
 
 ```text
-project is being worked on
-→ workspace/active/<project>/
-
-project is intentionally finalized/saved
-→ workspace/saved/<project>/
+active project → workspace/active/<project>/
+saved project  → workspace/saved/<project>/
 ```
 
-## Active project package after Flow 5
+## Active project package after Flow 6
 
 ```text
 workspace/active/<project>/
 ├── README.md
 ├── source/
-│   └── originals/                 immutable supplied source
+│   └── originals/
 ├── state/
-│   ├── source-inventory.yaml      provenance / source authority
-│   ├── requirement-register.yaml  normalized requirements / gaps / decisions
-│   ├── intake-state.yaml          Flow 2 readiness state
-│   ├── handoff-state.yaml         Flow 4 accepted PRD revision/readiness
-│   └── voice-state.yaml           Flow 5 voice extraction revision/status
+│   ├── source-inventory.yaml
+│   ├── requirement-register.yaml
+│   ├── intake-state.yaml
+│   ├── handoff-state.yaml
+│   └── voice-state.yaml
 ├── work/
-│   ├── review.md                  human-readable recovery review
-│   ├── content.md                 canonical PRD meaning
-│   ├── render-data.json           derived rendering projection
-│   ├── acceptance.md              Flow 4 acceptance evidence/findings
-│   └── voice-requirements.md      canonical justified voice moments
+│   ├── review.md
+│   ├── content.md
+│   ├── render-data.json
+│   ├── acceptance.md
+│   ├── voice-requirements.md       Flow 5 canonical voice scope
+│   └── voice-production.md         Flow 6 canonical spoken/performance text
 └── output/
-    ├── final.html                  rendered PRD artifact
-    └── team-handoff.md             concise production navigation aid
+    ├── final.html
+    ├── team-handoff.md
+    └── Voice Production.docx       Flow 6 derived production artifact
 ```
 
-Flow 6 will add the production voice-script deliverable. Do not invent final voice-script/output paths before that contract is implemented.
+Use only files the current project actually needs.
 
 ## Authority rule
 
 ```text
 original source / approved decisions
 → requirement state
-→ content.md
-→ render-data.json
-→ final.html
-→ PRD acceptance / handoff readiness
+→ canonical PRD
+→ PRD acceptance
 → voice-requirements.md
-→ Flow 6 performance script
+→ voice-production.md
+→ Voice Production.docx
+→ Flow 7 delivery state
 ```
 
-Voice requirements define what communication is justified; they do not contain final spoken wording or ElevenLabs production decisions.
+`state/voice-state.yaml` is the downstream lifecycle owner across Flow 5–7. It records status/revision/paths; it does not replace canonical voice content.
+
+A DOCX may be regenerated at any time from the canonical performance script. Do not patch the DOCX as the source of truth.

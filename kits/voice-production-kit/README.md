@@ -1,37 +1,50 @@
-# Voice Production Kit v1.1.0
+# Voice Production Kit v1.2.0
 
-Repository-backed downstream voice production for accepted PRD projects.
+Repository-backed Voice Production workflow for turning accepted PRD communication requirements into ElevenLabs-ready performance scripts and a reference-styled `Voice Production.docx`.
 
 ## Current flow
 
 ```text
-Flow 4 handoff_ready PRD
-→ Flow 5 Voice Requirement Extraction
-→ work/voice-requirements.md
-→ state/voice-state.yaml = voice_requirements_ready
-→ Flow 6 ElevenLabs Performance Script Production
+handoff_ready PRD
+→ Flow 5 voice requirements
+→ voice_requirements_ready
+→ Flow 6 performance script
+→ work/voice-production.md
+→ output/Voice Production.docx
+→ voice_script_ready
+→ Flow 7 validation/delivery
 ```
 
-Flow 5 is implemented. Flow 6 remains the next boundary.
+## Canonical owners
 
-## Flow 5 outputs
+- `VOICE-EXTRACTION.md` — which voice moments exist and what they must communicate;
+- `SCRIPT-PRODUCTION.md` — how justified moments become spoken/performance text;
+- `work/voice-requirements.md` — project-specific Flow 5 source of truth;
+- `work/voice-production.md` — project-specific Flow 6 source of truth for final spoken wording;
+- `output/Voice Production.docx` — derived production artifact;
+- `state/voice-state.yaml` — current downstream voice lifecycle status.
 
-- `work/voice-requirements.md` — canonical list of justified voice moments;
-- `state/voice-state.yaml` — revision/status/next-step owner.
+## DOCX builder
 
-A valid Flow 5 result can also be `no_voice_required`.
+Install:
 
-## Reference principle
+```bash
+python -m pip install -r kits/voice-production-kit/requirements.txt
+```
 
-The original Aftershock Voice Production package established useful patterns:
+Build:
 
-- Main Story for briefing, arrival, transition, story-state change, completion, reward, and farewell;
-- Radio Communication for brief warning, progress, urgency, encouragement, reminder, and recovery;
-- Main Story and Radio grouped by gameplay section;
-- no requirement that every section have the same number of lines.
+```bash
+python kits/voice-production-kit/builder/build_docx.py \
+  workspace/active/<project>/work/voice-production.md \
+  workspace/active/<project>/output/Voice\ Production.docx \
+  --requirements workspace/active/<project>/work/voice-requirements.md
+```
 
-Those are demonstrated patterns, not fixed project quotas.
+Read `DOCX-FORMAT.md` for the reference styling contract.
 
-## Flow 6 baseline
+## Reference
 
-`INSTRUCTIONS.md` preserves the original v1.0 script-writing rules. Performance wording, ElevenLabs directions, CAPS emphasis, pauses, duration, and DOCX formatting are deliberately deferred until Flow 6.
+`REFERENCE/Aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. Its demonstrated formatting/performance contract is codified in `DOCX-FORMAT.md` and the builder; the source binary is not required at runtime and is not duplicated through the current GitHub write surface.
+
+The original paired `Gameplay.html` v1.2 is intentionally not duplicated here because active projects must use their own accepted PRD revision as upstream authority.

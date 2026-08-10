@@ -8,97 +8,93 @@ Owner: workspace
 
 This workspace supports a two-stage production system:
 
-1. turn incomplete/uneven project direction into documentation that developers, level designers, and the wider production team can actually use;
-2. derive production-ready voice scripts from accepted project/gameplay/story documentation for ElevenLabs.
+1. turn incomplete/uneven project direction into documentation that developers, level designers, and the wider production team can use;
+2. derive ElevenLabs-ready voice production from accepted project/gameplay/story documentation without inventing upstream design.
 
 ## Project Document Generator
 
 Current owner: `kits/project-document-generator/`.
 
 ```text
-incomplete project source
-→ preserve/inventory source
-→ recover traceable requirements
+project source
+→ requirement recovery
 → ready_for_prd
 → canonical content.md
-→ render-data.json projection
-→ approved-template final.html
-→ mechanical + 4-perspective acceptance
-→ development_ready
-→ concise team-handoff.md
+→ rendered final.html
+→ PRD acceptance
 → handoff_ready
 ```
-
-Flow 4 separates generated output from production usability. Mechanical checks prove structure; New Reader, Level Designer, Developer, and Project Consistency audits prove whether the documentation can be used without inventing product rules.
 
 ## Voice Production Kit
 
 Current owner: `kits/voice-production-kit/`.
 
-Flow 5 now owns the boundary between accepted PRD and script production:
-
 ```text
 handoff_ready PRD
-→ inspect accepted player-facing narrative/communication needs
-→ extract justified voice moments
-→ deduplicate / reject unsupported moments
+→ Flow 5 voice requirements
 → work/voice-requirements.md
-→ state/voice-state.yaml = voice_requirements_ready
-→ Flow 6 script production
+→ voice_requirements_ready
+→ Flow 6 canonical performance script
+→ work/voice-production.md
+→ derived Voice Production.docx
+→ voice_script_ready
+→ Flow 7 validation/delivery
 ```
 
-Flow 5 does not write spoken text. Flow 6 owns final wording, performance notation, duration, and `Voice Production.docx`.
+Flow 5 owns **which communications exist and what they must communicate**. Flow 6 owns **the final spoken wording and performance notation**. Flow 7 owns final validation/delivery.
 
 ## Stable Terms
 
 **Project Source** — original user/client/project material.
 
-**Requirement Register** — normalized traceable project requirements/gaps/decisions from Flow 2.
+**Canonical PRD Content** — `work/content.md`; accepted project meaning used by downstream production.
 
-**Canonical PRD Content** — `work/content.md`; authoritative PRD meaning for Flow 3/4.
+**PRD Handoff State** — `state/handoff-state.yaml`; revision-specific readiness for production use.
 
-**Render Projection** — `work/render-data.json`; derived data only for deterministic rendering.
+**Voice Requirement** — justified player-facing communication moment with approved speaker/channel/trigger/purpose/required facts.
 
-**Rendered PRD** — `output/final.html`; presentation artifact, not automatically accepted.
+**Voice Requirements** — `work/voice-requirements.md`; canonical Flow 5 source of truth for voice-moment scope.
 
-**PRD Acceptance** — `work/acceptance.md`; concise evidence/findings from mechanical + four-perspective Flow 4 review.
+**Voice Production Script** — `work/voice-production.md`; canonical Flow 6 source of truth for final spoken wording, performance direction, emphasis, pauses, line breaks, and Estimated Duration.
 
-**Handoff State** — `state/handoff-state.yaml`; revision-specific PRD readiness state.
+**Voice Production DOCX** — `output/Voice Production.docx`; derived formatted artifact built from the canonical Voice Production Script.
 
-**Team Handoff** — `output/team-handoff.md`; concise navigation aid pointing production roles to the accepted PRD.
+**Voice State** — `state/voice-state.yaml`; lifecycle owner across Flow 5–7.
 
-**Voice Requirement** — a justified player-facing communication moment derived from an accepted PRD revision. It defines speaker/channel/trigger/purpose/required facts, not final spoken wording.
+**Performance Direction** — concise square-bracket direction describing delivery, not a new project fact or event.
 
-**Voice Requirements** — `work/voice-requirements.md`; canonical Flow 5 source of truth for which voice moments exist and what each must communicate.
+**Estimated Duration** — expected spoken-duration range; not measured audio proof.
 
-**Voice State** — `state/voice-state.yaml`; Flow 5 status, accepted upstream revision, and next step.
+**Golden Sample / Approved Reference** — demonstrated structure/presentation/performance-quality reference; never automatic project fact or quota.
 
-**Performance Script** — ElevenLabs-ready spoken text produced in Flow 6 with controlled direction, emphasis, pauses, pacing, and duration.
+## Reference State
 
-**Golden Sample / Approved Reference** — structure/presentation/quality evidence only where explicitly defined; never automatic project facts or quotas.
+`kits/voice-production-kit/REFERENCE/Aftershock/README.md` records the audited original Aftershock Voice Production reference contract and source SHA-256. The original v1.0.0 DOCX was re-read, rendered, and visually inspected during Flow 6, but its binary is not duplicated into the active repository because the current GitHub write surface does not safely materialize binary files. The active builder does not depend on that binary at runtime.
+
+The old paired Aftershock Gameplay HTML V1.2 is also not duplicated into the active Voice kit because current accepted project PRDs are the factual upstream authority.
 
 ## Archived Package
 
-`Production Document Builder/` is Archived. It may provide migration evidence, but it does not override current root/foundation/kit owners and must not be extended by default.
+`Production Document Builder/` remains Archived and non-authoritative.
 
 ## Stable Structure
 
 - `docs/foundation/` — durable production policy.
 - `docs/knowledge/` — continuity, decisions, ownership, backlog.
-- `kits/project-document-generator/` — active PRD Flow 2–4 implementation.
-- `kits/voice-production-kit/` — active Flow 5 voice-requirement owner; Flow 6 follows next.
+- `kits/project-document-generator/` — active PRD Flow 2–4 owner.
+- `kits/voice-production-kit/` — active Voice Flow 5–6 owner.
 - `workspace/active/` — active project packages.
-- `workspace/saved/` — intentionally retained project packages.
+- `workspace/saved/` — retained project packages.
 - `Production Document Builder/` — Archived historical reference.
 
 ## Architecture Principle
 
 ```text
-Source ≠ Interpretation ≠ Decision ≠ Requirement State ≠ Canonical PRD ≠ Rendered Output ≠ PRD Acceptance ≠ Voice Requirements ≠ Performance Script ≠ Delivery
+Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX ≠ Audio ≠ Delivery
 ```
 
-A voice requirement may be valid without final wording. A final script must not introduce a new voice moment or project fact that Flow 5 did not justify.
+A visually correct DOCX is not proof of final voice quality. A performance script must not introduce voice moments or facts absent from accepted upstream owners.
 
 ## Current Development State
 
-Flows 1–5 are implemented on permanent branch `Local`. Flow 6 — ElevenLabs Performance Script Production — is the next active boundary.
+Flows 1–6 are implemented on permanent branch `Local`. Flow 7 — Voice Validation & Delivery — is the next active boundary.

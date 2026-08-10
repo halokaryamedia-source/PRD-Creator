@@ -1,13 +1,13 @@
 # Production Validation Report
 
 Updated: 2026-08-10
-Scope: current `Local` architecture, active Project Document Generator through Flow 4, active Voice Production Kit Flow 5 boundary, Archived builder reference, and remaining Flow 6–7 gaps.
+Scope: current `Local` architecture, active PRD Flow 2–4, active Voice Flow 5–6, Aftershock voice reference, and remaining Flow 7 proof gaps.
 
 ## Status Labels
 
 - `CURRENT-WORKSPACE VERIFIED` — checked in this workspace.
-- `REFERENCE VERIFIED` — approved reference demonstrates the relevant contract, but not current-project correctness.
-- `EXECUTION PROOF REQUIRED` — implementation/rules exist but relevant real-project execution has not yet been performed.
+- `REFERENCE VERIFIED` — approved reference demonstrates the relevant contract, not current-project correctness.
+- `EXECUTION PROOF REQUIRED` — implementation exists but relevant real-project execution has not yet been performed.
 - `UNSUPPORTED` — evidence shows the method should not be relied on.
 - `UNKNOWN` — insufficient/conflicting evidence.
 
@@ -15,36 +15,33 @@ Scope: current `Local` architecture, active Project Document Generator through F
 
 | Flow | Current status | Evidence |
 |---|---|---|
-| 1. Repository Boot & Project Memory | `CURRENT-WORKSPACE VERIFIED` | Root authority/continuity and permanent `Local` branch policy exist. |
-| 2. Source Intake & Requirement Recovery | `CURRENT-WORKSPACE VERIFIED` contract + `EXECUTION PROOF REQUIRED` real project | Active PRD kit contains provenance, requirement recovery, conflicts, gap classes, and `ready_for_prd`. |
-| 3. Project Document / PRD Generation | `CURRENT-WORKSPACE VERIFIED` implementation + sample execution | Canonical content/rendering contracts and shell-preserving renderer exist; synthetic non-Aftershock render passed structural checks. |
-| 4. PRD Validation & Team Handoff | `CURRENT-WORKSPACE VERIFIED` contract/tool + `EXECUTION PROOF REQUIRED` real project | Four-perspective acceptance, severity/gate rules, handoff state, team handoff contract, and mechanical validator exist; validator passed the synthetic Flow 3 sample. |
-| 5. Voice Requirement Extraction | `CURRENT-WORKSPACE VERIFIED` contract/reference audit + `EXECUTION PROOF REQUIRED` real project | Active Voice Production Kit defines `handoff_ready` entry, voice-moment extraction/filtering, canonical voice requirements, upstream-return rules, and `no_voice_required`. Original Aftershock source/voice pair was re-inspected to verify the demonstrated Main Story/Radio function patterns. |
-| 6. ElevenLabs Performance Script Production | `REFERENCE VERIFIED` + `EXECUTION PROOF REQUIRED` | Original v1.0 Voice Production instructions are preserved as a baseline, but Flow 6 repository alignment is not implemented yet. |
-| 7. Voice Validation & Delivery | `UNKNOWN` | Dedicated current validation/delivery state not implemented. |
+| 1. Repository Boot & Project Memory | `CURRENT-WORKSPACE VERIFIED` | Root continuity and permanent `Local` policy exist. |
+| 2. Source Intake & Requirement Recovery | `CURRENT-WORKSPACE VERIFIED` contract + `EXECUTION PROOF REQUIRED` real project | Provenance/recovery/readiness contracts exist. |
+| 3. Project Document / PRD Generation | `CURRENT-WORKSPACE VERIFIED` implementation + sample execution | Canonical PRD contract and shell renderer passed synthetic execution. |
+| 4. PRD Validation & Team Handoff | `CURRENT-WORKSPACE VERIFIED` contract/tool + `EXECUTION PROOF REQUIRED` real project | Four-perspective acceptance and mechanical validator exist. |
+| 5. Voice Requirement Extraction | `CURRENT-WORKSPACE VERIFIED` contract + `EXECUTION PROOF REQUIRED` real project | Voice scope/traceability/duplicate/upstream-return contracts exist. |
+| 6. ElevenLabs Performance Script Production | `CURRENT-WORKSPACE VERIFIED` contract/tool + synthetic DOCX execution | Canonical performance-script contract, Flow 5 parity gate, reference-styled DOCX builder, and codified Aftershock reference contract exist. |
+| 7. Voice Validation & Delivery | `UNKNOWN` | Final current-revision voice continuity/delivery acceptance is the next boundary. |
 
-## Flow 5 evidence
+## Flow 6 evidence
 
-Verified at contract/reference level:
+Verified now:
 
-- active voice kit is now repository-owned under `kits/voice-production-kit/`;
-- Flow 5 requires the accepted PRD revision rather than an arbitrary generated HTML;
-- `work/voice-requirements.md` is the canonical voice-moment owner;
-- `state/voice-state.yaml` stores revision/status/next step without duplicating voice content;
-- Main Story and Radio Communication are defined by communication function rather than fixed counts;
-- Radio requires an approved remote communication channel;
-- packages may legitimately contain zero voice moments;
-- `no_voice_required` is valid;
-- final spoken wording, performance notation, durations, ElevenLabs settings, and DOCX creation are excluded from Flow 5;
-- the original Aftershock Voice Production reference shows Main Story used for briefing/arrival/state-change/completion/reward/farewell and Radio used for brief warning/progress/urgency/encouragement/reminder/recovery, with section counts varying naturally.
+- original Voice Production Kit v1.0.0 source was re-read before redesign;
+- original Aftershock `Voice Production.docx` was rendered and visually inspected as the layout/performance benchmark;
+- original reference SHA-256 was verified as `c76ce2562ee1839ae9174373f510b26da09e7b05f90e43a3e1de820633c34020`; the source binary is not duplicated through the current GitHub write surface, and the active builder does not depend on it;
+- legacy paired Aftershock `Gameplay.html` identifies itself as V1.2 and is intentionally not duplicated as active upstream authority;
+- `builder/build_docx.py` compiles and built a synthetic non-Aftershock three-entry DOCX;
+- synthetic DOCX was rendered to three page PNGs and every page was visually inspected without clipping/overlap/layout breakage;
+- builder rejected an extra Voice ID, a Flow 5 Type mismatch, and an unresolved placeholder.
 
-Still requires execution proof:
+Still requires real-project proof:
 
-- first real `handoff_ready` project extraction;
-- one upstream-return case where a missing voice-critical decision is not invented;
-- one Flow 5 → Flow 6 handoff after Flow 6 is implemented;
-- handling of a valid `no_voice_required` project in real use.
+- first real `voice_requirements_ready` → canonical performance script run;
+- real project DOCX render/visual QA;
+- revision cycle after voice feedback;
+- final Flow 7 terminology/pronunciation/continuity/delivery acceptance.
 
 ## Archived package status
 
-`Production Document Builder/` remains Archived and non-authoritative. Flow 5 does not adopt any additional Archived builder machinery.
+`Production Document Builder/` remains Archived. Flow 6 does not reactivate its process architecture.

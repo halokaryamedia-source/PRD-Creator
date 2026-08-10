@@ -11,17 +11,16 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 - [x] Flow 3 — Project Document / PRD Generation
 - [x] Flow 4 — PRD Validation & Team Handoff
 - [x] Flow 5 — Voice Requirement Extraction
-- [ ] Flow 6 — ElevenLabs Performance Script Production redesign/alignment
+- [x] Flow 6 — ElevenLabs Performance Script Production
 - [ ] Flow 7 — Voice Validation & Delivery
 
 ## Later Maintenance
 
-- [ ] exercise Flow 2→3→4→5 on a real project and record evidence;
-- [ ] exercise a real `no_voice_required` path;
-- [ ] reconcile/migrate the original Aftershock Voice Production binary/layout reference during Flow 6;
+- [ ] exercise Flow 2→6 on a real project and record evidence;
 - [ ] decide final removal of Archived builder only after useful behavior is migrated/retired;
-- [ ] remove obsolete `agent/*` branches outside this workflow if desired using a Git client/API supporting branch deletion;
-- [ ] add broader automation only after real project failures prove a concrete need.
+- [ ] remove obsolete non-authoritative branches outside this workflow when a delete-ref surface is available;
+- [ ] add broader regression automation only after real production failures prove a concrete need;
+- [ ] audit inherited template/reference naming only if it creates real maintenance/behavior issues.
 
 ## Rule
 
