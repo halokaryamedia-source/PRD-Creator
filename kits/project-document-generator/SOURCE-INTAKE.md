@@ -53,7 +53,9 @@ Do not mark a source `superseded` merely because another file is newer. Superses
 
 ## Requirement Register Contract
 
-Every material requirement/fact/open decision receives a stable `REQ-###` ID. Record enough information to answer: **what is claimed, where did it come from, what is missing, and does it need approval?**
+Every production-relevant requirement, constraint, conflict, or open decision that must survive into the PRD or acceptance flow receives a stable `REQ-###` ID. Do **not** create requirement IDs for incidental descriptive facts that do not affect scope, behavior, build, implementation, scoring, handoff, acceptance, or an unresolved decision.
+
+Record enough information to answer: **what is claimed, where did it come from, what is missing, and does it need approval?**
 
 Recommended fields:
 
@@ -91,6 +93,18 @@ resolution: ""
 - `pending`;
 - `approved`;
 - `deferred`.
+
+### Requirement granularity
+
+Keep the register useful rather than exhaustive.
+
+- One `REQ-###` should represent one meaningful production rule, constraint, or decision.
+- Combine tightly coupled facts when they only make sense as one rule.
+- Split items only when they can differ independently in source, approval, conflict, implementation impact, or acceptance.
+- Do not mirror the source sentence-by-sentence.
+- Do not create duplicate requirements merely because the same rule appears in several files; preserve multiple provenance references on the same requirement when appropriate.
+
+The goal is traceability for decisions and production behavior, not a catalog of every sentence in the source.
 
 ## Recovery Rules
 
@@ -131,25 +145,26 @@ There must be exactly one practical `next_step`.
 
 ## Human Review
 
-`work/review.md` is the user-facing view of the register. Keep it concise. Show:
+`work/review.md` is the user-facing view of the register. Keep it decision-focused and concise. It is not a second requirement register.
 
-1. project/source snapshot;
-2. supported facts that materially define the project;
-3. Clarification;
-4. Completion;
-5. Proposal requiring approval;
-6. Blocked/conflicting requirements;
-7. readiness and one next step.
+Default content:
 
-Do not force empty sections.
+1. short project/source snapshot;
+2. compact confirmed production scope;
+3. only meaningful Clarification/Completion that changed or completed how the project is understood;
+4. Proposal requiring approval;
+5. Blocked/conflicting requirements that need attention;
+6. readiness and one next step.
+
+Do not dump every supported fact into the review. The requirement register owns detailed traceability. Do not force empty sections, and do not ask the user to approve low-risk Clarification/Completion that already fits the recovery rules.
 
 ## Flow 2 Completion Gate
 
 Flow 2 is complete when:
 
 - every available source is inventoried and read or explicitly marked unavailable/unreadable;
-- every material extracted requirement is traceable to evidence or approved state;
-- every gap has exactly one recovery class;
+- every production-relevant requirement is traceable to evidence or approved state;
+- every material gap has exactly one recovery class;
 - source conflicts are resolved or visibly Blocked;
 - low-risk Clarification/Completion has not been unnecessarily escalated to the user;
 - `intake-state.yaml` accurately reports `ready_for_prd`, `needs_decision`, or `blocked`;
