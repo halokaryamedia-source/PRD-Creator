@@ -1,6 +1,6 @@
 # Workflow
 
-Project Document Generator has three macro steps. Internal files/checks support them; they are not extra user approval stages.
+Project Document Generator has three macro steps. This file is a sequencing reference only; detailed rules live in each Flow owner.
 
 ```text
 1. UNDERSTAND — Flow 2
@@ -8,89 +8,65 @@ Project Document Generator has three macro steps. Internal files/checks support 
 3. REVIEW     — Flow 4
 ```
 
-Normal production is **Production Execution**, not repository Developing.
+Normal PRD work is **Production Execution**, not repository Developing.
 
 ## 1. UNDERSTAND
 
 Owner: `SOURCE-INTAKE.md`.
 
 ```text
-inspect all relevant source
-→ reconcile authority / duplicates
-→ recover production-relevant requirements
+inventory/triage relevant source
+→ inspect material evidence to sufficient depth
+→ recover requirements
 → safe Clarification / Completion
-→ group only remaining high-impact decisions
+→ grouped material decisions only if needed
 ```
 
-If user approval is needed, present `Recommended / Reason / Impact` in one compact batch where possible. Do not create a review ceremony when no material decision exists.
-
-**Exit:** `ready_for_prd`, `needs_decision`, or `blocked`.
+Exit: `ready_for_prd`, `needs_decision`, or `blocked`.
 
 ## 2. BUILD PRD
 
-Semantic/page-composition owner: `CONTENT-CONTRACT.md`.
-
-Normal build is one production operation:
+Owners: `CONTENT-CONTRACT.md`; `RENDERING.md` only for projection/HTML mechanics.
 
 ```text
-canonical work/content.md
-→ compact derived work/render-data.json
+content.md
+→ compact render-data.json
 → deterministic renderer
-→ approved Golden Sample
-→ output/final.html
+→ Golden Sample
+→ final.html
 ```
 
-Golden hierarchy/page language comes from `CONTENT-CONTRACT.md`; do not repeat/rederive it from the 794 KB template source during normal production.
-
-### Efficient build behavior
-
-- finish/reconcile canonical meaning before the main render projection;
-- do not rebuild full render data after every drafting edit;
-- do not hand-write final HTML;
-- do not load the full Golden template into model context;
-- for English-only documents, use scalar strings instead of duplicated localized values;
-- during revisions, update only affected content/render-data subtree and necessary cross-references;
-- read `RENDERING.md` only when projection shape or HTML mechanics actually matter.
-
-If drafting exposes a material unresolved product decision, return to UNDERSTAND rather than guessing.
-
-**Exit:** current canonical meaning is represented by the generated Golden PRD without unresolved placeholders.
+Canonical meaning is completed before the main projection. Do not hand-write HTML, load the full Golden source into model context, or rebuild unchanged projection/packages during bounded revisions.
 
 ## 3. REVIEW
 
 Owner: `VALIDATION.md`.
 
 ```text
-mechanical validator
-+ Golden composition markers
+mechanical validation
++ one-read multi-lens semantic review
 + actual visual sanity when available
-+ New Reader / Level Designer / Developer / Consistency
 → fix real findings
 → re-review only invalidated scope
 ```
 
-The validator may read the complete generated files at runtime. The model should not load `final.html` in full merely to perform semantic review. Inspect source only for a concrete bounded HTML defect.
-
-**Exit:** mechanical/semantic gates pass, Critical=0, Major=0, and evidence claims match what was actually inspected.
+The model reviews canonical meaning; the validator handles full HTML mechanics. A package/document slice should be read once and assessed for New Reader, Level Designer, Developer, and Consistency together rather than reread four times.
 
 ## Revision fast path
 
 ```text
 approved bounded change
-→ affected requirement/content
-→ required cross-references
-→ affected render projection
+→ affected requirement/content + necessary cross-references
+→ affected projection
 → rerender
 → one mechanical check
-→ targeted semantic/visual review
+→ targeted review
 ```
 
-Do not replay unchanged source intake, resolved decisions, unrelated packages, or unaffected review evidence.
+Do not replay unchanged intake, decisions, packages, or evidence.
 
-## User-facing delivery
+## Delivery
 
-Default delivery is only the final PRD plus material adjustments and any real remaining attention item. Internal state/render data/validator output stay internal unless requested or needed to explain a blocker.
+Default user delivery is the final PRD plus material adjustments and any real remaining attention item. Internal state/render data/validator output stays internal unless needed.
 
-## Stop rule
-
-Do not add more Flow stages, template profiles, quality scores, screenshot/pixel systems, or HTML frameworks to make the process look rigorous. Fix only concrete defects in the smallest owner.
+Do not add stages, template profiles, quality scores, screenshot/pixel systems, or HTML frameworks merely to make the process look rigorous.

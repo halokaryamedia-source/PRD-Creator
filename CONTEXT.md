@@ -5,7 +5,7 @@ Working branch: `Local`
 
 ## Product
 
-PRD-Creator converts uneven project material into development-ready PRD documentation and, when needed, downstream Voice Production assets.
+PRD-Creator turns uneven project material into development-ready PRD documentation and, when needed, downstream Voice Production assets.
 
 ## Production sequence
 
@@ -19,35 +19,23 @@ Flow 6  ElevenLabs Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
-## Current PRD operating direction
+Normal project creation/revision is **Production Execution**. `development-brief` is only for changing PRD-Creator itself.
 
-Normal project production is **Production Execution**, not repository Developing.
+## PRD operating direction
 
-```text
-new/revised PRD project
-→ project-document-production / Project Document Generator directly
-→ no development-brief
-```
+User effort stays low:
 
-`development-brief` is reserved for changing or extending PRD-Creator itself.
-
-The PRD user experience should minimize user effort:
-
-- auto-bootstrap project/workspace/internal IDs;
-- inspect all source before asking questions;
-- apply safe Clarification/Completion automatically;
-- batch remaining material decisions with a recommended option/reason/impact when responsible;
-- allow one approve-all response with named exceptions;
-- use delta-first revision handling for bounded approved changes;
-- keep internal state/evidence internal during normal delivery;
-- deliver the final PRD plus only concise material changes/attention items;
-- perform one visual sanity pass inside Flow 4 when actual visual inspection is available, without creating another gate.
+- internal project/workspace/bootstrap is automatic;
+- source is inventoried/triaged before deep reading;
+- only materially relevant evidence is read to the depth needed;
+- safe Clarification/Completion is automatic;
+- unresolved material decisions are batched;
+- bounded revisions update only affected scope;
+- internal state/evidence stays internal during normal delivery.
 
 ## Golden Sample authority
 
-The approved Golden Sample remains the required template/output foundation for this gameplay PRD family.
-
-Preserve:
+The approved Golden Sample is the required hierarchy, page-composition, component-language, and presentation authority for this gameplay PRD family:
 
 ```text
 Overview
@@ -59,14 +47,12 @@ Overview
      → Developer
 ```
 
-Efficiency improvements belong in generation flow and information density, not in removing this structure or replacing the template with a generic minimal shell.
+Efficiency improvements belong in source reading, authoring, projection, and review—not in replacing this document family with a generic/minimal shell.
 
 ## Anti-overdevelopment
 
-Prefer the smallest complete solution. Do not add new skills, schemas, workflow engines, approval layers, checksums, generic parsers, or template systems without a proved need.
+Prefer the smallest complete solution. Do not add skills, schemas, workflow engines, approval layers, generic parsers, template systems, checksums, or other machinery without a proved current need. BuildIT is a discipline/ownership/proof reference, not a feature checklist.
 
-BuildIT remains a reference for discipline/ownership/proof, not a feature checklist.
+## Continuation
 
-## Current continuation
-
-Read `docs/knowledge/next-action.md` for the single active task and remaining pre-sample audit boundary.
+Read `docs/knowledge/next-action.md` for current status and the single next step.

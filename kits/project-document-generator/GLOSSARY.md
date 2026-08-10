@@ -2,16 +2,17 @@
 
 | Term | Definition |
 |---|---|
-| Source | Original project material used as project evidence. Repository-backed intake preserves originals and records provenance before using them as authority. |
-| Approved Template | `template/approved-document.html`; the fixed HTML presentation used for rendering. |
-| Clarification | Rewording or expansion that preserves the existing meaning. |
-| Completion | Missing documentation filled from strong contextual support without changing the project design. |
-| Proposal | A suggested change affecting gameplay, mechanics, scoring, progression, learning objectives, win conditions, or another design decision. It requires user approval. |
-| Blocked | A gap that cannot be completed reliably without a user decision. |
-| Source Inventory | Persistent list of project sources, provenance, role, and availability/supersession status. |
-| Requirement Register | Persistent, traceable set of recovered facts, requirements, gaps, conflicts, and approval state. |
-| Intake State | Single resumable source-intake status and next step for the active project. |
-| Review | The human-readable classified set of Clarification, Completion, Proposal, and Blocked items. |
-| Canonical Content | The approved project content used for rendering. |
-| Objective Package | The complete repeated group of pages and components used by one objective in the Approved Template. |
-| Rendering | Cloning the Approved Template and replacing project-specific content without redesigning it. |
+| Source | Original project material preserved as evidence before being used as authority. |
+| Golden Sample | Approved hierarchy, page-composition, component-language, and presentation authority for this PRD family. It is reference authority for document structure/quality, not project-specific facts. |
+| Clarification | Wording/explanation improvement that preserves existing meaning. |
+| Completion | Missing documentation filled from strong contextual support without defining a new material design choice. |
+| Proposal | Material project/design choice suggested by the agent; requires explicit approval. |
+| Blocked | Required scope that cannot be completed reliably from current evidence/authority. |
+| Source Inventory | Compact persistent source identity/provenance/role plus non-default availability/supersession state. |
+| Requirement Register | Persistent traceable production requirements, conflicts, recovery, and approval exceptions. |
+| Intake State | Single resumable Flow 2 status plus one practical next step. |
+| Review | Conditional human-facing summary of meaningful recovery, decisions, or blockers. |
+| Canonical Content | `work/content.md`; source of truth for PRD meaning. |
+| Gameplay Package | Repeated Golden package containing Gameplay Overview, Level Design, and Developer role surfaces for one gameplay unit/objective. |
+| Render Projection | `work/render-data.json`; compact derived values required by the Golden renderer, not a second semantic authority. |
+| Rendering | Deterministically projecting canonical project meaning through the approved Golden hierarchy/page composition/template without redesigning it or inventing project facts. |

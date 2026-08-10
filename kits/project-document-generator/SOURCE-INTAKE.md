@@ -1,71 +1,63 @@
 # Source Intake & Requirement Recovery
 
-This file owns Flow 2 for repository-backed PRD projects. Its job is to recover enough trustworthy project meaning for Flow 3 without forcing the user to prepare repository structure, answer unnecessary questions, or pay model context for irrelevant material.
+Flow 2 recovers enough trustworthy project meaning for Flow 3 without making the user manage repository structure, answer avoidable questions, or pay context for irrelevant material.
 
-## Automatic project bootstrap
-
-For a new project:
+## Automatic bootstrap
 
 ```text
 user project name OR strongest authoritative title
 → derive stable kebab-case slug
-→ reuse a clearly matching active project OR create workspace/active/<slug>/
+→ reuse clearly matching active project OR create workspace/active/<slug>/
 → preserve supplied originals
-→ create only artifacts required by the active Flow
+→ create only current-Flow artifacts
 ```
 
-Do not ask the user to choose slugs, folders, IDs, YAML shape, or renderer files. Ask only when project identity is genuinely ambiguous.
+Do not ask the user for slugs, folders, IDs, YAML shape, or renderer files. Ask only when project identity is genuinely ambiguous.
 
-## Relevance-first source reading
+## Relevance-first reading
 
-All supplied/current sources relevant to the project are inventoried, but **inventory does not mean deep-reading every byte**.
-
-Use this sequence:
+Inventory supplied/current source, then choose reading depth by authority and relevance:
 
 ```text
-inventory source
+inventory
 → quick relevance/authority triage
-→ deep-read material authoritative source
-→ targeted-read supporting/reference/generated source only where it can affect current scope
+→ deep-read material authoritative evidence
+→ targeted-read supporting/reference/generated evidence as needed
 → recover requirements
 ```
 
-Triage may use filename/title, source role, table of contents, headings, metadata, preview/snippet, or already-known project context when available.
+Triage may use filename/title, role, TOC/headings, metadata, preview/snippet, or established project context.
 
 Rules:
 
 - deep-read authoritative material that can materially change current scope;
-- read supporting material only to the depth needed to resolve/confirm current requirements;
-- read reference/Golden material only for the demonstrated structure/quality actually needed; do not reload the full Golden document when its contract is already encoded in PRD-Creator;
-- read prior generated output only where it contributes continuity, conflict detection, or a bounded revision;
-- if relevance is uncertain and the source could materially change the PRD, inspect it rather than assuming it is irrelevant;
-- do not repeatedly reread unchanged sources during bounded revisions;
-- do not let source-reading economy hide a contradiction, superseding instruction, or material requirement.
+- supporting material is read only as far as needed to confirm/resolve current requirements;
+- Golden/reference material is read only for the demonstrated structure/quality actually needed; do not reload the full Golden when its contract is already encoded;
+- generated prior output is read only for continuity/conflict/bounded revision needs;
+- uncertain evidence that could materially change the PRD must be inspected rather than assumed irrelevant;
+- bounded revisions do not reread unchanged source;
+- reading economy must never hide a contradiction, superseding instruction, or material requirement.
 
-The goal is **complete production meaning**, not complete byte consumption.
+Goal: **complete production meaning, not complete byte consumption**.
 
-## Project package during Flow 2
+## Flow 2 package
 
 Minimum active package:
 
 ```text
-workspace/active/<project-slug>/
-├── source/originals/
-└── state/
-    ├── source-inventory.yaml
-    ├── requirement-register.yaml
-    └── intake-state.yaml
+source/originals/
+state/source-inventory.yaml
+state/requirement-register.yaml
+state/intake-state.yaml
 ```
 
-`work/review.md` is conditional and appears only when a human-facing decision/recovery summary is useful.
-
-Later Flow artifacts are not pre-created merely because the repository eventually supports them.
+`work/review.md` is conditional. Later-Flow artifacts are not pre-created.
 
 ## Source inventory
 
-Every source receives a stable `SRC-###` internally. Persist only fields that add information.
+Every source gets a stable `SRC-###`. Store only information that adds meaning.
 
-Compact normal form:
+Normal form:
 
 ```yaml
 id: SRC-001
@@ -73,41 +65,29 @@ path: source/originals/example.docx
 role: authoritative
 ```
 
-Defaults that may be omitted:
+Omittable defaults:
 
 ```text
-type   → infer from file/format when obvious
+type   → infer when obvious
 origin → user
 status → current
-notes  → absent when there is nothing useful to record
+notes  → absent when none
 ```
 
-Write exceptions when needed, for example:
+Write non-default state explicitly, for example `status: superseded|unreadable|missing` and a useful note. Do not infer supersession from file date alone.
 
-```yaml
-id: SRC-004
-path: source/originals/old-notes.pdf
-role: supporting
-status: superseded
-notes: Replaced by SRC-006 for Objective 2 timing.
-```
+Roles:
 
-Allowed roles:
-
-- `authoritative` — intended to define project facts/requirements;
-- `supporting` — explains or supplements authoritative material;
-- `reference` — sample/Golden/reference material; not project fact by default;
-- `generated` — prior generated output retained for continuity/audit only.
-
-Allowed non-default statuses include `superseded`, `unreadable`, and `missing`.
-
-Do not infer supersession from file date alone.
+- `authoritative` — defines project facts/requirements;
+- `supporting` — explains/supplements authoritative material;
+- `reference` — style/sample/Golden; not project fact by default;
+- `generated` — prior generated output for continuity/audit only.
 
 ## Requirement register
 
 Create one `REQ-###` per meaningful production rule, constraint, conflict, or open decision that must survive into PRD/acceptance. Do not mirror source sentences or catalog incidental facts.
 
-Compact supported requirement:
+Normal supported requirement:
 
 ```yaml
 id: REQ-001
@@ -117,17 +97,17 @@ provenance: [SRC-001]
 impact: high
 ```
 
-Default semantics may be omitted:
+Omittable defaults:
 
 ```text
-evidence_status  → supported
-recovery_class   → none
-approval_status  → not_required
-affects          → []
-resolution       → absent when none is needed
+evidence_status → supported
+recovery_class  → none
+approval_status → not_required
+affects         → []
+resolution      → absent when none
 ```
 
-Persist exception state explicitly:
+Non-default state is always explicit:
 
 ```yaml
 id: REQ-014
@@ -140,64 +120,60 @@ approval_status: pending
 impact: high
 ```
 
-Sparse state is a storage rule only; it does **not** weaken traceability. Missing non-default state must never be interpreted as approval or conflict resolution.
+Sparse storage must never hide conflict, blocker, pending approval, supersession, or another non-default condition.
 
-Requirement granularity:
+Granularity:
 
-- combine tightly coupled facts that function as one production rule;
-- split only when items can differ independently in source, approval, conflict, implementation, or acceptance;
-- attach multiple provenance references to one requirement instead of duplicating the requirement;
+- combine tightly coupled facts that function as one rule;
+- split only when source/approval/conflict/implementation/acceptance can differ independently;
+- attach multiple provenance sources to one requirement instead of duplicating it;
 - keep one stable meaning per REQ.
 
 ## Recovery classes
 
-- **Clarification** — meaning already exists; wording/explanation may improve without changing intent.
-- **Completion** — missing detail has one strongly supported low-risk completion.
-- **Proposal** — a material design/product choice must be made; requires approval.
+- **Clarification** — improve explanation without changing existing meaning.
+- **Completion** — one low-risk completion is strongly supported by surrounding evidence.
+- **Proposal** — a material design/product choice is required; user approval is mandatory.
 - **Blocked** — evidence is insufficient or materially conflicting.
 
-Conflict is an evidence condition. If authority does not resolve it, the affected requirement becomes Blocked/Proposal as appropriate.
-
-Golden/reference material may guide demonstrated structure/quality but never silently supplies project-specific names, mechanics, quantities, story, scoring, or runtime rules.
+Conflict is an evidence condition, not a fifth class. Golden/reference material may guide structure/quality but may not silently supply project names, mechanics, quantities, story, scoring, or runtime rules.
 
 ## Question economy
 
 ```text
-triage + inspect all materially relevant source
+triage + inspect materially relevant source
 → reconcile authority/duplicates
 → recover supported requirements
-→ apply safe Clarification/Completion
-→ collect remaining material Proposal/Blocked items
+→ safe Clarification / Completion
+→ collect unresolved material Proposal / Blocked items
 → one grouped decision review when needed
 ```
 
-Zero questions is preferred when the project is sufficiently defined.
+Zero questions is preferred when the project is sufficiently defined. Never ask for facts already recoverable from current source/state.
 
-When approval is required:
+When approval is needed:
 
 ```text
 Decision N — <topic>
 Recommended: <option>
-Reason: <short source/context reason>
+Reason: <short evidence-based reason>
 Impact: <what changes>
 ```
 
-The user may approve all recommendations or override named exceptions. A recommendation remains pending until approved.
+The user may approve all recommendations or override named exceptions. Recommendations remain pending until approved.
 
 ## Intake state
 
-`state/intake-state.yaml` keeps one current status and one practical next step.
+Keep one status and one practical next step.
 
-Normal in-progress form:
+In progress:
 
 ```yaml
 status: audit_in_progress
 next_step: Complete remaining source recovery.
 ```
 
-Only persist non-zero unresolved counters when they help continuation. Omitted unresolved counts mean zero.
-
-Positive readiness remains explicit:
+Omitted unresolved counters mean zero; write non-zero counters only when useful. Positive readiness is explicit:
 
 ```yaml
 status: ready_for_prd
@@ -205,50 +181,36 @@ ready_for_prd: true
 next_step: Build canonical PRD content.
 ```
 
-Recommended statuses:
-
-- `collecting_sources`;
-- `audit_in_progress`;
-- `needs_decision`;
-- `blocked`;
-- `ready_for_prd`.
-
-Do not maintain redundant false/zero fields simply to make every state file look identical.
+Statuses: `collecting_sources`, `audit_in_progress`, `needs_decision`, `blocked`, `ready_for_prd`.
 
 ## Conditional human review
 
-Create/update `work/review.md` only when it adds user or resumability value, such as:
+Create/update `work/review.md` only when it adds user/resumability value: approval is needed, a blocker/conflict must be surfaced, meaningful recovery should be visible, the user requests an intake summary, or a concise persistent note materially helps continuation.
 
-- Proposal requires approval;
-- Blocked/conflicting requirement needs attention;
-- meaningful Clarification/Completion should be surfaced;
-- the user asks for an intake summary;
-- a concise persistent note materially helps continuation.
-
-When used, keep only: project/source snapshot, confirmed scope, meaningful recovery, decisions/blockers, readiness, and one next step. Detailed traceability remains in the requirement register.
+When used, keep only: source/scope snapshot, meaningful recovery, decisions/blockers, readiness, and one next step. Detailed traceability stays in the register.
 
 ## Revision fast path
 
-An explicit approved bounded revision does not restart full intake when project identity and authority are already clear.
+A bounded approved revision does not restart Flow 2 when project identity/authority remain clear:
 
 ```text
 approved change
 → affected REQ(s)
 → necessary cross-reference/conflict check
-→ continue downstream revision path
+→ downstream revision path
 ```
 
-Reopen broader intake only when the change affects source authority, shared/global rules, broader scope, or unresolved material decisions.
+Reopen broader intake only when source authority, shared/global rules, broader scope, or unresolved material decisions are affected.
 
-## Flow 2 completion gate
+## Completion gate
 
 Flow 2 is complete when:
 
-- every source that can materially affect current scope has been inventoried and inspected to sufficient depth, or explicitly marked unavailable/unreadable;
-- every production-relevant requirement is traceable to evidence or approved state;
-- material conflicts/gaps are resolved or visibly Proposal/Blocked;
-- low-risk recovery was not unnecessarily escalated to the user;
-- `intake-state.yaml` truthfully reports readiness;
-- `ready_for_prd: true` is impossible while unresolved material Proposal/Blocked items affect required output.
+- every source that can materially affect current scope is inventoried and inspected to sufficient depth, or explicitly unavailable/unreadable;
+- every production-relevant requirement traces to evidence/approved state;
+- material gaps/conflicts are resolved or visibly Proposal/Blocked;
+- low-risk recovery was not unnecessarily escalated;
+- intake state truthfully reports readiness;
+- `ready_for_prd: true` cannot coexist with an unresolved material Proposal/Blocked item affecting required output.
 
-When ready, Flow 3 begins canonical PRD generation.
+Then Flow 3 may begin.

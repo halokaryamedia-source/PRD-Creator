@@ -2,50 +2,30 @@
 
 Status: active architecture
 
-## Flow 1 — Repository Boot & Project Memory
-Purpose: make the repository independently resumable.
-Status: implemented.
+```text
+Flow 1  Repository Boot & Project Memory
+Flow 2  Source Intake & Requirement Recovery
+Flow 3  Project Document / PRD Generation
+Flow 4  PRD Validation & Team Handoff
+Flow 5  Voice Requirement Extraction
+Flow 6  ElevenLabs Performance Script Production
+Flow 7  Voice Validation & Delivery
+```
 
-## Flow 2 — Source Intake & Requirement Recovery
-Purpose: preserve source/provenance, recover requirements, expose conflicts, and ask only real high-impact decisions.
-Status: implemented.
+## Flow ownership
 
-## Flow 3 — Project Document / PRD Generation
-Purpose: turn `ready_for_prd` state into canonical PRD content and approved-shell HTML without adding project meaning.
-Status: implemented.
+- **Flow 1** — resume current repository/project state without asking the user to reconstruct it.
+- **Flow 2** — preserve/triage source, recover production requirements, expose conflicts, ask only material unresolved decisions.
+- **Flow 3** — turn `ready_for_prd` meaning into canonical PRD content and deterministic **Golden hierarchy/page-composition HTML** without adding project meaning.
+- **Flow 4** — distinguish generated PRD from development-ready PRD and create current acceptance/handoff evidence.
+- **Flow 5** — derive justified Voice requirements from the accepted PRD without inventing upstream facts.
+- **Flow 6** — create canonical ElevenLabs performance wording + derived reference-styled DOCX while preserving Voice scope.
+- **Flow 7** — validate the current Voice Requirements → Script → DOCX chain; actual audio is reviewed only when supplied/in scope.
 
-## Flow 4 — PRD Validation & Team Handoff
-Purpose: distinguish generated PRD from development-ready PRD and issue revision-specific team handoff.
-Status: implemented.
+There is no canonical Flow 8.
 
-## Flow 5 — Voice Requirement Extraction
-Purpose: derive justified, traceable voice moments from the accepted PRD without inventing upstream facts.
-Status: implemented.
+## Architecture rule
 
-## Flow 6 — ElevenLabs Performance Script Production
-Purpose: convert accepted Voice Requirements into canonical spoken/performance wording and a derived reference-styled DOCX while preserving exact Voice scope.
-Status: implemented.
+Fix the owning boundary instead of using downstream polish to compensate for unresolved upstream meaning. Derived artifacts may organize/represent canonical meaning but never become authority for it.
 
-## Flow 7 — Voice Validation & Delivery
-Purpose: validate the exact current Voice Requirements → Script → DOCX chain and declare script/DOCX delivery-ready only after mechanical, semantic, terminology/pronunciation, continuity, and visual gates pass.
-
-Canonical owners:
-
-- `docs/foundation/07-voice-validation-delivery.md`;
-- `kits/voice-production-kit/VOICE-VALIDATION.md`;
-- `kits/voice-production-kit/validator/validate.py`;
-- per-project `work/voice-acceptance.md` + `state/voice-state.yaml`.
-
-Actual audio is reviewed only when supplied/in scope. No audio-quality claim is inferred from script quality.
-
-Status: implemented and exercised on the real The Clockwork Vault integration project.
-
-## After Flow 7
-
-There is no Flow 8 in the canonical production sequence.
-
-System Integration Proof is complete on **The Clockwork Vault** and the final retirement audit concluded the old `Production Document Builder/` has no remaining active dependency. The live Archived tree is retired; there is no migration Flow 8.
-
-## Architecture Rule
-
-Implement/fix the owning boundary rather than using downstream polish to compensate for unresolved upstream meaning.
+Detailed policy/procedure lives in the matching `docs/foundation/` and `kits/*` owner; this file is only the high-level sequence.

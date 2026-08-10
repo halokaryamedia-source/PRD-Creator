@@ -1,102 +1,79 @@
 ---
 name: project-document-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 2–4. Use for source recovery, canonical PRD meaning, Golden representation requirements, PRD readiness, and handoff semantics. Do not use as a generic HTML/Python wrapper when the semantic contract is already correct.
+description: Semantic/product-contract owner for PRD-Creator Flow 2–4. Use for source recovery, canonical PRD meaning, Golden representation requirements, PRD readiness, and handoff semantics. Do not use as a generic HTML/Python wrapper when semantics are already correct.
 ---
 
 # Project Document Production
 
-Own semantic judgment for Project Document Generator Flow 2–4. Detailed production procedure and executable mechanics stay in `kits/project-document-generator/`.
+Own Flow 2–4 semantic judgment. Detailed production procedure/mechanics stay in `kits/project-document-generator/`.
 
-## Use this skill when
+## Use when
 
-- incomplete/uneven source must become production requirements;
-- canonical `work/content.md` meaning is being created or corrected;
-- the Golden Sample representation contract is wrong or incomplete;
-- PRD development-readiness or handoff meaning is being decided.
+- uneven source must become reliable production requirements;
+- canonical `work/content.md` meaning is created/corrected;
+- Golden hierarchy/page-composition requirements are defined/corrected;
+- PRD development-readiness or handoff meaning is decided.
 
-Do not keep this skill loaded merely because renderer/template/validator Python or HTML is being debugged. If semantic meaning is already correct, route directly to the nearest kit implementation owner.
+If semantics are already correct and the defect is renderer/template/validator mechanics, route directly to the nearest kit implementation owner.
 
 ## Authority chain
 
 ```text
 originals + approved decisions
 → requirement state
-→ canonical content.md
+→ content.md (canonical)
 → render-data.json (derived)
 → final.html (derived)
 → acceptance/handoff evidence
 ```
 
-Generated HTML never becomes project authority. Renderer/prose may organize approved meaning but may not invent mechanics, quantities, lore, scoring, triggers, architecture, or unresolved decisions.
+Generated output never becomes project authority. Rendering/prose may organize approved meaning but may not invent mechanics, quantities, lore, scoring, triggers, architecture, or unresolved decisions.
 
-## Smallest-owner routing
+## Smallest semantic owner
 
-- Flow 2 meaning → `SOURCE-INTAKE.md`
-- Flow 3 canonical meaning → `CONTENT-CONTRACT.md`
-- Flow 3 render/projection contract → `RENDERING.md` only when projection/HTML behavior is actually in scope
+- Flow 2 → `SOURCE-INTAKE.md`
+- Flow 3 content meaning → `CONTENT-CONTRACT.md`
+- Flow 3 projection meaning → `RENDERING.md` only when projection/HTML behavior is actually in scope
 - Flow 4 readiness → `VALIDATION.md`
-- pure renderer mechanics with correct semantics → kit `AGENTS.md` + exact `renderer/*` owner
-- pure validator mechanics with correct semantics → kit `AGENTS.md` + `validator/validate.py`
 
-Read only the smallest owner needed. `WORKFLOW.md` is a sequencing reference, not mandatory context for routine production.
+`WORKFLOW.md` is sequencing reference only. Read the smallest owner required by the active problem.
 
-## Semantic rules
+## Core judgment
 
-- inspect available source before asking the user;
-- register only production-relevant requirements/constraints/decisions;
+- inspect/triage available source before questioning the user;
+- preserve authority/provenance and only production-relevant requirements;
 - apply supported Clarification/Completion automatically;
 - surface only unresolved material Proposal/Blocked decisions;
 - use minimum sufficient detail;
-- keep Gameplay / Level Design / Developer meaning separate;
-- preserve Golden hierarchy/page language without copying Golden project facts;
-- use the prose-quality rules owned by `CONTENT-CONTRACT.md`; do not duplicate a second writing guide here;
-- return a real upstream gap to Flow 2 rather than hiding it with polished wording or HTML.
+- keep Gameplay / Level Design / Developer meaning distinct;
+- preserve Golden document language without copying Golden project facts;
+- use `CONTENT-CONTRACT.md` as the single prose-quality/content-density owner;
+- return real upstream gaps to Flow 2 rather than hiding them with polished wording or HTML.
 
 ## Context economy
 
-Normal PRD production must not spend model context on generated HTML internals unnecessarily.
+Normal production should not load the full Golden template or generated HTML source into model context. Use canonical content for meaning, validator/runtime for full-file mechanics, and actual rendered/browser inspection for visual claims. Inspect HTML source only for a concrete bounded defect. Do not reread unchanged source/packages during bounded revisions.
 
-- Do **not** load `template/approved-document.html` in full for normal production. The renderer may read it at runtime without putting the ~794 KB Golden file into model context.
-- Do **not** load `output/final.html` in full for normal semantic review. Use canonical content for meaning, the validator for mechanical HTML checks, and actual rendered/browser inspection for visual claims.
-- Inspect template or generated HTML source only when a concrete finding points to a specific marker/component; read/search only that bounded area.
-- Do not reread unchanged source/packages during a bounded revision.
-- Do not load root skill + kit skill + WORKFLOW + every Flow procedure merely because the task is “make a PRD.” Route by the active Flow.
+## Acceptance judgment
 
-## Flow 4 judgment
+Assess the current revision once through these lenses:
 
-Acceptance asks whether the current revision is usable by:
-
-- New Reader / Player context;
+- New Reader / Player Context;
 - Level Designer;
 - Developer;
 - Project Consistency.
 
-Writing quality/density are checked inside those lenses, not through an AI detector or extra quality score. Critical/Major findings block readiness.
+A single reading slice may satisfy several lenses; do not reread the same package four times. Critical/Major findings block readiness. Writing/density issues matter only when they reduce production usability or alter meaning.
 
-## Acceptance gate
+Before reporting ready, confirm:
 
-Before reporting the PRD ready, confirm only what the current task requires:
-
-- project meaning is supported by authority;
-- no material unresolved decision was hidden;
-- canonical content and derived representation do not materially disagree;
-- role-specific content is usable without unnecessary duplication/filler;
+- material project meaning is supported;
+- no unresolved material decision is hidden;
+- canonical meaning and derived representation materially agree;
+- role-specific content is usable without filler/duplication;
 - Golden structure/composition is preserved at the level actually verified;
-- visual/runtime claims do not exceed actual evidence.
-
-## Maintenance rule
-
-```text
-observe defect
-→ identify first wrong owner
-→ semantic wrong: fix smallest Flow owner
-→ semantics correct / mechanics wrong: exact kit implementation owner
-→ regenerate invalidated derived artifact
-→ minimum useful proof
-```
-
-Never patch `final.html` as source of truth.
+- visual/runtime claims do not exceed evidence.
 
 ## Boundary
 
-This skill owns Flow 2–4 semantic/product contract only. Voice remains downstream and must not be used as authority for missing PRD design.
+This skill owns PRD Flow 2–4 semantic/product contract only. Voice remains downstream. Never patch `final.html` as source of truth.
