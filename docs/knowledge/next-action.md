@@ -10,7 +10,7 @@ Bring PRD-Creator's **agent operating architecture** to the same level of discip
 
 ## Current Status
 
-`OPERATING_PARITY_PHASE_1_AGENT_ROUTING_SKILLS_IMPLEMENTED`
+`OPERATING_PARITY_PHASE_2_OWNERSHIP_REVIEW_MAINTENANCE_PROOF_IMPLEMENTED`
 
 ## Completed — Phase 1
 
@@ -29,46 +29,68 @@ Implemented:
   - `project-document-production`;
   - `voice-production`;
 - Developing skill budget: `development-brief` + at most one specialist;
-- `docs/knowledge/skills/activation-matrix.md` routing rules;
-- `docs/knowledge/skills/skill-map.md` ownership/lineage/freeze rules;
-- `docs/knowledge/flow.md` agent routing map, explicitly separate from product Flow 2–7;
-- `docs/knowledge/flows/development-flow.md` dual Build/Acceptance validation route.
+- skill activation matrix + skill map/freeze rules;
+- agent work-routing flow + Developing flow.
+
+## Completed — Phase 2
+
+Implemented:
+
+- `docs/knowledge/modules/module-map.md` — repository-area ownership and new-file/module gate;
+- `docs/knowledge/sources/source-map.md` — current authority/source routing without duplicating source content;
+- `docs/knowledge/maintenance/maintenance-flow.md` + template — root-cause-first bug/regression/cleanup route;
+- `docs/knowledge/reviews/review-graph.md` + template — historical review bodies remain immutable evidence while the graph owns current interpretation;
+- `docs/knowledge/reviews/operating-architecture-parity-audit.md` — durable evidence for why parity work exists;
+- `docs/knowledge/decisions/change-decision-guide.md` — decision-log vs review vs next-action vs task-board routing and cross-owner change threshold;
+- `docs/knowledge/operations/context-boot-baseline.md` — expected efficient boot/routing scenarios and measurement fields;
+- `docs/foundation/validation-report.md` — current evidence labels plus production and operating-layer status matrix;
+- root/dashboard/navigation/ownership notes updated to route to these owners.
 
 ## Preserved Boundaries
 
-Phase 1 does **not**:
+Phase 2 does **not**:
 
-- replace or duplicate the detailed `kits/*/SKILL.md` production procedures;
+- change Flow 2–7 production semantics;
+- create a second state/planning hierarchy;
+- convert reviews into current task trackers;
+- make Maintenance use `development-brief` by default;
 - create renderer/validator/DOCX/evidence skills;
-- reopen completed product Flow 1–7;
-- recreate retired generic schema/profile/freeze architecture;
-- add a large generic skill catalog merely to resemble BuildIT by file count.
+- add CI/tests/frameworks merely because BuildIT has them;
+- recreate retired schema/profile/freeze/packaging architecture.
 
-## Current Skill Architecture
+## Current Operating Architecture
 
 ```text
-Developing task
-→ development-brief
-→ at most one semantic specialist
-   ├─ project-document-production  (Flow 2–4)
-   └─ voice-production             (Flow 5–7)
-→ affected kit/project owner
-→ minimum useful proof
-→ Acceptance POV gate
+boot
+AGENTS → CONTEXT → next-action
+↓
+mode
+Plan | Developing | Maintenance
+↓
+ownership / authority
+module-map + source-map + implementation-map
+↓
+Developing only
+ development-brief + at most one semantic specialist
+↓
+smallest owner change
+↓
+minimum useful proof
+↓
+review / decision / active-state owner updated only when applicable
 ```
 
-## Remaining Operating-Parity Gaps
+## Remaining Operating-Parity Acceptance
 
-Still not yet at BuildIT parity:
+Architecture is now substantially aligned, but final parity acceptance still needs actual usage evidence:
 
-- formal module/ownership map beyond the current implementation map;
-- explicit source-authority map;
-- dedicated Maintenance workflow + template;
-- review evidence lifecycle / `review-graph`;
-- durable decision-note threshold / lightweight OpenSpec-style guide;
-- context-boot efficiency baseline;
-- proof/validation status matrix updated around the new operating layer.
+- exercise representative boot/routing scenarios from `operations/context-boot-baseline.md`;
+- exercise at least one Maintenance route under the new structure;
+- run a navigation/ownership consistency audit for stale/duplicate links;
+- inspect nearest/local `AGENTS.md` value: Project Document kit currently has no local agent rules while Voice kit has a small local `AGENTS.md`;
+- decide whether any additional automated engineering/CI gate is justified by current failure evidence rather than copied from BuildIT;
+- produce a final current parity matrix.
 
 ## Next Step
 
-Implement **Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure**: add module/source ownership routing, Maintenance flow, review evidence lifecycle, lightweight durable-decision threshold, and proof/boot baseline without changing production semantics unless a concrete inconsistency is discovered.
+Implement **Phase 3 — Operating Parity Acceptance**: exercise the new routing/maintenance architecture on representative repository scenarios, reconcile local-owner rules only where useful, audit navigation/ownership consistency, and decide evidence-first whether any engineering gate is still missing. Do not alter production semantics unless the acceptance run exposes a concrete defect.

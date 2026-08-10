@@ -4,6 +4,39 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Review bodies preserve captured evidence; review graph owns current interpretation
+
+- **Decision:** dedicated review/audit bodies are time-captured evidence and are not rewritten merely because later implementation changes their status. `docs/knowledge/reviews/review-graph.md` owns the current interpretation (`active evidence`, `implemented`, `historical`, `superseded`, etc.).
+- **Reason:** rewriting old reviews destroys reasoning provenance and can make historical findings appear to describe current source.
+- **Boundary:** active work order remains in `next-action.md`; durable choices move to the decision owner rather than remaining only in review prose.
+- **Date:** 2026-08-10
+
+### Maintenance is root-cause-first and does not automatically use development-brief
+
+- **Decision:** bug/regression/cleanup work follows `docs/knowledge/maintenance/maintenance-flow.md`; it starts from observed drift/root cause and uses the smallest semantic owner. `development-brief` remains mandatory for non-trivial Developing work, not Maintenance by default.
+- **Reason:** forcing create/change ceremony onto every defect increases context and risks turning repair into redesign.
+- **Date:** 2026-08-10
+
+### Module map, source map, and implementation map have separate jobs
+
+- **Decision:** `module-map.md` routes repository-area ownership, `source-map.md` routes claim/source authority, and `implementation-map.md` points to exact current code/procedure locations.
+- **Reason:** one giant ownership/source document would become another broad state system and duplicate current owners.
+- **Rule:** maps link owners; they do not copy full source content or become higher authority than the owners they reference.
+- **Date:** 2026-08-10
+
+### Formal coordinated change notes require a real cross-owner threshold
+
+- **Decision:** ordinary bounded work does not create OpenSpec-style/formal change machinery. A durable coordinated change note is justified only when several semantic owners, migration phases, or compatibility promises must change as one contract and existing state/decision owners cannot represent it clearly.
+- **Reason:** preserve BuildIT's cross-cutting-change discipline without reintroducing planning ceremony for local edits.
+- **Owner:** `docs/knowledge/decisions/change-decision-guide.md`.
+- **Date:** 2026-08-10
+
+### Context boot efficiency is measured by scenarios, not assumed from documentation
+
+- **Decision:** `docs/knowledge/operations/context-boot-baseline.md` records expected routes and measurement fields, but an unrun scenario stays unverified.
+- **Reason:** having good routing documents does not prove agents actually reach the correct owner efficiently in real tasks.
+- **Date:** 2026-08-10
+
 ### Production completion and BuildIT-style operating parity are separate milestones
 
 - **Decision:** completing Flow 1–7, real-project integration, and retired-builder migration does not mean PRD-Creator has achieved BuildIT-style agent operating parity.

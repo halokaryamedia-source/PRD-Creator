@@ -33,15 +33,21 @@ Use this page for future/non-active work only. It never overrides `../next-actio
   - [x] `voice-production` specialist;
   - [x] activation matrix + skill map + freeze rule;
   - [x] agent flow + Developing flow.
-- [ ] Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure;
-  - [ ] module/ownership map;
-  - [ ] source-authority map;
-  - [ ] dedicated Maintenance flow/template;
-  - [ ] review evidence lifecycle / review graph;
-  - [ ] lightweight durable-decision/OpenSpec threshold;
-  - [ ] context boot baseline;
-  - [ ] operating-layer proof/validation matrix update.
-- [ ] Phase 3 — exercise the operating routing on representative real tasks and tighten only evidence-backed gaps.
+- [x] Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure;
+  - [x] module/ownership map;
+  - [x] source-authority map;
+  - [x] dedicated Maintenance flow/template;
+  - [x] review evidence lifecycle / review graph;
+  - [x] durable-decision / cross-owner change threshold;
+  - [x] context boot baseline;
+  - [x] operating-layer proof/validation matrix update.
+- [ ] Phase 3 — Operating Parity Acceptance;
+  - [ ] exercise representative boot/routing scenarios from `context-boot-baseline.md`;
+  - [ ] exercise at least one Maintenance scenario using the new route;
+  - [ ] audit owner/navigation links for stale or duplicate routing;
+  - [ ] inspect whether nearest/local `AGENTS.md` rules add real value for the Project Document kit and reconcile the existing Voice kit local rules;
+  - [ ] decide whether any additional engineering/CI gate is evidence-backed rather than copied from BuildIT;
+  - [ ] publish final parity matrix and leave one normal operational next step.
 
 ## Other Maintenance
 

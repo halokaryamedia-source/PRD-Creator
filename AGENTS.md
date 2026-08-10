@@ -20,7 +20,7 @@ At the start of every material PRD-Creator session:
 4. read `docs/knowledge/skills/activation-matrix.md` only when selecting a workflow/skill;
 5. use `docs/knowledge/minimal-nav.md` when ownership is unclear.
 
-Do not broad-scan saved projects, all references, generated output, or retired Git history by default.
+Do not broad-scan saved projects, all references, generated output, review history, or retired Git history by default.
 
 ## Session Continuity
 
@@ -30,7 +30,10 @@ A new session must resume from repository state before asking the user to recons
 - `docs/knowledge/next-action.md` owns the current goal, status, blockers, completed boundary, and one next step.
 - `docs/knowledge/decision-log.md` owns durable decisions and reasons.
 - `docs/foundation/` owns durable production policy.
-- `docs/knowledge/implementation-map.md` owns current implementation/owner routing.
+- `docs/knowledge/modules/module-map.md` owns repository-area responsibility routing.
+- `docs/knowledge/sources/source-map.md` owns authority/source routing.
+- `docs/knowledge/implementation-map.md` owns exact current implementation/procedure routing.
+- `docs/knowledge/reviews/review-graph.md` owns the current meaning of historical reviews/evidence.
 - affected kit/source + relevant proof own actual behavior.
 
 Before ending material work, update only the canonical owner whose state actually changed.
@@ -102,6 +105,8 @@ Use the matching authority for the claim:
 
 Material conflicts are `UNKNOWN` until reconciled; never choose silently.
 
+Use `docs/knowledge/sources/source-map.md` when the correct source/authority is unclear.
+
 ## Developing Front Door
 
 Every non-trivial Developing task uses:
@@ -136,6 +141,8 @@ Do not stack specialists merely because a task touches several file types or imp
 
 Detailed routing lives in `docs/knowledge/skills/activation-matrix.md`.
 
+Maintenance procedure lives in `docs/knowledge/maintenance/maintenance-flow.md`.
+
 ## Execution Channels
 
 ### ChatGPT → GitHub
@@ -164,6 +171,7 @@ If the cause/contract remains unknown, do not patch around it. Report `Perlu pem
 Before creating or moving a file:
 
 - search current owners/helpers/tests/docs first;
+- use `docs/knowledge/modules/module-map.md` when repository-area ownership is unclear;
 - reuse or extend before creating;
 - create only when the canonical owner is clear and the file is required now;
 - do not create README/index/schema/config/fallback/abstraction for hypothetical future use;
@@ -177,6 +185,24 @@ A sample demonstrates structure, presentation, density, tone, or quality only to
 
 Do not promote sample-specific objective counts, characters, mechanics, scoring, voice counts, durations, speakers, channels, tags, lines, or pronunciation into generic policy.
 
+## Review Evidence Rule
+
+A review/audit is evidence captured at a point in time. It is not automatically current policy or task state.
+
+- review bodies preserve what was observed/reasoned at capture time;
+- `docs/knowledge/reviews/review-graph.md` owns the **current meaning** of historical reviews;
+- durable choices move into `decision-log.md` / `decisions/`;
+- active work order remains in `next-action.md`;
+- do not rewrite old review bodies merely so they appear current after implementation.
+
+Create a dedicated review only when it adds durable evidence beyond an ordinary task diff/validation note.
+
+## Durable Decision / Cross-Owner Change Rule
+
+Use `docs/knowledge/decisions/change-decision-guide.md` to decide whether a choice belongs in the decision log, a dedicated decision note, review evidence, next-action, or task board.
+
+Do not create a formal cross-owner change plan for ordinary bounded work. Escalate only when several semantic owners/migration phases genuinely need one coordinated durable contract.
+
 ## Anti-Slop Baseline
 
 - Think before editing; surface important assumptions/tradeoffs.
@@ -188,7 +214,7 @@ Do not promote sample-specific objective counts, characters, mechanics, scoring,
 - Do not use rendering, voice writing, or audit prose to solve an upstream definition problem.
 - Do not repeatedly patch symptoms when the owning content/rule/code is wrong.
 - Stop the same failed direction after two attempts without new evidence.
-- Do not create tests, screenshots, builds, fixtures, or reports solely to look rigorous.
+- Do not create tests, screenshots, builds, fixtures, reports, or review notes solely to look rigorous.
 - Never claim approval, validation, runtime behavior, visual quality, audio quality, or delivery that was not actually obtained.
 
 ## Minimum Useful Proof
@@ -278,9 +304,13 @@ Use exactly one next step. Explain decisions, not internal machinery, unless the
 
 - stable facts/terminology → `CONTEXT.md`;
 - active continuation state → `docs/knowledge/next-action.md`;
-- durable decisions/reasons → `docs/knowledge/decision-log.md`;
+- durable decisions/reasons → `docs/knowledge/decision-log.md` + `docs/knowledge/decisions/`;
 - production policy → `docs/foundation/`;
 - agent routing → `docs/knowledge/flow.md`;
+- module ownership → `docs/knowledge/modules/module-map.md` + `implementation-map.md`;
+- source authority routing → `docs/knowledge/sources/source-map.md`;
+- review evidence current meaning → `docs/knowledge/reviews/review-graph.md`;
+- Maintenance procedure → `docs/knowledge/maintenance/maintenance-flow.md`;
 - skill inventory → `docs/knowledge/skills/skill-map.md`;
 - skill routing → `docs/knowledge/skills/activation-matrix.md`;
 - production procedures → affected `kits/*` owner;

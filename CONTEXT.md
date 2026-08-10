@@ -30,11 +30,16 @@ Canonical repository-wide skills live only under `.agents/skills/`:
 - `project-document-production` — semantic specialist for Flow 2–4;
 - `voice-production` — semantic specialist for Flow 5–7.
 
-Detailed routing is owned by:
+Detailed routing/ownership is owned by:
 
-- `docs/knowledge/flow.md`;
-- `docs/knowledge/skills/activation-matrix.md`;
-- `docs/knowledge/skills/skill-map.md`.
+- `docs/knowledge/flow.md` — Plan / Developing / Maintenance route;
+- `docs/knowledge/skills/activation-matrix.md` — skill selection;
+- `docs/knowledge/skills/skill-map.md` — skill inventory/lineage/freeze;
+- `docs/knowledge/modules/module-map.md` — repository-area ownership;
+- `docs/knowledge/sources/source-map.md` — authority/source routing;
+- `docs/knowledge/maintenance/maintenance-flow.md` — bug/regression/cleanup route;
+- `docs/knowledge/reviews/review-graph.md` — current meaning of historical review evidence;
+- `docs/knowledge/decisions/change-decision-guide.md` — durable decision / cross-owner change threshold.
 
 The root skill architecture is intentionally small and frozen. Detailed production procedure remains inside the existing kits rather than being duplicated into root skills.
 
@@ -77,6 +82,12 @@ Flow 5 owns **which communications exist and what they must communicate**. Flow 
 
 **Acceptance POV** — downstream reader/operator/consumer who determines whether the result is actually useful.
 
+**Review Graph** — current-status index for historical review/audit evidence; review bodies remain time-captured.
+
+**Maintenance Flow** — root-cause-first route for bugs/regressions/cleanup that does not automatically invoke `development-brief`.
+
+**Source Authority Map** — routing note that identifies which current owner can support a claim without becoming another source of truth.
+
 **Canonical PRD Content** — `work/content.md`; accepted project meaning used by downstream production.
 
 **Voice Requirement** — justified player-facing communication moment with approved speaker/channel/trigger/purpose/required facts.
@@ -114,8 +125,8 @@ The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; cu
 ## Stable Structure
 
 - `.agents/skills/` — canonical repository-wide agent skill root.
-- `docs/foundation/` — durable production policy.
-- `docs/knowledge/` — continuity, routing, skills, decisions, ownership, backlog/evidence.
+- `docs/foundation/` — durable production policy and current proof matrix.
+- `docs/knowledge/` — continuity, routing, skills, ownership, sources, maintenance, reviews, decisions, operations.
 - `kits/project-document-generator/` — active PRD Flow 2–4 production owner.
 - `kits/voice-production-kit/` — active Voice Flow 5–7 production owner.
 - `workspace/active/` — active project packages.
@@ -133,6 +144,10 @@ A successful tool/artifact never silently becomes higher authority than the cano
 
 Production Flow 1–7, The Clockwork Vault real-project integration proof, and retirement of the old Production Document Builder are complete.
 
-BuildIT-style operating parity is now a separate improvement track. **Phase 1 — Agent Routing + Skill Architecture is implemented**: mode routing, mandatory `development-brief`, semantic specialist budget, root `.agents/skills/`, activation matrix, skill map, and agent development flow are established.
+BuildIT-style operating parity is a separate improvement track:
 
-The next active parity boundary is **Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure**. Production behavior itself is not reopened unless that work exposes a concrete conflict.
+- **Phase 1 — Agent Routing + Skill Architecture:** implemented;
+- **Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure:** implemented in repository architecture;
+- representative boot/routing/Maintenance scenarios still need to be exercised before final operating-parity acceptance.
+
+Production behavior itself is not reopened unless parity acceptance exposes a concrete conflict or missing capability.

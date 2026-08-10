@@ -12,13 +12,14 @@ The repository is project memory. Chat history is supporting context, not the au
 
 ## Two Architecture Layers
 
-PRD-Creator now separates **how the agent works** from **how the product is produced**.
+PRD-Creator separates **how the agent works** from **how the product is produced**.
 
 ```text
 Agent Operating Layer
 Plan / Developing / Maintenance
 → development-brief for Developing
 → at most one semantic specialist
+→ ownership/source routing
 → minimum useful proof + Acceptance POV
 
 Product Production Layer
@@ -39,14 +40,21 @@ voice-production
 - Developing may add **at most one** semantic specialist.
 - `project-document-production` owns agent judgment/routing around Flow 2–4.
 - `voice-production` owns agent judgment/routing around Flow 5–7.
+- Maintenance is root-cause-first and does not automatically invoke `development-brief`.
 - detailed production procedures remain inside `kits/`; root skills do not duplicate them.
 
-Routing owners:
+Operating owners:
 
 - `docs/knowledge/flow.md` — agent work-routing map;
 - `docs/knowledge/flows/development-flow.md` — Developing contract;
+- `docs/knowledge/maintenance/maintenance-flow.md` — Maintenance contract;
 - `docs/knowledge/skills/activation-matrix.md` — skill selection;
-- `docs/knowledge/skills/skill-map.md` — inventory/lineage/freeze rules.
+- `docs/knowledge/skills/skill-map.md` — inventory/lineage/freeze rules;
+- `docs/knowledge/modules/module-map.md` — repository-area ownership;
+- `docs/knowledge/sources/source-map.md` — source/authority routing;
+- `docs/knowledge/reviews/review-graph.md` — current meaning of historical review evidence;
+- `docs/knowledge/decisions/change-decision-guide.md` — durable decision / cross-owner change threshold;
+- `docs/knowledge/operations/context-boot-baseline.md` — expected efficient boot/routing scenarios.
 
 ## Production Flow
 
@@ -68,7 +76,7 @@ Flow 7 — Voice Validation & Delivery                  ✓ implemented
 
 Project Document Generator owns Flow 2–4 under `kits/project-document-generator/`.
 
-Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
+Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable Voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
 
 The replacement Flow 2–7 pipeline passed real-project integration proof using **The Clockwork Vault**, including a real DOCX defect → root fix → rebuild → revalidation cycle.
 
@@ -78,15 +86,18 @@ The replacement Flow 2–7 pipeline passed real-project integration proof using 
 2. read `CONTEXT.md`;
 3. read `docs/knowledge/next-action.md`;
 4. open only the smallest relevant foundation/source/kit owner;
-5. open the activation matrix only when skill selection is needed.
+5. use module/source maps only when ownership/authority is unclear;
+6. open the activation matrix only when skill selection is needed.
+
+Do not load the task board, review history, every kit, or saved projects during normal boot unless the active boundary requires them.
 
 ## Repository Map
 
 - `AGENTS.md` — repository-wide work modes, authority, independent judgment, root-cause/proof/anti-slop baseline.
 - `CONTEXT.md` — stable purpose, terminology, architecture boundaries.
 - `.agents/skills/` — canonical repository-wide routing/judgment skills.
-- `docs/foundation/` — durable production policy.
-- `docs/knowledge/` — current state, routing, skills, decisions, ownership, evidence/backlog.
+- `docs/foundation/` — durable production policy + current proof matrix.
+- `docs/knowledge/` — current state, routing, ownership, sources, skills, decisions, maintenance, reviews, operations.
 - `kits/project-document-generator/` — detailed PRD intake/generation/validation procedure and implementation.
 - `kits/voice-production-kit/` — detailed Voice extraction/script/DOCX/final acceptance procedure and implementation.
 - `workspace/active/` — active project packages.
@@ -105,6 +116,7 @@ Generated artifacts and successful tooling never silently become higher authorit
 - Product Flow 1–7: implemented.
 - Real-project Flow 2–7 integration: verified on The Clockwork Vault.
 - Retired Production Document Builder migration: complete.
-- BuildIT-style operating parity: **Phase 1 Agent Routing + Skill Architecture implemented**.
+- BuildIT-style operating parity Phase 1 — Agent Routing + Skill Architecture: implemented.
+- BuildIT-style operating parity Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure: implemented in repository architecture.
 
-The next operating-parity boundary is ownership/source mapping, Maintenance workflow, review lifecycle, durable-decision threshold, and boot/proof infrastructure. Production semantics should remain unchanged unless that work exposes a concrete inconsistency.
+Final operating-parity acceptance still requires representative boot/routing/Maintenance scenarios and a final owner/link/proof audit. Do not add CI or another framework merely to mimic BuildIT; add an engineering gate only if current failure evidence justifies it.

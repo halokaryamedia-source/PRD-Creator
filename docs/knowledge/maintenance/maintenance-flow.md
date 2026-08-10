@@ -1,0 +1,114 @@
+# Maintenance Flow
+
+Updated: 2026-08-10
+
+Use Maintenance for bugs, regressions, review/cleanup, stale documentation, broken routing, and behavior-preserving refactors.
+
+```text
+User reports bug/review/cleanup
+→ boot repository memory
+→ identify affected semantic owner
+→ observe/reproduce or inspect concrete drift
+→ cause/scope grounded?
+   ├─ no → UNKNOWN / LOCAL PROOF REQUIRED / Perlu pemeriksaan
+   └─ yes
+      → smallest safe correction
+      → targeted regression/proof
+      → scope/diff review
+      → update only the canonical owner whose state changed
+```
+
+## Categories
+
+- **Bug** — observe/reproduce, diagnose cause, correct the smallest owner, add only useful regression proof.
+- **Artifact defect** — determine whether cause is canonical content, projection/script, renderer/builder, validator, template, or evidence before editing.
+- **Small refactor** — preserve behavior; prefer deletion/simplification over new abstraction.
+- **Cross-owner refactor** — pause and define a durable change contract only when multiple semantic owners must change together.
+- **Documentation cleanup** — edit the current owner, remove stale/duplicate routing, verify affected links.
+- **Historical review cleanup** — do not rewrite old evidence as if newly observed; update `reviews/review-graph.md` instead.
+
+## Owner Routing
+
+```text
+source / requirement / PRD / HTML / PRD validator defect
+→ project-document-production owner
+
+Voice requirement / script / DOCX / Voice validator defect
+→ voice-production owner
+
+repository routing / ownership / review / decision-memory defect
+→ root AGENTS + relevant docs/knowledge owner
+```
+
+Use a root specialist only when its procedure adds value. Maintenance does not automatically invoke `development-brief`.
+
+## Root-Cause Rule
+
+Before editing establish:
+
+1. what is actually wrong;
+2. where the first incorrect owner/state appears;
+3. why the proposed fix addresses that cause;
+4. what evidence can prove the defect no longer exists.
+
+Do not patch a derived artifact when its canonical owner is wrong.
+
+Examples:
+
+```text
+wrong project fact in final.html
+→ inspect content/projection first
+→ do not hand-edit final.html
+
+blank page in Voice Production.docx
+→ inspect builder/layout owner
+→ do not patch DOCX binary
+
+acceptance report says PASS but canonical script is wrong
+→ fix/reopen script owner
+→ do not edit evidence to hide defect
+```
+
+## Validation Economy
+
+Run only proof invalidated by the change.
+
+- docs/routing → exact path/link/owner check;
+- canonical content → affected requirement/semantic acceptance;
+- renderer → targeted structural render check; browser claims need browser evidence;
+- Voice script → exact requirement/script parity + semantic check;
+- DOCX builder → rebuild + mechanical validation + rendered-page inspection when visual behavior changed;
+- audio behavior → actual audio evidence.
+
+Do not rerun full unrelated production flows for a local maintenance fix.
+
+## Scope Rules
+
+- diagnose before patching;
+- do not turn cleanup into feature work;
+- do not add fallback/compatibility layers unless the cause proves they are needed;
+- do not create new skills/modules because the current owner is inconvenient;
+- stop repeating the same failed direction after two attempts without new evidence;
+- `No change required` is valid when inspection disproves the reported defect.
+
+## Maintenance Checklist
+
+- [ ] affected owner identified;
+- [ ] concrete drift/defect observed or evidence limitation stated;
+- [ ] root cause grounded before edit;
+- [ ] change stayed inside scope;
+- [ ] derived artifacts regenerated instead of patched where applicable;
+- [ ] smallest informative validation performed;
+- [ ] no material claim exceeds actual proof;
+- [ ] review/decision/next-action owner updated only if its state changed.
+
+## Retirement Rule
+
+A note/tool/path can be retired when its useful behavior has moved to the canonical owner or is no longer part of the current product contract. Preserve historical evidence when it explains why a decision exists; do not preserve live duplicate architecture solely for archaeology.
+
+## Related
+
+- [Agent Flow](../flow.md)
+- [Module Map](../modules/module-map.md)
+- [Review Graph](../reviews/review-graph.md)
+- [Change Decision Guide](../decisions/change-decision-guide.md)

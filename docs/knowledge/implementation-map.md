@@ -2,7 +2,7 @@
 
 Updated: 2026-08-10
 
-Use this note to answer where current behavior/policy lives. It is not the active task tracker.
+Use this note to answer where current behavior/policy lives. It is not the active task tracker and does not replace module/source maps.
 
 ## Agent Operating Layer
 
@@ -12,12 +12,18 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Stable product context / terminology | `CONTEXT.md` |
 | Agent Plan / Developing / Maintenance routing | `docs/knowledge/flow.md` |
 | Developing task contract | `.agents/skills/development-brief/SKILL.md` + `docs/knowledge/flows/development-flow.md` |
+| Maintenance task contract | `docs/knowledge/maintenance/maintenance-flow.md` |
 | Root skill routing | `docs/knowledge/skills/activation-matrix.md` |
 | Root skill inventory/lineage/freeze | `docs/knowledge/skills/skill-map.md` |
+| Repository-area ownership | `docs/knowledge/modules/module-map.md` |
+| Source/authority routing | `docs/knowledge/sources/source-map.md` |
+| Review evidence current meaning | `docs/knowledge/reviews/review-graph.md` |
+| Durable decision / cross-owner change threshold | `docs/knowledge/decisions/change-decision-guide.md` |
 | Project Document semantic specialist | `.agents/skills/project-document-production/SKILL.md` |
 | Voice semantic specialist | `.agents/skills/voice-production/SKILL.md` |
 | Active continuation state | `docs/knowledge/next-action.md` |
 | Durable decisions/reasons | `docs/knowledge/decision-log.md` |
+| Context boot efficiency baseline | `docs/knowledge/operations/context-boot-baseline.md` |
 
 ## Production Layer
 
@@ -32,7 +38,7 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Flow 6 DOCX format/build | `kits/voice-production-kit/DOCX-FORMAT.md` + `builder/build_docx.py` |
 | Flow 7 Voice validation/delivery | `docs/foundation/07-voice-validation-delivery.md` + `kits/voice-production-kit/VOICE-VALIDATION.md` |
 | Flow 7 mechanical validator | `kits/voice-production-kit/validator/validate.py` |
-| Current production evidence status | `docs/foundation/validation-report.md` |
+| Current production + operating evidence status | `docs/foundation/validation-report.md` |
 | Active PRD kit | `kits/project-document-generator/` |
 | Active Voice kit | `kits/voice-production-kit/` |
 | Active Voice reference contract | `kits/voice-production-kit/DOCX-FORMAT.md` + `REFERENCE/Aftershock/README.md` |
@@ -40,6 +46,22 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Saved project packages | `workspace/saved/` |
 | Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
 | Retired-builder evidence | `docs/knowledge/operations/archived-retirement-audit.md` |
+| Operating parity audit evidence | `docs/knowledge/reviews/operating-architecture-parity-audit.md` |
+
+## Map Responsibilities
+
+```text
+module-map
+= which repository area owns a responsibility
+
+source-map
+= which source/state/artifact can support a claim
+
+implementation-map
+= exact current procedure/code/document location
+```
+
+Do not duplicate one map into another.
 
 ## Layer Separation
 
@@ -52,6 +74,9 @@ kits + foundation Flow rules
 
 workspace project package
 = project-specific source/state/canonical work/artifacts
+
+reviews / decisions / next-action
+= evidence history / durable choices / active state
 ```
 
 Do not move detailed Flow procedure into root skills and do not use kit-local `SKILL.md` files as parallel repository-wide routing roots.
@@ -67,7 +92,7 @@ work/content.md                    canonical PRD
       ↓
 PRD acceptance / handoff_ready
       ↓
-work/voice-requirements.md         canonical voice-moment scope
+work/voice-requirements.md         canonical Voice-moment scope
       ↓
 work/voice-production.md           canonical spoken/performance wording
       ↓
@@ -81,6 +106,6 @@ Actual generated audio, when supplied, is evidence/delivery material only and ne
 
 ## Current Engineering Boundary
 
-Production Flow 1–7 and real-project integration are complete. BuildIT-style Operating Architecture Parity Phase 1 is now implemented.
+Production Flow 1–7 and real-project integration are complete. BuildIT-style Operating Architecture Parity Phase 1 and Phase 2 are implemented.
 
-Next operating boundary: module/source ownership routing, Maintenance workflow, review evidence lifecycle, durable-decision threshold, and boot/proof baseline. Do not modify production semantics during that phase unless a concrete inconsistency is found.
+Next boundary: Phase 3 Operating Parity Acceptance — exercise representative boot/routing/Maintenance scenarios, audit navigation/nearest-owner rules, and decide whether any additional engineering gate is justified by evidence. Do not modify production semantics unless that acceptance run exposes a concrete defect.
