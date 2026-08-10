@@ -6,15 +6,13 @@ This is the single active-task snapshot.
 
 ## Current Status
 
-`PRD_FLOW_SIMPLIFIED_GOLDEN_TEMPLATE_LOCKED_REAL_SAMPLE_NEXT`
+`PRD_USER_EFFICIENCY_REFINEMENT_IMPLEMENTED_CONTINUE_PRE_SAMPLE_AUDIT`
 
 Working branch: **`Local` only**.
 
 ## Golden Sample decision
 
-The approved Golden Sample is intentionally the required template authority for this PRD family.
-
-Do **not** replace it with a reduced/minimal shell merely to make the template smaller or more generic.
+The approved Golden Sample remains the required template authority for this PRD family.
 
 Preserve its output foundation:
 
@@ -28,91 +26,120 @@ Overview
      → Developer
 ```
 
-Also preserve the approved visual/navigation/component foundation unless a concrete defect or explicit user decision requires a template change.
+Efficiency work belongs in the production process and content density, not in removing this structure or replacing the template with a smaller generic shell.
 
-Efficiency work belongs in the **generation process and content density**, not in changing the final structure the user expects.
+## Implemented — user-efficiency routing
 
-## Completed — PRD writing/content refinement
-
-The PRD owner already protects:
-
-- source fidelity and supported completion;
-- production-relevant requirement granularity;
-- plain, concrete anti-AI-slop technical prose;
-- stable terminology and technical values;
-- minimum sufficient detail;
-- Gameplay / Level Design / Developer ownership separation.
-
-## Completed — PRD flow simplification
-
-The end-to-end PRD workflow is now expressed as three macro steps:
+Normal project production is now explicitly separated from repository/system Developing work.
 
 ```text
-1. UNDERSTAND  — Flow 2
-2. BUILD PRD   — Flow 3
-3. REVIEW      — Flow 4
+normal PRD / Voice project production
+→ Production Execution
+→ matching production owner directly
+→ no development-brief
+
+change PRD-Creator itself
+→ Developing
+→ development-brief
 ```
 
-This replaces the previous mental model of 11 separate stages. Internal files/checks still exist, but they are implementation details rather than user-facing ceremonies.
+This prevents meta planning from appearing before ordinary PRD production.
 
-### Flow 2
+## Implemented — automatic PRD project bootstrap
 
-- inspect all available source before asking questions;
-- apply supported Clarification/Completion first;
-- batch remaining high-impact Proposal/Blocked decisions into one concise review when possible;
-- `work/review.md` is conditional rather than a mandatory user approval round.
+For a new PRD project the agent now owns:
 
-### Flow 3
+- project name/slug derivation;
+- active workspace creation/reuse;
+- original-source preservation;
+- internal SRC/REQ ID assignment;
+- minimum current-Flow state/work setup.
 
-- preserve the Golden Sample structure/foundation;
-- create canonical `content.md`;
-- derive `render-data.json` internally;
-- render `final.html` through the approved Golden Sample template;
-- keep role pages concise when local work is small instead of inventing filler;
-- do not remove role pages just to shorten the document.
+The user should not be asked to manage repository structure unless project identity is genuinely ambiguous.
 
-### Flow 4
+## Implemented — grouped decision interaction
 
-- run mechanical validation;
-- perform one integrated review through New Reader, Level Designer, Developer, and Project Consistency lenses;
-- record each finding once in a shared findings table;
-- writing quality and information density stay inside the same review rather than becoming extra gates.
+Flow 2 now finishes source inspection/recovery first, then groups only real high-impact decisions.
+
+When a responsible recommendation exists, each decision includes:
+
+```text
+Recommended
+Reason
+Impact
+```
+
+The user may approve all recommendations in one response or override only named exceptions. Recommendations remain pending until explicitly approved.
+
+## Implemented — revision fast path
+
+Bounded approved changes to an existing PRD use a delta path:
+
+```text
+approved change
+→ affected requirements/sections only
+→ necessary cross-references
+→ regenerate render data / HTML
+→ one current mechanical check
+→ targeted semantic/visual re-review only where invalidated
+→ updated final PRD
+```
+
+Unchanged sources, resolved decisions, unrelated packages, and unaffected review evidence are not replayed by default.
+
+## Implemented — minimal user-facing delivery
+
+Normal PRD completion should surface only:
+
+```text
+Final PRD
++ material adjustments/recovered decisions worth knowing
++ any real remaining attention item
+```
+
+Internal YAML/state, IDs, render data, acceptance tables, validator JSON, CI logs, and repository mechanics stay internal unless requested or needed to explain a blocker.
+
+## Implemented — visual sanity inside REVIEW
+
+Flow 4 keeps one REVIEW stage. When actual rendered/browser/page inspection is available, it includes one practical visual sanity pass for overflow, broken components/navigation, unreadable density, and inspected responsive/print/page-break defects.
+
+This is not a new Flow, score, detector, pixel-diff system, or extra user approval round.
+
+If visual inspection is unavailable, record `NOT PROVEN` and do not claim visual quality was verified.
 
 ## Changed owners
 
 ```text
+AGENTS.md
+README.md
+.agents/skills/development-brief/SKILL.md
+docs/knowledge/flow.md
+docs/knowledge/flows/development-flow.md
+docs/knowledge/skills/activation-matrix.md
+kits/project-document-generator/SKILL.md
 kits/project-document-generator/WORKFLOW.md
 kits/project-document-generator/SOURCE-INTAKE.md
-kits/project-document-generator/CONTENT-CONTRACT.md
-kits/project-document-generator/RENDERING.md
 kits/project-document-generator/VALIDATION.md
 ```
 
-The approved Golden Sample HTML template and renderer implementation were intentionally **not changed** by this flow refinement.
+The approved Golden Sample template, renderer implementation, validator code, and production tests are intentionally unchanged by this workflow-efficiency batch.
 
-## Anti-overdevelopment boundary
+## Testing cadence
 
-Do not add:
+Per current user direction, do **not** perform repeated manual/local project tests after each small refinement.
 
-- a new PRD workflow engine;
-- a new schema/profile framework;
-- AI-writing detector/score;
-- another approval state;
-- a replacement template system;
-- automatic template cleanup merely because the Golden Sample is large.
+Finish the remaining PRD workflow/skill readiness audit first. Use repository/CI consistency verification for repository changes as appropriate, then perform practical/manual real-project testing only when the PRD side is ready as one coherent system.
 
-Use the smallest change that improves real project output while preserving the document foundation the user approved.
+## Remaining pre-sample audit items
+
+Before manual/real-project testing, review only unresolved workflow issues that could still materially burden the user or produce misleading output, especially:
+
+- language/bilingual behavior and silent fallback semantics;
+- whether any remaining mandatory handoff state/artifact should be changed only together with the later Voice boundary review;
+- any direct routing/documentation drift exposed by the current efficiency changes.
+
+Do not reopen Golden Sample structure, add new skills/frameworks, or refactor `content.md → render-data.json` without real evidence.
 
 ## Next Step
 
-Use the refined three-step PRD flow on one real project/sample and compare the actual result against the Golden Sample expectations:
-
-- same structural/foundation quality;
-- clear player/project context;
-- useful Gameplay / Level Design / Developer pages;
-- no invented filler;
-- concise source/decision interaction;
-- plain, natural technical language;
-- enough detail for production roles without unnecessary repetition.
-
-If the practical result is good, stop PRD policy refinement and proceed to Voice skill review only when the user chooses to do so.
+Continue the PRD pre-sample audit for the remaining user-facing workflow risks above. Do not start manual real-project testing yet.
