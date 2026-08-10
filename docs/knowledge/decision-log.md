@@ -4,6 +4,23 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Real integration proof validates the Flow 2–7 replacement pipeline
+
+- **Decision:** The Clockwork Vault is the first canonical real-project System Integration Proof for the replacement architecture.
+- **Evidence:** 129 recovered requirements → 29-page PRD render → `handoff_ready` → 21 voice requirements → 21 exact-parity scripts → rebuilt/validated 8-page Voice Production DOCX → `voice_delivery_ready`.
+- **Authority guard:** legacy Voice Production v2 remained generated/reference-only and did not supply upstream facts.
+- **Audio boundary:** `audio_evidence: not_provided`; the proof validates script/DOCX delivery, not generated-audio quality.
+- **Owner:** `docs/knowledge/operations/system-integration-proof.md`.
+- **Date:** 2026-08-10
+
+### DOCX sections use heading page-break-before, not inserted break paragraphs
+
+- **Decision:** Flow 6 section starts use `Heading 1.paragraph_format.page_break_before = True` rather than an explicit `add_page_break()` paragraph before later sections.
+- **Reason:** real Flow 7 visual QA found that explicit break paragraphs can create a blank page when the prior section naturally ends at a page boundary.
+- **Proof:** The Clockwork Vault initially rendered a blank page before Ending; after the root fix, the rebuilt DOCX rendered as 8 nonblank pages and passed full reinspection + mechanical revalidation.
+- **Owner:** `kits/voice-production-kit/builder/build_docx.py`.
+- **Date:** 2026-08-10
+
 ### Flow 7 delivery readiness is script/DOCX scope by default
 
 - **Decision:** `voice_delivery_ready` means the accepted canonical performance script and derived DOCX are ready for downstream ElevenLabs production unless the current task explicitly includes generated audio.

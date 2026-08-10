@@ -6,50 +6,36 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Adopt the useful repository/workflow architecture learned from BuildIT into the Project Document Generator + Voice Production system, one production flow at a time from upstream to downstream.
+Complete migration from the Archived `Production Document Builder/` only after proving the replacement PRD + Voice Production architecture on a real project.
 
 ## Current Status
 
-`FLOW_7_VOICE_VALIDATION_DELIVERY_IMPLEMENTED`
+`SYSTEM_INTEGRATION_PROOF_COMPLETED`
 
-## Completed Slice — Flow 7
+## Completed Slice — Real Project Proof
 
-Implemented:
+Project: **The Clockwork Vault**
 
-- active Voice Production Kit advanced to v1.3.0;
-- `VOICE-VALIDATION.md` final validation/delivery procedure;
-- `work/voice-acceptance.md` revision-specific acceptance owner;
-- mechanical requirements → script → DOCX validator;
-- exact Voice ID/type/artifact-parity checks;
-- requirement-coverage and factual-fidelity gate;
-- material terminology/pronunciation risk gate;
-- speaker/channel/trigger consistency gate;
-- whole-project performance continuity/pacing/notation gate;
-- mandatory current-project DOCX render + every-page visual QA contract;
-- Critical/Major/Minor/Suggestion severity + root-owner fix routing;
-- truthful audio evidence model (`not_provided`, `partial_review`, `reviewed_passed`, `reviewed_with_findings`);
-- `voice_delivery_ready` default script/DOCX delivery scope without false generated-audio claims;
-- explicit invalidation/revalidation behavior after later script/requirement/builder changes.
+Implemented and verified:
 
-## Preserved Boundaries
+- Flow 2 recovered 129 material requirements and reached `ready_for_prd`;
+- Flow 3 produced canonical PRD content, render projection, and 29-page rendered document structure;
+- Flow 4 mechanical + four-perspective audit passed and reached `handoff_ready`;
+- Flow 5 extracted 21 justified voice moments without inventing a radio/communicator layer;
+- Flow 6 produced exact-parity canonical performance wording + derived Voice Production DOCX;
+- Flow 7 mechanical validation passed and mandatory rendered-page QA exposed one real DOCX-builder defect;
+- builder root cause corrected (`add_page_break()` → section-heading `page_break_before`);
+- DOCX rebuilt and all 8 pages re-rendered/re-inspected cleanly;
+- Flow 7 validator passed again;
+- final project state is `voice_delivery_ready`, delivery scope `script_docx`, audio evidence `not_provided`;
+- canonical evidence is stored in `docs/knowledge/operations/system-integration-proof.md`.
 
-Flow 7 intentionally does **not** claim:
+## Preserved Boundary
 
-- generated audio exists when none was supplied;
-- voice/model/settings are universally correct;
-- client sign-off;
-- implementation completion;
-- QA/release approval.
+The System Integration Proof does **not** itself authorize deletion of Archived files. It establishes the evidence required to begin the final retirement audit.
 
-## Current Proof
-
-- Flow 7 validator Python compile passed;
-- synthetic two-entry Voice project passed full mechanical parity/integrity validation;
-- validator rejected extra Voice ID, Flow 5/6 Type mismatch, and DOCX ID drift;
-- synthetic DOCX rendered through the standard DOCX render workflow;
-- rendered page was visually inspected without clipping/overlap/missing content;
-- semantic/pronunciation/continuity/audio contract is implemented, but no real project has yet exercised the entire Flow 2→7 chain.
+`Production Document Builder/` remains untouched in this proof slice.
 
 ## Next Step
 
-Run **System Integration Proof** on one real project through Flow 2→7, record at least one real review/revision cycle if findings appear, then perform the final `Production Document Builder/` retirement audit. Delete Archived files only after this proof shows their useful behavior/dependencies have been migrated or intentionally retired.
+Perform the **final `Production Document Builder/` retirement audit**: map its Golden Sample, renderer, schemas, validation/audit rules, examples/profiles, tests, and operational documentation against current active owners; identify any remaining dependency that has not been migrated or intentionally retired; then either (a) delete the Archived package if no active dependency remains, or (b) retain only the specifically justified missing dependency and record the blocker. Do not keep the archive merely from caution, and do not delete it merely because the new pipeline passed once.

@@ -76,7 +76,7 @@ The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; cu
 
 ## Archived Package
 
-`Production Document Builder/` remains Archived and non-authoritative. Delete it only after a real project has exercised the replacement pipeline and a final retirement audit confirms no useful dependency remains.
+`Production Document Builder/` remains Archived and non-authoritative. The required real-project proof has now completed; deletion is still blocked until the final retirement audit confirms no useful dependency remains.
 
 ## Stable Structure
 
@@ -98,4 +98,4 @@ A mechanically valid or visually correct DOCX is not generated-audio proof. A fi
 
 ## Current Development State
 
-Flows 1–7 are implemented on permanent branch `Local`. The next boundary is **real-project system integration proof**, followed by the final Archived-package retirement audit only after the replacement pipeline is proven end-to-end.
+Flows 1–7 are implemented on permanent branch `Local` and have now been exercised end-to-end on the real **The Clockwork Vault** project. The proof produced `handoff_ready` PRD state and `voice_delivery_ready` script/DOCX state, while truthfully recording `audio_evidence: not_provided`. The next active boundary is the final `Production Document Builder/` retirement audit.

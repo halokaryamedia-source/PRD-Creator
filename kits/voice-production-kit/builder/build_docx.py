@@ -292,9 +292,9 @@ def build_docx(data: VoiceDocument, output: Path) -> None:
     doc.add_page_break()
 
     for sidx, section in enumerate(data.sections, 1):
-        if sidx > 1:
-            doc.add_page_break()
         h = doc.add_paragraph(section.title, style="Heading 1")
+        if sidx > 1:
+            h.paragraph_format.page_break_before = True
         set_keep(h, keep_next=True)
 
         p = doc.add_paragraph()
@@ -329,7 +329,7 @@ def build_docx(data: VoiceDocument, output: Path) -> None:
             set_keep(p, keep_next=True)
             r = p.add_run(f"Estimated Duration: {entry.duration}")
             r.font.size = Pt(8.5)
-            r.italic = True
+            r.font.italic = True
             r.font.color.rgb = rgb(GRAY)
 
             add_script_paragraph(doc, entry)

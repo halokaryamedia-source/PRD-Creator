@@ -38,13 +38,13 @@ Canonical owners:
 
 Actual audio is reviewed only when supplied/in scope. No audio-quality claim is inferred from script quality.
 
-Status: implemented at contract/tool level; first real-project execution remains proof work.
+Status: implemented and exercised on the real The Clockwork Vault integration project.
 
 ## After Flow 7
 
 There is no Flow 8 in the canonical production sequence.
 
-The next engineering boundary is **System Integration Proof**: run one real project through Flow 2→7, record defects/revisions, and only then perform the final audit deciding whether `Production Document Builder/` can be deleted.
+System Integration Proof is complete on **The Clockwork Vault**. The next engineering boundary is the final audit deciding whether `Production Document Builder/` has any remaining useful dependency and can be retired/deleted safely.
 
 ## Architecture Rule
 

@@ -27,6 +27,7 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Active Voice reference contract | `kits/voice-production-kit/DOCX-FORMAT.md` + `REFERENCE/Aftershock/README.md` |
 | Active project packages | `workspace/active/` |
 | Saved project packages | `workspace/saved/` |
+| Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
 | Archived historical builder | `Production Document Builder/` |
 
 ## Project-level authority after Flow 7
@@ -54,4 +55,4 @@ Actual generated audio, when supplied, is evidence/delivery material only and ne
 
 ## Next engineering boundary
 
-All seven production flows are implemented. Next is **System Integration Proof**: run one real project through Flow 2→7, capture defects/revisions, then perform the final Archived-package retirement audit before deletion.
+All seven production flows are implemented and the **The Clockwork Vault** real-project System Integration Proof has passed with one resolved builder defect. The next engineering boundary is the final `Production Document Builder/` retirement audit.

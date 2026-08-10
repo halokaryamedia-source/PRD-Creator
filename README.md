@@ -32,7 +32,7 @@ Project Document Generator owns Flow 2–4 under `kits/project-document-generato
 
 Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
 
-The pre-existing `Production Document Builder/` remains **Archived** and non-authoritative until the full new pipeline has real-project proof and a final retirement audit is performed.
+The replacement Flow 2–7 pipeline has now passed one real-project integration proof using **The Clockwork Vault**. `Production Document Builder/` remains **Archived** and non-authoritative until the final retirement audit confirms that no useful dependency still requires it.
 
 ## Mandatory Session Boot
 
@@ -60,3 +60,7 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requ
 ```
 
 Generated artifacts and successful tooling never silently become higher authority than the canonical work/evidence that produced them.
+
+## Current Proof State
+
+`docs/knowledge/operations/system-integration-proof.md` records the first full real-project Flow 2→7 run, including a real DOCX builder defect, root-owner fix, rebuild, and revalidation cycle. The next active boundary is the final Archived-package retirement audit.
