@@ -22,11 +22,7 @@ The useful Humanizer-style behavior was merged into the existing PRD owner inste
 
 Source:
 
-`2c8cc015ec5d544d2899f554b9a4b9378d221456` — `docs: simplify PRD intake and content density`
-
-Final integration:
-
-`3bc0bd6115a1b67430658051935591fdf8674346` — `docs: complete PRD usability refinement`
+`daf94ec65fd6d3f007417e183784935b34787e2c` — `docs: simplify PRD intake and content density`
 
 The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
 
