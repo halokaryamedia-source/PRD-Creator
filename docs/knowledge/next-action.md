@@ -6,62 +6,73 @@ This is the single active-task snapshot.
 
 ## Current Status
 
-`ANTI_OVERDEVELOPMENT_CLEANUP_COMPLETE_REAL_PROJECT_WORK_NEXT`
+`PRD_WRITING_QUALITY_REFINED_PRD_SKILL_REVIEW_NEXT`
 
 Working branch: **`Local` only**.
 
-## What changed
+## Completed — PRD writing quality refinement
 
-The parity hardening track was stopped after it began adding complexity that was not needed by the product flow.
+Source:
 
-Source cleanup:
+`a1c59f45c52d4213adff41a236ae0265dcf91868` — `docs: improve PRD writing quality rules`
 
-`08b6f9d6a98641c5f93932df015cb0d2dffe9a42` — `refactor: remove overdeveloped revision machinery`
+The useful Humanizer-style behavior was **merged into the existing PRD owner**, not added as another root skill.
 
-Removed:
+Changed owners:
 
-- PRD render-data SHA/fingerprint metadata;
-- Voice Requirements SHA metadata in canonical script;
-- Voice script hash / DOCX revision identifier;
-- checksum-based derived-artifact revision protocol;
-- P1.3 per-entry/revision machinery that made the validator disproportionately complex.
+```text
+.agents/skills/project-document-production/SKILL.md
+kits/project-document-generator/CONTENT-CONTRACT.md
+kits/project-document-generator/VALIDATION.md
+```
 
-Kept:
+Added only the writing rules that materially help technical PRD work:
 
-- PRD structural validation and exact generated page set/order;
-- script-safe glossary handling and required shell-marker checks;
-- Voice ID/Type parity;
-- basic DOCX section/ID/duration/performance presence checks;
-- real blank-page regression;
-- controlled builder failure for a zero-entry Voice section;
-- Repository Verify + focused Production Verify.
+- plain, concrete technical prose;
+- remove inflated/promotional/fake-analysis filler;
+- keep official terminology stable instead of synonym cycling;
+- avoid artificial rhetorical patterns and forced rule-of-three phrasing;
+- use the minimum effective edit and leave already-clear sentences alone;
+- never alter IDs, names, numbers, coordinates, timings, formulas, scoring weights, triggers, conditions, states, code/API names, or approved terminology for style;
+- apply prose cleanup mainly to explanatory paragraphs, not aggressively to tables, formulas, configuration, requirement lists, or code.
 
-Durable simplification rule:
-
-`docs/knowledge/decisions/anti-overdevelopment-simplification.md`
+Flow 4 checks writing quality **inside the existing four-perspective review**. There is no fifth gate, AI score, detector, or separate evaluation framework.
 
 ## Proof
 
 ```text
-Repository Verify #17
-run: 31381677940
-head: 08b6f9d6a98641c5f93932df015cb0d2dffe9a42
+Repository Verify #19
+run: 31394321004
+head: a1c59f45c52d4213adff41a236ae0265dcf91868
 result: PASS
 
-Production Verify #7
-run: 31381677946
-head: 08b6f9d6a98641c5f93932df015cb0d2dffe9a42
+Production Verify #8
+run: 31394320900
+head: a1c59f45c52d4213adff41a236ae0265dcf91868
 result: PASS
 ```
 
-Production Verify passed dependency install, compile, PRD contracts, Voice contracts, and the final fail-closed aggregate.
+These gates prove repository/executable consistency only. They do not prove subjective writing quality.
+
+## Current limitation
+
+`workspace/active/` and `workspace/saved/` currently contain no real PRD project package to use as a before/after writing sample.
+
+Do not create synthetic prose evaluation machinery merely to fill this gap.
 
 ## Current direction
 
-BuildIT remains a **reference for discipline**, not a checklist of features or machinery to reproduce.
+Focus on **PRD skill quality first**. Voice skill review comes only after the PRD side is considered good enough.
 
-Do not continue P1.4 / P1.5 / P1.6 as automatic phases. A new engineering change requires a concrete current defect or real project need first.
+Continue using the anti-overdevelopment rule:
+
+```text
+reuse existing owner
+→ merge only proven useful behavior
+→ no new skill unless a distinct reusable ownership gap exists
+→ no detector / score / framework unless a real need proves it
+```
 
 ## Next Step
 
-Use the current pipeline on the **next real project/task**. If that real work exposes a concrete defect, route it through Maintenance and apply the smallest fix that solves the observed problem.
+Review the remaining `project-document-production` skill and Project Document Generator procedures for any **real content-quality/usability gap** beyond writing style. Keep `No change required` as a valid result. When a real PRD/sample is available, use it for a small before/after quality check instead of creating an automated AI-writing detector.
