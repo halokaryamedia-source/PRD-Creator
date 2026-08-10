@@ -24,9 +24,9 @@ Source:
 
 `2c8cc015ec5d544d2899f554b9a4b9378d221456` — `docs: simplify PRD intake and content density`
 
-Integration:
+Final integration:
 
-`58104111b3c320a3213ed038c10909865328d3f2` — `docs: integrate PRD usability refinement`
+`3841c21e4ec723acc3664723bad585ce44d5c7b7` — `docs: finalize PRD usability integration`
 
 The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
 
