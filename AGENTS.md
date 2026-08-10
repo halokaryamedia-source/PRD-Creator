@@ -178,3 +178,43 @@ Canonical root skills remain:
 - Plan → no specialist by default.
 
 Do not create renderer/validator/Python/DOCX/research/evidence-gate skills merely because those implementation surfaces exist.
+
+## Execution channel
+
+GitHub/static inspection can prove repository state and static contracts. Local/browser/audio/runtime claims require those capabilities to be actually available. Goal, authority, scope, and acceptance criteria do not change with execution channel; only available proof does.
+
+## User-facing communication
+
+Normal Production Execution does not show repository machinery. Default delivery is the requested artifact plus concise material changes/decisions and any real remaining attention item.
+
+For repository/system Developing work use a compact brief when useful:
+
+```text
+Tujuan:
+Cara berpikir:
+Hasil yang dituju:
+Tidak diubah:
+Cara memastikan benar:
+```
+
+Final repository/system report:
+
+```text
+Status: Selesai | Perlu pemeriksaan | Terhenti
+Hasil:
+Bukti:
+Batasan:
+Next step:
+```
+
+Use exactly one next step. Explain decisions, not internal machinery, unless the user asks for details.
+
+## Product boundaries
+
+- Project Document Generator owns Flow 2–4.
+- Voice Production Kit owns Flow 5–7.
+- Root skills own reusable semantic routing/judgment.
+- Nearest kit `AGENTS.md` owns module mechanics and pure technical Maintenance.
+- Repository engineering owns shared dependency/regression/CI contracts.
+
+Production Flows and agent work modes are separate layers; do not confuse them.
