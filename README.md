@@ -25,13 +25,16 @@ Normal project production is **Production Execution**. `development-brief` is re
 ```text
 project source
 → automatic internal bootstrap
-→ relevance/authority triage + requirement recovery
-→ grouped material decisions only if needed
+→ relevance/authority triage
+→ requirement recovery + problem solving
+→ humanized grouped unresolved decisions only if needed
 → canonical PRD
 → deterministic Golden projection/render
 → integrated review
 → final PRD
 ```
+
+Flow 2 should solve before asking: recover from authority, apply safe Completion, or form a responsible Proposal/tradeoff before escalating a material decision to the user.
 
 ## Golden PRD contract
 
@@ -49,13 +52,15 @@ Overview
 
 Future projects replace project facts; they do not redesign this document language or copy Aftershock-specific facts/counts.
 
-## Quality and efficiency
+## PRD quality and efficiency
 
 - source fidelity before polish;
 - production-relevant requirement granularity instead of sentence-by-sentence extraction;
 - relevance-first source reading rather than loading every byte;
+- Flow 2 resolves topology, lifecycle, numeric/clarity/coherence issues, known constraint conflicts, and cross-role implications before drafting when material;
+- recommendations are honest about evidence and tradeoffs rather than forcing a false default;
 - minimum sufficient detail inside the Golden structure;
-- plain technical prose without AI-style filler;
+- plain, human-readable production language without changing technical meaning;
 - canonical meaning first, compact derived projection second;
 - deterministic renderer/validator consume large HTML at runtime;
 - bounded revisions/reviews touch only affected scope;
