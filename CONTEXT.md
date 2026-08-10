@@ -9,7 +9,34 @@ Owner: workspace
 This workspace supports a two-stage production system:
 
 1. turn incomplete/uneven project direction into documentation that developers, level designers, and the wider production team can use;
-2. derive validated ElevenLabs-ready voice production from accepted project/gameplay/story documentation without inventing upstream design.
+2. derive validated ElevenLabs-ready Voice Production from accepted project/gameplay/story documentation without inventing upstream design.
+
+The production pipeline and the agent operating layer are separate:
+
+```text
+Agent Operating Layer
+Plan / Developing / Maintenance
+→ semantic owner + proof boundary
+
+Production Layer
+Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7
+```
+
+## Agent Operating Layer
+
+Canonical repository-wide skills live only under `.agents/skills/`:
+
+- `development-brief` — mandatory front door for non-trivial Developing work;
+- `project-document-production` — semantic specialist for Flow 2–4;
+- `voice-production` — semantic specialist for Flow 5–7.
+
+Detailed routing is owned by:
+
+- `docs/knowledge/flow.md`;
+- `docs/knowledge/skills/activation-matrix.md`;
+- `docs/knowledge/skills/skill-map.md`.
+
+The root skill architecture is intentionally small and frozen. Detailed production procedure remains inside the existing kits rather than being duplicated into root skills.
 
 ## Project Document Generator
 
@@ -43,6 +70,12 @@ handoff_ready PRD
 Flow 5 owns **which communications exist and what they must communicate**. Flow 6 owns **final spoken wording/performance notation**. Flow 7 owns **revision-specific script/DOCX validation and delivery readiness**.
 
 ## Stable Terms
+
+**Development Brief** — pre-implementation contract that separates goal/method/reference, selects authority/POVs/scope, defines 2–5 acceptance criteria, and sets the minimum proof budget.
+
+**Build POV** — semantic expert/owner responsible for making the active change correctly.
+
+**Acceptance POV** — downstream reader/operator/consumer who determines whether the result is actually useful.
 
 **Canonical PRD Content** — `work/content.md`; accepted project meaning used by downstream production.
 
@@ -80,10 +113,11 @@ The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; cu
 
 ## Stable Structure
 
+- `.agents/skills/` — canonical repository-wide agent skill root.
 - `docs/foundation/` — durable production policy.
-- `docs/knowledge/` — continuity, decisions, ownership, backlog.
-- `kits/project-document-generator/` — active PRD Flow 2–4 owner.
-- `kits/voice-production-kit/` — active Voice Flow 5–7 owner.
+- `docs/knowledge/` — continuity, routing, skills, decisions, ownership, backlog/evidence.
+- `kits/project-document-generator/` — active PRD Flow 2–4 production owner.
+- `kits/voice-production-kit/` — active Voice Flow 5–7 production owner.
 - `workspace/active/` — active project packages.
 - `workspace/saved/` — retained project packages.
 
@@ -93,8 +127,12 @@ The old paired Aftershock Gameplay HTML V1.2 is not active factual authority; cu
 Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX ≠ Voice Acceptance ≠ Audio
 ```
 
-A mechanically valid or visually correct DOCX is not generated-audio proof. A final script cannot introduce Voice IDs or project facts absent from accepted upstream owners.
+A successful tool/artifact never silently becomes higher authority than the canonical work/evidence that produced it.
 
 ## Current Development State
 
-Flows 1–7 are implemented on permanent branch `Local` and have now been exercised end-to-end on the real **The Clockwork Vault** project. The proof produced `handoff_ready` PRD state and `voice_delivery_ready` script/DOCX state, while truthfully recording `audio_evidence: not_provided`. Migration is complete. The next operational step is to use the active pipeline for the next project and apply only evidence-backed fixes.
+Production Flow 1–7, The Clockwork Vault real-project integration proof, and retirement of the old Production Document Builder are complete.
+
+BuildIT-style operating parity is now a separate improvement track. **Phase 1 — Agent Routing + Skill Architecture is implemented**: mode routing, mandatory `development-brief`, semantic specialist budget, root `.agents/skills/`, activation matrix, skill map, and agent development flow are established.
+
+The next active parity boundary is **Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure**. Production behavior itself is not reopened unless that work exposes a concrete conflict.

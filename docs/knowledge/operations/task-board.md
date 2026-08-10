@@ -14,15 +14,40 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 - [x] Flow 6 — ElevenLabs Performance Script Production
 - [x] Flow 7 — Voice Validation & Delivery
 
-## Next Integration / Maintenance
+## Migration / Integration
 
 - [x] execute one real project through Flow 2→7 and record evidence — The Clockwork Vault;
 - [x] exercise a real finding → root fix → rebuild → re-audit cycle — DOCX blank-page defect resolved;
 - [x] run final retirement audit for `Production Document Builder/` — `SAFE_TO_DELETE`;
-- [x] delete Archived builder after useful behavior/dependencies were mapped as migrated or intentionally retired;
+- [x] delete retired builder after useful behavior/dependencies were mapped as migrated or intentionally retired.
+
+## BuildIT-Style Operating Architecture Parity
+
+- [x] Phase 1 — Agent Routing + Skill Architecture;
+  - [x] Plan / Developing / Maintenance routing;
+  - [x] mandatory `development-brief`;
+  - [x] Build POV + Acceptance POV;
+  - [x] 2–5 acceptance criteria + proof budget;
+  - [x] `.agents/skills/` canonical root;
+  - [x] `project-document-production` specialist;
+  - [x] `voice-production` specialist;
+  - [x] activation matrix + skill map + freeze rule;
+  - [x] agent flow + Developing flow.
+- [ ] Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure;
+  - [ ] module/ownership map;
+  - [ ] source-authority map;
+  - [ ] dedicated Maintenance flow/template;
+  - [ ] review evidence lifecycle / review graph;
+  - [ ] lightweight durable-decision/OpenSpec threshold;
+  - [ ] context boot baseline;
+  - [ ] operating-layer proof/validation matrix update.
+- [ ] Phase 3 — exercise the operating routing on representative real tasks and tighten only evidence-backed gaps.
+
+## Other Maintenance
+
 - [ ] remove obsolete non-authoritative work branches when a supported delete-ref surface is available/desirable;
 - [ ] add broader regression automation only when real project failures prove a concrete need.
 
 ## Rule
 
-Migration/retirement work is complete. Future items are maintenance only and must be driven by concrete project evidence.
+Do not copy BuildIT domain skill names or create extra architecture for visual parity. Adopt its operating discipline—small semantic owners, explicit routing, proof economy, continuity, review/ownership lifecycle—using PRD-Creator's own product boundaries.

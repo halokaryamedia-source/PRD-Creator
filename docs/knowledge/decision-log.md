@@ -4,6 +4,40 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Production completion and BuildIT-style operating parity are separate milestones
+
+- **Decision:** completing Flow 1–7, real-project integration, and retired-builder migration does not mean PRD-Creator has achieved BuildIT-style agent operating parity.
+- **Reason:** the production pipeline answers how project artifacts are produced; BuildIT-style operating architecture also requires work-mode routing, semantic skill ownership, pre-implementation contracts, root-cause/proof discipline, and explicit review/ownership lifecycle.
+- **Result:** operating parity is tracked as a separate phased improvement without reopening completed production semantics by default.
+- **Date:** 2026-08-10
+
+### Root skill architecture is three semantic owners and is frozen after Phase 1
+
+- **Decision:** canonical repository-wide skill root is `.agents/skills/` with exactly `development-brief`, `project-document-production`, and `voice-production` after Phase 1.
+- **Reason:** these are the smallest reusable semantic ownership boundaries. Renderer, validator, DOCX builder, evidence classification, and references are implementation/policy surfaces inside those owners rather than distinct skills.
+- **Freeze:** do not rename/split/merge/add a root skill unless current repeated work proves a reusable ownership gap that cannot be represented by root policy, foundation, an existing kit, or one current specialist.
+- **Owners:** `docs/knowledge/skills/skill-map.md`, `docs/knowledge/skills/activation-matrix.md`.
+- **Date:** 2026-08-10
+
+### Developing uses a mandatory brief plus at most one specialist
+
+- **Decision:** every non-trivial create/change task uses `development-brief`; it may add at most one semantic specialist.
+- **Reason:** goal/method/reference separation, Build/Acceptance POV, minimal scope, acceptance criteria, and proof budget are cross-cutting baseline needs; specialist stacking increases context and blurs ownership.
+- **Fast path:** trivial unambiguous changes may keep the visible brief minimal but still obey the same goal/scope/proof gate.
+- **Date:** 2026-08-10
+
+### Root skills route work; kit SKILL files remain production procedures
+
+- **Decision:** `.agents/skills/` and `kits/*/SKILL.md` are different layers and must not be merged mechanically.
+- **Reason:** root skills own how the agent frames/routes/validates repository work; kit-local SKILL files own detailed Flow 2–7 production procedure and implementation context.
+- **Date:** 2026-08-10
+
+### Evidence status is baseline behavior, not a standalone skill
+
+- **Decision:** material evidence uncertainty uses root labels `CURRENT-PROJECT VERIFIED`, `AUTHORITATIVE-SOURCE VERIFIED`, `LOCAL PROOF REQUIRED`, `UNSUPPORTED`, and `UNKNOWN`.
+- **Reason:** evidence classification applies across owners and should not consume the single specialist slot or create another routing layer.
+- **Date:** 2026-08-10
+
 ### Production Document Builder v0.2.0 is retired from the live tree
 
 - **Decision:** remove `Production Document Builder/` from `Local` after final retirement audit.
@@ -119,5 +153,5 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ### Adopt BuildIT principles, not BuildIT domain structure 1:1
 
-- **Decision:** reuse ownership/continuity/validation/minimal-navigation principles without copying irrelevant MCP/Blockbench architecture.
+- **Decision:** reuse ownership/continuity/validation/minimal-navigation/skill-routing principles without copying irrelevant MCP/Blockbench domain architecture.
 - **Date:** 2026-08-10

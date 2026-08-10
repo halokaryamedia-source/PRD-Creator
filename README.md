@@ -8,7 +8,45 @@ The repository is project memory. Chat history is supporting context, not the au
 
 - `Local` — permanent working/development authority.
 - `main` — stable baseline; change only when explicitly requested.
-- routine per-flow branches/PRs are not used.
+- routine per-flow/per-task branches and PRs are not used.
+
+## Two Architecture Layers
+
+PRD-Creator now separates **how the agent works** from **how the product is produced**.
+
+```text
+Agent Operating Layer
+Plan / Developing / Maintenance
+→ development-brief for Developing
+→ at most one semantic specialist
+→ minimum useful proof + Acceptance POV
+
+Product Production Layer
+Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7
+```
+
+## Agent Operating Layer
+
+Canonical repository-wide skills live under `.agents/skills/`:
+
+```text
+development-brief
+project-document-production
+voice-production
+```
+
+- `development-brief` is mandatory for non-trivial Developing tasks.
+- Developing may add **at most one** semantic specialist.
+- `project-document-production` owns agent judgment/routing around Flow 2–4.
+- `voice-production` owns agent judgment/routing around Flow 5–7.
+- detailed production procedures remain inside `kits/`; root skills do not duplicate them.
+
+Routing owners:
+
+- `docs/knowledge/flow.md` — agent work-routing map;
+- `docs/knowledge/flows/development-flow.md` — Developing contract;
+- `docs/knowledge/skills/activation-matrix.md` — skill selection;
+- `docs/knowledge/skills/skill-map.md` — inventory/lineage/freeze rules.
 
 ## Production Flow
 
@@ -32,27 +70,29 @@ Project Document Generator owns Flow 2–4 under `kits/project-document-generato
 
 Voice Production Kit owns Flow 5–7 under `kits/voice-production-kit/`: accepted PRD → traceable voice requirements → canonical performance script → derived `Voice Production.docx` → final script/DOCX acceptance.
 
-The replacement Flow 2–7 pipeline has passed real-project integration proof using **The Clockwork Vault**. The final retirement audit concluded `Production Document Builder/` has no remaining active dependency, so the live Archived tree is removed from `Local`; Git history remains the historical recovery path.
+The replacement Flow 2–7 pipeline passed real-project integration proof using **The Clockwork Vault**, including a real DOCX defect → root fix → rebuild → revalidation cycle.
 
 ## Mandatory Session Boot
 
 1. read `AGENTS.md`;
 2. read `CONTEXT.md`;
 3. read `docs/knowledge/next-action.md`;
-4. open only the relevant foundation/kit/project owner.
+4. open only the smallest relevant foundation/source/kit owner;
+5. open the activation matrix only when skill selection is needed.
 
 ## Repository Map
 
-- `AGENTS.md` — repository-wide rules, branch policy, authority, proof, anti-slop baseline.
-- `CONTEXT.md` — stable purpose, terminology, boundaries.
+- `AGENTS.md` — repository-wide work modes, authority, independent judgment, root-cause/proof/anti-slop baseline.
+- `CONTEXT.md` — stable purpose, terminology, architecture boundaries.
+- `.agents/skills/` — canonical repository-wide routing/judgment skills.
 - `docs/foundation/` — durable production policy.
-- `docs/knowledge/` — current state, decisions, navigation, ownership, backlog.
-- `kits/project-document-generator/` — PRD intake/generation/validation.
-- `kits/voice-production-kit/` — Voice extraction/script/DOCX/final acceptance.
+- `docs/knowledge/` — current state, routing, skills, decisions, ownership, evidence/backlog.
+- `kits/project-document-generator/` — detailed PRD intake/generation/validation procedure and implementation.
+- `kits/voice-production-kit/` — detailed Voice extraction/script/DOCX/final acceptance procedure and implementation.
 - `workspace/active/` — active project packages.
 - `workspace/saved/` — retained project packages.
 
-## Core Rule
+## Core Authority Rule
 
 ```text
 Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requirements ≠ Voice Production Script ≠ DOCX ≠ Voice Acceptance ≠ Audio
@@ -60,6 +100,11 @@ Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance ≠ Voice Requ
 
 Generated artifacts and successful tooling never silently become higher authority than the canonical work/evidence that produced them.
 
-## Current Proof State
+## Current Proof / Parity State
 
-`docs/knowledge/operations/system-integration-proof.md` records the first full real-project Flow 2→7 run, including a real DOCX builder defect, root-owner fix, rebuild, and revalidation cycle. The migration is complete. Future work should start from the active Flow 2–7 owners and change only when a real project provides evidence.
+- Product Flow 1–7: implemented.
+- Real-project Flow 2–7 integration: verified on The Clockwork Vault.
+- Retired Production Document Builder migration: complete.
+- BuildIT-style operating parity: **Phase 1 Agent Routing + Skill Architecture implemented**.
+
+The next operating-parity boundary is ownership/source mapping, Maintenance workflow, review lifecycle, durable-decision threshold, and boot/proof infrastructure. Production semantics should remain unchanged unless that work exposes a concrete inconsistency.
