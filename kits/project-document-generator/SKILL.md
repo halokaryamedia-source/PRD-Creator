@@ -1,104 +1,223 @@
 ---
 name: project-document-generator
-description: Recover incomplete project requirements, create canonical development-oriented PRD content, render it through the approved HTML shell, and validate whether the result is development-ready for team handoff without inventing product decisions.
-version: 1.3.0
+description: Recover incomplete project requirements, create canonical development-oriented PRD content, render it through the approved Golden Sample HTML foundation, and validate whether the result is development-ready for team handoff without inventing product decisions.
+version: 1.4.0
 ---
 
 # Project Document Generator
 
 ## Purpose
 
-Use this skill to:
+Use this skill for normal PRD **Production Execution** and PRD revisions. It owns project production through Flow 4 and does not require `development-brief` unless the user is changing how PRD-Creator itself works.
 
-1. preserve and understand incomplete project sources;
-2. recover traceable requirements and expose true unresolved decisions;
-3. create practical canonical project documentation for developers, level designers, and production teams;
-4. render approved content through the fixed HTML presentation shell;
-5. validate the generated PRD from New Reader, Level Designer, Developer, and Project Consistency perspectives;
-6. produce a concise team handoff only when the accepted revision is actually development-ready.
+The normal user experience should stay close to:
+
+```text
+source / approved change
+→ understand automatically
+→ one grouped decision review only if needed
+→ build Golden-Sample PRD
+→ review/fix
+→ final PRD
+```
 
 The skill owns PRD production through Flow 4. It does not own downstream Voice Requirement extraction or ElevenLabs scripting.
 
-## Flow-first execution
+## User burden rule
 
-Do **not** read every kit document for every task. First identify the current Flow from project state, then open only the relevant owner.
+The user supplies project source, direction, and any decisions only they can make. The agent owns the internal production work.
 
-### Flow 2 — Source Intake & Requirement Recovery
+Do not ask the user to manage:
 
-Read:
+- project slug/folder naming;
+- workspace setup;
+- `SRC-###` or `REQ-###` IDs;
+- source inventory or requirement-register formatting;
+- `render-data.json`;
+- validation state/evidence files;
+- renderer commands;
+- internal handoff state.
 
-- `SOURCE-INTAKE.md`;
-- current project originals/source inventory/requirement state;
-- `RULES.md` only when a kit-wide rule is materially relevant;
-- `GLOSSARY.md` only when terminology is unclear.
+Ask only when a material product decision cannot be recovered safely from source, approved state, or an already-authorized default.
 
-Stop when the project is truthfully `ready_for_prd`, `needs_upstream_decision`, or blocked according to the Flow 2 contract.
+## Automatic project bootstrap
 
-### Flow 3 — Project Document / PRD Generation
+For a new PRD project, bootstrap `workspace/active/<project-slug>/` automatically.
 
-Read:
+Use this order:
 
-- `CONTENT-CONTRACT.md`;
-- current `work/content.md` / requirement state;
-- `RENDERING.md` only when projection/rendering is in scope;
-- `template/approved-document.html` only when template fidelity matters.
+1. derive the project name from the user's explicit name or strongest authoritative source title;
+2. derive a stable lowercase kebab-case slug;
+3. reuse an existing matching active project when it is clearly the same project;
+4. create the minimum project package required by the active Flow;
+5. preserve supplied originals and assign internal source/requirement IDs automatically.
 
-Maintain `work/content.md` as canonical PRD meaning. `work/render-data.json` and `output/final.html` remain derived.
+Do not ask the user for a slug, folder name, source ID, requirement ID, or boilerplate project metadata unless ambiguity would cause work to be written into the wrong project.
 
-### Flow 4 — PRD Validation & Team Handoff
+## Three-step production flow
 
-Read:
+### 1. UNDERSTAND — Flow 2
 
-- `VALIDATION.md`;
-- the exact current canonical/rendered PRD revision;
-- upstream content/renderer owners only when a finding points back to them.
+Read `SOURCE-INTAKE.md` plus only the current project sources/state needed.
 
-Validate mechanically with `validator/validate.py` and semantically from New Reader, Level Designer, Developer, and Project Consistency perspectives.
+- inspect all available source before asking questions;
+- recover only production-relevant requirements/constraints/decisions;
+- apply supported Clarification/Completion automatically;
+- batch remaining Proposal/Blocked decisions;
+- when a decision is needed, give a recommended option with a short reason and impact so the user can approve all recommendations or override only exceptions.
 
-Set `development_ready` only when Critical=0, Major=0, mechanical checks pass, and all four perspectives pass. Create `output/team-handoff.md` and set `handoff_ready` only for that accepted revision.
+Exit when the project is truthfully `ready_for_prd`, `needs_decision`, or `blocked`.
 
-## Shared routing helpers
+### 2. BUILD PRD — Flow 3
 
-- Read `WORKFLOW.md` only when end-to-end sequencing or Flow ownership is unclear.
-- Follow nearest `AGENTS.md` for local routing/edit discipline.
-- Use root `.agents/skills/project-document-production/` for repository-wide semantic judgment when selected by the activation matrix.
-- Do not use kit procedure as a substitute for root `development-brief` on non-trivial Developing work.
+Read `CONTENT-CONTRACT.md` and create/update canonical `work/content.md`.
+
+Preserve the approved Golden Sample structure and presentation foundation:
+
+```text
+Overview
+→ Gameplay Flow
+→ Global Development
+→ Gameplay Package(s)
+     → Gameplay Overview
+     → Level Design
+     → Developer
+```
+
+Use minimum sufficient detail inside that fixed structure. Keep short role pages concise instead of inventing filler.
+
+Treat projection/rendering as internal work in the same BUILD step:
+
+```text
+content.md
+→ derive render-data.json
+→ render through approved Golden Sample template
+→ final.html
+```
+
+Read `RENDERING.md` only when projection/rendering behavior is relevant.
+
+### 3. REVIEW — Flow 4
+
+Read `VALIDATION.md`.
+
+Run one review cycle for the current revision:
+
+```text
+mechanical validation
++ visual sanity when visual inspection is available
++ integrated New Reader / Level Designer / Developer / Consistency review
+→ fix only real findings
+→ re-review only invalidated scope
+```
+
+Do not create a separate AI-writing, brevity, visual-score, or quality-score gate.
+
+Set `development_ready` only when the semantic readiness contract is satisfied. Visual quality may be claimed only when the current rendered output was actually inspected at that level.
+
+## Grouped decision interaction
+
+When Flow 2 needs user decisions, present one compact batch where possible.
+
+Recommended format:
+
+```text
+Decision 1 — <topic>
+Recommended: <option>
+Reason: <short evidence-based reason>
+Impact: <what changes>
+
+Decision 2 — <topic>
+Recommended: <option>
+Reason: <short evidence-based reason>
+Impact: <what changes>
+```
+
+The user may respond with:
+
+```text
+Approve all recommendations.
+```
+
+or override only named items:
+
+```text
+Approve all except Decision 2: use <other option>.
+```
+
+A recommendation is not approved until the user approves it. Do not force separate approval messages for each Proposal.
+
+## Revision fast path
+
+For an existing project, an explicit approved user change should normally use a delta path rather than replaying full Flow 2–4.
+
+```text
+approved change
+→ identify affected requirement(s)/section(s)
+→ update only affected canonical content + required cross-references
+→ regenerate derived render data / HTML
+→ mechanical check for current output
+→ re-review affected scope + dependencies only
+→ updated final PRD
+```
+
+Do not re-inventory unchanged sources, re-ask resolved decisions, rewrite unrelated packages, or rerun a full semantic audit unless the change invalidates those areas.
+
+Return to full Flow 2 only when the revision changes source authority, introduces a material conflict, changes broad project scope, or exposes an unresolved product decision outside the local delta.
 
 ## Repository-backed project files
+
+These are internal production artifacts, not user chores.
 
 Flow 2 state:
 
 - `state/source-inventory.yaml`
 - `state/requirement-register.yaml`
 - `state/intake-state.yaml`
+- `work/review.md` only when a human-facing decision/recovery summary is useful
 
 Flow 3 work/output:
 
-- `work/review.md`
 - `work/content.md` — canonical PRD meaning
 - `work/render-data.json` — derived renderer projection
 - `output/final.html` — rendered PRD artifact
 
 Flow 4 acceptance/handoff:
 
-- `work/acceptance.md` — concise role-based audit and findings
-- `state/handoff-state.yaml` — current readiness status for the exact accepted revision
-- `output/team-handoff.md` — concise navigation aid for the production team
+- `work/acceptance.md` — concise integrated audit/findings
+- `state/handoff-state.yaml` — current readiness status
+- `output/team-handoff.md` — current repository handoff boundary/navigation aid
 
 Do not create release reports, checksums, packaging manifests, Content Freeze layers, or duplicate PRD summaries unless a concrete requirement needs them.
 
-## Completion condition for Flow 4
+## Default user-facing delivery
 
-Stop when:
+After normal PRD production/revision, show the user only what helps them continue:
 
-- Flow 3 artifacts exist for the same current revision;
+```text
+Final PRD: <final.html>
+
+Main adjustments / recovered decisions:
+- only material items worth knowing
+
+Needs attention:
+- none
+```
+
+If decisions remain, show them instead of pretending the PRD is final.
+
+Do not dump internal YAML, requirement IDs, validator JSON, CI logs, acceptance tables, or repository-state details into the normal delivery unless the user asks or a blocker requires explanation.
+
+## Completion condition
+
+Stop normal PRD production when:
+
+- current source/approved decisions support the canonical PRD;
+- current Golden Sample HTML is generated;
 - mechanical validation passes;
-- New Reader, Level Designer, Developer, and Project Consistency perspectives pass;
-- Critical findings = 0;
-- Major findings = 0;
-- remaining Minor findings, if any, are intentionally accepted and non-semantic;
-- `work/acceptance.md` records the evidence;
-- `state/handoff-state.yaml` = `handoff_ready`;
-- `output/team-handoff.md` points the team to the accepted canonical/rendered PRD.
+- New Reader, Level Designer, Developer, and Project Consistency lenses pass with Critical=0 and Major=0;
+- visual-quality claims do not exceed actual visual evidence;
+- unresolved Proposal/Blocked items do not affect the delivered scope;
+- the user receives the current final PRD plus only the concise information needed to continue.
 
-Do not claim client approval, implementation completion, QA completion, or Voice Production readiness from this status.
+Do not claim client approval, implementation completion, QA completion, release approval, or Voice Production readiness from this status.

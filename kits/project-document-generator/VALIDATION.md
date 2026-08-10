@@ -7,6 +7,7 @@ The review stays simple:
 ```text
 current PRD + HTML
 → mechanical check
+→ visual sanity when inspection is available
 → one integrated four-lens review
 → fix only real findings
 → development_ready
@@ -14,7 +15,7 @@ current PRD + HTML
 → handoff_ready
 ```
 
-Do not turn the four review lenses into four separate approval ceremonies.
+Do not turn mechanical, visual, or four-lens review into separate user approval ceremonies.
 
 ## Status model
 
@@ -41,7 +42,7 @@ Do not audit an old HTML file against newer canonical content.
 
 ## Step 1 — Mechanical validation
 
-Run:
+Run once for the finished current revision:
 
 ```bash
 python kits/project-document-generator/validator/validate.py \
@@ -51,6 +52,27 @@ python kits/project-document-generator/validator/validate.py \
 This check covers file presence, visible placeholders, render-data invariants, package role objects, scoring/completion exclusivity, numeric scoring weights, expected generated pages, duplicate HTML IDs, navigation reachability, and project browser title.
 
 Mechanical `pass` is structural evidence only. It cannot issue `development_ready` by itself.
+
+## Visual sanity inside the same review
+
+When the execution channel provides actual rendered/browser/page inspection, inspect the current HTML once for obvious presentation defects that would make the Golden Sample output harder to use.
+
+Check only practical failure surfaces:
+
+- clipped/overflowing content;
+- broken or unreadable tables/cards/tabs;
+- broken visible navigation or controls;
+- accidental blank/near-empty presentation caused by rendering/layout failure rather than intentionally concise content;
+- text density that is visibly unreadable;
+- responsive/print/page-break defects in the mode actually inspected.
+
+Rules:
+
+- visual sanity is part of Flow 4 REVIEW, not a new Flow, score, or screenshot-report system;
+- do not create pixel-diff or Golden regression machinery without a proved need;
+- visual inspection does not need a separate user approval round;
+- if rendered/browser inspection is unavailable, record `NOT PROVEN` and do not claim visual quality was verified;
+- semantic `development_ready` may still be evaluated from available evidence, but any visual-quality claim remains limited to what was actually inspected.
 
 ## Step 2 — One integrated four-lens review
 
@@ -170,7 +192,9 @@ Never patch `final.html` as the source of truth.
 
 ## Acceptance record
 
-Create/update `work/acceptance.md` as a concise integrated review:
+Create/update `work/acceptance.md` as a concise integrated review.
+
+When findings exist:
 
 ```text
 # PRD Acceptance
@@ -178,26 +202,54 @@ Create/update `work/acceptance.md` as a concise integrated review:
 Status: needs_revision | development_ready | handoff_ready
 Reviewed revision: <content/html version or commit/reference>
 
-## Mechanical Validation
-PASS / FAIL + concise evidence
+Mechanical: PASS / FAIL
+Visual sanity: PASS / FAIL / NOT PROVEN
 
-## Perspective Summary
+Perspective Summary
 New Reader: PASS / FAIL
 Level Designer: PASS / FAIL
 Developer: PASS / FAIL
 Project Consistency: PASS / FAIL
 
-## Findings
+Findings
 ID | Lens | Severity | Owner | Location | Finding | Resolution Status
 
-## Gate
+Gate
 Critical: N
 Major: N
 Minor: N
 Result: ...
 ```
 
+When everything passes and there are no findings, keep the record compact:
+
+```text
+Status: development_ready
+Mechanical: PASS
+Visual sanity: PASS | NOT PROVEN
+New Reader: PASS
+Level Designer: PASS
+Developer: PASS
+Project Consistency: PASS
+Critical: 0
+Major: 0
+Findings: none
+```
+
 Do not duplicate a finding under several perspective headings and then repeat it again in the table. Do not copy the PRD into the audit.
+
+## Targeted re-review after revisions
+
+An approved bounded revision should invalidate only the evidence that depends on it.
+
+After the revision fast path:
+
+- rerun the current mechanical validator for the regenerated output;
+- visually re-inspect only when the changed output could affect presentation and visual inspection is available;
+- re-review the changed package/section and directly dependent global/cross-reference meaning;
+- preserve unaffected accepted findings/lenses instead of replaying the entire semantic review.
+
+Use a full Flow 4 semantic review only when the change affects broad/shared meaning, multiple package dependencies, or the overall journey/consistency contract.
 
 ## Handoff state
 
@@ -212,6 +264,7 @@ html: output/final.html
 acceptance: work/acceptance.md
 handoff: output/team-handoff.md
 mechanical: passed
+visual: passed_or_not_proven
 perspectives:
   new_reader: passed
   level_designer: passed
@@ -260,21 +313,22 @@ Set `development_ready` only when:
 - explanatory prose and information density are clear enough that the intended role does not need to decode filler or guess missing rules;
 - requested language coverage is usable for the intended team.
 
+Visual quality is claim-specific: mark it `PASS` only after actual current-output inspection; otherwise preserve `NOT PROVEN` rather than inventing evidence.
+
 Then create the concise team handoff and set `handoff_ready`.
 
 ## Revisions after handoff
 
-If canonical meaning changes after `handoff_ready`:
+Prefer the revision fast path:
 
 ```text
-change approved
-→ update requirement/decision owner when needed
-→ update content.md
-→ regenerate render-data.json
-→ rerender final.html
-→ reopen Flow 4 status to pending_review
-→ re-audit affected dependencies only
-→ issue updated handoff
+approved bounded change
+→ update affected requirement/decision owner when needed
+→ update affected content.md section + necessary cross-references
+→ regenerate render-data.json / final.html
+→ reopen only invalidated review evidence
+→ targeted re-review
+→ updated handoff state
 ```
 
-Do not silently keep an old `handoff_ready` status against a newer PRD revision.
+Escalate to broader re-audit only when the change invalidates broader project meaning. Do not silently keep an old `handoff_ready` status against a newer PRD revision.

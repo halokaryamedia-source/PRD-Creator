@@ -7,14 +7,39 @@ Use this note only to choose the **smallest correct owner**. A correct owner may
 | Mode | Default |
 |---|---|
 | Plan | no repository skill by default; inspect owners and decide before editing |
+| Production Execution | use the one matching production owner/kit directly; **no `development-brief`** |
 | Developing | mandatory `development-brief` + **at most one** specialist |
 | Maintenance | root-cause-first; a root specialist is optional and used only when its semantic procedure adds material value |
 
 Do not activate a skill merely because a file format or implementation technology appears in the task.
 
-## Developing Front Door
+## Production Execution vs Developing
 
-Every non-trivial create/change task starts with:
+Use **Production Execution** when the user is using the existing system to create or revise project deliverables.
+
+Examples:
+
+```text
+"Here are my sources; create the PRD."
+→ Production Execution
+→ project-document-production + smallest Project Document Generator procedure
+
+"Update Objective 2 in this existing PRD with this approved change."
+→ Production Execution
+→ PRD revision fast path
+
+"Create the Voice Production document from the accepted PRD."
+→ Production Execution
+→ voice-production + smallest Voice procedure
+```
+
+Use **Developing** when the user asks to change or extend PRD-Creator itself: policy, skills, workflow, renderer/validator/builder behavior, repository structure, CI, or shared production mechanics.
+
+Normal project production must not be routed through a meta development brief simply because it creates files.
+
+## Repository Developing Front Door
+
+Every non-trivial repository/system create/change task starts with:
 
 `.agents/skills/development-brief/SKILL.md`
 
@@ -31,12 +56,14 @@ It owns:
 - proof budget;
 - final contract re-check.
 
+This front door does **not** apply to normal Flow 2–7 project production.
+
 ## Canonical Semantic Specialist Routing
 
 | Primary semantic/product contract | Skill | Trigger examples | Do not select merely because… |
 |---|---|---|---|
-| Source → requirements → canonical PRD → PRD acceptance/handoff | `project-document-production` | Flow 2 recovery, canonical PRD meaning, what render projection/pages must represent, approved-template product contract, readiness/handoff semantics | task contains HTML/JSON/Markdown/Python or a renderer/validator file fails mechanically |
-| Accepted PRD → Voice requirements → performance wording/artifact contract → Voice acceptance/delivery | `voice-production` | Flow 5 Voice scope, Voice ID/Type contract, performance wording, what DOCX must represent, delivery/evidence semantics | task mentions ElevenLabs/DOCX/audio/Python or builder/validator mechanics fail |
+| Source → requirements → canonical PRD → PRD acceptance/handoff | `project-document-production` | normal PRD Production Execution, Flow 2 recovery, canonical PRD meaning, what render projection/pages must represent, approved-template product contract, readiness/handoff semantics | task contains HTML/JSON/Markdown/Python or a renderer/validator file fails mechanically |
+| Accepted PRD → Voice requirements → performance wording/artifact contract → Voice acceptance/delivery | `voice-production` | normal Voice Production Execution, Flow 5 Voice scope, Voice ID/Type contract, performance wording, what DOCX must represent, delivery/evidence semantics | task mentions ElevenLabs/DOCX/audio/Python or builder/validator mechanics fail |
 
 Canonical paths:
 
@@ -180,6 +207,7 @@ A useful capability does **not** automatically become a root skill.
 Before loading a specialist ask:
 
 ```text
+Is this normal project Production Execution or a change to PRD-Creator itself?
 What exact meaning/behavior/contract is wrong?
 Is the failure semantic/product-contract or executable mechanics?
 Which owner would still be responsible if the implementation language/file format changed?
@@ -187,4 +215,4 @@ Does the specialist add reusable semantic procedure beyond AGENTS + nearest modu
 Can Maintenance reach the exact implementation owner without loading a root specialist?
 ```
 
-If no specialist adds material value, use `development-brief` alone for Developing or direct root-cause Maintenance for repairs.
+If normal project production, use the matching production owner directly. If repository Developing and no specialist adds material value, use `development-brief` alone. Maintenance remains direct root-cause-first.

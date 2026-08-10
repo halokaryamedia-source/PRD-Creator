@@ -45,8 +45,11 @@ If current user instruction conflicts with stored state, current user intent win
 Infer the work mode from intent:
 
 - unclear problem, architecture question, or pre-implementation decision → **Plan**;
-- create/change/extend request → **Developing**;
+- use the existing Flow 2–7 system to create or revise a project deliverable → **Production Execution**;
+- change/extend PRD-Creator itself (policy, skills, workflow, renderer/validator/builder contract, repository structure, shared tooling) → **Developing**;
 - bug, regression, review, cleanup, stale docs, or behavior-preserving correction → **Maintenance**.
+
+Creating a PRD, revising an existing PRD, creating Voice requirements, or producing a Voice document is **Production Execution**, not Developing merely because files are created.
 
 The user may explicitly override the mode. If editing is risky and the mode is genuinely unclear, use Plan first.
 
@@ -107,9 +110,34 @@ Material conflicts are `UNKNOWN` until reconciled; never choose silently.
 
 Use `docs/knowledge/sources/source-map.md` when the correct source/authority is unclear.
 
+## Production Execution Front Door
+
+Normal Flow 2–7 project production bypasses `development-brief`.
+
+Use the one matching production owner directly:
+
+```text
+new/revised PRD project
+→ project-document-production
+→ kits/project-document-generator/ smallest active Flow procedure
+
+accepted PRD → Voice production
+→ voice-production
+→ kits/voice-production-kit/ smallest active Flow procedure
+```
+
+Production Execution rules:
+
+- auto-bootstrap project/workspace/state instead of asking the user to manage repository structure;
+- inspect current source/state before asking questions;
+- batch only real high-impact decisions;
+- use the owning Flow's revision fast path for bounded approved changes;
+- keep internal state/evidence internal unless the user asks or a blocker requires explanation;
+- default user-facing delivery is the requested artifact plus a concise material summary/attention note.
+
 ## Developing Front Door
 
-Every non-trivial Developing task uses:
+Every non-trivial **repository/system Developing** task uses:
 
 `.agents/skills/development-brief/SKILL.md`
 
@@ -127,13 +155,16 @@ Every non-trivial Developing task uses:
 - minimum useful proof budget;
 - unresolved high-impact decisions.
 
-A trivial, unambiguous change may use its fast path, but the same goal/scope/proof gate still applies.
+A trivial, unambiguous system change may use its fast path, but the same goal/scope/proof gate still applies.
 
 After the brief, add **at most one** repository specialist when it provides real domain procedure.
+
+Do not route normal PRD/Voice project production through this meta-brief.
 
 ## Mode Skill Budget
 
 - **Plan:** repository-grounded analysis first; use no repository specialist by default.
+- **Production Execution:** use at most one matching root semantic production specialist plus the smallest relevant kit procedure; no `development-brief`.
 - **Developing:** mandatory `development-brief` + at most one specialist.
 - **Maintenance:** diagnose the concrete failure first; use the smallest owning specialist only when its procedure adds material value. A root specialist is optional.
 
@@ -283,9 +314,9 @@ Static inspection cannot upgrade a live/browser/audio claim to `CURRENT-PROJECT 
 
 The frozen repository-wide skill set is:
 
-- `.agents/skills/development-brief/` — mandatory Developing front door;
-- `.agents/skills/project-document-production/` — semantic/product-contract specialist for Flow 2–4;
-- `.agents/skills/voice-production/` — semantic/product-contract specialist for Flow 5–7.
+- `.agents/skills/development-brief/` — mandatory repository/system Developing front door; not normal project production;
+- `.agents/skills/project-document-production/` — semantic/product-contract specialist for Flow 2–4 and normal PRD Production Execution;
+- `.agents/skills/voice-production/` — semantic/product-contract specialist for Flow 5–7 and normal Voice Production Execution.
 
 P0.2 re-audited a possible renderer/validator/DOCX/Python/artifact-engineering specialist and **did not add one**. Pure implementation mechanics stay module-local; shared dependency/test/CI mechanics stay repository-engineering owned.
 
@@ -308,7 +339,7 @@ Skill routing: `docs/knowledge/skills/activation-matrix.md`.
 
 ## User-Facing Communication
 
-For non-trivial Developing work, keep the visible brief simple:
+For non-trivial repository Developing work, keep the visible brief simple:
 
 ```text
 Tujuan:
@@ -318,7 +349,9 @@ Tidak diubah:
 Cara memastikan benar:
 ```
 
-Final report:
+Normal Production Execution skips that meta-brief. Default production delivery shows only the requested artifact plus concise material changes/decisions and any real remaining attention item. Internal YAML/state/IDs/validator logs/CI details stay internal unless requested or necessary to explain a blocker.
+
+Final report for repository/system work:
 
 ```text
 Status: Selesai | Perlu pemeriksaan | Terhenti

@@ -2,10 +2,12 @@
 
 Updated: 2026-08-10
 
-This is the end-to-end path for **Developing** work in PRD-Creator.
+This is the end-to-end path for **repository/system Developing** work in PRD-Creator.
+
+Normal project Production Execution (for example creating or revising a PRD from project source) does **not** use this flow. It routes directly to the matching production owner/kit.
 
 ```text
-User request
+User asks to change PRD-Creator itself
 → development-brief
 → goal/method/reference/authority grounded
 → development needed?
@@ -21,7 +23,7 @@ User request
 
 ## Development Brief
 
-`development-brief` is mandatory before non-trivial implementation. Its canonical procedure lives in `.agents/skills/development-brief/SKILL.md`.
+`development-brief` is mandatory before non-trivial repository/system implementation. Its canonical procedure lives in `.agents/skills/development-brief/SKILL.md`.
 
 The user does not need to provide an expert prompt. The brief establishes:
 
@@ -51,19 +53,19 @@ Do not create a new skill, schema, compatibility layer, renderer abstraction, va
 
 Use `development-brief` alone when another skill adds no material domain value.
 
-Otherwise choose exactly one semantic specialist:
+Otherwise choose exactly one semantic specialist for the **system contract being changed**:
 
 ```text
-Project Document Flow 2–4
+Project Document Flow 2–4 system/policy
 → project-document-production
 
-Voice Production Flow 5–7
+Voice Production Flow 5–7 system/policy
 → voice-production
 ```
 
-Do not stack both because the final project pipeline contains both. Select the owner of the active change.
+Do not stack both because the final project pipeline contains both. Select the owner of the active system change.
 
-If a PRD change later invalidates Voice work, finish the upstream correction and explicitly mark downstream artifacts for revalidation rather than keeping both specialists active at once.
+If a PRD system change later invalidates Voice behavior, finish the upstream correction and explicitly mark downstream behavior for revalidation rather than keeping both specialists active at once.
 
 ## Execution Channel
 
@@ -103,12 +105,12 @@ Then:
 
 ### Build Pass
 
-Check whether the semantic owner produced the intended change correctly.
+Check whether the semantic owner produced the intended system change correctly.
 
 Examples:
 
-- Flow 2 requirement/provenance recovery is internally consistent;
-- Flow 3 canonical content/render projection agree materially;
+- Flow 2 requirement/provenance recovery contract is internally consistent;
+- Flow 3 canonical content/render projection contract agrees materially;
 - Flow 6 exact Voice ID/Type parity remains intact;
 - builder/validator changes pass the targeted mechanical check.
 
@@ -149,7 +151,7 @@ Update only the canonical owner:
 
 ## User Reporting
 
-For material implementation:
+For material repository/system implementation:
 
 ```text
 Status:

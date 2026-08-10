@@ -2,6 +2,28 @@
 
 This file owns Flow 2 for repository-backed projects. Its purpose is to turn uneven source material into a traceable, resumable requirement state without prematurely writing the final PRD or forcing unnecessary review rounds.
 
+## Automatic project bootstrap
+
+The user should not need to prepare repository structure before PRD production.
+
+For a new project:
+
+```text
+user-provided project name OR strongest authoritative source title
+→ derive stable project name
+→ derive lowercase kebab-case project slug
+→ reuse a clearly matching active project OR create workspace/active/<project-slug>/
+→ preserve supplied originals
+→ create only the state/work structure needed by the current Flow
+```
+
+Rules:
+
+- do not ask the user to choose a slug, folder name, source ID, requirement ID, or internal YAML structure;
+- reuse an existing active project when current evidence clearly shows the source belongs to it;
+- ask only when multiple plausible projects would make automatic placement unsafe;
+- project bootstrap is internal setup, not a user approval stage.
+
 ## Project Package
 
 Active work lives under:
@@ -23,7 +45,7 @@ Later flows may add canonical content and final outputs. Do not put final delive
 
 ## Source Inventory Contract
 
-Every source receives a stable `SRC-###` ID and records at minimum:
+Every source receives a stable `SRC-###` ID internally and records at minimum:
 
 ```yaml
 id: SRC-001
@@ -53,7 +75,7 @@ Do not mark a source `superseded` merely because another file is newer. Superses
 
 ## Requirement Register Contract
 
-Every production-relevant requirement, constraint, conflict, or open decision that must survive into the PRD or acceptance flow receives a stable `REQ-###` ID. Do **not** create requirement IDs for incidental descriptive facts that do not affect scope, behavior, build, implementation, scoring, handoff, acceptance, or an unresolved decision.
+Every production-relevant requirement, constraint, conflict, or open decision that must survive into the PRD or acceptance flow receives a stable `REQ-###` ID internally. Do **not** create requirement IDs for incidental descriptive facts that do not affect scope, behavior, build, implementation, scoring, handoff, acceptance, or an unresolved decision.
 
 Record enough information to answer: **what is claimed, where did it come from, what is missing, and does it need approval?**
 
@@ -94,7 +116,7 @@ resolution: ""
 - `approved`;
 - `deferred`.
 
-### Requirement granularity
+## Requirement granularity
 
 Keep the register useful rather than exhaustive.
 
@@ -141,6 +163,43 @@ Rules:
 - low-risk Clarification/Completion should not create an approval round;
 - zero questions is the preferred result when the project is already sufficiently defined.
 
+## Recommended decision batch
+
+When a Proposal genuinely needs approval, reduce user effort by doing the analysis first.
+
+Default format:
+
+```text
+Decision 1 — <topic>
+Recommended: <option>
+Reason: <short source/context reason>
+Impact: <what changes>
+
+Decision 2 — <topic>
+Recommended: <option>
+Reason: <short source/context reason>
+Impact: <what changes>
+```
+
+The user may approve efficiently:
+
+```text
+Approve all recommendations.
+```
+
+or override only specific items:
+
+```text
+Approve all except Decision 2: use <other option>.
+```
+
+Rules:
+
+- recommendations must be grounded in current source/context;
+- the recommendation is still `proposal` / `pending` until user approval;
+- do not make the user invent an option from scratch when a safe evidence-based recommendation can be presented;
+- if there is no responsible recommendation, present the real choice/unknown plainly instead of manufacturing one.
+
 ## Intake State
 
 `state/intake-state.yaml` keeps one resumable state:
@@ -182,7 +241,7 @@ When used, keep it concise:
 1. short project/source snapshot;
 2. compact confirmed production scope;
 3. meaningful Clarification/Completion only;
-4. Proposal requiring approval;
+4. Proposal requiring approval, with recommendation/reason/impact when a responsible recommendation exists;
 5. Blocked/conflicting requirements requiring attention;
 6. readiness and one next step.
 
@@ -190,11 +249,24 @@ Do not dump every supported fact into the review. Detailed traceability belongs 
 
 If no human decision/recovery summary is needed, Flow 2 may advance directly through `intake-state.yaml` without forcing a separate user review round.
 
+## Revision input
+
+An explicit approved user revision to an existing project does not require full source intake again by default.
+
+Route it to the revision fast path when:
+
+- the project identity is already clear;
+- the user instruction itself is authoritative for the requested change;
+- the change is local/bounded;
+- it does not invalidate source authority or introduce a broader conflict.
+
+Update the affected requirement(s) and preserve the prior traceability. Reopen full intake only when the change materially affects broader scope, shared/global rules, source authority, or unresolved decisions.
+
 ## Flow 2 Completion Gate
 
 Flow 2 is complete when:
 
-- every available source is inventoried and read or explicitly marked unavailable/unreadable;
+- every available source relevant to current scope is inventoried and read or explicitly marked unavailable/unreadable;
 - every production-relevant requirement is traceable to evidence or approved state;
 - every material gap has exactly one recovery class;
 - source conflicts are resolved or visibly Blocked;

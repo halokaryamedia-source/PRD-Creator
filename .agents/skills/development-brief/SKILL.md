@@ -1,13 +1,32 @@
 ---
 name: development-brief
-description: Mandatory front door for non-trivial PRD-Creator Developing tasks. Ground the real goal in repository/project evidence, separate suggested method and sample/reference from the requirement, detect execution channel, decide whether development is needed, choose Build and Acceptance POVs, define minimal scope with 2–5 provable criteria and a proof budget, then hand off to at most one semantic specialist. Re-check the same contract before completion. Do not use as the production procedure for Flow 2–7.
+description: Mandatory front door for non-trivial repository/system Developing tasks in PRD-Creator. Ground the real goal in repository/project evidence, separate suggested method and sample/reference from the requirement, detect execution channel, decide whether development is needed, choose Build and Acceptance POVs, define minimal scope with 2–5 provable criteria and a proof budget, then hand off to at most one semantic specialist. Re-check the same contract before completion. Do not use for normal Flow 2–7 project production such as creating or revising a PRD from project source.
 ---
 
 # Development Brief
 
-Turn a create/change request into the smallest grounded development contract.
+Turn a repository/system create/change request into the smallest grounded development contract.
 
 Root `AGENTS.md` owns source precedence, independent judgment, root-cause gating, proof economy, evidence status, and anti-slop behavior. Apply those rules instead of duplicating them here.
+
+## Do not trigger for normal production
+
+Normal project production is **Production Execution**, not repository Developing.
+
+Examples that bypass this skill:
+
+```text
+"Here are the project sources; create the PRD."
+→ Project Document Generator Flow 2–4 directly
+
+"Update Objective 3 in the existing PRD using this approved change."
+→ Project Document Generator revision fast path directly
+
+"Create Voice Production from the accepted PRD."
+→ Voice Production Flow 5–7 directly
+```
+
+Use `development-brief` only when the user asks to change or extend **how PRD-Creator itself works**, for example its policy, skills, workflow, renderer contract, validator contract, builder behavior, repository structure, or shared tooling.
 
 ## Required Decisions
 
@@ -61,8 +80,8 @@ Omit fields that do not apply.
 
 6. **Select implementation owner**
    - Use this skill alone for trivial repository/routing work.
-   - For PRD/source/handoff work, add `project-document-production` when its domain procedure materially helps.
-   - For Voice requirement/script/DOCX/delivery work, add `voice-production` when its domain procedure materially helps.
+   - For PRD/source/handoff system changes, add `project-document-production` when its domain procedure materially helps.
+   - For Voice requirement/script/DOCX/delivery system changes, add `voice-production` when its domain procedure materially helps.
    - Add at most one specialist. If investigation exposes a second independent problem, finish or explicitly reframe the first boundary before switching owner.
 
 7. **Implement and final-gate**
@@ -74,10 +93,16 @@ Omit fields that do not apply.
 
 ```text
 User asks to change how incomplete gameplay sources become a PRD
+→ repository Developing
 → development-brief
 → project-document-production
 
+User supplies incomplete gameplay sources and asks for the PRD
+→ Production Execution
+→ project-document-production / Project Document Generator directly
+
 User asks to change Voice moment extraction or ElevenLabs script wording rules
+→ repository Developing
 → development-brief
 → voice-production
 
@@ -89,7 +114,7 @@ User reports a blank page in Voice Production.docx
 
 ## User-Facing Brief
 
-For non-trivial Developing work:
+For non-trivial repository Developing work:
 
 ```text
 Tujuan:
@@ -100,6 +125,8 @@ Cara memastikan benar:
 ```
 
 For a trivial unambiguous change, one short line is enough.
+
+Normal Production Execution does not show this meta-brief to the user.
 
 ## Escalation
 
