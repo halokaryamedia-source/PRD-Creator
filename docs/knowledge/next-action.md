@@ -2,155 +2,61 @@
 
 Updated: 2026-08-11
 
-This is the single active-task snapshot.
+## Status
 
-## Current Status
-
-`PRD_PRE_SAMPLE_AUDIT_COMPLETE_REAL_PROJECT_SAMPLE_NEXT`
+`PRD_PRE_SAMPLE_READY_HTML_CONTEXT_EFFICIENCY_REFINED`
 
 Working branch: **`Local` only**.
 
-## Golden Sample decision
+## Current PRD contract
 
-The approved Golden Sample remains the required output authority for this gameplay-document family.
+- Golden Sample remains the required hierarchy, page-composition, component-language, and presentation authority.
+- Normal PRD creation/revision is Production Execution; no `development-brief`.
+- User burden stays low: automatic bootstrap, inspect source first, grouped material decisions only when needed, delta-first revisions, concise delivery.
+- PRD prose uses plain technical writing without AI-style filler or invented detail.
+- English-only is default unless EN + ID is intentionally produced.
+- Journey/Flow grids adapt item count within existing Golden capacities.
+- Package Terms Used are role-specific instead of repeated on every role page.
 
-Preserve both:
+## HTML/context efficiency
 
-```text
-Hierarchy
-Overview
-→ Gameplay Flow
-→ Global Development
-→ Gameplay Package(s)
-     → Gameplay Overview
-     → Level Design
-     → Developer
-```
-
-and its reusable page composition/component language.
-
-Golden remains the hierarchy, page composition, component language, and presentation foundation. It is not merely an HTML/CSS shell, and it is not a reason to copy Aftershock-specific project facts or fixed item counts into another project.
-
-## PRD pre-sample audit — complete
-
-The remaining user-facing PRD risks identified after Golden fidelity remediation have now been closed with bounded changes.
-
-### 1. Adaptive Golden content distribution
-
-Golden journey/flow components no longer assume Aftershock's exact item count on desktop.
+Normal production treats HTML rendering as deterministic runtime work:
 
 ```text
-Overview journey
-→ one column per item up to the Golden six-column capacity
-→ larger sets wrap at the existing Golden maximum
-
-Golden flow cards
-→ one column per item up to the Golden four-column capacity
-→ larger sets wrap at the existing Golden maximum
+content.md
+→ compact render-data.json
+→ renderer
+→ Golden template
+→ final.html
 ```
 
-Existing Golden mobile behavior remains authoritative. No layout engine, template profile, visual score, or alternate document family was introduced.
+Rules:
 
-### 2. Explicit document language availability
+- do not hand-author `final.html`;
+- do not load the ~794 KB Golden template into model context during normal production;
+- do not load full `final.html` for semantic review;
+- let renderer/validator consume large HTML files at runtime;
+- inspect HTML source only for a concrete bounded defect;
+- finish canonical content before the main projection;
+- patch only affected render-data subtree during bounded revisions;
+- use scalar strings for EN-only projection instead of duplicated localized values when appropriate;
+- load only the active Flow owner/procedure, not the whole PRD skill/document stack.
 
-The renderer now distinguishes:
+## Latest proof
 
-```text
-["en"]
-→ English-only document
-→ EN/ID selector hidden
+Implementation head: `07bb8cd8919ce9fb9c1f6041ab3448af15d8a494`
 
-["en", "id"]
-→ bilingual document
-→ selector remains available
-```
+- Repository Verify #52 — PASS
+- Production Verify #18 — PASS
 
-An explicit localized `en` / `id` value in bilingual output must provide both sides. The renderer no longer silently copies a missing localized language into the other side.
+No manual/real-project visual test has been run for this refined PRD system yet.
 
-Scalar proper names, codes, numbers, formulas, IDs, and other intentionally shared values may remain identical. No translation service, translation memory, or localization framework was added.
+## Do not add now
 
-### 3. Role-specific Terms Used
+No new template/profile framework, HTML schema, pixel/screenshot scoring, AI detector, generic parser, checksum/revision machinery, or `content.md → render-data.json` architecture rewrite without real evidence.
 
-Package terms remain one glossary/tooltips source.
-
-Visible package Terms Used now behaves as:
-
-```text
-roles omitted
-→ Gameplay Overview only
-
-roles explicitly include level_design / developer
-→ visible on those named role pages
-
-roles: []
-→ glossary/tooltips only
-```
-
-This removes automatic repetition of every package term across Gameplay, Level Design, and Developer while keeping the shared glossary source intact.
-
-### 4. Documentation alignment
-
-Kit documentation now uses the current Golden composition model rather than the retired shell-only mental model.
-
-`kits/project-document-generator/README.md` is aligned to kit version `1.5.0` and describes Golden hierarchy + composition + presentation foundation. `CONTENT-CONTRACT.md` and `RENDERING.md` record the bounded language, adaptive-grid, and role-specific Terms Used behavior.
-
-## Implementation revision
-
-Substantive implementation commit:
-
-```text
-41174b4f54a16b33f2b320aa520d9711e08b07a5
-fix: close PRD pre-sample rendering gaps
-```
-
-Final verified implementation revision after restoring the pre-existing non-executable renderer file mode:
-
-```text
-e12ab42ee58d1768e1becd74f271c24b13fbadb8
-```
-
-## Verification evidence
-
-```text
-Repository Verify #48
-run: 31416985727
-head: e12ab42ee58d1768e1becd74f271c24b13fbadb8
-result: PASS
-
-Production Verify #17
-run: 31416986247
-head: e12ab42ee58d1768e1becd74f271c24b13fbadb8
-result: PASS
-job: 93548231114
-```
-
-Production Verify passed:
-
-- locked dependency installation;
-- Python source compilation;
-- Project Document contracts, including the new focused PRD renderer cases;
-- Voice Production contracts as downstream regression coverage;
-- final verification enforcement.
-
-## Boundaries intentionally unchanged
-
-Do not reopen these without a concrete real-project defect:
-
-- Golden hierarchy or template family;
-- `content.md → render-data.json` architecture;
-- Source Intake / requirement-recovery architecture;
-- visual scoring / pixel-diff / screenshot baseline systems;
-- translation-service or localization frameworks;
-- BuildIT parity as an automatic backlog.
-
-Handoff-state simplification remains deferred. Review it only together with the later PRD → Voice boundary if real project use shows friction there.
-
-## Evidence boundary
-
-Repository and production-contract verification are complete for this implementation revision.
-
-**Actual visual quality on a new project is not yet claimed.** Golden browser/page behavior with a different project structure must be judged from the next real-project sample, not inferred from mechanical tests.
+Handoff-state simplification remains deferred to the later PRD → Voice boundary review.
 
 ## Next Step
 
-Run one real project through PRD Flow 2–4 using the current system, then inspect the actual generated Golden document for content recovery, layout distribution, language behavior, role readability, and visual quality. Fix only concrete defects exposed by that sample.
+Run **one real project through Flow 2 → 4** as the first coherent practical sample. Measure actual user friction, context usage, Golden visual fidelity, and output usability; fix only defects that appear in that run.
