@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -11,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
 VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
+APPROVED_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "approved-document.html"
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
@@ -123,15 +125,23 @@ class ProjectDocumentContracts(unittest.TestCase):
             encoding="utf-8",
         )
 
-    def render(self, project: Path) -> subprocess.CompletedProcess[str]:
-        return run_cli(
+    def render(self, project: Path, template: Path | None = None) -> subprocess.CompletedProcess[str]:
+        args: list[Path | str] = [
             RENDERER,
             project / "work" / "render-data.json",
             project / "output" / "final.html",
-        )
+        ]
+        if template is not None:
+            args.extend(["--template", template])
+        return run_cli(*args)
 
     def validate(self, project: Path) -> subprocess.CompletedProcess[str]:
         return run_cli(VALIDATOR, project)
+
+    def write_template(self, project: Path, name: str, text: str) -> Path:
+        path = project / name
+        path.write_text(text, encoding="utf-8")
+        return path
 
     def test_renderer_and_validator_happy_path(self) -> None:
         data = render_data()
@@ -142,6 +152,14 @@ class ProjectDocumentContracts(unittest.TestCase):
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
         self.assertIn(
             f'<meta content="{fingerprint(data)}" name="render-data-sha256"/>',
+            html,
+        )
+        self.assertIn(
+            '<meta content="A minimal contract fixture for production verification." name="description"/>',
+            html,
+        )
+        self.assertIn(
+            '<meta content="prd-contract-fixture-v1.0" name="specification-version"/>',
             html,
         )
 
@@ -158,6 +176,85 @@ class ProjectDocumentContracts(unittest.TestCase):
                 "dev-core-developer",
             ],
         )
+
+    def test_renderer_keeps_glossary_script_context_safe(self) -> None:
+        data = render_data()
+        payload = "Before </script><script>window.injected=true</script> after"
+        data["packages"][0]["terms"] = [
+            {
+                "key": "unsafe-term",
+                "label": {"en": "Unsafe Term", "id": "Istilah Tidak Aman"},
+                "definition": {"en": payload, "id": payload},
+                "aliases": {"en": ["Unsafe Term"], "id": ["Istilah Tidak Aman"]},
+            }
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertNotIn(payload, html)
+        self.assertIn(
+            r"Before \u003c/script\u003e\u003cscript\u003ewindow.injected=true\u003c/script\u003e after",
+            html,
+        )
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+
+    def test_renderer_rejects_malformed_glossary_aliases(self) -> None:
+        data = render_data()
+        data["packages"][0]["terms"] = [
+            {
+                "key": "bad-alias",
+                "label": "Bad Alias",
+                "definition": "Alias shape is intentionally invalid.",
+                "aliases": {"en": "not-an-array"},
+            }
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertNotIn("Traceback", rendered.stderr)
+        self.assertIn("aliases.en must be an array of strings", rendered.stderr)
+        self.assertFalse((project / "output" / "final.html").exists())
+
+    def test_renderer_rejects_missing_or_ambiguous_required_shell_marker(self) -> None:
+        data = render_data()
+        project = self.make_project(data)
+        template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
+        marker = '<nav class="sidebar-nav">'
+        self.assertEqual(template.count(marker), 1)
+
+        variants = {
+            "missing": template.replace(marker, '<nav class="sidebar-nav-broken">', 1),
+            "ambiguous": template.replace(marker, '<nav class="sidebar-nav"></nav>' + marker, 1),
+        }
+        for name, mutated in variants.items():
+            with self.subTest(name=name):
+                output = project / "output" / "final.html"
+                if output.exists():
+                    output.unlink()
+                template_path = self.write_template(project, f"{name}.html", mutated)
+                rendered = self.render(project, template_path)
+                self.assertEqual(rendered.returncode, 2)
+                self.assertNotIn("Traceback", rendered.stderr)
+                self.assertIn("sidebar navigation marker", rendered.stderr)
+                self.assertFalse(output.exists())
+
+    def test_renderer_rejects_missing_description_metadata_marker(self) -> None:
+        project = self.make_project(render_data())
+        template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
+        pattern = re.compile(r'<meta\s+content="[^"]*"\s+name="description"\s*/?>', re.I)
+        mutated, count = pattern.subn("", template, count=1)
+        self.assertEqual(count, 1)
+        template_path = self.write_template(project, "missing-description.html", mutated)
+
+        rendered = self.render(project, template_path)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertNotIn("Traceback", rendered.stderr)
+        self.assertIn("description metadata marker", rendered.stderr)
 
     def test_validator_rejects_stale_html_after_render_data_changes(self) -> None:
         data = render_data()

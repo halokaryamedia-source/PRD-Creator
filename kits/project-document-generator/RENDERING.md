@@ -18,6 +18,8 @@ output/final.html                  presentation artifact
 
 `render-data.json` is not a second PRD. It exists only because deterministic HTML rendering needs structured page data. If `content.md` changes, regenerate the projection before rendering.
 
+The renderer also embeds a deterministic SHA-256 fingerprint of the current render-data into `final.html`. Flow 4 mechanical validation uses that fingerprint only to prove **current projection → current HTML** freshness; it does not prove that the projection is semantically equivalent to canonical `content.md`.
+
 ## What the renderer preserves
 
 The renderer clones the approved HTML and preserves its shared:
@@ -45,7 +47,8 @@ Only project-owned content surfaces:
 - navigation entries and targets;
 - generated document pages inside `.document-main`;
 - project glossary data used by the inherited tooltip script;
-- project-specific local-storage namespace.
+- project-specific local-storage namespace;
+- generated `render-data-sha256` revision metadata.
 
 Inherited internal class names such as `quarry-*` may remain because they are part of the approved template's presentation vocabulary. They do not make Quarry content a requirement for another project.
 
@@ -106,6 +109,54 @@ Each package requires:
 
 The renderer creates A/B/C pages for each package and regenerates the matching sidebar hierarchy automatically.
 
+### Package glossary aliases
+
+Package `terms[]` feed both visible Terms Used content and the inherited glossary tooltip runtime.
+
+When `aliases` is supplied, use only one of the supported shapes:
+
+```json
+["Alias One", "Alias Two"]
+```
+
+or:
+
+```json
+{
+  "en": ["English Alias"],
+  "id": ["Alias Indonesia"]
+}
+```
+
+The `en`/`id` object may provide one or both languages, but every supplied language value must be an array of strings. Malformed alias shapes are rejected before rendering rather than being allowed to fail later in browser JavaScript.
+
+## Script-context safety
+
+Glossary data is inserted into an executable classic `<script>` block. The renderer must serialize that JSON for **script context**, not merely ordinary JSON context.
+
+At minimum, serialized glossary text escapes characters that could terminate or alter the enclosing script context, including literal `<`, `>`, `&`, U+2028, and U+2029. Project text such as `</script>` must therefore remain data and must never create a new executable script boundary.
+
+This is a mechanical rendering-safety rule. It is not a general HTML sanitizer and does not authorize arbitrary user-authored HTML/JavaScript in project content.
+
+## Approved shell marker contract
+
+The renderer mutates a small required set of approved-shell surfaces. Each unique marker must exist exactly once where uniqueness is required; missing or ambiguous markers fail the render instead of being ignored.
+
+Required unique surfaces include:
+
+- sidebar brand anchor;
+- `<nav class="sidebar-nav">`;
+- `<main class="document-main">`;
+- glossary JavaScript assignment anchor;
+- document `<title>`;
+- description metadata;
+- specification-version metadata;
+- closing `</head>` insertion point.
+
+The approved shell must also retain the inherited local-storage namespace tokens that the renderer replaces with the current project namespace.
+
+Do not expand this into a full-template snapshot contract. CSS/layout/content elsewhere in the approved shell remains presentation authority and is reviewed visually when that evidence level is required.
+
 ## Renderer input checks
 
 The renderer blocks when:
@@ -115,9 +166,10 @@ The renderer blocks when:
 - package IDs are duplicated;
 - a package does not contain Gameplay, Level Design, and Developer objects;
 - Developer contains neither scoring nor completion data;
+- package glossary aliases use a shape unsupported by the runtime;
 - visible unresolved placeholder tokens remain;
 - generated navigation points to a page that does not exist;
-- the approved template shell markers cannot be found deterministically.
+- the approved template shell markers cannot be found exactly as required.
 
 These are rendering safety checks, not a substitute for Flow 4 content/development-readiness validation.
 
@@ -138,6 +190,8 @@ python kits/project-document-generator/renderer/render.py \
   <render-data.json> <final.html> \
   --template <approved-template.html>
 ```
+
+Renderer contract failures return a controlled non-zero CLI result. A failed render must not be reported as a valid generated artifact.
 
 ## Important boundary
 
