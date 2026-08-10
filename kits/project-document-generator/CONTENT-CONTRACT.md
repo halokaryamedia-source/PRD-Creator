@@ -4,6 +4,35 @@ This file defines what `work/content.md` must contain after Flow 2 reaches `read
 
 `content.md` is the canonical human-readable project document content. It owns project meaning for Flow 3. `render-data.json` is only a derived projection used by the renderer, and `final.html` is only a presentation artifact.
 
+## Golden Sample structure is the output contract
+
+The approved Golden Sample is not merely a loose visual reference. Its document foundation is the required production structure for this gameplay-document family.
+
+Preserve:
+
+```text
+Overview
+→ Gameplay Flow
+→ Global Development
+→ Gameplay Package(s)
+     → Gameplay Overview
+     → Level Design
+     → Developer
+```
+
+For a Gameplay Package, the three role surfaces remain part of the document foundation even when one role has little package-specific work. **Do not remove a role page just to make the document shorter.**
+
+Efficiency is achieved by keeping each role page focused and by avoiding invented or duplicated detail, not by changing the approved Golden Sample hierarchy.
+
+If a role has no meaningful package-specific requirement beyond an already-defined global/shared rule:
+
+- keep the page concise;
+- state only the local implication or dependency that the role needs;
+- reference the applicable global/shared rule when useful;
+- do not invent objects, dimensions, mechanics, APIs, architecture, scoring, persistence, or other work just to fill the page.
+
+If the user later requests a materially different document family, treat that as an explicit template/output decision. Do not silently mutate the Golden Sample contract.
+
 ## Core principles
 
 1. **Context before detail.** A reader should understand the project and player journey before implementation detail.
@@ -14,7 +43,7 @@ This file defines what `work/content.md` must contain after Flow 2 reaches `read
 6. **No filler.** Do not repeat narrative or requirements merely to make a page look complete.
 7. **No unresolved design decisions.** Flow 3 may clarify wording, but it cannot invent a decision that Flow 2 left unresolved.
 8. **Plain technical prose.** Prefer direct, concrete language. Writing quality must improve readability without changing project meaning or technical precision.
-9. **Minimum sufficient detail.** Include enough information for the target role to work without guessing, but do not fill optional fields or repeat background that does not change a production decision, action, or acceptance condition.
+9. **Minimum sufficient detail inside the fixed structure.** Include enough information for the target role to work without guessing, but do not fill fields with content that does not affect understanding, production action, or acceptance.
 
 ## PRD writing quality
 
@@ -25,8 +54,8 @@ Use these rules for explanatory prose:
 1. **State the concrete behavior.** Explain what happens, when it happens, and what result follows. Do not add generic comments about importance, immersion, engagement, seamlessness, or quality unless the source explicitly requires that claim.
 2. **Prefer simple words when they are equally precise.** Avoid inflated vocabulary such as `pivotal`, `crucial`, `robust`, `intricate`, `transformative`, `showcase`, or `foster` when a direct technical phrase communicates the same meaning.
 3. **Remove fake analysis.** Avoid trailing phrases such as `highlighting`, `underscoring`, `showcasing`, or `ensuring` when they only restate or decorate the mechanic instead of adding a real consequence.
-4. **Keep terminology stable.** If the approved term is `Objective`, `Checkpoint`, `Arena`, or another project term, reuse it consistently. Do not rotate synonyms merely to make prose look varied.
-5. **Do not force rhetorical patterns.** Avoid artificial rule-of-three phrasing, dramatic fragments, repeated contrast formulas such as `not only X, but Y`, and generic setup lines that delay the actual requirement.
+4. **Keep terminology stable.** Reuse approved terms consistently. Do not rotate synonyms merely to make prose look varied.
+5. **Do not force rhetorical patterns.** Avoid artificial rule-of-three phrasing, dramatic fragments, repeated contrast formulas, and generic setup lines that delay the actual requirement.
 6. **Use the minimum effective wording.** Remove filler and duplicated interpretation, but do not compress away context that a New Reader, Level Designer, or Developer needs.
 7. **Protect technical facts.** A writing-quality pass must never alter IDs, approved names, numbers, coordinates, timings, formulas, scoring weights, trigger conditions, completion/fail conditions, state names, code/API names, or other authoritative values.
 8. **Apply judgment by content type.** Rewrite narrative and explanatory paragraphs when needed. Leave tables, formulas, requirement lists, configuration values, code, and already-clear technical statements mostly untouched.
@@ -41,21 +70,11 @@ Prefer:
 Completing this objective opens the next area and starts the following phase.
 ```
 
-Another example:
-
-```text
-Avoid:
-The bridge collapses after the timer ends, creating tension and encouraging players to move quickly.
-
-Prefer:
-When the timer ends, the bridge collapses. The player must cross before that happens.
-```
-
 If a smoother sentence would make a precise rule less explicit, keep the precise rule.
 
 ## Information density
 
-Use the smallest amount of content that still makes the document production-ready.
+Use the smallest amount of content that still makes every required Golden Sample surface useful.
 
 Include a detail when it does at least one of these jobs:
 
@@ -65,33 +84,16 @@ Include a detail when it does at least one of these jobs:
 - defines a trigger, condition, quantity, score, handoff, reset, or acceptance rule;
 - prevents a target role from having to invent a product decision.
 
-Otherwise, omit it or compress it.
+Otherwise, omit it, compress it, or reference the existing shared/global rule.
 
 Additional rules:
 
-- Do not fill an optional section, field, note, or table merely because the template provides one.
+- Do not remove required Golden Sample role pages merely because their local content is short.
+- Do not fill a field, note, table row, or paragraph merely because there is visual space for it.
 - Do not repeat the same global rule in full across several packages. State the global rule once and repeat only the local implication needed by the package.
 - Prefer one explicit requirement over several paraphrases of the same requirement.
-- Background/lore may stay when it helps the reader understand the gameplay or production intent; do not expand it when it has no downstream effect.
+- Background/lore may stay when it helps the reader understand gameplay or production intent; do not expand it when it has no downstream effect.
 - Brevity is not the goal by itself. If removing a detail would make a production role guess, keep the detail.
-
-## Canonical document order
-
-For the current approved gameplay-production template, use this order:
-
-```text
-1. Overview
-2. Gameplay Flow
-3. Global Development
-4+. Gameplay Packages
-     A. Gameplay Overview
-     B. Level Design
-     C. Developer
-```
-
-The exact number of Gameplay Flow pages, Global Development pages, and Gameplay Packages follows project needs. Do not force Aftershock's page count or objective count onto another project.
-
-If a project requires a materially different document family, do not deform this template to fit it. Surface the template/profile choice as a material decision before rendering.
 
 ## 1. Overview
 
@@ -136,11 +138,13 @@ Global pages own rules shared by multiple packages. Do not duplicate the full gl
 
 A Gameplay Package represents a production-relevant gameplay section such as an Introduction, Objective, Transition, Ending, Stage, Station, or standalone gameplay unit.
 
-Every package that materially requires production work uses the three-page structure below.
+Every package uses the approved three-role Golden Sample structure.
 
 ### A. Gameplay Overview
 
-Required when applicable:
+Explain **what the player experiences and what counts as success**.
+
+Use relevant information such as:
 
 - local context;
 - package type / label;
@@ -155,11 +159,13 @@ Required when applicable:
 - handoff to the next package;
 - local Terms Used.
 
-The page describes **what the player experiences and what counts as success**.
+Do not add fields that have no project meaning merely to make the page look full.
 
 ### B. Level Design
 
-Required when the package needs build/layout work:
+This page remains part of the package structure and explains **what must be built and why it exists**.
+
+Use relevant information such as:
 
 - concise local overview;
 - Level Design flow in production order;
@@ -168,27 +174,31 @@ Required when the package needs build/layout work:
 - Gameplay Function for each meaningful object/area;
 - only dimensions/quantities that materially affect gameplay or production;
 - important build notes and constraints;
-- local Terms Used.
+- local Terms Used when they materially help this role.
 
-Do not hide gameplay function inside visual prose. Level Design should know both what to build and why it exists.
+If the package has little local Level Design work, keep the page concise and point to applicable shared/global layout rules. Do not invent decorative build requirements to fill it.
 
 ### C. Developer
 
-Required when the package needs runtime implementation:
+This page remains part of the package structure and explains **runtime behavior, data, and result**.
+
+Use relevant information such as:
 
 - concise local overview;
 - chronological trigger → behavior → data → result flow;
 - grouped implementation requirements;
 - scoring or completion data;
 - recording/persistence requirements when applicable;
-- duplicate-prevention behavior;
+- duplicate-prevention behavior when applicable;
 - interruption / disconnect behavior when applicable;
 - reset behavior;
 - verification/acceptance behavior;
 - important implementation notes;
-- local Terms Used.
+- local Terms Used when they materially help this role.
 
-Describe product/runtime behavior. Do not invent class names, file names, APIs, or architecture unless the source explicitly requires them.
+Describe product/runtime behavior. Do not invent class names, file names, APIs, architecture, persistence, or tracking requirements unless the source/product rule requires them.
+
+For non-scoring packages, use the completion-data surface to state the valid product outcome and any genuinely required recorded data. Do not manufacture extra metrics merely to populate the table.
 
 ## Scoring contract
 
@@ -211,14 +221,16 @@ If numeric component weights are used, they must total 100% unless the approved 
 
 ## Completion-data contract
 
-A package that does **not** produce an Objective Score must not receive an artificial score just to fill the template. Define instead:
+A package that does **not** produce an Objective Score must not receive an artificial score just to fill the template. Use completion data to document only the product outcome that actually matters:
 
 - `produces_score: false`;
 - valid completion condition;
-- recorded completion/progress data;
+- recorded completion/progress data only when it genuinely exists or is required;
 - interruption behavior when relevant;
-- duplicate prevention;
+- duplicate prevention when relevant;
 - handoff result.
+
+Do not invent persistence, analytics, counters, or duplicate-prevention systems if the product does not require them.
 
 ## Terms Used
 
@@ -227,11 +239,11 @@ Use Terms Used only for project-specific or production-critical terminology.
 Each term should have:
 
 - stable key;
-- label (EN and ID when available);
+- label (EN and ID when available/required by the project);
 - concise definition;
 - optional aliases when the same term appears in another approved form.
 
-Do not over-tag ordinary language.
+Do not over-tag ordinary language and do not add definitions solely to fill the component.
 
 ## Critical information
 
@@ -256,8 +268,8 @@ Flow 3 must not hide missing critical information behind vague text such as “u
 
 - Flow 2 state is `ready_for_prd`;
 - every included material statement is supported by source/recovered requirements/approved decisions;
-- required package pages have enough local context for their target role;
-- each included detail serves a production/readability purpose and optional sections are not filled merely for completeness;
+- Golden Sample document structure is preserved for this document family;
+- required package role surfaces have enough local context for their target role without invented filler;
 - scoring or completion behavior is explicit where relevant;
 - explanatory prose is plain, concrete, and free of unnecessary filler without altering technical meaning;
 - no unresolved high-impact Proposal or Blocked item affects the requested document;

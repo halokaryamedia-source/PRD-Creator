@@ -1,32 +1,57 @@
 # Workflow
 
-## Stage 1 — Intake
+The Project Document Generator uses three macro steps. Internal files and checks support these steps; they are not separate user-facing approval stages.
 
-Follow `SOURCE-INTAKE.md`. Preserve supplied source, record provenance/authority, and inspect available authoritative/supporting material.
+```text
+1. UNDERSTAND   — Flow 2
+2. BUILD PRD    — Flow 3
+3. REVIEW       — Flow 4
+```
 
-**Exit:** sources inventoried and inspected or explicitly unavailable/unreadable.
+The normal user experience should stay close to:
 
-## Stage 2 — Requirement Recovery
+```text
+project source
+→ inspect/recover
+→ one grouped decision review only if needed
+→ build PRD
+→ review/fix
+→ final accepted PRD
+```
 
-Normalize material facts, constraints, terminology, sequences, requirements, and decisions into `state/requirement-register.yaml`.
+Do not turn the internal artifact chain into an 11-step ceremony.
 
-Use exactly one gap class: Clarification, Completion, Proposal, or Blocked.
+## 1. UNDERSTAND — Flow 2
 
-Update `work/review.md` and `state/intake-state.yaml`.
+Follow `SOURCE-INTAKE.md`.
 
-**Exit:** material requirements are traceable and identified gaps are classified.
+### Internal work
 
-## Stage 3 — Decision Resolution
+- preserve supplied source and provenance;
+- inspect all available authoritative/supporting material before questioning the user;
+- register only production-relevant requirements, constraints, conflicts, and decisions;
+- classify real gaps as Clarification, Completion, Proposal, or Blocked;
+- apply supported Clarification/Completion without unnecessary approval rounds;
+- after source inspection is complete, batch remaining high-impact Proposal/Blocked items into one concise decision review when possible.
 
-Apply supported Clarification/Completion. Ask only unresolved high-impact Proposal/Blocked decisions. Record approved material decisions.
+Detailed state may use:
 
-**Exit:** `state/intake-state.yaml` = `ready_for_prd`.
+- `state/source-inventory.yaml`;
+- `state/requirement-register.yaml`;
+- `state/intake-state.yaml`;
+- `work/review.md` only when a human-facing decision/recovery summary is useful.
 
-## Stage 4 — Canonical PRD Content
+Do not make the user approve a separate intake report when no material decision is waiting.
 
-Read `CONTENT-CONTRACT.md`. Create/update `work/content.md` from authoritative source, recovered requirements, supported recovery, and approved decisions.
+**Exit:** `state/intake-state.yaml` truthfully reaches `ready_for_prd`. A material unresolved Proposal/Blocked item prevents this status.
 
-Use the canonical hierarchy:
+---
+
+## 2. BUILD PRD — Flow 3
+
+Read `CONTENT-CONTRACT.md`. Create/update canonical `work/content.md` from authoritative source, supported recovery, and approved decisions.
+
+The Golden Sample is the approved output authority. Preserve its document foundation and production structure:
 
 ```text
 Overview
@@ -38,85 +63,87 @@ Overview
      → Developer
 ```
 
-If canonical drafting exposes a real unresolved design decision, return it to Flow 2 rather than guessing.
+The goal is **not** to simplify the final document by removing this structure. Efficiency comes from producing the same kind of document with less internal ceremony and less filler.
 
-**Exit:** required canonical sections are complete with no unresolved required design decision/placeholder.
+### Content rule
 
-## Stage 5 — Rendering Projection
+Use minimum sufficient detail inside the fixed structure:
 
-Read `RENDERING.md`. Create/update `work/render-data.json` strictly as a structured projection of `content.md`.
+- keep information that helps a reader understand, build, implement, validate, or avoid guessing;
+- do not invent extra mechanics, objects, dimensions, architecture, scoring detail, or narrative just to fill a page;
+- when one role has little package-specific work, keep that role page concise and reference the relevant shared/global rule rather than manufacturing detail;
+- preserve plain, concrete PRD prose and stable terminology.
 
-**Exit:** projection contains no new meaning and passes renderer input checks.
+### Internal rendering
 
-## Stage 6 — Render
+Treat projection + rendering as implementation details of the same BUILD step:
 
-Run:
-
-```bash
-python kits/project-document-generator/renderer/render.py \
-  workspace/active/<project>/work/render-data.json \
-  workspace/active/<project>/output/final.html
+```text
+work/content.md
+→ derive work/render-data.json
+→ render through Golden Sample template
+→ output/final.html
 ```
 
-**Exit:** current `output/final.html` is generated structurally without changing project meaning.
+Read `RENDERING.md` when projection/rendering is in scope.
 
-## Stage 7 — Mechanical Flow 4 Validation
+`work/render-data.json` is derived. It is not another project-meaning approval stage.
 
-Read `VALIDATION.md`, then run:
+If canonical drafting exposes a real unresolved design decision, return that decision to Flow 2 instead of guessing.
+
+**Exit:** current canonical content is complete, current HTML is rendered through the approved Golden Sample foundation, generated navigation resolves, and no required placeholder remains.
+
+---
+
+## 3. REVIEW — Flow 4
+
+Read `VALIDATION.md`.
+
+### Mechanical check
+
+Run:
 
 ```bash
 python kits/project-document-generator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical failure means the PRD cannot enter semantic acceptance yet. Fix the canonical owner, projection, renderer, or template according to the actual cause.
+Mechanical failure means the current PRD cannot be accepted yet. Fix the actual owner: canonical content, projection, renderer, or template mechanics.
 
-**Exit:** mechanical status = `pass`.
+### Integrated semantic review
 
-## Stage 8 — Four-Perspective Acceptance
-
-Audit the same current revision from:
+Review the same current revision once through four lenses:
 
 1. New Reader / Player Context;
 2. Level Designer;
 3. Developer;
 4. Project Consistency.
 
-Record concise evidence/findings in `work/acceptance.md` using Critical/Major/Minor/Suggestion severity.
+These are four perspectives inside **one review pass**, not four separate reporting ceremonies.
 
-- Critical or Major → status `needs_revision` and fix the canonical owner.
-- If meaning changes, regenerate render-data and rerender before re-audit.
-- A real missing product decision returns to Flow 2.
+Record each finding once in `work/acceptance.md` with the relevant lens, severity, owner, location, and resolution status.
 
-**Exit:** all four perspectives pass, Critical=0, Major=0.
+- Critical or Major → `needs_revision`;
+- fix the owning source/content boundary;
+- regenerate only invalidated derived output;
+- re-review the affected scope;
+- a real missing product decision returns to Flow 2.
 
-## Stage 9 — Development-Ready Gate
+Writing quality and information density are checked inside these same perspectives. Do not create a separate AI-writing, brevity, or quality-score gate.
 
-Set `state/handoff-state.yaml` to `development_ready` only when:
+**Exit:** mechanical validation passes, all four lenses pass, Critical=0, Major=0, and no unresolved Proposal/Blocked item affects the handed-off scope.
 
-- mechanical validation passed;
-- all four perspectives passed;
-- Critical=0;
-- Major=0;
-- no unresolved Proposal/Blocked item affects handed-off scope;
-- requested language coverage is usable;
-- any remaining Minor is intentionally accepted and does not change meaning.
+Set `development_ready` only at that point.
 
-**Exit:** `development_ready`.
+## Team Handoff
 
-## Stage 10 — Team Handoff
+For the current canonical sequence, `output/team-handoff.md` remains a concise navigation aid after acceptance and `handoff_ready` remains the downstream boundary used by the repository.
 
-Create `output/team-handoff.md` as a concise navigation aid containing accepted revision/paths, project scope, role reading routes, package inventory, global systems, and any accepted non-blocking caveat.
+Do not treat handoff generation as another content-writing phase and do not copy the PRD into it. It should only point the team to the accepted document and relevant reading route.
 
-Do not copy the PRD into the handoff file.
+## Stop Gate
 
-Set `state/handoff-state.yaml` to `handoff_ready` and point it to the accepted content, HTML, acceptance report, and handoff file.
-
-**Exit:** `handoff_ready`.
-
-## Stage 11 — Flow 4 Stop Gate
-
-Flow 4 ends at team-handoff readiness.
+Flow 4 ends at accepted PRD/team-handoff readiness.
 
 Do **not** claim:
 
@@ -126,4 +153,4 @@ Do **not** claim:
 - release approved;
 - Voice Production requirements already extracted.
 
-If canonical meaning changes later, reopen Flow 4 to `pending_review`, rerender, and re-audit the affected dependencies.
+If canonical meaning changes later, reopen the affected review boundary, regenerate derived artifacts, and re-audit only what the change invalidated.

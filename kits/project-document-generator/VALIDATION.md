@@ -2,13 +2,27 @@
 
 Flow 4 decides whether a generated PRD is actually usable by the production team. Rendering success is necessary but not sufficient.
 
+The review stays simple:
+
+```text
+current PRD + HTML
+→ mechanical check
+→ one integrated four-lens review
+→ fix only real findings
+→ development_ready
+→ concise team handoff
+→ handoff_ready
+```
+
+Do not turn the four review lenses into four separate approval ceremonies.
+
 ## Status model
 
 Use exactly one current PRD status in `state/handoff-state.yaml`:
 
 - `pending_review` — Flow 3 output exists but Flow 4 audit is incomplete;
 - `needs_revision` — one or more Critical/Major findings remain;
-- `development_ready` — mechanical checks pass and all four semantic perspectives pass with Critical=0 and Major=0;
+- `development_ready` — mechanical checks pass and all four semantic lenses pass with Critical=0 and Major=0;
 - `handoff_ready` — `development_ready` plus `output/team-handoff.md` exists and points the team to the accepted PRD;
 - `blocked` — required artifacts/evidence are unavailable or a required upstream decision must return to Flow 2.
 
@@ -38,7 +52,9 @@ This check covers file presence, visible placeholders, render-data invariants, p
 
 Mechanical `pass` is structural evidence only. It cannot issue `development_ready` by itself.
 
-## Step 2 — Four-perspective semantic audit
+## Step 2 — One integrated four-lens review
+
+Read the current PRD once, then assess it through four lenses. A finding may affect more than one lens, but record the finding **once** in the findings table.
 
 ### A. New Reader / Player Context
 
@@ -69,7 +85,7 @@ They must be able to begin blockout/build work without inventing the main produc
 - interaction space/readability needed by the mechanic;
 - package-local constraints that differ from global rules.
 
-Do not require cosmetic dimensions that do not affect production.
+The Golden Sample Level Design page remains part of the package structure. If little package-specific build work exists, the page may be concise and rely on the relevant shared/global rule. Do not invent cosmetic dimensions or build requirements just to fill the page.
 
 ### C. Developer
 
@@ -80,17 +96,17 @@ They must be able to form an implementation plan without inventing product rules
 - activation/start trigger;
 - progression/state transitions;
 - valid completion validation;
-- quantities/items/resources/state ownership;
+- quantities/items/resources/state ownership when relevant;
 - timer start/stop/excluded time when applicable;
 - scoring **or** completion-data behavior;
-- recorded/persistent data where applicable;
-- duplicate prevention;
+- recorded/persistent data only when actually required;
+- duplicate prevention when actually required;
 - interruption/disconnect behavior when relevant;
 - reset behavior;
 - handoff/result to the next package;
 - verification/acceptance behavior.
 
-Implementation architecture, class names, file names, or APIs are required only when explicitly part of the approved project scope.
+The Golden Sample Developer page remains part of the package structure. When a package has little local runtime complexity, keep the page focused on the actual trigger/behavior/result and do not invent architecture, persistence, analytics, APIs, or tracking merely to fill the surface.
 
 ### D. Project Consistency
 
@@ -107,27 +123,28 @@ Check especially:
 - start/end/fail/retry conditions;
 - timer boundaries;
 - score components/weights/inputs;
-- recorded data and ownership;
+- recorded data and ownership where relevant;
 - handoff items/state/results;
 - interruption/disconnect/reset behavior;
 - final-result relationship.
 
-### Writing quality inside the existing review
+## Writing quality and information density inside the same review
 
-Do not create a fifth semantic perspective, AI score, detector, or separate writing gate.
+Do not create a fifth perspective, AI score, detector, brevity score, or separate writing gate.
 
-While reviewing the four perspectives above, flag prose only when it reduces usability, for example:
+While reviewing the four lenses, flag prose/content only when it reduces usability, for example:
 
-- inflated or promotional wording instead of concrete behavior;
+- inflated/promotional wording instead of concrete behavior;
 - vague comments such as `important`, `immersive`, `seamless`, or `engaging` that add no production information;
-- repeated filler, fake analysis, or decorative `-ing` clauses;
-- synonym cycling that makes one project term look like several different concepts;
-- rhetorical patterns or repeated sentence shapes that make instructions harder to scan;
+- repeated filler or fake analysis;
+- synonym cycling that makes one project term look like several concepts;
+- duplicated global rules that hide the package-specific requirement;
+- role pages padded with invented or non-actionable detail merely to fill visual space;
 - stylistic rewriting that changes or obscures IDs, names, quantities, timings, scoring, triggers, conditions, state names, or other technical facts.
 
-If the meaning is already clear and precise, leave the sentence alone. Writing polish is not a reason to rewrite every paragraph.
+If the meaning is already clear and precise, leave it alone.
 
-Writing-quality findings are normally `Minor` or `Suggestion`. Escalate to `Major` only when vague or misleading prose forces a production role to guess a material rule.
+Writing/density findings are normally `Minor` or `Suggestion`. Escalate to `Major` only when vague, misleading, duplicated, or missing information forces a production role to invent a material rule.
 
 ## Severity
 
@@ -153,7 +170,7 @@ Never patch `final.html` as the source of truth.
 
 ## Acceptance record
 
-Create/update `work/acceptance.md` with:
+Create/update `work/acceptance.md` as a concise integrated review:
 
 ```text
 # PRD Acceptance
@@ -164,20 +181,14 @@ Reviewed revision: <content/html version or commit/reference>
 ## Mechanical Validation
 PASS / FAIL + concise evidence
 
-## New Reader
-PASS / FAIL + findings
-
-## Level Designer
-PASS / FAIL + findings
-
-## Developer
-PASS / FAIL + findings
-
-## Project Consistency
-PASS / FAIL + findings
+## Perspective Summary
+New Reader: PASS / FAIL
+Level Designer: PASS / FAIL
+Developer: PASS / FAIL
+Project Consistency: PASS / FAIL
 
 ## Findings
-ID | Severity | Owner | Location | Finding | Resolution Status
+ID | Lens | Severity | Owner | Location | Finding | Resolution Status
 
 ## Gate
 Critical: N
@@ -186,7 +197,7 @@ Minor: N
 Result: ...
 ```
 
-Keep this report concise. Do not duplicate the PRD inside the audit.
+Do not duplicate a finding under several perspective headings and then repeat it again in the table. Do not copy the PRD into the audit.
 
 ## Handoff state
 
@@ -217,7 +228,7 @@ Use project-relative paths. Do not store chat-only claims in the state.
 
 ## Team handoff
 
-After the gate passes, create `output/team-handoff.md` as a navigation aid, not a second PRD.
+After the gate passes, create `output/team-handoff.md` as a navigation aid, not a second PRD and not another authoring phase.
 
 It should contain only:
 
@@ -237,15 +248,16 @@ Do not copy every requirement into the handoff file.
 Set `development_ready` only when:
 
 - mechanical validation passes;
-- New Reader perspective passes;
-- Level Designer perspective passes;
-- Developer perspective passes;
-- Project Consistency passes;
+- New Reader lens passes;
+- Level Designer lens passes;
+- Developer lens passes;
+- Project Consistency lens passes;
 - Critical findings = 0;
 - Major findings = 0;
 - no unresolved Proposal/Blocked requirement affects the handed-off scope;
 - scoring/completion and handoff/reset behavior are implementable where relevant;
-- explanatory prose is clear enough that the intended role does not need to decode filler or ambiguous stylistic wording;
+- Golden Sample document structure remains intact for this document family;
+- explanatory prose and information density are clear enough that the intended role does not need to decode filler or guess missing rules;
 - requested language coverage is usable for the intended team.
 
 Then create the concise team handoff and set `handoff_ready`.
@@ -261,7 +273,7 @@ change approved
 → regenerate render-data.json
 → rerender final.html
 → reopen Flow 4 status to pending_review
-→ re-audit affected dependencies
+→ re-audit affected dependencies only
 → issue updated handoff
 ```
 

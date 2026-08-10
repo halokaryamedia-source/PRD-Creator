@@ -1,6 +1,6 @@
 # Source Intake & Requirement Recovery
 
-This file owns Flow 2 for repository-backed projects. Its purpose is to turn uneven source material into a traceable, resumable requirement state without prematurely writing the final PRD.
+This file owns Flow 2 for repository-backed projects. Its purpose is to turn uneven source material into a traceable, resumable requirement state without prematurely writing the final PRD or forcing unnecessary review rounds.
 
 ## Project Package
 
@@ -16,7 +16,7 @@ workspace/active/<project-slug>/
 │   ├── requirement-register.yaml
 │   └── intake-state.yaml
 └── work/
-    └── review.md
+    └── review.md        # only when a human-facing review is useful
 ```
 
 Later flows may add canonical content and final outputs. Do not put final deliverables inside `source/` or overwrite original inputs.
@@ -115,9 +115,31 @@ The goal is traceability for decisions and production behavior, not a catalog of
 5. Proposal is used when the agent must actually choose or define something material. It never self-approves.
 6. Blocked is used when evidence is insufficient or materially conflicting.
 7. Conflict is evidence state. If authority resolves it, record the resolution. If not, the affected requirement is Blocked.
-8. Ask only high-impact unresolved questions. Do not turn intake into a questionnaire for information already recoverable from source.
-9. Reference/Golden Sample content may guide structure or demonstrated quality, but never silently supplies project-specific mechanics, names, quantities, story, or scoring.
-10. Prior generated output is continuity evidence, not automatic source authority.
+8. Reference/Golden Sample content may guide structure and demonstrated quality, but never silently supplies project-specific mechanics, names, quantities, story, or scoring.
+9. Prior generated output is continuity evidence, not automatic source authority.
+
+## Question Economy
+
+Do not interrupt source inspection with questions that may be answered by later material.
+
+Use this order:
+
+```text
+inspect all available source
+→ reconcile authority / duplicates
+→ recover supported requirements
+→ apply safe Clarification / Completion
+→ identify only remaining material Proposal / Blocked items
+→ ask one grouped decision review when possible
+```
+
+Rules:
+
+- do not ask the user for information already recoverable from source or approved state;
+- do not ask one question per file or one question per requirement;
+- group related high-impact decisions into one concise review;
+- low-risk Clarification/Completion should not create an approval round;
+- zero questions is the preferred result when the project is already sufficiently defined.
 
 ## Intake State
 
@@ -145,18 +167,28 @@ There must be exactly one practical `next_step`.
 
 ## Human Review
 
-`work/review.md` is the user-facing view of the register. Keep it decision-focused and concise. It is not a second requirement register.
+`work/review.md` is a **conditional** human-facing decision/recovery summary, not a mandatory second requirement register.
 
-Default content:
+Create or materially update it when at least one of these is true:
+
+- Proposal requires approval;
+- Blocked/conflicting requirement needs attention;
+- meaningful Completion/Clarification changes how the project is understood and should be surfaced;
+- the user explicitly asks for an intake summary;
+- a persistent review note materially helps resumability.
+
+When used, keep it concise:
 
 1. short project/source snapshot;
 2. compact confirmed production scope;
-3. only meaningful Clarification/Completion that changed or completed how the project is understood;
+3. meaningful Clarification/Completion only;
 4. Proposal requiring approval;
-5. Blocked/conflicting requirements that need attention;
+5. Blocked/conflicting requirements requiring attention;
 6. readiness and one next step.
 
-Do not dump every supported fact into the review. The requirement register owns detailed traceability. Do not force empty sections, and do not ask the user to approve low-risk Clarification/Completion that already fits the recovery rules.
+Do not dump every supported fact into the review. Detailed traceability belongs in `requirement-register.yaml`.
+
+If no human decision/recovery summary is needed, Flow 2 may advance directly through `intake-state.yaml` without forcing a separate user review round.
 
 ## Flow 2 Completion Gate
 
@@ -167,6 +199,7 @@ Flow 2 is complete when:
 - every material gap has exactly one recovery class;
 - source conflicts are resolved or visibly Blocked;
 - low-risk Clarification/Completion has not been unnecessarily escalated to the user;
+- remaining material decisions were grouped and surfaced efficiently when needed;
 - `intake-state.yaml` accurately reports `ready_for_prd`, `needs_decision`, or `blocked`;
 - unresolved Proposal/Blocked items that materially affect the requested PRD prevent a false `ready_for_prd`.
 

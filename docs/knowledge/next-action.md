@@ -6,79 +6,113 @@ This is the single active-task snapshot.
 
 ## Current Status
 
-`PRD_CONTENT_USABILITY_REFINED_REAL_SAMPLE_REVIEW_NEXT`
+`PRD_FLOW_SIMPLIFIED_GOLDEN_TEMPLATE_LOCKED_REAL_SAMPLE_NEXT`
 
 Working branch: **`Local` only**.
 
-## Completed — PRD writing quality refinement
+## Golden Sample decision
 
-Source:
+The approved Golden Sample is intentionally the required template authority for this PRD family.
 
-`a1c59f45c52d4213adff41a236ae0265dcf91868` — `docs: improve PRD writing quality rules`
+Do **not** replace it with a reduced/minimal shell merely to make the template smaller or more generic.
 
-The useful Humanizer-style behavior was merged into the existing PRD owner instead of adding another root skill.
-
-## Completed — PRD content/usability refinement
-
-Active `Local` commits:
+Preserve its output foundation:
 
 ```text
-92bda8e40c99ec9c115986189525a6c931bd2862  docs: refine PRD skill usability
-7f47b1fc10b65f82101596cec652d672da52e42c  docs: simplify PRD source intake
-656743d42ad9d72d7119ee465b6142691eabacdd  docs: refine PRD content density
+Overview
+→ Gameplay Flow
+→ Global Development
+→ Gameplay Package(s)
+     → Gameplay Overview
+     → Level Design
+     → Developer
 ```
 
-The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
+Also preserve the approved visual/navigation/component foundation unless a concrete defect or explicit user decision requires a template change.
 
-- Flow 2 requirement granularity now tracks production-relevant requirements, constraints, conflicts, and decisions instead of mirroring every source sentence/fact into `REQ-###` entries;
-- `work/review.md` is explicitly decision-focused, so detailed traceability stays in the requirement register while the user sees confirmed scope, meaningful completion/clarification, and only Proposal/Blocked items that need attention;
-- Flow 3 uses minimum sufficient detail: include content when it helps a role understand, build, implement, validate, or avoid guessing; do not fill optional fields/sections merely because the template has a place for them.
+Efficiency work belongs in the **generation process and content density**, not in changing the final structure the user expects.
 
-Changed owners:
+## Completed — PRD writing/content refinement
 
-```text
-.agents/skills/project-document-production/SKILL.md
-kits/project-document-generator/SOURCE-INTAKE.md
-kits/project-document-generator/CONTENT-CONTRACT.md
-```
-
-No renderer, validator, CI, schema, new root skill, or additional persistent project state was added.
-
-## Current quality boundary
-
-The PRD skill now explicitly protects:
+The PRD owner already protects:
 
 - source fidelity and supported completion;
-- decision economy during intake;
 - production-relevant requirement granularity;
-- context before detail;
-- Gameplay / Level Design / Developer ownership separation;
-- minimum sufficient detail and information density;
-- plain, concrete, non-promotional technical prose;
+- plain, concrete anti-AI-slop technical prose;
 - stable terminology and technical values;
-- development-readiness from the existing four Flow 4 perspectives.
+- minimum sufficient detail;
+- Gameplay / Level Design / Developer ownership separation.
 
-## Current limitation
+## Completed — PRD flow simplification
 
-`workspace/active/` and `workspace/saved/` currently contain no real PRD project package to use as a before/after quality sample.
-
-Do not create synthetic prose/usability scoring or detector machinery to fill this gap.
-
-## Current direction
-
-PRD policy/skill refinement is complete enough to stop adding rules speculatively.
-
-Voice skill review remains intentionally deferred until the PRD side is checked against a real project/sample or the user explicitly chooses to proceed.
-
-Continue using the anti-overdevelopment rule:
+The end-to-end PRD workflow is now expressed as three macro steps:
 
 ```text
-real source/project
-→ use current PRD flow
-→ observe actual friction or quality gap
-→ smallest owner/fix only when needed
+1. UNDERSTAND  — Flow 2
+2. BUILD PRD   — Flow 3
+3. REVIEW      — Flow 4
 ```
+
+This replaces the previous mental model of 11 separate stages. Internal files/checks still exist, but they are implementation details rather than user-facing ceremonies.
+
+### Flow 2
+
+- inspect all available source before asking questions;
+- apply supported Clarification/Completion first;
+- batch remaining high-impact Proposal/Blocked decisions into one concise review when possible;
+- `work/review.md` is conditional rather than a mandatory user approval round.
+
+### Flow 3
+
+- preserve the Golden Sample structure/foundation;
+- create canonical `content.md`;
+- derive `render-data.json` internally;
+- render `final.html` through the approved Golden Sample template;
+- keep role pages concise when local work is small instead of inventing filler;
+- do not remove role pages just to shorten the document.
+
+### Flow 4
+
+- run mechanical validation;
+- perform one integrated review through New Reader, Level Designer, Developer, and Project Consistency lenses;
+- record each finding once in a shared findings table;
+- writing quality and information density stay inside the same review rather than becoming extra gates.
+
+## Changed owners
+
+```text
+kits/project-document-generator/WORKFLOW.md
+kits/project-document-generator/SOURCE-INTAKE.md
+kits/project-document-generator/CONTENT-CONTRACT.md
+kits/project-document-generator/RENDERING.md
+kits/project-document-generator/VALIDATION.md
+```
+
+The approved Golden Sample HTML template and renderer implementation were intentionally **not changed** by this flow refinement.
+
+## Anti-overdevelopment boundary
+
+Do not add:
+
+- a new PRD workflow engine;
+- a new schema/profile framework;
+- AI-writing detector/score;
+- another approval state;
+- a replacement template system;
+- automatic template cleanup merely because the Golden Sample is large.
+
+Use the smallest change that improves real project output while preserving the document foundation the user approved.
 
 ## Next Step
 
-Use the refined PRD skill on one real PRD/project sample and review the actual result for clarity, completeness, information density, and role usability. If the result is good, do not add more PRD machinery; move on to the Voice skill review only after that practical check or explicit user direction.
+Use the refined three-step PRD flow on one real project/sample and compare the actual result against the Golden Sample expectations:
+
+- same structural/foundation quality;
+- clear player/project context;
+- useful Gameplay / Level Design / Developer pages;
+- no invented filler;
+- concise source/decision interaction;
+- plain, natural technical language;
+- enough detail for production roles without unnecessary repetition.
+
+If the practical result is good, stop PRD policy refinement and proceed to Voice skill review only when the user chooses to do so.
