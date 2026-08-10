@@ -24,6 +24,10 @@ Source:
 
 `2c8cc015ec5d544d2899f554b9a4b9378d221456` — `docs: simplify PRD intake and content density`
 
+Integration:
+
+`58104111b3c320a3213ed038c10909865328d3f2` — `docs: integrate PRD usability refinement`
+
 The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
 
 - Flow 2 requirement granularity now tracks production-relevant requirements, constraints, conflicts, and decisions instead of mirroring every source sentence/fact into `REQ-###` entries;
