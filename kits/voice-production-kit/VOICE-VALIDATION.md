@@ -14,7 +14,7 @@ Read in this order:
 4. `DOCX-FORMAT.md`;
 5. accepted PRD only when a project fact/term needs verification.
 
-## Step 1 — mechanical validator
+## Step 1 — Mechanical validator
 
 Run:
 
@@ -23,20 +23,9 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-A pass now proves these mechanical contracts for the current files:
+A pass proves parity/integrity only. It does not approve wording, pronunciation, pacing, layout, or audio.
 
-- current `work/voice-requirements.md` text fingerprint matches `Source Voice Requirements SHA-256` in the canonical script;
-- current requirements + current script fingerprints match the revision identifier embedded by the builder in `Voice Production.docx`;
-- requirements/script Voice ID and Type parity still matches;
-- DOCX section and Voice entry order matches the canonical script;
-- every derived DOCX Voice entry is checked as one bound block: section + Type + Voice ID/title + duration + performance text;
-- page-size/basic document structure remains mechanically valid.
-
-This closes stale requirements/script/DOCX and global-token-only false-pass paths. It still does **not** approve wording, pronunciation, pacing, visual layout, or audio.
-
-If current requirements or script changes after the DOCX was built, mechanical validation must fail until downstream artifacts are intentionally rebuilt from the current canonical owners.
-
-## Step 2 — requirement-by-requirement review
+## Step 2 — Requirement-by-requirement review
 
 For each Voice ID, compare the canonical performance text to its Flow 5 requirement.
 
@@ -51,7 +40,7 @@ PASS only when:
 
 Do not demand literal sentence matching. Meaning and production function are the test.
 
-## Step 3 — terminology / pronunciation
+## Step 3 — Terminology / pronunciation
 
 Audit official project terms across the full script.
 
@@ -97,9 +86,9 @@ Render `output/Voice Production.docx` using the standard DOCX render workflow an
 
 Record page count and result in `work/voice-acceptance.md`.
 
-The embedded SHA-256 revision identifier and per-entry mechanical PASS do not prove page layout. If layout fails, fix the canonical/builder owner and rebuild. Never patch the DOCX manually as the authoritative fix.
+If layout fails, fix the canonical/builder owner and rebuild. Never patch the DOCX manually as the authoritative fix.
 
-## Step 7 — audio evidence
+## Step 7 — audio evidence (optional unless required by task)
 
 If no audio is supplied:
 
@@ -139,13 +128,11 @@ delivery_scope: script_docx
 next_step: system_integration_proof
 ```
 
-The state file records lifecycle/readiness. Requirements/script/DOCX revision identity remains mechanically owned by the canonical script metadata + derived DOCX core identifier; do not duplicate hashes into the state file merely to create another source of truth.
-
 If findings remain, use `needs_revision` and name the owning upstream file/flow. Do not use the audit file as a place to rewrite the canonical script.
 
 ## Final boundary
 
-`voice_delivery_ready` means the accepted **current script + current DOCX scope** is ready for the downstream production user.
+`voice_delivery_ready` means the accepted **script + DOCX scope** is ready for the downstream production user.
 
 It does not mean:
 

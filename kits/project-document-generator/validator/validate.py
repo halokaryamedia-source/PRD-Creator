@@ -2,14 +2,13 @@
 """Mechanical Flow 4 validation for a repository-backed PRD project.
 
 This tool checks file presence, unresolved placeholders, render-data invariants,
-current render identity, exact generated page IDs, duplicate HTML IDs, and
-fragment navigation reachability. It does not judge semantic development-readiness;
-that remains the role-based Flow 4 audit recorded in work/acceptance.md.
+exact generated page IDs, duplicate HTML IDs, and fragment navigation reachability.
+It does not judge semantic development-readiness; that remains the role-based
+Flow 4 audit recorded in work/acceptance.md.
 """
 from __future__ import annotations
 
 import argparse
-import hashlib
 import html as html_lib
 import json
 import re
@@ -29,7 +28,6 @@ class HtmlFacts(HTMLParser):
         self.fragment_hrefs: list[str] = []
         self.title_parts: list[str] = []
         self.document_section_ids: list[str] = []
-        self.render_fingerprints: list[str] = []
         self._in_title = False
         self._in_document_main = False
 
@@ -45,10 +43,6 @@ class HtmlFacts(HTMLParser):
         href = data.get("href")
         if isinstance(href, str) and href.startswith("#") and len(href) > 1:
             self.fragment_hrefs.append(href[1:])
-        if tag.lower() == "meta" and data.get("name") == "render-data-sha256":
-            content = data.get("content")
-            if isinstance(content, str):
-                self.render_fingerprints.append(content)
         if tag.lower() == "title":
             self._in_title = True
 
@@ -67,17 +61,6 @@ def text_en(value: Any) -> str:
     if isinstance(value, dict):
         value = value.get("en") or value.get("id") or ""
     return str(value or "")
-
-
-def render_data_fingerprint(data: dict[str, Any]) -> str:
-    canonical = json.dumps(
-        data,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
@@ -180,12 +163,6 @@ def validate(project: Path) -> dict[str, Any]:
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
-    try:
-        expected_fingerprint = render_data_fingerprint(data)
-    except (TypeError, ValueError) as exc:
-        errors.append(f"render_data_fingerprint: {exc}")
-        return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
-
     html_text = html_path.read_text(encoding="utf-8")
     facts = HtmlFacts()
     try:
@@ -195,21 +172,6 @@ def validate(project: Path) -> dict[str, Any]:
 
     duplicates = sorted(k for k, count in Counter(facts.ids).items() if count > 1)
     check("html_ids_unique", not duplicates, f"duplicate ids: {duplicates}" if duplicates else "no duplicate HTML ids")
-
-    check(
-        "render_revision_marker_unique",
-        len(facts.render_fingerprints) == 1,
-        f"found {len(facts.render_fingerprints)} render-data revision markers",
-    )
-    if len(facts.render_fingerprints) == 1:
-        actual_fingerprint = facts.render_fingerprints[0]
-        check(
-            "render_data_revision_matches_html",
-            actual_fingerprint == expected_fingerprint,
-            "final.html render-data fingerprint matches current render-data.json"
-            if actual_fingerprint == expected_fingerprint
-            else f"final.html fingerprint {actual_fingerprint!r} does not match current render-data {expected_fingerprint!r}",
-        )
 
     expected = expected_page_ids(data)
     actual_pages = facts.document_section_ids

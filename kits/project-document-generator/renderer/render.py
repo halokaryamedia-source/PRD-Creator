@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render derived PRD JSON into the approved HTML shell without redesigning it."""
 from __future__ import annotations
-import argparse, hashlib, json, re, sys
+import argparse, json, re, sys
 from pathlib import Path
 from typing import Any
 
@@ -18,18 +18,6 @@ TITLE_RE = re.compile(r"<title>.*?</title>", re.S | re.I)
 DESCRIPTION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="description"\s*/?>', re.I)
 SPEC_VERSION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="specification-version"\s*/?>', re.I)
 GLOSSARY_ASSIGN_RE = re.compile(r"const glossary = .*?;\n\s*const tooltip =", re.S)
-HEAD_CLOSE_RE = re.compile(r"</head>", re.I)
-
-
-def render_data_fingerprint(data: dict) -> str:
-    canonical = json.dumps(
-        data,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def script_safe_json(value: Any) -> str:
@@ -154,7 +142,6 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         raise FileNotFoundError(f"Approved template not found: {template}")
     data = json.loads(render_data.read_text(encoding="utf-8"))
     validate(data)
-    fingerprint = render_data_fingerprint(data)
     src = template.read_text(encoding="utf-8")
     require_namespace_tokens(src)
 
@@ -198,14 +185,6 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         SPEC_VERSION_META_RE,
         f'<meta content="prd-{namespace}-v{esc(doc.get("version", "1.0"))}" name="specification-version"/>',
         "specification-version metadata marker",
-    )
-
-    revision_meta = f'<meta content="{fingerprint}" name="render-data-sha256"/>'
-    src = replace_regex_once(
-        src,
-        HEAD_CLOSE_RE,
-        revision_meta + "\n</head>",
-        "head closing marker",
     )
 
     src = src.replace("aftershock-document-", f"prd-{namespace}-")

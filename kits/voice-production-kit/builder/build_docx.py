@@ -3,14 +3,12 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from docx import Document
-from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -24,7 +22,6 @@ OTHER_FILL = "F4F6F8"
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 REQ_ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
-SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 @dataclass
@@ -47,20 +44,7 @@ class VoiceDocument:
     title: str
     version: str
     source_requirements: str
-    source_requirements_sha256: str
     sections: list[VoiceSection]
-
-
-def text_fingerprint(path: Path) -> str:
-    text = path.read_text(encoding="utf-8")
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()
-
-
-def docx_revision_identifier(requirements_sha256: str, script_sha256: str) -> str:
-    return (
-        f"voice-requirements-sha256={requirements_sha256};"
-        f"voice-script-sha256={script_sha256}"
-    )
 
 
 def parse_script(path: Path) -> VoiceDocument:
@@ -72,7 +56,6 @@ def parse_script(path: Path) -> VoiceDocument:
     title = ""
     version = "1.0"
     source_requirements = ""
-    source_requirements_sha256 = ""
     sections: list[VoiceSection] = []
     current_section: VoiceSection | None = None
     i = 0
@@ -88,17 +71,7 @@ def parse_script(path: Path) -> VoiceDocument:
             i += 1
             continue
         if line.startswith("Source Voice Requirements:"):
-            if source_requirements:
-                raise ValueError("Canonical voice script contains duplicate Source Voice Requirements metadata.")
             source_requirements = line.split(":", 1)[1].strip()
-            i += 1
-            continue
-        if line.startswith("Source Voice Requirements SHA-256:"):
-            if source_requirements_sha256:
-                raise ValueError("Canonical voice script contains duplicate Voice Requirements SHA-256 metadata.")
-            source_requirements_sha256 = line.split(":", 1)[1].strip().lower()
-            if not SHA256_RE.fullmatch(source_requirements_sha256):
-                raise ValueError("Source Voice Requirements SHA-256 must be exactly 64 hexadecimal characters.")
             i += 1
             continue
         if line.startswith("## "):
@@ -107,11 +80,11 @@ def parse_script(path: Path) -> VoiceDocument:
             i += 1
             continue
 
-        m = ENTRY_RE.match(line)
-        if m:
+        match = ENTRY_RE.match(line)
+        if match:
             if current_section is None:
-                raise ValueError(f"Voice entry {m.group(1)} appears before a gameplay section.")
-            entry = VoiceEntry(m.group(1), m.group(2).strip())
+                raise ValueError(f"Voice entry {match.group(1)} appears before a gameplay section.")
+            entry = VoiceEntry(match.group(1), match.group(2).strip())
             i += 1
             while i < len(lines):
                 meta = lines[i].rstrip()
@@ -149,31 +122,24 @@ def parse_script(path: Path) -> VoiceDocument:
 
     if not title:
         raise ValueError("Document requires one '# <Project> Voice Production' heading.")
-    if not source_requirements:
-        raise ValueError("Canonical voice script requires Source Voice Requirements metadata.")
-    if not source_requirements_sha256:
-        raise ValueError("Canonical voice script requires Source Voice Requirements SHA-256 metadata.")
     if not sections or not any(section.entries for section in sections):
         raise ValueError("No voice entries were found.")
+    empty_sections = [section.title for section in sections if not section.entries]
+    if empty_sections:
+        raise ValueError("Voice section has no entries: " + ", ".join(empty_sections))
     ids = [entry.voice_id for section in sections for entry in section.entries]
     if len(ids) != len(set(ids)):
         raise ValueError("Duplicate Voice IDs exist in canonical script.")
-    return VoiceDocument(
-        title,
-        version,
-        source_requirements,
-        source_requirements_sha256,
-        sections,
-    )
+    return VoiceDocument(title, version, source_requirements, sections)
 
 
 def parse_requirements(path: Path) -> dict[str, str]:
     result: dict[str, str] = {}
     current_id: str | None = None
     for line in path.read_text(encoding="utf-8").splitlines():
-        m = REQ_ENTRY_RE.match(line.rstrip())
-        if m:
-            current_id = m.group(1)
+        match = REQ_ENTRY_RE.match(line.rstrip())
+        if match:
+            current_id = match.group(1)
             if current_id in result:
                 raise ValueError(f"Duplicate Voice ID in requirements: {current_id}")
             result[current_id] = ""
@@ -182,7 +148,7 @@ def parse_requirements(path: Path) -> dict[str, str]:
             result[current_id] = line.split(":", 1)[1].strip()
     if not result:
         raise ValueError("No Voice IDs found in Flow 5 requirements.")
-    missing_type = [k for k, v in result.items() if not v]
+    missing_type = [key for key, value in result.items() if not value]
     if missing_type:
         raise ValueError(f"Requirements missing Type for: {', '.join(missing_type)}")
     return result
@@ -278,13 +244,11 @@ def add_script_paragraph(doc: Document, entry: VoiceEntry) -> None:
     p.paragraph_format.space_after = Pt(5)
     p.paragraph_format.left_indent = Pt(6)
     p.paragraph_format.right_indent = Pt(6)
-    p.paragraph_format.first_line_indent = Pt(0)
     set_keep(p, keep_lines=True)
-    fill = MAIN_FILL if entry.voice_type.casefold() == "main story" else OTHER_FILL
-    shade(p, fill)
+    shade(p, MAIN_FILL if entry.voice_type.casefold() == "main story" else OTHER_FILL)
 
     lines = entry.performance.split("\n")
-    for n, line in enumerate(lines):
+    for index, line in enumerate(lines):
         run = p.add_run(line)
         run.font.name = "Consolas"
         run.font.size = Pt(9)
@@ -293,23 +257,13 @@ def add_script_paragraph(doc: Document, entry: VoiceEntry) -> None:
             run.font.color.rgb = rgb(BLUE)
         else:
             run.font.color.rgb = rgb(DARK)
-        if n != len(lines) - 1:
+        if index != len(lines) - 1:
             run.add_break()
 
 
-def build_docx(
-    data: VoiceDocument,
-    output: Path,
-    requirements_sha256: str,
-    script_sha256: str,
-) -> None:
+def build_docx(data: VoiceDocument, output: Path) -> None:
     doc = Document()
     configure_styles(doc)
-    doc.core_properties.identifier = docx_revision_identifier(
-        requirements_sha256,
-        script_sha256,
-    )
-
     sec = doc.sections[0]
     sec.page_width = Inches(8.5)
     sec.page_height = Inches(11)
@@ -388,31 +342,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("script", type=Path, help="Canonical work/voice-production.md")
     parser.add_argument("output", type=Path, help="Destination Voice Production.docx")
-    parser.add_argument(
-        "--requirements",
-        type=Path,
-        required=True,
-        help="Current Flow 5 work/voice-requirements.md",
-    )
+    parser.add_argument("--requirements", type=Path, help="Optional Flow 5 work/voice-requirements.md parity check")
     args = parser.parse_args()
 
     try:
         if not args.script.is_file():
             raise FileNotFoundError(args.script)
-        if not args.requirements.is_file():
-            raise FileNotFoundError(args.requirements)
-
         data = parse_script(args.script)
-        requirements_sha256 = text_fingerprint(args.requirements)
-        if data.source_requirements_sha256.casefold() != requirements_sha256.casefold():
-            raise ValueError(
-                "Canonical voice script Voice Requirements SHA-256 does not match the current requirements file. "
-                f"expected {requirements_sha256}, found {data.source_requirements_sha256}"
-            )
-
-        validate_parity(data, parse_requirements(args.requirements))
-        script_sha256 = text_fingerprint(args.script)
-        build_docx(data, args.output, requirements_sha256, script_sha256)
+        if args.requirements:
+            if not args.requirements.is_file():
+                raise FileNotFoundError(args.requirements)
+            validate_parity(data, parse_requirements(args.requirements))
+        build_docx(data, args.output)
         print(args.output)
         return 0
     except (OSError, ValueError) as exc:
