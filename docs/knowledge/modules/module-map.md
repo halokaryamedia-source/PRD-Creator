@@ -9,9 +9,11 @@ Use this note to identify the smallest current owner before creating, moving, or
 ```text
 PRD-Creator/
 ├─ .agents/skills/                  repository-wide agent routing specialists
+├─ .github/workflows/               narrow automated repository gates
+├─ tools/                           repository-wide verification utilities
 ├─ docs/
-│  ├─ foundation/                   durable production policy
-│  └─ knowledge/                    repository memory, ownership, evidence, operations
+│  ├─ foundation/                   durable production policy + proof matrix
+│  └─ knowledge/                    memory, ownership, evidence, operations
 ├─ kits/
 │  ├─ project-document-generator/   Flow 2–4 production implementation
 │  └─ voice-production-kit/         Flow 5–7 production implementation
@@ -36,15 +38,24 @@ voice-production
 
 Do not create a new root skill for renderer, validator, DOCX, research, evidence, or a file format merely because that surface exists.
 
+### `.github/workflows/` + `tools/`
+
+Own only **repeatable repository-wide engineering invariants** that are cheap and meaningful on every relevant commit.
+
+Current gate:
+
+```text
+tools/verify_repository.py
+→ .github/workflows/repository-verify.yml
+```
+
+It may enforce ownership/navigation/skill-freeze/retirement/Python-syntax contracts. It must not pretend to replace project semantic review, browser rendering, DOCX visual QA, or actual audio review.
+
+Do not add another workflow/test framework unless a real repeatable failure proves a missing invariant.
+
 ### `docs/foundation/`
 
-Owns durable product/production policy:
-
-- product boundaries;
-- Flow 1–7 production contracts;
-- validation/proof status that is stable enough to guide future work.
-
-It does not own the current task or per-project state.
+Owns durable product/production policy and the current validation/proof matrix. It does not own the active task or per-project state.
 
 ### `docs/knowledge/`
 
@@ -56,40 +67,22 @@ Owns repository memory:
 - `sources/` — authority routing;
 - `reviews/` — evidence/history and current review status;
 - `maintenance/` — bug/regression/cleanup workflow;
-- `operations/` — backlog, integration proof, retirement/audit notes, boot baselines;
+- `operations/` — backlog, integration/acceptance evidence, boot baselines;
 - `skills/` — skill inventory/routing.
 
 ### `kits/project-document-generator/`
 
-Owns actual Flow 2–4 behavior:
+Owns actual Flow 2–4 behavior. Its nearest `AGENTS.md` now owns Flow-local read/edit discipline because Phase 3 found a real broad-read defect in the old fixed kit reading order.
 
-- source intake/recovery;
-- canonical PRD generation;
-- approved-shell rendering;
-- PRD mechanical/semantic validation and handoff.
-
-Renderer/template/validator are implementation surfaces inside this semantic owner, not separate top-level modules.
+Renderer/template/validator remain implementation surfaces inside this semantic owner.
 
 ### `kits/voice-production-kit/`
 
-Owns actual Flow 5–7 behavior:
-
-- Voice Requirement Extraction;
-- final performance wording;
-- deterministic DOCX generation;
-- Voice validation/delivery.
-
-Builder/validator/reference contracts remain inside this semantic owner.
+Owns actual Flow 5–7 behavior. Existing nearest `AGENTS.md` remains the scoped Flow 5/6/7 routing rule; no additional nested owner is needed.
 
 ### `workspace/`
 
-Owns **project-specific** material only:
-
-- original inputs;
-- normalized state;
-- canonical PRD/Voice work;
-- derived artifacts;
-- project-specific acceptance evidence.
+Owns **project-specific** originals, normalized state, canonical PRD/Voice work, derived artifacts, and project-specific acceptance evidence.
 
 Repository-wide policies/skills must not be stored inside one project package.
 
@@ -99,10 +92,11 @@ Ask:
 
 1. Does an existing owner already cover this responsibility?
 2. Is it reusable work-routing behavior (`.agents/skills`) or production procedure (`kits`)?
-3. Is it durable policy (`foundation`) or working memory/evidence (`knowledge`)?
-4. Is it project-specific data (`workspace`)?
-5. Is a new file required now, or would extending the existing owner be smaller?
-6. Would the new owner remain correct if the implementation file format/tool changed?
+3. Is it a repeatable repository invariant (`tools`/workflow) or project-specific validation?
+4. Is it durable policy (`foundation`) or working memory/evidence (`knowledge`)?
+5. Is it project-specific data (`workspace`)?
+6. Is a new file required now, or would extending the existing owner be smaller?
+7. Would the new owner remain correct if the implementation file format/tool changed?
 
 If ownership is still ambiguous, do not create the file yet. Resolve ownership first.
 
@@ -115,4 +109,4 @@ If ownership is still ambiguous, do not create the file yet. Resolve ownership f
 - [Implementation Map](../implementation-map.md)
 - [Source Map](../sources/source-map.md)
 - [Skill Map](../skills/skill-map.md)
-- [Workspace Map](../workspace-map.md)
+- [Operating Parity Acceptance](../operations/operating-parity-acceptance.md)

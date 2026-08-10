@@ -8,20 +8,19 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 
 | Evidence / review | Current meaning |
 |---|---|
-| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Active execution evidence.** It established that Flow 1–7 production was complete but BuildIT-style repository operating discipline was incomplete. Phase 1 agent routing/skills and Phase 2 ownership/review/maintenance/proof infrastructure implement the high-priority gaps. Remaining parity acceptance belongs to the current `next-action.md`. |
+| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Active historical execution evidence.** It established that Flow 1–7 production was complete but BuildIT-style operating discipline was incomplete. Phase 1–2 implemented the architectural gaps; Phase 3 now exercises them. |
+| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Active execution evidence.** Representative routing scenarios pass and a real Project Document broad-read Maintenance defect was found. Final acceptance is waiting for the first successful Repository Verify run. |
 | [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and one real defect→root-fix→revalidation cycle. |
 | [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** It justified deleting the old `Production Document Builder/` live tree. Do not use it as current production procedure. |
-| [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It summarizes current implementation/evidence, not historical reasoning. |
+| [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It summarizes current production and operating evidence, not historical reasoning. |
 | [Review Template](review-template.md) | Reusable review shape when a dedicated review is actually justified. |
 
 ## Review Labels
 
-Use one of these when indexing evidence:
-
 - `active evidence` — current architecture still relies on the finding;
 - `active execution evidence` — finding directly controls current work order;
-- `implemented` — the corresponding current-owner change exists;
-- `current production evidence` — current production capability is supported by the recorded proof;
+- `implemented` — corresponding current-owner change exists;
+- `current production evidence` — current production capability is supported by recorded proof;
 - `historical` — retained for reasoning/provenance, not current routing;
 - `local proof required` — source/implementation exists but material local/browser/audio/runtime proof remains;
 - `superseded` — a later decision/source replaced the old method or conclusion.
@@ -50,7 +49,7 @@ keep review body historical
 → update current source/policy/next-action separately
 ```
 
-Do not rewrite an old review header/body until it falsely appears to have predicted later implementation.
+Do not rewrite an old review until it falsely appears to have predicted later implementation.
 
 ## Current Routing
 
@@ -63,5 +62,5 @@ Use this graph only when historical evidence/review status materially affects th
 ## Related
 
 - [Knowledge Dashboard](../index.md)
-- [Decision Log](../decision-log.md)
 - [Module Map](../modules/module-map.md)
+- [Operating Parity Acceptance](../operations/operating-parity-acceptance.md)

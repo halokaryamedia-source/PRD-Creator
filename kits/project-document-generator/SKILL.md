@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
 description: Recover incomplete project requirements, create canonical development-oriented PRD content, render it through the approved HTML shell, and validate whether the result is development-ready for team handoff without inventing product decisions.
-version: 1.2.0
+version: 1.3.0
 ---
 
 # Project Document Generator
@@ -19,23 +19,50 @@ Use this skill to:
 
 The skill owns PRD production through Flow 4. It does not own downstream Voice Requirement extraction or ElevenLabs scripting.
 
-## Required execution order
+## Flow-first execution
 
-1. Read `GLOSSARY.md`.
-2. Read `RULES.md`.
-3. Read `SOURCE-INTAKE.md` when intake/recovery is active.
-4. Read `CONTENT-CONTRACT.md`.
-5. Read `RENDERING.md`.
-6. Read `VALIDATION.md` when Flow 4/handoff is in scope.
-7. Follow `WORKFLOW.md`.
-8. Inspect `template/approved-document.html` directly when rendering/template fidelity matters.
-9. Resolve required high-impact decisions before canonical drafting.
-10. Maintain `work/content.md` as canonical PRD meaning.
-11. Maintain `work/render-data.json` only as a derived projection.
-12. Render with `renderer/render.py`.
-13. Validate mechanically with `validator/validate.py` and semantically with the four-perspective audit.
-14. Set `development_ready` only when Critical=0, Major=0, mechanical checks pass, and all four perspectives pass.
-15. Create `output/team-handoff.md`, set `handoff_ready`, then stop Flow 4.
+Do **not** read every kit document for every task. First identify the current Flow from project state, then open only the relevant owner.
+
+### Flow 2 — Source Intake & Requirement Recovery
+
+Read:
+
+- `SOURCE-INTAKE.md`;
+- current project originals/source inventory/requirement state;
+- `RULES.md` only when a kit-wide rule is materially relevant;
+- `GLOSSARY.md` only when terminology is unclear.
+
+Stop when the project is truthfully `ready_for_prd`, `needs_upstream_decision`, or blocked according to the Flow 2 contract.
+
+### Flow 3 — Project Document / PRD Generation
+
+Read:
+
+- `CONTENT-CONTRACT.md`;
+- current `work/content.md` / requirement state;
+- `RENDERING.md` only when projection/rendering is in scope;
+- `template/approved-document.html` only when template fidelity matters.
+
+Maintain `work/content.md` as canonical PRD meaning. `work/render-data.json` and `output/final.html` remain derived.
+
+### Flow 4 — PRD Validation & Team Handoff
+
+Read:
+
+- `VALIDATION.md`;
+- the exact current canonical/rendered PRD revision;
+- upstream content/renderer owners only when a finding points back to them.
+
+Validate mechanically with `validator/validate.py` and semantically from New Reader, Level Designer, Developer, and Project Consistency perspectives.
+
+Set `development_ready` only when Critical=0, Major=0, mechanical checks pass, and all four perspectives pass. Create `output/team-handoff.md` and set `handoff_ready` only for that accepted revision.
+
+## Shared routing helpers
+
+- Read `WORKFLOW.md` only when end-to-end sequencing or Flow ownership is unclear.
+- Follow nearest `AGENTS.md` for local routing/edit discipline.
+- Use root `.agents/skills/project-document-production/` for repository-wide semantic judgment when selected by the activation matrix.
+- Do not use kit procedure as a substitute for root `development-brief` on non-trivial Developing work.
 
 ## Repository-backed project files
 
