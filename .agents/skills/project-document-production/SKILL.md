@@ -64,8 +64,10 @@ Rules:
 - inspect all relevant sources before questioning the user;
 - preserve source roles/status/provenance;
 - distinguish supported, conflicting, and missing evidence;
+- register production-relevant requirements, constraints, conflicts, and decisions at useful granularity; do not mirror the source sentence-by-sentence or create IDs for incidental facts that do not affect scope, behavior, build, implementation, scoring, handoff, or an unresolved decision;
 - use Clarification/Completion only for low-risk supported recovery;
 - Proposal/Blocked material decisions require resolution rather than polished guessing;
+- keep the user-facing review decision-focused: summarize confirmed production scope, note meaningful Clarification/Completion, then surface only the Proposal/Blocked items that actually need attention;
 - do not ask again for information already recoverable from current sources/state.
 
 ## Flow 3 Judgment
@@ -75,6 +77,8 @@ Rules:
 - preserve Gameplay Overview / Level Design / Developer separation;
 - scoring and completion-data semantics must remain implementation-ready;
 - critical information must be explicit before final rendering;
+- use minimum sufficient detail: include information when it helps a target role understand, build, implement, validate, or avoid guessing; omit or compress detail that does not change a production decision or action;
+- do not fill optional fields, sections, or repeated explanations merely because the template provides a place for them;
 - preserve the approved HTML shell instead of redesigning it opportunistically;
 - decide what the renderer must represent, but leave pure implementation mechanics to the kit-local owner when semantics are already correct.
 
@@ -115,7 +119,7 @@ Audit from the perspectives that determine production usefulness:
 - Project Consistency;
 - rendered-artifact integrity at the level actually proven.
 
-While performing those existing reviews, also flag explanatory prose that is vague, inflated, repetitive, or formulaically AI-sounding when it makes the PRD harder to use. Do not create a separate AI score or writing gate.
+While performing those existing reviews, also flag explanatory prose that is vague, inflated, repetitive, or formulaically AI-sounding when it makes the PRD harder to use. Also flag duplicated or non-actionable detail when it hides the requirement a production role actually needs. Do not create a separate AI score, writing gate, or brevity target.
 
 Critical/Major findings block development readiness. Minor/Suggestion findings may remain only when they do not change material meaning or prevent the downstream role from working reliably.
 
@@ -156,7 +160,7 @@ Before completion verify the relevant original development-brief criteria, inclu
 - project facts trace to authority;
 - no unresolved material gap was hidden;
 - canonical content and derived artifact do not materially disagree;
-- role-specific output is usable;
+- role-specific output is usable without forcing the reader to sift through duplicated or non-actionable detail;
 - explanatory prose is plain, concrete, and free of unnecessary AI-style filler without altering technical meaning;
 - structural/visual/runtime claims do not exceed actual evidence.
 
