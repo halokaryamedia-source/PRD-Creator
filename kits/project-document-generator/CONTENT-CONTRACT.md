@@ -14,6 +14,7 @@ This file defines what `work/content.md` must contain after Flow 2 reaches `read
 6. **No filler.** Do not repeat narrative or requirements merely to make a page look complete.
 7. **No unresolved design decisions.** Flow 3 may clarify wording, but it cannot invent a decision that Flow 2 left unresolved.
 8. **Plain technical prose.** Prefer direct, concrete language. Writing quality must improve readability without changing project meaning or technical precision.
+9. **Minimum sufficient detail.** Include enough information for the target role to work without guessing, but do not fill optional fields or repeat background that does not change a production decision, action, or acceptance condition.
 
 ## PRD writing quality
 
@@ -51,6 +52,28 @@ When the timer ends, the bridge collapses. The player must cross before that hap
 ```
 
 If a smoother sentence would make a precise rule less explicit, keep the precise rule.
+
+## Information density
+
+Use the smallest amount of content that still makes the document production-ready.
+
+Include a detail when it does at least one of these jobs:
+
+- explains the project/player context needed to understand the work;
+- changes what the Level Designer must build;
+- changes what the Developer must implement or record;
+- defines a trigger, condition, quantity, score, handoff, reset, or acceptance rule;
+- prevents a target role from having to invent a product decision.
+
+Otherwise, omit it or compress it.
+
+Additional rules:
+
+- Do not fill an optional section, field, note, or table merely because the template provides one.
+- Do not repeat the same global rule in full across several packages. State the global rule once and repeat only the local implication needed by the package.
+- Prefer one explicit requirement over several paraphrases of the same requirement.
+- Background/lore may stay when it helps the reader understand the gameplay or production intent; do not expand it when it has no downstream effect.
+- Brevity is not the goal by itself. If removing a detail would make a production role guess, keep the detail.
 
 ## Canonical document order
 
@@ -234,6 +257,7 @@ Flow 3 must not hide missing critical information behind vague text such as “u
 - Flow 2 state is `ready_for_prd`;
 - every included material statement is supported by source/recovered requirements/approved decisions;
 - required package pages have enough local context for their target role;
+- each included detail serves a production/readability purpose and optional sections are not filled merely for completeness;
 - scoring or completion behavior is explicit where relevant;
 - explanatory prose is plain, concrete, and free of unnecessary filler without altering technical meaning;
 - no unresolved high-impact Proposal or Blocked item affects the requested document;
