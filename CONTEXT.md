@@ -28,8 +28,8 @@ User effort stays low:
 - internal project/workspace/bootstrap is automatic;
 - source is inventoried/triaged before deep reading;
 - only materially relevant evidence is read to the depth needed;
-- safe Clarification/Completion is automatic;
-- unresolved material decisions are batched;
+- Flow 2 solves before asking: recover from authority, apply safe Completion, or form a responsible Proposal before escalating;
+- unresolved material decisions are grouped and explained in clear user-facing language;
 - bounded revisions update only affected scope;
 - internal state/evidence stays internal during normal delivery.
 
