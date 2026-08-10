@@ -1,46 +1,22 @@
 ---
 name: project-document-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 2–4. Use when the active boundary is source intake/recovery, canonical PRD meaning, render-projection meaning, approved-template product contract, PRD validation/readiness, or team handoff. Do not select merely because renderer/template/validator mechanics fail when semantics are already correct; pure technical Maintenance may route directly to the nearest kit implementation owner. Preserve source authority and project meaning; never use rendering or polished prose to invent unresolved design. Do not use for Voice-only work.
+description: Semantic/product-contract specialist for PRD-Creator Flow 2–4. Use for source recovery, canonical PRD meaning, Golden representation requirements, PRD readiness, and handoff semantics. Do not use as a generic HTML/Python wrapper when the semantic contract is already correct.
 ---
 
 # Project Document Production
 
-Own semantic/product-contract judgment around Project Document Generator Flow 2–4. Detailed production and executable mechanics remain in `kits/project-document-generator/`; this skill protects the authority, representation, writing quality, and acceptance contract instead of becoming a generic Python/HTML/tooling owner.
+Own semantic judgment for Project Document Generator Flow 2–4. Detailed production procedure and executable mechanics stay in `kits/project-document-generator/`.
 
-## Trigger
+## Use this skill when
 
-Use when the actual wrong contract is one of:
+- incomplete/uneven source must become production requirements;
+- canonical `work/content.md` meaning is being created or corrected;
+- the Golden Sample representation contract is wrong or incomplete;
+- PRD development-readiness or handoff meaning is being decided.
 
-- incomplete/uneven source → recovered requirements;
-- requirement/provenance/conflict handling;
-- `ready_for_prd` → canonical `work/content.md`;
-- what canonical PRD data/pages must represent;
-- approved-template/product presentation contract;
-- PRD role/readiness validation;
-- team handoff semantics;
-- a renderer/validator change whose required behavior changes or misrepresents the Flow 2–4 product contract.
+Do not keep this skill loaded merely because renderer/template/validator Python or HTML is being debugged. If semantic meaning is already correct, route directly to the nearest kit implementation owner.
 
-Do **not** select merely because:
-
-- a task mentions HTML, JSON, Markdown, Python, or a document;
-- `renderer/render.py` crashes while the semantic render contract is already correct;
-- `validator/validate.py` has a mechanical implementation bug;
-- CI/test/dependency tooling fails.
-
-Pure technical Maintenance may route directly through `kits/project-document-generator/AGENTS.md` to the exact implementation owner without a root specialist.
-
-## Required Routing
-
-1. Read the relevant Flow state/project package first.
-2. Identify whether the defect is semantic/product-contract or executable mechanics.
-3. For semantic/product-contract work, identify the active Flow owner:
-   - Flow 2 → `SOURCE-INTAKE.md` + source/requirement state;
-   - Flow 3 → `CONTENT-CONTRACT.md`, `RENDERING.md`, canonical content + affected representation contract;
-   - Flow 4 → `VALIDATION.md`, acceptance/handoff state.
-4. Read only the smallest relevant kit procedure/source.
-5. Preserve the authority chain; never repair an upstream definition problem in downstream rendering/validation.
-
-## Authority Guard
+## Authority chain
 
 ```text
 originals + approved decisions
@@ -51,119 +27,76 @@ originals + approved decisions
 → acceptance/handoff evidence
 ```
 
-Rules:
+Generated HTML never becomes project authority. Renderer/prose may organize approved meaning but may not invent mechanics, quantities, lore, scoring, triggers, architecture, or unresolved decisions.
 
-- generated HTML never becomes canonical project meaning;
-- a sample/Golden proves presentation/quality only where explicitly defined;
-- renderer behavior must not invent mechanics, scoring, quantities, lore, triggers, or architecture;
-- unresolved material conflicts/critical gaps route back to Flow 2;
-- `handoff_ready` is revision-specific and cannot be inferred from successful rendering alone.
+## Smallest-owner routing
 
-## Flow 2 Judgment
+- Flow 2 meaning → `SOURCE-INTAKE.md`
+- Flow 3 canonical meaning → `CONTENT-CONTRACT.md`
+- Flow 3 render/projection contract → `RENDERING.md` only when projection/HTML behavior is actually in scope
+- Flow 4 readiness → `VALIDATION.md`
+- pure renderer mechanics with correct semantics → kit `AGENTS.md` + exact `renderer/*` owner
+- pure validator mechanics with correct semantics → kit `AGENTS.md` + `validator/validate.py`
 
-- inspect all relevant sources before questioning the user;
-- preserve source roles/status/provenance;
-- distinguish supported, conflicting, and missing evidence;
-- register production-relevant requirements, constraints, conflicts, and decisions at useful granularity; do not mirror the source sentence-by-sentence or create IDs for incidental facts that do not affect scope, behavior, build, implementation, scoring, handoff, or an unresolved decision;
-- use Clarification/Completion only for low-risk supported recovery;
-- Proposal/Blocked material decisions require resolution rather than polished guessing;
-- keep the user-facing review decision-focused: summarize confirmed production scope, note meaningful Clarification/Completion, then surface only the Proposal/Blocked items that actually need attention;
-- do not ask again for information already recoverable from current sources/state.
+Read only the smallest owner needed. `WORKFLOW.md` is a sequencing reference, not mandatory context for routine production.
 
-## Flow 3 Judgment
+## Semantic rules
 
-- `work/content.md` is the human-readable source of truth;
-- `work/render-data.json` is a derived projection only;
-- preserve Gameplay Overview / Level Design / Developer separation;
-- scoring and completion-data semantics must remain implementation-ready;
-- critical information must be explicit before final rendering;
-- use minimum sufficient detail: include information when it helps a target role understand, build, implement, validate, or avoid guessing; omit or compress detail that does not change a production decision or action;
-- do not fill optional fields, sections, or repeated explanations merely because the template provides a place for them;
-- preserve the approved HTML shell instead of redesigning it opportunistically;
-- decide what the renderer must represent, but leave pure implementation mechanics to the kit-local owner when semantics are already correct.
+- inspect available source before asking the user;
+- register only production-relevant requirements/constraints/decisions;
+- apply supported Clarification/Completion automatically;
+- surface only unresolved material Proposal/Blocked decisions;
+- use minimum sufficient detail;
+- keep Gameplay / Level Design / Developer meaning separate;
+- preserve Golden hierarchy/page language without copying Golden project facts;
+- use the prose-quality rules owned by `CONTENT-CONTRACT.md`; do not duplicate a second writing guide here;
+- return a real upstream gap to Flow 2 rather than hiding it with polished wording or HTML.
 
-### PRD prose quality
+## Context economy
 
-Apply the writing-quality contract in `CONTENT-CONTRACT.md` to explanatory prose. The goal is not to make technical writing decorative or "more human" at the expense of precision; it is to remove formulaic AI-style filler while keeping the PRD easy to read.
+Normal PRD production must not spend model context on generated HTML internals unnecessarily.
 
-Use these rules:
+- Do **not** load `template/approved-document.html` in full for normal production. The renderer may read it at runtime without putting the ~794 KB Golden file into model context.
+- Do **not** load `output/final.html` in full for normal semantic review. Use canonical content for meaning, the validator for mechanical HTML checks, and actual rendered/browser inspection for visual claims.
+- Inspect template or generated HTML source only when a concrete finding points to a specific marker/component; read/search only that bounded area.
+- Do not reread unchanged source/packages during a bounded revision.
+- Do not load root skill + kit skill + WORKFLOW + every Flow procedure merely because the task is “make a PRD.” Route by the active Flow.
 
-- prefer plain technical sentences over inflated wording;
-- state the concrete mechanic, condition, action, or consequence instead of telling the reader that something is important, immersive, seamless, dynamic, or engaging;
-- remove fake analysis, promotional wording, throat-clearing, and filler that does not change meaning;
-- keep stable project terminology stable; do not rotate synonyms merely for style;
-- do not force ideas into artificial groups of three or repeated sentence patterns;
-- make the minimum effective edit and leave already-clear sentences alone;
-- never rewrite IDs, official names, numbers, coordinates, timings, formulas, weights, triggers, conditions, state names, code/API names, or approved terminology for stylistic reasons;
-- apply this most strongly to Overview, Gameplay explanation, narrative/context, Level Design explanation, Developer explanation, and notes; do not aggressively "humanize" tables, formulas, requirement lists, configuration values, or code.
+## Flow 4 judgment
 
-Example:
-
-```text
-Avoid:
-This mechanic plays a crucial role in creating an engaging and immersive gameplay experience.
-
-Prefer:
-When the timer ends, the bridge collapses. The player must cross before that happens.
-```
-
-Writing quality is subordinate to source fidelity and implementation clarity. If a smoother sentence changes product meaning, keep the precise sentence.
-
-## Flow 4 Judgment
-
-Audit from the perspectives that determine production usefulness:
+Acceptance asks whether the current revision is usable by:
 
 - New Reader / Player context;
 - Level Designer;
 - Developer;
-- Project Consistency;
-- rendered-artifact integrity at the level actually proven.
+- Project Consistency.
 
-While performing those existing reviews, also flag explanatory prose that is vague, inflated, repetitive, or formulaically AI-sounding when it makes the PRD harder to use. Also flag duplicated or non-actionable detail when it hides the requirement a production role actually needs. Do not create a separate AI score, writing gate, or brevity target.
+Writing quality/density are checked inside those lenses, not through an AI detector or extra quality score. Critical/Major findings block readiness.
 
-Critical/Major findings block development readiness. Minor/Suggestion findings may remain only when they do not change material meaning or prevent the downstream role from working reliably.
+## Acceptance gate
 
-## Technical Handoff Rule
+Before reporting the PRD ready, confirm only what the current task requires:
 
-If investigation proves:
+- project meaning is supported by authority;
+- no material unresolved decision was hidden;
+- canonical content and derived representation do not materially disagree;
+- role-specific content is usable without unnecessary duplication/filler;
+- Golden structure/composition is preserved at the level actually verified;
+- visual/runtime claims do not exceed actual evidence.
 
-```text
-canonical meaning/representation contract is correct
-+ executable renderer/template/validator mechanics are wrong
-```
-
-then route Maintenance to:
-
-`kits/project-document-generator/AGENTS.md` → exact implementation source.
-
-Do not keep this root specialist loaded solely as a Python/HTML debugging wrapper. Shared dependency/test/CI failures belong to root repository-engineering owners (`requirements.lock.txt`, `tests/`, `tools/`, workflows).
-
-## Maintenance Rule
-
-For a Project Document defect:
+## Maintenance rule
 
 ```text
-observe concrete defect
-→ classify semantic/product contract vs executable mechanics
-→ semantic wrong: use this specialist + smallest Flow owner
-→ semantics correct, mechanics wrong: nearest kit AGENTS + exact implementation owner
-→ regenerate derived output when needed
-→ run the cheapest proof that can falsify the fix
+observe defect
+→ identify first wrong owner
+→ semantic wrong: fix smallest Flow owner
+→ semantics correct / mechanics wrong: exact kit implementation owner
+→ regenerate invalidated derived artifact
+→ minimum useful proof
 ```
 
-Do not patch `final.html` directly when canonical content/projection/renderer is wrong.
+Never patch `final.html` as source of truth.
 
-## Acceptance Gate
+## Boundary
 
-Before completion verify the relevant original development-brief criteria, including as applicable:
-
-- project facts trace to authority;
-- no unresolved material gap was hidden;
-- canonical content and derived artifact do not materially disagree;
-- role-specific output is usable without forcing the reader to sift through duplicated or non-actionable detail;
-- explanatory prose is plain, concrete, and free of unnecessary AI-style filler without altering technical meaning;
-- structural/visual/runtime claims do not exceed actual evidence.
-
-## Handoff Boundary
-
-Once `handoff_ready` is valid, Voice may consume the accepted PRD. This specialist must not pre-write Voice Production or use downstream Voice artifacts as authority for missing upstream design.
+This skill owns Flow 2–4 semantic/product contract only. Voice remains downstream and must not be used as authority for missing PRD design.

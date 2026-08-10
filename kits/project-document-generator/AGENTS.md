@@ -1,51 +1,38 @@
 # Project Document Generator Agent Rules
 
-Root `AGENTS.md` remains authoritative for work mode, proof, skill budget, repository continuity, and the semantic-vs-technical ownership rule. This file narrows behavior only inside `kits/project-document-generator/`.
+Root `AGENTS.md` owns repository work mode, proof, skill budget, continuity, and semantic-vs-technical routing. This file narrows behavior inside `kits/project-document-generator/`.
 
-## Module Structure
+## Flow routing
 
-```text
-kits/project-document-generator/
-├─ AGENTS.md
-├─ SKILL.md
-├─ SOURCE-INTAKE.md
-├─ CONTENT-CONTRACT.md
-├─ RENDERING.md
-├─ VALIDATION.md
-├─ RULES.md
-├─ WORKFLOW.md
-├─ GLOSSARY.md
-├─ renderer/
-│  ├─ core.py
-│  ├─ pages.py
-│  └─ render.py
-├─ template/
-│  └─ approved-document.html
-└─ validator/
-   └─ validate.py
-```
+Start from current project/state and open only the active owner.
 
-`tests/test_prd_contracts.py` is the focused repository regression owner for high-risk generic renderer/validator contracts.
+- **Flow 2** → `SOURCE-INTAKE.md`; `RULES.md` only for a kit-wide recovery rule; `GLOSSARY.md` only when terminology is unclear.
+- **Flow 3 content** → `CONTENT-CONTRACT.md`.
+- **Flow 3 projection/rendering** → `RENDERING.md` only when render-data shape/HTML behavior is in scope.
+- **Flow 4** → `VALIDATION.md`.
+- `WORKFLOW.md` is only for end-to-end sequencing when ownership is unclear.
 
-## Flow Routing
+Do not load every kit document by default.
 
-Start from the current project/state and identify the active Flow before opening kit documents.
+## Context budget for HTML work
 
-- **Flow 2 — Source Intake & Requirement Recovery**
-  - read `SOURCE-INTAKE.md`;
-  - read `RULES.md` only when a kit-wide recovery rule is relevant;
-  - read `GLOSSARY.md` only when terminology is unclear.
-- **Flow 3 — PRD Generation**
-  - read `CONTENT-CONTRACT.md`;
-  - read `RENDERING.md` only when projection/rendering is in scope;
-  - inspect `template/approved-document.html` only when template fidelity matters.
-- **Flow 4 — PRD Validation & Team Handoff**
-  - read `VALIDATION.md`;
-  - inspect renderer/content only when a finding points back to those owners.
+The Golden template and generated PRD can be very large. Runtime file access and model context are different things.
 
-Use `WORKFLOW.md` only when end-to-end sequencing or Flow ownership is unclear. Do not load every kit document by default.
+### Normal production
 
-## Canonical Boundary
+- Never load `template/approved-document.html` in full merely to create a PRD. The deterministic renderer can read the Golden file at runtime without placing its contents in model context.
+- Never load `output/final.html` in full for routine semantic review.
+- Do not copy Golden HTML/CSS/JS into working notes or prompts.
+- Use `CONTENT-CONTRACT.md` as the compressed semantic/page-composition authority for normal authoring.
+- Use `RENDERING.md` as the bounded projection/mechanics reference only when needed.
+
+### Targeted inspection
+
+Inspect template/generated HTML source only after a concrete defect identifies a likely HTML owner. Search for the exact section ID, class, marker, script, or component and read the smallest useful range.
+
+For visual acceptance, prefer actual rendered/browser/page inspection when available. Reading HTML source is not a substitute for visual proof.
+
+## Canonical boundary
 
 ```text
 project originals + approved decisions
@@ -53,110 +40,80 @@ project originals + approved decisions
 → work/content.md                 canonical PRD meaning
 → work/render-data.json           derived projection
 → output/final.html               derived presentation
-→ work/acceptance.md              revision-specific evidence
-→ state/handoff-state.yaml
-→ output/team-handoff.md
+→ acceptance/handoff evidence
 ```
 
-Never patch a derived artifact to hide a defect in an upstream owner.
+Never patch a derived artifact to hide an upstream defect.
 
-## Semantic vs Technical Ownership
+## Renderer ownership
 
-Use the root `project-document-production` specialist when the wrong behavior is a **Flow 2–4 semantic/product-contract** problem, including:
+- `renderer/core.py` → reusable Golden helpers and bounded presentation primitives.
+- `renderer/pages.py` → Golden page composition from render data.
+- `renderer/render.py` → deterministic template projection/output mechanics.
+- `template/approved-document.html` → edit only when the template itself is proven to own the defect.
+- `validator/validate.py` → mechanical Flow 4 checks.
 
-- source authority / requirement recovery;
-- canonical PRD meaning;
-- what the render projection/pages must represent;
-- approved-template product contract;
-- PRD readiness/handoff semantics.
+Renderer code may organize approved meaning; it may not invent missing facts or product decisions.
 
-When semantics are already correct and the defect is purely executable mechanics, Maintenance may route directly here without loading a root specialist.
+## Production efficiency
 
-Technical owners:
+Initial BUILD:
 
-- rendering helpers/layout data mechanics → `renderer/core.py` / `renderer/pages.py`;
-- deterministic template projection/output → `renderer/render.py`;
-- approved shell mechanics → `template/approved-document.html` only when the shell itself is the cause;
-- mechanical Flow 4 checks → `validator/validate.py`.
+```text
+finish/reconcile canonical content
+→ derive compact render projection once
+→ render once
+→ validate/review
+```
 
-Do not call a Python/tooling specialist merely because these files are Python.
+Do not regenerate a full projection after every prose edit during drafting.
 
-## Contributor Rules
+Bounded revision:
 
-### Renderer
+```text
+approved delta
+→ affected content + cross-references
+→ affected render-data subtree
+→ rerender
+→ targeted review
+```
 
-- `work/content.md` remains canonical project meaning; renderer code cannot invent or repair missing project facts.
-- `work/render-data.json` is derived projection, not another authority layer.
-- preserve deterministic template markers, stable IDs, navigation reachability, and placeholder rejection.
-- change `pages.py` / `core.py` only when the representation helper actually owns the defect.
-- change `render.py` only when projection/template/output mechanics own the defect.
-- do not hand-edit `output/final.html` as the fix.
+Do not reread/rewrite unchanged packages.
 
-### Template
+For English-only output, prefer scalar render-data strings rather than duplicated localized objects. For package terms, omit optional role metadata when default Gameplay visibility is sufficient.
 
-- preserve the approved shell by default;
-- do not redesign presentation during unrelated Flow work;
-- a template edit needs a shell-level requirement or proven template defect;
-- Golden/reference content never becomes project facts.
+## Semantic vs technical ownership
 
-### Validator
+Use root `project-document-production` when the wrong contract is source meaning, canonical PRD meaning, Golden representation requirements, or readiness semantics.
 
-- mechanical validation must fail closed on the contract it claims to check;
-- do not make semantic development-readiness claims from mechanical checks alone;
-- if the validator exposes an upstream content/render defect, fix that upstream owner rather than weakening the check.
+When those semantics are already correct and the problem is executable renderer/template/validator mechanics, Maintenance routes directly to the exact owner here. Do not load a semantic specialist solely as a Python/HTML wrapper.
 
-## Verification Commands
+## Verification
 
-Run from repository root.
-
-### Focused contract suite
+Repository-side renderer/contract changes use the focused existing proof:
 
 ```text
 python -m unittest tests.test_prd_contracts -v
-```
-
-This executes the real renderer and real Flow 4 mechanical validator against minimal generic fixtures.
-
-### Compile check
-
-```text
 python -m compileall -q kits/project-document-generator tests/test_prd_contracts.py
 ```
 
-### Direct renderer
+`Production Verify` is the canonical CI gate. Run only checks invalidated by the coherent change; do not repeatedly run local/manual project tests during an unfinished refinement batch.
 
-```text
-python kits/project-document-generator/renderer/render.py \
-  workspace/active/<project>/work/render-data.json \
-  workspace/active/<project>/output/final.html
-```
-
-### Direct validator
-
-```text
-python kits/project-document-generator/validator/validate.py \
-  workspace/active/<project>
-```
-
-For repository-side production changes, `Production Verify` is the canonical repeatable CI gate. Run only the checks invalidated by the active change when working locally.
+Browser/visual PASS still requires actual browser/visual evidence.
 
 ## Maintenance
 
-For a concrete defect:
+```text
+observe concrete defect
+→ identify first wrong owner
+→ fix smallest owner
+→ regenerate invalidated derived output
+→ cheapest proof that can falsify the fix
+→ stop
+```
 
-1. establish whether the first wrong owner is source/recovery, canonical content, render projection, renderer/template mechanics, validator mechanics, or acceptance evidence;
-2. if semantic/product contract is wrong, route to `project-document-production`;
-3. if semantics are correct and mechanics are wrong, fix the exact implementation owner here;
-4. regenerate only invalidated derived artifacts;
-5. run the minimum useful proof;
-6. browser/visual PASS still requires actual browser/visual evidence when that level is claimed.
-
-Maintenance does not automatically invoke `development-brief` or a root specialist.
+Do not create new renderer profiles, HTML schemas, snapshot frameworks, template copies, debug artifacts, or generic parsers without a concrete current requirement.
 
 ## Boundaries
 
-- This kit owns Flow 2–4 only.
-- Voice scope/writing/DOCX belongs to `kits/voice-production-kit/`.
-- Repository-wide dependency/test/CI ownership belongs to root `requirements.lock.txt`, `tests/`, `tools/`, and `.github/workflows/`.
-- Golden/reference material demonstrates approved structure/quality only; it does not define project facts.
-- Do not recreate retired schema/profile/freeze/package architecture without a proved current requirement.
+This kit owns Flow 2–4. Voice belongs to `kits/voice-production-kit/`. Shared dependencies/tests/CI belong to repository engineering owners.

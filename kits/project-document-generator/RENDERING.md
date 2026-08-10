@@ -1,48 +1,33 @@
 # Rendering Contract
 
-The approved Golden Sample is the presentation **and page-composition authority** for this PRD family. The renderer must reproduce its reusable document language with project-specific content; merely injecting generic pages into the Golden CSS/JS shell is not sufficient.
+The approved Golden Sample is the presentation and page-composition authority for this PRD family. The renderer reproduces that document language with project-specific facts; it does not redesign the document.
 
-Do not replace the Golden Sample with a reduced/minimal shell.
-
-## Rendering model
+## Normal production path
 
 ```text
-work/content.md                    canonical project meaning
-        ↓
-work/render-data.json              derived Golden projection
-        ↓
-template/approved-document.html    approved Golden Sample authority
-        ↓
-renderer/render.py + renderer/pages.py
-        ↓
-output/final.html                  derived project document
+work/content.md                    canonical meaning
+→ work/render-data.json            compact derived projection
+→ renderer                         deterministic HTML composition
+→ template/approved-document.html  Golden runtime input
+→ output/final.html                derived PRD
 ```
 
-`render-data.json` and `final.html` are derived. When canonical meaning changes, regenerate them. Do not add revision/checksum machinery.
+The template and final HTML are runtime artifacts. **Normal authoring does not require loading either large file into model context.**
 
-## What “preserve Golden” means
+Use `CONTENT-CONTRACT.md` for the Golden hierarchy/page-composition meaning. Use this file only for projection and renderer rules.
 
-Preservation includes:
+## Context-efficient HTML generation
 
-- document hierarchy and page rhythm;
-- Overview / Gameplay Flow / Global Development / Gameplay Package organization;
-- Gameplay Overview → Level Design → Developer package structure;
-- Golden package titles/subtitles and 1/2/3 package tabs;
-- storytelling-first Gameplay Flow composition;
-- context blocks/cards;
-- Golden production-table families and grouped rows;
-- Level Design `Area Size / Build and Visual / Gameplay Function` separation;
-- Developer grouped requirements with inline scoring/completion treatment;
-- Important Notes card grids;
-- Terms Used accordion treatment when used;
-- project-branded footers and page codes;
-- sidebar/navigation, typography, spacing, colors, controls, glossary interaction, responsive and print foundation.
+- Do not hand-author or patch `final.html`.
+- Do not copy Golden HTML/CSS/JS into prompts, notes, or canonical content.
+- Do not read `approved-document.html` in full during normal project production; the renderer reads it directly at runtime.
+- Do not read `final.html` in full merely to review semantics; the mechanical validator reads it directly.
+- When HTML source investigation is necessary, search for the exact page ID/class/marker/component and inspect only the smallest relevant area.
+- For visual quality, inspect the actual rendered page/browser when available rather than treating source review as visual proof.
 
-The renderer may omit an optional block when the project has no meaningful content for it. It may **not** replace the Golden composition with unrelated generic cards/tables merely because that is easier to render.
+## Projection economy
 
-## Projection rules
-
-`render-data.json` remains a small structured projection, not another semantic authority.
+`render-data.json` is a structured projection, not a second semantic document.
 
 Root shape:
 
@@ -56,79 +41,55 @@ Root shape:
 }
 ```
 
-Each package keeps:
+Each package keeps `gameplay`, `level_design`, and `developer`.
 
-```text
-gameplay
-level_design
-developer
-```
+Initial production should project once after canonical content is stable enough to render. During a bounded revision, change only the affected subtree plus required cross-references; do not recreate unchanged packages.
 
-The projection may carry fields needed to fill Golden surfaces, including:
+Do not copy commentary/provenance/internal reasoning into render data. Carry only values required by the Golden surfaces.
 
-- Gameplay purpose/time/start/end/fail/scoring summary/player flow;
-- Level Design flow, object subtitle, area size, build/visual requirement, gameplay function, optional child rows, titled notes;
-- Developer flow, grouped requirements, scoring/completion, reset, titled notes;
-- page/role-specific Terms Used when needed.
+## Compact value conventions
 
-Missing optional project facts remain absent/neutral. Do not synthesize exact dimensions, metrics, mechanics, persistence, architecture, or lore to populate a Golden component.
+### English-only
 
-## Document language contract
-
-Language availability is project-level and explicit.
+Default document language is:
 
 ```json
-"document": {
-  "languages": ["en"]
-}
+"languages": ["en"]
 ```
 
-Supported modes are intentionally small:
+Use scalar strings for ordinary English values when there is no bilingual output requirement:
 
-```text
-["en"]
-→ default
-→ English is the only selectable document language
-→ the EN/ID control is hidden
-
-["en", "id"]
-→ bilingual document
-→ the EN/ID control remains available
+```json
+"title": "Core Trial"
 ```
 
-For bilingual output, a localized object that uses `en` / `id` must contain both values. Missing one side fails before rendering; the renderer must not silently copy the other language into it.
+Do not expand this into duplicated localized data merely for renderer symmetry:
 
-A scalar string is treated as intentionally shared text, such as a proper name, code, number, formula, or label that is meant to remain identical in both languages. Do not use a scalar merely to avoid translating ordinary bilingual prose.
+```json
+{"en": "Core Trial", "id": "Core Trial"}
+```
 
-This is a bounded language-availability rule, not a translation service, translation-memory system, or localization framework.
+unless the value is intentionally represented as localized content.
 
-## Content-driven Golden grids
+### Bilingual
 
-Golden composition stays fixed, but item distribution must not assume Aftershock's exact count.
+For intentional EN + ID output:
 
-On desktop:
+```json
+"languages": ["en", "id"]
+```
 
-- Overview `.journey` uses one column per item up to the Golden six-column capacity;
-- Golden `.flow` cards use one column per item up to the Golden four-column capacity;
-- lists above those capacities wrap using the existing Golden maximum instead of creating narrower card styles;
-- existing mobile responsive behavior remains authoritative.
+Localized prose objects must contain both values. Missing translations fail before rendering; the renderer does not silently copy one language into the other.
 
-The renderer carries only the current item count through CSS variables. Do not create template profiles, layout scoring, or a separate responsive layout engine for this behavior.
+Proper names, IDs, codes, numbers, formulas, and intentionally language-neutral values may remain scalar.
+
+This is a language-availability contract, not a translation framework.
 
 ## Role-specific Terms Used
 
-Package terms remain one glossary source. Visible package Terms Used blocks are controlled by the optional `roles` field on each term:
+Package terms remain one glossary/tooltips source.
 
-```json
-{
-  "key": "example-term",
-  "label": "Example Term",
-  "definition": "Definition used by the package.",
-  "roles": ["gameplay", "developer"]
-}
-```
-
-Allowed role values:
+Optional `roles` values are:
 
 ```text
 gameplay
@@ -136,93 +97,52 @@ level_design
 developer
 ```
 
-Behavior:
-
 - omitted `roles` → visible on Gameplay Overview only;
-- explicit roles → visible only on those role pages;
-- `roles: []` → available to package glossary/tooltips without a visible package Terms Used block.
+- explicit roles → visible only on those pages;
+- `roles: []` → glossary/tooltips only.
 
-Do not repeat every package term on Level Design and Developer by default.
+Omit role metadata when default Gameplay visibility is correct. Do not repeat every package term across all role pages.
 
-## Golden component ownership
+## Content-driven Golden grids
 
-`renderer/core.py` owns reusable Golden HTML helpers.
+Golden component language stays fixed while item distribution follows actual content.
 
-`renderer/pages.py` owns the current Golden page composition:
+- Overview Journey: one desktop column per item up to six, then wrap at the existing Golden capacity.
+- Golden Flow cards: one desktop column per item up to four, then wrap at the existing Golden capacity.
+- Existing Golden mobile behavior remains authoritative.
 
-```text
-Gameplay Flow
-→ narrative page / narrative sequence
+This uses bounded CSS variables only; do not create layout profiles, scoring, or another responsive system.
 
-Global Development
-→ shared tabs
-→ context block
-→ flow cards
-→ grouped production table
-→ notes cards
+## Renderer ownership
 
-Gameplay Overview
-→ package title/subtitle + 1/2/3 tabs
-→ Gameplay Context / Main Objective / Result
-→ Gameplay Information table
-→ role sequence
+- `renderer/core.py` → reusable Golden helpers.
+- `renderer/pages.py` → project data → Golden page composition.
+- `renderer/render.py` → validation of render-data boundary, template mutation, project metadata/navigation/glossary/language/grid mechanics, final write.
+- `template/approved-document.html` → edit only when a proven defect belongs to the Golden template itself.
 
-Level Design
-→ package title/subtitle + tabs
-→ context block
-→ Design Flow cards
-→ Golden 5-column build table
-→ notes cards
+The renderer may omit optional blocks with no meaningful project data. It may not invent facts or replace Golden composition with unrelated generic markup.
 
-Developer
-→ package title/subtitle + tabs
-→ context block
-→ Development Flow cards
-→ grouped Golden development table
-   including inline scoring/completion/reset
-→ notes cards
-```
+## Template mutation boundary
 
-Do not create another renderer profile/component framework to express this one approved document family.
+The renderer may mutate only project-owned surfaces already required by this document family:
 
-## Golden fidelity guard
-
-Mechanical validation checks a **small semantic marker set** for the generated pages, such as:
-
-- `narrative-sequence` on Gameplay Flow pages;
-- `package-tabs` on Golden development/package pages;
-- `phase-context-grid`, `phase-overview-table`, and `role-sequence` on Gameplay Overview;
-- `section-context`, `quarry-design-flow`, and `quarry-build-table` where applicable on Level Design;
-- `section-context`, `quarry-development-flow`, `quarry-development-table`, and inline score/completion summary on Developer;
-- Golden note grid when notes exist.
-
-This protects against accidental regression back to generic page composition. It is **not** a pixel-diff system and does not prove visual quality.
-
-Actual visual quality still requires final rendered/browser/page inspection when that claim is made.
-
-## Glossary safety
-
-Package glossary aliases may be a string array or an `en`/`id` object of string arrays. Malformed shapes fail before rendering.
-
-Glossary data is inserted into an executable `<script>` block, so renderer serialization must remain script-context safe for `<`, `>`, `&`, U+2028, and U+2029.
-
-This is a focused script-safety rule, not a sanitizer framework.
-
-## Approved template mechanics
-
-The renderer mutates only project-owned surfaces:
-
-- title/metadata;
-- sidebar project brand;
-- generated navigation;
+- project title/metadata/brand;
+- navigation;
 - generated pages inside `.document-main`;
-- project glossary data;
-- project-specific local-storage namespace;
-- bounded project-dependent language availability and Golden grid-count behavior.
+- glossary data;
+- project local-storage namespace;
+- bounded language availability;
+- bounded content-driven Golden grid variables.
 
-Required template markers are checked only where the renderer actually mutates the Golden Sample. Do not create a full-template snapshot framework.
+Do not add template copies, renderer profiles, snapshot systems, or generalized HTML schemas without a concrete need.
 
-## Commands
+## Mechanical fidelity
+
+Flow 4 validator owns structural checks such as page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set.
+
+Do not duplicate those checks in authoring instructions. Structural PASS is not visual PASS.
+
+## Command
 
 ```bash
 python kits/project-document-generator/renderer/render.py \
@@ -230,17 +150,15 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-Use an alternate template only when the user explicitly approves a different document family.
+Use another template only when the user explicitly approves a different document family.
 
 ## Boundary
 
-Renderer code may organize approved project meaning into the Golden composition. It may never invent missing project facts, approve an unresolved decision, change scoring/completion meaning, or patch `final.html` as source of truth.
-
-Keep production simple:
-
 ```text
 canonical PRD
-→ derive Golden projection
-→ render Golden composition
+→ compact Golden projection
+→ deterministic render
 → validate
 ```
+
+Renderer code may organize approved meaning; it may never repair missing product definition, approve unresolved decisions, or make `final.html` a source of truth.

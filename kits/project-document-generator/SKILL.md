@@ -1,14 +1,12 @@
 ---
 name: project-document-generator
-description: Recover incomplete project requirements, create canonical development-oriented PRD content, render it through the approved Golden Sample hierarchy and page composition, and validate whether the result is development-ready without inventing product decisions.
+description: Recover incomplete project requirements, create canonical development-oriented PRD content, render it through the approved Golden Sample hierarchy/page composition, and validate whether the result is development-ready without inventing product decisions.
 version: 1.5.0
 ---
 
 # Project Document Generator
 
-## Purpose
-
-Use this skill for normal PRD **Production Execution** and PRD revisions. It owns project production through Flow 4 and does not require `development-brief` unless the user is changing how PRD-Creator itself works.
+Use for normal PRD **Production Execution** and bounded PRD revisions. Do not route ordinary PRD creation through `development-brief`.
 
 Normal user experience:
 
@@ -16,196 +14,105 @@ Normal user experience:
 source / approved change
 → understand automatically
 → one grouped decision review only if needed
-→ build Golden-Sample PRD
+→ build Golden PRD
 → review/fix
 → final PRD
 ```
 
-## User burden rule
+## User burden
 
-The user supplies project source, direction, and only decisions they must make. The agent owns project slug/workspace setup, source/requirement IDs, internal state, render data, commands, validation evidence, and normal repository mechanics.
+The user supplies source/direction and only decisions that genuinely require them. The agent owns project/workspace bootstrap, internal IDs/state, render projection, commands, validation evidence, and repository mechanics.
 
-Do not ask the user for internal project-package details unless ambiguity would put work in the wrong project or a material product decision cannot be recovered safely.
+Do not ask the user to manage slugs, folders, YAML, JSON, renderer files, or validation output.
 
-## Automatic project bootstrap
+## 1. UNDERSTAND — Flow 2
 
-For a new PRD project:
-
-1. derive the project name from explicit user wording or strongest authoritative source title;
-2. derive a stable lowercase kebab-case slug;
-3. reuse a clearly matching active project;
-4. create only the minimum current-Flow package;
-5. preserve supplied originals and assign internal IDs automatically.
-
-## Three-step production flow
-
-### 1. UNDERSTAND — Flow 2
-
-Read `SOURCE-INTAKE.md` plus only current project sources/state needed.
+Read `SOURCE-INTAKE.md` plus only relevant current source/state.
 
 - inspect all available source before asking questions;
-- recover production-relevant requirements/constraints/decisions;
-- apply supported Clarification/Completion automatically;
-- batch remaining Proposal/Blocked decisions;
-- when a decision is needed, give `Recommended / Reason / Impact` so the user can approve all or override named exceptions.
+- recover production-relevant requirements;
+- apply safe Clarification/Completion automatically;
+- batch remaining material Proposal/Blocked decisions;
+- when needed, use `Recommended / Reason / Impact` so the user can approve all or override named exceptions.
 
 Exit truthfully as `ready_for_prd`, `needs_decision`, or `blocked`.
 
-### 2. BUILD PRD — Flow 3
+## 2. BUILD PRD — Flow 3
 
-Read `CONTENT-CONTRACT.md` and create/update canonical `work/content.md`.
+Read `CONTENT-CONTRACT.md`. It owns Golden hierarchy, page composition, information density, role separation, language meaning, Terms Used semantics, and prose quality.
 
-The Golden Sample is not only the outer HTML shell. It is the **output composition authority**.
-
-Preserve:
+Canonical path:
 
 ```text
-Overview
-→ Gameplay Flow
-→ Global Development
-→ Gameplay Package(s)
-     → Gameplay Overview
-     → Level Design
-     → Developer
+work/content.md
+→ work/render-data.json (derived projection)
+→ deterministic renderer
+→ Golden Sample template
+→ output/final.html
 ```
 
-And preserve the reusable Golden page language inside those sections:
+### HTML efficiency rules
 
-```text
-Gameplay Flow
-→ narrative sequence / transition treatment
+Normal production treats the renderer as a deterministic black box.
 
-Global Development
-→ shared tabs
-→ context
-→ flow cards
-→ grouped production table
-→ note cards
+- Write project meaning in `content.md`; do **not** hand-author `final.html`.
+- Do **not** load `template/approved-document.html` into model context during normal production. The renderer reads it at runtime.
+- Do **not** copy Golden HTML/CSS/JS into prompts or working notes.
+- Finish/reconcile canonical content before doing the main render projection. Avoid rebuilding full JSON after every drafting edit.
+- Initial production: derive `render-data.json` once when canonical content is stable enough to render.
+- Bounded revision: patch only affected render-data subtree/cross-reference; do not reconstruct unrelated packages.
+- English-only documents should use scalar strings for ordinary English values instead of duplicating `{en,id}` text. Use localized objects only for intentional bilingual content; language-neutral names/codes/formulas may remain scalar.
+- Omit `roles` on package terms when the default Gameplay visibility is correct; add role metadata only when visibility differs.
+- Read `RENDERING.md` only when projection shape, language/Terms behavior, or renderer mechanics are actually needed.
 
-Gameplay Overview
-→ title/subtitle + 1/2/3 tabs
-→ Gameplay Context / Main Objective / Result
-→ Gameplay Information table
-→ role-sequence
+The Golden Sample remains the output authority. Efficiency comes from deterministic projection and small context, not from replacing the approved document family.
 
-Level Design
-→ title/subtitle + tabs
-→ context
-→ Design Flow cards
-→ Golden 5-column Build Requirements table
-→ note cards
-
-Developer
-→ title/subtitle + tabs
-→ context
-→ Development Flow cards
-→ grouped Golden Development Requirements table
-   with scoring/completion/reset integrated in hierarchy
-→ note cards
-```
-
-**Do not treat use of the Golden CSS/JS shell as sufficient fidelity.** A generic card/table body inside that shell is a failed Golden projection for this document family.
-
-Use minimum sufficient project detail inside the fixed composition. Optional component content may be omitted when no meaningful project fact exists; do not invent filler to make a page visually full.
-
-Internal BUILD path:
-
-```text
-content.md
-→ derive Golden-oriented render-data.json
-→ renderer/pages.py composes Golden components
-→ approved Golden Sample template
-→ final.html
-```
-
-Read `RENDERING.md` when projection/rendering behavior matters.
-
-### 3. REVIEW — Flow 4
+## 3. REVIEW — Flow 4
 
 Read `VALIDATION.md`.
 
-Run one current-revision review:
-
 ```text
-mechanical validation
-+ Golden composition marker check
-+ visual sanity when actual inspection is available
-+ integrated New Reader / Level Designer / Developer / Consistency review
+mechanical validator
++ Golden composition markers
++ visual sanity when actual rendered inspection exists
++ New Reader / Level Designer / Developer / Consistency
 → fix real findings
 → re-review only invalidated scope
 ```
 
-Mechanical markers prevent regression to generic renderer output; they do not prove visual quality. Do not create pixel diff, screenshot baselines, visual scores, AI-quality detectors, or extra review phases.
-
-## Golden fidelity rule
-
-When a generated document feels materially different from the Golden Sample, diagnose in this order:
-
-```text
-project meaning correct?
-↓
-canonical content represents Golden page needs?
-↓
-render-data preserves that representation?
-↓
-renderer emits Golden component composition?
-↓
-actual rendered page visually behaves correctly?
-```
-
-Fix the **first wrong owner**. Never compensate for a simplified renderer by padding canonical prose, and never patch `final.html` directly.
-
-Golden fidelity does not mean copying AFTERSHOCK-specific names, objective count, mechanics, lore, dimensions, scores, or runtime rules. It means reproducing the approved document structure, component composition, information hierarchy, visual density, and role readability with the new project's facts.
-
-## Grouped decision interaction
-
-When Flow 2 needs decisions, present one compact batch where possible:
-
-```text
-Decision 1 — <topic>
-Recommended: <option>
-Reason: <short evidence-based reason>
-Impact: <what changes>
-```
-
-The user may approve all recommendations in one response or override only named items. A recommendation remains pending until explicitly approved.
+For review, do not load the entire generated HTML source. The validator owns full-file mechanical inspection. Semantic review uses canonical content/relevant requirement state; visual review uses the actual rendered page/browser when available. Inspect HTML source only for a concrete bounded defect.
 
 ## Revision fast path
 
-For an approved bounded change:
-
 ```text
-approved change
+approved bounded change
 → affected requirement/content only
-→ necessary cross-references
-→ regenerate Golden projection / HTML
-→ one current mechanical check
-→ targeted semantic/visual re-review only where invalidated
-→ updated final PRD
+→ required cross-references
+→ patch affected projection
+→ rerender final HTML
+→ one mechanical check
+→ targeted semantic/visual re-review
 ```
 
-Do not re-inventory unchanged sources, re-ask resolved decisions, rewrite unrelated packages, or replay full review unless the change invalidates them.
+Do not re-inventory unchanged source, re-ask resolved decisions, or replay unrelated packages/reviews.
 
-## Repository-backed project files
+## Internal artifacts
 
-Internal artifacts, not user chores:
+These are system artifacts, not user chores:
 
 - `state/source-inventory.yaml`
 - `state/requirement-register.yaml`
 - `state/intake-state.yaml`
 - `work/review.md` only when useful
 - `work/content.md` — canonical meaning
-- `work/render-data.json` — derived Golden projection
-- `output/final.html` — rendered PRD
+- `work/render-data.json` — derived projection
+- `output/final.html` — derived PRD
 - `work/acceptance.md`
-- `state/handoff-state.yaml`
-- `output/team-handoff.md` under the current repository handoff boundary
+- current handoff artifacts under repository policy
 
-Do not create release reports, checksums, packaging manifests, Content Freeze layers, new template profiles, or duplicate summaries without a real requirement.
+Do not create checksums, packaging manifests, template profiles, duplicate summaries, or additional quality reports without a concrete need.
 
 ## Default user-facing delivery
-
-After normal production/revision show only what helps the user continue:
 
 ```text
 Final PRD: <final.html>
@@ -214,22 +121,11 @@ Main adjustments / recovered decisions:
 - material items only
 
 Needs attention:
-- none
+- none OR real blocker/decision
 ```
 
-Do not dump internal YAML, requirement IDs, render data, validator JSON, CI logs, or acceptance tables unless requested or needed to explain a blocker.
+Keep YAML, IDs, render data, validator JSON, CI logs, and internal evidence out of normal delivery unless requested or required to explain a blocker.
 
-## Completion condition
+## Stop condition
 
-Stop normal PRD production when:
-
-- source/approved decisions support canonical meaning;
-- canonical content satisfies the Golden hierarchy **and page-composition contract**;
-- current HTML is generated through the approved Golden Sample;
-- mechanical + Golden composition checks pass;
-- New Reader, Level Designer, Developer, and Project Consistency pass with Critical=0/Major=0;
-- visual claims do not exceed actual inspection evidence;
-- no unresolved Proposal/Blocked item affects delivered scope;
-- user receives the current final PRD plus concise continuation information.
-
-Do not claim client approval, implementation completion, QA completion, release approval, or Voice Production readiness from this status.
+Stop when current source/decisions support the canonical PRD, Golden rendering/mechanical contracts pass, four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and user receives the current final PRD. Do not claim visual fidelity beyond actual visual inspection or claim downstream implementation/QA/Voice completion.
