@@ -20,9 +20,13 @@ The useful Humanizer-style behavior was merged into the existing PRD owner inste
 
 ## Completed — PRD content/usability refinement
 
-Source:
+Active `Local` commits:
 
-`a6642157be0719d48febc2d5d47c134fcfbb2b35` — `docs: apply PRD usability refinement`
+```text
+92bda8e40c99ec9c115986189525a6c931bd2862  docs: refine PRD skill usability
+7f47b1fc10b65f82101596cec652d672da52e42c  docs: simplify PRD source intake
+656743d42ad9d72d7119ee465b6142691eabacdd  docs: refine PRD content density
+```
 
 The remaining PRD review found three real usability gaps and fixed them without adding a new skill, workflow, validator, or framework:
 
