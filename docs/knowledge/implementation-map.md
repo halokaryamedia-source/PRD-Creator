@@ -19,9 +19,10 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Source/authority routing | `docs/knowledge/sources/source-map.md` |
 | Review evidence current meaning | `docs/knowledge/reviews/review-graph.md` |
 | Durable cross-owner decision threshold | `docs/knowledge/decisions/change-decision-guide.md` |
-| Operating parity acceptance evidence | `docs/knowledge/operations/operating-parity-acceptance.md` |
-| Operating parity gate decisions | `docs/knowledge/decisions/operating-parity-gates.md` |
-| Repository engineering gate | `tools/verify_repository.py` + `.github/workflows/repository-verify.yml` |
+| Current BuildIT parity gap evidence | `docs/knowledge/reviews/buildit-current-parity-gap-audit.md` |
+| Ordered parity remediation | `docs/knowledge/operations/buildit-parity-remediation-plan.md` |
+| Static repository gate | `tools/verify_repository.py` + `.github/workflows/repository-verify.yml` |
+| Executable production gate | `.github/workflows/production-verify.yml` + `tests/` + `requirements.lock.txt` |
 | Active continuation state | `docs/knowledge/next-action.md` |
 
 ## Production Layer
@@ -34,14 +35,18 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 | Flow 4 PRD validation/handoff | `docs/foundation/04-prd-validation-handoff.md` + `kits/project-document-generator/VALIDATION.md` |
 | Project Document kit-local routing/edit rules | `kits/project-document-generator/AGENTS.md` |
 | Project Document production procedure | `kits/project-document-generator/SKILL.md` |
+| Project Document renderer | `kits/project-document-generator/renderer/` |
+| Project Document mechanical validator | `kits/project-document-generator/validator/validate.py` |
+| Project Document focused regression | `tests/test_prd_contracts.py` |
 | Flow 5 Voice Requirement Extraction | `docs/foundation/05-voice-requirement-extraction.md` + `kits/voice-production-kit/VOICE-EXTRACTION.md` |
 | Flow 6 performance-script production | `docs/foundation/06-elevenlabs-script-production.md` + `kits/voice-production-kit/SCRIPT-PRODUCTION.md` |
 | Flow 6 DOCX format/build | `kits/voice-production-kit/DOCX-FORMAT.md` + `builder/build_docx.py` |
 | Flow 7 Voice validation/delivery | `docs/foundation/07-voice-validation-delivery.md` + `kits/voice-production-kit/VOICE-VALIDATION.md` |
-| Voice kit-local routing/edit rules | `kits/voice-production-kit/AGENTS.md` |
+| Voice mechanical validator | `kits/voice-production-kit/validator/validate.py` |
+| Voice focused regression | `tests/test_voice_contracts.py` |
+| Voice direct dependency declaration | `kits/voice-production-kit/requirements.txt` |
+| Exact Production Verify dependency environment | `requirements.lock.txt` |
 | Current production + operating evidence status | `docs/foundation/validation-report.md` |
-| Active PRD kit | `kits/project-document-generator/` |
-| Active Voice kit | `kits/voice-production-kit/` |
 | Active project packages | `workspace/active/` |
 | Saved project packages | `workspace/saved/` |
 | Real System Integration Proof | `docs/knowledge/operations/system-integration-proof.md` |
@@ -50,23 +55,17 @@ Use this note to answer where current behavior/policy lives. It is not the activ
 ## Layer Separation
 
 ```text
-AGENTS / root skills
-= how the agent frames/routes/proves work
-
-module/source/implementation maps
-= how the agent finds the correct owner
-
-kit-local AGENTS + kit SKILL/procedures
-= scoped production/read/edit discipline
-
-workspace project package
-= project-specific source/state/canonical work/artifacts
-
 Repository Verify
-= cheap static repository invariants only
+= static repository/routing/navigation/pin invariants
+
+Production Verify
+= locked dependency install + compile + focused executable production contracts
+
+Flow validators / semantic audits / visual/audio review
+= project-specific readiness and evidence
 ```
 
-Do not use the automated repository gate as a substitute for Flow-specific semantic or visual/audio proof.
+Production Verify does not replace browser visual inspection, rendered DOCX page QA, or audio review.
 
 ## Project-Level Authority After Flow 7
 
@@ -89,12 +88,8 @@ work/voice-acceptance.md           Flow 7 evidence/findings
 state/voice-state.yaml             voice_delivery_ready / lifecycle state
 ```
 
-Actual generated audio, when supplied, is evidence/delivery material only and never becomes upstream project authority.
-
 ## Current Engineering Boundary
 
-Production Flow 1–7 and BuildIT-style operating parity are accepted on `Local`.
+Production Flow 1–7 remains real-project proven.
 
-Phase 3 representative routing/Maintenance acceptance passed, and the first `Repository Verify` GitHub Actions run (`31367001967`) succeeded on commit `5970c47c15c8e9e83df185be7c5472e976739062`.
-
-No additional parity phase is planned. Future engineering starts from the smallest current owner and changes only when a real project defect, capability gap, or repeatable invariant failure provides evidence.
+Full relevant BuildIT parity is reopened by the current gap audit. P0.1 source/contracts are prepared, but executable acceptance remains pending until the first `Production Verify` GitHub Actions run succeeds.

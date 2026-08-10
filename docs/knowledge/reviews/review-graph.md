@@ -8,11 +8,12 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 
 | Evidence / review | Current meaning |
 |---|---|
-| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical active evidence.** It established that production completion did not equal BuildIT-style operating parity and justified Phases 1–3. Its gap findings are now implemented/accepted; use the Phase 3 acceptance for current status. |
-| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Current operating acceptance evidence.** Representative routing passed, a real Maintenance defect was corrected, nearest-agent decisions were grounded, and Repository Verify run `31367001967` passed. Current result: `OPERATING_PARITY_ACCEPTED`. |
+| [BuildIT Current Parity Gap Audit](buildit-current-parity-gap-audit.md) | **Active execution evidence.** Compared current BuildIT `e4330f7…` against PRD-Creator and reopened overall parity because engineering enforcement, technical ownership depth, module governance, and operations maturity remain incomplete. |
+| [Operating Architecture Parity Audit](operating-architecture-parity-audit.md) | **Historical implemented evidence.** It correctly identified the missing governance/routing layer and justified Phases 1–3. |
+| [Operating Parity Acceptance](../operations/operating-parity-acceptance.md) | **Historical partial acceptance evidence.** Representative routing/Maintenance and Repository Verify genuinely passed. Its agent-governance conclusions remain useful, but its overall `OPERATING_PARITY_ACCEPTED` conclusion is superseded by the deeper current-BuildIT audit. |
 | [System Integration Proof](../operations/system-integration-proof.md) | **Current production evidence.** Real The Clockwork Vault Flow 2→7 run proved the replacement pipeline and a real defect→root-fix→revalidation cycle. |
-| [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** It justified deleting the old `Production Document Builder/` live tree. Do not use it as current production procedure. |
-| [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It summarizes current production and operating evidence, not historical reasoning. |
+| [Archived Retirement Audit](../operations/archived-retirement-audit.md) | **Historical implemented evidence.** It justified deleting the old `Production Document Builder/` live tree. |
+| [Foundation Validation Report](../../foundation/validation-report.md) | **Current proof/status matrix.** It owns current production + parity-remediation evidence status. |
 | [Review Template](review-template.md) | Reusable review shape when a dedicated review is actually justified. |
 
 ## Review Labels
@@ -21,28 +22,14 @@ Use this note to understand how reviews/audits/evidence relate to current `Local
 - `active execution evidence` — finding directly controls current work order;
 - `implemented` — corresponding current-owner change exists;
 - `current production evidence` — current production capability is supported by recorded proof;
-- `current operating acceptance evidence` — current operating architecture has explicit acceptance proof;
+- `historical partial acceptance evidence` — a prior acceptance remains valid for a narrower boundary but no longer supports the broader conclusion;
 - `historical` — retained for reasoning/provenance, not current routing;
 - `local proof required` — source/implementation exists but material local/browser/audio/runtime proof remains;
 - `superseded` — a later decision/source replaced the old method or conclusion.
 
 A review may carry more than one meaning over time; this graph owns its **current** interpretation.
 
-## Review Rules
-
-When adding a review, answer:
-
-1. what concrete failure/decision is being reviewed;
-2. which current owner/source is relevant;
-3. what evidence can disprove the conclusion;
-4. what is observed vs inferred vs proposed;
-5. what later implementation/decision should move out of review prose into its canonical owner.
-
-Do not create a review for routine bounded work whose evidence fits directly in the changed owner/commit/validation note.
-
-## Historical Integrity
-
-A review body is a time-captured evidence record. If later work changes the result:
+## Historical Integrity Rule
 
 ```text
 keep review body historical
@@ -50,7 +37,7 @@ keep review body historical
 → update current source/policy/next-action separately
 ```
 
-Do not rewrite an old review until it falsely appears to have predicted later implementation.
+Do not edit old review bodies merely to make them look current.
 
 ## Current Routing
 
@@ -63,5 +50,5 @@ Use this graph only when historical evidence/review status materially affects th
 ## Related
 
 - [Knowledge Dashboard](../index.md)
+- [BuildIT Parity Remediation Plan](../operations/buildit-parity-remediation-plan.md)
 - [Module Map](../modules/module-map.md)
-- [Operating Parity Acceptance](../operations/operating-parity-acceptance.md)

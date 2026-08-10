@@ -21,26 +21,41 @@ Use this page for future/non-active work only. It never overrides `../next-actio
 - [x] retired-builder final audit — `SAFE_TO_DELETE`;
 - [x] remove retired `Production Document Builder/` live tree.
 
-## BuildIT-Style Operating Architecture Parity
+## Agent Governance Foundation
 
-- [x] Phase 1 — Agent Routing + Skill Architecture.
-- [x] Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure.
-- [x] Phase 3 — Operating Parity Acceptance.
-  - [x] representative Project Document / Voice routing scenarios;
-  - [x] real Maintenance scenario;
-  - [x] Project Document broad-read defect corrected at owner;
-  - [x] nearest/local `AGENTS.md` decision from evidence;
-  - [x] owner/navigation audit;
-  - [x] evidence-backed engineering-gate decision;
-  - [x] narrow `Repository Verify` script + workflow;
-  - [x] first `Local` Repository Verify run PASS — run `31367001967`;
-  - [x] final parity matrix + normal operational next step.
+- [x] Plan / Developing / Maintenance routing;
+- [x] mandatory `development-brief` + Dual POV + proof budget;
+- [x] root skill routing/freeze baseline;
+- [x] module/source/review/maintenance ownership layer;
+- [x] representative routing/Maintenance scenarios;
+- [x] static Repository Verify gate.
+
+The previous Phase 3 full-parity conclusion is superseded by the current BuildIT gap audit; the governance work above remains valid implemented evidence.
+
+## Current BuildIT Parity Remediation
+
+Governing plan: `buildit-parity-remediation-plan.md`.
+
+- [ ] **P0.1 — Executable Production Verify**
+  - [x] exact Voice direct dependency pin prepared;
+  - [x] exact Python dependency lock prepared;
+  - [x] focused PRD renderer/validator contracts prepared;
+  - [x] focused Voice builder/validator contracts prepared;
+  - [x] real DOCX page-break root-fix regression prepared;
+  - [x] fail-closed Production Verify workflow prepared;
+  - [ ] first Production Verify run PASS on `Local`.
+- [ ] **P0.2 — Technical Ownership Refinement**
+  - audit current three-skill freeze against semantic vs technical failure ownership;
+  - strengthen kit-local contributor/verification contracts where evidence supports it.
+- [ ] **P1 — Production Engineering Quality Audit**
+- [ ] **P1.5 — Module Governance**
+- [ ] **P2 — Knowledge / Operations Maturity**
+- [ ] **P3 — Conditional Helper Routing**
 
 ## Other Maintenance
 
-- [ ] remove obsolete non-authoritative work branches when a supported delete-ref surface is available/desirable;
-- [ ] expand automated checks only when a real repeatable failure proves a concrete missing invariant.
+- [ ] remove obsolete non-authoritative work branches when a supported delete-ref surface is available/desirable.
 
 ## Rule
 
-Operating-parity work is complete. Do not create another parity phase merely to imitate BuildIT structure. Future changes must follow the accepted routing and be driven by actual project evidence or a repeatable repository invariant failure.
+Do not restore a full-parity claim until the current gap audit/remediation boundaries have been completed and re-audited. Do not copy BuildIT domain-specific structure merely for visual similarity.

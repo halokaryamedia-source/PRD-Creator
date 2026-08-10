@@ -6,87 +6,83 @@ This is the single active-task snapshot.
 
 ## Active Goal
 
-Operate the completed PRD + Voice Production pipeline under the accepted BuildIT-style agent operating architecture.
+Close **P0.1 — Executable Production Verify** from the current BuildIT parity reassessment without changing Flow 2–7 product semantics.
 
 ## Current Status
 
-`BUILD_IT_STYLE_OPERATING_PARITY_ACCEPTED`
+`BUILD_IT_PARITY_REASSESSMENT_P0_1_PRODUCTION_VERIFY_PENDING`
 
-## Completed Production System
+Execution channel: **ChatGPT → GitHub**.  
+Working branch: **`Local` only**.
 
-- Flow 1–7 implemented on permanent branch `Local`;
-- The Clockwork Vault completed real Flow 2→7 integration proof;
-- real DOCX blank-page defect was found by visual QA, fixed at the builder root, rebuilt, and revalidated;
-- old `Production Document Builder/` was audited `SAFE_TO_DELETE` and removed from the live tree;
-- generated audio remains a separate evidence dimension and is never inferred from script/DOCX quality.
+## Governing Evidence
 
-## Completed Operating Architecture
+Current comparison audit:
 
-### Phase 1 — Agent Routing + Skill Architecture
+`docs/knowledge/reviews/buildit-current-parity-gap-audit.md`
 
-- Plan / Developing / Maintenance modes;
-- mandatory non-trivial `development-brief`;
-- Build POV + Acceptance POV;
-- 2–5 acceptance criteria + proof budget;
-- frozen root skills:
-  - `development-brief`;
-  - `project-document-production`;
-  - `voice-production`;
-- activation matrix + skill map;
-- agent flow + Developing flow.
+Ordered remediation:
 
-### Phase 2 — Ownership + Review + Maintenance + Proof Infrastructure
+`docs/knowledge/operations/buildit-parity-remediation-plan.md`
 
-- module ownership map;
-- source-authority map;
-- Maintenance workflow/template;
-- review graph / historical-evidence lifecycle;
-- durable decision / coordinated-change threshold;
-- context-boot baseline;
-- production + operating validation matrix.
+The previous Phase 3 `OPERATING_PARITY_ACCEPTED` evidence remains historical proof for agent-governance/routing acceptance, but its overall full-parity conclusion is superseded by the deeper comparison against current BuildIT.
 
-### Phase 3 — Operating Parity Acceptance
+## P0.1 Implementation Boundary
 
-- representative Project Document and Voice routing scenarios passed;
-- real Project Document broad-read routing defect found and corrected;
-- nearest `kits/project-document-generator/AGENTS.md` added from evidence;
-- existing Voice nearest `AGENTS.md` retained;
-- narrow repository engineering gate implemented;
-- first `Repository Verify` GitHub Actions run passed on commit `5970c47c15c8e9e83df185be7c5472e976739062`, run `31367001967`.
-
-Canonical acceptance evidence:
-
-`docs/knowledge/operations/operating-parity-acceptance.md`
-
-## Current Operating Rule
+This slice adds:
 
 ```text
-boot
-AGENTS → CONTEXT → next-action
-↓
-mode
-Plan | Developing | Maintenance
-↓
-smallest semantic owner
-↓
-Developing only: development-brief + at most one specialist
-↓
-smallest complete change
-↓
-minimum useful proof
-↓
-update only the canonical state/decision/review owner that actually changed
+requirements.lock.txt
+kits/voice-production-kit/requirements.txt exact direct pin
+
+tests/test_prd_contracts.py
+tests/test_voice_contracts.py
+
+.github/workflows/production-verify.yml
 ```
 
-`Repository Verify` protects static repository invariants only. PRD semantic, HTML visual, DOCX visual, and generated-audio claims still require their own evidence.
+`Repository Verify` remains the static repository/routing gate. `Production Verify` is a separate executable engineering gate.
+
+### PRD contracts
+
+- real renderer CLI builds HTML from a minimal generic fixture using the approved template;
+- real PRD validator must PASS the generated project;
+- negative fixture must fail scoring/completion exclusivity;
+- negative fixture must fail numeric scoring weights that do not total 100.
+
+### Voice contracts
+
+- real DOCX builder runs from canonical requirements + performance script;
+- real Voice validator must PASS the generated project;
+- second section must retain `Heading 1.page_break_before = True`, locking the real blank-page root fix;
+- missing Voice ID parity must fail;
+- Voice Type mismatch must fail.
+
+### Dependency contract
+
+Production Verify installs an exact Python 3.11 dependency lock and runs `pip check` before executable contracts.
+
+## Proof Boundary
+
+GitHub Actions can prove dependency installation, Python compilation, CLI execution, structural render/DOCX contracts, and focused regression behavior.
+
+It does **not** prove:
+
+- PRD semantic development-readiness for an arbitrary project;
+- browser visual appearance;
+- DOCX rendered-page visual quality;
+- generated-audio quality.
+
+Those remain Flow-specific evidence boundaries.
 
 ## Preserved Boundaries
 
-- no Phase 4 is created merely to continue parity work;
-- no BuildIT MCP/Blockbench domain structure is copied into this repository;
-- no new skill/module/workflow is added without a proved current ownership or repeatable-invariant need;
-- `main` remains untouched unless explicitly requested.
+- no new root skill in P0.1;
+- no renderer/validator/builder redesign;
+- no test coverage target;
+- no browser or audio framework;
+- no change to `main`.
 
 ## Next Step
 
-Use the active pipeline on the **next real project**, starting at the smallest correct Flow (normally Flow 2 for new/incomplete source). Any future defect or architecture change must follow the accepted Plan / Developing / Maintenance routing and be evidence-driven.
+Run and inspect the first **Production Verify** workflow on the P0.1 `Local` commit. If it passes without weakening checks, record P0.1 complete and advance only to **P0.2 — Technical Ownership Refinement**; if it fails, fix the reported root contract and rerun.
