@@ -279,7 +279,12 @@ class ProjectDocumentContracts(unittest.TestCase):
 
         html_path = project / "output" / "final.html"
         html = html_path.read_text(encoding="utf-8")
-        html_path.write_text(html.replace("phase-overview-table", "phase-overview-table-broken", 1), encoding="utf-8")
+        generated_marker = 'production-table phase-overview-table quarry-overview-table'
+        self.assertIn(generated_marker, html)
+        html_path.write_text(
+            html.replace(generated_marker, 'production-table phase-overview-table-broken quarry-overview-table', 1),
+            encoding="utf-8",
+        )
 
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
