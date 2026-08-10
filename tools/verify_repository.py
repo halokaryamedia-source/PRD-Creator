@@ -55,8 +55,16 @@ MARKDOWN_ROOTS = [
     ROOT / "kits" / "voice-production-kit",
 ]
 
+AGENT_REQUIRED_HEADINGS = {
+    "## Execution channel",
+    "## User-facing communication",
+    "## Product boundaries",
+}
+
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s=]+)$")
+SKILL_VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
+README_VERSION_RE = re.compile(r"(?m)^\*\*Version:\*\*\s*([^\s]+)\s*$")
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -124,6 +132,38 @@ def check_next_action(errors: list[str]) -> None:
         fail(errors, "next-action.md must contain exactly one '## Next Step'")
     if "## Current Status" not in text:
         fail(errors, "next-action.md is missing '## Current Status'")
+
+
+def check_agent_contract(errors: list[str]) -> None:
+    path = ROOT / "AGENTS.md"
+    if not path.is_file():
+        return
+    text = path.read_text(encoding="utf-8")
+    for heading in sorted(AGENT_REQUIRED_HEADINGS):
+        if heading not in text:
+            fail(errors, f"AGENTS.md missing required section: {heading}")
+
+
+def check_project_document_version(errors: list[str]) -> None:
+    skill_path = ROOT / "kits" / "project-document-generator" / "SKILL.md"
+    readme_path = ROOT / "kits" / "project-document-generator" / "README.md"
+    if not skill_path.is_file() or not readme_path.is_file():
+        return
+
+    skill_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
+    readme_match = README_VERSION_RE.search(readme_path.read_text(encoding="utf-8"))
+    if not skill_match:
+        fail(errors, "Project Document SKILL.md is missing version front matter")
+        return
+    if not readme_match:
+        fail(errors, "Project Document README.md is missing Version")
+        return
+    if skill_match.group(1) != readme_match.group(1):
+        fail(
+            errors,
+            "Project Document version drift: "
+            f"SKILL {skill_match.group(1)} != README {readme_match.group(1)}",
+        )
 
 
 def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
@@ -225,6 +265,8 @@ def main() -> int:
     check_skill_root(errors)
     check_retired_boundaries(errors)
     check_next_action(errors)
+    check_agent_contract(errors)
+    check_project_document_version(errors)
     check_dependency_lock(errors)
     check_markdown_links(errors)
     check_python_syntax(errors)
@@ -238,6 +280,8 @@ def main() -> int:
     print("REPOSITORY VERIFY PASSED")
     print(f"- canonical skills: {', '.join(sorted(CANONICAL_SKILLS))}")
     print(f"- markdown files checked: {len(iter_markdown_files())}")
+    print("- root AGENTS contract sections: present")
+    print("- Project Document skill/README version: aligned")
     print("- relative navigation: valid")
     print("- dependency lock/direct pins: exact and aligned")
     print("- Python kits/tools/tests: syntax valid")
