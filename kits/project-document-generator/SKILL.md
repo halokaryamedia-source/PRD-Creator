@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
 description: Recover project requirements, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness without inventing product decisions.
-version: 1.6.0
+version: 1.7.0
 ---
 
 # Project Document Generator
@@ -16,22 +16,37 @@ source / approved change
 → final PRD
 ```
 
-The user supplies project source/direction and only decisions they must make. The agent owns workspace/bootstrap, IDs/state, projection, commands, validation evidence, and normal repository mechanics.
+The user supplies project source/direction and only decisions they must make. The agent owns workspace/bootstrap, IDs/state, recovery analysis, projection, commands, validation evidence, and normal repository mechanics.
 
 ## 1. UNDERSTAND — Flow 2
 
 Owner: `SOURCE-INTAKE.md`.
 
 ```text
-inventory/triage source
-→ deep-read material authoritative evidence
-→ targeted-read supporting/reference/generated evidence as needed
-→ recover requirements
+inventory + authority/relevance inspection
+→ recover explicit facts/rules/exclusions
+→ recover project topology + terminology
+→ cross-role implication pass
+→ production coverage scan
 → safe Clarification / Completion
 → one grouped material decision batch only if needed
 ```
 
-Do not interpret completeness as loading every byte. If uncertain evidence could materially change the PRD, inspect it. Exit truthfully as `ready_for_prd`, `needs_decision`, or `blocked`.
+Flow 2 must improve incomplete source **without turning ambiguity into invented design**.
+
+Rules:
+
+- persist material user instructions even when they arrive only in chat;
+- record source inspection depth enough for resumability;
+- treat removals/exclusions as first-class requirements;
+- resolve partial source changes at claim/requirement level instead of superseding an entire source unnecessarily;
+- recover ordered packages/global ownership/transitions/final result when needed by the project;
+- recover necessary Gameplay / Level Design / Developer implications of material mechanics;
+- run a concern-based coverage scan before readiness;
+- Completion is allowed only when one evidence-backed result exists at the needed abstraction;
+- missing optional/irrelevant detail stays open/neutral rather than becoming filler or a user question.
+
+If uncertain evidence could materially change the PRD, inspect it. Exit truthfully as `ready_for_prd`, `needs_decision`, or `blocked`.
 
 ## 2. BUILD PRD — Flow 3
 
@@ -57,6 +72,8 @@ Rules:
 - package term `roles` metadata is written only when visibility differs from the default;
 - read `RENDERING.md` only when projection/HTML mechanics are actually relevant.
 
+If Flow 3 is forced to choose missing topology, role implication, exclusion meaning, terminology, or another material product rule, return that gap to Flow 2.
+
 ## 3. REVIEW — Flow 4
 
 Owner: `VALIDATION.md`.
@@ -76,8 +93,9 @@ Review the relevant document/package slice once and evaluate New Reader, Level D
 
 ```text
 approved bounded change
-→ affected requirement/content
-→ required cross-references
+→ persist authoritative instruction if needed
+→ affected requirement + topology/terminology/exclusion/implication checks
+→ affected canonical content + required cross-references
 → affected render projection
 → rerender
 → one mechanical check
@@ -106,7 +124,7 @@ DOWNSTREAM
 Voice artifacts only after entering Voice Flow
 ```
 
-Use sparse state where defaults are defined; persist every non-default conflict, approval, blocker, supersession, and positive readiness explicitly.
+Use sparse state where defaults are defined; persist every non-default conflict, approval, blocker, supersession, inspection boundary needed for continuation, and positive readiness explicitly.
 
 ## Default delivery
 
@@ -124,4 +142,4 @@ Do not dump YAML, IDs, render data, validator output, CI logs, or internal evide
 
 ## Stop condition
 
-Stop when source/approved decisions support canonical meaning, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.
+Stop when source/approved decisions support canonical meaning, Flow 2 coverage is truthfully ready, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.

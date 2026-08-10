@@ -4,7 +4,7 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_PRE_SAMPLE_READY_BOOT_AND_PROCEDURE_CONTEXT_COMPACTED`
+`PRD_FLOW2_RECOVERY_ENGINE_STRENGTHENED_PRE_SAMPLE_READY`
 
 Working branch: **`Local` only**.
 
@@ -12,54 +12,70 @@ Working branch: **`Local` only**.
 
 - Golden Sample remains the required hierarchy, page-composition, component-language, and presentation authority.
 - Normal PRD creation/revision is Production Execution; no `development-brief`.
-- Source work uses inventory/authority-relevance triage before deep reading.
-- Internal state is sparse but every non-default conflict/approval/blocker/supersession/readiness condition remains explicit.
-- Artifacts are created by lifecycle: Core / Conditional / Derived / Downstream.
-- Canonical content is completed before the main projection; bounded revisions patch only affected scope.
-- Large Golden/generated HTML is consumed by renderer/validator runtime, not loaded into model context during normal production.
-- Flow 4 uses one-read multi-lens review rather than four repeated document reads.
+- Flow 2 now treats requirement recovery as a production-completeness task, not only source extraction/provenance.
+- Flow 3 must not invent material topology, cross-role requirements, exclusions, terminology, or product decisions that Flow 2 should have recovered.
+- Flow 4 keeps one-read multi-lens review plus mechanical validation and truthful visual evidence.
 
-## Context-loading rule
+## Flow 2 recovery contract
 
-Normal PRD work loads progressively:
+Normal Flow 2 sequence:
 
 ```text
-mandatory boot
-AGENTS.md
-→ CONTEXT.md
-→ next-action.md
-
-then only the smallest active owner
-Flow 2 → SOURCE-INTAKE.md
-Flow 3 → CONTENT-CONTRACT.md
-Flow 4 → VALIDATION.md
+source inventory + inspection
+→ explicit facts/rules/exclusions
+→ topology + terminology
+→ cross-role implications
+→ production coverage scan
+→ safe Clarification / Completion
+→ grouped Proposal / Blocked decisions only if needed
+→ ready_for_prd
 ```
 
-`RENDERING.md`, kit `AGENTS.md`, `WORKFLOW.md`, ownership maps, and activation matrix are conditional references—not default context. The activation matrix is used only when ownership/skill routing is actually ambiguous.
+Key rules:
+
+- material user instructions are persisted as source authority even when no file exists;
+- source inspection coverage can be recorded as targeted/full for resumability;
+- source-level supersession applies only when the whole source is replaced;
+- removals/exclusions are first-class requirements;
+- topology includes package order, global ownership, dependencies/transitions, and final result when relevant;
+- material mechanics are checked for necessary Gameplay / Level Design / Developer / result-reset implications;
+- coverage scan checks only applicable production concerns and does not force optional fields;
+- Completion requires one reliable evidence-backed result without choosing among multiple designs;
+- a missing detail is material only when a downstream role would otherwise have to choose product behavior/scope.
 
 ## Efficiency boundary
 
-Do not load or recreate information merely to appear thorough:
+Flow 2 improvement must not become user ceremony or a new artifact framework:
 
-- no full Golden template/final HTML in model context during normal production;
-- no repeated reading of unchanged project packages/source;
-- no separate four-pass semantic review;
-- no duplicated default YAML fields;
-- no pre-created downstream artifacts;
-- no duplicate policy/procedure stacks when one active owner is enough.
+- no topology file;
+- no coverage-report file;
+- no mandatory checklist filled for every project;
+- no source indexer/RAG/vector store;
+- no fake file for chat instructions;
+- no rereading unchanged source during bounded revisions;
+- no question for optional/irrelevant detail.
 
-Quality boundaries remain unchanged: source authority, requirement traceability, Golden fidelity, role usability, scoring/completion correctness, mechanical validation, and truthful visual evidence.
+Topology, exclusions, terminology, and implications remain normal `REQ-###` state. Inspection coverage remains in source inventory.
 
-## Do not add now
+## Mechanical intake guard
 
-No source indexer/RAG/vector store, state-schema/artifact framework, new template/profile system, HTML schema, pixel/screenshot scoring, AI detector, generic parser, checksum/revision machinery, or `content.md → render-data.json` architecture rewrite without real evidence.
+No new Flow 2 validator was added. The existing validator is a Flow 4 owner and requires canonical/rendered artifacts; expanding it backward or creating another validator would add lifecycle/tooling complexity without a demonstrated state-contradiction failure. Flow 2 readiness is strengthened semantically first; add a mechanical intake sanity guard only if real project evidence proves it is needed.
 
-Handoff-state simplification remains deferred to the later PRD → Voice boundary review.
+## Existing context/HTML efficiency
+
+- mandatory boot remains compact and progressive;
+- load only the smallest active Flow owner;
+- renderer/validator consume large HTML at runtime rather than model context;
+- canonical content is completed before the main projection;
+- bounded revisions patch only affected scope;
+- internal state is sparse but non-default conflicts/approvals/blockers/supersession/readiness remain explicit.
 
 ## Evidence boundary
 
-This compaction changes routing/procedure text only; Golden template, renderer behavior, validator implementation, and production semantics are intentionally unchanged. Repository/Production Verify on the active implementation revision is the engineering proof. No real-project visual/usage test has been run yet for the fully refined system.
+This Flow 2 batch changes semantic/procedure contracts only. It does not change Golden HTML, renderer behavior, Flow 4 validator mechanics, `content.md → render-data.json`, handoff semantics, or Voice behavior.
+
+No new real-project sample has yet exercised the strengthened Flow 2 against genuinely incomplete source. CI can prove repository/procedure consistency, not the quality of future recovery judgment.
 
 ## Next Step
 
-Run **one real project through Flow 2 → 4** as the first coherent practical sample. Measure actual user friction, context/source-reading cost, state/artifact overhead, Golden visual fidelity, and output usability; fix only defects demonstrated by that run.
+Run **one real project with genuinely incomplete/uneven source through Flow 2 → 4**. Evaluate whether Flow 2 correctly recovers topology, exclusions, terminology, cross-role implications, and material gaps before Flow 3; fix only defects demonstrated by that run.

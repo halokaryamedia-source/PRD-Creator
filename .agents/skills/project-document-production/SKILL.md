@@ -10,6 +10,7 @@ Own Flow 2–4 semantic judgment. Detailed production procedure/mechanics stay i
 ## Use when
 
 - uneven source must become reliable production requirements;
+- missing project meaning must be safely recovered before drafting;
 - canonical `work/content.md` meaning is created/corrected;
 - Golden hierarchy/page-composition requirements are defined/corrected;
 - PRD development-readiness or handoff meaning is decided.
@@ -19,7 +20,7 @@ If semantics are already correct and the defect is renderer/template/validator m
 ## Authority chain
 
 ```text
-originals + approved decisions
+originals + persisted user instructions + approved decisions
 → requirement state
 → content.md (canonical)
 → render-data.json (derived)
@@ -31,24 +32,44 @@ Generated output never becomes project authority. Rendering/prose may organize a
 
 ## Smallest semantic owner
 
-- Flow 2 → `SOURCE-INTAKE.md`
+- Flow 2 recovery/readiness → `SOURCE-INTAKE.md`
 - Flow 3 content meaning → `CONTENT-CONTRACT.md`
 - Flow 3 projection meaning → `RENDERING.md` only when projection/HTML behavior is actually in scope
 - Flow 4 readiness → `VALIDATION.md`
 
 `WORKFLOW.md` is sequencing reference only. Read the smallest owner required by the active problem.
 
-## Core judgment
+## Flow 2 judgment
 
-- inspect/triage available source before questioning the user;
-- preserve authority/provenance and only production-relevant requirements;
-- apply supported Clarification/Completion automatically;
-- surface only unresolved material Proposal/Blocked decisions;
-- use minimum sufficient detail;
-- keep Gameplay / Level Design / Developer meaning distinct;
-- preserve Golden document language without copying Golden project facts;
-- use `CONTENT-CONTRACT.md` as the single prose-quality/content-density owner;
-- return real upstream gaps to Flow 2 rather than hiding them with polished wording or HTML.
+Flow 2 is not just provenance/extraction. Before `ready_for_prd`, it must recover enough production meaning that Flow 3 does not have to invent project structure or required role behavior.
+
+Apply this order:
+
+```text
+source authority + inspection
+→ explicit facts/rules/exclusions
+→ project topology + terminology
+→ cross-role implications
+→ production coverage scan
+→ safe Clarification / Completion
+→ unresolved Proposal / Blocked only
+```
+
+Key boundaries:
+
+- material user instructions are persisted even without a file;
+- source-level supersession is used only when the whole source is replaced;
+- negative constraints/removals are first-class requirements;
+- Completion requires one reliable evidence-backed result at the needed abstraction;
+- a missing detail is material only when a downstream role would otherwise have to choose product behavior/scope;
+- relevant Gameplay / Level Design / Developer implications are recovered when logically required, without inventing implementation choices;
+- irrelevant/optional detail remains open instead of being filled for completeness.
+
+## Flow 3 judgment
+
+Use minimum sufficient detail, keep Gameplay / Level Design / Developer meaning distinct, preserve Golden document language without copying Golden project facts, and use `CONTENT-CONTRACT.md` as the single prose-quality/content-density owner.
+
+If drafting discovers a material topology, terminology, exclusion, cross-role, or product-decision gap that Flow 2 should have resolved, return that requirement upstream rather than hiding it with polished wording or HTML.
 
 ## Context economy
 

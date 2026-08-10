@@ -15,12 +15,16 @@ Normal PRD work is **Production Execution**, not repository Developing.
 Owner: `SOURCE-INTAKE.md`.
 
 ```text
-inventory/triage relevant source
-→ inspect material evidence to sufficient depth
-→ recover requirements
+inventory + inspect material source
+→ recover explicit facts/rules/exclusions
+→ recover topology + terminology
+→ cross-role implication pass
+→ production coverage scan
 → safe Clarification / Completion
 → grouped material decisions only if needed
 ```
+
+Flow 2 must leave enough supported meaning that Flow 3 does not have to invent package order/global ownership/transitions, required role implications, removed behavior, terminology, or another material product rule.
 
 Exit: `ready_for_prd`, `needs_decision`, or `blocked`.
 
@@ -37,6 +41,8 @@ content.md
 ```
 
 Canonical meaning is completed before the main projection. Do not hand-write HTML, load the full Golden source into model context, or rebuild unchanged projection/packages during bounded revisions.
+
+If drafting discovers a material requirement-recovery gap, return it to Flow 2 instead of making a hidden design choice.
 
 ## 3. REVIEW
 
@@ -56,8 +62,9 @@ The model reviews canonical meaning; the validator handles full HTML mechanics. 
 
 ```text
 approved bounded change
-→ affected requirement/content + necessary cross-references
-→ affected projection
+→ persist authoritative instruction when needed
+→ affected requirements + topology/terminology/exclusion/implication checks
+→ affected content/projection
 → rerender
 → one mechanical check
 → targeted review
