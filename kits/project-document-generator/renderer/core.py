@@ -112,7 +112,7 @@ def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
         title = item.get("title") or item.get("stage") or item.get("trigger") or ""
         description = item.get("description") or item.get("details") or item.get("action") or item.get("behavior") or ""
         body.append(f'<article><b>{i18n(str(step).zfill(2))}</b><strong>{i18n(title)}</strong><p>{i18n(description)}</p></article>')
-    return f'<div class="flow {esc(cls)}'>{"".join(body)}</div>'
+    return f'<div class="flow {esc(cls)}">{"".join(body)}</div>'
 
 
 def sequence(items: list[dict[str, Any]]) -> str:
