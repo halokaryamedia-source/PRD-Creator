@@ -1,92 +1,47 @@
-# Workspace Context
+# PRD-Creator Context
 
-Last verified: 2026-08-10
-Stability: stable production system; normal project work ready
-Owner: workspace
+## Stable workspace facts
 
-## Purpose
+- `Local` is the permanent development/working authority.
+- `main` changes only when explicitly requested.
+- Repository state is authoritative for continuation; chat is supporting context.
+- Production Flow remains 1–7: repository boot → source intake/recovery → PRD generation → PRD validation/handoff → Voice requirements → ElevenLabs performance script/DOCX → Voice validation/delivery.
 
-PRD-Creator supports two connected outcomes:
+## Current PRD direction
 
-1. turn incomplete project direction into development-ready project documentation;
-2. derive ElevenLabs-ready Voice Production from accepted project documentation without inventing upstream design.
+The PRD side is intentionally optimized for simple, high-quality production use rather than maximum process detail.
 
-## Production model
-
-```text
-Flow 2 Source Intake
-→ Flow 3 PRD Generation
-→ Flow 4 PRD Validation/Handoff
-→ Flow 5 Voice Requirements
-→ Flow 6 Voice Script + DOCX
-→ Flow 7 Voice Validation/Delivery
-```
-
-Flow 1–7 is implemented and real-project proven on The Clockwork Vault. The retired `Production Document Builder/` is not a live owner.
-
-## Agent operating model
+Core principles:
 
 ```text
-Plan | Developing | Maintenance
-→ smallest correct owner
-→ minimum complete change
-→ minimum useful proof
+source fidelity
+→ production-relevant requirement recovery
+→ decision-focused review
+→ canonical PRD with minimum sufficient detail
+→ approved HTML render
+→ existing four-perspective development-readiness review
 ```
 
-Root skills remain:
+The active `project-document-production` skill includes PRD-specific anti-AI-slop writing guidance. It prefers plain, concrete technical prose and stable terminology while protecting IDs, names, numbers, timings, scoring, triggers, states, formulas, and other authoritative values.
 
-- `development-brief`;
-- `project-document-production`;
-- `voice-production`.
+Flow 2 does not mirror source text sentence-by-sentence into requirement IDs. The requirement register tracks production-relevant requirements, constraints, conflicts, and decisions. `work/review.md` remains a concise user-facing decision view rather than a duplicate register.
 
-Pure renderer/validator/builder mechanics stay module-local. Shared dependency/test/CI mechanics stay repository-engineering owned.
+Flow 3 uses minimum sufficient detail. Optional sections/fields are not filled just because the template provides a place for them. Content stays when it helps a target role understand, build, implement, validate, or avoid guessing.
 
-## Anti-overdevelopment rule
+## Anti-overdevelopment boundary
 
-Current durable decision:
+BuildIT remains a reference for discipline, ownership, proof, and anti-slop behavior, not a feature checklist.
 
-`docs/knowledge/decisions/anti-overdevelopment-simplification.md`
+Do not add checksum/revision protocols, generic schema/profile frameworks, new root skills, extra gates, writing detectors/scores, test infrastructure, or similar machinery without a concrete current project need.
 
-BuildIT is a **reference for discipline**, not a checklist of architecture/features that PRD-Creator must reproduce.
+`No change required` is a valid result.
 
-The repository must remain easy to use. Normal project production must not require operators to understand checksums, revision fingerprints, generated-artifact identifiers, or internal engineering ceremony.
+## Current verification boundary
 
-Current production flow is intentionally:
+Repository/Production Verify prove repository and executable consistency only. They do not prove subjective writing quality, browser visual quality, DOCX visual quality, or audio quality.
 
-```text
-canonical input
-→ generate
-→ focused validate
-→ semantic/visual/audio review only where that evidence is actually required
-```
+PRD writing/usability quality should be checked against a real project/sample when available, not via synthetic AI-writing scoring machinery.
 
-## Verification
+## Current continuation
 
-- `Repository Verify` — static repository/routing/navigation/syntax/dependency invariants.
-- `Production Verify` — locked dependency install, compile, focused PRD contracts, focused Voice contracts, fail-closed aggregate.
-
-Latest simplification proof:
-
-```text
-source 08b6f9d6a98641c5f93932df015cb0d2dffe9a42
-Repository Verify 31381677940 PASS
-Production Verify 31381677946 PASS
-```
-
-These gates do not replace semantic review, browser visual QA, DOCX page inspection, pronunciation/performance judgement, or actual audio review.
-
-## Stable authority chain
-
-```text
-Source ≠ Requirement State ≠ Canonical PRD ≠ PRD Acceptance
-≠ Voice Requirements ≠ Voice Production Script ≠ DOCX
-≠ Voice Acceptance ≠ Audio
-```
-
-Derived artifacts stay derived. When an upstream canonical file changes, regenerate the affected downstream artifact rather than adding another revision-management system.
-
-## Current development state
-
-There is no automatic parity-remediation phase active.
-
-The repository is ready for the next real project/task. New engineering work starts only from a concrete current need or observed defect.
+Read `docs/knowledge/next-action.md` for the single active next step.
