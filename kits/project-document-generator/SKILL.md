@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
 description: Recover project requirements, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness without inventing product decisions.
-version: 1.7.0
+version: 1.8.0
 ---
 
 # Project Document Generator
@@ -16,7 +16,7 @@ source / approved change
 → final PRD
 ```
 
-The user supplies project source/direction and only decisions they must make. The agent owns workspace/bootstrap, IDs/state, recovery analysis, projection, commands, validation evidence, and normal repository mechanics.
+The user supplies project source/direction and only decisions they must make. The agent owns workspace/bootstrap, IDs/state, recovery/problem-solving analysis, projection, commands, validation evidence, and normal repository mechanics.
 
 ## 1. UNDERSTAND — Flow 2
 
@@ -24,12 +24,14 @@ Owner: `SOURCE-INTAKE.md`.
 
 ```text
 inventory + authority/relevance inspection
-→ recover explicit facts/rules/exclusions
-→ recover project topology + terminology
-→ cross-role implication pass
-→ production coverage scan
-→ safe Clarification / Completion
-→ one grouped material decision batch only if needed
+→ explicit facts/rules/exclusions
+→ topology + terminology
+→ cross-role implications
+→ production coverage
+→ mechanic lifecycle + quantitative coherence
+→ problem framing + Resolution Ladder
+→ impact propagation
+→ one humanized grouped decision package only if needed
 ```
 
 Flow 2 must improve incomplete source **without turning ambiguity into invented design**.
@@ -42,9 +44,26 @@ Rules:
 - resolve partial source changes at claim/requirement level instead of superseding an entire source unnecessarily;
 - recover ordered packages/global ownership/transitions/final result when needed by the project;
 - recover necessary Gameplay / Level Design / Developer implications of material mechanics;
-- run a concern-based coverage scan before readiness;
-- Completion is allowed only when one evidence-backed result exists at the needed abstraction;
-- missing optional/irrelevant detail stays open/neutral rather than becoming filler or a user question.
+- scan applicable lifecycle stages so missing activation/completion/fail/result/reset behavior is noticed when material;
+- check directly related numeric facts (duration/count/capacity/scoring/etc.) for contradictions before drafting;
+- frame the real problem and try authority → Completion → recommended Proposal → Blocked before asking the user;
+- propagate recovered/approved resolutions to all actually affected requirements;
+- group related issues when one root decision resolves them;
+- missing optional/irrelevant detail stays open/neutral rather than becoming filler or a question.
+
+### User-facing decisions
+
+Use a bounded Humanize pass so decisions are easy to understand:
+
+```text
+Masalah
+Saran
+Kenapa
+Dampak
+Alternatif — only when meaningful
+```
+
+Humanize changes presentation only. Preserve official names, numbers, timings, formulas, mechanics, triggers, uncertainty, provenance, and approval state. Do not expose internal IDs/YAML/recovery jargon by default.
 
 If uncertain evidence could materially change the PRD, inspect it. Exit truthfully as `ready_for_prd`, `needs_decision`, or `blocked`.
 
@@ -72,7 +91,7 @@ Rules:
 - package term `roles` metadata is written only when visibility differs from the default;
 - read `RENDERING.md` only when projection/HTML mechanics are actually relevant.
 
-If Flow 3 is forced to choose missing topology, role implication, exclusion meaning, terminology, or another material product rule, return that gap to Flow 2.
+If Flow 3 is forced to choose missing topology, lifecycle, role implication, numeric correction, exclusion meaning, terminology, or another material product rule, return that gap to Flow 2.
 
 ## 3. REVIEW — Flow 4
 
@@ -95,6 +114,7 @@ Review the relevant document/package slice once and evaluate New Reader, Level D
 approved bounded change
 → persist authoritative instruction if needed
 → affected requirement + topology/terminology/exclusion/implication checks
+→ lifecycle/quantitative/impact checks only where invalidated
 → affected canonical content + required cross-references
 → affected render projection
 → rerender
@@ -142,4 +162,4 @@ Do not dump YAML, IDs, render data, validator output, CI logs, or internal evide
 
 ## Stop condition
 
-Stop when source/approved decisions support canonical meaning, Flow 2 coverage is truthfully ready, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.
+Stop when source/approved decisions support canonical meaning, Flow 2 recovery/problem-solving is truthfully ready, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.

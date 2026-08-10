@@ -32,7 +32,7 @@ Generated output never becomes project authority. Rendering/prose may organize a
 
 ## Smallest semantic owner
 
-- Flow 2 recovery/readiness → `SOURCE-INTAKE.md`
+- Flow 2 recovery/readiness/problem-solving → `SOURCE-INTAKE.md`
 - Flow 3 content meaning → `CONTENT-CONTRACT.md`
 - Flow 3 projection meaning → `RENDERING.md` only when projection/HTML behavior is actually in scope
 - Flow 4 readiness → `VALIDATION.md`
@@ -41,7 +41,7 @@ Generated output never becomes project authority. Rendering/prose may organize a
 
 ## Flow 2 judgment
 
-Flow 2 is not just provenance/extraction. Before `ready_for_prd`, it must recover enough production meaning that Flow 3 does not have to invent project structure or required role behavior.
+Flow 2 is not just provenance/extraction. Before `ready_for_prd`, it must recover enough production meaning that Flow 3 does not have to invent project structure or required role behavior, and it should help resolve material gaps before pushing decisions back to the user.
 
 Apply this order:
 
@@ -50,9 +50,12 @@ source authority + inspection
 → explicit facts/rules/exclusions
 → project topology + terminology
 → cross-role implications
-→ production coverage scan
-→ safe Clarification / Completion
-→ unresolved Proposal / Blocked only
+→ production coverage
+→ mechanic lifecycle + quantitative coherence
+→ problem framing
+→ Resolution Ladder
+→ impact propagation
+→ humanized grouped decision package only if needed
 ```
 
 Key boundaries:
@@ -63,13 +66,27 @@ Key boundaries:
 - Completion requires one reliable evidence-backed result at the needed abstraction;
 - a missing detail is material only when a downstream role would otherwise have to choose product behavior/scope;
 - relevant Gameplay / Level Design / Developer implications are recovered when logically required, without inventing implementation choices;
+- related numbers/timings/counts are checked for direct contradictions before drafting;
+- each material issue is framed and taken through the least-assumptive Resolution Ladder before asking the user;
+- one recovered/approved resolution is propagated to all actually affected requirements instead of being fixed in only one section;
+- related decisions are grouped for the user when one root resolution controls them;
 - irrelevant/optional detail remains open instead of being filled for completeness.
+
+### Humanized user communication
+
+Flow 2 user-facing decision/recovery explanations should use clear plain production language, normally:
+
+```text
+Masalah → Saran → Kenapa → Dampak → Alternatif (only if useful)
+```
+
+This Humanize behavior changes presentation only. It must not change official terminology, numbers, timing, formulas, mechanics, triggers, uncertainty, provenance, or approval state. Do not expose internal `SRC/REQ`/YAML/recovery jargon unless requested or needed to explain a blocker.
 
 ## Flow 3 judgment
 
 Use minimum sufficient detail, keep Gameplay / Level Design / Developer meaning distinct, preserve Golden document language without copying Golden project facts, and use `CONTENT-CONTRACT.md` as the single prose-quality/content-density owner.
 
-If drafting discovers a material topology, terminology, exclusion, cross-role, or product-decision gap that Flow 2 should have resolved, return that requirement upstream rather than hiding it with polished wording or HTML.
+If drafting discovers a material topology, terminology, exclusion, lifecycle, quantitative, cross-role, or product-decision gap that Flow 2 should have resolved, return that requirement upstream rather than hiding it with polished wording or HTML.
 
 ## Context economy
 

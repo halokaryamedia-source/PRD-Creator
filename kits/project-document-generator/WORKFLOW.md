@@ -16,15 +16,17 @@ Owner: `SOURCE-INTAKE.md`.
 
 ```text
 inventory + inspect material source
-→ recover explicit facts/rules/exclusions
-→ recover topology + terminology
-→ cross-role implication pass
-→ production coverage scan
-→ safe Clarification / Completion
-→ grouped material decisions only if needed
+→ explicit facts/rules/exclusions
+→ topology + terminology
+→ cross-role implications
+→ production coverage
+→ mechanic lifecycle + quantitative coherence
+→ problem framing + Resolution Ladder
+→ propagate the resolution
+→ grouped humanized decisions only if needed
 ```
 
-Flow 2 must leave enough supported meaning that Flow 3 does not have to invent package order/global ownership/transitions, required role implications, removed behavior, terminology, or another material product rule.
+Flow 2 should solve supported gaps before questioning the user. If a real choice remains, present one clear recommendation with reason/impact and only meaningful alternatives. Flow 3 must not have to invent package order/global ownership/transitions, lifecycle behavior, numeric corrections, required role implications, removed behavior, terminology, or another material product rule.
 
 Exit: `ready_for_prd`, `needs_decision`, or `blocked`.
 
@@ -64,6 +66,7 @@ The model reviews canonical meaning; the validator handles full HTML mechanics. 
 approved bounded change
 → persist authoritative instruction when needed
 → affected requirements + topology/terminology/exclusion/implication checks
+→ lifecycle/quantitative/impact checks where invalidated
 → affected content/projection
 → rerender
 → one mechanical check

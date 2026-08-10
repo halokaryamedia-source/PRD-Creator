@@ -1,6 +1,6 @@
 # Source Intake & Requirement Recovery
 
-Flow 2 turns uneven project material into a production-ready requirement state. It must do more than copy source text: recover project structure, required implications, exclusions, terminology, and material gaps without inventing design choices.
+Flow 2 turns uneven project material into a production-ready requirement state. It must do more than copy source text: recover project structure, required implications, exclusions, terminology, missing material behavior, and practical solutions without inventing unapproved design choices.
 
 ## Automatic bootstrap
 
@@ -61,7 +61,7 @@ inspection omitted → inventoried/triaged only
 Use:
 
 - `inspection: targeted` when only bounded material was read; add a concise `inspection_scope`;
-- `inspection: full` when the source was inspected deeply enough that no uninspected portion is expected to materially alter the current project scope.
+- `inspection: full` when the source was inspected deeply enough that no uninspected portion is expected to materially alter current scope.
 
 Example:
 
@@ -77,7 +77,7 @@ This records coverage for resumability; it is not a checksum/revision system.
 
 ### Persist material user instructions
 
-A current user instruction can be authoritative even when no file exists. Preserve material instruction sets as non-file source entries instead of relying on chat history or creating fake text files:
+A current user instruction can be authoritative even when no file exists. Preserve coherent material instruction sets as non-file source entries instead of relying on chat history or creating fake text files:
 
 ```yaml
 id: SRC-007
@@ -88,7 +88,7 @@ summary: Objective 2 uses three checkpoints; collapse begins only in checkpoint 
 inspection: full
 ```
 
-Do not create one source entry per sentence. Group one coherent material instruction/decision set when practical.
+Do not create one source entry per sentence.
 
 ### Source roles and supersession
 
@@ -99,7 +99,7 @@ Roles:
 - `reference` — style/sample/Golden; not project fact by default;
 - `generated` — prior generated output for continuity/audit only.
 
-Use source-level `status: superseded` only when the source as a whole is no longer authoritative. If only one claim/section changed, keep the source and resolve the affected requirement at claim level through current provenance/resolution. Never infer supersession from file date alone.
+Use source-level `status: superseded` only when the source as a whole is no longer authoritative. If one claim/section changed, keep the source and resolve the affected requirement at claim level. Never infer supersession from file date alone.
 
 ## 2. Recover explicit production meaning
 
@@ -113,7 +113,7 @@ remove / no longer use / do not use
 replaced by / only / must not
 ```
 
-An approved removal/exclusion must prevent lower-authority old source, references, or generated output from silently reintroducing the removed behavior.
+An approved removal/exclusion must prevent lower-authority old source, references, or generated output from silently reintroducing removed behavior.
 
 Create one `REQ-###` per meaningful production rule, constraint, conflict, exclusion, topology rule, or open decision that must survive into PRD/acceptance. Do not mirror source sentences or catalog incidental facts.
 
@@ -188,7 +188,7 @@ Safe implications may include:
 - Gameplay: player must cross before the collapse condition.
 - Level Design: a defined collapsible route must exist and remain readable as the required crossing.
 - Developer: the route changes state when the approved timer condition expires.
-- Reset: if retry is already part of the approved flow, the collapsed state must be restorable for that retry.
+- Reset: if retry is already approved, the collapsed state must be restorable for that retry.
 ```
 
 Do **not** infer exact block counts, coordinates, animations, cooldowns, implementation architecture, or other choices unless source/approved state supports them.
@@ -209,9 +209,106 @@ After explicit recovery + implications, scan the **applicable concerns** before 
 
 First decide whether a concern applies. **Irrelevant or intentionally unspecified detail is not a gap.** Do not invent or ask for information merely because the Golden structure could display it.
 
-If a missing concern would force a downstream role to make a product/design decision, classify it through the materiality/recovery tests below.
+If a missing concern would force a downstream role to make a product/design decision, continue through lifecycle/materiality/resolution below.
 
-## 7. Safe Completion test
+## 7. Mechanic lifecycle scan
+
+For each material mechanic/system, inspect only the lifecycle stages that actually apply:
+
+```text
+ENTRY / PRECONDITION
+→ ACTIVATE / TRIGGER
+→ ACTIVE BEHAVIOR
+→ SUCCESS / COMPLETION
+→ FAIL / TIMEOUT / INTERRUPT
+→ RESULT / TRANSITION
+→ RETRY / RESET
+```
+
+A missing lifecycle stage is not automatically a gap. It becomes material only when the mechanic cannot be understood/implemented safely without it.
+
+Example:
+
+```text
+"Player repairs the generator"
+```
+
+may require checking whether source defines:
+
+- when repair becomes available;
+- what action/progress constitutes repair;
+- what proves completion;
+- what state/result changes after completion;
+- whether interruption/retry/reset behavior exists.
+
+Recover what evidence supports. Do not create interaction type, progress count, timer, failure condition, reset rule, or architecture merely because a lifecycle stage exists conceptually.
+
+## 8. Quantitative coherence scan
+
+When source contains related numeric facts, check that they can coexist before drafting.
+
+Examples:
+
+```text
+objective duration vs phase/checkpoint durations
+player/session count vs arena/capacity assumptions
+required item/count totals across sections
+scoring components/weights
+stage/puzzle/object counts repeated in different sources
+range/minimum/maximum rules that overlap
+```
+
+A mismatch is evidence to resolve, not permission to silently edit a number. Use authority/precedence first; use Clarification/Completion only when one correction is strongly supported. Otherwise use Proposal/Blocked.
+
+Do not "balance" numbers merely because they look unusual.
+
+## 9. Problem framing before proposing a solution
+
+When a material issue remains, identify the real production problem before choosing a fix.
+
+Frame only what evidence supports:
+
+```text
+Observed issue / symptom
+→ affected player/production consequence
+→ relevant constraints that must remain true
+→ desired outcome implied by project intent
+→ roles/requirements affected
+```
+
+Example:
+
+```text
+Symptom: failure removes too much player progress.
+Constraint: objective remains time-limited and collapse mechanic remains.
+Goal: reduce frustration without removing failure consequence.
+```
+
+Do not manufacture a "design problem" merely to justify changing an already-valid preference.
+
+### Advisory production concerns
+
+A source can be complete yet still expose a concrete gameplay/production risk. When evidence supports it, Flow 2 may surface a **material concern** or **optional improvement** to the user, but this does not become a new recovery class and does not alter approved requirements automatically.
+
+## 10. Resolution Ladder
+
+Before asking the user, try the least-assumptive route that can solve the issue:
+
+```text
+1. Existing authority/source already resolves it?
+   → recover the answer.
+
+2. One necessary evidence-backed completion exists?
+   → Completion.
+
+3. Several designs are possible, but one responsible recommendation can be made from project goal + constraints + existing rules?
+   → Proposal with one recommended option.
+
+4. No responsible resolution/recommendation can be made?
+   → Blocked / direct user decision.
+```
+
+### Safe Completion test
 
 A missing detail may be recovered as **Completion** only when all are true:
 
@@ -221,55 +318,107 @@ A missing detail may be recovered as **Completion** only when all are true:
 4. it does not invent unsupported quantities, timings, scoring, names, objects, architecture, or decorative detail;
 5. the completion can be explained through existing provenance.
 
-If any condition fails and the missing detail is material:
+If any condition fails and the detail is material, use Proposal or Blocked.
 
-- use **Proposal** when a design/product choice can responsibly be presented for approval;
-- use **Blocked** when evidence is insufficient/conflicting and no responsible completion/proposal can be made.
-
-**Clarification** only improves wording/explanation of meaning that already exists.
-
-## 8. Material-missing test
+### Material-missing test
 
 A missing detail is material when leaving it unresolved would force Gameplay, Level Design, Developer, or acceptance to choose product behavior/scope, or would change player experience, build scope, runtime behavior, scoring/completion, timing, handoff, reset/interruption, or final result.
 
 If the role can proceed safely while the detail remains intentionally open/neutral, it is not material. Omit it instead of creating filler, a question, or a fake requirement.
 
-## 9. Conflict and decision economy
+## 11. Impact propagation after a resolution
 
-Sequence:
+A recovered Completion or approved Proposal must update all **actually affected** meaning, not only the sentence where the issue was found.
 
-```text
-inspect material evidence
-→ reconcile authority/duplicates
-→ explicit recovery
-→ topology + terminology + exclusions
-→ cross-role implication pass
-→ coverage scan
-→ safe Clarification / Completion
-→ collect unresolved material Proposal / Blocked items
-→ one grouped decision review when needed
-```
-
-Zero questions is preferred when evidence is sufficient. Never ask for facts already recoverable from current source/state.
-
-When approval is needed:
+Check as applicable:
 
 ```text
-Decision N — <topic>
-Recommended: <option>
-Reason: <short evidence-based reason>
-Impact: <what changes>
+requirement itself
+→ topology / global-vs-local ownership
+→ Gameplay implication
+→ Level Design implication
+→ Developer implication
+→ timing / quantities / scoring
+→ transition / handoff
+→ retry / reset / interruption
 ```
 
-Recommendations remain pending until approved. The user may approve all or override named exceptions.
+Use existing REQs + `affects` where useful. Do not create a dependency-graph artifact.
 
-## Intake state
+If a new approved resolution invalidates an older claim, resolve/supersede the affected requirement at claim level instead of deleting unrelated valid source meaning.
+
+## 12. Group related issues into one solution package
+
+Do not ask several questions when they are consequences of one root problem.
+
+Example:
+
+```text
+checkpoint count
+collapse activation
+retry location
+collapse reset
+```
+
+may be one **Failure & Collapse** solution package when one coherent decision controls them.
+
+Internally, keep requirements separate when provenance/acceptance can differ. User-facing communication may group them when one decision can resolve them together.
+
+Default: one recommended solution. Add at most 1–2 alternatives only when they represent meaningful tradeoffs.
+
+## 13. Humanized decision communication
+
+Use a bounded **Humanize pass** for Flow 2 user-facing explanations so technical recovery is easy to understand. This is presentation behavior, not a new authority, recovery class, or root skill.
+
+Preferred structure:
+
+```text
+<short issue title>
+
+Masalah
+<what is unclear or risky, in plain language>
+
+Saran
+<one recommended resolution>
+
+Kenapa
+<short evidence/constraint-based reason>
+
+Dampak
+<what changes for Gameplay / Level Design / Developer / timing / reset as relevant>
+
+Alternatif
+<only when a meaningful alternative exists>
+```
+
+Humanize may improve:
+
+- sentence structure;
+- explanation order;
+- clarity;
+- unnecessary internal jargon exposure.
+
+Humanize may **not** change or soften:
+
+- official names/terminology;
+- quantities, timings, coordinates, formulas, scoring weights;
+- triggers, conditions, mechanics, failure/result behavior;
+- authority/provenance;
+- uncertainty;
+- approval status;
+- technical terminology when it is itself authoritative/production-critical.
+
+Do not expose `SRC-###`, `REQ-###`, recovery-class jargon, YAML, or internal state in normal user communication unless requested or needed to explain a blocker.
+
+Recommendations remain pending until approved. The user may approve all recommendations or override named exceptions.
+
+## 14. Intake state
 
 Keep one status and one practical next step.
 
 ```yaml
 status: audit_in_progress
-next_step: Complete remaining requirement recovery and coverage scan.
+next_step: Complete remaining recovery and resolution pass.
 ```
 
 Omitted unresolved counters mean zero. Positive readiness remains explicit:
@@ -282,7 +431,7 @@ next_step: Build canonical PRD content.
 
 Statuses: `collecting_sources`, `audit_in_progress`, `needs_decision`, `blocked`, `ready_for_prd`.
 
-`work/review.md` remains conditional; use it only when decisions/blockers/meaningful recovery should be surfaced or a concise persistent note materially helps continuation.
+`work/review.md` remains conditional. When decisions are needed, prefer the same humanized solution-package structure above rather than dumping requirement-register internals.
 
 ## Revision fast path
 
@@ -292,7 +441,7 @@ A bounded approved revision does not restart Flow 2 when project identity/author
 approved change
 → persist material instruction as source when needed
 → affected REQ(s), exclusions, terminology, topology, cross-role implications
-→ necessary conflict/coverage check
+→ lifecycle + quantitative coherence + impact checks only where invalidated
 → downstream revision path
 ```
 
@@ -307,11 +456,14 @@ Flow 2 is ready only when:
 - explicit rules **and exclusions** are recovered;
 - project topology is sufficient for Flow 3 to organize the document without inventing order/ownership/transitions;
 - material terminology ambiguity is resolved or surfaced;
-- material mechanics have been checked for necessary cross-role implications;
+- material mechanics have been checked for necessary cross-role implications and applicable lifecycle gaps;
+- related quantitative facts have no unresolved material contradiction;
 - the production coverage scan found no hidden material gap;
+- every material issue has gone through problem framing + Resolution Ladder before becoming a user question;
+- recovered/approved resolutions have been propagated to affected meaning;
 - every material requirement traces to evidence/approved state;
 - every Completion passes the safe-completion test;
 - unresolved material Proposal/Blocked items prevent readiness;
 - intake state truthfully reports `ready_for_prd: true`.
 
-Flow 3 may improve wording and presentation, but it must not be the first place where required project topology, role implications, or material product decisions are invented/discovered.
+Flow 3 may improve wording and presentation, but it must not be the first place where required project topology, lifecycle behavior, role implications, numeric consistency, or material product decisions are invented/discovered.
