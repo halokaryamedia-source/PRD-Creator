@@ -37,6 +37,24 @@ Overview
 
 Package/page counts follow the project. Golden authority means preserving hierarchy, information rhythm, component language, and presentation foundation—not copying Aftershock-specific facts/counts.
 
+## Flow 2 intake boundary
+
+Flow 3 receives resolved production meaning. It may organize and clarify that meaning, but it must not silently choose a material product rule that Flow 2 should own.
+
+Return the affected requirement to Flow 2 when drafting exposes a material gap in any of these areas:
+
+- topology, package order, global/local ownership, transition, or final result;
+- mechanic lifecycle behavior;
+- contradictory numeric/timing/count/scoring facts;
+- wording so vague that materially different product behavior would still appear compliant;
+- global/default rule conflicting with a package-specific exception;
+- authoritative known project/platform/production constraint conflicting with requested behavior;
+- missing Gameplay / Level Design / Developer implication;
+- exclusion/removal or terminology ambiguity;
+- another unresolved design/product choice.
+
+Do not solve such a gap by inventing a metric, generic best practice, technical workaround, or renderer-friendly value. Qualitative direction may remain qualitative when it is intentionally so and production can proceed safely.
+
 ## Projection and rendering
 
 `render-data.json` is a compact disposable projection. It contains only values required to reproduce canonical meaning through the Golden surfaces.
@@ -61,6 +79,7 @@ Flow 3 completes when:
 
 - Flow 2 is truthfully `ready_for_prd`;
 - canonical content satisfies the content/Golden composition contract;
+- no material Flow 2 intake issue was silently decided during drafting;
 - derived render data passes structural renderer checks;
 - `final.html` is generated through the approved Golden family;
 - generated navigation resolves;

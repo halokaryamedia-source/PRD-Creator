@@ -74,6 +74,24 @@ Preserve meaningful groups such as Mechanic Setup, Gameplay Setup, Scoring/Compl
 6. **No filler.** Fixed Golden structure never authorizes invented metrics, architecture, dimensions, mechanics, tracking, lore, or decoration.
 7. **No hidden decisions.** Material unresolved choices return to Flow 2.
 
+## Flow 2 handoff boundary
+
+`ready_for_prd` means Flow 3 receives project meaning that is already resolved enough to draft. Flow 3 may organize, clarify, and present approved meaning; it may not become the first place that these material issues are decided:
+
+- package order, global/local ownership, transitions, or final result;
+- required mechanic lifecycle behavior;
+- contradictory counts/timing/scoring values;
+- vague wording that would allow materially different product behavior;
+- silent conflict between a shared/global rule and a local package exception;
+- conflict with an authoritative known project/platform/production constraint;
+- missing Gameplay / Level Design / Developer implications;
+- removed/excluded behavior or terminology ambiguity;
+- any other material product/design choice.
+
+If drafting exposes one of these, return the affected requirement to Flow 2. Do not hide it with polished prose, a guessed value, a generic best practice, or a convenient renderer representation.
+
+Qualitative direction is allowed when it is intentionally qualitative and production roles can act on it safely. Flow 3 must not invent metrics merely to make wording appear more precise.
+
 ## Information density
 
 Keep a detail only when it:
@@ -179,6 +197,7 @@ If required critical information remains unresolved, return it to Flow 2 rather 
 
 - Flow 2 is truthfully `ready_for_prd`;
 - material statements trace to source/recovery/approved decisions;
+- no Flow 2 handoff issue above was silently decided during drafting;
 - Golden hierarchy/page composition is represented;
 - each role surface has enough local context without filler;
 - scoring/completion is explicit where relevant;

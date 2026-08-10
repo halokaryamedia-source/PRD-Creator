@@ -66,9 +66,25 @@ Does the package + relevant global rules provide activation, progression/state, 
 
 ### Project Consistency
 
-Cross-check material facts only: official names, order, counts/quantities, conditions, timing, scoring, handoff, interruption/reset, and final-result relationship. Different wording is allowed; different meaning is not.
+Cross-check material facts only:
+
+- official names and terminology;
+- package/order/topology;
+- counts/quantities/timing/scoring;
+- conditions, handoff, interruption/reset, and final-result relationship;
+- shared/global defaults versus explicit package exceptions;
+- materially vague requirements that could yield different product behavior;
+- authoritative known project/platform/production constraints when they are part of accepted project evidence.
+
+Different wording is allowed; different meaning is not. A legitimate local exception is not inconsistency when it is explicit and supported.
 
 Record each finding once and tag all affected lens(es) if needed.
+
+## Flow 2 fallback boundary
+
+Flow 4 may reveal a requirement-recovery defect that earlier stages missed. If a finding requires a new product/design decision—such as resolving material ambiguity, choosing a global/local exception, reconciling contradictory values, or deciding how to handle a known feasibility conflict—return that finding to Flow 2.
+
+Flow 4 may fix wording when the underlying approved meaning is already clear. It may not invent a metric, workaround, rule, or product choice merely to make the PRD pass review.
 
 ## Visual sanity
 
@@ -110,11 +126,11 @@ Critical/Major block readiness.
 Fix the first wrong owner:
 
 - requirement/project meaning → requirement state + `content.md`;
+- unresolved product/design choice or missing Flow 2 recovery → Flow 2 requirement state;
 - Golden representation → `CONTENT-CONTRACT.md` / affected projection;
 - renderer mechanics → exact `renderer/*` owner;
 - validator mechanics → `validator/validate.py`;
-- template mechanics → Golden template only when proven responsible;
-- unresolved product choice → Flow 2.
+- template mechanics → Golden template only when proven responsible.
 
 Never patch `final.html` as source of truth.
 
