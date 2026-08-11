@@ -30,98 +30,136 @@ VALIDATION.md
 → semantic/document acceptance procedure
 ```
 
-## Current gameplay PRD family
+## Current deterministic proof
 
-For `N` gameplay packages:
+The three pre-test blockers remain closed:
 
-```text
-Overview                                      1
-Gameplay Flow: Journey Begins + N packages    1 + N
-Global Development                            4
-Gameplay role pages                           3N
------------------------------------------------
-Total                                         6 + 4N
-```
+1. glossary role visibility is consistent between inline highlighting and Terms Used;
+2. Reset / Interruption requires a non-empty Expected System Result;
+3. Flow 4/handoff requires explicit `Acceptance: PASS`.
 
-Global Development uses Development Overview, Session & Runtime System, Data, Recovery & Reset, and Gameplay Package Integration. Every package keeps Gameplay Overview, Level Design, and Developer.
-
-## Current semantic behavior
-
-The contract requires explicit project context/session/playtime/structure, chronological Gameplay Flow plus Objective Sequence, complete Level Design and Developer meaning, Failure / Retry / Recovery, explicit Objective Score or `No Objective Score`, separate final-result/display/telemetry behavior, package Acceptance & Verification, one canonical package glossary index, and bounded Humanize writing.
-
-Mandatory concerns resolve only as:
+Current focused production gate after the stable-version policy update:
 
 ```text
-Defined | Explicit No | Not Applicable | Blocked
+PRD Verify #109 — PASS
 ```
 
-## Pre-test blocker corrections
-
-The three deterministic blockers found immediately before representative testing are closed:
-
-1. **Glossary role visibility** — omitted `roles` now means all package reader roles; explicit roles constrain both inline glossary highlighting and Terms Used through role-scoped glossary data.
-2. **Reset / Interruption result** — `developer.reset_result` is mandatory, so a reset requirement cannot render with a blank Expected System Result.
-3. **Acceptance lens persistence** — Flow 4 acceptance records and handoff validation now require explicit `Acceptance: PASS` in addition to New Reader, Level Designer, Developer, and Project Consistency.
-
-Focused contract proof after these corrections:
+Repository verification after that policy update:
 
 ```text
-PRD Verify #108 — PASS
+Repository Verify #197 — PASS
 ```
 
-This proves the corrected deterministic contracts compile and pass the focused PRD regression suite.
+## Stable document-version policy
 
-## Representative AFTERSHOCK test — Flow 2 result
+`document.version` is project/release metadata, not an edit counter.
 
-Representative testing has now started using the current authoritative AFTERSHOCK `Gameplay Development Specification | FINAL v2.4` plus the approved Golden Sample as a document-quality/reference source.
+Normal clarification, Humanize, rerendering, review correction, and representative testing keep the same version. A version changes only when the user/source explicitly defines a new revision or the team intentionally declares a new release/handoff milestone.
 
-Flow 2 found a real material scoring conflict and correctly **did not** advance to Flow 3:
+The representative AFTERSHOCK document therefore remains **2.4** throughout this proof.
 
-- current v2.4 explicitly forbids player-facing scores/results and excludes scores/aggregates/interpretations from raw telemetry;
-- current v2.4 records objective-specific progress/outcome data but does not define an internal Objective Score formula;
-- the older Golden Sample contains internal Quarry/Ascent/Beacon/Relay scoring and Final Total, but several Golden scoring formulas depend on mechanics that no longer match v2.4;
-- therefore `No Objective Score` cannot be inferred from display/export prohibitions, while old Golden formulas also cannot be copied as current project truth.
+## Representative AFTERSHOCK proof
 
-Examples of material mechanic drift include:
+Representative testing uses current AFTERSHOCK `Gameplay Development Specification | FINAL v2.4` as project authority and the approved Golden Sample only as a document-function/quality reference.
+
+The user approved the current progress-based internal scoring model:
 
 ```text
-Quarry
-v2.4 → timed mining/deposit milestones + optional no-reward stretch
-old Golden scoring → Time Score + Surplus Score
-
-Beacon
-v2.4 → guided Beacon Brick build + deterministic 25%/35% storm removal
-old Golden scoring → Time Score + Storm Exposure model
-
-Relay
-v2.4 → waypoint braziers + repeated gale pushback
-old Golden scoring → previous relay/cable scoring model
+Docks    → No Objective Score
+Quarry   → 0–100 main Forge progress normalized to Gold; Stretch excluded
+Ascent   → 100 on Signal Horn/cable-car valid completion; otherwise highest checkpoint progress
+Beacon   → 0–100 final valid scaffold completion
+Relay    → 100 on Relay activation; otherwise farthest valid route progress
+Ending   → No Objective Score
+Final Total = (Quarry + Ascent + Beacon + Relay) ÷ 4
 ```
 
-This is a **correct Flow 2 block**, not a renderer failure. Inventing a new scoring formula or silently restoring incompatible Golden mechanics would violate current authority and the mandatory-slot contract.
+All internal scores remain hidden from the player and excluded from raw telemetry/export.
+
+### Flow 2
+
+PASS / `ready_for_prd` after the scoring decision.
+
+Recovered project truth also preserves:
+
+- isolated concurrent lanes and start-gate boundary;
+- Adventure Mode with package-specific scripted permissions;
+- game-time pause and disconnect/rejoin behavior;
+- Quarry scripted deposits, optional no-reward Stretch, and configurable Flat Mode that launches OFF;
+- Ascent harmless fall/recovery and assistance rules;
+- Beacon deterministic 25%/35% storms, idle scheduling, external-cause presentation, and nearby free pickups;
+- Relay ~100–120 block route, configurable ~75-second rhythm with roughly six meaningful gale cycles, equal routes, and safe recovery;
+- Ending persistence before lobby return/reset.
+
+### Flow 3 semantic candidate
+
+The representative candidate contains six gameplay packages and the fixed 30-page family (`6 + 4N`).
+
+The first semantic pass found and corrected project-document quality issues before proof was accepted:
+
+- generator/repository meta-language had leaked into Global Development notes and was removed;
+- Global Development was rewritten around actual runtime/package handoff rather than authoring-process instructions;
+- Final Total now explicitly refuses missing/invalid inputs instead of substituting zero/duplicates;
+- Beacon free-pickup recovery and Relay target gale pacing were restored from source;
+- glossary coverage was expanded with source-grounded package terms;
+- document version remained 2.4 throughout all corrections.
+
+Integrated semantic review after correction:
+
+```text
+New Reader          PASS
+Level Designer      PASS
+Developer           PASS
+Acceptance          PASS
+Project Consistency PASS
+Critical            0
+Major               0
+```
+
+### Targeted desktop proof
+
+A representative standalone HTML preview was rendered from the current canonical candidate and inspected in Chromium at 1440×1050. This is a desktop-only proof; mobile was intentionally not run.
+
+Observed checks:
+
+```text
+30 document sections                         PASS
+browser console/page errors                  0
+horizontal document overflow                 none
+Gameplay Journey / Full Production switch    PASS
+Quarry Gameplay Flow readability             PASS
+Quarry Level Design table readability        PASS
+Quarry Developer scoring/result readability  PASS
+Reset Expected System Result                 present
+Acceptance & Verification                    readable
+inline glossary tooltip                      PASS
+role-scoped glossary                          PASS
+Flat Mode highlighted on Gameplay             no
+Flat Mode highlighted on Level Design         no
+Flat Mode highlighted on Developer            yes
+Terms Used self-highlighting                  none
+```
+
+The desktop preview shows the intended information hierarchy, role separation, glossary affordance, and scoring/reset/acceptance presentation without changing document version 2.4.
 
 ## Evidence boundary
 
-Not yet proven on a fresh representative final artifact:
+The representative semantic candidate and desktop preview are proven, and the active production renderer/template contracts are regression-proven by PRD Verify.
 
-- Flow 3 Humanize quality on the resolved AFTERSHOCK project;
-- complete role-page semantic parity after current scoring is resolved;
-- actual browser/desktop visual quality;
-- glossary hover/click behavior in the new representative artifact;
-- Flow 4 handoff on the representative artifact.
+However, the exact representative `render-data.json` was **not executed through the repository's production renderer/validator inside this sandbox** because the execution environment could inspect GitHub through the connector but could not materialize those repository source files into the local runtime. Therefore this report does not claim exact candidate production-renderer E2E or handoff PASS yet.
 
-The representative test is paused at the first material unresolved decision rather than manufacturing downstream output.
+Do not convert the standalone preview proof into a claim that canonical `output/final.html` has passed the exact production renderer/validator.
 
 ## Current flow evidence
 
 | Flow | Evidence state |
 |---|---|
 | Flow 1 | repository/static proof current |
-| Flow 2 | representative test correctly detected current AFTERSHOCK scoring ambiguity and blocked downstream authoring |
-| Flow 3 | deterministic contracts current; representative authoring waits for scoring resolution |
-| Flow 4 | corrected Acceptance/handoff contract current; representative review waits for Flow 3 output |
+| Flow 2 | representative AFTERSHOCK source recovery + approved scoring decision PASS |
+| Flow 3 | representative canonical content semantic PASS; production renderer contract regression PASS; exact candidate renderer execution pending |
+| Flow 4 | integrated semantic PASS + targeted desktop preview PASS; canonical mechanical/handoff acceptance pending exact candidate execution |
 | Flow 5–7 | unchanged; Voice verification remains separate |
 
 ## Current boundary
 
-PRD Flow 2–4 is not yet end-to-end proven. The next representative action must resolve the current AFTERSHOCK internal scoring model from current authority/approved decision before Flow 3 can continue.
+The generator is ready for the final representative mechanical step. No additional architecture redesign or document-version bump is required before that proof.
