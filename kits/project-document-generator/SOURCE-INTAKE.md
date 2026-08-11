@@ -165,6 +165,23 @@ After explicit recovery, perform **one integrated pass** over the material requi
 
 Only inspect concerns that actually apply. **Irrelevant or intentionally open detail is not a gap.** Do not invent dimensions, timings, metrics, architecture, animations, cooldowns, or mechanics because a category exists.
 
+### Cross-surface consistency for mature PRD sources
+
+A single authoritative or mature PRD file is **not automatically internally consistent**. Before `ready_for_prd`, compare repeated material claims across the source surfaces that describe the same package, especially:
+
+```text
+Gameplay Flow
+↔ Gameplay Overview
+↔ Level Design
+↔ Developer
+```
+
+Check only high-impact meaning that is actually repeated: objective/progression count, trigger or timing, mechanic/state change, fail/retry/recovery, scoring/result, reward/handoff, interruption/reset, and other rules that would make two production roles build different behavior.
+
+Do not compare wording literally and do not create a second coverage artifact. This is one bounded consistency sweep inside the existing readiness pass.
+
+If two same-authority surfaces materially disagree and no stronger approved authority resolves them, record the conflict and use `needs_decision` / `blocked` as appropriate. Do **not** choose whichever surface looks newer, more detailed, or easier to fit into the Golden template, and do not use Completion to select between two plausible product behaviors.
+
 ### Cross-role implications
 
 A material rule may imply work beyond its source sentence. Recover only necessary supported implications.
@@ -322,7 +339,7 @@ Flow 2 is ready only when:
 - material user instructions are persisted;
 - explicit rules and exclusions are recovered;
 - topology and terminology are sufficient for Flow 3;
-- the integrated readiness pass has no unresolved material contradiction/gap;
+- the integrated readiness pass has no unresolved material contradiction/gap, including contradictions between repeated claims inside one authoritative source;
 - every Completion passes the safe-completion rule;
 - every material requirement traces to evidence/approved state;
 - unresolved material Proposal/Blocked items do not remain;
