@@ -23,9 +23,9 @@ The audited PRD-side Flow 1–4 correction set is complete at the **repository/s
 | Flow | Current evidence state | Current note |
 |---|---|---|
 | 1. Repository Boot & Project Memory | **current repository/static proof** | Current-state owners separate current versus historical proof; CI bookkeeping no longer requires chasing the newest run number after every documentation-only sync. |
-| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | `ready_for_prd` now requires persisted source/requirement evidence owners, rejects unambiguous current blockers, and does not let an explicitly superseded source's old blocked inspection invalidate current readiness. |
-| 3. PRD Generation | **historical real-project proof + current static contract proof** | Existing stale-derivation guards remain; scoring display normalization and deterministic required Golden content presence are regression proven. |
-| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Handoff now requires current version/path consistency and a compact acceptance record that actually authorizes `handoff_ready`. |
+| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | `ready_for_prd` requires persisted source/requirement evidence owners, rejects unambiguous current blockers, and ignores an explicitly superseded source's old blocked inspection. |
+| 3. PRD Generation | **historical real-project proof + current static contract proof** | Existing stale-derivation guards remain; scoring display normalization and required Golden hierarchy/content presence are regression proven. |
+| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Handoff requires current version/path consistency and a compact acceptance record that actually authorizes `handoff_ready`. |
 | 5. Voice Requirement Extraction | **historical real-project proof** | The Clockwork Vault previously exercised real Voice scope extraction. No current-revision Voice hardening is claimed by this PRD-side batch. |
 | 6. Voice Script + DOCX | **historical real-project proof** | Earlier Voice ID/Type parity and DOCX generation were exercised. |
 | 7. Voice Validation & Delivery | **historical real-project proof** | Earlier real DOCX visual QA found/fixed the blank-page defect. Audio evidence for that proof remained `not_provided`. |
@@ -55,42 +55,43 @@ The current PRD contracts now protect these concrete cases:
 - current requirement blockers `approval_status: pending` and `recovery_class: blocked` fail readiness;
 - current source `inspection: blocked` fails readiness, while an entry explicitly marked `status: superseded` does not block merely because that old source was unreadable/uninspected;
 - `evidence_status: conflict` alone remains nonblocking because a higher-authority approved resolution may already exist;
-- deterministic Golden slots that the gameplay PRD family already defines as mandatory cannot disappear silently: narrative presence, Gameplay Context/Main Objective/Result/player flow, Level Design overview/build requirement, Global Development overview/requirement, and Developer overview are mechanically checked for presence;
+- the required gameplay PRD hierarchy itself cannot disappear silently: at least one Gameplay Flow page, at least one Global Development page, and at least one Gameplay Package are required;
+- deterministic Golden slots already declared mandatory are mechanically checked for presence: narrative content, Gameplay Context/Main Objective/Result/player flow, Level Design overview/build requirement, Global Development overview/requirement, and Developer overview;
 - numeric weights and percentage strings render with one `%`; unweighted scoring components do not receive invented percentage markers or equal weights;
 - `work/render-data.json` remains bound to current `work/content.md` through the existing narrow `canonical_content_sha256` stale-projection guard;
 - generated `output/final.html` remains bound to current `work/render-data.json` through the existing `render-data-sha256` stale-render guard;
 - Flow 4 → Flow 5 continues to use existing `document.version` / `accepted_prd_version`, not another hash;
-- `validate_handoff.py` now rejects a `handoff_ready` state when `work/acceptance.md` says `needs_revision`, mechanical/review failure, explicit visual failure, or non-zero Critical/Major blockers;
+- `validate_handoff.py` rejects a `handoff_ready` state when `work/acceptance.md` says `needs_revision`, mechanical/review failure, explicit visual failure, or non-zero Critical/Major blockers;
 - `Visual sanity: NOT PROVEN` remains valid when no actual browser/page proof exists and is never promoted to visual PASS;
-- prior weighted-scoring, intentional bilingual display-text, and bounded wrapped-grid protections remain active.
+- prior weighted-scoring, intentional bilingual display-text, generated-page, navigation, and wrapped-grid protections remain active.
 
-## Stable repository proof anchor
+## Stable repository proof anchors
 
-The executable correction set is anchored by:
+The final executable PRD-side contract set is anchored by:
 
 ```text
-d37fa3655e62548aeec0be153b42bca6077cb9ad
+3ccbf5196d3d3e4c173c440f0a2b5e0d2211a671
 ```
 
-GitHub Actions on that implementation state recorded:
+GitHub Actions on that implementation/CI state recorded:
 
 ```text
-Repository Verify #96 — PASS
-Production Verify #52 — PASS
+Repository Verify #104 — PASS
+Production Verify #56 — PASS
 Project Document contracts — PASS
 ```
 
-The aligned kit validation procedure at:
+The aligned canonical validation procedure at:
 
 ```text
-ebf1e784850b5f2eb3b6229494e7dea6fa21feb3
+207f8c9e4aa0d0602b74c60c13c6c69fccdcc7e7
 ```
 
 also recorded:
 
 ```text
-Repository Verify #99 — PASS
-Production Verify #53 — PASS
+Repository Verify #105 — PASS
+Production Verify #57 — PASS
 ```
 
 These are **proof anchors**, not a requirement that this report be edited whenever a later documentation-only commit creates a newer run number. Live GitHub Actions remains the authoritative execution history for newer commits. Update this report when the evidence class, protected claim, or known limitation materially changes—not merely to chase CI numbering.
@@ -123,7 +124,7 @@ Owns the repeatable executable baseline:
 ```text
 locked dependencies
 → Python compile
-→ PRD renderer/validator + handoff + Flow 2 state contracts
+→ PRD renderer/validator + handoff + Flow 2 + hierarchy contracts
 → Voice builder/validator contracts
 → fail-closed aggregate
 ```
@@ -147,4 +148,4 @@ These limitations are not permission to add preventive machinery. The next usefu
 
 ## Current boundary
 
-All **concrete PRD-side Flow 1–4 defects identified in the latest audit** are closed at the static/regression level. Further PRD guard work should be driven by a failing representative current-project run or another concrete defect, not by hypothetical completeness.
+All **concrete PRD-side Flow 1–4 defects identified in the latest audit and final hierarchy contradiction pass** are closed at the static/regression level. Further PRD guard work should be driven by a failing representative current-project run or another concrete defect, not by hypothetical completeness.
