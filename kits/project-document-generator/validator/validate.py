@@ -338,7 +338,7 @@ def golden_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[st
 
         developer_required = {"package-tabs", "section-context", "quarry-development-table", "quarry-score-summary"}
         if developer.get("flow"):
-            developer_required.add("quarry-development-flow")
+            developer_required.add("developer-flow")
         if developer.get("notes"):
             developer_required.add("quarry-note-grid")
         require(f"dev-{pid}-developer", developer_required)
