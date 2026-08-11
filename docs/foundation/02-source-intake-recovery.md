@@ -137,12 +137,16 @@ Repository-backed Flow 2 uses:
 
 Sparse state may omit defaults, but must never hide conflict, pending approval, blocker, supersession, inspection boundary needed for continuation, or material recovery class.
 
-When `intake-state.yaml` claims `ready_for_prd`, Flow 4 performs one narrow persisted-state contradiction check. It blocks only on markers that are unambiguously unresolved:
+When `intake-state.yaml` claims `ready_for_prd`, repository-backed validation requires both persistent evidence owners to exist and contain at least one stable entry: one `SRC-###` in `source-inventory.yaml` and one `REQ-###` in `requirement-register.yaml`. Missing or empty evidence owners cannot be treated as proof that there are no blockers.
+
+Flow 4 then performs one narrow persisted-state contradiction check. It blocks only on markers that are unambiguously unresolved:
 
 - `requirement-register.yaml`: `approval_status: pending` or `recovery_class: blocked`;
-- `source-inventory.yaml`: `inspection: blocked` only when inability to inspect that source itself blocks the current requested scope.
+- current `source-inventory.yaml` entries: `inspection: blocked`.
 
-`inspection: targeted`, approved proposals, omitted defaults, optional/advisory ideas, and merely unpopulated non-material detail are not blockers. `evidence_status: conflict` alone is also not treated as a blocker because conflicting source evidence may already have a valid higher-authority resolution. This check does not infer materiality, parse arbitrary YAML semantics, or replace Flow 2 judgment; it only prevents an unambiguous persisted blocker from coexisting with `ready_for_prd: true`.
+A source entry explicitly marked `status: superseded` does not block readiness merely because its old inspection state is `blocked`; that source is no longer the current authority. `inspection: targeted`, approved proposals, omitted defaults, optional/advisory ideas, and merely unpopulated non-material detail are not blockers. `evidence_status: conflict` alone is also not treated as a blocker because conflicting source evidence may already have a valid higher-authority resolution.
+
+This check remains bounded to the existing SRC/REQ entry shape. It does not infer materiality, validate arbitrary YAML semantics, or replace Flow 2 judgment; it only prevents missing evidence owners or an unambiguous current blocker from coexisting with `ready_for_prd: true`.
 
 Detailed contract: `kits/project-document-generator/SOURCE-INTAKE.md`.
 
