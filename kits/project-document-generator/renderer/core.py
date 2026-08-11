@@ -209,6 +209,18 @@ def _score_table(headers: list[Any], rows: list[str]) -> str:
     )
 
 
+def _result_context(data: dict[str, Any]) -> str:
+    rows = []
+    for label, value in [
+        (bi("Final Result", "Hasil Akhir"), data.get("final_result_relationship")),
+        (bi("Player-Facing Result", "Hasil yang Ditampilkan ke Player"), data.get("player_facing_display")),
+        (bi("Telemetry / Export", "Telemetry / Export"), data.get("telemetry_export")),
+    ]:
+        if present(value):
+            rows.append(join_text(label, value, sep=": "))
+    return ul(rows, "compact-cell-list") if rows else ""
+
+
 def score_html(data: dict[str, Any]) -> str:
     if not data:
         return ""
@@ -236,14 +248,13 @@ def score_html(data: dict[str, Any]) -> str:
         (bi("Timer Stop", "Timer Berhenti"), data.get("timer_stop")),
         (bi("No-Score Condition", "Kondisi Tanpa Score"), data.get("no_score_condition")),
         (bi("Duplicate Prevention", "Pencegahan Duplikasi"), data.get("duplicate_prevention")),
-        (bi("Final Result", "Hasil Akhir"), data.get("final_result_relationship")),
     ]:
         if present(value):
             extra.append(join_text(label, value, sep=": "))
     return summary + _score_table(
         [bi("Component", "Komponen"), bi("Weight", "Bobot"), bi("Required Rule", "Aturan Wajib")],
         rows,
-    ) + (ul(extra, "compact-cell-list") if extra else "")
+    ) + (ul(extra, "compact-cell-list") if extra else "") + _result_context(data)
 
 
 def completion_html(data: dict[str, Any]) -> str:
@@ -268,4 +279,4 @@ def completion_html(data: dict[str, Any]) -> str:
     return summary + _score_table(
         [bi("Component", "Komponen"), bi("Status", "Status"), bi("Required Rule", "Aturan Wajib")],
         rows,
-    )
+    ) + _result_context(data)
