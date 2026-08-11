@@ -19,6 +19,7 @@ DESCRIPTION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="description"\
 SPEC_VERSION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="specification-version"\s*/?>', re.I)
 GLOSSARY_ASSIGN_RE = re.compile(r"const glossary = .*?;\n\s*const tooltip =", re.S)
 HTML_TAG_RE = re.compile(r"<html\b[^>]*>", re.I)
+GLOSSARY_SKIP_TOKEN = ".language-switch,.theme-switch,.view-switch,a,button"
 TERM_ROLES = {"gameplay", "level_design", "developer"}
 GOLDEN_GLOBAL_SECTIONS = (
     ("development-overview", "Development Overview"),
@@ -44,6 +45,7 @@ BILINGUAL_SCALAR_FIELDS = {
 }
 
 RENDERER_CONTRACT_STYLE = """<style id="prd-renderer-contract-style">
+/* One renderer-owned reading layer. Keep new PRD UI refinements here instead of stacking template patches. */
 @media(min-width:761px){
   .document-main .journey{grid-template-columns:repeat(var(--prd-journey-columns,6),1fr)}
   .document-main .journey article:nth-child(n+7){border-top:1px solid var(--line)}
@@ -52,8 +54,138 @@ RENDERER_CONTRACT_STYLE = """<style id="prd-renderer-contract-style">
   .document-main .flow article:nth-child(n+5){border-top:1px solid var(--line)}
   .document-main .flow article:nth-child(4n+1){border-left:0}
 }
+@media screen{
+  .document-main .sheet{min-height:0}
+}
+@media(min-width:981px){
+  .document-main .sheet{width:min(1120px,calc(100% - 40px));padding-left:58px;padding-right:58px}
+  .phase-navigation .phase-page-list{display:none}
+  .phase-navigation .phase-nav-item.is-current .phase-page-list,
+  .phase-navigation .phase-nav-item:focus-within .phase-page-list{display:block}
+}
 html[data-document-languages="en"] .language-panel{display:none!important}
+
+/* Overview: metadata is metadata, not a warning panel. */
+.document-control-block{margin:24px 0 4px}
+.document-control-title{display:block;margin-bottom:8px;color:var(--muted);font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.document-control-strip{display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,1.35fr) minmax(0,1fr);border:1px solid var(--line);background:var(--paper)}
+.document-control-strip article{min-width:0;padding:13px 15px}
+.document-control-strip article+article{border-left:1px solid var(--line)}
+.document-control-strip b{display:block;margin-bottom:5px;color:var(--blue);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase}
+.document-control-strip p{margin:0;color:var(--ink);font-size:.82rem;line-height:1.48}
+.main-system-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.main-system-grid article{padding:15px 17px;border:1px solid var(--line);background:var(--soft)}
+.main-system-grid b{display:block;margin-bottom:5px;color:var(--navy);font-size:.79rem}
+.main-system-grid p{margin:0;color:var(--muted);font-size:.81rem;line-height:1.5}
+
+/* Gameplay Flow: orient first, then tell the player story. */
+.flow-orientation{display:grid;grid-template-columns:1.4fr .8fr .8fr;margin:15px 0 20px;border:1px solid var(--line);background:var(--soft)}
+.flow-orientation article{min-width:0;padding:12px 14px}
+.flow-orientation article+article{border-left:1px solid var(--line)}
+.flow-orientation b{display:block;margin-bottom:5px;color:var(--blue);font-size:.63rem;letter-spacing:.07em;text-transform:uppercase}
+.flow-orientation p{margin:0;color:var(--ink);font-size:.81rem;line-height:1.45}
+.narrative-page .section-intro{max-width:80ch;color:var(--ink);font-size:.95rem;line-height:1.68}
+.narrative-copy p{max-width:82ch;font-size:.89rem;line-height:1.66}
+.story-transition{margin-top:20px;padding:15px 17px;border-left:4px solid var(--amber);background:var(--amber-soft)}
+.story-transition b{display:block;margin-bottom:4px;color:#7b531f;font-size:.64rem;letter-spacing:.07em;text-transform:uppercase}
+.story-transition p{margin:0;line-height:1.5}
+
+/* Developer Flow: never flatten Trigger / Behavior / Data / Result into one sentence. */
+.developer-flow{display:grid;gap:12px;margin-top:12px}
+.developer-flow-step{border:1px solid var(--line);background:var(--paper)}
+.developer-flow-step header{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--line);background:var(--soft)}
+.developer-flow-step header span:first-child{display:grid;place-items:center;flex:0 0 31px;width:31px;height:31px;border:1px solid var(--line);color:var(--blue);font-size:.67rem;font-weight:800}
+.developer-flow-step header strong{color:var(--navy);font-size:.86rem}
+.developer-flow-step dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}
+.developer-flow-step dl>div{min-width:0;padding:12px 15px}
+.developer-flow-step dl>div:nth-child(even){border-left:1px solid var(--line)}
+.developer-flow-step dl>div:nth-child(n+3){border-top:1px solid var(--line)}
+.developer-flow-step dt{margin:0 0 5px;color:var(--blue);font-size:.62rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.developer-flow-step dd{margin:0;color:var(--ink);font-size:.82rem;line-height:1.53}
+
+/* Tables: retain production-table semantics but give long requirements room to breathe. */
+.production-table{font-size:.83rem}
+.production-table th{padding:11px 12px;line-height:1.35}
+.production-table td{padding:13px 13px;line-height:1.55}
+.production-table .compact-cell-list{margin:0;padding-left:17px}
+.production-table .compact-cell-list li+li{margin-top:7px}
+.production-table .quarry-group-row td{padding-top:10px;padding-bottom:10px;background:#edf3f6;color:var(--navy);border-color:var(--line-strong,var(--line))}
+.quarry-development-table tbody tr:not(.quarry-group-row)>td:last-child,
+.quarry-dev-table tbody tr:not(.quarry-group-row)>td:last-child{background:rgba(53,120,154,.055)}
+.phase-overview-table td:first-child{width:210px;background:var(--soft)}
+.phase-overview-table td:first-child b{color:var(--navy)}
+
+/* Acceptance: observable outcomes read as completion checks, not another generic bullet list. */
+.acceptance-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.acceptance-list li{position:relative;margin:0;padding-left:24px;line-height:1.55}
+.acceptance-list li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:900}
+
+/* Glossary index: visible affordance in prose, while the Terms Used panel remains a clean index. */
+.glossary-term{padding:0 .08em;border-radius:3px;border-bottom:1px dotted var(--blue);background:rgba(53,120,154,.07);color:var(--navy);font-weight:760;text-decoration:none}
+.glossary-term:hover,.glossary-term:focus-visible{background:rgba(53,120,154,.14);color:var(--blue);outline:2px solid transparent}
+
+/* Sidebar: show local depth for the active package instead of expanding every package at once. */
+.phase-navigation .phase-nav-item{border-left-color:rgba(255,255,255,.12)}
+.phase-navigation .phase-nav-item.is-current{background:rgba(255,255,255,.045);border-left-color:var(--amber)}
+.phase-navigation .phase-page-list{margin-top:2px;margin-bottom:7px}
+.phase-navigation .phase-page-link{padding-top:7px!important;padding-bottom:7px!important}
+
+body.theme-dark .document-control-strip,
+body.theme-dark .developer-flow-step{background:#172a33;border-color:#405761}
+body.theme-dark .document-control-strip article+article,
+body.theme-dark .developer-flow-step header,
+body.theme-dark .developer-flow-step dl>div:nth-child(even),
+body.theme-dark .developer-flow-step dl>div:nth-child(n+3){border-color:#405761}
+body.theme-dark .developer-flow-step header,
+body.theme-dark .main-system-grid article,
+body.theme-dark .flow-orientation{background:#1d3039;border-color:#405761}
+body.theme-dark .flow-orientation article+article{border-color:#405761}
+body.theme-dark .document-control-strip p,
+body.theme-dark .flow-orientation p,
+body.theme-dark .developer-flow-step dd{color:#d9e5e9}
+body.theme-dark .production-table .quarry-group-row td{background:#1c3540;color:#edf6f8}
+body.theme-dark .quarry-development-table tbody tr:not(.quarry-group-row)>td:last-child,
+body.theme-dark .quarry-dev-table tbody tr:not(.quarry-group-row)>td:last-child{background:rgba(104,199,237,.06)}
+body.theme-dark .glossary-term{background:rgba(104,199,237,.09);border-bottom-color:#68c7ed;color:#eef8fb}
+body.theme-dark .glossary-term:hover,body.theme-dark .glossary-term:focus-visible{background:rgba(104,199,237,.16);color:#fff}
+
+@media(max-width:900px){
+  .document-control-strip,.flow-orientation,.developer-flow-step dl,.main-system-grid{grid-template-columns:1fr}
+  .document-control-strip article+article,.flow-orientation article+article,.developer-flow-step dl>div:nth-child(even){border-left:0;border-top:1px solid var(--line)}
+}
+@media print{
+  .document-main .sheet{min-height:1120px}
+  .glossary-term{padding:0;background:transparent;border-bottom:0;color:inherit}
+  .developer-flow-step,.document-control-strip,.flow-orientation{break-inside:avoid}
+}
 </style>"""
+
+READING_EXPERIENCE_RUNTIME = """<script id="prd-reading-experience-runtime">
+(() => {
+  const labels = {
+    clean: {en: 'Gameplay Journey', id: 'Alur Gameplay'},
+    professional: {en: 'Full Production', id: 'Produksi Lengkap'}
+  };
+  function syncViewLabels(){
+    const language = document.documentElement.lang === 'id' ? 'id' : 'en';
+    document.querySelectorAll('[data-mode-label]').forEach((button) => {
+      const copy = button.querySelector('.i18n-text');
+      const label = labels[button.dataset.modeLabel];
+      if (!copy || !label) return;
+      copy.dataset.en = label.en;
+      copy.dataset.id = label.id;
+      copy.textContent = label[language];
+    });
+  }
+  syncViewLabels();
+  const observer = new MutationObserver((mutations) => {
+    if (mutations.some((mutation) => mutation.type === 'attributes' && mutation.attributeName === 'lang')){
+      syncViewLabels();
+    }
+  });
+  observer.observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+})();
+</script>"""
 
 
 def script_safe_json(value: Any) -> str:
@@ -472,6 +604,15 @@ def apply_document_runtime_contract(src: str, languages: list[str]) -> str:
     language_value = ",".join(languages)
     updated = opening[:-1] + f' data-document-languages="{esc(language_value)}">'
     src = src[:html_matches[0].start()] + updated + src[html_matches[0].end():]
+
+    # Keep glossary indexing out of the Terms Used index itself; otherwise definitions recursively highlight themselves.
+    require_exact_once(src, GLOSSARY_SKIP_TOKEN, "glossary skip selector")
+    src = src.replace(
+        GLOSSARY_SKIP_TOKEN,
+        ".language-switch,.theme-switch,.view-switch,.terms-used-collapsible,a,button",
+        1,
+    )
+
     require_exact_once(src, "</head>", "head closing marker")
     return src.replace("</head>", RENDERER_CONTRACT_STYLE + "\n</head>", 1)
 
@@ -549,9 +690,12 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
     src = src.replace("aftershock-document-", f"prd-{namespace}-")
     src = src.replace("aftershock-sidebar-collapsed", f"prd-{namespace}-sidebar-collapsed")
+
+    runtime_scripts = [READING_EXPERIENCE_RUNTIME]
     if languages == ["en"]:
-        require_exact_once(src, "</body>", "body closing marker")
-        src = src.replace("</body>", single_language_enforcer(namespace) + "\n</body>", 1)
+        runtime_scripts.append(single_language_enforcer(namespace))
+    require_exact_once(src, "</body>", "body closing marker")
+    src = src.replace("</body>", "\n".join(runtime_scripts) + "\n</body>", 1)
 
     ids = set(re.findall(r'<section\b[^>]*\bid="([^"]+)"', src))
     targets = set(re.findall(r'data-target="([^"]+)"', nav))
