@@ -57,20 +57,6 @@ def cell_html(value: Any) -> str:
     return i18n(value) if present(value) else ""
 
 
-def table(headers: list[Any], rows: list[list[Any]], cls: str = "role-spec-table") -> str:
-    if not rows:
-        return ""
-    head = "".join(f"<th>{i18n(header)}</th>" for header in headers)
-    body = "".join(
-        "<tr>" + "".join(f"<td>{cell_html(cell)}</td>" for cell in row) + "</tr>"
-        for row in rows
-    )
-    return (
-        f'<div class="role-table-wrap"><table class="{esc(cls)}">'
-        f"<thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>"
-    )
-
-
 def production_table(headers: list[Any], rows_html: list[str], cls: str) -> str:
     if not rows_html:
         return ""
