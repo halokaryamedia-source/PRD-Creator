@@ -70,8 +70,11 @@
 
 ## 10. Handoff status is revision-specific
 
-- `state/handoff-state.yaml` must point to the exact accepted content/render/acceptance/handoff artifacts.
-- A later canonical meaning change reopens status to `pending_review` until affected dependencies are rerendered/re-audited.
+- `document.version` is the existing lightweight PRD lifecycle revision used by downstream handoff; do not add another checksum/manifest layer for this boundary.
+- `state/handoff-state.yaml` records `accepted_prd_version` equal to the reviewed `document.version` and points to the current canonical/render/HTML/acceptance/handoff paths.
+- A later canonical **meaning** change that invalidates the accepted handoff must advance `document.version` and reopen `handoff-state.yaml` to `pending_review` before downstream use.
+- After the affected revision is rerendered/reviewed, Flow 4 may set `handoff_ready` again with the new accepted version.
+- Flow 5 must pass `validator/validate_handoff.py` before extraction; a non-ready state, version mismatch, or missing/current-path mismatch blocks entry.
 - `handoff_ready` does not imply client approval, implementation completion, QA completion, release approval, or Voice Production readiness.
 
 ## 11. Keep outputs minimal
