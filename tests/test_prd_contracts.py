@@ -113,9 +113,9 @@ def render_data() -> dict:
         ],
         "global_development": [
             _global_section("development-overview", "Development Overview", "package topology and handoff"),
-            _global_section("game-system", "Session & Runtime System", "session/runtime ownership"),
-            _global_section("data-reset", "Data, Recovery & Reset", "result persistence, recovery, and reset"),
-            _global_section("gameplay-development", "Gameplay Package Integration", "package lifecycle and integration"),
+            _global_section("game-system", "Game System", "session/runtime ownership"),
+            _global_section("data-reset", "Data and Reset", "result persistence, recovery, and reset"),
+            _global_section("gameplay-development", "Gameplay Development", "package lifecycle and integration"),
         ],
         "packages": [{
             "id": "core",
