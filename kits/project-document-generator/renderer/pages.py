@@ -19,7 +19,6 @@ from core import (
     tabs,
     terms,
     txt,
-    ul,
     weight_text,
 )
 
@@ -39,6 +38,42 @@ def _visible_package_terms(pkg: dict[str, Any], role: str) -> list[dict[str, Any
     return visible
 
 
+def _document_control(d: dict[str, Any], o: dict[str, Any]) -> str:
+    items = [
+        (bi("Version", "Versi"), str(d.get("version", "1.0"))),
+        (bi("Scope", "Cakupan"), o.get("document_scope")),
+        (bi("Intended Use", "Tujuan Penggunaan"), o.get("intended_use")),
+    ]
+    cells = "".join(
+        f'<article><b>{i18n(label)}</b><p>{i18n(value)}</p></article>'
+        for label, value in items
+        if present(value)
+    )
+    return (
+        '<div class="document-control-block">'
+        f'<span class="document-control-title">{i18n(bi("Document Control", "Kontrol Dokumen"))}</span>'
+        f'<div class="document-control-strip">{cells}</div></div>'
+    )
+
+
+def _main_systems(items: list[dict[str, Any]]) -> str:
+    visible = [
+        item
+        for item in items
+        if isinstance(item, dict) and (present(item.get("title")) or present(item.get("description")))
+    ]
+    if not visible:
+        return ""
+    cards_html = "".join(
+        f'<article><b>{i18n(item.get("title", ""))}</b><p>{i18n(item.get("description", ""))}</p></article>'
+        for item in visible
+    )
+    return (
+        f'<h3>{i18n(bi("Main Systems", "Sistem Utama"))}</h3>'
+        f'<div class="main-system-grid">{cards_html}</div>'
+    )
+
+
 def overview(data: dict[str, Any]) -> str:
     d, o = data["document"], data["overview"]
     brand = d.get("brand") or d["title"]
@@ -54,16 +89,6 @@ def overview(data: dict[str, Any]) -> str:
         f'<article><small>{n:02d}</small><strong>{i18n(x.get("title", ""))}</strong><p>{i18n(x.get("description", ""))}</p></article>'
         for n, x in enumerate(journey_src, 1)
     )
-    systems = [
-        join_text(x.get("title"), x.get("description"), sep=" — ")
-        for x in o.get("main_systems", [])
-        if present(x.get("title")) or present(x.get("description"))
-    ]
-    document_control = [
-        join_text(bi("Version", "Versi"), str(d.get("version", "1.0")), sep=" — "),
-        join_text(bi("Scope", "Cakupan"), o.get("document_scope"), sep=" — "),
-        join_text(bi("Intended Use", "Tujuan Penggunaan"), o.get("intended_use"), sep=" — "),
-    ]
     body = (
         '<div class="cover-rule"></div>'
         f'<p class="eyebrow">{i18n(d.get("document_type", bi("Production Specification", "Spesifikasi Produksi")))}</p>'
@@ -73,10 +98,7 @@ def overview(data: dict[str, Any]) -> str:
     )
     if o.get("main_experience"):
         body += f'<h3>{i18n(bi("Main Experience", "Pengalaman Utama"))}</h3><p>{i18n(o["main_experience"])}</p>'
-    body += (
-        f'<div class="summary-note"><strong>{i18n(bi("Document Control", "Kontrol Dokumen"))}</strong>'
-        f'{ul(document_control)}</div>'
-    )
+    body += _document_control(d, o)
     if facts:
         body += f'<div class="facts{" three" if len(o.get("facts", [])) == 3 else ""}">{facts}</div>'
     if journey:
@@ -85,8 +107,7 @@ def overview(data: dict[str, Any]) -> str:
             f'<h3>{i18n(bi("Complete Gameplay Journey", "Perjalanan Gameplay Lengkap"))}</h3>'
             f'<div class="journey" style="--prd-journey-columns:{journey_columns}">{journey}</div>'
         )
-    if systems:
-        body += f'<div class="summary-note"><strong>{i18n(bi("Main Systems", "Sistem Utama"))}</strong>{ul(systems)}</div>'
+    body += _main_systems(o.get("main_systems", []))
     body += terms(o.get("terms", []), "summary-terms-used-details")
     ctx = bi(
         f'Production Development Document · v{d.get("version", "1.0")}',
@@ -121,11 +142,29 @@ def _narrative_beats(item: dict[str, Any]) -> list[dict[str, Any]]:
     return beats
 
 
+def _flow_orientation(item: dict[str, Any], pkg: dict[str, Any], previous_title: Any) -> str:
+    gameplay = pkg["gameplay"]
+    fields = [
+        (bi("Player Goal", "Tujuan Player"), gameplay.get("main_objective")),
+        (bi("Arrives From", "Datang Dari"), previous_title),
+        (bi("Continues To", "Berlanjut Ke"), item.get("next_destination")),
+    ]
+    body = "".join(
+        f'<article><b>{i18n(label)}</b><p>{i18n(value)}</p></article>'
+        for label, value in fields
+        if present(value)
+    )
+    return f'<div class="flow-orientation">{body}</div>' if body else ""
+
+
 def flow_pages(data: dict[str, Any]) -> list[str]:
     out = []
     brand = data["document"].get("brand") or data["document"]["title"]
-    for n, item in enumerate(data.get("gameplay_flow", [])):
+    flow_items = data.get("gameplay_flow", [])
+    packages = {pkg["id"]: pkg for pkg in data.get("packages", [])}
+    for n, item in enumerate(flow_items):
         pid = f'flow-{item["id"]}'
+        pkg = packages.get(item["id"])
         beats = _narrative_beats(item)
         beat_html = "".join(
             f'<div class="narrative-beat"><div class="narrative-index">{index:02d}</div>'
@@ -133,12 +172,20 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
             for index, beat in enumerate(beats, 1)
         )
         body = f'<h2>{i18n(item.get("title", ""))}</h2>'
+        if pkg is not None:
+            previous_title = flow_items[n - 1].get("title", "") if n > 0 else ""
+            body += _flow_orientation(item, pkg, previous_title)
         if item.get("narrative_context"):
             body += f'<p class="section-intro">{i18n(item["narrative_context"])}</p>'
         body += f'<div class="narrative-sequence">{beat_html}</div>'
         if item.get("next_destination"):
-            body += f'<div class="story-transition"><p>{i18n(join_text(bi("Next:", "Berikutnya:"), item["next_destination"]))}</p></div>'
-        body += terms(item.get("terms", []), f"{pid}-terms-used-details")
+            body += (
+                '<div class="story-transition">'
+                f'<b>{i18n(bi("Transition", "Transisi"))}</b>'
+                f'<p>{i18n(join_text(bi("Next:", "Berikutnya:"), item["next_destination"]))}</p></div>'
+            )
+        visible_terms = _visible_package_terms(pkg, "gameplay") if pkg is not None else item.get("terms", [])
+        body += terms(visible_terms, f"{pid}-terms-used-details")
         out.append(
             page(
                 pid,
@@ -149,6 +196,8 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
                 header=bi("02 — Gameplay Flow", "02 — Alur Gameplay"),
                 footer_title=join_text(bi("Gameplay Flow", "Alur Gameplay"), item.get("title", ""), sep=" · "),
                 brand=brand,
+                phase=f'dev-{item["id"]}' if pkg is not None else "",
+                role="gameplay-flow",
                 classes="sheet clean-visible story-page narrative-page glossary-enabled-page",
             )
         )
@@ -364,11 +413,37 @@ def _developer_requirement_rows(dev: dict[str, Any]) -> list[str]:
     return rows
 
 
+def _developer_flow(items: list[dict[str, Any]]) -> str:
+    body = []
+    for index, entry in enumerate(items, 1):
+        if not isinstance(entry, dict):
+            continue
+        step = entry.get("step", index)
+        trigger = entry.get("trigger")
+        title = entry.get("title") or entry.get("stage") or trigger or bi("Development Step", "Tahap Development")
+        behavior = entry.get("behavior") or entry.get("details") or entry.get("description") or ""
+        fields = []
+        for label, value in [
+            (bi("Trigger", "Pemicu"), trigger),
+            (bi("System Behavior", "Perilaku Sistem"), behavior),
+            (bi("Data", "Data"), entry.get("data")),
+            (bi("Expected Result", "Hasil yang Diharapkan"), entry.get("result")),
+        ]:
+            if present(value):
+                fields.append(f'<div><dt>{i18n(label)}</dt><dd>{i18n(value)}</dd></div>')
+        body.append(
+            '<article class="developer-flow-step">'
+            f'<header><span>{i18n(str(step).zfill(2))}</span><strong>{i18n(title)}</strong></header>'
+            f'<dl>{"".join(fields)}</dl></article>'
+        )
+    return f'<div class="developer-flow">{"".join(body)}</div>' if body else ""
+
+
 def _acceptance_block(items: list[Any]) -> str:
     return (
         '<div class="acceptance">'
         f'<h3>{i18n(bi("Acceptance & Verification", "Penerimaan & Verifikasi"))}</h3>'
-        f'{ul(items)}'
+        f'<ul class="acceptance-list">{"".join(f"<li>{i18n(item)}</li>" for item in items)}</ul>'
         '</div>'
     )
 
@@ -454,6 +529,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
                 footer_title=join_text(bi("Development", "Pengembangan"), title, bi("Level Design", "Level Design"), sep=" · "),
                 brand=brand,
                 phase=phase,
+                role="level-design",
                 clean=clean,
                 classes="sheet professional-only quarry-package-page phase-package-page glossary-enabled-page",
             )
@@ -466,21 +542,9 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             + tabs(pid, "developer")
             + context_block(bi("Developer Overview", "Ringkasan Developer"), dev.get("overview", ""))
         )
-        dev_flow = []
-        for entry in dev.get("flow", []):
-            if not isinstance(entry, dict):
-                continue
-            description = entry.get("behavior") or entry.get("details") or entry.get("description") or ""
-            extras = []
-            if present(entry.get("data")):
-                extras.append(join_text(bi("Data", "Data"), entry["data"], sep=": "))
-            if present(entry.get("result")):
-                extras.append(join_text(bi("Result", "Hasil"), entry["result"], sep=": "))
-            if extras:
-                description = join_text(description, *extras, sep=" · ")
-            dev_flow.append({"step": entry.get("step", len(dev_flow) + 1), "title": entry.get("title") or entry.get("trigger") or entry.get("stage") or "", "description": description})
+        dev_flow = [entry for entry in dev.get("flow", []) if isinstance(entry, dict)]
         if dev_flow:
-            dev_body += heading(bi("Development Flow", "Alur Development")) + flow_cards(dev_flow, "quarry-development-flow")
+            dev_body += heading(bi("Development Flow", "Alur Development")) + _developer_flow(dev_flow)
         dev_rows = _developer_requirement_rows(dev)
         if dev_rows:
             dev_body += heading(bi("Development Requirements", "Kebutuhan Development")) + production_table(
@@ -508,6 +572,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
                 footer_title=join_text(bi("Development", "Pengembangan"), title, bi("Developer", "Developer"), sep=" · "),
                 brand=brand,
                 phase=phase,
+                role="developer",
                 clean=clean,
                 classes="sheet professional-only quarry-package-page phase-package-page glossary-enabled-page",
             )
@@ -551,6 +616,11 @@ def glossary(data: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
             aliases = item.get("aliases") or {"en": [label["en"]], "id": [label["id"]]}
             if isinstance(aliases, list):
                 aliases = {"en": aliases, "id": aliases}
-            items.append({"key": str(item.get("key") or f'{pkg["id"]}-{n}'), "label": label, "definition": txt(item.get("definition", "")), "aliases": aliases})
+            items.append({
+                "key": str(item.get("key") or f'{pkg["id"]}-{n}'),
+                "label": label,
+                "definition": txt(item.get("definition", "")),
+                "aliases": aliases,
+            })
         out[pkg["id"]] = items
     return out
