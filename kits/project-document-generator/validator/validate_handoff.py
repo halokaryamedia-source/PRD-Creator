@@ -15,6 +15,17 @@ EXPECTED_REFS = {
     "acceptance": "work/acceptance.md",
     "handoff": "output/team-handoff.md",
 }
+ACCEPTANCE_REQUIRED = {
+    "Status": {"handoff_ready"},
+    "Mechanical": {"PASS"},
+    "Visual sanity": {"PASS", "NOT PROVEN"},
+    "New Reader": {"PASS"},
+    "Level Designer": {"PASS"},
+    "Developer": {"PASS"},
+    "Project Consistency": {"PASS"},
+    "Critical": {"0"},
+    "Major": {"0"},
+}
 
 
 def scalar_values(text: str, key: str) -> list[str]:
@@ -35,9 +46,35 @@ def one_scalar(text: str, key: str) -> str:
     return values[0]
 
 
+def acceptance_values(text: str, label: str) -> list[str]:
+    pattern = re.compile(rf"(?mi)^\s*{re.escape(label)}:\s*(.*?)\s*$")
+    return [value.strip() for value in pattern.findall(text)]
+
+
+def validate_acceptance(path: Path) -> tuple[bool, str]:
+    if not path.is_file():
+        return False, f"missing acceptance artifact: {path}"
+
+    text = path.read_text(encoding="utf-8")
+    failures: list[str] = []
+    for label, allowed in ACCEPTANCE_REQUIRED.items():
+        values = acceptance_values(text, label)
+        if len(values) != 1 or not values[0]:
+            failures.append(f"{label} must appear exactly once with a non-empty value")
+            continue
+        value = values[0]
+        if value not in allowed:
+            failures.append(f"{label}={value!r}, expected one of {sorted(allowed)}")
+
+    if failures:
+        return False, "; ".join(failures)
+    return True, "acceptance.md authorizes handoff_ready with no Critical/Major blocker"
+
+
 def validate(project: Path) -> dict[str, Any]:
     state_path = project / "state" / "handoff-state.yaml"
     data_path = project / "work" / "render-data.json"
+    acceptance_path = project / "work" / "acceptance.md"
     errors: list[str] = []
     checks: list[dict[str, str]] = []
 
@@ -109,6 +146,9 @@ def validate(project: Path) -> dict[str, Any]:
         if refs_ok
         else "; ".join(ref_details),
     )
+
+    acceptance_ok, acceptance_detail = validate_acceptance(acceptance_path)
+    check("acceptance_allows_handoff", acceptance_ok, acceptance_detail)
 
     return {"status": "pass" if not errors else "fail", "errors": errors, "checks": checks}
 
