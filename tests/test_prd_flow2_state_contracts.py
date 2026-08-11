@@ -50,7 +50,6 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         markers = {
             "pending approval": "approval_status: pending",
             "blocked recovery": "recovery_class: blocked",
-            "unresolved conflict": "evidence_status: conflict",
         }
         for name, marker in markers.items():
             with self.subTest(name=name):
@@ -96,9 +95,10 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
             "  - id: REQ-001\n"
             "    area: gameplay\n"
             "    statement: Approved fixture decision.\n"
-            "    evidence_status: supported\n"
+            "    evidence_status: conflict\n"
             "    recovery_class: proposal\n"
-            "    approval_status: approved\n",
+            "    approval_status: approved\n"
+            "    resolution: Higher-authority decision resolves the source conflict.\n",
             encoding="utf-8",
         )
         (project / "state" / "source-inventory.yaml").write_text(
