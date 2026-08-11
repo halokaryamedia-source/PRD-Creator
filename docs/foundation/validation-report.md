@@ -43,36 +43,11 @@ Gameplay role pages                           3N
 Total                                         6 + 4N
 ```
 
-Global Development uses:
-
-```text
-Development Overview
-Session & Runtime System
-Data, Recovery & Reset
-Gameplay Package Integration
-```
-
-Every package keeps:
-
-```text
-Gameplay Overview
-Level Design
-Developer
-```
+Global Development uses Development Overview, Session & Runtime System, Data, Recovery & Reset, and Gameplay Package Integration. Every package keeps Gameplay Overview, Level Design, and Developer.
 
 ## Current semantic behavior
 
-The contract currently requires:
-
-- explicit project context/session/playtime/structure;
-- chronological Gameplay Flow plus short Objective Sequence;
-- complete Level Design and Developer production meaning;
-- explicit Failure / Retry / Recovery;
-- explicit Objective Score or `No Objective Score`;
-- separate final-result, player-facing display, and telemetry/export behavior;
-- package Acceptance & Verification;
-- one canonical package glossary index (`packages[].terms`);
-- bounded Humanize writing that preserves technical meaning.
+The contract requires explicit project context/session/playtime/structure, chronological Gameplay Flow plus Objective Sequence, complete Level Design and Developer meaning, Failure / Retry / Recovery, explicit Objective Score or `No Objective Score`, separate final-result/display/telemetry behavior, package Acceptance & Verification, one canonical package glossary index, and bounded Humanize writing.
 
 Mandatory concerns resolve only as:
 
@@ -80,64 +55,73 @@ Mandatory concerns resolve only as:
 Defined | Explicit No | Not Applicable | Blocked
 ```
 
-## Current architecture quality
+## Pre-test blocker corrections
 
-The active generator is normalized to avoid implementation-history, duplicate-procedure, and reference-project leakage:
+The three deterministic blockers found immediately before representative testing are closed:
 
-- generic functional component/runtime names;
-- one generic approved PRD template;
-- no version-labelled presentation patch stack;
-- renderer does not inject UI patch layers;
-- Flow owner docs point to the nearest authority instead of repeating competing procedures;
-- Flow 2 uses one integrated readiness pass rather than many ritualized scan stages;
-- mechanical validator uses generic `required_content` / `document_page_composition` terminology rather than acting as a semantic reference reviewer;
-- unused legacy rendering helper/vocabulary is removed rather than retained for hypothetical compatibility.
+1. **Glossary role visibility** — omitted `roles` now means all package reader roles; explicit roles constrain both inline glossary highlighting and Terms Used through role-scoped glossary data.
+2. **Reset / Interruption result** — `developer.reset_result` is mandatory, so a reset requirement cannot render with a blank Expected System Result.
+3. **Acceptance lens persistence** — Flow 4 acceptance records and handoff validation now require explicit `Acceptance: PASS` in addition to New Reader, Level Designer, Developer, and Project Consistency.
 
-## Current proof
-
-Latest focused PRD gate covering the current renderer/validator/contracts and simplified kit owners:
+Focused contract proof after these corrections:
 
 ```text
-PRD Verify #99 — PASS
+PRD Verify #108 — PASS
 ```
 
-This is repository/regression evidence. It proves current deterministic contracts compile and pass their focused tests.
+This proves the corrected deterministic contracts compile and pass the focused PRD regression suite.
+
+## Representative AFTERSHOCK test — Flow 2 result
+
+Representative testing has now started using the current authoritative AFTERSHOCK `Gameplay Development Specification | FINAL v2.4` plus the approved Golden Sample as a document-quality/reference source.
+
+Flow 2 found a real material scoring conflict and correctly **did not** advance to Flow 3:
+
+- current v2.4 explicitly forbids player-facing scores/results and excludes scores/aggregates/interpretations from raw telemetry;
+- current v2.4 records objective-specific progress/outcome data but does not define an internal Objective Score formula;
+- the older Golden Sample contains internal Quarry/Ascent/Beacon/Relay scoring and Final Total, but several Golden scoring formulas depend on mechanics that no longer match v2.4;
+- therefore `No Objective Score` cannot be inferred from display/export prohibitions, while old Golden formulas also cannot be copied as current project truth.
+
+Examples of material mechanic drift include:
+
+```text
+Quarry
+v2.4 → timed mining/deposit milestones + optional no-reward stretch
+old Golden scoring → Time Score + Surplus Score
+
+Beacon
+v2.4 → guided Beacon Brick build + deterministic 25%/35% storm removal
+old Golden scoring → Time Score + Storm Exposure model
+
+Relay
+v2.4 → waypoint braziers + repeated gale pushback
+old Golden scoring → previous relay/cable scoring model
+```
+
+This is a **correct Flow 2 block**, not a renderer failure. Inventing a new scoring formula or silently restoring incompatible Golden mechanics would violate current authority and the mandatory-slot contract.
 
 ## Evidence boundary
 
-Not yet proven on a fresh representative project:
+Not yet proven on a fresh representative final artifact:
 
-- end-to-end source recovery quality from uneven real material;
-- real-project prose/Humanize quality;
+- Flow 3 Humanize quality on the resolved AFTERSHOCK project;
+- complete role-page semantic parity after current scoring is resolved;
 - actual browser/desktop visual quality;
-- glossary hover/click behavior in a newly generated real artifact;
-- universal behavior for every future project shape.
+- glossary hover/click behavior in the new representative artifact;
+- Flow 4 handoff on the representative artifact.
 
-Static/regression evidence is not presented as semantic or visual proof.
-
-## Deliberately not added
-
-- no extra workflow stages;
-- no generic schema/naming framework;
-- no word-count/row-count/semantic-similarity quality score;
-- no DOM/pixel snapshot framework;
-- no additional checksum chain;
-- no second glossary system;
-- no mobile QA by default;
-- no unrelated Voice changes.
-
-The existing `content.md → render-data.json` SHA remains a stale-projection binding only, not semantic proof.
+The representative test is paused at the first material unresolved decision rather than manufacturing downstream output.
 
 ## Current flow evidence
 
 | Flow | Evidence state |
 |---|---|
 | Flow 1 | repository/static proof current |
-| Flow 2 | recovery/readiness contract current; representative project proof pending |
-| Flow 3 | content contract + generic template/render regression proof current; representative semantic/desktop proof pending |
-| Flow 4 | mechanical + semantic acceptance boundary current; representative proof pending |
+| Flow 2 | representative test correctly detected current AFTERSHOCK scoring ambiguity and blocked downstream authoring |
+| Flow 3 | deterministic contracts current; representative authoring waits for scoring resolution |
+| Flow 4 | corrected Acceptance/handoff contract current; representative review waits for Flow 3 output |
 | Flow 5–7 | unchanged; Voice verification remains separate |
 
 ## Current boundary
 
-PRD Flow 2–4 is not declared end-to-end proven yet. Representative semantic/desktop testing remains intentionally on hold until explicitly requested.
+PRD Flow 2–4 is not yet end-to-end proven. The next representative action must resolve the current AFTERSHOCK internal scoring model from current authority/approved decision before Flow 3 can continue.
