@@ -23,6 +23,10 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 WEIGHT_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%?\s*$")
 INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
 INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
+FLOW2_REQUIRED_STATE = {
+    "source-inventory.yaml": "SRC",
+    "requirement-register.yaml": "REQ",
+}
 FLOW2_EXPLICIT_BLOCKERS = {
     "requirement-register.yaml": {
         "approval_status": {"pending"},
@@ -119,31 +123,166 @@ def flow2_readiness(path: Path) -> tuple[bool, str]:
     return True, "Flow 2 intake state explicitly reports ready_for_prd"
 
 
+def _clean_state_scalar(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        value = value[1:-1].strip()
+    return value
+
+
+def _flow2_state_entries(path: Path, prefix: str) -> list[dict[str, Any]]:
+    """Read only stable Flow 2 list entries and their scalar fields.
+
+    This is intentionally bounded to the existing SRC/REQ state shape. It is not
+    a generic YAML parser or schema validator.
+    """
+    entries: list[dict[str, Any]] = []
+    current: dict[str, Any] | None = None
+
+    for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        candidate = line[1:].lstrip() if line.startswith("-") else line
+        if ":" not in candidate:
+            continue
+        key, raw_value = candidate.split(":", 1)
+        key = key.strip()
+        value = _clean_state_scalar(raw_value)
+
+        if key == "id" and re.fullmatch(rf"{re.escape(prefix)}-\d+", value):
+            current = {"id": value, "line": lineno, "fields": {}}
+            entries.append(current)
+            continue
+
+        if current is not None:
+            current["fields"][key] = (value, lineno)
+
+    return entries
+
+
 def flow2_persisted_state_consistency(project: Path) -> tuple[bool, str]:
     findings: list[str] = []
+    parsed: dict[str, list[dict[str, Any]]] = {}
 
-    for filename, rules in FLOW2_EXPLICIT_BLOCKERS.items():
+    for filename, prefix in FLOW2_REQUIRED_STATE.items():
         path = project / "state" / filename
         if not path.is_file():
+            findings.append(f"missing required Flow 2 persisted state: state/{filename}")
+            parsed[filename] = []
             continue
-        for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-            line = raw.split("#", 1)[0].strip()
-            if not line or ":" not in line:
-                continue
-            if line.startswith("-"):
-                line = line[1:].lstrip()
-            key, value = line.split(":", 1)
-            key = key.strip()
-            value = value.strip()
-            if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
-                value = value[1:-1].strip()
-            normalized = value.casefold()
-            if key in rules and normalized in rules[key]:
-                findings.append(f"{filename}:{lineno} {key}={value!r}")
+        entries = _flow2_state_entries(path, prefix)
+        parsed[filename] = entries
+        if not entries:
+            findings.append(f"{filename} must contain at least one {prefix}-### entry before ready_for_prd")
+
+    for filename, rules in FLOW2_EXPLICIT_BLOCKERS.items():
+        for entry in parsed.get(filename, []):
+            fields: dict[str, tuple[str, int]] = entry["fields"]
+            if filename == "source-inventory.yaml":
+                source_status = fields.get("status", ("current", entry["line"]))[0].casefold()
+                if source_status == "superseded":
+                    continue
+            for key, blocked_values in rules.items():
+                field = fields.get(key)
+                if field is None:
+                    continue
+                value, lineno = field
+                if value.casefold() in blocked_values:
+                    findings.append(f"{filename}:{lineno} {entry['id']} {key}={value!r}")
 
     if findings:
-        return False, "explicit persisted Flow 2 blocker(s): " + "; ".join(findings)
-    return True, "no explicit persisted Flow 2 blocker marker contradicts ready_for_prd"
+        return False, "Flow 2 persisted-state contradiction(s): " + "; ".join(findings)
+    return True, "required Flow 2 state is present and no unambiguous current blocker contradicts ready_for_prd"
+
+
+def _has_text(value: Any) -> bool:
+    return bool(text_en(value).strip())
+
+
+def _has_dict_entry(value: Any) -> bool:
+    return isinstance(value, list) and any(isinstance(item, dict) for item in value)
+
+
+def _has_requirement_rows(groups: Any) -> bool:
+    if not isinstance(groups, list):
+        return False
+    for group in groups:
+        if not isinstance(group, dict):
+            continue
+        items = group.get("items") or group.get("objects") or []
+        if any(isinstance(item, dict) for item in items):
+            return True
+    return False
+
+
+def _has_narrative_beat(item: dict[str, Any]) -> bool:
+    explicit = item.get("beats")
+    if isinstance(explicit, list):
+        for beat in explicit:
+            if isinstance(beat, dict) and (
+                _has_text(beat.get("description")) or _has_text(beat.get("details"))
+            ):
+                return True
+    return any(
+        _has_text(item.get(key))
+        for key in (
+            "player_experience",
+            "main_obstacle_or_change",
+            "player_result",
+            "narrative_context",
+        )
+    )
+
+
+def golden_required_content_errors(data: dict[str, Any]) -> list[str]:
+    """Check only deterministic content slots already declared required by Golden."""
+    failures: list[str] = []
+
+    for item in data.get("gameplay_flow", []):
+        if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+            continue
+        flow_id = item["id"]
+        if not _has_text(item.get("title")):
+            failures.append(f"flow-{flow_id}: title is required")
+        if not _has_narrative_beat(item):
+            failures.append(f"flow-{flow_id}: at least one narrative beat/context is required")
+
+    for item in data.get("global_development", []):
+        if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+            continue
+        global_id = item["id"]
+        if not _has_text(item.get("overview")):
+            failures.append(f"global-{global_id}: overview is required")
+        if not _has_requirement_rows(item.get("requirements")):
+            failures.append(f"global-{global_id}: at least one Development Requirement row is required")
+
+    for pkg in data.get("packages", []):
+        if not isinstance(pkg, dict) or not isinstance(pkg.get("id"), str):
+            continue
+        pid = pkg["id"]
+        gameplay = pkg.get("gameplay") if isinstance(pkg.get("gameplay"), dict) else {}
+        level = pkg.get("level_design") if isinstance(pkg.get("level_design"), dict) else {}
+        developer = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
+
+        if not (_has_text(gameplay.get("context")) or _has_text(gameplay.get("overview"))):
+            failures.append(f"package-{pid}: Gameplay Context is required")
+        if not _has_text(gameplay.get("main_objective")):
+            failures.append(f"package-{pid}: Main Objective is required")
+        if not _has_text(gameplay.get("result")):
+            failures.append(f"package-{pid}: Result is required")
+        if not _has_dict_entry(gameplay.get("player_flow")):
+            failures.append(f"package-{pid}: at least one player_flow step is required")
+
+        if not _has_text(level.get("overview")):
+            failures.append(f"package-{pid}: Level Design overview is required")
+        if not _has_requirement_rows(level.get("requirements")):
+            failures.append(f"package-{pid}: at least one Build Requirement row is required")
+
+        if not _has_text(developer.get("overview")):
+            failures.append(f"package-{pid}: Developer overview is required")
+
+    return failures
 
 
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
@@ -329,6 +468,16 @@ def validate(project: Path) -> dict[str, Any]:
                         total = sum(parsed_weights)
                         if abs(total - 100.0) > 1e-9:
                             errors.append(f"package_{pid}: scoring weights total {total:g}, expected 100")
+
+    if structure_ok:
+        required_content = golden_required_content_errors(data)
+        check(
+            "golden_required_content",
+            not required_content,
+            "required Golden content slots are populated"
+            if not required_content
+            else "; ".join(required_content),
+        )
 
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
