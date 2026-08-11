@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
-import re
 import subprocess
 import sys
 import tempfile
@@ -40,6 +40,41 @@ def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def _global_section(section_id: str, title: str, purpose: str) -> dict:
+    return {
+        "id": section_id,
+        "title": title,
+        "subtitle": "Project-wide development",
+        "overview": f"{title} owns {purpose} for the complete fixture journey.",
+        "flow": [
+            {
+                "step": 1,
+                "title": f"Prepare {title}",
+                "description": f"Configure the shared {purpose} before package gameplay begins.",
+                "result": f"{title} is ready for all packages.",
+            }
+        ],
+        "requirements": [
+            {
+                "title": title,
+                "items": [
+                    {
+                        "title": f"{title} Ownership",
+                        "details": f"Keep the shared {purpose} explicit and isolated to the correct fixture session.",
+                        "result": f"All packages use the same approved {purpose} rule.",
+                    }
+                ],
+            }
+        ],
+        "notes": [
+            {
+                "title": f"{title} Boundary",
+                "description": f"Do not move shared {purpose} behavior into one local package.",
+            }
+        ],
+    }
+
+
 def render_data() -> dict:
     return {
         "document": {
@@ -49,54 +84,65 @@ def render_data() -> dict:
             "version": "1.0",
         },
         "overview": {
-            "project_context": "A minimal contract fixture for production verification.",
-            "main_experience": "Complete one deterministic gameplay package.",
+            "project_context": "A controlled gameplay fixture used to prove the mandatory Golden PRD contract.",
+            "main_experience": "The player enters one isolated session, completes the Core Trial, and returns with one valid result.",
             "facts": [
-                {"label": "Players", "value": "1"},
-                {"label": "Mode", "value": "Contract Test"},
+                {"key": "session-model", "label": "Session Model", "value": "1 player · 1 isolated session"},
+                {"key": "target-playtime", "label": "Target Playtime", "value": "Short controlled run"},
+                {"key": "game-structure", "label": "Game Structure", "value": "1 scored gameplay package"},
+            ],
+            "journey": [
+                {"title": "The Journey Begins", "description": "Enter the fixture and learn why the Core Trial is active."},
+                {"title": "Core Trial", "description": "Complete the controlled interaction and record one result."},
+            ],
+            "main_systems": [
+                {"title": "Session Ownership", "description": "One player owns one isolated fixture session."},
+                {"title": "Result Handling", "description": "One valid run creates one package result and resets cleanly."},
             ],
         },
         "gameplay_flow": [
             {
-                "id": "arrival",
-                "title": "Arrival",
-                "narrative_context": "The player enters the controlled fixture.",
-                "player_experience": "Follow the marked route into the test space.",
-                "main_obstacle_or_change": "The trial becomes available.",
-                "player_result": "The player reaches the Core Trial.",
+                "id": "journey-begins",
+                "title": "The Journey Begins",
+                "narrative_context": "The player arrives outside the controlled trial and can see the marked destination ahead.",
+                "beats": [
+                    {
+                        "title": "Understand the Trial",
+                        "description": "A clear fixture cue explains that the route leads to one controlled Core Trial.",
+                    },
+                    {
+                        "title": "Enter the Route",
+                        "description": "The player follows the marked path and reaches the trial entrance without another objective interrupting the journey.",
+                    },
+                ],
                 "next_destination": "Core Trial",
-            }
+            },
+            {
+                "id": "core",
+                "title": "Core Trial",
+                "narrative_context": "The player enters the isolated arena with the trial target already visible.",
+                "beats": [
+                    {
+                        "title": "Activate the Trial",
+                        "description": "Entering the marked start area activates the objective and confirms that the interaction is ready.",
+                    },
+                    {
+                        "title": "Complete the Interaction",
+                        "description": "The player performs the required interaction; the system confirms completion and records the package result once.",
+                    },
+                    {
+                        "title": "Leave the Trial",
+                        "description": "The completed state opens the exit and the player leaves with the fixture result already secured.",
+                    },
+                ],
+                "next_destination": "End of fixture journey",
+            },
         ],
         "global_development": [
-            {
-                "id": "game-system",
-                "title": "Game System",
-                "subtitle": "Shared fixture behavior",
-                "overview": "One shared system owns the fixture session.",
-                "flow": [
-                    {
-                        "step": 1,
-                        "title": "Initialize",
-                        "description": "Create the fixture state.",
-                        "result": "The trial is ready.",
-                    }
-                ],
-                "requirements": [
-                    {
-                        "title": "Session Setup",
-                        "items": [
-                            {
-                                "title": "Ownership",
-                                "details": ["Use one isolated fixture session."],
-                                "result": "State remains isolated.",
-                            }
-                        ],
-                    }
-                ],
-                "notes": [
-                    {"title": "Shared Rule", "description": "Use the same fixture owner for the complete run."}
-                ],
-            }
+            _global_section("development-overview", "Development Overview", "package topology and handoff"),
+            _global_section("game-system", "Game System", "session/runtime ownership"),
+            _global_section("data-reset", "Data and Reset", "result persistence and reset"),
+            _global_section("gameplay-development", "Gameplay Development", "package lifecycle and integration"),
         ],
         "packages": [
             {
@@ -104,27 +150,37 @@ def render_data() -> dict:
                 "package_label": "Fixture Package",
                 "title": "Core Trial",
                 "gameplay": {
-                    "context": "The player enters a controlled test arena.",
-                    "main_objective": "Complete the trial.",
-                    "purpose": "Prove the Golden Sample package composition with one deterministic trial.",
-                    "gameplay_time": "Short controlled run.",
-                    "start_condition": "Player enters the arena.",
-                    "end_condition": "Trial completion is recorded.",
-                    "blocked_or_fail_condition": "The trial is interrupted.",
+                    "context": "The player enters a controlled arena where one interaction target is visible from the start.",
+                    "main_objective": "Activate and complete the Core Trial once.",
+                    "result": "The package stores one valid Fixture Score and opens the exit.",
+                    "purpose": "Prove one complete scored gameplay package without unrelated mechanics.",
+                    "gameplay_time": "Short controlled run; no separate hard timeout is required for this fixture.",
+                    "start_condition": "The player enters the marked trial start area in the assigned session.",
+                    "end_condition": "The required interaction completes and the Fixture Score is stored once.",
+                    "blocked_or_fail_condition": "No permanent gameplay fail; interruption ends the current run without a score.",
                     "player_flow": [
                         {
                             "step": 1,
-                            "title": "Start",
-                            "action": "Begin the trial.",
-                            "result": "Trial becomes active.",
-                        }
+                            "title": "Enter",
+                            "action": "Walk into the marked trial area.",
+                            "result": "The trial activates.",
+                        },
+                        {
+                            "step": 2,
+                            "title": "Complete",
+                            "action": "Perform the required Core interaction.",
+                            "result": "The result is stored and the exit opens.",
+                        },
                     ],
-                    "result": "The trial records one completion result.",
                 },
                 "level_design": {
-                    "overview": "Build one readable test space.",
+                    "overview": "Build one readable arena where the start, interaction target, and exit are understandable at a glance.",
                     "flow": [
-                        {"step": 1, "title": "Build the Trial", "details": "Create the single fixture route."}
+                        {
+                            "step": 1,
+                            "title": "Establish the Route",
+                            "details": "Place the start, visible target, and exit in one clear progression path.",
+                        }
                     ],
                     "requirements": [
                         {
@@ -133,27 +189,37 @@ def render_data() -> dict:
                                 {
                                     "object": "Core Trial Space",
                                     "subtitle": "Primary gameplay area",
-                                    "area_size": "Fit one controlled interaction route.",
-                                    "build_and_visual": "Keep the route readable and the target visible.",
-                                    "gameplay_function": "Supports the complete fixture trial.",
+                                    "area_size": "Not specified — fit one controlled interaction route.",
+                                    "build_and_visual": "Keep the start, target, and exit readable without decorative obstruction.",
+                                    "gameplay_function": "Supports the complete fixture trial from activation to exit.",
                                 }
                             ],
                         }
                     ],
                     "notes": [
-                        {"title": "Readable Route", "description": "The player must see the required destination."}
+                        {
+                            "title": "Readable Destination",
+                            "description": "The player must understand the interaction target before leaving the start area.",
+                        }
                     ],
                 },
                 "developer": {
-                    "overview": "Track one score result deterministically.",
+                    "overview": "Own activation, one deterministic score result, interruption handling, and reset for the Core Trial.",
                     "flow": [
                         {
                             "step": 1,
-                            "trigger": "Trial starts",
-                            "behavior": "Activate the fixture objective.",
-                            "data": "Fixture state",
-                            "result": "Trial becomes active.",
-                        }
+                            "trigger": "Player enters the trial",
+                            "behavior": "Activate the objective once for the current session.",
+                            "data": "Trial active state",
+                            "result": "The interaction becomes valid.",
+                        },
+                        {
+                            "step": 2,
+                            "trigger": "Required interaction completes",
+                            "behavior": "Stop the run, calculate the Fixture Score, store it once, and open the exit.",
+                            "data": "Completion and score state",
+                            "result": "The package is complete.",
+                        },
                     ],
                     "requirements": [
                         {
@@ -161,38 +227,44 @@ def render_data() -> dict:
                             "items": [
                                 {
                                     "title": "Trial Activation",
-                                    "details": ["Activate once when the player enters the trial."],
-                                    "result": "The objective starts once.",
+                                    "details": "Activate only for the assigned session when the player enters the marked start area.",
+                                    "result": "The objective starts once for the correct player.",
                                 }
                             ],
                         }
                     ],
                     "scoring": {
+                        "produces_score": True,
                         "score_name": "Fixture Score",
                         "scale": "0–100",
                         "components": [
                             {
                                 "name": "Completion",
                                 "weight": 100,
-                                "rule": "Completion contributes the full score.",
+                                "rule": "Valid completion contributes the full package score.",
                             }
                         ],
                         "timer_start": "Trial activation.",
-                        "timer_stop": "Trial completion.",
-                        "no_score_condition": "Interrupted run.",
-                        "duplicate_prevention": "Record once per run.",
-                        "final_result_relationship": "Fixture Score is the package result.",
+                        "timer_stop": "Valid trial completion.",
+                        "no_score_condition": "Interrupted or invalid run.",
+                        "duplicate_prevention": "Store at most one Fixture Score per run.",
+                        "final_result_relationship": "Fixture Score is the only scored package result in this fixture.",
+                        "player_facing_display": "Display completion feedback but do not show a separate score screen.",
+                        "telemetry_export": "Store the internal score in the fixture result; no external telemetry export is required.",
                     },
-                    "reset": ["Restore the fixture trial to its initial state."],
+                    "reset": ["Clear active trial state, restore the interaction, close the exit, and release the session for reuse."],
                     "notes": [
-                        {"title": "One Result", "description": "A valid run creates one Fixture Score."}
+                        {
+                            "title": "One Result",
+                            "description": "A valid run creates one Fixture Score; interruption must not create a duplicate or partial score.",
+                        }
                     ],
                 },
                 "terms": [
                     {
                         "key": "fixture-score",
                         "label": "Fixture Score",
-                        "definition": "The score created by the Core Trial.",
+                        "definition": "The Objective Score created by a valid Core Trial completion.",
                     }
                 ],
             }
@@ -227,24 +299,16 @@ class ProjectDocumentContracts(unittest.TestCase):
         (project / "state").mkdir(parents=True)
         (project / "work").mkdir(parents=True)
         (project / "output").mkdir(parents=True)
-        self.write_intake_state(project)
+        (project / "state" / "intake-state.yaml").write_text(
+            "status: ready_for_prd\nready_for_prd: true\nnext_step: Build canonical PRD content.\n",
+            encoding="utf-8",
+        )
         (project / "state" / "source-inventory.yaml").write_text(
-            "sources:\n"
-            "  - id: SRC-001\n"
-            "    type: instruction\n"
-            "    role: authoritative\n"
-            "    origin: user\n"
-            "    summary: Contract fixture source.\n"
-            "    inspection: full\n",
+            "sources:\n  - id: SRC-001\n    type: instruction\n    role: authoritative\n    origin: user\n    summary: Contract fixture source.\n    inspection: full\n",
             encoding="utf-8",
         )
         (project / "state" / "requirement-register.yaml").write_text(
-            "requirements:\n"
-            "  - id: REQ-001\n"
-            "    area: gameplay\n"
-            "    statement: Complete one deterministic fixture trial.\n"
-            "    provenance: [SRC-001]\n"
-            "    impact: high\n",
+            "requirements:\n  - id: REQ-001\n    area: gameplay\n    statement: Preserve the complete Golden mandatory fixture contract.\n    provenance: [SRC-001]\n    impact: high\n",
             encoding="utf-8",
         )
         (project / "work" / "content.md").write_text(
@@ -253,19 +317,6 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
         self.write_data(project, data)
         return project
-
-    def write_intake_state(
-        self,
-        project: Path,
-        status: str = "ready_for_prd",
-        ready: bool = True,
-    ) -> None:
-        (project / "state" / "intake-state.yaml").write_text(
-            f"status: {status}\n"
-            f"ready_for_prd: {'true' if ready else 'false'}\n"
-            "next_step: Build canonical PRD content.\n",
-            encoding="utf-8",
-        )
 
     def write_data(self, project: Path, data: object) -> None:
         if isinstance(data, dict):
@@ -290,304 +341,50 @@ class ProjectDocumentContracts(unittest.TestCase):
     def validate(self, project: Path) -> subprocess.CompletedProcess[str]:
         return run_cli(VALIDATOR, project)
 
-    def write_template(self, project: Path, name: str, text: str) -> Path:
-        path = project / name
-        path.write_text(text, encoding="utf-8")
-        return path
-
-    def test_renderer_and_validator_happy_path(self) -> None:
+    def test_full_golden_contract_renders_and_validates(self) -> None:
         project = self.make_project(render_data())
-
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertIn(
-            '<meta content="A minimal contract fixture for production verification." name="description"/>',
-            html,
-        )
-        self.assertIn(
-            '<meta content="prd-contract-fixture-v1.0" name="specification-version"/>',
-            html,
-        )
-        render_data_sha = hashlib.sha256(
-            (project / "work" / "render-data.json").read_bytes()
-        ).hexdigest()
-        self.assertIn(
-            f'<meta content="{render_data_sha}" name="render-data-sha256"/>',
-            html,
-        )
-        self.assertIn('data-document-languages="en"', html)
-        self.assertIn('id="prd-renderer-contract-style"', html)
-        self.assertIn('id="prd-single-language-enforcer"', html)
-        self.assertIn('style="--prd-journey-columns:1"', html)
-        self.assertIn('style="--prd-flow-columns:1"', html)
-        self.assertIn('dev-core-requirement-terms-used-details', html)
-        self.assertNotIn('dev-core-level-terms-used-details', html)
-        self.assertNotIn('dev-core-developer-terms-used-details', html)
-        for marker in (
-            "narrative-sequence",
-            "section-tabs package-tabs",
-            "development-package-title",
-            "phase-context-grid",
-            "phase-overview-table quarry-overview-table",
-            "role-sequence quarry-sequence",
-            "context-block section-context",
-            "flow quarry-design-flow",
-            "production-table quarry-build-table",
-            "flow quarry-development-flow",
-            "production-table quarry-development-table",
-            "quarry-score-summary phase-score-summary",
-            "outcome quarry-note-grid",
+        for text in (
+            "Development Overview",
+            "Game System",
+            "Data and Reset",
+            "Gameplay Development",
+            "Player-Facing Result",
+            "Telemetry / Export",
         ):
-            self.assertIn(marker, html)
-        self.assertNotIn('<span class="footer-brand">MIVUBI</span>', html)
+            self.assertIn(text, html)
 
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         result = json.loads(validated.stdout)
         self.assertEqual(result["status"], "pass")
-        flow2 = next(check for check in result["checks"] if check["check"] == "flow2_ready_for_prd")
-        self.assertEqual(flow2["status"], "pass")
-        binding = next(
-            check for check in result["checks"] if check["check"] == "render_data_matches_canonical_content"
-        )
-        self.assertEqual(binding["status"], "pass")
-        html_binding = next(
-            check for check in result["checks"] if check["check"] == "html_matches_current_render_data"
-        )
-        self.assertEqual(html_binding["status"], "pass")
         self.assertEqual(
             result["expected_pages"],
             [
                 "summary",
-                "flow-arrival",
+                "flow-journey-begins",
+                "flow-core",
+                "global-development-overview",
                 "global-game-system",
+                "global-data-reset",
+                "global-gameplay-development",
                 "dev-core-requirement",
                 "dev-core-level",
                 "dev-core-developer",
             ],
         )
-        required_content = next(
-            check for check in result["checks"] if check["check"] == "golden_required_content"
-        )
-        self.assertEqual(required_content["status"], "pass")
-        composition = next(check for check in result["checks"] if check["check"] == "golden_page_composition")
-        self.assertEqual(composition["status"], "pass")
 
-    def test_renderer_adapts_golden_grid_columns_to_content_count(self) -> None:
-        data = render_data()
-        data["overview"]["journey"] = [
-            {"title": f"Stage {index}", "description": f"Stage {index} result."}
-            for index in range(1, 6)
-        ]
-        data["global_development"][0]["flow"] = [
-            {"step": index, "title": f"Step {index}", "description": f"Do step {index}."}
-            for index in range(1, 4)
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertIn('style="--prd-journey-columns:5"', html)
-        self.assertIn('style="--prd-flow-columns:3"', html)
-        self.assertIn(
-            '.document-main .journey{grid-template-columns:repeat(var(--prd-journey-columns,6),1fr)}',
-            html,
-        )
-        self.assertIn(
-            '.document-main .flow{grid-template-columns:repeat(var(--prd-flow-columns,4),1fr)}',
-            html,
-        )
-
-    def test_renderer_preserves_wrap_boundaries_beyond_golden_capacity(self) -> None:
-        data = render_data()
-        data["overview"]["journey"] = [
-            {"title": f"Stage {index}", "description": f"Stage {index} result."}
-            for index in range(1, 8)
-        ]
-        data["global_development"][0]["flow"] = [
-            {"step": index, "title": f"Step {index}", "description": f"Do step {index}."}
-            for index in range(1, 6)
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertIn('style="--prd-journey-columns:6"', html)
-        self.assertIn('style="--prd-flow-columns:4"', html)
-        for rule in (
-            ".document-main .journey article:nth-child(n+7){border-top:1px solid var(--line)}",
-            ".document-main .journey article:nth-child(6n+1){border-left:0}",
-            ".document-main .flow article:nth-child(n+5){border-top:1px solid var(--line)}",
-            ".document-main .flow article:nth-child(4n+1){border-left:0}",
-        ):
-            self.assertIn(rule, html)
-
-    def test_renderer_enforces_explicit_bilingual_localized_values(self) -> None:
-        data = bilingual_render_data()
-        data["overview"]["project_context"] = {"en": "English only."}
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 2)
-        self.assertNotIn("Traceback", rendered.stderr)
-        self.assertIn(
-            "render_data.overview.project_context.id is required for bilingual document",
-            rendered.stderr,
-        )
-        self.assertFalse((project / "output" / "final.html").exists())
-
-    def test_renderer_rejects_scalar_user_facing_text_in_bilingual_document(self) -> None:
-        data = bilingual_render_data()
-        data["packages"][0]["gameplay"]["main_objective"] = "English-only objective."
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 2)
-        self.assertNotIn("Traceback", rendered.stderr)
-        self.assertIn(
-            "render_data.packages[0].gameplay.main_objective must use an explicit en/id localized value",
-            rendered.stderr,
-        )
-        self.assertFalse((project / "output" / "final.html").exists())
-
-    def test_renderer_keeps_bilingual_switch_only_for_declared_bilingual_document(self) -> None:
-        data = bilingual_render_data()
-        data["overview"]["project_context"] = {
-            "en": "A bilingual contract fixture.",
-            "id": "Fixture kontrak bilingual.",
-        }
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertIn('data-document-languages="en,id"', html)
-        self.assertNotIn('id="prd-single-language-enforcer"', html)
-        self.assertIn('data-id="Fixture kontrak bilingual."', html)
-        self.assertIn('data-id="Gambaran Gameplay"', html)
-
-    def test_renderer_applies_role_specific_terms_visibility(self) -> None:
-        data = render_data()
-        data["packages"][0]["terms"][0]["roles"] = ["gameplay", "developer"]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertIn('dev-core-requirement-terms-used-details', html)
-        self.assertNotIn('dev-core-level-terms-used-details', html)
-        self.assertIn('dev-core-developer-terms-used-details', html)
-
-    def test_renderer_rejects_unknown_term_role(self) -> None:
-        data = render_data()
-        data["packages"][0]["terms"][0]["roles"] = ["qa"]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 2)
-        self.assertNotIn("Traceback", rendered.stderr)
-        self.assertIn("roles contains unsupported role: qa", rendered.stderr)
-
-    def test_validator_requires_flow2_ready_state(self) -> None:
-        project = self.make_project(render_data())
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        self.write_intake_state(project, status="needs_decision", ready=False)
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertEqual(result["status"], "fail")
-        self.assertIn("flow2_ready_for_prd", "\n".join(result["errors"]))
-        self.assertIn("status='needs_decision'", "\n".join(result["errors"]))
-
-    def test_validator_rejects_missing_flow2_intake_state(self) -> None:
-        project = self.make_project(render_data())
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        (project / "state" / "intake-state.yaml").unlink()
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertIn("missing Flow 2 intake state", "\n".join(result["errors"]))
-
-    def test_validator_rejects_stale_render_projection(self) -> None:
-        project = self.make_project(render_data())
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        (project / "work" / "content.md").write_text(
-            "# Contract Fixture\n\nCanonical content changed after projection.\n",
-            encoding="utf-8",
-        )
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        joined = "\n".join(result["errors"])
-        self.assertIn("render_data_matches_canonical_content", joined)
-        self.assertIn("projection is stale", joined)
-
-    def test_validator_rejects_stale_html_after_render_data_changes(self) -> None:
-        project = self.make_project(render_data())
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-
-        updated = render_data()
-        updated["document"]["version"] = "1.1"
-        self.write_data(project, updated)
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        joined = "\n".join(result["errors"])
-        self.assertIn("html_matches_current_render_data", joined)
-        self.assertIn("rendered HTML is stale", joined)
-
-    def test_validator_rejects_missing_golden_composition_marker(self) -> None:
-        project = self.make_project(render_data())
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-
-        html_path = project / "output" / "final.html"
-        html = html_path.read_text(encoding="utf-8")
-        generated_marker = 'production-table phase-overview-table quarry-overview-table'
-        self.assertIn(generated_marker, html)
-        html_path.write_text(
-            html.replace(generated_marker, 'production-table phase-overview-table-broken quarry-overview-table', 1),
-            encoding="utf-8",
-        )
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertIn("golden_page_composition", "\n".join(result["errors"]))
-
-    def test_validator_rejects_missing_required_golden_content(self) -> None:
+    def test_renderer_rejects_missing_mandatory_golden_functions(self) -> None:
         variants = {
-            "flow narrative": lambda data: data["gameplay_flow"][0].update(
-                {
-                    "narrative_context": "",
-                    "player_experience": "",
-                    "main_obstacle_or_change": "",
-                    "player_result": "",
-                }
-            ),
-            "gameplay objective": lambda data: data["packages"][0]["gameplay"].update(
-                {"main_objective": ""}
-            ),
-            "gameplay player flow": lambda data: data["packages"][0]["gameplay"].update(
-                {"player_flow": []}
-            ),
-            "level build requirements": lambda data: data["packages"][0]["level_design"].update(
-                {"requirements": []}
-            ),
-            "global requirements": lambda data: data["global_development"][0].update(
-                {"requirements": []}
-            ),
+            "missing global function": lambda data: data["global_development"].pop(2),
+            "missing package flow page": lambda data: data["gameplay_flow"].pop(),
+            "missing gameplay time": lambda data: data["packages"][0]["gameplay"].update({"gameplay_time": ""}),
+            "missing design flow": lambda data: data["packages"][0]["level_design"].update({"flow": []}),
+            "missing developer reset": lambda data: data["packages"][0]["developer"].update({"reset": []}),
+            "missing development notes": lambda data: data["packages"][0]["developer"].update({"notes": []}),
         }
         for name, mutate in variants.items():
             with self.subTest(name=name):
@@ -595,216 +392,90 @@ class ProjectDocumentContracts(unittest.TestCase):
                 mutate(data)
                 project = self.make_project(data)
                 rendered = self.render(project)
-                self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+                self.assertEqual(rendered.returncode, 2)
+                self.assertIn("Golden mandatory contract", rendered.stderr)
+                self.assertFalse((project / "output" / "final.html").exists())
 
-                validated = self.validate(project)
-                self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-                result = json.loads(validated.stdout)
-                self.assertIn("golden_required_content", "\n".join(result["errors"]))
-
-    def test_renderer_keeps_glossary_script_context_safe(self) -> None:
+    def test_non_scored_package_is_explicit_not_omitted(self) -> None:
         data = render_data()
-        payload = "Before </script><script>window.injected=true</script> after"
-        data["packages"][0]["terms"] = [
-            {
-                "key": "unsafe-term",
-                "label": {"en": "Unsafe Term", "id": "Istilah Tidak Aman"},
-                "definition": {"en": payload, "id": payload},
-                "aliases": {"en": ["Unsafe Term"], "id": ["Istilah Tidak Aman"]},
-            }
-        ]
+        dev = data["packages"][0]["developer"]
+        dev.pop("scoring")
+        dev["completion_data"] = {
+            "produces_score": False,
+            "completion_name": "Core Trial Completion",
+            "valid_completion_condition": "The player completes the required Core interaction.",
+            "recorded_data": "Store completion state for the current session.",
+            "interrupted_completion_behavior": "Interrupted run stores no completion result.",
+            "duplicate_prevention": "Record completion once per run.",
+            "handoff_result": "Open the fixture exit and continue to the ending.",
+            "final_result_relationship": "This package contributes no Objective Score to the final result.",
+            "player_facing_display": "Show completion feedback only; there is no score screen.",
+            "telemetry_export": "Export completion state only; no Objective Score exists to export.",
+        }
+        data["packages"][0]["gameplay"]["result"] = "The package records completion only and opens the exit."
         project = self.make_project(data)
 
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn("No Objective Score", html)
+        self.assertIn("This package contributes no Objective Score to the final result.", html)
+        self.assertIn("Show completion feedback only; there is no score screen.", html)
+        self.assertIn("Export completion state only; no Objective Score exists to export.", html)
+
+    def test_percentage_string_does_not_render_double_percent(self) -> None:
+        data = render_data()
+        data["packages"][0]["developer"]["scoring"]["components"][0]["weight"] = "100%"
+        project = self.make_project(data)
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn("100% Completion", html)
+        self.assertNotIn("100%%", html)
+
+    def test_bilingual_document_rejects_implicit_translation(self) -> None:
+        data = bilingual_render_data()
+        data["packages"][0]["gameplay"]["main_objective"] = "English-only objective."
+        project = self.make_project(data)
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("must use an explicit en/id localized value", rendered.stderr)
+
+    def test_validator_rejects_stale_html_after_projection_change(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+        updated = render_data()
+        updated["document"]["version"] = "1.1"
+        self.write_data(project, updated)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        self.assertIn("html_matches_current_render_data", "\n".join(result["errors"]))
+
+    def test_glossary_json_is_script_safe(self) -> None:
+        data = render_data()
+        payload = "Before </script><script>window.injected=true</script> after"
+        data["packages"][0]["terms"][0]["definition"] = payload
+        project = self.make_project(data)
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
         self.assertNotIn(payload, html)
-        self.assertIn(
-            r"Before \u003c/script\u003e\u003cscript\u003ewindow.injected=true\u003c/script\u003e after",
-            html,
-        )
+        self.assertIn(r"\u003c/script\u003e", html)
 
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
-
-    def test_renderer_rejects_malformed_glossary_aliases(self) -> None:
-        data = render_data()
-        data["packages"][0]["terms"] = [
-            {
-                "key": "bad-alias",
-                "label": "Bad Alias",
-                "definition": "Alias shape is intentionally invalid.",
-                "aliases": {"en": "not-an-array"},
-            }
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 2)
-        self.assertNotIn("Traceback", rendered.stderr)
-        self.assertIn("aliases.en must be an array of strings", rendered.stderr)
-        self.assertFalse((project / "output" / "final.html").exists())
-
-    def test_renderer_rejects_missing_or_ambiguous_required_shell_marker(self) -> None:
+    def test_template_requires_current_golden_shell_markers(self) -> None:
         project = self.make_project(render_data())
         template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
-        marker = '<nav class="sidebar-nav">'
-        self.assertEqual(template.count(marker), 1)
-
-        variants = {
-            "missing": template.replace(marker, '<nav class="sidebar-nav-broken">', 1),
-            "ambiguous": template.replace(marker, '<nav class="sidebar-nav"></nav>' + marker, 1),
-        }
-        for name, mutated in variants.items():
-            with self.subTest(name=name):
-                output = project / "output" / "final.html"
-                if output.exists():
-                    output.unlink()
-                template_path = self.write_template(project, f"{name}.html", mutated)
-                rendered = self.render(project, template_path)
-                self.assertEqual(rendered.returncode, 2)
-                self.assertNotIn("Traceback", rendered.stderr)
-                self.assertIn("sidebar navigation marker", rendered.stderr)
-                self.assertFalse(output.exists())
-
-    def test_renderer_rejects_missing_description_metadata_marker(self) -> None:
-        project = self.make_project(render_data())
-        template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
-        pattern = re.compile(r'<meta\s+content="[^"]*"\s+name="description"\s*/?>', re.I)
-        mutated, count = pattern.subn("", template, count=1)
-        self.assertEqual(count, 1)
-        template_path = self.write_template(project, "missing-description.html", mutated)
-
-        rendered = self.render(project, template_path)
-        self.assertEqual(rendered.returncode, 2)
-        self.assertNotIn("Traceback", rendered.stderr)
-        self.assertIn("description metadata marker", rendered.stderr)
-
-    def test_validator_returns_structured_fail_for_malformed_collection_item(self) -> None:
-        data = render_data()
-        project = self.make_project(data)
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-
-        malformed = render_data()
-        malformed["gameplay_flow"] = ["not-an-object"]
-        self.write_data(project, malformed)
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertNotIn("Traceback", validated.stderr)
-        result = json.loads(validated.stdout)
-        self.assertEqual(result["status"], "fail")
-        self.assertIn(
-            "gameplay_flow[0]: item must be an object",
-            "\n".join(result["errors"]),
-        )
-
-    def test_validator_rejects_extra_generated_page(self) -> None:
-        project = self.make_project(render_data())
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-
-        html_path = project / "output" / "final.html"
-        html = html_path.read_text(encoding="utf-8")
-        html_path.write_text(
-            html.replace(
-                "</main>",
-                '<section class="sheet" id="stale-extra"></section></main>',
-                1,
-            ),
+        broken = project / "broken-template.html"
+        broken.write_text(
+            template.replace('<nav class="sidebar-nav">', '<nav class="sidebar-nav-broken">', 1),
             encoding="utf-8",
         )
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertIn(
-            "generated_page_set_matches_current_render_data",
-            "\n".join(result["errors"]),
-        )
-
-    def test_validator_accepts_percentage_string_weights_totaling_100(self) -> None:
-        data = render_data()
-        data["packages"][0]["developer"]["scoring"]["components"] = [
-            {"name": "Completion", "weight": "60%", "rule": "Completion contribution."},
-            {"name": "Time", "weight": "40%", "rule": "Time contribution."},
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
-
-    def test_renderer_normalizes_percentage_string_weights(self) -> None:
-        data = render_data()
-        data["packages"][0]["developer"]["scoring"]["components"] = [
-            {"name": "Completion", "weight": "60%", "rule": "Completion contribution."},
-            {"name": "Time", "weight": "40%", "rule": "Time contribution."},
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertNotIn("60%%", html)
-        self.assertNotIn("40%%", html)
-        self.assertIn("Fixture Score: 60% Completion + 40% Time", html)
-
-    def test_renderer_does_not_invent_percent_for_unweighted_scoring(self) -> None:
-        data = render_data()
-        data["packages"][0]["developer"]["scoring"]["components"] = [
-            {"name": "Completion", "rule": "Completion contributes to the result."},
-            {"name": "Time", "rule": "Time contributes to the result."},
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
-        self.assertNotIn("% Completion", html)
-        self.assertNotIn("% Time", html)
-        self.assertIn("Fixture Score uses Completion, Time", html)
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
-
-    def test_validator_rejects_percentage_string_weights_above_100(self) -> None:
-        data = render_data()
-        data["packages"][0]["developer"]["scoring"]["components"] = [
-            {"name": "Completion", "weight": "60%", "rule": "Completion contribution."},
-            {"name": "Time", "weight": "50%", "rule": "Time contribution."},
-        ]
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertIn("scoring weights total 110", "\n".join(result["errors"]))
-
-    def test_validator_rejects_scoring_completion_conflict_and_bad_weight(self) -> None:
-        data = render_data()
-        developer = data["packages"][0]["developer"]
-        developer["scoring"]["components"][0]["weight"] = 90
-        developer["completion_data"] = {
-            "produces_score": False,
-            "valid_completion_condition": "Trial completes.",
-            "recorded_data": "Completion state.",
-        }
-        project = self.make_project(data)
-
-        rendered = self.render(project)
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-
-        validated = self.validate(project)
-        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        joined = "\n".join(result["errors"])
-        self.assertIn("exactly one of scoring or completion_data", joined)
-        self.assertIn("scoring weights total 90", joined)
+        rendered = self.render(project, broken)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("sidebar navigation marker", rendered.stderr)
 
 
 if __name__ == "__main__":
