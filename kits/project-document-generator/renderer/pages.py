@@ -530,7 +530,7 @@ def navigation(data: dict[str, Any]) -> str:
             f'<span class="nav-index">03</span><span class="nav-copy">{i18n(bi("Development", "Development"))}</span>'
             f'<span aria-hidden="true" class="group-chevron"></span></button>'
             f'<div class="nav-submenu">{global_links}</div>'
-            f'<div class="nav-submenu package-navigation'>{"".join(package_links)}</div></div>'
+            f'<div class="nav-submenu package-navigation">{"".join(package_links)}</div></div>'
         )
     return "".join(navigation_items)
 
