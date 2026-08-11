@@ -20,6 +20,7 @@ from typing import Any
 OPEN_RE = re.compile(r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]", re.I)
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+WEIGHT_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%?\s*$")
 INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
 INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
 
@@ -75,6 +76,18 @@ def text_en(value: Any) -> str:
     if isinstance(value, dict):
         value = value.get("en") or value.get("id") or ""
     return str(value or "")
+
+
+def scoring_weight(value: Any) -> float | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        match = WEIGHT_RE.fullmatch(value)
+        if match:
+            return float(match.group(1))
+    return None
 
 
 def flow2_readiness(path: Path) -> tuple[bool, str]:
@@ -254,11 +267,26 @@ def validate(project: Path) -> dict[str, Any]:
             errors.append(f"package_{pid}: developer must define exactly one of scoring or completion_data")
         if has_score:
             components = dev["scoring"].get("components", [])
-            numeric_weights = [c.get("weight") for c in components if isinstance(c, dict) and isinstance(c.get("weight"), (int, float))] if isinstance(components, list) else []
-            if numeric_weights and isinstance(components, list) and len(numeric_weights) == len(components):
-                total = sum(numeric_weights)
-                if abs(total - 100.0) > 1e-9:
-                    errors.append(f"package_{pid}: numeric scoring weights total {total}, expected 100")
+            if isinstance(components, list):
+                raw_weights = [
+                    component.get("weight") if isinstance(component, dict) else None
+                    for component in components
+                ]
+                has_weighted_scoring = any(weight not in (None, "") for weight in raw_weights)
+                if has_weighted_scoring:
+                    parsed_weights: list[float] = []
+                    for index, weight in enumerate(raw_weights):
+                        parsed = scoring_weight(weight)
+                        if parsed is None:
+                            errors.append(
+                                f"package_{pid}: scoring component {index} weight must be numeric or a numeric percentage string"
+                            )
+                        else:
+                            parsed_weights.append(parsed)
+                    if len(parsed_weights) == len(raw_weights):
+                        total = sum(parsed_weights)
+                        if abs(total - 100.0) > 1e-9:
+                            errors.append(f"package_{pid}: scoring weights total {total:g}, expected 100")
 
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}

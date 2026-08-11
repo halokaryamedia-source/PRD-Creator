@@ -566,6 +566,34 @@ class ProjectDocumentContracts(unittest.TestCase):
             "\n".join(result["errors"]),
         )
 
+    def test_validator_accepts_percentage_string_weights_totaling_100(self) -> None:
+        data = render_data()
+        data["packages"][0]["developer"]["scoring"]["components"] = [
+            {"name": "Completion", "weight": "60%", "rule": "Completion contribution."},
+            {"name": "Time", "weight": "40%", "rule": "Time contribution."},
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+
+    def test_validator_rejects_percentage_string_weights_above_100(self) -> None:
+        data = render_data()
+        data["packages"][0]["developer"]["scoring"]["components"] = [
+            {"name": "Completion", "weight": "60%", "rule": "Completion contribution."},
+            {"name": "Time", "weight": "50%", "rule": "Time contribution."},
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        self.assertIn("scoring weights total 110", "\n".join(result["errors"]))
+
     def test_validator_rejects_scoring_completion_conflict_and_bad_weight(self) -> None:
         data = render_data()
         developer = data["packages"][0]["developer"]
@@ -585,7 +613,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         result = json.loads(validated.stdout)
         joined = "\n".join(result["errors"])
         self.assertIn("exactly one of scoring or completion_data", joined)
-        self.assertIn("numeric scoring weights total 90", joined)
+        self.assertIn("scoring weights total 90", joined)
 
 
 if __name__ == "__main__":
