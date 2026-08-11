@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import subprocess
@@ -214,6 +215,10 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
 
     def write_data(self, project: Path, data: object) -> None:
+        if isinstance(data, dict):
+            data["canonical_content_sha256"] = hashlib.sha256(
+                (project / "work" / "content.md").read_bytes()
+            ).hexdigest()
         (project / "work" / "render-data.json").write_text(
             json.dumps(data, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
@@ -283,6 +288,10 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(result["status"], "pass")
         flow2 = next(check for check in result["checks"] if check["check"] == "flow2_ready_for_prd")
         self.assertEqual(flow2["status"], "pass")
+        binding = next(
+            check for check in result["checks"] if check["check"] == "render_data_matches_canonical_content"
+        )
+        self.assertEqual(binding["status"], "pass")
         self.assertEqual(
             result["expected_pages"],
             [
@@ -399,6 +408,22 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         result = json.loads(validated.stdout)
         self.assertIn("missing Flow 2 intake state", "\n".join(result["errors"]))
+
+    def test_validator_rejects_stale_render_projection(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        (project / "work" / "content.md").write_text(
+            "# Contract Fixture\n\nCanonical content changed after projection.\n",
+            encoding="utf-8",
+        )
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        joined = "\n".join(result["errors"])
+        self.assertIn("render_data_matches_canonical_content", joined)
+        self.assertIn("projection is stale", joined)
 
     def test_validator_rejects_missing_golden_composition_marker(self) -> None:
         project = self.make_project(render_data())

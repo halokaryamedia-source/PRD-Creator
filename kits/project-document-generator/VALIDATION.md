@@ -35,9 +35,11 @@ python kits/project-document-generator/validator/validate.py \
 
 The validator first requires `state/intake-state.yaml` to explicitly declare both `status: ready_for_prd` and `ready_for_prd: true`. Missing, ambiguous, or non-ready Flow 2 state fails validation instead of allowing a rendered artifact to bypass the Flow 2 readiness boundary.
 
-The validator owns current mechanical contracts including Flow 2 readiness state, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
+It also requires `work/render-data.json` to carry `canonical_content_sha256` matching the current exact bytes of `work/content.md`. If canonical content changes without regenerating the projection binding, validation fails as stale instead of accepting an older projection/HTML as current.
 
-Mechanical PASS proves structure only—not visual quality. Do not expand this into pixel comparison, DOM snapshots, visual scoring, or a generic HTML schema.
+The validator owns current mechanical contracts including Flow 2 readiness state, canonical-content/projection revision binding, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
+
+Mechanical PASS proves structure/current-revision binding only—not semantic equivalence or visual quality. Do not expand this into semantic hashing, pixel comparison, DOM snapshots, visual scoring, or a generic HTML schema.
 
 ## One-read multi-lens review
 
@@ -158,14 +160,14 @@ Do not add evidence prose when everything passes.
 
 ## Development-ready gate
 
-Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
+Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, current canonical content is bound to the current render projection, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
 
 ## Revision path
 
 ```text
 approved change
 → affected requirement/content
-→ affected projection + rerender
+→ affected projection + refreshed canonical-content binding + rerender
 → one mechanical check
 → one targeted multi-lens/visual review
 ```

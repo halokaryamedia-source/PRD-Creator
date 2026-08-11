@@ -8,6 +8,7 @@ quality; those remain part of the Flow 4 review.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html as html_lib
 import json
 import re
@@ -18,6 +19,7 @@ from typing import Any
 
 OPEN_RE = re.compile(r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]", re.I)
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
 INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
 
@@ -188,6 +190,21 @@ def validate(project: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         errors.append("render_data_root: render-data must be an object")
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
+
+    actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
+    declared_content_sha = data.get("canonical_content_sha256")
+    binding_valid = (
+        isinstance(declared_content_sha, str)
+        and SHA256_RE.fullmatch(declared_content_sha) is not None
+        and declared_content_sha == actual_content_sha
+    )
+    if not isinstance(declared_content_sha, str) or SHA256_RE.fullmatch(declared_content_sha) is None:
+        binding_detail = "render-data canonical_content_sha256 is missing or invalid"
+    elif declared_content_sha != actual_content_sha:
+        binding_detail = "render-data projection is stale relative to work/content.md; regenerate the affected projection"
+    else:
+        binding_detail = "render-data is bound to the current canonical content revision"
+    check("render_data_matches_canonical_content", binding_valid, binding_detail)
 
     doc = data.get("document")
     check("document_object", isinstance(doc, dict), "render-data.document must be an object")

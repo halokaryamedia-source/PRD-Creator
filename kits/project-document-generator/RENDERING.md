@@ -6,7 +6,7 @@ The approved Golden Sample is the presentation and page-composition authority fo
 
 ```text
 work/content.md                    canonical meaning
-→ work/render-data.json            compact derived projection
+→ work/render-data.json            compact derived projection bound to current content
 → renderer                         deterministic HTML composition
 → template/approved-document.html  Golden runtime input
 → output/final.html                derived PRD
@@ -33,6 +33,7 @@ Root shape:
 
 ```json
 {
+  "canonical_content_sha256": "<sha256 of current work/content.md>",
   "document": {},
   "overview": {},
   "gameplay_flow": [],
@@ -41,11 +42,13 @@ Root shape:
 }
 ```
 
+`canonical_content_sha256` is derived revision binding only. When the projection is written or regenerated, calculate SHA-256 over the exact bytes of the current `work/content.md` and store the lowercase 64-character digest. It does not carry project meaning. Flow 4 rejects a missing/invalid digest or a digest that no longer matches canonical content, so an older projection cannot silently validate after `content.md` changes.
+
 Each package keeps `gameplay`, `level_design`, and `developer`.
 
-Initial production should project once after canonical content is stable enough to render. During a bounded revision, change only the affected subtree plus required cross-references; do not recreate unchanged packages.
+Initial production should project once after canonical content is stable enough to render. During a bounded revision, change only the affected subtree plus required cross-references and refresh `canonical_content_sha256`; do not recreate unchanged packages.
 
-Do not copy commentary/provenance/internal reasoning into render data. Carry only values required by the Golden surfaces.
+Do not copy commentary/provenance/internal reasoning into render data. Carry only values required by the Golden surfaces plus the canonical-content revision binding above.
 
 ## Compact value conventions
 
@@ -138,7 +141,7 @@ Do not add template copies, renderer profiles, snapshot systems, or generalized 
 
 ## Mechanical fidelity
 
-Flow 4 validator owns structural checks such as page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set.
+Flow 4 validator owns structural checks such as Flow 2 readiness, canonical-content/projection revision binding, page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set.
 
 Do not duplicate those checks in authoring instructions. Structural PASS is not visual PASS.
 
@@ -156,7 +159,7 @@ Use another template only when the user explicitly approves a different document
 
 ```text
 canonical PRD
-→ compact Golden projection
+→ compact Golden projection bound to that canonical revision
 → deterministic render
 → validate
 ```
