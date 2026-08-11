@@ -1,367 +1,440 @@
-# Canonical PRD Content Contract
+# Golden Mandatory PRD Contract
 
-`work/content.md` is the human-readable source of truth. `render-data.json` and `final.html` are derived.
+`work/content.md` is the human-readable source of truth for Flow 3. `render-data.json` and `final.html` are derived.
 
-## Golden output contract
+This file is the **single semantic owner** for the gameplay PRD family. Flow 2, Flow 3, rendering, and Flow 4 must refer here instead of maintaining separate Golden checklists.
 
-The approved Golden Sample defines both hierarchy and reusable page composition **and acts as the functional quality floor for this gameplay PRD family**. Projects replace facts, not document function.
+## Core rule
+
+The approved Golden Sample defines the **minimum document function** for this gameplay PRD family.
 
 ```text
-Overview
-→ Gameplay Flow
-→ Global Development
-→ Gameplay Package(s)
-     → Gameplay Overview
-     → Level Design
-     → Developer
+Current project facts + approved decisions
+→ fill the Golden mandatory surfaces
+→ never remove a Golden function merely because source is short
+→ never copy Golden project-specific facts merely to fill space
 ```
 
-A project does not copy Golden-specific mechanics, counts, wording, lore, or scoring. It must preserve what each surface accomplishes for its reader. Keep the role pages even when local work is small; keep them concise only after all material production meaning is present.
+A generated PRD may contain more project-specific detail than the Golden Sample when the project needs it. It may not contain fewer required Golden functions.
 
-**No filler does not mean minimal document.** The target is complete material information with no useless repetition.
-
-## Golden composition matrix
-
-| Surface | Required rhythm | Optional when meaningful |
-|---|---|---|
-| Overview | project context → key production facts → full journey → shared systems | Terms Used |
-| Gameplay Flow | player/stage context → chronological player-story beats → system/NPC/environment response → result/transition | Terms Used |
-| Global Development | title/subtitle → shared tabs → context → grouped production requirements | flow cards, note cards, Terms |
-| Gameplay Overview | package title/label → 1/2/3 tabs → Context / Main Objective / Result → Gameplay Information → player flow | Terms |
-| Level Design | package title/label → tabs → overview → Golden Build Requirements table | Design Flow, note cards, role Terms |
-| Developer | package title/label → tabs → overview → grouped Golden Development Requirements including Scoring/Result | Development Flow, reset/interruption, notes, role Terms |
-
-A generic card/table body inside Golden CSS is not sufficient fidelity. A visually correct page that omits material source meaning is not Golden-quality output.
-
-## Golden quality floor
-
-Use the Golden Sample as a **functional comparison**, not a word-count target.
-
-For the corresponding project surface, ask:
+**No filler does not mean minimal document.** The target is:
 
 ```text
-Does this page give its reader the same level of production understanding
-that the Golden page gives its reader,
-using only current-project supported meaning?
+complete material production information
++
+no useless repetition
 ```
 
-Do not enforce arbitrary minimum words, paragraphs, rows, or notes. Those create filler. Instead preserve every material requirement that changes player experience, build scope, runtime behavior, scoring/result, data, interruption/reset, or handoff.
+## Mandatory-slot state
 
-If the Golden page demonstrates an important type of information that also exists in the current project, that current-project information must not disappear merely because the source is being summarized.
+Every mandatory concern must resolve to one of these meanings before handoff:
 
-## Gameplay Flow = chronological player journey
+| State | Meaning |
+|---|---|
+| **Defined** | The project/source defines the actual behavior/value. |
+| **Explicit No** | The concern exists, and the correct project rule is explicitly negative, e.g. `No Objective Score`, `No hard timeout`, `No permanent fail`. |
+| **Not Applicable** | The concern genuinely does not apply; state that clearly with a short production reason when the visible slot would otherwise be ambiguous. |
+| **Blocked** | The concern is material but cannot yet be resolved responsibly; Flow 2 must not declare `ready_for_prd`. |
 
-Gameplay Flow is the **story of what the player experiences**, written for a production team. It is not a developer task list, abstract flowchart caption, or three-step summary.
+A mandatory slot must **never disappear silently** because its value was absent from source or render data.
 
-A good Gameplay Flow normally preserves this sequence where applicable:
+`missing` is not a fifth allowed state.
+
+## Fixed document blueprint
+
+For `N` gameplay packages, the gameplay PRD family uses this fixed shell:
 
 ```text
-where the player comes from / current situation
+01 Overview
+
+02 Gameplay Flow
+   02A The Journey Begins
+   02B+ one Gameplay Flow page for every package, in package order
+
+03 Development
+   Development Overview
+   Game System
+   Data and Reset
+   Gameplay Development
+
+04+ Gameplay Packages
+   for every package:
+   1. Gameplay Overview
+   2. Level Design
+   3. Developer
+```
+
+The number of package pages follows the project. The four Global Development functions do not collapse into one generic page.
+
+For `N` packages, the expected page count is:
+
+```text
+Overview                         1
+Gameplay Flow                    1 + N
+Global Development               4
+Gameplay role pages              3N
+-----------------------------------
+Total                            6 + 4N
+```
+
+This count is a consequence of the fixed shell, not a quality score or word-count target.
+
+## Mandatory surface matrix
+
+### 1. Overview
+
+The Overview must provide all of these functions:
+
+- **Project Context** — what the project/gameplay experience is and why the player is there;
+- **Session Model** — player/session/arena relationship or an explicit project-equivalent rule;
+- **Target Playtime** — target duration or an explicit negative/unspecified production rule;
+- **Game Structure** — stage/package structure and scored/non-scored relationship at project level;
+- **Complete Gameplay Journey** — the ordered journey from opening to ending;
+- **Main Systems / Global Gameplay Direction** — the shared systems a new reader must understand before package detail.
+
+Terms Used is shown when project-specific production terminology materially helps the reader.
+
+### 2. Gameplay Flow — The Journey Begins
+
+The opening flow page must explain:
+
+- the player's starting situation;
+- what the player sees or understands first;
+- why the journey begins;
+- the first instruction/cue or world response that matters;
+- the first playable destination;
+- the transition into the first package.
+
+### 3. Gameplay Flow — every package
+
+Gameplay Flow is the **chronological player journey**, not a developer checklist, abstract flowchart caption, or task summary.
+
+Each package flow must explain the applicable story beats in production language:
+
+```text
+entry / current situation
 → what the player sees or understands
 → NPC / instruction / system cue
 → what the player does
-→ how the environment or system responds
-→ what changes because of that action
-→ what the player now carries / knows / can access
-→ result and transition into the next beat
+→ how the world/system responds
+→ setback / recovery when relevant
+→ what state, access, item, or knowledge changes
+→ result
+→ transition to the next stage
 ```
 
-Use enough narrative beats to explain the actual experience. Important feedback, setbacks, recovery, visible state change, NPC response, item handoff, and route opening/closing belong here when they materially shape what the player experiences.
+Use enough beats to make the experience understandable without reopening the original source. Do not invent dialogue, lore, cinematics, animation, quantities, or mechanics merely to make the page feel richer.
 
-Keep it production prose rather than novel prose. Do not invent dialogue, cinematic detail, animation, lore, or mechanic behavior merely to make the flow feel richer.
+### 4. Global Development — four fixed functions
 
-## Gameplay Information
+Global Development always contains these four pages in this order:
 
-Use project-relevant rows from this family:
+1. **Development Overview**
+2. **Game System**
+3. **Data and Reset**
+4. **Gameplay Development**
 
-- Game Purpose;
-- Gameplay Time;
-- Starting Condition;
-- End Condition;
-- Fail / Retry / Blocked Condition;
-- **Scoring / Result behavior**.
+Each page contains:
 
-The Scoring / Result row is always meaningful for a gameplay package because the production team must know whether the package creates an Objective Score or explicitly does not.
+- Overview;
+- Development Flow;
+- Development Requirements;
+- Important Development Notes.
 
-Do not add empty/meaningless rows. Player flow is chronological player experience, not developer trigger/data specification.
+If one concern is intentionally simple, keep the surface and state the project truth clearly. Do not delete the page or its core blocks merely to reduce page count.
 
-## Scoring / Result contract — required for every package
+#### Development Overview owns
 
-Every gameplay package must state its result model explicitly.
+Project-wide implementation topology: package order, shared ownership, major dependencies, common handoff, and the overall development sequence.
 
-### Scored package
+#### Game System owns
 
-Define only facts the product needs:
+Shared runtime/session behavior: player/session/arena ownership, shared state/permissions, common activation/routing, concurrency/isolation, and other project-wide runtime rules.
 
-- Objective Score name/scale when defined;
-- components/weights when weighted scoring is used;
-- target/success basis when relevant;
-- bonus/reduction behavior when relevant;
-- timer start/stop/excluded time when relevant;
-- invalid/no-score condition;
-- recorded score/result data and duplicate prevention only when genuinely required;
-- relationship to package/final result;
-- exact formula only when product-critical.
+#### Data and Reset owns
 
-Numeric component weights total 100% unless an approved model explicitly says otherwise.
+Shared persistence/result/data behavior: score/final-result storage, telemetry/export rules, interruption/disconnect/pause behavior, reset/cleanup, and reusable-arena/session recovery where applicable.
 
-### Non-scored package
+#### Gameplay Development owns
 
-Do **not** omit the scoring/result section. State explicitly:
+How the gameplay packages connect as one production system: package lifecycle, shared package conventions, package-to-package handoff, and cross-package implementation responsibilities.
+
+Use explicit `Not Applicable` only when a concern genuinely does not apply to the current project. Do not hide a shared rule inside one package when multiple packages depend on it.
+
+### 5. Gameplay Overview — every package
+
+Every package Gameplay Overview contains:
+
+- Gameplay Context;
+- Main Objective;
+- Result;
+- Gameplay Information;
+- chronological Player Flow.
+
+#### Gameplay Information — fixed rows
+
+The following concerns are always resolved and visible:
+
+1. Game Purpose
+2. Gameplay Time
+3. Starting Condition
+4. End Condition
+5. Fail / Retry / Blocked Condition
+6. Scoring / Result
+
+Use explicit negative wording when appropriate. Examples:
 
 ```text
-No Objective Score
+No hard timeout. The package continues until ...
+No permanent fail. A setback returns the player to ...
+No Objective Score. Completion only opens ...
 ```
 
-and define the actual completion/result behavior:
+Do not remove a row because the correct rule is negative.
 
-- `produces_score: false`;
-- valid completion condition;
-- recorded completion/progress data only when needed;
-- interruption/duplicate prevention when relevant;
-- handoff result;
-- relationship to final result, including that the package does not contribute an Objective Score when applicable.
+### 6. Level Design — every package
 
-### Keep three concerns separate
+Every Level Design page contains:
 
-Never collapse these into one meaning unless authority explicitly does so:
+- Level Design Overview;
+- Design Flow;
+- Build Requirements;
+- Important Build Notes.
 
-```text
-1. Internal scoring/result
-   Does the package calculate/store an Objective Score or only completion?
-
-2. Player-facing display
-   Is score/result shown to the player?
-
-3. Telemetry/export
-   Is score/result included in raw events, exported data, reports, or another downstream payload?
-```
-
-`Do not display score` does **not** mean `No Objective Score`.
-
-`Do not export score` does **not** mean `No Objective Score`.
-
-A source that hides score from players or telemetry may still require internal Objective Score calculation and final-total contribution.
-
-## Level Design table
-
-Golden columns:
+Golden Build Requirements columns remain:
 
 ```text
 No. | Object | Area Size | Build and Visual Requirements | Gameplay Function
 ```
 
-Preserve the difference between **what is built** and **why gameplay needs it**. `Area Size` may remain unspecified/neutral if no authority defines it. Group/child rows may preserve meaningful hierarchy; do not flatten everything into generic requirement rows.
+Carry all material build-owned meaning supported by the project, including when applicable:
 
-### Level Design completeness
-
-Carry all material build-relevant meaning supported by the project, including when applicable:
-
-- required areas and sub-areas;
-- objects/machines/markers/hazards;
-- route and spatial relationships;
-- sightlines/readability/visible destination;
-- known dimensions or size constraints;
-- safe landing/recovery areas;
-- interaction placement and player access;
+- required areas/sub-areas;
+- objects, machines, markers, hazards, interactables;
+- route/spatial relationships;
+- visible destination, sightlines, readability, warnings, guidance;
+- known dimensions/size constraints;
+- safe landing/recovery space;
+- player access and interaction placement;
 - entry/exit/reset boundaries;
 - build/visual requirements;
 - gameplay function;
-- important notes that prevent a materially wrong build.
+- notes that prevent a materially wrong build.
 
-Do not compress several distinct build requirements into one vague row when a Level Designer would need to reopen the source to understand what to build.
+`Area Size` may use a neutral explicit value such as `Not specified — follow approved layout` when authority intentionally leaves it open. Never invent dimensions merely to fill the table.
 
-## Developer table
+A Level Designer must not need the original source to rediscover a material build requirement that belongs on this page.
 
-Golden columns:
+### 7. Developer — every package
+
+Every Developer page contains:
+
+- Developer Overview;
+- Development Flow;
+- Development Requirements;
+- Scoring / Result contract inside the requirement hierarchy;
+- Reset / interruption behavior;
+- Important Development Notes.
+
+Golden Development Requirements columns remain:
 
 ```text
 No. | Setup | Development Requirements | Gameplay Function
 ```
 
-Preserve meaningful groups such as Mechanic Setup, Gameplay Setup, Scoring/Result, Data, Interruption/Reset, and Handoff where those concerns apply. Scoring/result belongs inside the requirement hierarchy, not as an unrelated appendix table.
+Carry all material runtime-owned meaning supported by the project, including when applicable:
 
-### Developer completeness
-
-Carry all material runtime meaning supported by the project, including when applicable:
-
-- activation / preconditions;
+- activation/precondition;
 - interaction behavior;
 - progression/state changes;
-- quantities and timing;
+- quantities/timing;
 - success/completion;
 - Objective Score **or explicit No Objective Score**;
 - score/result relationship to the final result;
-- player-facing score/result display rules;
-- telemetry/export/data rules;
+- player-facing score/result display;
+- telemetry/export/data behavior;
 - invalid/no-score behavior;
-- interruption/disconnect/pause;
+- pause/interruption/disconnect;
 - retry/reset/cleanup;
 - transition/handoff;
-- important implementation notes that prevent materially wrong behavior.
+- implementation notes that prevent materially wrong behavior.
 
-A shared/global rule may be referenced instead of repeated, but the package page must still make clear **which shared rule applies and what local behavior depends on it**. A generic “follow global rules” reference is insufficient when the developer must search elsewhere to discover a material local implication.
+A Developer must not need the original source to rediscover a material runtime requirement that belongs on this page.
 
-## Global Development completeness
+## Scoring / Result contract — mandatory for every package
 
-Global Development owns project-wide behavior that multiple packages depend on. Do not collapse several distinct shared systems into a short summary merely to reduce page count.
-
-Keep separate shared ownership when it materially helps production understand concerns such as:
-
-- session / arena ownership;
-- shared player state and permissions;
-- timing/pause/rejoin behavior;
-- shared score/final-result aggregation;
-- shared telemetry/data/export rules;
-- global reset/cleanup;
-- common gameplay-package lifecycle or handoff behavior.
-
-Combine only when one coherent shared system genuinely owns the rules. Page count is not a goal.
-
-## Content authority and role ownership
-
-1. **Source fidelity first.** Current user instruction, approved decisions, and authoritative source define project meaning through the repository authority chain.
-2. **Do not over-broaden exclusions.** A prohibition on display/export is not a prohibition on internal scoring or storage unless authority says so.
-3. **Context before detail.** New readers understand the experience before implementation detail.
-4. **One rule, one meaning.** Local reminders are allowed; semantic duplication/drift is not.
-5. **Gameplay / Level Design / Developer stay separate.** Gameplay = intended player experience; Level Design = what must be built; Developer = runtime behavior/data/result.
-6. **Local role usability.** A production role can work from its package plus clearly referenced global rules without reopening original source to recover omitted material requirements.
-7. **No filler.** Fixed Golden structure never authorizes invented metrics, architecture, dimensions, mechanics, tracking, lore, or decoration.
-8. **No hidden decisions.** Material unresolved choices return to Flow 2.
-
-## Flow 2 handoff boundary
-
-`ready_for_prd` means Flow 3 receives project meaning that is already resolved enough to draft. Flow 3 may organize, clarify, and present approved meaning; it may not become the first place that these material issues are decided:
-
-- package order, global/local ownership, transitions, or final result;
-- required mechanic lifecycle behavior;
-- contradictory counts/timing/scoring values;
-- distinction between internal score, player-facing display, and telemetry/export when source statements could be confused;
-- vague wording that would allow materially different product behavior;
-- silent conflict between a shared/global rule and a local package exception;
-- conflict with an authoritative known project/platform/production constraint;
-- missing Gameplay / Level Design / Developer implications;
-- removed/excluded behavior or terminology ambiguity;
-- any other material product/design choice.
-
-If drafting exposes one of these, return the affected requirement to Flow 2. Do not hide it with polished prose, a guessed value, a generic best practice, or a convenient renderer representation.
-
-Qualitative direction is allowed when it is intentionally qualitative and production roles can act on it safely. Flow 3 must not invent metrics merely to make wording appear more precise.
-
-## Information density
-
-Use this rule:
+Every package must answer these questions explicitly:
 
 ```text
-complete material information
-+
-no useless repetition
+1. Internal result
+   Does the package calculate/store an Objective Score or only completion?
+
+2. Calculation / completion rule
+   How is that score/result determined?
+
+3. Final-result relationship
+   How does this package contribute to or affect the project/session final result?
+
+4. Player-facing display
+   What score/result is shown or intentionally not shown to the player?
+
+5. Telemetry / export
+   What score/result is exported, logged, or intentionally excluded from downstream payloads when such data systems exist?
 ```
 
-Keep a detail when it:
+### Scored package
 
-- explains context needed to understand the work;
-- changes what the player experiences;
-- changes what Level Design builds;
-- changes what Developer implements/records;
-- defines trigger, condition, quantity, timing, score/result, display/export rule, handoff, reset, or acceptance;
-- prevents a production role from guessing or reopening the original source.
+State `Objective Score` and preserve project-defined details such as:
 
-Otherwise omit/compress it or reference the existing shared/global rule. Do not repeat global rules in full across packages or fill optional components just because visual space exists.
+- score name/scale;
+- components/weights;
+- timer start/stop/excluded time;
+- bonus/reduction behavior;
+- invalid/no-score condition;
+- duplicate prevention when required;
+- final-result relationship;
+- player-facing display rule;
+- telemetry/export rule;
+- exact formula when product-critical.
 
-## PRD Humanize pass
+Numeric component weights total 100% unless approved authority explicitly defines another model.
 
-After the canonical meaning is complete and before projection, apply one bounded Humanize pass to narrative and explanatory prose.
+### Non-scored package
 
-### Humanize should
-
-- use natural production English;
-- explain context before instructions;
-- prefer cause → action → response → consequence order;
-- split comma-stacked requirement dumps into readable sentences when that improves comprehension;
-- keep paragraphs scannable without turning them into fragments;
-- use stable project terminology;
-- make Gameplay Flow feel like a clear account of the player journey;
-- make Level Design and Developer overviews explain the work before the tables provide dense detail.
-
-### Humanize must not
-
-- change official names/terminology;
-- change quantities, timings, coordinates, formulas, scoring weights, triggers, conditions, state names, code/API names, or other authoritative values;
-- soften uncertainty or approval state;
-- add cinematic/lore detail unsupported by authority;
-- inflate simple requirements with promotional or theatrical language;
-- rewrite tables/formulas/configuration merely for style.
-
-Example:
+State exactly and visibly:
 
 ```text
-Avoid:
-Implement custom-ore breaking, one-item drops, scripted deposits, station-restricted inventory, meter progression, unlocks, and reset.
-
-Prefer:
-The Quarry controls the complete mining loop. Breaking an active ore block gives exactly one matching ore item and prevents the tool from affecting the surrounding environment. Depositing that ore at the Forge updates the approved progression state and unlocks the next stage when its requirement is met.
+No Objective Score
 ```
 
-Clarity never outranks source fidelity.
+Then define:
 
-## Document language
+- valid completion condition;
+- completion/progress data that must be recorded;
+- interruption behavior;
+- duplicate prevention when required;
+- handoff result;
+- final-result relationship, including non-contribution to Objective Score when applicable;
+- player-facing result behavior;
+- telemetry/export behavior.
 
-- English-only is default unless intentional EN + ID output is approved/produced.
-- Expose Indonesian selection only when actual bilingual content exists.
-- In intentional bilingual output, every user-visible textual value must explicitly provide both `en` and `id`; never treat an ordinary scalar sentence/label/name as an implicit translation.
-- If a displayed proper name is intentionally identical in both languages, state it explicitly as the same `en` and `id` value.
-- Scalar strings remain valid only for non-linguistic/structural values the renderer defines as language-neutral, such as stable IDs/keys/codes, version/brand mark, language/role tokens, numeric weights, step/row identifiers, canonical revision hash, and an exact formula.
+### Never broaden negative rules
 
-Do not build translation-memory/localization machinery for this boundary.
+These are different requirements:
+
+```text
+No Objective Score
+Do not display score to the player
+Do not export score in telemetry
+```
+
+One does not imply either of the others.
 
 ## Terms Used
 
-Use Terms only for project-specific/production-critical terminology. Each term has a stable key, label, concise definition, and optional aliases.
+Terms Used is a supporting Golden component, not permission to repeat every noun.
 
-Package terms share one glossary/tooltips source:
+Use it for project-specific or production-critical terminology that materially helps the page reader. A term has a stable key, label, concise definition, and optional aliases/role visibility.
 
-- default visible block → Gameplay Overview;
-- Level Design / Developer visibility → only when that role benefits;
-- glossary/tooltips-only → valid when no visible role block needs it.
+If no project-specific term is needed on a surface, the Terms block may be omitted; this is one of the few genuinely conditional presentation components because its function itself may be Not Applicable.
 
-Do not repeat the same visible glossary block across all role pages by default.
+## Source fidelity and authority
 
-## Critical information
+Project meaning follows the repository authority chain:
 
-When relevant, treat these as critical:
+1. current explicit user instruction;
+2. approved project decisions;
+3. current authoritative project source;
+4. normalized requirement state;
+5. reference/Golden material for document function/quality only.
 
-- player/session/arena count;
-- package/stage order;
-- important quantities/dimensions;
-- target time/timer boundaries;
-- Objective Score vs explicit No Objective Score;
-- scoring weights/inputs and final-result relationship;
-- player-facing score/result display rules;
-- telemetry/export rules when source distinguishes them;
-- completion and invalid/no-score conditions;
-- handoff items/state;
-- interruption/disconnect behavior;
-- reset behavior;
-- final-result rules.
+A source filename containing `FINAL` does not override higher-authority current instruction or approved decisions.
 
-If required critical information remains unresolved, return it to Flow 2 rather than hiding the gap behind vague text or polished layout.
+Golden supplies **document function**, not project facts. Never copy Golden mechanics, counts, story, scoring, objects, timings, or implementation decisions unless current project authority independently supports them.
+
+## Flow 2 responsibility
+
+Before `ready_for_prd`, Flow 2 resolves every mandatory concern that is material to the current project as:
+
+```text
+Defined
+Explicit No
+Not Applicable
+Blocked
+```
+
+Flow 2 does **not** create a separate Golden checklist artifact. Use normal source/requirement state. A material unresolved concern becomes `Blocked`/pending decision in existing state and prevents readiness.
+
+Flow 2 must specifically avoid these recurring interpretation errors:
+
+- display/export prohibition incorrectly becoming `No Objective Score`;
+- missing source detail being treated as permission to remove a mandatory surface;
+- one package-specific rule incorrectly becoming a global rule;
+- a Golden example fact being copied as project truth;
+- a material build/runtime implication being lost because source prose was summarized too aggressively.
+
+## Flow 3 authoring rule
+
+Flow 3 fills the fixed Golden shell using **minimum complete production detail**.
+
+Do not ask:
+
+> How little can this page contain and still look valid?
+
+Ask:
+
+> What material project meaning must this page carry so its reader can work correctly without reopening the source?
+
+Use the Golden Sample as a functional quality floor, not a word-count target.
+
+## Humanize pass
+
+After canonical meaning is complete and before projection, perform one bounded prose pass.
+
+Humanize should:
+
+- use natural production English;
+- explain context before instruction;
+- prefer cause → action → response → consequence;
+- turn unreadable comma-stacked requirement dumps into clear sentences;
+- keep Gameplay Flow as a readable account of the player journey;
+- make Level Design/Developer overviews explain the work before dense tables;
+- preserve stable project terminology.
+
+Humanize must not:
+
+- change official terminology;
+- alter numbers, timings, coordinates, formulas, weights, triggers, conditions, state names, APIs, or approved mechanics;
+- soften uncertainty/approval state;
+- add unsupported lore/cinematic/design detail;
+- inflate simple requirements with promotional writing.
+
+Tables, formulas, IDs, configuration, and exact technical values remain concise and precise.
+
+## Flow 4 acceptance rule
+
+Flow 4 checks the PRD against this contract once through the relevant production lenses.
+
+A **Major** finding exists when a production role must reopen original source to recover a material rule that belongs in the PRD, or when a mandatory Golden function has been compressed into something that no longer performs its intended role.
+
+A mechanical presence check is not semantic acceptance.
+
+Do not use word counts, row counts, semantic similarity scores, or a permanent source-to-output matrix as a substitute for review.
 
 ## Canonical-content gate
 
-`content.md` is ready for projection when:
+`content.md` is ready for projection only when:
 
-- Flow 2 is truthfully `ready_for_prd`;
-- material statements trace to source/recovery/approved decisions;
-- no Flow 2 handoff issue above was silently decided during drafting;
-- Golden hierarchy/page composition is represented;
-- Golden functional quality is preserved for the current project without copying sample facts;
-- Gameplay Flow explains the chronological player journey rather than only task steps;
-- every package has an explicit Scoring / Result contract;
-- each role surface contains complete material role-owned meaning without filler;
-- a Level Designer or Developer does not need the original source to recover a material rule that belongs in the PRD;
-- explanatory prose has received the bounded Humanize pass;
-- no material Proposal/Blocked item affects requested scope;
+- Flow 2 truthfully reports `ready_for_prd`;
+- the fixed Golden blueprint is represented;
+- every mandatory concern resolves as Defined / Explicit No / Not Applicable rather than silently missing;
+- every package has a visible Scoring / Result contract;
+- Gameplay Flow explains the chronological player journey;
+- Global Development preserves all four fixed functions;
+- Level Design and Developer carry complete material role-owned meaning;
+- explanatory prose has received the Humanize pass;
+- material meaning remains traceable to source/recovery/approved decisions;
+- no material Proposal/Blocked item affects the output;
 - no unresolved placeholder remains.
 
-A semantically correct document that cannot be projected into the Golden composition is not finished Flow 3 content for this document family. A structurally complete document that omits material production meaning is also not finished.
+A structurally complete document that omits material production meaning is not finished. A detailed document that invents unsupported meaning is also not finished.
