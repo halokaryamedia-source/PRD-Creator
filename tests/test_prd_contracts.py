@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -260,6 +261,7 @@ def render_data() -> dict:
                         "telemetry_export": "Store the internal score in the fixture result; no external telemetry export is required.",
                     },
                     "reset": ["Clear active trial state, restore the interaction, close the exit, and release the session for reuse."],
+                    "reset_result": "The trial returns to its initial reusable state with no active progress or leftover result state.",
                     "notes": [
                         {
                             "title": "One Result",
@@ -272,7 +274,6 @@ def render_data() -> dict:
                         "key": "core-trial",
                         "label": "Core Trial",
                         "definition": "The complete fixture gameplay package from activation through result and exit.",
-                        "roles": ["gameplay", "level_design", "developer"],
                     },
                     {
                         "key": "fixture-score",
@@ -382,11 +383,29 @@ class ProjectDocumentContracts(unittest.TestCase):
             "Gameplay Journey",
             "Full Production",
             'data-package="core"',
-            'data-glossary-scope="core"',
+            'data-glossary-scope="core-gameplay"',
+            'data-glossary-scope="core-level-design"',
+            'data-glossary-scope="core-developer"',
             'data-page-role="gameplay-flow"',
             "section[data-glossary-scope]",
         ):
             self.assertIn(text, html)
+
+        glossary_match = re.search(r"const glossary = (.*?);\n\s*const tooltip =", html, re.S)
+        self.assertIsNotNone(glossary_match)
+        glossary_data = json.loads(glossary_match.group(1))
+        self.assertEqual(
+            {item["key"] for item in glossary_data["core-gameplay"]},
+            {"core-trial", "fixture-score"},
+        )
+        self.assertEqual(
+            {item["key"] for item in glossary_data["core-level-design"]},
+            {"core-trial"},
+        )
+        self.assertEqual(
+            {item["key"] for item in glossary_data["core-developer"]},
+            {"core-trial", "fixture-score"},
+        )
 
         for forbidden in ("aftershock-", "quarry-", "phase-"):
             self.assertNotIn(forbidden, html.lower())
@@ -444,6 +463,7 @@ class ProjectDocumentContracts(unittest.TestCase):
             "missing gameplay time": lambda data: data["packages"][0]["gameplay"].update({"gameplay_time": ""}),
             "missing design flow": lambda data: data["packages"][0]["level_design"].update({"flow": []}),
             "missing developer reset": lambda data: data["packages"][0]["developer"].update({"reset": []}),
+            "missing reset result": lambda data: data["packages"][0]["developer"].update({"reset_result": ""}),
             "missing acceptance": lambda data: data["packages"][0].update({"acceptance": []}),
         }
         for name, mutate in variants.items():
