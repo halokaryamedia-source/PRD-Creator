@@ -53,6 +53,7 @@ class PrdHandoffContracts(unittest.TestCase):
             "New Reader: PASS\n"
             "Level Designer: PASS\n"
             "Developer: PASS\n"
+            "Acceptance: PASS\n"
             "Project Consistency: PASS\n"
             "Critical: 0\n"
             "Major: 0\n",
@@ -131,6 +132,7 @@ class PrdHandoffContracts(unittest.TestCase):
             "mechanical failure": "Mechanical: FAIL",
             "visual failure": "Visual sanity: FAIL",
             "developer failure": "Developer: FAIL",
+            "acceptance failure": "Acceptance: FAIL",
             "critical blocker": "Critical: 1",
             "major blocker": "Major: 2",
         }
