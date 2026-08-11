@@ -66,22 +66,23 @@ Renderer/validator may expose deterministic defects but may not define product m
 
 Visual PASS requires actual visual/browser evidence; static HTML inspection is not a visual PASS.
 
-## 8. Handoff is revision-specific
+## 8. Keep document versions stable
 
-`document.version` is the existing PRD revision used by downstream handoff.
+`document.version` is real project/release metadata, not an edit counter.
 
-When an accepted PRD's **meaning** changes materially:
+Keep the same `document.version` through normal drafting, clarification, Humanize, rendering, review findings, and representative testing. Do **not** bump it for every content correction or rerender.
 
-```text
-advance document.version
-→ reopen handoff state to pending review
-→ rerender/review affected revision
-→ restore handoff_ready only after acceptance
-```
+A version changes only when one of these is true:
+
+- the user explicitly requests a new version;
+- an authoritative source declares a new project/document revision;
+- the team intentionally establishes a new release/handoff milestone.
+
+When the meaning of an already accepted or handed-off PRD changes, reopen handoff state to `pending_review`, regenerate and review the affected scope, and restore `handoff_ready` only after acceptance. This invalidation does not itself require a version bump.
 
 Do not add another revision/checksum/manifest framework for this boundary.
 
-`handoff_ready` means only that the current accepted PRD revision may enter the next production flow. It does not imply client approval, implementation completion, QA completion, release approval, or Voice readiness.
+`handoff_ready` means only that the currently accepted PRD content at the stated document version may enter the next production flow. It does not imply client approval, implementation completion, QA completion, release approval, or Voice readiness.
 
 ## 9. Keep the system minimal
 
