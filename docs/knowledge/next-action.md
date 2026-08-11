@@ -4,121 +4,69 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_GENERIC_TEMPLATE_CLEANUP_COMPLETE_AWAIT_FURTHER_REVIEW_OR_PROOF_APPROVAL`
+`PRD_ARCHITECTURAL_CLEANUP_COMPLETE_AWAIT_USER_DIRECTION`
 
 Working branch: **`Local` only**.
 
-## Current PRD contract
+## Current system
 
-PRD Flow 2–4 uses one semantic owner:
+Single semantic owner:
 
 ```text
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
-The fixed gameplay PRD family remains:
+Current production path:
 
 ```text
-Overview
-Gameplay Flow
-  The Journey Begins
-  one full flow page per gameplay package
-Global Development
-  Development Overview
-  Session & Runtime System
-  Data, Recovery & Reset
-  Gameplay Package Integration
-Gameplay Packages
-  Gameplay Overview
-  Level Design
-  Developer
+Flow 2
+source authority
+→ requirement truth
+→ one integrated readiness pass
+→ resolve material gaps
+→ ready_for_prd
+
+Flow 3
+content.md
+→ Humanize
+→ render-data.json
+→ generic approved template
+→ final.html
+
+Flow 4
+mechanical validation
+→ integrated semantic review
+→ targeted desktop visual sanity only when required/available
+→ handoff
 ```
 
-For `N` gameplay packages the shell produces `6 + 4N` pages.
+## Cleanup now complete
 
-Required concerns resolve only as:
+The active PRD Generator now avoids the main AI-slop patterns found during review:
+
+- no reference-project naming in active template/component/runtime hooks;
+- no internal presentation patch/version history in the template;
+- no stacked UI patch layers;
+- no stale `phase` terminology for gameplay-package presentation;
+- no semantic `Golden` naming inside generic mechanical composition checks;
+- no 17-step ritualized Flow 2 sequence;
+- no duplicate detailed PRD procedure across skill/workflow/rules/validation owners;
+- current evidence/continuation docs no longer act as debugging-history logs.
+
+The real project `document.version` remains valid document metadata.
+
+## Current proof
 
 ```text
-Defined
-Explicit No
-Not Applicable
-Blocked
+PRD Verify #98 — PASS
 ```
 
-A mandatory concern may not silently disappear.
+This is repository/regression evidence only, not representative semantic/browser proof.
 
-## Professional content behavior
+## Hold boundary
 
-The contract standardizes Overview context/control, chronological Gameplay Flow, Objective Sequence, Failure / Retry / Recovery, Result / Scoring Model, role-specific production requirements, Acceptance & Verification, explicit scored/non-scored behavior, and bounded Humanize writing.
-
-## Reading and glossary behavior
-
-Current generated HTML provides:
-
-- Gameplay Flow orientation;
-- structured Developer Flow;
-- readable production tables;
-- compact Document Control;
-- package-focused navigation;
-- **Gameplay Journey** / **Full Production** reading views;
-- package glossary highlighting and local Terms Used from `packages[].terms`.
-
-No second glossary engine is used.
-
-## Generic template cleanup completed
-
-The old approved template contained reference-project and implementation-history residue even though current PRD semantics were already generic.
-
-The active generator has now removed:
-
-- internal feature/CSS iteration labels used as pseudo-versions;
-- version-suffixed patch-style IDs;
-- reference-project runtime/storage/component names;
-- obsolete object/phase-specific presentation hooks;
-- extraction/source revision metadata;
-- stacked visual-polish patch layers.
-
-Current ownership is:
-
-```text
-CONTENT-CONTRACT.md
-→ semantic document truth
-
-approved-document.html
-→ one generic stable PRD presentation/runtime
-
-renderer
-→ project data + pages + navigation + glossary data + project namespace
-
-validator
-→ current generic mechanical composition
-```
-
-The real `document.version` remains valid project metadata. Internal feature/CSS iteration numbers are not document versions and must not leak into template/component naming.
-
-A narrow regression guard prevents the known reference/patch-history categories from returning to the approved template.
-
-## Focused implementation proof
-
-Current gate after implementation and rendering-boundary documentation alignment:
-
-```text
-PRD Verify #89 — PASS
-```
-
-This is repository/regression evidence only. It is not a browser/visual PASS.
-
-## Deliberately not run
-
-At the user's current direction, do not run:
-
-- representative real-project PRD proof;
-- browser/desktop visual proof;
-- mobile QA;
-- unrelated Voice validation.
-
-The previous AFTERSHOCK sample remains diagnostic evidence only.
+Do not run representative project/browser/mobile/Voice proof unless explicitly requested. The current user direction remains architectural/content cleanup first.
 
 ## Next Step
 
-Continue **manual/architectural review for any remaining concrete AI-slop or unclear PRD Generator behavior** without starting representative testing. Run the representative semantic + targeted desktop proof only after explicit user approval.
+Wait for the user's next concrete PRD Generator review request or explicit approval to begin the representative semantic + targeted desktop proof.
