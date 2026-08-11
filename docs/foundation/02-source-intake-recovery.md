@@ -46,15 +46,44 @@ Precedence:
 
 Material user instructions must be persisted in source inventory even when no file exists. Do not rely on chat history as the only durable authority.
 
+A source filename or internal label such as `FINAL` does not by itself override a higher-authority current user instruction or approved project decision. Resolve conflicts through the authority chain, not filename confidence.
+
 Persist reading coverage compactly (`targeted` + scope or `full`) when it materially helps resumability. Source-level supersession applies only when the whole source is superseded; partial changes are resolved at the affected claim/requirement.
 
 ## Recovery behavior
 
 - Recover explicit positive and negative constraints (`remove`, `do not use`, `replaced by`, `only`, etc.).
+- Do not over-broaden a negative statement. `Do not display score`, `do not export score`, and `this package has no Objective Score` are different requirements unless authority explicitly connects them.
 - Recover ordered packages/stages, shared/global ownership, dependencies/transitions, and final result when needed by the project.
 - Normalize terminology when multiple labels may refer to one concept; unresolved ambiguity is surfaced rather than synonym-cycled.
 - For each material mechanic/system, inspect necessary implications for Gameplay, Level Design, Developer, and result/reset/handoff.
 - Record only implications logically required by source/approved state; do not invent exact quantities, timings, objects, dimensions, implementation architecture, or decorative detail.
+
+## Scoring / Result recovery
+
+For **every gameplay package**, Flow 2 must recover the result model that authority actually defines:
+
+```text
+Scored package
+→ Objective Score exists
+→ recover applicable scale/components/weights/timer/no-score/final-result relationship
+
+Non-scored package
+→ explicit No Objective Score
+→ recover valid completion/result and final-result relationship
+```
+
+Keep these concerns separate whenever source distinguishes them:
+
+```text
+internal scoring/result
+player-facing score/result display
+telemetry/export payload
+```
+
+A rule that hides score from the player does not remove internal scoring. A rule that excludes score from raw telemetry/export does not remove internal scoring. Conversely, a package with no Objective Score must say so explicitly rather than merely omitting score information.
+
+When scoring facts differ across sources or approved decisions, use normal authority resolution. Do not infer a simpler model just because it is easier to document.
 
 ## Coverage and coherence
 
@@ -64,7 +93,7 @@ Before readiness, scan only applicable concerns for:
 - Gameplay objective/start/end/fail-or-retry/result;
 - Level Design areas/objects/relationships/known constraints/gameplay function;
 - Developer activation/state/completion-or-score/timing/data/reset/interruption/result;
-- critical counts, timing boundaries, scoring, handoff, reset/disconnect, and final-result rules.
+- critical counts, timing boundaries, scoring/result, player-facing display, telemetry/export, handoff, reset/disconnect, and final-result rules.
 
 For material mechanics, inspect relevant lifecycle stages: precondition, trigger, active behavior, success, fail/timeout/interruption, result/transition, and retry/reset. Missing stages are material only when downstream production cannot proceed safely without them.
 
@@ -76,7 +105,7 @@ Reconcile shared/global defaults with explicit local exceptions. A package must 
 
 When authoritative project/platform/production constraints are known, check material requirements against them. A conflict is surfaced and resolved through normal authority/Proposal rules; speculative external limitations or generic best practice are not project authority.
 
-This is not a mandatory-field form. Irrelevant or intentionally unspecified detail is not a gap.
+This is not a mandatory-field form. Irrelevant or intentionally unspecified detail is not a gap. **Scoring/Result is the exception at the package level only in the sense that the package must explicitly say which result model applies; it does not require inventing scoring.**
 
 ## Problem-solving boundary
 
@@ -148,7 +177,7 @@ A source entry explicitly marked `status: superseded` does not block readiness m
 
 This check remains bounded to the existing SRC/REQ entry shape. It does not infer materiality, validate arbitrary YAML semantics, or replace Flow 2 judgment; it only prevents missing evidence owners or an unambiguous current blocker from coexisting with `ready_for_prd: true`.
 
-Detailed contract: `kits/project-document-generator/SOURCE-INTAKE.md`.
+Detailed contract: `kits/project-document-generator/SOURCE-INTAKE.md` plus the root `project-document-production` semantic owner for current scoring/result interpretation.
 
 ## Question economy
 
@@ -160,11 +189,13 @@ Ask only after explicit recovery, topology/terminology/exclusion reconciliation,
 
 - materially relevant source inspected to sufficient depth;
 - material user instructions persisted;
-- explicit rules/exclusions recovered;
+- explicit rules/exclusions recovered without broadening their meaning;
 - sufficient project topology for Flow 3;
 - material terminology ambiguity resolved or surfaced;
 - necessary cross-role implications recovered;
 - applicable lifecycle and quantitative coherence checked;
+- each gameplay package has a resolved Scoring / Result model: Objective Score or explicit No Objective Score;
+- player-facing display and telemetry/export distinctions are preserved when source defines them;
 - material wording operationally clear enough for production;
 - shared/global rules and local exceptions reconciled;
 - authoritative known constraints do not silently conflict with required behavior;
@@ -177,4 +208,4 @@ Ask only after explicit recovery, topology/terminology/exclusion reconciliation,
 
 Once this gate passes, stop generating optional redesign ideas. Flow 2 is a production-recovery/problem-solving stage, not an endless design workshop.
 
-Flow 3 may organize and polish approved meaning, but must not become the first place required product structure, lifecycle behavior, numeric consistency, global/local coherence, known feasibility conflict, implications, or decisions are invented.
+Flow 3 may organize and humanize approved meaning, but must not become the first place required product structure, lifecycle behavior, scoring interpretation, numeric consistency, global/local coherence, known feasibility conflict, implications, or decisions are invented.
