@@ -4,7 +4,7 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_FLOW2_GITHUB_STATIC_AUDIT_COMPLETE_LOCAL_TEST_DEFERRED`
+`PRD_GITHUB_FALSE_GREEN_GUARDS_STRENGTHENED_LOCAL_TEST_DEFERRED`
 
 Working branch: **`Local` only**.
 
@@ -74,29 +74,51 @@ Flow 4 uses the same fallback rule if review finds one of these issues later. Wo
 
 ## GitHub-side safeguards now active
 
-`tools/verify_repository.py` now protects two concrete repository invariants demonstrated by this audit:
+Repository-level static safeguards continue to protect:
 
-- mandatory root `AGENTS.md` retains its required tail sections (`Execution channel`, `User-facing communication`, `Product boundaries`);
-- Project Document Generator `SKILL.md` and kit `README.md` must report the same version.
+- mandatory root `AGENTS.md` tail sections (`Execution channel`, `User-facing communication`, `Product boundaries`);
+- Project Document Generator `SKILL.md` / kit `README.md` version parity.
 
-These are small static guards based on observed defects, not a generic documentation-schema framework.
+PRD production contracts now additionally protect these concrete false-green cases:
 
-## Efficiency boundary
+- Flow 4 fails when `state/intake-state.yaml` is missing, ambiguous, or does not explicitly report both `status: ready_for_prd` and `ready_for_prd: true`;
+- `render-data.json` carries `canonical_content_sha256`; Flow 4 rejects a missing/invalid binding or a projection left stale after `work/content.md` changes;
+- weighted scoring accepts numeric values or numeric percentage strings, but every declared component weight must parse and weighted totals must equal 100;
+- intentional EN + ID rendering requires explicit localized values for user-visible text instead of silently treating a scalar English string as Indonesian; structural/non-linguistic fields remain scalar where defined;
+- Journey grids beyond six items and Flow grids beyond four items preserve wrapped-row separator mechanics and reset the false left-edge divider on the first item of each wrapped row.
 
-Do not add topology/coverage/lifecycle/quantitative/clarity reports, dependency graphs, mandatory checklists, source indexers, Humanize skill layers, new validators, or documentation schemas merely to represent reasoning already owned by Flow 2.
+These are narrow guards for observed defects. They are not a generic document schema, semantic parser, visual snapshot system, or new framework.
+
+## Evidence boundary
+
+This correction batch was performed through repository inspection and GitHub Actions only.
+
+GitHub/static/CI evidence can prove repository routing, documentation consistency, current-revision binding, renderer/validator static contracts, and regression tests. It does **not** prove:
+
+- practical Flow 2 recovery quality on a real project;
+- semantic equivalence between arbitrary canonical prose and projection beyond current-revision binding plus the existing Flow 4 semantic review;
+- browser/visual fidelity, including the actual appearance of wrapped grids;
+- local render/runtime behavior or measured usage.
+
+## Deliberately not changed
+
+No broader mechanism is justified by current evidence:
+
+- no broad Flow 2 documentation consolidation without a new concrete owner-drift defect;
+- no mass rename/refactor of inherited Aftershock/`quarry-*` renderer vocabulary without a functional defect;
+- no generic content parser/schema or automatic semantic-comparison framework;
+- no generalization beyond the current gameplay PRD document family;
+- no handoff-state gate added without evidence that the current Flow 4 sequencing is wrong;
+- no local/manual real-project or browser testing until the user explicitly allows it.
 
 ## Testing boundary
 
 Per current user direction, **do not run local/manual real-project tests yet**.
 
-GitHub/static/CI evidence can prove repository routing, documentation consistency, static invariants, and existing regression contracts. It cannot prove practical recovery quality, local render behavior, browser visual fidelity, or measured usage.
-
 ## GitHub audit result
 
-The current Flow 2 → Flow 3 → Flow 4 semantic/routing owners have been aligned for the strengthened recovery/problem-solving boundary. High-level README/context/foundation/skill/procedure wording and the small observed static invariants are synchronized.
-
-No additional GitHub-side Flow 2 mechanism is currently justified without a new concrete defect. Do not add preventive architecture merely because more checks are imaginable.
+The concrete GitHub-side false-green defects found in the current PRD Flow 2 → Flow 3 → Flow 4 path have been corrected with focused regression coverage. Remaining limitations require either new concrete repository evidence or the deferred real-project/browser proof; they should not be converted into preventive architecture.
 
 ## Next Step
 
-Wait for the next user-directed GitHub-side task or new concrete repository evidence. Do **not** start local/manual real-project testing until the user explicitly allows it.
+Wait for the next user-directed GitHub-side task or explicit permission for local/manual real-project/browser proof.
