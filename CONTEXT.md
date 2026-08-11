@@ -51,12 +51,12 @@ The fixed family preserves:
 Overview
 → Gameplay Flow
      The Journey Begins
-     one flow page per package
+     one full flow page per package
 → Global Development
      Development Overview
-     Game System
-     Data and Reset
-     Gameplay Development
+     Session & Runtime System
+     Data, Recovery & Reset
+     Gameplay Package Integration
 → Gameplay Package(s)
      Gameplay Overview
      Level Design
@@ -79,7 +79,22 @@ Key interpretation:
 - every package states Objective Score or explicit No Objective Score;
 - internal scoring/result, player-facing display, and telemetry/export remain separate unless authority joins them;
 - Level Design and Developer pages carry complete material role-owned meaning;
-- PRD prose is human-readable production language without changing exact technical facts.
+- package terms use one canonical package glossary index that powers both inline term help and Terms Used;
+- PRD prose is human-readable production language and closes already-resolved cause/action/result questions without changing exact technical facts.
+
+## Reading experience
+
+HTML remains a professional document, not a dashboard. Current direction prioritizes clarity and scanability:
+
+- clear reading orientation before dense detail;
+- structured Developer Flow rather than flattened requirement sentences;
+- active-focused package navigation;
+- readable production tables;
+- restrained inline glossary highlighting/tooltips;
+- distinct **Gameplay Journey** and **Full Production** reading modes;
+- desktop-first proof by default.
+
+Presentation improvements must not create or change project meaning.
 
 ## Proof direction
 
