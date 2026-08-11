@@ -4,89 +4,124 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_SEMANTIC_QUALITY_CONTRACT_REVISED_NEXT_DESKTOP_REPRESENTATIVE_PROOF`
+`PRD_GOLDEN_MANDATORY_CONTRACT_IMPLEMENTED_NEXT_REPRESENTATIVE_PROOF`
 
 Working branch: **`Local` only**.
 
-## Why PRD Flow 2–4 was reopened
+## What changed
 
-Direct review of the representative AFTERSHOCK final sample found that the previous semantic threshold was too permissive even though renderer/mechanical/browser checks passed.
+PRD Flow 2–4 no longer relies on scattered Golden guidance.
 
-Concrete failures included:
+The single semantic owner is now:
 
-- `score is not displayed/exported` was incorrectly interpreted as `No Objective Score`;
-- Gameplay Flow became task summaries instead of the chronological player journey/context needed by the team;
-- Level Design, Developer, and Global Development lost material production detail;
-- prose was too compressed/database-like and insufficiently humanized;
-- semantic acceptance did not trace material source/requirement meaning deeply enough before declaring PASS.
+```text
+kits/project-document-generator/CONTENT-CONTRACT.md
+```
 
-The previous AFTERSHOCK run remains diagnostic/mechanical evidence only. It is **not** current semantic-quality proof.
+It defines the complete mandatory gameplay PRD family:
 
-## Completed semantic contract revision
+```text
+Overview
+Gameplay Flow
+  The Journey Begins
+  one flow page per gameplay package
+Global Development
+  Development Overview
+  Game System
+  Data and Reset
+  Gameplay Development
+Gameplay Packages
+  Gameplay Overview
+  Level Design
+  Developer
+```
 
-### Flow 2
+For `N` gameplay packages the fixed shell produces `6 + 4N` pages.
 
-- do not broaden negative statements beyond their actual scope;
-- `do not display score`, `do not export score`, and `No Objective Score` are distinct meanings;
-- every gameplay package resolves its Scoring / Result model as Objective Score or explicit No Objective Score;
-- internal score/result, player-facing display, and telemetry/export remain separate when authority distinguishes them;
-- a source/file labelled `FINAL` does not silently override higher-authority current instruction or approved decisions.
+## Mandatory concern rule
 
-### Flow 3
+A required concern may resolve only as:
 
-- target changed from minimum-looking output to **minimum complete production detail**;
-- Golden is now an explicit **functional quality floor**, not just hierarchy/template;
-- Gameplay Flow must be chronological player-story production narrative;
-- Level Design must carry complete material build-relevant meaning;
-- Developer must carry complete material runtime/state/scoring-or-result/data/interruption/reset/handoff meaning;
-- Global Development must preserve important shared ownership;
-- every package must visibly state its Scoring / Result contract;
-- one bounded PRD Humanize pass is required before projection.
+```text
+Defined
+Explicit No
+Not Applicable
+Blocked
+```
 
-### Flow 4
+A mandatory concern may not silently disappear because source or render data omitted it.
 
-- semantic acceptance now performs bounded material source/requirement → PRD coverage review;
-- if Level Design or Developer must reopen original source for a material rule that belongs in the PRD, that is Major;
-- Golden quality is judged by production function, not word/row count;
-- default visual proof is **desktop-only**;
-- representative browser smoke is limited to Overview + one Gameplay Flow + one Level Design + one dense Developer page unless a specific defect requires more.
+Examples of important explicit negative states:
+
+```text
+No Objective Score
+No hard timeout
+No permanent fail
+Do not display score to the player
+Do not export score in telemetry
+```
+
+These meanings remain distinct.
+
+## Result/scoring behavior
+
+Every package explicitly carries:
+
+- Objective Score **or** `No Objective Score`;
+- calculation/completion rule;
+- final-result relationship;
+- player-facing display behavior;
+- telemetry/export behavior.
+
+The renderer now exposes these distinctions rather than compressing them away.
+
+## Authoring and review behavior
+
+- Gameplay Flow is a chronological player journey, not a task summary.
+- Global Development always preserves its four fixed functions.
+- Level Design always preserves Overview, Design Flow, Build Requirements, and Important Build Notes.
+- Developer always preserves Overview, Development Flow, Development Requirements, Scoring/Result, reset/interruption behavior, and Important Development Notes.
+- Flow 3 applies one bounded Humanize pass after meaning is complete.
+- Flow 4 checks semantic usability against the same single contract; it does not maintain another checklist.
+
+## Deterministic enforcement
+
+The renderer fails before writing HTML when the fixed mandatory shell is structurally incomplete.
+
+Focused PRD regression coverage now uses a complete Golden-contract fixture rather than a minimal skeleton.
+
+Current implementation proof:
+
+```text
+PRD Verify #68 — PASS
+```
+
+Voice verification is now independent:
+
+```text
+Voice Verify #1 — PASS
+```
+
+PRD-only work no longer reruns Voice tests by default.
 
 ## Deliberately not added
 
-- no word-count validator;
-- no minimum row/note count;
-- no generic schema/coverage matrix;
+- no word-count or row-count quality gate;
 - no semantic similarity engine;
-- no additional hash/checksum chain;
-- no mobile QA by default;
-- no Voice changes yet.
+- no permanent source-to-output matrix;
+- no generic schema framework;
+- no new checksum chain;
+- no mobile QA as a default;
+- no Voice feature changes.
 
-## Proof economy
+The existing `content.md → render-data.json` SHA remains unchanged in this slice and is still a separate simplification candidate.
 
-Do not rerun unchanged checks merely because documentation changed.
+## Evidence boundary
 
-Use:
+The previous AFTERSHOCK sample remains diagnostic/mechanical evidence only. It is not semantic-quality proof for this new contract.
 
-```text
-semantic contract change
-→ repository/CI gate where automatically applicable
-→ one representative real-project authoring/review proof
-→ targeted desktop visual smoke
-→ stop
-```
-
-The existing `content.md → render-data.json` SHA remains unchanged in this semantic slice. Its later simplification is still a separate candidate because it does not prove semantic equivalence.
+The new fixed contract still needs one representative real-project run to prove that Flow 2 fills the shell correctly and Flow 3 produces complete, human-readable content in practice.
 
 ## Next Step
 
-Run one **new representative PRD Flow 2–4 production proof** using the revised semantic quality floor.
-
-The proof must specifically verify:
-
-1. correct Objective Score vs explicit No Objective Score interpretation, including display/export distinctions;
-2. Gameplay Flow reads as a complete chronological player journey rather than a task summary;
-3. Level Design / Developer / Global Development preserve all material production meaning needed by their roles;
-4. prose is humanized and readable without changing exact technical facts;
-5. the Golden Sample is matched as a functional quality floor without copying project-specific facts.
-
-Use **desktop-only targeted visual sanity**. Do not run mobile QA or unrelated Voice validation unless the test exposes a concrete reason.
+Run **one new representative PRD Flow 2–4 production proof** using the Golden Mandatory Contract, then inspect the generated HTML with the user before closing PRD Flow 2–4. Review semantic quality first and use only targeted **desktop** visual sanity; do not run mobile QA or unrelated Voice validation.
