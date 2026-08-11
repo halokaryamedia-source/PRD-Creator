@@ -82,7 +82,7 @@ Defined | Explicit No | Not Applicable | Blocked
 
 ## Current architecture quality
 
-The active generator has been normalized to avoid implementation-history and reference-project leakage:
+The active generator is normalized to avoid implementation-history, duplicate-procedure, and reference-project leakage:
 
 - generic functional component/runtime names;
 - one generic approved PRD template;
@@ -90,14 +90,15 @@ The active generator has been normalized to avoid implementation-history and ref
 - renderer does not inject UI patch layers;
 - Flow owner docs point to the nearest authority instead of repeating competing procedures;
 - Flow 2 uses one integrated readiness pass rather than many ritualized scan stages;
-- mechanical validator uses generic `required_content` / `document_page_composition` terminology rather than acting as a semantic reference reviewer.
+- mechanical validator uses generic `required_content` / `document_page_composition` terminology rather than acting as a semantic reference reviewer;
+- unused legacy rendering helper/vocabulary is removed rather than retained for hypothetical compatibility.
 
 ## Current proof
 
 Latest focused PRD gate covering the current renderer/validator/contracts and simplified kit owners:
 
 ```text
-PRD Verify #98 — PASS
+PRD Verify #99 — PASS
 ```
 
 This is repository/regression evidence. It proves current deterministic contracts compile and pass their focused tests.
