@@ -33,11 +33,13 @@ def _visible_package_terms(pkg: dict[str, Any], role: str) -> list[dict[str, Any
     visible: list[dict[str, Any]] = []
     for term in pkg.get("terms", []):
         roles = term.get("roles")
-        if roles is None:
-            roles = ["gameplay"]
-        if role in roles:
+        if roles is None or role in roles:
             visible.append(term)
     return visible
+
+
+def _glossary_scope(package_id: str, role: str) -> str:
+    return f"{package_id}-{role.replace('_', '-')}"
 
 
 def _document_control(document: dict[str, Any], overview_data: dict[str, Any]) -> str:
@@ -194,11 +196,11 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
 
         if pkg is not None:
             visible_terms = _visible_package_terms(pkg, "gameplay")
-            glossary_scope = pkg["id"]
+            glossary_scope = _glossary_scope(pkg["id"], "gameplay")
             package_id = pkg["id"]
         else:
             visible_terms = item.get("terms", [])
-            glossary_scope = item["id"] if visible_terms else ""
+            glossary_scope = f'{item["id"]}-opening' if visible_terms else ""
             package_id = ""
         body += terms(visible_terms, f"{page_id}-terms-used-details")
 
@@ -549,7 +551,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
                 footer_title=join_text(bi("Development", "Pengembangan"), title, bi("Gameplay Overview", "Gambaran Gameplay"), sep=" · "),
                 brand=brand,
                 package_id=package_id,
-                glossary_scope=package_id,
+                glossary_scope=_glossary_scope(package_id, "gameplay"),
                 journey_target=journey_target,
                 role="gameplay-overview",
                 classes="sheet production-only package-page role-gameplay-overview glossary-enabled-page",
@@ -596,7 +598,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
                 footer_title=join_text(bi("Development", "Pengembangan"), title, bi("Level Design", "Level Design"), sep=" · "),
                 brand=brand,
                 package_id=package_id,
-                glossary_scope=package_id,
+                glossary_scope=_glossary_scope(package_id, "level_design"),
                 journey_target=journey_target,
                 role="level-design",
                 classes="sheet production-only package-page glossary-enabled-page",
@@ -643,7 +645,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
                 footer_title=join_text(bi("Development", "Pengembangan"), title, bi("Developer", "Developer"), sep=" · "),
                 brand=brand,
                 package_id=package_id,
-                glossary_scope=package_id,
+                glossary_scope=_glossary_scope(package_id, "developer"),
                 journey_target=journey_target,
                 role="developer",
                 classes="sheet production-only package-page glossary-enabled-page",
@@ -704,7 +706,7 @@ def navigation(data: dict[str, Any]) -> str:
             f'<span class="nav-index">03</span><span class="nav-copy">{i18n(bi("Development", "Pengembangan"))}</span>'
             f'<span aria-hidden="true" class="group-chevron"></span></button>'
             f'<div class="nav-submenu">{global_links}</div>'
-            f'<div class="nav-submenu package-navigation">{"".join(package_links)}</div></div>'
+            f'<div class="nav-submenu package-navigation'>{"".join(package_links)}</div></div>'
         )
     return "".join(navigation_items)
 
@@ -730,12 +732,16 @@ def _glossary_items(items: list[dict[str, Any]], scope: str) -> list[dict[str, A
 def glossary(data: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     output: dict[str, list[dict[str, Any]]] = {}
     for pkg in data.get("packages", []):
-        output[pkg["id"]] = _glossary_items(pkg.get("terms", []), pkg["id"])
+        package_id = pkg["id"]
+        for role in ("gameplay", "level_design", "developer"):
+            scope = _glossary_scope(package_id, role)
+            output[scope] = _glossary_items(_visible_package_terms(pkg, role), scope)
 
     flow = data.get("gameplay_flow", [])
     if flow:
         opening = flow[0]
         opening_terms = opening.get("terms", [])
         if opening_terms:
-            output[opening["id"]] = _glossary_items(opening_terms, opening["id"])
+            scope = f'{opening["id"]}-opening'
+            output[scope] = _glossary_items(opening_terms, scope)
     return output
