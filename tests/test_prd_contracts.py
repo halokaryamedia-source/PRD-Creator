@@ -189,14 +189,29 @@ class ProjectDocumentContracts(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         project = Path(temp.name)
+        (project / "state").mkdir(parents=True)
         (project / "work").mkdir(parents=True)
         (project / "output").mkdir(parents=True)
+        self.write_intake_state(project)
         (project / "work" / "content.md").write_text(
             "# Contract Fixture\n\nCanonical fixture content with no unresolved placeholders.\n",
             encoding="utf-8",
         )
         self.write_data(project, data)
         return project
+
+    def write_intake_state(
+        self,
+        project: Path,
+        status: str = "ready_for_prd",
+        ready: bool = True,
+    ) -> None:
+        (project / "state" / "intake-state.yaml").write_text(
+            f"status: {status}\n"
+            f"ready_for_prd: {'true' if ready else 'false'}\n"
+            "next_step: Build canonical PRD content.\n",
+            encoding="utf-8",
+        )
 
     def write_data(self, project: Path, data: object) -> None:
         (project / "work" / "render-data.json").write_text(
@@ -266,6 +281,8 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         result = json.loads(validated.stdout)
         self.assertEqual(result["status"], "pass")
+        flow2 = next(check for check in result["checks"] if check["check"] == "flow2_ready_for_prd")
+        self.assertEqual(flow2["status"], "pass")
         self.assertEqual(
             result["expected_pages"],
             [
@@ -358,6 +375,30 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(rendered.returncode, 2)
         self.assertNotIn("Traceback", rendered.stderr)
         self.assertIn("roles contains unsupported role: qa", rendered.stderr)
+
+    def test_validator_requires_flow2_ready_state(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        self.write_intake_state(project, status="needs_decision", ready=False)
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        self.assertEqual(result["status"], "fail")
+        self.assertIn("flow2_ready_for_prd", "\n".join(result["errors"]))
+        self.assertIn("status='needs_decision'", "\n".join(result["errors"]))
+
+    def test_validator_rejects_missing_flow2_intake_state(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        (project / "state" / "intake-state.yaml").unlink()
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        self.assertIn("missing Flow 2 intake state", "\n".join(result["errors"]))
 
     def test_validator_rejects_missing_golden_composition_marker(self) -> None:
         project = self.make_project(render_data())

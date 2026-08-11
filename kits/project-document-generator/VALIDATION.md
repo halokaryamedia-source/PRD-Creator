@@ -33,7 +33,9 @@ python kits/project-document-generator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-The validator owns current mechanical contracts including artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
+The validator first requires `state/intake-state.yaml` to explicitly declare both `status: ready_for_prd` and `ready_for_prd: true`. Missing, ambiguous, or non-ready Flow 2 state fails validation instead of allowing a rendered artifact to bypass the Flow 2 readiness boundary.
+
+The validator owns current mechanical contracts including Flow 2 readiness state, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
 
 Mechanical PASS proves structure only—not visual quality. Do not expand this into pixel comparison, DOM snapshots, visual scoring, or a generic HTML schema.
 
@@ -156,7 +158,7 @@ Do not add evidence prose when everything passes.
 
 ## Development-ready gate
 
-Set `development_ready` only when mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
+Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
 
 ## Revision path
 

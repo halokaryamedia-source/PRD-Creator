@@ -18,6 +18,8 @@ from typing import Any
 
 OPEN_RE = re.compile(r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]", re.I)
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
+INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
 
 
 class HtmlFacts(HTMLParser):
@@ -71,6 +73,23 @@ def text_en(value: Any) -> str:
     if isinstance(value, dict):
         value = value.get("en") or value.get("id") or ""
     return str(value or "")
+
+
+def flow2_readiness(path: Path) -> tuple[bool, str]:
+    if not path.is_file():
+        return False, f"missing Flow 2 intake state: {path}"
+
+    text = path.read_text(encoding="utf-8")
+    statuses = INTAKE_STATUS_RE.findall(text)
+    readiness = INTAKE_READY_RE.findall(text)
+    if len(statuses) != 1 or len(readiness) != 1:
+        return False, "intake-state.yaml must define exactly one status and one ready_for_prd boolean"
+
+    status = statuses[0]
+    ready = readiness[0].lower() == "true"
+    if status != "ready_for_prd" or not ready:
+        return False, f"Flow 2 is not ready: status={status!r}, ready_for_prd={ready}"
+    return True, "Flow 2 intake state explicitly reports ready_for_prd"
 
 
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
@@ -135,6 +154,7 @@ def golden_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[st
 
 
 def validate(project: Path) -> dict[str, Any]:
+    intake_path = project / "state" / "intake-state.yaml"
     content_path = project / "work" / "content.md"
     data_path = project / "work" / "render-data.json"
     html_path = project / "output" / "final.html"
@@ -148,6 +168,8 @@ def validate(project: Path) -> dict[str, Any]:
         if not ok:
             errors.append(f"{name}: {detail}")
 
+    flow2_ready, flow2_detail = flow2_readiness(intake_path)
+    check("flow2_ready_for_prd", flow2_ready, flow2_detail)
     check("canonical_content_exists", content_path.is_file(), str(content_path))
     check("render_data_exists", data_path.is_file(), str(data_path))
     check("rendered_html_exists", html_path.is_file(), str(html_path))
