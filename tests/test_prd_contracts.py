@@ -381,10 +381,15 @@ class ProjectDocumentContracts(unittest.TestCase):
             "System Behavior",
             "Gameplay Journey",
             "Full Production",
-            "id=\"flow-core\" data-phase=\"dev-core\" data-page-role=\"gameplay-flow\"",
-            ".terms-used-collapsible,a,button",
+            'data-package="core"',
+            'data-glossary-scope="core"',
+            'data-page-role="gameplay-flow"',
+            "section[data-glossary-scope]",
         ):
             self.assertIn(text, html)
+
+        for forbidden in ("aftershock-", "quarry-", "phase-"):
+            self.assertNotIn(forbidden, html.lower())
 
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
@@ -405,6 +410,31 @@ class ProjectDocumentContracts(unittest.TestCase):
                 "dev-core-developer",
             ],
         )
+
+    def test_template_has_no_reference_or_patch_history_slop(self) -> None:
+        template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
+        for forbidden in (
+            "aftershock-",
+            "quarry-",
+            "phase-",
+            "V90",
+            "V94",
+            "V1.2",
+            "v14-style",
+            "v15-style",
+            "v16-style",
+            "v17-style",
+            "v18-style",
+            "golden-sample-version",
+            "source-document",
+            "template-extraction-version",
+        ):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, template)
+        self.assertEqual(template.count("<style>"), 1)
+        self.assertIn("__PRD_STORAGE_PREFIX__", template)
+        self.assertIn('id="prd-document-runtime"', template)
+        self.assertIn('id="prd-global-glossary-script"', template)
 
     def test_renderer_rejects_missing_mandatory_golden_functions(self) -> None:
         variants = {
@@ -428,9 +458,9 @@ class ProjectDocumentContracts(unittest.TestCase):
 
     def test_non_scored_package_is_explicit_not_omitted(self) -> None:
         data = render_data()
-        dev = data["packages"][0]["developer"]
-        dev.pop("scoring")
-        dev["completion_data"] = {
+        developer = data["packages"][0]["developer"]
+        developer.pop("scoring")
+        developer["completion_data"] = {
             "produces_score": False,
             "completion_name": "Core Trial Completion",
             "valid_completion_condition": "The player completes the required Core interaction.",
