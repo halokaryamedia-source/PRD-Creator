@@ -95,10 +95,10 @@ No second glossary engine or duplicate terminology artifact was added.
 
 ## Focused implementation proof
 
-Current implementation gate:
+Current final implementation gate after `kits/**` contract/rendering alignment:
 
 ```text
-PRD Verify #79 — PASS
+PRD Verify #81 — PASS
 ```
 
 The first UI-slice run correctly exposed one stale validator expectation for the previous Developer Flow class. The validator was updated to recognize the new structured Developer Flow instead of restoring the old compressed presentation.
