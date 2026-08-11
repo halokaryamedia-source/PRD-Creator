@@ -4,70 +4,54 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_ARCHITECTURAL_CLEANUP_COMPLETE_AWAIT_USER_DIRECTION`
+`PRD_REPRESENTATIVE_FLOW2_NEEDS_AFTERSHOCK_SCORING_DECISION`
 
 Working branch: **`Local` only**.
 
-## Current system
+## Current system state
 
-Single semantic owner:
+The three pre-test deterministic blockers are closed:
 
-```text
-kits/project-document-generator/CONTENT-CONTRACT.md
-```
+- glossary role visibility is consistent between inline highlighting and Terms Used;
+- Reset / Interruption requires an explicit post-reset Expected System Result;
+- Flow 4/handoff requires an explicit Acceptance lens PASS.
 
-Current production path:
-
-```text
-Flow 2
-source authority
-→ requirement truth
-→ one integrated readiness pass
-→ resolve material gaps
-→ ready_for_prd
-
-Flow 3
-content.md
-→ Humanize
-→ render-data.json
-→ generic approved template
-→ final.html
-
-Flow 4
-mechanical validation
-→ integrated semantic review
-→ targeted desktop visual sanity only when required/available
-→ handoff
-```
-
-## Cleanup now complete
-
-The active PRD Generator now avoids the main AI-slop patterns found during review:
-
-- no reference-project naming in active template/component/runtime hooks;
-- no internal presentation patch/version history in the template;
-- no stacked UI patch layers;
-- no stale package-presentation terminology inherited from old project-specific implementations;
-- no semantic-reference naming inside generic mechanical composition checks;
-- no ritualized multi-scan Flow 2 sequence;
-- no duplicate detailed PRD procedure across skill/workflow/rules/validation owners;
-- no unused legacy table helper kept for hypothetical compatibility;
-- current evidence/continuation docs do not act as debugging-history logs.
-
-The real project `document.version` remains valid document metadata.
-
-## Current proof
+Current focused proof:
 
 ```text
-PRD Verify #99 — PASS
+PRD Verify #108 — PASS
 ```
 
-This is repository/regression evidence only, not representative semantic/browser proof.
+## Representative test status
 
-## Hold boundary
+Representative Flow 2 testing has started with AFTERSHOCK `FINAL v2.4`.
 
-Do not run representative project/browser/mobile/Voice proof unless explicitly requested. The current user direction remains architectural/content cleanup first.
+The test correctly stopped before Flow 3 because current scoring meaning is unresolved:
+
+```text
+current v2.4
+→ no player-facing score/results
+→ no score/aggregate/interpretation in raw telemetry
+→ objective progress/outcome data exists
+→ no current internal Objective Score formula is defined
+
+older Golden Sample
+→ internal Objective Scores + Final Total exist
+→ several formulas depend on older mechanics that no longer match v2.4
+```
+
+Therefore neither of these is valid without a new approved decision:
+
+```text
+infer No Objective Score from display/export rules
+OR
+copy the old Golden scoring formulas into v2.4
+```
+
+Flow 2 must remain `needs_decision` for this representative project until the current internal scoring model is resolved.
+
+No representative HTML/browser/mobile/Voice proof should be run while this material scoring decision remains unresolved.
 
 ## Next Step
 
-Wait for the user's next concrete PRD Generator review request or explicit approval to begin the representative semantic + targeted desktop proof.
+**Resolve and approve the current AFTERSHOCK internal scoring model for the v2.4 mechanics; then resume the same representative proof at Flow 3 without restarting completed intake work.**
