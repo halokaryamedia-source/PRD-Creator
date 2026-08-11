@@ -348,6 +348,7 @@ def validate_mandatory_contract(data: dict[str, Any]) -> None:
         )
         if not developer.get("reset"):
             raise ValueError(f"{context}.developer.reset is required by the Golden mandatory contract")
+        _require_text(developer, "reset_result", f"{context}.developer")
         _validate_notes(
             _require_nonempty_list(developer, "notes", f"{context}.developer"),
             f"{context}.developer.notes",
