@@ -20,6 +20,7 @@ from core import (
     terms,
     txt,
     ul,
+    weight_text,
 )
 
 
@@ -230,11 +231,32 @@ def _gameplay_info_rows(pkg: dict[str, Any]) -> list[str]:
     if not present(scoring_criteria) and dev.get("scoring"):
         score = dev["scoring"]
         components = [item for item in score.get("components", []) if isinstance(item, dict)]
-        if components:
-            en_formula = " + ".join(f'{item.get("weight", "")}% {txt(item.get("name", ""))["en"]}' for item in components)
-            id_formula = " + ".join(f'{item.get("weight", "")}% {txt(item.get("name", ""))["id"]}' for item in components)
+        explicit_summary = score.get("formula") or score.get("summary")
+        if present(explicit_summary):
+            scoring_criteria = explicit_summary
+        elif components:
             score_name = txt(score.get("score_name", bi("Score", "Score")))
-            scoring_criteria = {"en": f'{score_name["en"]}: {en_formula}', "id": f'{score_name["id"]}: {id_formula}'}
+            raw_weights = [item.get("weight") for item in components]
+            if all(weight not in (None, "") for weight in raw_weights):
+                en_formula = " + ".join(
+                    f'{weight_text(item.get("weight"))} {txt(item.get("name", ""))["en"]}'
+                    for item in components
+                )
+                id_formula = " + ".join(
+                    f'{weight_text(item.get("weight"))} {txt(item.get("name", ""))["id"]}'
+                    for item in components
+                )
+                scoring_criteria = {
+                    "en": f'{score_name["en"]}: {en_formula}',
+                    "id": f'{score_name["id"]}: {id_formula}',
+                }
+            else:
+                en_names = ", ".join(txt(item.get("name", ""))["en"] for item in components)
+                id_names = ", ".join(txt(item.get("name", ""))["id"] for item in components)
+                scoring_criteria = {
+                    "en": f'{score_name["en"]} uses {en_names}',
+                    "id": f'{score_name["id"]} menggunakan {id_names}',
+                }
     elif not present(scoring_criteria) and dev.get("completion_data"):
         scoring_criteria = dev["completion_data"].get("summary") or dev["completion_data"].get("valid_completion_condition")
     pairs = [
