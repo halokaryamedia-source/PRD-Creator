@@ -1,86 +1,82 @@
 # Workflow
 
-Project Document Generator has three macro steps. This file is a sequencing reference only; detailed rules live in each Flow owner.
+Project Document Generator has three production steps. This file owns **sequence only**; detailed behavior stays in each owner.
 
 ```text
-1. UNDERSTAND — Flow 2
-2. BUILD PRD  — Flow 3
-3. REVIEW     — Flow 4
+Flow 2  UNDERSTAND
+Flow 3  BUILD PRD
+Flow 4  REVIEW & HANDOFF
 ```
 
-Normal PRD work is **Production Execution**, not repository Developing.
+Normal project creation/revision is Production Execution, not repository Developing.
 
-## 1. UNDERSTAND
+## Flow 2 — UNDERSTAND
 
 Owner: `SOURCE-INTAKE.md`.
 
 ```text
-inventory + inspect material source
-→ recover explicit facts/rules/exclusions
-→ recover topology + terminology
-→ cross-role implications
-→ production coverage
-→ lifecycle + quantitative + operational clarity
-→ global/local coherence + known-constraint feasibility
-→ problem framing + Resolution Ladder
-→ impact propagation
-→ grouped humanized decisions only if needed
+source authority
+→ requirement truth
+→ one integrated production-readiness pass
+→ resolve only material gaps
+→ propagate approved meaning
+→ ready_for_prd | needs_decision | blocked
 ```
 
-Flow 2 must leave enough supported meaning that Flow 3 does not have to invent package order/global ownership/transitions, required role implications, removed behavior, terminology, lifecycle behavior, numeric corrections, global/local exceptions, known feasibility resolution, or another material product rule.
+Exit rule: Flow 3 must not need to invent package order, shared/local ownership, transitions, material role behavior, scoring/result meaning, or another product decision.
 
-Use `Recommended` only when project evidence/goals/constraints actually favor one option. If the tradeoff is balanced, say so. Once production-ready, stop generating optional redesign ideas.
+Once ready, stop Flow 2. Optional redesign ideas are not part of intake.
 
-Exit: `ready_for_prd`, `needs_decision`, or `blocked`.
+## Flow 3 — BUILD PRD
 
-## 2. BUILD PRD
-
-Owners: `CONTENT-CONTRACT.md`; `RENDERING.md` only for projection/HTML mechanics.
+Semantic owner: `CONTENT-CONTRACT.md`.
+Projection mechanics: `RENDERING.md` only when needed.
 
 ```text
-content.md
-→ compact render-data.json
-→ deterministic renderer
-→ Golden Sample
-→ final.html
+ready requirement state
+→ work/content.md
+→ bounded Humanize pass
+→ work/render-data.json
+→ generic approved PRD template + renderer
+→ output/final.html
 ```
 
-Canonical meaning is completed before the main projection. Do not hand-write HTML, load the full Golden source into model context, or rebuild unchanged projection/packages during bounded revisions.
+`content.md` owns meaning. Projection and HTML are derived.
 
-If drafting discovers a material requirement-recovery gap, return it to Flow 2 instead of making a hidden design choice.
+If authoring exposes a material unresolved decision, return that issue to Flow 2. Do not hide it with prose or renderer-friendly defaults.
 
-## 3. REVIEW
+## Flow 4 — REVIEW & HANDOFF
 
 Owner: `VALIDATION.md`.
 
 ```text
 mechanical validation
-+ one-read multi-lens semantic review
-+ actual visual sanity when available
-→ fix real findings
-→ re-review only invalidated scope
++ one integrated semantic review
++ targeted desktop visual sanity when actually required/available
+→ fix first wrong owner
+→ development_ready | handoff_ready
 ```
 
-The model reviews canonical meaning; the validator handles full HTML mechanics. A package/document slice should be read once and assessed for New Reader, Level Designer, Developer, and Consistency together rather than reread four times.
+Mechanical PASS is not semantic or visual approval.
 
-## Revision fast path
+Review the affected document/package once through the relevant reader lenses rather than rereading it separately for each role.
+
+## Bounded revision
 
 ```text
-approved bounded change
-→ persist authoritative instruction when needed
-→ affected requirements + topology/terminology/exclusion/implication checks
-→ affected lifecycle/quantitative/clarity/global-local/feasibility checks
-→ impact propagation
-→ affected content/projection
+approved change
+→ affected Flow 2 truth only
+→ affected canonical content/projection
 → rerender
 → one mechanical check
-→ targeted review
+→ targeted semantic/visual review of invalidated scope
+→ stop
 ```
 
-Do not replay unchanged intake, decisions, packages, or evidence.
+Do not replay unchanged intake, packages, evidence, mobile QA, or downstream Voice work.
 
 ## Delivery
 
-Default user delivery is the final PRD plus material adjustments and any real remaining attention item. Internal state/render data/validator output stays internal unless needed.
+Default user delivery is the requested PRD plus material changes/attention items. Internal source inventory, requirement state, render projection, and validator details stay internal unless needed.
 
-Do not add stages, template profiles, quality scores, screenshot/pixel systems, or HTML frameworks merely to make the process look rigorous.
+Do not add workflow stages, template profiles, quality scores, screenshot systems, or HTML frameworks merely to make the process look more rigorous.
