@@ -228,6 +228,25 @@ class ProjectDocumentContracts(unittest.TestCase):
         (project / "work").mkdir(parents=True)
         (project / "output").mkdir(parents=True)
         self.write_intake_state(project)
+        (project / "state" / "source-inventory.yaml").write_text(
+            "sources:\n"
+            "  - id: SRC-001\n"
+            "    type: instruction\n"
+            "    role: authoritative\n"
+            "    origin: user\n"
+            "    summary: Contract fixture source.\n"
+            "    inspection: full\n",
+            encoding="utf-8",
+        )
+        (project / "state" / "requirement-register.yaml").write_text(
+            "requirements:\n"
+            "  - id: REQ-001\n"
+            "    area: gameplay\n"
+            "    statement: Complete one deterministic fixture trial.\n"
+            "    provenance: [SRC-001]\n"
+            "    impact: high\n",
+            encoding="utf-8",
+        )
         (project / "work" / "content.md").write_text(
             "# Contract Fixture\n\nCanonical fixture content with no unresolved placeholders.\n",
             encoding="utf-8",
@@ -348,6 +367,10 @@ class ProjectDocumentContracts(unittest.TestCase):
                 "dev-core-developer",
             ],
         )
+        required_content = next(
+            check for check in result["checks"] if check["check"] == "golden_required_content"
+        )
+        self.assertEqual(required_content["status"], "pass")
         composition = next(check for check in result["checks"] if check["check"] == "golden_page_composition")
         self.assertEqual(composition["status"], "pass")
 
@@ -543,6 +566,42 @@ class ProjectDocumentContracts(unittest.TestCase):
         result = json.loads(validated.stdout)
         self.assertIn("golden_page_composition", "\n".join(result["errors"]))
 
+    def test_validator_rejects_missing_required_golden_content(self) -> None:
+        variants = {
+            "flow narrative": lambda data: data["gameplay_flow"][0].update(
+                {
+                    "narrative_context": "",
+                    "player_experience": "",
+                    "main_obstacle_or_change": "",
+                    "player_result": "",
+                }
+            ),
+            "gameplay objective": lambda data: data["packages"][0]["gameplay"].update(
+                {"main_objective": ""}
+            ),
+            "gameplay player flow": lambda data: data["packages"][0]["gameplay"].update(
+                {"player_flow": []}
+            ),
+            "level build requirements": lambda data: data["packages"][0]["level_design"].update(
+                {"requirements": []}
+            ),
+            "global requirements": lambda data: data["global_development"][0].update(
+                {"requirements": []}
+            ),
+        }
+        for name, mutate in variants.items():
+            with self.subTest(name=name):
+                data = render_data()
+                mutate(data)
+                project = self.make_project(data)
+                rendered = self.render(project)
+                self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+                validated = self.validate(project)
+                self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+                result = json.loads(validated.stdout)
+                self.assertIn("golden_required_content", "\n".join(result["errors"]))
+
     def test_renderer_keeps_glossary_script_context_safe(self) -> None:
         data = render_data()
         payload = "Before </script><script>window.injected=true</script> after"
@@ -675,6 +734,39 @@ class ProjectDocumentContracts(unittest.TestCase):
 
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+
+    def test_renderer_normalizes_percentage_string_weights(self) -> None:
+        data = render_data()
+        data["packages"][0]["developer"]["scoring"]["components"] = [
+            {"name": "Completion", "weight": "60%", "rule": "Completion contribution."},
+            {"name": "Time", "weight": "40%", "rule": "Time contribution."},
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertNotIn("60%%", html)
+        self.assertNotIn("40%%", html)
+        self.assertIn("Fixture Score: 60% Completion + 40% Time", html)
+
+    def test_renderer_does_not_invent_percent_for_unweighted_scoring(self) -> None:
+        data = render_data()
+        data["packages"][0]["developer"]["scoring"]["components"] = [
+            {"name": "Completion", "rule": "Completion contributes to the result."},
+            {"name": "Time", "rule": "Time contributes to the result."},
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertNotIn("% Completion", html)
+        self.assertNotIn("% Time", html)
+        self.assertIn("Fixture Score uses Completion, Time", html)
+
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
 
