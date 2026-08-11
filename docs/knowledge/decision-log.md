@@ -4,6 +4,15 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Exact Golden reference and material-detail conservation are separate from the runtime shell
+
+- **Decision:** keep the exact approved PRD artifact at `kits/project-document-generator/template/golden-sample.html` as canonical representation evidence, while `template/approved-document.html` remains the maintained runtime shell. Flow 3 must conserve every independently actionable material rule; Flow 4 requires `Material Conservation: PASS` separately from `Golden Fidelity: PASS` before new handoff.
+- **Reason:** AFTERSHOCK v2.4 proved that page count, CSS, IDs/classes, and component presence can all look correct while lists, rows, glossary coverage, and multi-rule content are materially compressed or omitted. A cleaned runtime interpretation is not sufficient evidence of exact Golden fidelity.
+- **Boundary:** Golden remains presentation/structure authority only and never supplies project-specific mechanics or facts. Runtime refactors are allowed only when representation remains faithful to the retained Golden reference.
+- **Supersedes/refines:** supersedes the old shorthand “Approved PRD template is preserved as a shell” when read as permission to replace the full reference with a reduced reconstruction; refines “Golden Samples are references, not project requirements” so it remains true for project facts but not for approved visible composition/information-density requirements.
+- **Owner:** `docs/knowledge/decisions/golden-reference-fidelity.md`.
+- **Date:** 2026-08-12
+
 ### P0.2 keeps three root semantic skills and moves pure technical mechanics to smaller owners
 
 - **Decision:** keep `development-brief`, `project-document-production`, and `voice-production` as the only root repository skills. Narrow the two production specialists to semantic/product-contract ownership. Pure renderer/template/validator/builder mechanics route to nearest kit `AGENTS.md` + exact implementation owner; shared dependency/test/CI mechanics route to `requirements.lock.txt`, `tests/`, `tools/`, and workflows.
@@ -187,12 +196,14 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ### Approved PRD template is preserved as a shell
 
-- **Decision:** preserve the approved HTML presentation shell and regenerate only project-owned content surfaces.
+- **Status:** superseded by `docs/knowledge/decisions/golden-reference-fidelity.md`.
+- **Previous decision:** preserve the approved HTML presentation shell and regenerate only project-owned content surfaces.
 - **Date:** 2026-08-10
 
 ### Golden Samples are references, not project requirements
 
-- **Decision:** samples demonstrate quality/structure only where explicitly defined.
+- **Status:** refined by `docs/knowledge/decisions/golden-reference-fidelity.md`.
+- **Decision:** Golden/reference content never supplies project-specific facts; however the explicitly approved PRD Golden artifact is binding for visible document composition and demonstrated information-density/fidelity requirements until the user approves a new design.
 - **Date:** 2026-08-10
 
 ### Adopt BuildIT principles, not BuildIT domain structure 1:1
