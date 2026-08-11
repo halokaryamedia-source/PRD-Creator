@@ -22,9 +22,9 @@ HTML_TAG_RE = re.compile(r"<html\b[^>]*>", re.I)
 TERM_ROLES = {"gameplay", "level_design", "developer"}
 GOLDEN_GLOBAL_SECTIONS = (
     ("development-overview", "Development Overview"),
-    ("game-system", "Game System"),
-    ("data-reset", "Data and Reset"),
-    ("gameplay-development", "Gameplay Development"),
+    ("game-system", "Session & Runtime System"),
+    ("data-reset", "Data, Recovery & Reset"),
+    ("gameplay-development", "Gameplay Package Integration"),
 )
 GOLDEN_OVERVIEW_FACT_KEYS = {"session-model", "target-playtime", "game-structure"}
 BILINGUAL_SCALAR_FIELDS = {
@@ -142,6 +142,12 @@ def _require_nonempty_list(container: dict[str, Any], field: str, context: str) 
     return value
 
 
+def _validate_text_items(items: list[Any], context: str) -> None:
+    for index, item in enumerate(items):
+        if not _has_text(item):
+            raise ValueError(f"{context}[{index}] must contain visible text")
+
+
 def _validate_flow_steps(items: list[Any], context: str) -> None:
     for index, item in enumerate(items):
         if not isinstance(item, dict):
@@ -232,9 +238,15 @@ def _validate_result_contract(dev: dict[str, Any], context: str) -> None:
 
 
 def validate_mandatory_contract(data: dict[str, Any]) -> None:
+    document = data["document"]
+    _require_text(document, "document_type", "document")
+    _require_text(document, "version", "document")
+
     overview_data = data["overview"]
     _require_text(overview_data, "project_context", "overview")
     _require_text(overview_data, "main_experience", "overview")
+    _require_text(overview_data, "document_scope", "overview")
+    _require_text(overview_data, "intended_use", "overview")
     facts = _require_nonempty_list(overview_data, "facts", "overview")
     fact_keys = {
         str(item.get("key"))
@@ -298,6 +310,8 @@ def validate_mandatory_contract(data: dict[str, Any]) -> None:
         context = f"packages[{index}]"
         _require_text(pkg, "title", context)
         _require_text(pkg, "package_label", context)
+        acceptance = _require_nonempty_list(pkg, "acceptance", context)
+        _validate_text_items(acceptance, f"{context}.acceptance")
 
         gameplay = pkg["gameplay"]
         for field in (
