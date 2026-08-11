@@ -4,7 +4,7 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_PROFESSIONAL_READING_EXPERIENCE_IMPLEMENTED_AWAIT_USER_PROOF_APPROVAL`
+`PRD_GENERIC_TEMPLATE_CLEANUP_COMPLETE_AWAIT_FURTHER_REVIEW_OR_PROOF_APPROVAL`
 
 Working branch: **`Local` only**.
 
@@ -65,43 +65,63 @@ The contract standardizes:
 - English-only default unless bilingual copy is complete and reviewable;
 - Humanize prose that closes already-resolved trigger/action/response/result/next-state questions rather than leaving the reader to infer them.
 
-## Reading experience completed
+## Reading and glossary behavior
 
-The renderer now also provides a clearer professional reading experience without changing project meaning:
+Current generated HTML provides:
 
-- package Gameplay Flow gets a compact orientation summary;
-- Developer Flow keeps Trigger / System Behavior / Data / Expected Result separate;
-- production tables have more breathing room and clearer result hierarchy;
-- Document Control is compact metadata rather than another note block;
-- Main Systems is visually distinct;
-- package subnavigation is active-focused;
-- reading modes are **Gameplay Journey** and **Full Production**;
-- web sheets use content height while print behavior stays bounded;
-- new PRD reading refinements stay in one renderer-owned style/runtime layer instead of accumulating another template style patch.
+- Gameplay Flow orientation;
+- structured Developer Flow;
+- readable production tables;
+- compact Document Control;
+- package-focused navigation;
+- **Gameplay Journey** / **Full Production** reading views;
+- package glossary highlighting and local Terms Used from `packages[].terms`.
 
-## Glossary Index restored
+No second glossary engine is used.
 
-The approved Golden tooltip engine was never removed, but new package Gameplay Flow pages were not scoped for it correctly.
+## Generic template cleanup completed
 
-Current wiring now uses one canonical source:
+The old approved template still contained reference-project and implementation-history residue even though current PRD semantics were already generic.
+
+That residue has now been removed from the active generator:
 
 ```text
-packages[].terms
+V90 / V94 / V1.2 style comments
+v14-style ... v18-style patch IDs
+aftershock-* hooks/storage/runtime names
+quarry-* component names
+obsolete phase-* presentation naming
+source-document / template-extraction revision metadata
+stacked visual-polish patch styles
 ```
 
-That term index drives both inline glossary help and role-local Terms Used. Package-owned full Gameplay Flow now receives package scope and the same gameplay-visible term index. Terms Used itself is excluded from recursive highlighting.
+Current ownership is cleaner:
 
-No second glossary engine or duplicate terminology artifact was added.
+```text
+CONTENT-CONTRACT.md
+→ semantic document truth
+
+approved-document.html
+→ one generic stable PRD presentation/runtime
+
+renderer
+→ project data + pages + navigation + glossary data + project namespace
+
+validator
+→ current generic mechanical composition
+```
+
+The real `document.version` remains valid project metadata. Internal feature/CSS iteration numbers are not treated as document versions and must not leak into template/component naming.
+
+A narrow regression guard prevents the known reference/patch-history tokens from returning to the approved template.
 
 ## Focused implementation proof
 
-Current final implementation gate after `kits/**` contract/rendering alignment:
+Current cleanup implementation gate:
 
 ```text
-PRD Verify #81 — PASS
+PRD Verify #88 — PASS
 ```
-
-The first UI-slice run correctly exposed one stale validator expectation for the previous Developer Flow class. The validator was updated to recognize the new structured Developer Flow instead of restoring the old compressed presentation.
 
 This is repository/regression evidence only. It is not a browser/visual PASS.
 
@@ -114,8 +134,8 @@ At the user's current direction, do not run:
 - mobile QA;
 - unrelated Voice validation.
 
-The previous AFTERSHOCK sample remains diagnostic/mechanical evidence only and does not become proof for the new professional reading contract.
+The previous AFTERSHOCK sample remains diagnostic evidence only.
 
 ## Next Step
 
-**Wait for explicit user approval before running the representative real-project semantic + targeted desktop proof.** Until that approval, only address a new concrete PRD readability/content defect if the user identifies one.
+Continue **manual/architectural review for any remaining concrete AI-slop or unclear PRD Generator behavior** without starting representative testing. Run the representative semantic + targeted desktop proof only after explicit user approval.
