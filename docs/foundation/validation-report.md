@@ -1,32 +1,86 @@
 # Production + Operating Validation Report
 
-Updated: 2026-08-10
+Updated: 2026-08-11
 
-## Production status
+This file owns the **current evidence state** for PRD-Creator. Historical project proof remains useful evidence, but it must not be presented as proof that a later repository revision was re-executed on the same real project.
 
-Production Flow 1–7 remains implemented and real-project proven on The Clockwork Vault.
+## Evidence boundary
 
-| Flow | Status | Current note |
+Keep these evidence classes separate:
+
+- **Current repository/static proof** — current `Local` code, documentation, regression contracts, and GitHub Actions have been inspected/executed for the stated repository claim.
+- **Historical real-project proof** — an earlier repository revision was exercised on a real project and may still demonstrate product/workflow feasibility, but it does not automatically prove later changed contracts.
+- **Current real-project/browser/DOCX/audio proof** — requires the current changed behavior to be exercised on an actual project or rendered/reviewed in the relevant medium.
+
+Root evidence labels remain authoritative. Static/GitHub proof must not be upgraded into a current-project browser/audio/runtime claim.
+
+## Current revision status
+
+Current working branch: `Local`.
+
+The latest PRD correction batch was performed through repository inspection and GitHub Actions only. The changed PRD contracts therefore have **current repository/static proof**, while real-project/browser proof for those changed contracts remains deferred by user direction.
+
+| Flow | Current evidence state | Current note |
 |---|---|---|
-| 1. Repository Boot & Project Memory | `CURRENT-PROJECT VERIFIED` | Repository continuity remains authoritative. |
-| 2. Source Intake & Requirement Recovery | `CURRENT-PROJECT VERIFIED` | Real project intake/recovery proven. |
-| 3. PRD Generation | `CURRENT-PROJECT VERIFIED` | Canonical PRD + derived HTML path proven. |
-| 4. PRD Validation & Handoff | `CURRENT-PROJECT VERIFIED` | Structural/mechanical + semantic readiness gate proven. |
-| 5. Voice Requirement Extraction | `CURRENT-PROJECT VERIFIED` | Real Voice scope extraction proven. |
-| 6. Voice Script + DOCX | `CURRENT-PROJECT VERIFIED` | Exact Voice ID/Type parity + DOCX generation proven. |
-| 7. Voice Validation & Delivery | `CURRENT-PROJECT VERIFIED` | Real visual QA found/fixed the blank-page defect; audio remains separate evidence. |
+| 1. Repository Boot & Project Memory | **current repository/static proof** | Current-state owners are aligned again in this revision; historical and current proof are explicitly separated here. |
+| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | The Clockwork Vault previously proved practical recovery, but the latest Flow 2/4 readiness guards have not been re-run as a current real-project trial. |
+| 3. PRD Generation | **historical real-project proof + current static contract proof** | Earlier canonical PRD/rendering production was proven; current projection-binding, bilingual, scoring, and wrapped-grid changes are regression/CI proven only. |
+| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Earlier development-readiness/handoff was exercised; the latest false-green guards are current static proof only. |
+| 5. Voice Requirement Extraction | **historical real-project proof** | The Clockwork Vault previously exercised real Voice scope extraction. No new current-revision Voice production proof was created by the latest PRD-only correction batch. |
+| 6. Voice Script + DOCX | **historical real-project proof** | Earlier Voice ID/Type parity and DOCX generation were exercised. No new current-revision Voice project run was performed in the latest batch. |
+| 7. Voice Validation & Delivery | **historical real-project proof** | Earlier real DOCX visual QA found/fixed the blank-page defect. Audio evidence for that proof remained `not_provided`; no new current-revision Voice visual/audio proof was performed. |
 
-Audio evidence for the recorded integration proof remains `not_provided`.
+## Historical real-project proof
+
+The Clockwork Vault remains valid historical evidence that the end-to-end Flow 1–7 production model has been exercised on a real project.
+
+That proof must be read as:
+
+```text
+real-project feasibility was demonstrated on the revision exercised at that time
+```
+
+not as:
+
+```text
+all later repository changes are automatically CURRENT-PROJECT VERIFIED
+```
+
+Do not erase this evidence when newer static-only changes are introduced. Preserve it as historical proof and state the newer proof boundary explicitly.
+
+## Current PRD false-green correction batch
+
+The current PRD-side corrections now protect these concrete cases:
+
+- Flow 4 rejects missing/ambiguous/non-ready `state/intake-state.yaml` instead of accepting downstream artifacts while Flow 2 is not explicitly ready;
+- `work/render-data.json` is bound to the exact current bytes of `work/content.md` through the narrow `canonical_content_sha256` revision field, so an older projection cannot silently validate after canonical content changes;
+- weighted scoring validates numeric weights and numeric percentage strings and requires a complete weighted total of 100;
+- intentional EN + ID output requires explicit localized user-visible text rather than silently duplicating scalar English prose into Indonesian;
+- Journey grids beyond six items and Flow grids beyond four items include bounded wrapped-row separator handling.
+
+Repository/CI evidence for the correction sequence includes Repository Verify #68–#73 and Production Verify #28–#32 on their respective commits.
+
+These checks prove the exercised static/regression contracts. They do **not** prove current browser appearance, current real-project recovery quality, or semantic equivalence of arbitrary prose beyond the contracts actually implemented.
+
+## Anti-overdevelopment decision — current interpretation
+
+The earlier anti-overdevelopment cleanup remains valid: PRD-Creator does not restore a broad checksum/revision framework, package manifest system, generic schema registry, or deep artifact-binding architecture merely for theoretical safety.
+
+The later `canonical_content_sha256` addition is a **narrow exception justified by a concrete false-green defect** between canonical `content.md` and its derived `render-data.json`. It must not be interpreted as restoring the retired general checksum protocol.
+
+Likewise, prior decisions not to add stale-HTML, Voice artifact, handoff, or other revision machinery remain historical decisions only until newer concrete evidence justifies revisiting a specific boundary. A later audit may supersede one such decision without invalidating the anti-overdevelopment principle itself.
 
 ## Verification gates
 
 ### Repository Verify
 
-Owns static repository/routing/navigation/syntax/dependency-pin checks.
+Owns static repository/routing/navigation/syntax/dependency-pin and explicitly codified repository invariant checks.
+
+A PASS proves only the checks implemented by that gate. It does not prove that every current-state Markdown statement is semantically synchronized unless that relationship is explicitly checked.
 
 ### Production Verify
 
-Owns the small repeatable executable baseline:
+Owns the repeatable executable baseline:
 
 ```text
 locked dependencies
@@ -36,47 +90,23 @@ locked dependencies
 → fail-closed aggregate
 ```
 
-These gates do not replace semantic review, browser visual QA, DOCX page inspection, pronunciation/performance judgement, or actual audio review.
+A PASS proves those current regression contracts. It does not replace project semantic review, browser visual QA, DOCX page inspection, pronunciation/performance judgment, or actual audio review.
 
-## Anti-overdevelopment correction
+## Known current limitations
 
-Current durable decision:
+The current revision still does not claim proof for:
 
-`docs/knowledge/decisions/anti-overdevelopment-simplification.md`
+- practical Flow 2 recovery quality after the latest PRD guard changes on a new/current real-project run;
+- browser visual fidelity of the latest renderer changes;
+- exact `render-data.json` → `final.html` revision binding beyond current structural/content checks;
+- exact Flow 4 handoff revision binding into Flow 5;
+- current Voice requirement/script/DOCX revision integrity beyond the existing Voice contracts;
+- generated-audio quality without supplied/reviewed audio.
 
-Source cleanup:
-
-`08b6f9d6a98641c5f93932df015cb0d2dffe9a42`
-
-Proof:
-
-```text
-Repository Verify 31381677940  PASS
-Production Verify 31381677946  PASS
-```
-
-The cleanup removed checksum/revision machinery that was not required for normal production use.
-
-## P1 audit findings — current disposition
-
-| Finding | Current disposition |
-|---|---|
-| PRD malformed render-data failure path | **implemented** — structured fail remains. |
-| PRD glossary script-context safety | **implemented**. |
-| PRD required shell-marker safety | **implemented**. |
-| PRD stale HTML revision fingerprint | **no change required** — checksum protocol removed; derived HTML is regenerated from current projection as part of normal flow. |
-| Voice requirements/script/DOCX checksum linkage | **no change required** — checksum protocol removed. |
-| DOCX deep per-entry revision binding | **no change required** — existing ID/Type/content checks + actual Flow 7 review are sufficient for current risk. |
-| Empty Voice section uncontrolled failure | **implemented** — builder now returns a clear controlled error. |
-| Automatic test discovery expansion | **no change required** without evidence of a missed test. |
-| Atomic derived-output writes | **no change required** without evidence of partial-output failure. |
-
-## BuildIT relationship
-
-BuildIT remains an authoritative **reference for operating discipline** where relevant: repository memory, small ownership surfaces, root-cause work, proof boundaries, and anti-slop behavior.
-
-It is **not** a completion checklist. PRD-Creator does not need to reproduce BuildIT's engineering depth or domain-specific machinery when the current product does not need it.
+These limitations are not permission to add broad preventive architecture. Address them only through a concrete bounded defect/current need and the smallest owner that can resolve it.
 
 ## Current boundary
 
-There is no automatic next parity-hardening phase. The repository is ready for normal real-project work. Future engineering changes require a concrete observed defect or current project need.
+The current evidence owner is now reconciled: historical real-project proof is preserved, while the latest PRD hardening is reported only at the GitHub/static/CI evidence level actually obtained.
+
+Per current user direction, do not run local/manual real-project or browser proof until explicitly allowed. The next repository-side correction should address one concrete audited false-green boundary at a time.
