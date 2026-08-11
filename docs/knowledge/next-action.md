@@ -4,52 +4,117 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_FLOW1_4_STATIC_HARDENING_COMPLETE_NEXT_CURRENT_PROJECT_PROOF`
+`PRD_FLOW1_4_CURRENT_PROJECT_PROOF_COMPLETE_NEXT_FLOW5_REQUIREMENT_COMPLETENESS`
 
 Working branch: **`Local` only**.
 
-## Completed PRD-side correction sequence
+## Completed PRD-side correction and proof sequence
 
-The latest audit findings and final hierarchy contradiction pass for PRD Flow 1–4 are closed at the repository/static/regression level:
+The latest PRD Flow 1–4 audit is now closed through both static/regression evidence and one representative current real-project/browser proof:
 
 ```text
-Flow 2 intake declaration
-↓ required persisted source + requirement evidence
-↓ narrow current-blocker consistency
+real authoritative source
+↓
+Flow 2 persisted source + requirement recovery
+↓ ready_for_prd
 work/content.md
 ↓ canonical_content_sha256
 work/render-data.json
-↓ required Golden hierarchy/content + scoring/render contracts
-↓ render-data-sha256
+↓ current Golden renderer/template
 output/final.html
-↓ Flow 4 mechanical + multi-lens acceptance
-existing document.version
-↓ accepted_prd_version + acceptance truth
+↓ current mechanical validation
+one integrated semantic review
+↓ source-fidelity findings corrected at canonical owner
+rerender + revalidate
+↓ actual Chromium desktop/mobile sanity
+work/acceptance.md
+↓ document.version / accepted_prd_version
 handoff_ready
+↓ current handoff validator PASS
 ```
 
-Current protections include:
+## Representative proof result
 
-- `state/intake-state.yaml` must explicitly report `status: ready_for_prd` + `ready_for_prd: true`;
-- `state/source-inventory.yaml` and `state/requirement-register.yaml` must both exist and contain at least one stable `SRC-###` / `REQ-###` entry before readiness can pass;
-- unambiguous current blockers fail readiness:
-  - requirement `approval_status: pending`;
-  - requirement `recovery_class: blocked`;
-  - current source `inspection: blocked`;
-- a source explicitly marked `status: superseded` does not block merely because its old inspection state is `blocked`;
-- `evidence_status: conflict` alone remains allowed because the conflict may already have a valid higher-authority/approved resolution;
-- the gameplay PRD hierarchy cannot silently collapse: at least one Gameplay Flow, one Global Development page, and one Gameplay Package are required;
-- required Golden content presence is mechanically guarded: narrative presence, Gameplay Context/Main Objective/Result/player flow, Level Design overview/build requirement, Global Development overview/requirement, and Developer overview;
-- numeric and percentage-string scoring weights render consistently with one `%`; unweighted scoring does not invent percentage markers;
-- existing `content.md → render-data.json` and `render-data.json → final.html` SHA guards remain unchanged and narrow;
-- Flow 4 → Flow 5 continues to use existing `document.version` / `accepted_prd_version`; no handoff SHA was added;
-- `validate_handoff.py` requires `work/acceptance.md` to actually authorize `handoff_ready`: Mechanical and all four semantic lenses PASS, Critical/Major are zero, and Visual sanity is `PASS` or honestly `NOT PROVEN`;
-- explicit `Visual sanity: FAIL` blocks handoff; `NOT PROVEN` is never upgraded into a visual claim;
-- earlier bilingual display-text, scoring-total, generated-page/navigation, and wrapped Golden-grid guards remain active.
+Representative source:
 
-## Current proof
+```text
+Aftershock-Adventure-Map FINAL v2.4
+Minecraft Bedrock / Minecraft Education
+```
 
-Final executable PRD-side proof anchor:
+The local proof used exact current `Local` renderer/validator/template blobs and produced a complete gameplay PRD with:
+
+```text
+28 generated pages
+7 Gameplay Flow pages
+2 Global Development pages
+6 Gameplay Packages
+```
+
+Final mechanical result:
+
+```text
+PASS
+errors: 0
+warnings: 0
+```
+
+Final integrated semantic acceptance:
+
+```text
+New Reader: PASS
+Level Designer: PASS
+Developer: PASS
+Project Consistency: PASS
+Critical: 0
+Major: 0
+```
+
+Current handoff validation also passed current version `2.4`, artifact references, `handoff_ready`, and acceptance truth.
+
+## What the real-project proof taught us
+
+The first semantic pass found real source-fidelity omissions even though mechanical validation had already passed. The missing emphasis concerned Docks demonstration/feedback, Quarry scripted-deposit and optional-stretch boundaries, Ascent's expected harmless failure, Beacon idle/external-storm behavior, and shared guidance/permission rules.
+
+Those findings were corrected in the representative project's requirement/content/projection owners and then rerendered. **No new PRD validator guard, schema, checksum, semantic engine, or framework was added.**
+
+This confirms the intended split:
+
+```text
+deterministic defect → deterministic guard
+source fidelity / production judgment → Flow 2 + Flow 4 semantic review
+```
+
+Do not convert the semantic findings from this one project into generic mechanical fields merely because they occurred once.
+
+## Browser proof
+
+The final exact `final.html` passed Chromium sanity at desktop `1440×1000` and mobile `390×844`:
+
+- no console/page errors;
+- no document-level horizontal overflow;
+- Overview/sidebar and generated package navigation rendered correctly;
+- Beacon package navigation and Gameplay/Level Design/Developer tabs worked;
+- Terms disclosure worked;
+- theme and Overview/Full Detail controls worked;
+- desktop dense Developer table remained bounded;
+- mobile dense table used internal scrolling without breaking document width;
+- mobile off-canvas Menu opened correctly.
+
+Sandbox policy blocked direct HTTP/file URL navigation, so the exact self-contained HTML was injected into Chromium with Playwright `set_content`. This proves current browser layout/interaction sanity, but not URL-origin/localStorage persistence across a real navigation/reload.
+
+## Existing PRD boundaries remain unchanged
+
+- Flow 2 requires real persisted `SRC-###` / `REQ-###` evidence and rejects only unambiguous current blockers.
+- Required Golden hierarchy/content remains fail-closed at deterministic presence boundaries.
+- Existing content→projection and projection→HTML SHA guards remain narrow; no hash chain was extended.
+- Handoff continues to use `document.version`, `accepted_prd_version`, and compact acceptance truth.
+- One representative project is not universal proof for every possible source shape.
+- Further PRD architecture work requires another concrete defect.
+
+## Repository proof anchors
+
+The executable PRD contracts remain anchored by:
 
 ```text
 3ccbf5196d3d3e4c173c440f0a2b5e0d2211a671
@@ -66,28 +131,16 @@ Repository Verify #105 — PASS
 Production Verify #57 — PASS
 ```
 
-These run numbers are proof anchors, not running state that documentation must chase after every later docs-only commit. Live GitHub Actions owns newer execution history.
-
-This remains **repository/static/regression proof**. It does not prove current real-project recovery quality or current browser appearance.
-
-## Explicit boundaries
-
-- the bounded SRC/REQ entry reader is not a generic YAML parser/schema;
-- required-hierarchy/content checks prove deterministic presence only, not semantic quality;
-- `canonical_content_sha256` catches accidental stale projection but does not prove semantic equivalence between `content.md` and `render-data.json`;
-- no new SHA/checksum, manifest, revision registry, semantic similarity engine, DOM snapshot, pixel comparison, or materiality classifier was added;
-- no Voice Flow 5–7 behavior was changed in this correction sequence;
-- no local/manual real-project or browser proof was run in this GitHub execution channel.
+Current representative proof details are owned by `docs/foundation/validation-report.md`.
 
 ## Deliberately not changed
 
-- no broad Flow 2 schema/completeness framework;
-- no hash-chain extension beyond the two existing PRD mechanical boundaries;
-- no automatic semantic acceptance;
-- no generic renderer/profile framework;
-- no Voice parser/builder/validator hardening yet;
-- no claim that historical real-project proof validates the latest PRD changes.
+- no additional PRD guard after the representative proof;
+- no generic YAML/schema or semantic-comparison framework;
+- no extra checksum/manifest/revision registry;
+- no project-specific AFTERSHOCK rule promoted into global validator policy;
+- no Voice Flow 5–7 behavior changed yet.
 
 ## Next Step
 
-Run **one representative current PRD Flow 2–4 production proof** before starting Voice hardening, including actual rendered/browser sanity when a suitable local/browser execution channel is available. Add no further PRD guard unless that current-project proof reveals a concrete defect.
+Address the already-audited **Flow 5 — Voice Requirement Extraction completeness** boundary: require the existing documented requirement fields (`Function`, `Necessity`, `Purpose`, non-empty `Must communicate`, `Must not add/repeat`, and `Source refs`) at the executable parser boundary before Flow 6 can rely on a Voice requirement entry. Keep the change fail-closed and bounded; do not add a Voice schema framework, semantic similarity engine, automatic lore/mechanic inference, or checksum chain.
