@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render derived PRD JSON into the approved Golden Sample composition."""
 from __future__ import annotations
-import argparse, json, re, sys
+import argparse, hashlib, json, re, sys
 from pathlib import Path
 from typing import Any
 
@@ -240,7 +240,9 @@ def single_language_enforcer(namespace: str) -> str:
 def render(template: Path, render_data: Path, output: Path) -> None:
     if not template.is_file():
         raise FileNotFoundError(f"Approved template not found: {template}")
-    data = json.loads(render_data.read_text(encoding="utf-8"))
+    render_data_bytes = render_data.read_bytes()
+    data = json.loads(render_data_bytes.decode("utf-8"))
+    render_data_sha = hashlib.sha256(render_data_bytes).hexdigest()
     languages = validate(data)
     src = template.read_text(encoding="utf-8")
     require_namespace_tokens(src)
@@ -286,6 +288,12 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         SPEC_VERSION_META_RE,
         f'<meta content="prd-{namespace}-v{esc(doc.get("version", "1.0"))}" name="specification-version"/>',
         "specification-version metadata marker",
+    )
+    require_exact_once(src, "</head>", "head closing marker")
+    src = src.replace(
+        "</head>",
+        f'<meta content="{render_data_sha}" name="render-data-sha256"/>\n</head>',
+        1,
     )
 
     src = src.replace("aftershock-document-", f"prd-{namespace}-")

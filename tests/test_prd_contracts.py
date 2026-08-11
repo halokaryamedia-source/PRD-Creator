@@ -290,6 +290,13 @@ class ProjectDocumentContracts(unittest.TestCase):
             '<meta content="prd-contract-fixture-v1.0" name="specification-version"/>',
             html,
         )
+        render_data_sha = hashlib.sha256(
+            (project / "work" / "render-data.json").read_bytes()
+        ).hexdigest()
+        self.assertIn(
+            f'<meta content="{render_data_sha}" name="render-data-sha256"/>',
+            html,
+        )
         self.assertIn('data-document-languages="en"', html)
         self.assertIn('id="prd-renderer-contract-style"', html)
         self.assertIn('id="prd-single-language-enforcer"', html)
@@ -326,6 +333,10 @@ class ProjectDocumentContracts(unittest.TestCase):
             check for check in result["checks"] if check["check"] == "render_data_matches_canonical_content"
         )
         self.assertEqual(binding["status"], "pass")
+        html_binding = next(
+            check for check in result["checks"] if check["check"] == "html_matches_current_render_data"
+        )
+        self.assertEqual(html_binding["status"], "pass")
         self.assertEqual(
             result["expected_pages"],
             [
@@ -496,6 +507,22 @@ class ProjectDocumentContracts(unittest.TestCase):
         joined = "\n".join(result["errors"])
         self.assertIn("render_data_matches_canonical_content", joined)
         self.assertIn("projection is stale", joined)
+
+    def test_validator_rejects_stale_html_after_render_data_changes(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
+        updated = render_data()
+        updated["document"]["version"] = "1.1"
+        self.write_data(project, updated)
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        joined = "\n".join(result["errors"])
+        self.assertIn("html_matches_current_render_data", joined)
+        self.assertIn("rendered HTML is stale", joined)
 
     def test_validator_rejects_missing_golden_composition_marker(self) -> None:
         project = self.make_project(render_data())

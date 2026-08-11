@@ -33,6 +33,7 @@ class HtmlFacts(HTMLParser):
         self.title_parts: list[str] = []
         self.document_section_ids: list[str] = []
         self.section_classes: dict[str, set[str]] = {}
+        self.render_data_sha256: list[str] = []
         self._in_title = False
         self._in_document_main = False
         self._current_document_section: str | None = None
@@ -52,6 +53,8 @@ class HtmlFacts(HTMLParser):
             self.section_classes.setdefault(section_id, set()).update(classes)
         elif self._current_document_section:
             self.section_classes.setdefault(self._current_document_section, set()).update(classes)
+        if tag_name == "meta" and str(data.get("name") or "").casefold() == "render-data-sha256":
+            self.render_data_sha256.append(str(data.get("content") or ""))
         href = data.get("href")
         if isinstance(href, str) and href.startswith("#") and len(href) > 1:
             self.fragment_hrefs.append(href[1:])
@@ -297,6 +300,25 @@ def validate(project: Path) -> dict[str, Any]:
         facts.feed(html_text)
     except Exception as exc:
         errors.append(f"html_parse: {exc}")
+
+    actual_render_data_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
+    html_bindings = facts.render_data_sha256
+    html_binding_valid = (
+        len(html_bindings) == 1
+        and SHA256_RE.fullmatch(html_bindings[0]) is not None
+        and html_bindings[0] == actual_render_data_sha
+    )
+    if not html_bindings:
+        html_binding_detail = "rendered HTML is missing render-data-sha256 revision binding"
+    elif len(html_bindings) != 1:
+        html_binding_detail = f"rendered HTML must contain exactly one render-data-sha256 binding; found {len(html_bindings)}"
+    elif SHA256_RE.fullmatch(html_bindings[0]) is None:
+        html_binding_detail = "rendered HTML render-data-sha256 binding is invalid"
+    elif html_bindings[0] != actual_render_data_sha:
+        html_binding_detail = "rendered HTML is stale relative to work/render-data.json; rerender final.html"
+    else:
+        html_binding_detail = "rendered HTML is bound to the current render-data revision"
+    check("html_matches_current_render_data", html_binding_valid, html_binding_detail)
 
     duplicates = sorted(k for k, count in Counter(facts.ids).items() if count > 1)
     check("html_ids_unique", not duplicates, f"duplicate ids: {duplicates}" if duplicates else "no duplicate HTML ids")
