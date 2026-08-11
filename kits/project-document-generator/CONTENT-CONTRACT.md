@@ -287,6 +287,8 @@ Carry all material runtime-owned meaning supported by the project, including whe
 - transition/handoff;
 - implementation constraints that prevent materially wrong behavior.
 
+Reset / interruption is not complete with an action alone. When it applies, state both **what is reset/recovered** and the observable **post-reset Expected System Result**. A blank result cell is not a valid completed requirement.
+
 ### Developer Flow reading contract
 
 Development Flow must preserve the lifecycle sequence **and** keep different kinds of information visibly distinguishable when they exist:
@@ -384,6 +386,8 @@ A package term may define:
 - concise production definition;
 - aliases when the same approved term appears in another written form;
 - role visibility when the term is relevant only to Gameplay, Level Design, or Developer readers.
+
+`roles` is a restriction, not a second terminology source. When `roles` is omitted, the package term is available to all three package reader roles. When `roles` is provided, the same restriction applies to **both** inline glossary highlighting and the local `Terms Used` index.
 
 The same package term index serves both reading surfaces:
 
