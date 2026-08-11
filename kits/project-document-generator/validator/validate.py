@@ -43,6 +43,7 @@ def expected_page_ids(data: dict[str, Any]) -> list[str]:
 
 def document_composition_errors(data: dict[str, Any], facts: Any) -> list[str]:
     failures: list[str] = []
+    packages = {pkg["id"]: pkg for pkg in data.get("packages", [])}
 
     def require(section_id: str, required: set[str]) -> None:
         available = facts.section_classes.get(section_id, set())
@@ -52,7 +53,11 @@ def document_composition_errors(data: dict[str, Any], facts: Any) -> list[str]:
 
     for index, item in enumerate(data.get("gameplay_flow", [])):
         section_id = "flow-start" if index == 0 else f'flow-{item["id"]}'
-        require(section_id, {"clean-visible", "story-page", "story-flow", "quarry-definition-list"})
+        required = {"clean-visible", "story-page", "story-flow"}
+        source_terms = item.get("terms", []) if index == 0 else packages.get(item["id"], {}).get("terms", [])
+        if source_terms:
+            required.add("quarry-definition-list")
+        require(section_id, required)
 
     for item in data.get("global_development", []):
         require(
