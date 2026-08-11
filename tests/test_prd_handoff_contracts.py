@@ -46,7 +46,16 @@ class PrdHandoffContracts(unittest.TestCase):
         )
         (project / "output" / "final.html").write_text("<!doctype html><title>Contract</title>\n", encoding="utf-8")
         (project / "work" / "acceptance.md").write_text(
-            f"# PRD Acceptance\nStatus: {status}\nPRD Version: {accepted}\n",
+            f"# PRD Acceptance\n"
+            f"Status: {status}\n"
+            "Mechanical: PASS\n"
+            "Visual sanity: NOT PROVEN\n"
+            "New Reader: PASS\n"
+            "Level Designer: PASS\n"
+            "Developer: PASS\n"
+            "Project Consistency: PASS\n"
+            "Critical: 0\n"
+            "Major: 0\n",
             encoding="utf-8",
         )
         (project / "output" / "team-handoff.md").write_text(
@@ -79,6 +88,12 @@ class PrdHandoffContracts(unittest.TestCase):
             if check["check"] == "handoff_revision_matches_current_prd"
         )
         self.assertEqual(revision["status"], "pass")
+        acceptance = next(
+            check
+            for check in result["checks"]
+            if check["check"] == "acceptance_allows_handoff"
+        )
+        self.assertEqual(acceptance["status"], "pass")
 
     def test_pending_review_cannot_authorize_flow5(self) -> None:
         project = self.make_project(status="pending_review")
@@ -109,6 +124,39 @@ class PrdHandoffContracts(unittest.TestCase):
         result = json.loads(validated.stdout)
         self.assertIn("handoff_artifact_references_current", "\n".join(result["errors"]))
         self.assertIn("missing referenced artifact: output/team-handoff.md", "\n".join(result["errors"]))
+
+    def test_acceptance_failure_cannot_authorize_flow5(self) -> None:
+        variants = {
+            "needs revision": "Status: needs_revision",
+            "mechanical failure": "Mechanical: FAIL",
+            "visual failure": "Visual sanity: FAIL",
+            "developer failure": "Developer: FAIL",
+            "critical blocker": "Critical: 1",
+            "major blocker": "Major: 2",
+        }
+        for name, replacement in variants.items():
+            with self.subTest(name=name):
+                project = self.make_project()
+                path = project / "work" / "acceptance.md"
+                text = path.read_text(encoding="utf-8")
+                label = replacement.split(":", 1)[0]
+                text = "\n".join(
+                    replacement if line.startswith(f"{label}:") else line
+                    for line in text.splitlines()
+                ) + "\n"
+                path.write_text(text, encoding="utf-8")
+
+                validated = run_cli(HANDOFF_VALIDATOR, project)
+                self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+                result = json.loads(validated.stdout)
+                self.assertIn("acceptance_allows_handoff", "\n".join(result["errors"]))
+
+    def test_acceptance_allows_visual_not_proven_without_claiming_pass(self) -> None:
+        project = self.make_project()
+
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+        self.assertIn("NOT PROVEN", (project / "work" / "acceptance.md").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
