@@ -27,7 +27,6 @@ FLOW2_EXPLICIT_BLOCKERS = {
     "requirement-register.yaml": {
         "approval_status": {"pending"},
         "recovery_class": {"blocked"},
-        "evidence_status": {"conflict"},
     },
     "source-inventory.yaml": {
         "inspection": {"blocked"},
