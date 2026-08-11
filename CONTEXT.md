@@ -25,27 +25,24 @@ Normal project creation/revision is **Production Execution**. `development-brief
 
 User effort stays low:
 
-- internal project/workspace/bootstrap is automatic;
-- source is inventoried/triaged before deep reading;
-- only materially relevant evidence is read to the depth needed;
-- Flow 2 solves before asking: recover from authority, apply safe Completion, or form a responsible Proposal before escalating;
-- unresolved material decisions are grouped and explained clearly;
-- bounded revisions update only affected scope;
+- workspace/bootstrap is automatic;
+- source is triaged by authority/relevance before deep reading;
+- Flow 2 resolves supported meaning before asking for decisions;
+- only unresolved material decisions are surfaced;
+- bounded revisions update only invalidated scope;
 - internal state/evidence stays internal during normal delivery.
 
-Efficiency applies to **reading and proof**, not to deleting material production meaning from the PRD.
+Efficiency applies to reading and proof, not to deleting material production meaning.
 
-## Golden Mandatory Contract
+## Gameplay PRD contract
 
-The approved Golden Sample defines the minimum document function for this gameplay PRD family. Its single semantic owner is:
+The approved Golden Sample defines the minimum document function/quality expected from this gameplay PRD family. The single semantic owner is:
 
 ```text
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
-Other Flow 2–4 owners point there instead of maintaining competing Golden checklists.
-
-The fixed family preserves:
+The fixed family is:
 
 ```text
 Overview
@@ -63,7 +60,7 @@ Overview
      Developer
 ```
 
-Projects do not copy Golden-specific facts, counts, mechanics, lore, or scoring. They fill the fixed functions with current-project truth.
+Projects fill these functions with current-project truth; reference-project facts/mechanics do not transfer automatically.
 
 Mandatory concerns resolve as:
 
@@ -80,19 +77,18 @@ Key interpretation:
 - internal scoring/result, player-facing display, and telemetry/export remain separate unless authority joins them;
 - Level Design and Developer pages carry complete material role-owned meaning;
 - `packages[].terms` is the canonical package glossary index;
-- PRD prose is human-readable production language and closes already-resolved cause/action/result questions without changing exact technical facts.
+- PRD prose is human-readable production language and closes already-resolved cause/action/result questions without changing technical facts.
 
 ## Presentation direction
 
 HTML remains a professional document, not a dashboard.
 
-- the approved template is generic PRD infrastructure, not an AFTERSHOCK-derived artifact;
-- stable component/runtime names describe their function, not the reference project;
-- internal CSS/feature iterations do not appear as `V19`, `V94`, `v17-style`, or similar pseudo-versions;
-- legitimate `document.version` remains project metadata;
+- `approved-document.html` is generic PRD presentation/runtime infrastructure;
+- stable component/runtime names describe function, not implementation history or a reference project;
+- project `document.version` is real document metadata, not presentation-patch numbering;
 - Gameplay Journey and Full Production are the two reading views;
 - package terminology can be highlighted through the shared glossary index;
-- generated HTML remains derived and is never manually patched.
+- generated HTML is derived and is never manually patched.
 
 ## Proof direction
 
