@@ -4,7 +4,7 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_PROFESSIONAL_GOLDEN_CONTRACT_IMPLEMENTED_NEXT_REPRESENTATIVE_PROOF`
+`PRD_PROFESSIONAL_READING_EXPERIENCE_IMPLEMENTED_AWAIT_USER_PROOF_APPROVAL`
 
 Working branch: **`Local` only**.
 
@@ -47,60 +47,75 @@ Blocked
 
 A mandatory concern may not silently disappear.
 
-## Professional-quality improvements completed
+## Professional content behavior
 
-The contract and renderer now standardize:
+The contract standardizes:
 
-- Overview **Document Control** with version, scope, and intended production use;
-- full Gameplay Flow as chronological player story;
-- package **Objective Sequence** as the separate scan-friendly summary;
-- **Failure / Retry / Recovery** and **Result / Scoring Model** labels;
-- Level Design **Area / Spatial Constraint**;
-- Developer/global **Expected System Result**;
-- **Critical Constraints & Notes** with a narrow non-dumping-ground role;
-- package **Acceptance & Verification** with observable definition-of-done statements;
-- aggregate Final Result Contract ownership under **Data, Recovery & Reset** when applicable;
+- Overview Document Control;
+- chronological full Gameplay Flow;
+- separate Objective Sequence;
+- Failure / Retry / Recovery;
+- Result / Scoring Model;
+- Level Design Area / Spatial Constraint;
+- Developer/global Expected System Result;
+- Critical Constraints & Notes;
+- package Acceptance & Verification;
+- aggregate Final Result Contract ownership under Data, Recovery & Reset;
 - explicit Objective Score vs `No Objective Score`, player-facing display, telemetry/export, and final-result relationship;
-- English-only as default; bilingual output is intentional only when complete user-visible translation is available and reviewable.
+- English-only default unless bilingual copy is complete and reviewable;
+- Humanize prose that closes already-resolved trigger/action/response/result/next-state questions rather than leaving the reader to infer them.
 
-Package Acceptance & Verification and Flow 4 document acceptance are deliberately separate concepts.
+## Reading experience completed
 
-## Deterministic enforcement
+The renderer now also provides a clearer professional reading experience without changing project meaning:
 
-The renderer fails before writing HTML when the mandatory deterministic shell is incomplete, including missing Document Control inputs or package Acceptance & Verification.
+- package Gameplay Flow gets a compact orientation summary;
+- Developer Flow keeps Trigger / System Behavior / Data / Expected Result separate;
+- production tables have more breathing room and clearer result hierarchy;
+- Document Control is compact metadata rather than another note block;
+- Main Systems is visually distinct;
+- package subnavigation is active-focused;
+- reading modes are **Gameplay Journey** and **Full Production**;
+- web sheets use content height while print behavior stays bounded;
+- new PRD reading refinements stay in one renderer-owned style/runtime layer instead of accumulating another template style patch.
 
-Focused regression coverage uses the professional Golden fixture rather than a minimal skeleton.
+## Glossary Index restored
 
-Current implementation proof:
+The approved Golden tooltip engine was never removed, but new package Gameplay Flow pages were not scoped for it correctly.
+
+Current wiring now uses one canonical source:
 
 ```text
-PRD Verify #73 — PASS
+packages[].terms
 ```
 
-A syntax typo found by the first CI attempt of this slice was corrected at the exact renderer owner before this PASS.
+That term index drives both inline glossary help and role-local Terms Used. Package-owned full Gameplay Flow now receives package scope and the same gameplay-visible term index. Terms Used itself is excluded from recursive highlighting.
 
-Voice verification remains independent, so PRD-only work does not rerun Voice contracts by default.
+No second glossary engine or duplicate terminology artifact was added.
 
-## Deliberately not added
+## Focused implementation proof
 
-- no QA appendix/test-case framework;
-- no RACI/risk-register/epic ceremony;
-- no word-count or row-count quality gate;
-- no semantic similarity engine;
-- no permanent source-to-output matrix;
-- no generic schema framework;
-- no new checksum chain;
-- no mobile QA as a default;
-- no Voice feature changes.
+Current implementation gate:
 
-The existing `content.md → render-data.json` SHA remains a separate simplification candidate, not semantic proof.
+```text
+PRD Verify #79 — PASS
+```
 
-## Evidence boundary
+The first UI-slice run correctly exposed one stale validator expectation for the previous Developer Flow class. The validator was updated to recognize the new structured Developer Flow instead of restoring the old compressed presentation.
 
-The previous AFTERSHOCK sample remains diagnostic/mechanical evidence only. It is not semantic-quality proof for this professional contract.
+This is repository/regression evidence only. It is not a browser/visual PASS.
 
-The contract still needs one representative real-project run to prove that Flow 2 fills the mandatory surfaces correctly and Flow 3 produces complete, human-readable, production-usable content in practice.
+## Deliberately not run
+
+At the user's current direction, do not run:
+
+- representative real-project PRD proof;
+- browser/desktop visual proof;
+- mobile QA;
+- unrelated Voice validation.
+
+The previous AFTERSHOCK sample remains diagnostic/mechanical evidence only and does not become proof for the new professional reading contract.
 
 ## Next Step
 
-Run **one new representative PRD Flow 2–4 production proof** using the professional Golden Mandatory Contract, then inspect the generated HTML with the user before closing Flow 2–4. Review semantic/content quality first, then use only targeted **desktop** visual sanity. Do not run mobile QA or unrelated Voice validation.
+**Wait for explicit user approval before running the representative real-project semantic + targeted desktop proof.** Until that approval, only address a new concrete PRD readability/content defect if the user identifies one.
