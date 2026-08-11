@@ -52,7 +52,9 @@ The generated `output/final.html` must contain exactly one `render-data-sha256` 
 
 Mechanical validation distinguishes **required content presence** from **rendered composition markers**.
 
-For the existing gameplay PRD family it fails when deterministic Golden slots that are already mandatory are absent, including:
+For the existing gameplay PRD family, the required hierarchy itself must be present: at least one `Gameplay Flow`, at least one `Global Development` page, and at least one Gameplay Package. Empty required hierarchy collections fail rather than being reduced to an optional warning.
+
+It also fails when deterministic Golden slots that are already mandatory are absent, including:
 
 - a Gameplay Flow page with no usable narrative beat/context;
 - Gameplay Overview without Context, Main Objective, Result, or a player-flow step;
@@ -60,11 +62,11 @@ For the existing gameplay PRD family it fails when deterministic Golden slots th
 - a Global Development page that exists but has no overview or Development Requirement row;
 - Developer without an overview.
 
-This check asks only whether a required slot exists. It does **not** decide whether the content is semantically good, complete enough for a specific mechanic, or supported by project evidence; those remain Flow 2/Flow 4 judgment.
+This check asks only whether required hierarchy/content slots exist. It does **not** decide whether the content is semantically good, complete enough for a specific mechanic, or supported by project evidence; those remain Flow 2/Flow 4 judgment.
 
 The renderer also normalizes scoring display text consistently. Numeric weights and numeric percentage strings such as `60` and `"60%"` render as one percentage marker, while unweighted scoring components are described without inventing percentage signs or equal weighting.
 
-The validator owns current mechanical contracts including Flow 2 readiness/evidence presence, unambiguous current blocker detection, canonical-content/projection revision binding, projection/HTML revision binding, artifact presence, placeholders, required Golden content slots, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
+The validator owns current mechanical contracts including Flow 2 readiness/evidence presence, unambiguous current blocker detection, canonical-content/projection revision binding, projection/HTML revision binding, artifact presence, placeholders, required Golden hierarchy/content slots, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
 
 Mechanical PASS proves these implemented structure/current-revision/explicit-state contracts only—not semantic equivalence, completeness of arbitrary Flow 2 reasoning, or visual quality. Do not expand this into generic YAML schemas, semantic hashing, pixel comparison, DOM snapshots, visual scoring, artifact manifests, or a generic HTML schema.
 
@@ -202,7 +204,7 @@ This uses the existing lifecycle/acceptance owners and `document.version`. Do no
 
 ## Development-ready gate
 
-Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, required Flow 2 persisted evidence owners exist, no unambiguous current blocker contradicts readiness, current canonical content is bound to the current render projection, current `final.html` is bound to that exact projection, required Golden content/structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
+Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, required Flow 2 persisted evidence owners exist, no unambiguous current blocker contradicts readiness, current canonical content is bound to the current render projection, current `final.html` is bound to that exact projection, required Golden hierarchy/content/structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
 
 Set `handoff_ready` only after the same accepted revision is represented truthfully in `work/acceptance.md` and `state/handoff-state.yaml`.
 
