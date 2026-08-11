@@ -21,12 +21,12 @@ Before HTML is produced, render data must represent the complete fixed gameplay 
 Overview
 Gameplay Flow
   The Journey Begins
-  one flow page per gameplay package
+  one full Gameplay Flow page per gameplay package
 Global Development
   Development Overview
-  Game System
-  Data and Reset
-  Gameplay Development
+  Session & Runtime System
+  Data, Recovery & Reset
+  Gameplay Package Integration
 Gameplay packages
   Gameplay Overview
   Level Design
@@ -35,7 +35,7 @@ Gameplay packages
 
 Mandatory package/global blocks may contain an explicit negative or `Not Applicable` production statement where the semantic contract permits it, but they may not be silently omitted.
 
-The renderer fails before writing `final.html` when deterministic mandatory shell data is missing.
+The renderer fails before writing `final.html` when deterministic mandatory shell data is missing. This includes current Overview document-control values and package-level `Acceptance & Verification` content.
 
 ## Projection shape
 
@@ -54,32 +54,24 @@ The renderer fails before writing `final.html` when deterministic mandatory shel
 
 The existing `canonical_content_sha256` is retained for now as a narrow stale-projection binding. It is not semantic proof and must not be treated as evidence of completeness.
 
-`final.html` receives the current `render-data-sha256` marker so stale deterministic HTML cannot be mistaken for the current projection.
-
-No additional hash/checksum chain is added.
+`final.html` receives the current `render-data-sha256` marker so stale deterministic HTML cannot be mistaken for the current projection. No additional hash/checksum chain is added.
 
 ## Fixed deterministic identifiers
 
-Global Development uses these fixed IDs/order:
+Global Development keeps stable IDs/order while using the professional display names owned by `CONTENT-CONTRACT.md`:
 
 ```text
-development-overview
- game-system
- data-reset
- gameplay-development
+development-overview  → Development Overview
+game-system           → Session & Runtime System
+data-reset             → Data, Recovery & Reset
+gameplay-development   → Gameplay Package Integration
 ```
 
-The first Gameplay Flow item uses:
+The first Gameplay Flow item uses `journey-begins`. Remaining Gameplay Flow IDs match package IDs in package order.
 
-```text
-journey-begins
-```
+## Required Overview projection
 
-The remaining Gameplay Flow IDs match gameplay package IDs in package order. This creates one unambiguous flow page per package without a second mapping system.
-
-## Required overview facts
-
-Overview facts use stable keys for the three fixed Golden functions:
+Overview preserves the fixed Golden project facts:
 
 ```text
 session-model
@@ -87,7 +79,17 @@ target-playtime
 game-structure
 ```
 
+It also carries `document_scope` and `intended_use` for the rendered Document Control block. Current approval/handoff state is intentionally not rendered there; lifecycle truth stays in Flow 4 state so approval does not require a cosmetic rerender.
+
 Additional project facts are allowed when materially useful.
+
+## Package projection
+
+Gameplay Overview renders the short `player_flow` projection as **Objective Sequence**. The separate top-level Gameplay Flow collection remains the full chronological player narrative.
+
+Every package also carries a non-empty `acceptance` list for the Developer-page **Acceptance & Verification** block. These are observable package-level definition-of-done statements, not a QA test-case framework.
+
+Level Design and Developer table labels follow `CONTENT-CONTRACT.md`; renderer code does not redefine their semantics.
 
 ## Scoring / Result projection
 
@@ -99,18 +101,11 @@ OR
 completion_data
 ```
 
-`scoring` represents an Objective Score.
+`scoring` represents an Objective Score. `completion_data` represents explicit `No Objective Score` behavior.
 
-`completion_data` represents explicit `No Objective Score` behavior.
+Both forms carry current project truth for final-result relationship, player-facing display, telemetry/export behavior, and interruption/duplicate behavior where required.
 
-Both forms also carry the current project truth for:
-
-- final-result relationship;
-- player-facing score/result display;
-- telemetry/export behavior;
-- interruption/duplicate behavior where required by the Golden contract.
-
-The renderer must display these distinctions. It must never infer `No Objective Score` from a display/export prohibition.
+The renderer displays these distinctions and never infers `No Objective Score` from a display/export prohibition.
 
 ## English and bilingual values
 
@@ -118,7 +113,7 @@ Default output is English-only.
 
 For intentional EN + ID output, every user-visible textual value must explicitly provide both `en` and `id`. Structural values such as IDs, keys, version, weights, and step codes may remain language-neutral scalars.
 
-This is a strict rendering boundary, not a translation framework.
+This proves localization completeness only, not translation quality. Do not enable bilingual output merely because placeholder/machine-like Indonesian strings exist.
 
 ## Terms Used
 
