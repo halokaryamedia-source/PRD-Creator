@@ -537,7 +537,7 @@ def navigation(data: dict[str, Any]) -> str:
     if glinks or plinks:
         nav.append(
             f'<div class="nav-group is-open professional-nav"><button class="nav-group-toggle" aria-expanded="true"><span class="nav-index">03</span><span class="nav-copy">{i18n(bi("Development", "Pengembangan"))}</span></button>'
-            f'<div class="nav-submenu">{glinks}</div><div class="nav-submenu phase-navigation'>{"".join(plinks)}</div></div>'
+            f'<div class="nav-submenu">{glinks}</div><div class="nav-submenu phase-navigation">{"".join(plinks)}</div></div>'
         )
     return "".join(nav)
 
