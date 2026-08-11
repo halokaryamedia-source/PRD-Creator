@@ -105,7 +105,7 @@ Never convert static source inspection into a visual PASS claim.
 
 ## 4. Acceptance record
 
-Keep `work/acceptance.md` compact:
+Keep `work/acceptance.md` compact and record every semantic lens explicitly:
 
 ```text
 # PRD Acceptance
@@ -115,13 +115,14 @@ Visual sanity: PASS | FAIL | NOT PROVEN
 New Reader: PASS | FAIL
 Level Designer: PASS | FAIL
 Developer: PASS | FAIL
+Acceptance: PASS | FAIL
 Project Consistency: PASS | FAIL
 Findings: <only when findings exist>
 Critical: N
 Major: N
 ```
 
-Package-level `Acceptance & Verification` is part of the PRD. `work/acceptance.md` records whether the document revision passed Flow 4; these are different concepts.
+Package-level `Acceptance & Verification` is part of the PRD. The `Acceptance:` line above records whether those package criteria are themselves sufficient and observable. `work/acceptance.md` records whether the document revision passed Flow 4; these concepts remain distinct.
 
 ## 5. Handoff entry
 
@@ -132,7 +133,7 @@ python kits/project-document-generator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-The handoff validator confirms the current accepted PRD version, artifact references, acceptance status, and `handoff_ready` state.
+The handoff validator confirms the current accepted PRD version, artifact references, acceptance status, and `handoff_ready` state. Handoff requires PASS for New Reader, Level Designer, Developer, Acceptance, and Project Consistency.
 
 `Visual sanity: NOT PROVEN` remains allowed when browser proof was unavailable; it is not a visual PASS claim.
 
