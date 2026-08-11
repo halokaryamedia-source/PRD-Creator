@@ -4,143 +4,89 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_FLOW1_4_CURRENT_PROJECT_PROOF_COMPLETE_NEXT_FLOW5_REQUIREMENT_COMPLETENESS`
+`PRD_SEMANTIC_QUALITY_CONTRACT_REVISED_NEXT_DESKTOP_REPRESENTATIVE_PROOF`
 
 Working branch: **`Local` only**.
 
-## Completed PRD-side correction and proof sequence
+## Why PRD Flow 2–4 was reopened
 
-The latest PRD Flow 1–4 audit is now closed through both static/regression evidence and one representative current real-project/browser proof:
+Direct review of the representative AFTERSHOCK final sample found that the previous semantic threshold was too permissive even though renderer/mechanical/browser checks passed.
 
-```text
-real authoritative source
-↓
-Flow 2 persisted source + requirement recovery
-↓ ready_for_prd
-work/content.md
-↓ canonical_content_sha256
-work/render-data.json
-↓ current Golden renderer/template
-output/final.html
-↓ current mechanical validation
-one integrated semantic review
-↓ source-fidelity findings corrected at canonical owner
-rerender + revalidate
-↓ actual Chromium desktop/mobile sanity
-work/acceptance.md
-↓ document.version / accepted_prd_version
-handoff_ready
-↓ current handoff validator PASS
-```
+Concrete failures included:
 
-## Representative proof result
+- `score is not displayed/exported` was incorrectly interpreted as `No Objective Score`;
+- Gameplay Flow became task summaries instead of the chronological player journey/context needed by the team;
+- Level Design, Developer, and Global Development lost material production detail;
+- prose was too compressed/database-like and insufficiently humanized;
+- semantic acceptance did not trace material source/requirement meaning deeply enough before declaring PASS.
 
-Representative source:
+The previous AFTERSHOCK run remains diagnostic/mechanical evidence only. It is **not** current semantic-quality proof.
 
-```text
-Aftershock-Adventure-Map FINAL v2.4
-Minecraft Bedrock / Minecraft Education
-```
+## Completed semantic contract revision
 
-The local proof used exact current `Local` renderer/validator/template blobs and produced a complete gameplay PRD with:
+### Flow 2
 
-```text
-28 generated pages
-7 Gameplay Flow pages
-2 Global Development pages
-6 Gameplay Packages
-```
+- do not broaden negative statements beyond their actual scope;
+- `do not display score`, `do not export score`, and `No Objective Score` are distinct meanings;
+- every gameplay package resolves its Scoring / Result model as Objective Score or explicit No Objective Score;
+- internal score/result, player-facing display, and telemetry/export remain separate when authority distinguishes them;
+- a source/file labelled `FINAL` does not silently override higher-authority current instruction or approved decisions.
 
-Final mechanical result:
+### Flow 3
 
-```text
-PASS
-errors: 0
-warnings: 0
-```
+- target changed from minimum-looking output to **minimum complete production detail**;
+- Golden is now an explicit **functional quality floor**, not just hierarchy/template;
+- Gameplay Flow must be chronological player-story production narrative;
+- Level Design must carry complete material build-relevant meaning;
+- Developer must carry complete material runtime/state/scoring-or-result/data/interruption/reset/handoff meaning;
+- Global Development must preserve important shared ownership;
+- every package must visibly state its Scoring / Result contract;
+- one bounded PRD Humanize pass is required before projection.
 
-Final integrated semantic acceptance:
+### Flow 4
 
-```text
-New Reader: PASS
-Level Designer: PASS
-Developer: PASS
-Project Consistency: PASS
-Critical: 0
-Major: 0
-```
+- semantic acceptance now performs bounded material source/requirement → PRD coverage review;
+- if Level Design or Developer must reopen original source for a material rule that belongs in the PRD, that is Major;
+- Golden quality is judged by production function, not word/row count;
+- default visual proof is **desktop-only**;
+- representative browser smoke is limited to Overview + one Gameplay Flow + one Level Design + one dense Developer page unless a specific defect requires more.
 
-Current handoff validation also passed current version `2.4`, artifact references, `handoff_ready`, and acceptance truth.
+## Deliberately not added
 
-## What the real-project proof taught us
+- no word-count validator;
+- no minimum row/note count;
+- no generic schema/coverage matrix;
+- no semantic similarity engine;
+- no additional hash/checksum chain;
+- no mobile QA by default;
+- no Voice changes yet.
 
-The first semantic pass found real source-fidelity omissions even though mechanical validation had already passed. The missing emphasis concerned Docks demonstration/feedback, Quarry scripted-deposit and optional-stretch boundaries, Ascent's expected harmless failure, Beacon idle/external-storm behavior, and shared guidance/permission rules.
+## Proof economy
 
-Those findings were corrected in the representative project's requirement/content/projection owners and then rerendered. **No new PRD validator guard, schema, checksum, semantic engine, or framework was added.**
+Do not rerun unchanged checks merely because documentation changed.
 
-This confirms the intended split:
+Use:
 
 ```text
-deterministic defect → deterministic guard
-source fidelity / production judgment → Flow 2 + Flow 4 semantic review
+semantic contract change
+→ repository/CI gate where automatically applicable
+→ one representative real-project authoring/review proof
+→ targeted desktop visual smoke
+→ stop
 ```
 
-Do not convert the semantic findings from this one project into generic mechanical fields merely because they occurred once.
-
-## Browser proof
-
-The final exact `final.html` passed Chromium sanity at desktop `1440×1000` and mobile `390×844`:
-
-- no console/page errors;
-- no document-level horizontal overflow;
-- Overview/sidebar and generated package navigation rendered correctly;
-- Beacon package navigation and Gameplay/Level Design/Developer tabs worked;
-- Terms disclosure worked;
-- theme and Overview/Full Detail controls worked;
-- desktop dense Developer table remained bounded;
-- mobile dense table used internal scrolling without breaking document width;
-- mobile off-canvas Menu opened correctly.
-
-Sandbox policy blocked direct HTTP/file URL navigation, so the exact self-contained HTML was injected into Chromium with Playwright `set_content`. This proves current browser layout/interaction sanity, but not URL-origin/localStorage persistence across a real navigation/reload.
-
-## Existing PRD boundaries remain unchanged
-
-- Flow 2 requires real persisted `SRC-###` / `REQ-###` evidence and rejects only unambiguous current blockers.
-- Required Golden hierarchy/content remains fail-closed at deterministic presence boundaries.
-- Existing content→projection and projection→HTML SHA guards remain narrow; no hash chain was extended.
-- Handoff continues to use `document.version`, `accepted_prd_version`, and compact acceptance truth.
-- One representative project is not universal proof for every possible source shape.
-- Further PRD architecture work requires another concrete defect.
-
-## Repository proof anchors
-
-The executable PRD contracts remain anchored by:
-
-```text
-3ccbf5196d3d3e4c173c440f0a2b5e0d2211a671
-Repository Verify #104 — PASS
-Production Verify #56 — PASS
-Project Document contracts — PASS
-```
-
-Aligned canonical validation procedure:
-
-```text
-207f8c9e4aa0d0602b74c60c13c6c69fccdcc7e7
-Repository Verify #105 — PASS
-Production Verify #57 — PASS
-```
-
-Current representative proof details are owned by `docs/foundation/validation-report.md`.
-
-## Deliberately not changed
-
-- no additional PRD guard after the representative proof;
-- no generic YAML/schema or semantic-comparison framework;
-- no extra checksum/manifest/revision registry;
-- no project-specific AFTERSHOCK rule promoted into global validator policy;
-- no Voice Flow 5–7 behavior changed yet.
+The existing `content.md → render-data.json` SHA remains unchanged in this semantic slice. Its later simplification is still a separate candidate because it does not prove semantic equivalence.
 
 ## Next Step
 
-Address the already-audited **Flow 5 — Voice Requirement Extraction completeness** boundary: require the existing documented requirement fields (`Function`, `Necessity`, `Purpose`, non-empty `Must communicate`, `Must not add/repeat`, and `Source refs`) at the executable parser boundary before Flow 6 can rely on a Voice requirement entry. Keep the change fail-closed and bounded; do not add a Voice schema framework, semantic similarity engine, automatic lore/mechanic inference, or checksum chain.
+Run one **new representative PRD Flow 2–4 production proof** using the revised semantic quality floor.
+
+The proof must specifically verify:
+
+1. correct Objective Score vs explicit No Objective Score interpretation, including display/export distinctions;
+2. Gameplay Flow reads as a complete chronological player journey rather than a task summary;
+3. Level Design / Developer / Global Development preserve all material production meaning needed by their roles;
+4. prose is humanized and readable without changing exact technical facts;
+5. the Golden Sample is matched as a functional quality floor without copying project-specific facts.
+
+Use **desktop-only targeted visual sanity**. Do not run mobile QA or unrelated Voice validation unless the test exposes a concrete reason.
