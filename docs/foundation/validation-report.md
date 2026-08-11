@@ -8,9 +8,9 @@ This file owns the **current evidence state** for PRD-Creator.
 
 Working branch: `Local`.
 
-PRD Flow 2–4 now uses one **professional Golden Mandatory PRD Contract** plus a bounded renderer-owned reading layer. The previous AFTERSHOCK sample remains diagnostic evidence only; its old semantic PASS was revoked after direct review exposed scoring interpretation, Gameplay Flow, Development completeness, writing-quality, and readability failures.
+PRD Flow 2–4 uses one professional Golden Mandatory PRD Contract plus one clean generic HTML presentation/runtime template. The previous AFTERSHOCK sample remains diagnostic evidence only; it is not current semantic or presentation authority.
 
-The central semantic contract, deterministic shell, and current reading/glossary wiring are repository/regression-proven. A new representative real-project semantic/desktop proof has **not** been run because the user has not approved that testing step yet.
+The central semantic contract, deterministic shell, glossary wiring, professional reading composition, and current template cleanup are repository/regression-proven. A new representative real-project semantic/desktop proof has **not** been run because the user has not approved that testing step yet.
 
 ## Single semantic owner
 
@@ -18,7 +18,7 @@ The central semantic contract, deterministic shell, and current reading/glossary
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
-It owns the fixed blueprint, mandatory-slot states, role completeness, Scoring / Result semantics, Humanize behavior, professional terminology, package glossary semantics, package definition of done, and semantic acceptance threshold. Other Flow 2–4 owners reference it instead of keeping competing Golden checklists.
+It owns the fixed blueprint, mandatory-slot states, role completeness, Scoring / Result semantics, Humanize behavior, terminology/glossary semantics, package definition of done, and semantic acceptance threshold.
 
 ## Professional Golden shell
 
@@ -44,80 +44,79 @@ Gameplay Package Integration
 
 Every package keeps Gameplay Overview, Level Design, and Developer pages.
 
-## Professional content contract
+## Professional content behavior
 
 The current contract requires:
 
-- compact **Document Control** on Overview: version, scope, intended production use;
-- full top-level Gameplay Flow as the chronological player story;
-- package **Objective Sequence** as the separate scan-friendly summary;
-- **Failure / Retry / Recovery** and **Result / Scoring Model** labels;
-- Level Design **Area / Spatial Constraint**;
-- Developer/global **Expected System Result**;
-- **Critical Constraints & Notes** with a narrow non-dumping-ground role;
-- package-level **Acceptance & Verification** with observable definition-of-done statements;
-- aggregate scoring/final-result rules owned by **Data, Recovery & Reset** when applicable;
+- compact Document Control on Overview;
+- full chronological Gameplay Flow;
+- separate Objective Sequence;
+- Failure / Retry / Recovery;
+- Result / Scoring Model;
+- Level Design Area / Spatial Constraint;
+- Developer/global Expected System Result;
+- Critical Constraints & Notes;
+- package Acceptance & Verification;
+- aggregate Final Result Contract ownership under Data, Recovery & Reset;
 - explicit Objective Score vs `No Objective Score`, player-facing display, telemetry/export, and final-result relationship;
-- English-only as the default baseline; bilingual output only when complete user-visible translation is available and reviewable;
+- English-only baseline unless bilingual copy is complete and reviewable;
 - Humanize behavior that closes already-resolved trigger/action/response/result/next-state questions before moving on.
 
-Package Acceptance & Verification is part of the PRD. It is distinct from `work/acceptance.md`, which records whether the document revision itself passed Flow 4.
+## Reading experience and glossary
 
-## Reading-experience and glossary correction
+Current presentation keeps the document readable without turning it into a dashboard:
 
-The UI/readability audit found that the Golden template's inline glossary engine still existed, but newly generated full Gameplay Flow pages lacked the package phase scope required by that runtime. The generator also used package terms for inline glossary JSON while full Gameplay Flow could use a separate term collection, creating drift risk.
+- Gameplay Flow orientation before detailed narrative beats;
+- structured Developer Flow with Trigger / System Behavior / Data / Expected Result;
+- readable production tables and requirement/result hierarchy;
+- package-focused navigation;
+- Gameplay Journey and Full Production reading views;
+- compact metadata vs production-content distinction;
+- restrained inline glossary highlighting + Terms Used index;
+- one canonical package glossary source: `packages[].terms`.
 
-The current implementation now:
+Package Gameplay Flow and its production pages use the same package ID for navigation and glossary scope. Terms Used does not recursively highlight its own definitions.
 
-- uses `packages[].terms` as the canonical package glossary source;
-- applies package scope to package-owned full Gameplay Flow pages so the existing Golden glossary engine can index them;
-- uses the same package terms for full Gameplay Flow Terms Used according to gameplay role visibility;
-- excludes the Terms Used disclosure from recursive inline term matching;
-- gives glossary terms a restrained visible affordance rather than indistinguishable bold text;
-- keeps the approved Golden tooltip engine as the interaction owner rather than adding a second glossary system.
+## AI-slop / template cleanup
 
-Other bounded reading improvements now include:
-
-- wider desktop reading surface while preserving print behavior;
-- content-height document sheets on screen to reduce artificial empty space;
-- Document Control rendered as metadata rather than another warning/note block;
-- Main Systems separated visually from metadata;
-- package Gameplay Flow orientation for Player Goal / previous stage / next destination using existing truth only;
-- structured Developer Flow with distinct Trigger / System Behavior / Data / Expected Result;
-- more readable production tables and stronger requirement/result hierarchy;
-- Acceptance & Verification rendered as observable completion checks;
-- active-focused package subnavigation rather than exposing all package subpages at once;
-- reading mode labels changed from ambiguous `Overview / Full Detail` to **Gameplay Journey / Full Production**.
-
-New PRD-specific UI refinements are centralized in the existing renderer-owned reading style/runtime rather than adding another versioned `<style>` patch to the large approved template.
-
-## Scoring / Result correction
-
-Every package carries exactly one explicit internal result model:
+A dedicated review found that the previously approved HTML template still contained implementation-history and reference-project residue, including examples such as:
 
 ```text
-Objective Score
-OR
-No Objective Score
+V90 / V94 / V1.2
+v14-style ... v18-style
+aftershock-*
+quarry-*
+phase-* names for current package concepts
+source-document / template-extraction revision metadata
+multiple appended visual-polish patch layers
 ```
 
-The renderer keeps internal result, final-result relationship, player-facing display, and telemetry/export separate. A display/export prohibition cannot erase an internal Objective Score.
+These were not useful document versioning. They were implementation history leaking into active generator structure.
+
+The active generator is now normalized:
+
+- `approved-document.html` is a generic PRD template rather than an AFTERSHOCK-derived template artifact;
+- the template contains one main stylesheet and stable generic document/glossary runtime;
+- renderer no longer injects another UI stylesheet/runtime patch layer;
+- project storage namespace comes from one generic template token and is replaced by the renderer;
+- page/component hooks describe actual functions such as package, requirement, development, glossary, journey, production, and result;
+- old sample-specific `aftershock-*`, `quarry-*`, and obsolete `phase-*` hooks were removed from active template/renderer/validator composition;
+- pseudo-version patch labels were removed;
+- legitimate `document.version` remains untouched as real project metadata.
+
+A focused regression guard now rejects reintroduction of the known reference/patch-history tokens in the approved template. This is a narrow anti-regression guard, not a generic naming framework.
 
 ## Deterministic enforcement
 
-The renderer fails before writing `final.html` when deterministic mandatory shell data is absent. Current checks include the fixed hierarchy/order, Overview document-control inputs, package role blocks, explicit result contract, reset/interruption data, and non-empty package Acceptance & Verification content.
+The renderer still fails before writing `final.html` when mandatory shell data is absent. The mechanical validator continues to check current generated composition, revision binding, navigation, IDs, scoring numeric consistency, and required files/state without pretending to judge prose or visual quality automatically.
 
-The mechanical validator checks current generated composition but does not score prose quality or visual aesthetics.
-
-During the reading-experience slice, the first PRD run failed because the validator still required the old `quarry-development-flow` presentation class on Developer pages. The generated Developer Flow had intentionally moved to the clearer structured `developer-flow` component. The stale composition expectation was corrected at the validator owner rather than reintroducing the old UI.
-
-Current implementation proof after the final `kits/**` contract/rendering documentation alignment:
+Current focused implementation proof after the template/renderer/validator cleanup:
 
 ```text
-PRD Verify #81 — PASS
+PRD Verify #88 — PASS
 ```
 
-This PASS covers compile + existing focused PRD contracts with the renderer, glossary wiring, reading composition, fixture assertions, validator composition marker, and current contract/rendering owners aligned.
+This PASS covers compilation, the full mandatory fixture, generic composition hooks, glossary safety, Flow 2 state contracts, handoff contracts, and the new narrow anti-slop template regression guard.
 
 Voice verification remains independent; PRD-only work does not rerun Voice contracts by default.
 
@@ -132,7 +131,7 @@ The current evidence does **not** yet prove:
 - desktop visual quality of a newly generated representative artifact;
 - universal correctness for every future project shape.
 
-Static/regression wiring is not presented as browser/visual proof.
+Static/regression proof is not presented as browser/visual proof.
 
 ## Deliberately not added
 
@@ -141,7 +140,7 @@ Static/regression wiring is not presented as browser/visual proof.
 - no word-count or row-count quality scoring;
 - no semantic similarity engine;
 - no permanent traceability matrix;
-- no generic schema framework;
+- no generic naming/versioning framework;
 - no second glossary system;
 - no new checksum chain;
 - no mobile QA as a default;
@@ -155,7 +154,7 @@ The existing `content.md → render-data.json` SHA remains a separate simplifica
 |---|---|
 | Flow 1 | current repository/static proof |
 | Flow 2 | professional mandatory semantic contract implemented; representative proof pending |
-| Flow 3 | professional Golden shell + current reading/glossary regression proof complete; representative semantic/desktop proof pending |
+| Flow 3 | professional content + clean generic template + focused regression proof complete; representative semantic/desktop proof pending |
 | Flow 4 | package definition-of-done + document acceptance boundaries aligned; representative proof pending |
 | Flow 5–7 | unchanged; Voice verification remains separate |
 
@@ -163,4 +162,4 @@ The existing `content.md → render-data.json` SHA remains a separate simplifica
 
 PRD Flow 2–4 is **not closed yet**.
 
-The current implementation should remain in design/review state until the user explicitly approves a representative real-project proof. No browser/mobile/Voice proof should be run merely for ceremony.
+The generator may continue through design/cleanup review without representative testing. No browser/mobile/Voice proof should be run merely for ceremony.
