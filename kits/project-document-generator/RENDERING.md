@@ -133,17 +133,15 @@ Document Control is compact metadata. Main Systems is production information and
 
 Gameplay Overview renders `player_flow` as **Objective Sequence**. Top-level Gameplay Flow remains the complete chronological player journey.
 
-Package-owned Gameplay Flow and its three production pages use the same stable package ID for:
-
-- active package navigation;
-- glossary scope;
-- role-local Terms Used.
+Package-owned Gameplay Flow and its three production pages use the same stable package ID for package navigation and derive their glossary scope from that package plus the reader role.
 
 A package Gameplay Flow may derive its orientation summary from already-defined Main Objective, previous flow position, and `next_destination`. Renderer must not invent missing meaning.
 
 Developer Flow keeps `trigger`, `behavior`, `data`, and `result` visually distinct when those fields exist.
 
-Every package also renders non-empty `Acceptance & Verification` content on the Developer page.
+Every package renders non-empty `Acceptance & Verification` content on the Developer page.
+
+Reset / Interruption renders both the reset/recovery requirement and its explicit post-reset `Expected System Result`. `developer.reset_result` may not be omitted when reset behavior exists.
 
 ## Scoring / Result projection
 
@@ -165,14 +163,26 @@ A display/export prohibition must never be interpreted as `No Objective Score`.
 
 `packages[].terms` is the canonical package glossary source.
 
-The renderer projects it to:
+Role behavior is deterministic:
 
 ```text
-inline glossary JSON
+roles omitted
+→ term is available to Gameplay, Level Design, and Developer readers
+
+roles provided
+→ term is available only to the listed roles
+```
+
+The renderer applies the same role filter to both:
+
+```text
+inline glossary scope
 + role-local Terms Used index
 ```
 
-Package Gameplay Flow uses the owning package term index. `The Journey Begins` may carry opening-specific terms only when those terms genuinely do not belong to a package.
+The generated inline glossary uses role-scoped keys derived from the owning package, so a gameplay-only term cannot be highlighted on Level Design or Developer pages merely because they share the same package.
+
+`The Journey Begins` may carry its own opening-specific term scope only when those terms genuinely do not belong to a package.
 
 The Terms Used block does not recursively highlight its own definitions.
 
