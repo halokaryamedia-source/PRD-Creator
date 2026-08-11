@@ -35,13 +35,13 @@ python kits/project-document-generator/validator/validate.py \
 
 The validator first requires `state/intake-state.yaml` to explicitly declare both `status: ready_for_prd` and `ready_for_prd: true`. Missing, ambiguous, or non-ready Flow 2 state fails validation instead of allowing a rendered artifact to bypass the Flow 2 readiness boundary.
 
-When Flow 2 claims readiness, the validator also checks only **explicit persisted contradiction markers** in the existing state files. It fails on `approval_status: pending`, `recovery_class: blocked`, or `evidence_status: conflict` in `requirement-register.yaml`, and on `inspection: blocked` in `source-inventory.yaml`. Approved proposals, `inspection: targeted`, omitted defaults, advisory ideas, and other nonblocking detail remain allowed. This is a narrow contradiction guard, not a YAML schema validator or automated materiality engine.
+When Flow 2 claims readiness, the validator also checks only **unambiguous explicit blocker markers** in the existing persisted state. It fails on `approval_status: pending` or `recovery_class: blocked` in `requirement-register.yaml`, and on `inspection: blocked` in `source-inventory.yaml`. Approved proposals, `inspection: targeted`, omitted defaults, advisory ideas, and other nonblocking detail remain allowed. `evidence_status: conflict` alone is not a blocker because the conflict may already have an approved/higher-authority resolution. This is a narrow contradiction guard, not a YAML schema validator or automated materiality engine.
 
 It also requires `work/render-data.json` to carry `canonical_content_sha256` matching the current exact bytes of `work/content.md`. If canonical content changes without regenerating the projection binding, validation fails as stale instead of accepting an older projection as current.
 
 The generated `output/final.html` must also contain exactly one `render-data-sha256` metadata marker matching the current exact bytes of `work/render-data.json`. A missing, duplicate, invalid, or mismatched marker fails validation. This prevents an older HTML artifact from passing merely because page IDs/composition still resemble the newer projection.
 
-The validator owns current mechanical contracts including Flow 2 readiness declaration, explicit persisted Flow 2 contradiction detection, canonical-content/projection revision binding, projection/HTML revision binding, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
+The validator owns current mechanical contracts including Flow 2 readiness declaration, unambiguous persisted Flow 2 blocker detection, canonical-content/projection revision binding, projection/HTML revision binding, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
 
 Mechanical PASS proves these implemented structure/current-revision/explicit-state contracts only—not semantic equivalence, completeness of arbitrary Flow 2 reasoning, or visual quality. Do not expand this into generic YAML schemas, semantic hashing, pixel comparison, DOM snapshots, visual scoring, artifact manifests, or a generic HTML schema.
 
@@ -164,7 +164,7 @@ Do not add evidence prose when everything passes.
 
 ## Development-ready gate
 
-Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, no explicit persisted Flow 2 blocker contradicts that readiness, current canonical content is bound to the current render projection, current `final.html` is bound to that exact projection, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
+Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, no unambiguous persisted Flow 2 blocker contradicts that readiness, current canonical content is bound to the current render projection, current `final.html` is bound to that exact projection, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
 
 ## Revision path
 
