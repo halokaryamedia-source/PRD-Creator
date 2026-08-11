@@ -35,41 +35,63 @@ User effort stays low:
 
 Efficiency applies to **reading and proof**, not to deleting material production meaning from the PRD.
 
-## Golden Sample authority
+## Golden Mandatory Contract
 
-The approved Golden Sample is the required hierarchy, page-composition, component-language, presentation authority, and **functional quality floor** for this gameplay PRD family:
+The approved Golden Sample defines the minimum document function for this gameplay PRD family. Its single semantic owner is:
+
+```text
+kits/project-document-generator/CONTENT-CONTRACT.md
+```
+
+Other Flow 2–4 owners point to that file instead of maintaining their own Golden checklists.
+
+The fixed family preserves:
 
 ```text
 Overview
 → Gameplay Flow
+     The Journey Begins
+     one flow page per package
 → Global Development
+     Development Overview
+     Game System
+     Data and Reset
+     Gameplay Development
 → Gameplay Package(s)
-     → Gameplay Overview
-     → Level Design
-     → Developer
+     Gameplay Overview
+     Level Design
+     Developer
 ```
 
-Projects do not copy Golden-specific facts/counts/mechanics, but corresponding pages must provide the same production function and enough supported detail for their readers.
+Projects do not copy Golden-specific facts/counts/mechanics. They fill the fixed functions with current-project truth.
+
+Mandatory concerns resolve as:
+
+```text
+Defined | Explicit No | Not Applicable | Blocked
+```
+
+A mandatory concern does not disappear silently.
 
 Key interpretation:
 
 - Gameplay Flow = chronological player journey/context, not a task summary;
 - every package states Objective Score or explicit No Objective Score;
-- internal scoring/result, player-facing display, and telemetry/export are separate unless authority joins them;
-- Level Design and Developer pages must carry complete material role-owned meaning;
-- PRD prose should be human-readable production language without changing exact technical facts.
-
-Efficiency improvements belong in source reading, authoring, projection, and review—not in replacing this document family with a generic/minimal shell.
+- internal scoring/result, player-facing display, and telemetry/export remain separate unless authority joins them;
+- Level Design and Developer pages carry complete material role-owned meaning;
+- PRD prose is human-readable production language without changing exact technical facts.
 
 ## Proof direction
 
 Default PRD visual proof is desktop-only and targeted. Mobile/responsive QA is run only when explicitly required or when the active defect is mobile-specific.
 
+PRD and Voice CI are scoped separately so one domain does not rerun unrelated production contracts.
+
 Do not repeat unchanged visual interactions or cross-flow tests merely for ceremony.
 
 ## Anti-overdevelopment
 
-Prefer the smallest complete solution. Do not add skills, schemas, workflow engines, approval layers, generic parsers, template systems, checksums, word-count gates, row-count gates, semantic similarity scoring, or other machinery without a proved current need. BuildIT is a discipline/ownership/proof reference, not a feature checklist.
+Prefer the smallest complete solution. Do not add skills, generic schemas, workflow engines, approval layers, generic parsers, template systems, extra checksums, word-count gates, row-count gates, semantic similarity scoring, or other machinery without a proved current need.
 
 ## Continuation
 
