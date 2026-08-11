@@ -54,7 +54,7 @@ jobs:
       - name: Project Document contracts
         id: prd
         continue-on-error: true
-        run: python -m unittest tests.test_prd_contracts tests.test_prd_handoff_contracts -v
+        run: python -m unittest tests.test_prd_contracts tests.test_prd_handoff_contracts tests.test_prd_flow2_state_contracts -v
 
       - name: Voice Production contracts
         id: voice
