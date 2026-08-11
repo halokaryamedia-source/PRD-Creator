@@ -21,46 +21,48 @@ Flow 7  Voice Validation & Delivery
 
 Normal project creation/revision is **Production Execution**. `development-brief` is only for changing PRD-Creator itself.
 
-## PRD operating direction
+## Operating direction
 
-User effort stays low:
-
-- workspace/bootstrap is automatic;
 - source is triaged by authority/relevance before deep reading;
 - Flow 2 resolves supported meaning before asking for decisions;
 - only unresolved material decisions are surfaced;
-- bounded revisions update only invalidated scope;
-- internal state/evidence stays internal during normal delivery.
+- bounded revisions touch only invalidated scope;
+- information completeness must not be sacrificed for speed;
+- implementation ceremony must not be added without a concrete need.
 
-Efficiency applies to reading and proof, not to deleting material production meaning.
+## Gameplay PRD authority
 
-## Gameplay PRD contract
-
-The approved Golden Sample defines the minimum document function/quality expected from this gameplay PRD family. The single semantic owner is:
+The single owner is:
 
 ```text
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
-The fixed family is:
+The approved Golden Sample is the **canonical visible page prototype**, not merely a style inspiration or loose quality reference.
+
+Project facts are dynamic. The visible page composition is locked unless the user explicitly approves a Golden prototype change.
+
+Fixed family:
 
 ```text
 Overview
 → Gameplay Flow
      The Journey Begins
-     one full flow page per package
-→ Global Development
+     one page per package
+→ Development
      Development Overview
-     Session & Runtime System
-     Data, Recovery & Reset
-     Gameplay Package Integration
+     Game System
+     Data and Reset
+     Gameplay Development
 → Gameplay Package(s)
      Gameplay Overview
      Level Design
      Developer
 ```
 
-Projects fill these functions with current-project truth; reference-project facts/mechanics do not transfer automatically.
+For `N` packages: `6 + 4N` pages.
+
+Reference-project gameplay facts do not transfer automatically.
 
 Mandatory concerns resolve as:
 
@@ -68,41 +70,46 @@ Mandatory concerns resolve as:
 Defined | Explicit No | Not Applicable | Blocked
 ```
 
-A mandatory concern does not disappear silently.
+## Golden presentation rules
 
-Key interpretation:
-
-- Gameplay Flow = chronological player journey/context, not a task summary;
-- every package states Objective Score or explicit No Objective Score;
-- internal scoring/result, player-facing display, and telemetry/export remain separate unless authority joins them;
-- Level Design and Developer pages carry complete material role-owned meaning;
-- `packages[].terms` is the canonical package glossary index;
-- PRD prose is human-readable production language and closes already-resolved cause/action/result questions without changing technical facts.
-
-## Presentation direction
-
-HTML remains a professional document, not a dashboard.
-
-- `approved-document.html` is generic PRD presentation/runtime infrastructure;
-- stable component/runtime names describe function, not implementation history or a reference project;
-- project `document.version` is real document/release metadata, not presentation-patch numbering or an edit counter;
-- normal drafting, rerendering, Humanize, review fixes, and representative tests keep the same document version;
-- version changes only for an explicit user/source revision or an intentionally declared release/handoff milestone;
-- Gameplay Journey and Full Production are the two reading views;
-- package terminology can be highlighted through the shared glossary index;
+- Overview, Gameplay Flow, Global Development, Gameplay Overview, Level Design and Developer each follow the matching Golden component order and labels.
+- Gameplay Overview uses short 3-card summaries; detailed rules go to Gameplay Information/Gameplay Flow/Developer.
+- Global/Level/Developer flow uses the Golden horizontal-card pattern rather than new matrices.
+- Acceptance remains Flow 4 review state; no extra visible Acceptance panel is added to Developer pages.
+- Terms Used is visible only where Golden shows it: Gameplay Flow, Global Development, Gameplay Overview.
+- inline glossary highlighting may still help readers without changing page composition.
 - generated HTML is derived and is never manually patched.
+
+## Writing direction
+
+Use direct production prose. One paragraph should answer one main question.
+
+Avoid:
+
+- long copy inside narrow summary cards;
+- repeated explanation;
+- generator/document meta-language;
+- invented professional-sounding labels;
+- database-like prose where Golden uses normal narrative;
+- extra UI created merely to fit verbose content.
+
+Humanize means clearer and shorter, not more prose.
+
+## Version policy
+
+`document.version` is project/release metadata, not an edit counter.
+
+Normal drafting, Humanize, rerendering, review corrections and representative tests keep the same version. Change it only for an explicit user/source revision or intentionally declared release/handoff milestone.
 
 ## Proof direction
 
-Default PRD visual proof is desktop-only and targeted. Mobile/responsive QA is run only when explicitly required or when the active defect is mobile-specific.
+Default visual proof is targeted desktop-only. Compare affected pages directly with the matching Golden prototypes.
 
-PRD and Voice CI are scoped separately so one domain does not rerun unrelated production contracts.
-
-Do not repeat unchanged visual interactions or cross-flow tests merely for ceremony.
+PRD and Voice CI remain scoped separately. Do not replay unchanged browser/mobile/cross-flow tests for ceremony.
 
 ## Anti-overdevelopment
 
-Prefer the smallest complete solution. Do not add skills, generic schemas, workflow engines, approval layers, generic parsers, template systems, extra checksums, word-count gates, row-count gates, semantic similarity scoring, or other machinery without a proved current need.
+Prefer the smallest complete solution. Do not add generic schemas, workflow engines, approval layers, extra checksums, semantic similarity scoring, word/row-count gates, or presentation variants without a proved current need.
 
 ## Continuation
 
