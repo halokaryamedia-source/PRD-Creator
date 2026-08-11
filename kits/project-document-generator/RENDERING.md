@@ -11,7 +11,7 @@ work/content.md
 → output/final.html
 ```
 
-The renderer does not decide whether a Golden function is optional and does not repair missing project meaning.
+The renderer does not decide whether a mandatory content function is optional and does not repair missing project meaning.
 
 ## Mandatory shell
 
@@ -69,9 +69,9 @@ The first Gameplay Flow ID is `journey-begins`. Remaining Gameplay Flow IDs matc
 
 ## Generic template rule
 
-`template/approved-document.html` is a **generic PRD presentation/runtime template**.
+`template/approved-document.html` is generic PRD presentation/runtime infrastructure.
 
-It may contain stable component names such as:
+Component names describe their stable function, for example:
 
 ```text
 package
@@ -83,21 +83,11 @@ production
 result
 ```
 
-It must not carry implementation-history or reference-project naming such as:
+Do not encode implementation history, reference-project names, extraction history, or patch sequence into active class/ID/runtime naming.
 
-```text
-V19 / V20 / V90 / V94
-v14-style / v18-style
-"final polish" iteration labels
-source-document revision chains
-aftershock-*
-quarry-*
-phase-* when the actual concept is gameplay package
-```
+The real `document.version` is project metadata. It is unrelated to internal CSS/feature iteration and must not be used to version presentation patches.
 
-The document's real `document.version` is valid project metadata and is not the same thing as internal CSS/feature iteration numbering.
-
-When presentation needs improvement, edit the correct stable component/template rule. Do **not** create a new version-labeled style/script patch at the end of the template.
+When presentation needs improvement, edit the correct stable component/template rule. Do not append a new version-labelled style/script patch.
 
 ## Template / renderer ownership
 
@@ -121,7 +111,7 @@ The renderer owns project projection into that template:
 - language availability;
 - current render-data revision marker.
 
-The renderer must not inject another stylesheet/runtime layer merely to compensate for a badly structured template. The template must not contain project facts.
+The renderer must not inject another stylesheet/runtime layer to compensate for a badly structured template. The template must not contain project facts.
 
 Never patch generated `final.html` manually.
 
@@ -182,7 +172,7 @@ inline glossary JSON
 + role-local Terms Used index
 ```
 
-Package Gameplay Flow uses the owning package term index. `The Journey Begins` may carry its own opening-specific terms only when those terms genuinely do not belong to a package.
+Package Gameplay Flow uses the owning package term index. `The Journey Begins` may carry opening-specific terms only when those terms genuinely do not belong to a package.
 
 The Terms Used block does not recursively highlight its own definitions.
 
