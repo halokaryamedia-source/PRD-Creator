@@ -111,13 +111,13 @@ The mechanical validator checks current generated composition but does not score
 
 During the reading-experience slice, the first PRD run failed because the validator still required the old `quarry-development-flow` presentation class on Developer pages. The generated Developer Flow had intentionally moved to the clearer structured `developer-flow` component. The stale composition expectation was corrected at the validator owner rather than reintroducing the old UI.
 
-Current implementation proof:
+Current implementation proof after the final `kits/**` contract/rendering documentation alignment:
 
 ```text
-PRD Verify #79 — PASS
+PRD Verify #81 — PASS
 ```
 
-This PASS covers compile + existing focused PRD contracts after the renderer, glossary wiring, reading composition, fixture assertions, and validator composition marker were aligned.
+This PASS covers compile + existing focused PRD contracts with the renderer, glossary wiring, reading composition, fixture assertions, validator composition marker, and current contract/rendering owners aligned.
 
 Voice verification remains independent; PRD-only work does not rerun Voice contracts by default.
 
