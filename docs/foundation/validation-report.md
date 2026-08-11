@@ -18,16 +18,16 @@ Root evidence labels remain authoritative. Static/GitHub proof must not be upgra
 
 Current working branch: `Local`.
 
-The latest PRD correction batch was performed through repository inspection and GitHub Actions only. The changed PRD contracts therefore have **current repository/static proof**, while real-project/browser proof for those changed contracts remains deferred by user direction.
+The latest PRD correction work was performed through repository inspection and GitHub Actions only. The changed PRD contracts therefore have **current repository/static proof**, while real-project/browser proof for those changed contracts remains deferred by user direction.
 
 | Flow | Current evidence state | Current note |
 |---|---|---|
-| 1. Repository Boot & Project Memory | **current repository/static proof** | Current-state owners are aligned again in this revision; historical and current proof are explicitly separated here. |
-| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | The Clockwork Vault previously proved practical recovery, but the latest Flow 2/4 readiness guards have not been re-run as a current real-project trial. |
-| 3. PRD Generation | **historical real-project proof + current static contract proof** | Earlier canonical PRD/rendering production was proven; current projection-binding, bilingual, scoring, and wrapped-grid changes are regression/CI proven only. |
-| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Earlier development-readiness/handoff was exercised; the latest false-green guards are current static proof only. |
-| 5. Voice Requirement Extraction | **historical real-project proof** | The Clockwork Vault previously exercised real Voice scope extraction. No new current-revision Voice production proof was created by the latest PRD-only correction batch. |
-| 6. Voice Script + DOCX | **historical real-project proof** | Earlier Voice ID/Type parity and DOCX generation were exercised. No new current-revision Voice project run was performed in the latest batch. |
+| 1. Repository Boot & Project Memory | **current repository/static proof** | Current-state owners separate current versus historical proof. |
+| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | The Clockwork Vault previously proved practical recovery; the latest readiness guards have not been re-run as a current real-project trial. |
+| 3. PRD Generation | **historical real-project proof + current static contract proof** | Earlier canonical PRD/rendering production was proven; current content→projection and projection→HTML revision bindings plus bilingual/scoring/grid corrections are regression/CI proven. |
+| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Earlier development-readiness/handoff was exercised; current Flow 4 now rejects stale projection and stale HTML revision boundaries mechanically. |
+| 5. Voice Requirement Extraction | **historical real-project proof** | The Clockwork Vault previously exercised real Voice scope extraction. No new current-revision Voice production proof was created by the current PRD correction batch. |
+| 6. Voice Script + DOCX | **historical real-project proof** | Earlier Voice ID/Type parity and DOCX generation were exercised. No new current-revision Voice project run was performed in the current batch. |
 | 7. Voice Validation & Delivery | **historical real-project proof** | Earlier real DOCX visual QA found/fixed the blank-page defect. Audio evidence for that proof remained `not_provided`; no new current-revision Voice visual/audio proof was performed. |
 
 ## Historical real-project proof
@@ -48,27 +48,40 @@ all later repository changes are automatically CURRENT-PROJECT VERIFIED
 
 Do not erase this evidence when newer static-only changes are introduced. Preserve it as historical proof and state the newer proof boundary explicitly.
 
-## Current PRD false-green correction batch
+## Current PRD false-green correction sequence
 
-The current PRD-side corrections now protect these concrete cases:
+Current PRD-side contracts now protect these concrete cases:
 
 - Flow 4 rejects missing/ambiguous/non-ready `state/intake-state.yaml` instead of accepting downstream artifacts while Flow 2 is not explicitly ready;
 - `work/render-data.json` is bound to the exact current bytes of `work/content.md` through the narrow `canonical_content_sha256` revision field, so an older projection cannot silently validate after canonical content changes;
+- generated `output/final.html` carries one `render-data-sha256` marker derived from the exact current bytes of `work/render-data.json`; Flow 4 rejects missing/duplicate/invalid/mismatched markers so an older HTML artifact cannot silently validate against a newer projection with the same page structure;
 - weighted scoring validates numeric weights and numeric percentage strings and requires a complete weighted total of 100;
 - intentional EN + ID output requires explicit localized user-visible text rather than silently duplicating scalar English prose into Indonesian;
 - Journey grids beyond six items and Flow grids beyond four items include bounded wrapped-row separator handling.
 
-Repository/CI evidence for the correction sequence includes Repository Verify #68–#73 and Production Verify #28–#32 on their respective commits.
+Repository/CI evidence for the latest projection→HTML correction:
 
-These checks prove the exercised static/regression contracts. They do **not** prove current browser appearance, current real-project recovery quality, or semantic equivalence of arbitrary prose beyond the contracts actually implemented.
+```text
+Commit: 8d177cea8e2119931c1a068ff6e924e47f60b490
+Repository Verify #76 — PASS
+Production Verify #33 — PASS
+Project Document contracts — PASS
+```
+
+These checks prove the exercised static/regression contracts. They do **not** prove current browser appearance, current real-project recovery quality, or semantic equivalence of arbitrary canonical prose beyond the contracts actually implemented.
 
 ## Anti-overdevelopment decision — current interpretation
 
 The earlier anti-overdevelopment cleanup remains valid: PRD-Creator does not restore a broad checksum/revision framework, package manifest system, generic schema registry, or deep artifact-binding architecture merely for theoretical safety.
 
-The later `canonical_content_sha256` addition is a **narrow exception justified by a concrete false-green defect** between canonical `content.md` and its derived `render-data.json`. It must not be interpreted as restoring the retired general checksum protocol.
+The current SHA fields/markers are two **narrow boundary guards justified by concrete false-green defects**:
 
-Likewise, prior decisions not to add stale-HTML, Voice artifact, handoff, or other revision machinery remain historical decisions only until newer concrete evidence justifies revisiting a specific boundary. A later audit may supersede one such decision without invalidating the anti-overdevelopment principle itself.
+```text
+content.md → render-data.json
+render-data.json → final.html
+```
+
+They must not be interpreted as a generic artifact manifest/checksum framework. Additional revision machinery requires its own concrete defect/current need.
 
 ## Verification gates
 
@@ -98,15 +111,16 @@ The current revision still does not claim proof for:
 
 - practical Flow 2 recovery quality after the latest PRD guard changes on a new/current real-project run;
 - browser visual fidelity of the latest renderer changes;
-- exact `render-data.json` → `final.html` revision binding beyond current structural/content checks;
-- exact Flow 4 handoff revision binding into Flow 5;
-- current Voice requirement/script/DOCX revision integrity beyond the existing Voice contracts;
+- whether persisted Flow 2 requirement/source state can explicitly contradict a manually declared `ready_for_prd` state without being detected mechanically;
+- exact Flow 4 accepted handoff revision binding into Flow 5;
+- Flow 5 requirement completeness at the executable parser boundary;
+- current Voice requirement/script/DOCX revision integrity beyond the existing Voice ID/Type/content checks;
 - generated-audio quality without supplied/reviewed audio.
 
 These limitations are not permission to add broad preventive architecture. Address them only through a concrete bounded defect/current need and the smallest owner that can resolve it.
 
 ## Current boundary
 
-The current evidence owner is now reconciled: historical real-project proof is preserved, while the latest PRD hardening is reported only at the GitHub/static/CI evidence level actually obtained.
+The Flow 3 → Flow 4 stale-HTML false-green is closed at the static/regression level. Per current user direction, do not run local/manual real-project or browser proof until explicitly allowed.
 
-Per current user direction, do not run local/manual real-project or browser proof until explicitly allowed. The next repository-side correction should address one concrete audited false-green boundary at a time.
+The next repository-side correction should address the concrete **Flow 4 → Flow 5 handoff revision boundary** identified by audit: a stale `handoff_ready` state must not authorize Voice extraction for a newer PRD revision.

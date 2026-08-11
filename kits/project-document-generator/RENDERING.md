@@ -9,7 +9,7 @@ work/content.md                    canonical meaning
 → work/render-data.json            compact derived projection bound to current content
 → renderer                         deterministic HTML composition
 → template/approved-document.html  Golden runtime input
-→ output/final.html                derived PRD
+→ output/final.html                derived PRD bound to current projection
 ```
 
 The template and final HTML are runtime artifacts. **Normal authoring does not require loading either large file into model context.**
@@ -43,6 +43,14 @@ Root shape:
 ```
 
 `canonical_content_sha256` is derived revision binding only. When the projection is written or regenerated, calculate SHA-256 over the exact bytes of the current `work/content.md` and store the lowercase 64-character digest. It does not carry project meaning. Flow 4 rejects a missing/invalid digest or a digest that no longer matches canonical content, so an older projection cannot silently validate after `content.md` changes.
+
+When `final.html` is generated, the renderer separately calculates SHA-256 over the exact current bytes of `work/render-data.json` and writes that digest into one generated HTML metadata marker:
+
+```html
+<meta content="<sha256>" name="render-data-sha256"/>
+```
+
+This marker is a narrow derived-output revision binding only. It does not carry project meaning and is not a general artifact manifest/checksum framework. Flow 4 rejects a missing, duplicate, invalid, or mismatched marker, so an older `final.html` cannot silently validate after `render-data.json` changes while page structure happens to remain the same. Never patch the marker or `final.html` manually; rerender from the current projection.
 
 Each package keeps `gameplay`, `level_design`, and `developer`.
 
@@ -126,7 +134,7 @@ This uses bounded CSS variables/selectors only; do not create layout profiles, s
 
 - `renderer/core.py` → reusable Golden helpers.
 - `renderer/pages.py` → project data → Golden page composition.
-- `renderer/render.py` → validation of render-data boundary, template mutation, project metadata/navigation/glossary/language/grid mechanics, final write.
+- `renderer/render.py` → validation of render-data boundary, template mutation, project metadata/navigation/glossary/language/grid mechanics, render-data revision marker, final write.
 - `template/approved-document.html` → edit only when a proven defect belongs to the Golden template itself.
 
 The renderer may omit optional blocks with no meaningful project data. It may not invent facts or replace Golden composition with unrelated generic markup.
@@ -141,13 +149,14 @@ The renderer may mutate only project-owned surfaces already required by this doc
 - glossary data;
 - project local-storage namespace;
 - bounded language availability;
-- bounded content-driven Golden grid variables.
+- bounded content-driven Golden grid variables;
+- one generated `render-data-sha256` revision marker used only to prove the current projection produced the current HTML.
 
-Do not add template copies, renderer profiles, snapshot systems, or generalized HTML schemas without a concrete need.
+Do not add template copies, renderer profiles, snapshot systems, artifact manifests, or generalized HTML schemas without a concrete need.
 
 ## Mechanical fidelity
 
-Flow 4 validator owns structural checks such as Flow 2 readiness, canonical-content/projection revision binding, page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set. The renderer itself owns bilingual input-shape rejection because invalid localization must fail before HTML is produced.
+Flow 4 validator owns structural checks such as Flow 2 readiness, canonical-content/projection revision binding, projection/HTML revision binding, page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set. The renderer itself owns bilingual input-shape rejection because invalid localization must fail before HTML is produced.
 
 Do not duplicate those checks in authoring instructions. Structural PASS is not visual PASS.
 
@@ -166,7 +175,7 @@ Use another template only when the user explicitly approves a different document
 ```text
 canonical PRD
 → compact Golden projection bound to that canonical revision
-→ deterministic render
+→ deterministic HTML bound to that projection revision
 → validate
 ```
 
