@@ -429,7 +429,19 @@ def validate(project: Path) -> dict[str, Any]:
             typed.append(item)
         collections[key] = typed
 
+    gameplay_flow = collections["gameplay_flow"]
+    global_development = collections["global_development"]
     packages = collections["packages"]
+    check(
+        "gameplay_flow_array",
+        len(gameplay_flow) > 0,
+        "at least one Gameplay Flow page is required for this gameplay PRD profile",
+    )
+    check(
+        "global_development_array",
+        len(global_development) > 0,
+        "at least one Global Development page is required for this gameplay PRD profile",
+    )
     check("packages_array", len(packages) > 0, "at least one gameplay package is required for this template profile")
 
     seen_pkg: set[str] = set()
@@ -537,11 +549,6 @@ def validate(project: Path) -> dict[str, Any]:
 
     browser_title = "".join(facts.title_parts).strip()
     check("browser_title_matches_project", bool(title) and title.lower() in html_lib.unescape(browser_title).lower(), f"browser title: {browser_title!r}")
-
-    if not data.get("gameplay_flow"):
-        warnings.append("No gameplay_flow entries; confirm this is intentional for the selected document profile.")
-    if not data.get("global_development"):
-        warnings.append("No global_development pages; confirm the project has no shared global system requiring its own page.")
 
     status = "pass" if not errors else "fail"
     return {"status": status, "errors": errors, "warnings": warnings, "checks": checks, "expected_pages": expected}
