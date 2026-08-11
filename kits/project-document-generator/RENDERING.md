@@ -1,39 +1,49 @@
 # Rendering Contract
 
-The approved Golden Sample is the presentation and page-composition authority for this PRD family. The renderer reproduces that document language with project-specific facts; it does not redesign the document.
+`CONTENT-CONTRACT.md` owns the gameplay PRD's mandatory Golden semantics. This file owns only projection/render mechanics.
 
-## Normal production path
+## Authority chain
 
 ```text
-work/content.md                    canonical meaning
-→ work/render-data.json            compact derived projection bound to current content
-→ renderer                         deterministic HTML composition
-→ template/approved-document.html  Golden runtime input
-→ output/final.html                derived PRD bound to current projection
+work/content.md
+→ work/render-data.json
+→ current renderer + approved Golden template
+→ output/final.html
 ```
 
-The template and final HTML are runtime artifacts. **Normal authoring does not require loading either large file into model context.**
+The renderer does not decide whether a Golden function is optional. `CONTENT-CONTRACT.md` already decides that.
 
-Use `CONTENT-CONTRACT.md` for the Golden hierarchy/page-composition meaning. Use this file only for projection and renderer rules.
+## Fail-closed mandatory shell
 
-## Context-efficient HTML generation
+Before HTML is produced, render data must represent the complete fixed gameplay PRD shell:
 
-- Do not hand-author or patch `final.html`.
-- Do not copy Golden HTML/CSS/JS into prompts, notes, or canonical content.
-- Do not read `approved-document.html` in full during normal project production; the renderer reads it directly at runtime.
-- Do not read `final.html` in full merely to review semantics; the mechanical validator reads it directly.
-- When HTML source investigation is necessary, search for the exact page ID/class/marker/component and inspect only the smallest relevant area.
-- For visual quality, inspect the actual rendered page/browser when available rather than treating source review as visual proof.
+```text
+Overview
+Gameplay Flow
+  The Journey Begins
+  one flow page per gameplay package
+Global Development
+  Development Overview
+  Game System
+  Data and Reset
+  Gameplay Development
+Gameplay packages
+  Gameplay Overview
+  Level Design
+  Developer
+```
 
-## Projection economy
+Mandatory package/global blocks may contain an explicit negative or `Not Applicable` production statement where the semantic contract permits it, but they may not be silently omitted.
 
-`render-data.json` is a structured projection, not a second semantic document.
+The renderer fails before writing `final.html` when deterministic mandatory shell data is missing.
 
-Root shape:
+## Projection shape
+
+`render-data.json` remains a disposable structured projection, not a second semantic document.
 
 ```json
 {
-  "canonical_content_sha256": "<sha256 of current work/content.md>",
+  "canonical_content_sha256": "<current content revision binding>",
   "document": {},
   "overview": {},
   "gameplay_flow": [],
@@ -42,125 +52,96 @@ Root shape:
 }
 ```
 
-`canonical_content_sha256` is derived revision binding only. When the projection is written or regenerated, calculate SHA-256 over the exact bytes of the current `work/content.md` and store the lowercase 64-character digest. It does not carry project meaning. Flow 4 rejects a missing/invalid digest or a digest that no longer matches canonical content, so an older projection cannot silently validate after `content.md` changes.
+The existing `canonical_content_sha256` is retained for now as a narrow stale-projection binding. It is not semantic proof and must not be treated as evidence of completeness.
 
-When `final.html` is generated, the renderer separately calculates SHA-256 over the exact current bytes of `work/render-data.json` and writes that digest into one generated HTML metadata marker:
+`final.html` receives the current `render-data-sha256` marker so stale deterministic HTML cannot be mistaken for the current projection.
 
-```html
-<meta content="<sha256>" name="render-data-sha256"/>
-```
+No additional hash/checksum chain is added.
 
-This marker is a narrow derived-output revision binding only. It does not carry project meaning and is not a general artifact manifest/checksum framework. Flow 4 rejects a missing, duplicate, invalid, or mismatched marker, so an older `final.html` cannot silently validate after `render-data.json` changes while page structure happens to remain the same. Never patch the marker or `final.html` manually; rerender from the current projection.
+## Fixed deterministic identifiers
 
-Each package keeps `gameplay`, `level_design`, and `developer`.
-
-Initial production should project once after canonical content is stable enough to render. During a bounded revision, change only the affected subtree plus required cross-references and refresh `canonical_content_sha256`; do not recreate unchanged packages.
-
-Do not copy commentary/provenance/internal reasoning into render data. Carry only values required by the Golden surfaces plus the canonical-content revision binding above.
-
-## Compact value conventions
-
-### English-only
-
-Default document language is:
-
-```json
-"languages": ["en"]
-```
-
-Use scalar strings for ordinary English values when there is no bilingual output requirement:
-
-```json
-"title": "Core Trial"
-```
-
-Do not expand this into duplicated localized data merely for renderer symmetry:
-
-```json
-{"en": "Core Trial", "id": "Core Trial"}
-```
-
-unless the value is intentionally represented as localized content.
-
-### Bilingual
-
-For intentional EN + ID output:
-
-```json
-"languages": ["en", "id"]
-```
-
-Every user-visible textual value must use an explicit localized object containing both values. Missing translations and ordinary scalar display text fail before rendering; the renderer does not silently copy English into Indonesian.
-
-If a displayed proper name is intentionally unchanged, make that intent explicit:
-
-```json
-{"en": "Core Trial", "id": "Core Trial"}
-```
-
-Scalar strings remain valid only for renderer-defined non-linguistic/structural values: stable `id`/`key`/`code`, version/brand mark, language/role tokens, numeric scoring weight, step/row identifiers, `canonical_content_sha256`, and an exact formula. Numeric/boolean values remain unchanged.
-
-This is a strict language-availability contract, not a translation framework.
-
-## Role-specific Terms Used
-
-Package terms remain one glossary/tooltips source.
-
-Optional `roles` values are:
+Global Development uses these fixed IDs/order:
 
 ```text
-gameplay
-level_design
-developer
+development-overview
+ game-system
+ data-reset
+ gameplay-development
 ```
 
-- omitted `roles` → visible on Gameplay Overview only;
-- explicit roles → visible only on those pages;
-- `roles: []` → glossary/tooltips only.
+The first Gameplay Flow item uses:
 
-Omit role metadata when default Gameplay visibility is correct. Do not repeat every package term across all role pages.
+```text
+journey-begins
+```
 
-## Content-driven Golden grids
+The remaining Gameplay Flow IDs match gameplay package IDs in package order. This creates one unambiguous flow page per package without a second mapping system.
 
-Golden component language stays fixed while item distribution follows actual content.
+## Required overview facts
 
-- Overview Journey: one desktop column per item up to six; items beyond six wrap to later rows with an explicit row separator and no false left-edge divider on the first item of each wrapped row.
-- Golden Flow cards: one desktop column per item up to four; items beyond four use the same wrapped-row separator/reset behavior.
-- Existing Golden mobile behavior remains authoritative.
+Overview facts use stable keys for the three fixed Golden functions:
 
-This uses bounded CSS variables/selectors only; do not create layout profiles, scoring, or another responsive system. Static contract proof can verify the wrap mechanics exist, but actual visual fidelity still requires rendered/browser inspection.
+```text
+session-model
+target-playtime
+game-structure
+```
 
-## Renderer ownership
+Additional project facts are allowed when materially useful.
 
-- `renderer/core.py` → reusable Golden helpers.
-- `renderer/pages.py` → project data → Golden page composition.
-- `renderer/render.py` → validation of render-data boundary, template mutation, project metadata/navigation/glossary/language/grid mechanics, render-data revision marker, final write.
-- `template/approved-document.html` → edit only when a proven defect belongs to the Golden template itself.
+## Scoring / Result projection
 
-The renderer may omit optional blocks with no meaningful project data. It may not invent facts or replace Golden composition with unrelated generic markup.
+Every package carries exactly one result model:
 
-## Template mutation boundary
+```text
+scoring
+OR
+completion_data
+```
 
-The renderer may mutate only project-owned surfaces already required by this document family:
+`scoring` represents an Objective Score.
 
-- project title/metadata/brand;
+`completion_data` represents explicit `No Objective Score` behavior.
+
+Both forms also carry the current project truth for:
+
+- final-result relationship;
+- player-facing score/result display;
+- telemetry/export behavior;
+- interruption/duplicate behavior where required by the Golden contract.
+
+The renderer must display these distinctions. It must never infer `No Objective Score` from a display/export prohibition.
+
+## English and bilingual values
+
+Default output is English-only.
+
+For intentional EN + ID output, every user-visible textual value must explicitly provide both `en` and `id`. Structural values such as IDs, keys, version, weights, and step codes may remain language-neutral scalars.
+
+This is a strict rendering boundary, not a translation framework.
+
+## Terms Used
+
+Terms remain project-driven. A Terms block may be omitted when no production-critical terminology exists for that surface; this is a genuinely conditional component under `CONTENT-CONTRACT.md`.
+
+## Template boundary
+
+The approved Golden template supplies presentation/runtime behavior only.
+
+The renderer may replace only project-owned surfaces already required by the family:
+
+- metadata/title/brand;
 - navigation;
-- generated pages inside `.document-main`;
+- document pages inside `.document-main`;
 - glossary data;
 - project local-storage namespace;
-- bounded language availability;
-- bounded content-driven Golden grid variables;
-- one generated `render-data-sha256` revision marker used only to prove the current projection produced the current HTML.
+- language availability;
+- bounded content-driven grid variables;
+- current render-data revision marker.
 
-Do not add template copies, renderer profiles, snapshot systems, artifact manifests, or generalized HTML schemas without a concrete need.
+Never patch `final.html` manually to repair missing semantics.
 
-## Mechanical fidelity
-
-Flow 4 validator owns structural checks such as Flow 2 readiness, canonical-content/projection revision binding, projection/HTML revision binding, page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set. The renderer itself owns bilingual input-shape rejection because invalid localization must fail before HTML is produced.
-
-Do not duplicate those checks in authoring instructions. Structural PASS is not visual PASS.
-
-## Command
+## Normal production
 
 ```bash
 python kits/project-document-generator/renderer/render.py \
@@ -168,15 +149,8 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-Use another template only when the user explicitly approves a different document family.
+Normal authoring does not load the full template or generated HTML into model context. Renderer/validator may consume them directly; semantic review uses canonical content and actual rendered pages only where needed.
 
 ## Boundary
 
-```text
-canonical PRD
-→ compact Golden projection bound to that canonical revision
-→ deterministic HTML bound to that projection revision
-→ validate
-```
-
-Renderer code may organize approved meaning; it may never repair missing product definition, approve unresolved decisions, or make `final.html` a source of truth.
+The renderer enforces deterministic shell completeness and presentation mechanics. It does not invent project meaning, decide materiality, repair Flow 2 gaps, or replace Flow 4 semantic acceptance.
