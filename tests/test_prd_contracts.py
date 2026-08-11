@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import hashlib
 import json
 import subprocess
@@ -86,6 +85,8 @@ def render_data() -> dict:
         "overview": {
             "project_context": "A controlled gameplay fixture used to prove the mandatory Golden PRD contract.",
             "main_experience": "The player enters one isolated session, completes the Core Trial, and returns with one valid result.",
+            "document_scope": "Gameplay, Level Design, Developer implementation, result handling, and package verification.",
+            "intended_use": "Primary production reference for Level Design and Development.",
             "facts": [
                 {"key": "session-model", "label": "Session Model", "value": "1 player · 1 isolated session"},
                 {"key": "target-playtime", "label": "Target Playtime", "value": "Short controlled run"},
@@ -140,15 +141,21 @@ def render_data() -> dict:
         ],
         "global_development": [
             _global_section("development-overview", "Development Overview", "package topology and handoff"),
-            _global_section("game-system", "Game System", "session/runtime ownership"),
-            _global_section("data-reset", "Data and Reset", "result persistence and reset"),
-            _global_section("gameplay-development", "Gameplay Development", "package lifecycle and integration"),
+            _global_section("game-system", "Session & Runtime System", "session/runtime ownership"),
+            _global_section("data-reset", "Data, Recovery & Reset", "result persistence, recovery, and reset"),
+            _global_section("gameplay-development", "Gameplay Package Integration", "package lifecycle and integration"),
         ],
         "packages": [
             {
                 "id": "core",
                 "package_label": "Fixture Package",
                 "title": "Core Trial",
+                "acceptance": [
+                    "Entering the approved start area activates the trial exactly once for the assigned session.",
+                    "Completing the Core interaction stores one valid Fixture Score and opens the exit.",
+                    "An interrupted run creates no score and reset restores the documented initial state.",
+                    "The start, interaction target, and exit remain readable from the approved player route.",
+                ],
                 "gameplay": {
                     "context": "The player enters a controlled arena where one interaction target is visible from the start.",
                     "main_objective": "Activate and complete the Core Trial once.",
@@ -157,7 +164,7 @@ def render_data() -> dict:
                     "gameplay_time": "Short controlled run; no separate hard timeout is required for this fixture.",
                     "start_condition": "The player enters the marked trial start area in the assigned session.",
                     "end_condition": "The required interaction completes and the Fixture Score is stored once.",
-                    "blocked_or_fail_condition": "No permanent gameplay fail; interruption ends the current run without a score.",
+                    "blocked_or_fail_condition": "No permanent gameplay fail; interruption ends the current run without a score, then reset restores the initial state.",
                     "player_flow": [
                         {
                             "step": 1,
@@ -348,10 +355,17 @@ class ProjectDocumentContracts(unittest.TestCase):
 
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
         for text in (
-            "Development Overview",
-            "Game System",
-            "Data and Reset",
-            "Gameplay Development",
+            "Document Control",
+            "Session &amp; Runtime System",
+            "Data, Recovery &amp; Reset",
+            "Gameplay Package Integration",
+            "Objective Sequence",
+            "Failure / Retry / Recovery",
+            "Result / Scoring Model",
+            "Area / Spatial Constraint",
+            "Expected System Result",
+            "Critical Constraints &amp; Notes",
+            "Acceptance &amp; Verification",
             "Player-Facing Result",
             "Telemetry / Export",
         ):
@@ -381,10 +395,11 @@ class ProjectDocumentContracts(unittest.TestCase):
         variants = {
             "missing global function": lambda data: data["global_development"].pop(2),
             "missing package flow page": lambda data: data["gameplay_flow"].pop(),
+            "missing document scope": lambda data: data["overview"].update({"document_scope": ""}),
             "missing gameplay time": lambda data: data["packages"][0]["gameplay"].update({"gameplay_time": ""}),
             "missing design flow": lambda data: data["packages"][0]["level_design"].update({"flow": []}),
             "missing developer reset": lambda data: data["packages"][0]["developer"].update({"reset": []}),
-            "missing development notes": lambda data: data["packages"][0]["developer"].update({"notes": []}),
+            "missing acceptance": lambda data: data["packages"][0].update({"acceptance": []}),
         }
         for name, mutate in variants.items():
             with self.subTest(name=name):
