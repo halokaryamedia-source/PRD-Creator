@@ -79,17 +79,7 @@ Package Gameplay Flow and its production pages use the same package ID for navig
 
 ## AI-slop / template cleanup
 
-A dedicated review found that the previously approved HTML template still contained implementation-history and reference-project residue, including examples such as:
-
-```text
-V90 / V94 / V1.2
-v14-style ... v18-style
-aftershock-*
-quarry-*
-phase-* names for current package concepts
-source-document / template-extraction revision metadata
-multiple appended visual-polish patch layers
-```
+A dedicated review found that the previously approved HTML template still contained implementation-history and reference-project residue: feature/CSS iteration labels masquerading as versions, version-suffixed style IDs, reference-project namespaces, old object-specific component names, obsolete phase-oriented presentation naming, extraction/source revision metadata, and multiple appended visual-polish patch layers.
 
 These were not useful document versioning. They were implementation history leaking into active generator structure.
 
@@ -100,23 +90,23 @@ The active generator is now normalized:
 - renderer no longer injects another UI stylesheet/runtime patch layer;
 - project storage namespace comes from one generic template token and is replaced by the renderer;
 - page/component hooks describe actual functions such as package, requirement, development, glossary, journey, production, and result;
-- old sample-specific `aftershock-*`, `quarry-*`, and obsolete `phase-*` hooks were removed from active template/renderer/validator composition;
-- pseudo-version patch labels were removed;
+- reference-project and obsolete object/phase hooks were removed from active template/renderer/validator composition;
+- pseudo-version patch labels and extraction/source revision metadata were removed;
 - legitimate `document.version` remains untouched as real project metadata.
 
-A focused regression guard now rejects reintroduction of the known reference/patch-history tokens in the approved template. This is a narrow anti-regression guard, not a generic naming framework.
+A focused regression guard prevents the known reference/patch-history categories from returning to the approved template. This is a narrow anti-regression guard, not a generic naming framework.
 
 ## Deterministic enforcement
 
 The renderer still fails before writing `final.html` when mandatory shell data is absent. The mechanical validator continues to check current generated composition, revision binding, navigation, IDs, scoring numeric consistency, and required files/state without pretending to judge prose or visual quality automatically.
 
-Current focused implementation proof after the template/renderer/validator cleanup:
+Current focused gate after implementation **and** the final rendering-boundary documentation alignment:
 
 ```text
-PRD Verify #88 — PASS
+PRD Verify #89 — PASS
 ```
 
-This PASS covers compilation, the full mandatory fixture, generic composition hooks, glossary safety, Flow 2 state contracts, handoff contracts, and the new narrow anti-slop template regression guard.
+This PASS covers compilation, the full mandatory fixture, generic composition hooks, glossary safety, Flow 2 state contracts, handoff contracts, the narrow anti-slop template regression guard, and the current rendering contract.
 
 Voice verification remains independent; PRD-only work does not rerun Voice contracts by default.
 
