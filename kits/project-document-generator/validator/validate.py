@@ -262,6 +262,7 @@ def expected_page_ids(data: dict[str, Any]) -> list[str]:
 
 
 def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[str]:
+    """Check only the deterministic Golden prototype markers rendered on each page."""
     failures: list[str] = []
 
     def require(section_id: str, required: set[str]) -> None:
@@ -271,50 +272,28 @@ def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[
             failures.append(f"{section_id} missing {missing}")
 
     for item in data.get("gameplay_flow", []):
-        require(f'flow-{item["id"]}', {"narrative-page", "narrative-sequence"})
+        require(f'flow-{item["id"]}', {"story-page", "story-flow"})
 
     for item in data.get("global_development", []):
-        required = {"package-tabs", "section-context"}
-        if item.get("flow"):
-            required.add("development-flow-grid")
-        if item.get("requirements"):
-            required.add("development-requirements-table")
-        if item.get("notes"):
-            required.add("note-grid")
-        require(f'global-{item["id"]}', required)
+        require(
+            f'global-{item["id"]}',
+            {"package-tabs", "section-context", "development-flow-grid", "development-requirements-table", "note-grid"},
+        )
 
     for pkg in data.get("packages", []):
         package_id = pkg["id"]
-        gameplay = pkg.get("gameplay") if isinstance(pkg.get("gameplay"), dict) else {}
-        level = pkg.get("level_design") if isinstance(pkg.get("level_design"), dict) else {}
-        developer = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
-
-        gameplay_required = {"package-tabs", "package-context-grid", "gameplay-info-table"}
-        if gameplay.get("player_flow"):
-            gameplay_required.add("objective-sequence")
-        require(f"dev-{package_id}-requirement", gameplay_required)
-
-        level_required = {"package-tabs", "section-context"}
-        if level.get("flow"):
-            level_required.add("design-flow-grid")
-        if level.get("requirements"):
-            level_required.add("build-requirements-table")
-        if level.get("notes"):
-            level_required.add("note-grid")
-        require(f"dev-{package_id}-level", level_required)
-
-        developer_required = {
-            "package-tabs",
-            "section-context",
-            "development-requirements-table",
-            "result-summary",
-            "acceptance",
-        }
-        if developer.get("flow"):
-            developer_required.add("developer-flow")
-        if developer.get("notes"):
-            developer_required.add("note-grid")
-        require(f"dev-{package_id}-developer", developer_required)
+        require(
+            f"dev-{package_id}-requirement",
+            {"package-tabs", "package-context-grid", "gameplay-info-table", "objective-sequence"},
+        )
+        require(
+            f"dev-{package_id}-level",
+            {"package-tabs", "section-context", "design-flow-grid", "build-requirements-table", "note-grid"},
+        )
+        require(
+            f"dev-{package_id}-developer",
+            {"package-tabs", "section-context", "development-flow-grid", "development-requirements-table", "result-summary", "note-grid"},
+        )
 
     return failures
 
@@ -496,7 +475,7 @@ def validate(project: Path) -> dict[str, Any]:
     check(
         "document_page_composition",
         not composition,
-        "required document composition markers are present" if not composition else "; ".join(composition),
+        "required Golden prototype markers are present" if not composition else "; ".join(composition),
     )
 
     id_set = set(facts.ids)
