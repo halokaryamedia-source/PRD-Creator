@@ -59,6 +59,11 @@ def overview(data: dict[str, Any]) -> str:
         for x in o.get("main_systems", [])
         if present(x.get("title")) or present(x.get("description"))
     ]
+    document_control = [
+        join_text(bi("Version", "Versi"), str(d.get("version", "1.0")), sep=" — "),
+        join_text(bi("Scope", "Cakupan"), o.get("document_scope"), sep=" — "),
+        join_text(bi("Intended Use", "Tujuan Penggunaan"), o.get("intended_use"), sep=" — "),
+    ]
     body = (
         '<div class="cover-rule"></div>'
         f'<p class="eyebrow">{i18n(d.get("document_type", bi("Production Specification", "Spesifikasi Produksi")))}</p>'
@@ -68,6 +73,10 @@ def overview(data: dict[str, Any]) -> str:
     )
     if o.get("main_experience"):
         body += f'<h3>{i18n(bi("Main Experience", "Pengalaman Utama"))}</h3><p>{i18n(o["main_experience"])}</p>'
+    body += (
+        f'<div class="summary-note"><strong>{i18n(bi("Document Control", "Kontrol Dokumen"))}</strong>'
+        f'{ul(document_control)}</div>'
+    )
     if facts:
         body += f'<div class="facts{" three" if len(o.get("facts", [])) == 3 else ""}">{facts}</div>'
     if journey:
@@ -198,12 +207,17 @@ def global_pages(data: dict[str, Any]) -> list[str]:
         req_rows = _requirement_rows(item.get("requirements", []))
         if req_rows:
             body += heading(bi("Development Requirements", "Kebutuhan Development")) + production_table(
-                [bi("No.", "No."), bi("Setup", "Setup"), bi("Development Requirements", "Kebutuhan Development"), bi("System Result", "Hasil Sistem")],
+                [
+                    bi("No.", "No."),
+                    bi("Setup", "Setup"),
+                    bi("Development Requirements", "Kebutuhan Development"),
+                    bi("Expected System Result", "Hasil Sistem yang Diharapkan"),
+                ],
                 req_rows,
                 "quarry-dev-table",
             )
         if item.get("notes"):
-            body += heading(bi("Important Development Notes", "Catatan Development Penting")) + note_grid(item["notes"])
+            body += heading(bi("Critical Constraints & Notes", "Batasan & Catatan Kritis")) + note_grid(item["notes"])
         body += terms(item.get("terms", []), f"{pid}-terms-used-details")
         out.append(
             page(
@@ -264,8 +278,8 @@ def _gameplay_info_rows(pkg: dict[str, Any]) -> list[str]:
         (bi("Gameplay Time", "Waktu Gameplay"), gp.get("gameplay_time") or gp.get("estimated_time") or gp.get("duration")),
         (bi("Starting Condition", "Kondisi Awal"), gp.get("start_condition")),
         (bi("End Condition", "Kondisi Selesai"), gp.get("end_condition")),
-        (bi("Fail Condition", "Kondisi Gagal"), gp.get("blocked_or_fail_condition")),
-        (bi("Scoring Criteria", "Kriteria Scoring"), scoring_criteria),
+        (bi("Failure / Retry / Recovery", "Gagal / Ulang / Pemulihan"), gp.get("blocked_or_fail_condition")),
+        (bi("Result / Scoring Model", "Model Hasil / Scoring"), scoring_criteria),
     ]
     return [f'<tr><td><b>{i18n(label)}</b></td><td>{cell_html(value)}</td></tr>' for label, value in pairs if present(value)]
 
@@ -327,7 +341,7 @@ def _developer_requirement_rows(dev: dict[str, Any]) -> list[str]:
         group_number += 1
     if dev.get("scoring"):
         scoring = dev["scoring"]
-        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Scoring Setup", "Scoring Setup"))}</b></td></tr>')
+        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Scoring / Result", "Scoring / Hasil"))}</b></td></tr>')
         rows.append(
             f'<tr><td><b>A</b></td><td><b>{i18n(scoring.get("score_name", bi("Scoring", "Scoring")))}</b></td>'
             f'<td>{score_html(scoring)}</td><td>{cell_html(scoring.get("final_result_relationship", ""))}</td></tr>'
@@ -335,19 +349,28 @@ def _developer_requirement_rows(dev: dict[str, Any]) -> list[str]:
         group_number += 1
     elif dev.get("completion_data"):
         completion = dev["completion_data"]
-        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Completion and Data", "Penyelesaian dan Data"))}</b></td></tr>')
+        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Completion / Result", "Penyelesaian / Hasil"))}</b></td></tr>')
         rows.append(
             f'<tr><td><b>A</b></td><td><b>{i18n(completion.get("completion_name", bi("Completion State", "Kondisi Selesai")))}</b></td>'
             f'<td>{completion_html(completion)}</td><td>{cell_html(completion.get("handoff_result", ""))}</td></tr>'
         )
         group_number += 1
     if dev.get("reset"):
-        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Reset Mechanic", "Reset Mechanic"))}</b></td></tr>')
+        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Reset / Interruption", "Reset / Interupsi"))}</b></td></tr>')
         rows.append(
-            f'<tr><td><b>A</b></td><td><b>{i18n(bi("Reset / Interruption", "Reset / Interupsi"))}</b></td>'
+            f'<tr><td><b>A</b></td><td><b>{i18n(bi("Reset and Recovery", "Reset dan Pemulihan"))}</b></td>'
             f'<td>{cell_html(dev["reset"])}</td><td>{cell_html(dev.get("reset_result", ""))}</td></tr>'
         )
     return rows
+
+
+def _acceptance_block(items: list[Any]) -> str:
+    return (
+        '<div class="acceptance">'
+        f'<h3>{i18n(bi("Acceptance & Verification", "Penerimaan & Verifikasi"))}</h3>'
+        f'{ul(items)}'
+        '</div>'
+    )
 
 
 def package_pages(data: dict[str, Any]) -> list[str]:
@@ -375,7 +398,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             gp_body += heading(bi("Gameplay Information", "Informasi Gameplay")) + production_table([], info_rows, "phase-overview-table quarry-overview-table")
         gp_flow = [entry for entry in gp.get("player_flow", []) if isinstance(entry, dict)]
         if gp_flow:
-            gp_body += heading(bi("Gameplay Flow", "Alur Gameplay")) + sequence(gp_flow)
+            gp_body += heading(bi("Objective Sequence", "Urutan Objective")) + sequence(gp_flow)
         gp_body += terms(_visible_package_terms(pkg, "gameplay"), f"dev-{pid}-requirement-terms-used-details")
         out.append(
             page(
@@ -407,12 +430,18 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         ld_rows = _level_requirement_rows(ld.get("requirements", []))
         if ld_rows:
             ld_body += heading(bi("Build Requirements", "Kebutuhan Build")) + production_table(
-                [bi("No.", "No."), bi("Object", "Objek"), bi("Area Size", "Ukuran Area"), bi("Build and Visual Requirements", "Kebutuhan Build dan Visual"), bi("Gameplay Function", "Fungsi Gameplay")],
+                [
+                    bi("No.", "No."),
+                    bi("Object", "Objek"),
+                    bi("Area / Spatial Constraint", "Area / Batasan Spasial"),
+                    bi("Build and Visual Requirements", "Kebutuhan Build dan Visual"),
+                    bi("Gameplay Function", "Fungsi Gameplay"),
+                ],
                 ld_rows,
                 "quarry-build-table",
             )
         if ld.get("notes"):
-            ld_body += heading(bi("Important Build Notes", "Catatan Build Penting")) + note_grid(ld["notes"])
+            ld_body += heading(bi("Critical Constraints & Notes", "Batasan & Catatan Kritis")) + note_grid(ld["notes"])
         ld_body += terms(_visible_package_terms(pkg, "level_design"), f"dev-{pid}-level-terms-used-details")
         out.append(
             page(
@@ -455,12 +484,18 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         dev_rows = _developer_requirement_rows(dev)
         if dev_rows:
             dev_body += heading(bi("Development Requirements", "Kebutuhan Development")) + production_table(
-                [bi("No.", "No."), bi("Setup", "Setup"), bi("Development Requirements", "Kebutuhan Development"), bi("Gameplay Function", "Fungsi Gameplay")],
+                [
+                    bi("No.", "No."),
+                    bi("Setup", "Setup"),
+                    bi("Development Requirements", "Kebutuhan Development"),
+                    bi("Expected System Result", "Hasil Sistem yang Diharapkan"),
+                ],
                 dev_rows,
                 "quarry-development-table",
             )
         if dev.get("notes"):
-            dev_body += heading(bi("Important Development Notes", "Catatan Development Penting")) + note_grid(dev["notes"])
+            dev_body += heading(bi("Critical Constraints & Notes", "Batasan & Catatan Kritis")) + note_grid(dev["notes"])
+        dev_body += _acceptance_block(pkg.get("acceptance", []))
         dev_body += terms(_visible_package_terms(pkg, "developer"), f"dev-{pid}-developer-terms-used-details")
         out.append(
             page(
@@ -502,7 +537,7 @@ def navigation(data: dict[str, Any]) -> str:
     if glinks or plinks:
         nav.append(
             f'<div class="nav-group is-open professional-nav"><button class="nav-group-toggle" aria-expanded="true"><span class="nav-index">03</span><span class="nav-copy">{i18n(bi("Development", "Pengembangan"))}</span></button>'
-            f'<div class="nav-submenu">{glinks}</div><div class="nav-submenu phase-navigation">{"".join(plinks)}</div></div>'
+            f'<div class="nav-submenu">{glinks}</div><div class="nav-submenu phase-navigation'>{"".join(plinks)}</div></div>'
         )
     return "".join(nav)
 
