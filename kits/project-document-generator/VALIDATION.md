@@ -24,99 +24,71 @@ python kits/project-document-generator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical validation owns only deterministic checks such as:
+Mechanical validation owns deterministic checks only: Flow 2 readiness/evidence, explicit blockers, stale revision bindings, required files/placeholders, valid collections/IDs, scoring numeric consistency, generated page order/IDs, duplicate IDs, navigation/browser title, and Golden composition markers.
 
-- Flow 2 readiness and persisted evidence presence;
-- explicit current blocker contradictions;
-- current content/projection and projection/HTML revision bindings;
-- required files/placeholders;
-- valid render-data collections/IDs;
-- scoring numeric consistency;
-- page IDs/order;
-- duplicate IDs;
-- navigation/browser title;
-- Golden composition markers.
+The renderer rejects deterministic missing mandatory shell data before HTML generation, including current Document Control inputs and non-empty package Acceptance & Verification content.
 
-The renderer itself rejects missing deterministic mandatory Golden shell data before HTML generation.
+Mechanical PASS does **not** prove source fidelity, correct scoring interpretation, narrative quality, role completeness, quality of acceptance criteria, Humanize quality, or visual quality.
 
-Mechanical PASS does **not** prove:
-
-- source fidelity;
-- correct scoring interpretation;
-- narrative quality;
-- role completeness;
-- Humanize quality;
-- visual quality.
-
-Do not add word-count gates, row-count gates, semantic hashing/similarity, DOM snapshots, pixel scoring, or a generic schema to imitate semantic review.
+Do not add word-count, row-count, semantic similarity, DOM snapshot, pixel scoring, or generic-schema machinery as a substitute for semantic review.
 
 ## One integrated semantic review
 
-Read only the relevant authoritative/approved evidence plus the affected canonical PRD scope.
-
-Use these lenses in one pass:
+Read only relevant authoritative/approved evidence plus the affected canonical PRD scope.
 
 ### New Reader / Player Context
 
-Can a new team member understand the chronological player journey, context, objective/result, important cues/setbacks/recovery, and forward transition without reopening the original source?
+Can a new team member understand the full chronological Gameplay Flow, context, objective/result, important cues/setbacks/recovery, and forward transition without reopening source?
+
+The shorter **Objective Sequence** on Gameplay Overview is for scanability; it should not be mistaken for or duplicate the full narrative.
 
 ### Level Designer
 
-Can Level Design build the package from the Level Design page plus clearly referenced shared rules without reopening original source for a material build rule?
+Can Level Design build the package from its page plus clearly referenced shared rules without reopening source for a material build rule?
+
+Check that `Area / Spatial Constraint`, build/visual requirements, gameplay function, and Critical Constraints & Notes communicate the actual project truth without invented dimensions.
 
 ### Developer
 
-Can Developer implement the package from the Developer page plus clearly referenced shared rules without reopening original source for material runtime behavior?
+Can Developer implement the package from its page plus clearly referenced shared rules without reopening source for material runtime behavior?
 
-This includes the package's Scoring / Result contract and the distinction between:
+This includes Scoring / Result, `Expected System Result`, interruption/recovery/reset, and the distinction between internal result, player-facing display, and telemetry/export.
 
-```text
-internal score/result
-player-facing display
-telemetry/export
-```
+### Acceptance & Verification
+
+Does the package close with concise **observable conditions** that actually prove its material behavior?
+
+Acceptance is inadequate when it only says `works correctly`, restates a requirement without an observable result, or ignores a material entry/completion/result/recovery/handoff behavior needed by the package.
+
+Do not require a QA test-case appendix. This is package definition of done, not a second testing framework.
 
 ### Project Consistency
 
-Do terminology, topology, timing, quantities, scoring/result, global/local rules, interruption/reset, and handoff remain consistent across the current revision?
+Do terminology, topology, timing, quantities, scoring/result, global/local rules, interruption/reset, acceptance statements, and handoff remain consistent across the revision?
+
+When a project has an aggregate result, confirm that its Final Result Contract lives coherently under **Data, Recovery & Reset** rather than drifting across packages.
 
 ## Golden mandatory-contract check
 
-Use `CONTENT-CONTRACT.md` directly.
+Use `CONTENT-CONTRACT.md` directly. Do not maintain another full checklist here.
 
-The semantic reviewer checks that:
+The reviewer confirms that mandatory functions perform their intended production job with current-project truth, explicit negative/N/A states are understandable, role-owned material meaning is on the correct surface, and prose remains readable without changing technical facts.
 
-- all mandatory Golden functions are present;
-- explicit negative and Not Applicable states are understandable rather than silently missing;
-- The Journey Begins + one Gameplay Flow page per package form a coherent player journey;
-- all four Global Development functions perform their intended jobs;
-- every package has Gameplay Overview, Level Design, and Developer depth appropriate to current project evidence;
-- every package explicitly communicates Objective Score or `No Objective Score`;
-- material source meaning is represented on the surface used by the role that needs it;
-- prose is readable production language without changing technical truth.
+A **Major** finding exists when a production role must reopen source to recover a material rule, a mandatory Golden function has been reduced until it no longer works for its reader, or Acceptance & Verification fails to prove a material behavior the package depends on.
 
-A **Major** finding exists when a production role must reopen original source to recover a material rule that belongs in the PRD, or when a mandatory Golden function has been reduced until it no longer performs its production role.
-
-Do not compare word count or row count to Golden. A simpler project may legitimately be shorter. Missing material meaning is the failure, not shortness itself.
+Do not compare word or row counts with Golden.
 
 ## Flow 2 fallback
 
-Return a finding to Flow 2 when it requires a new product/design decision, authority reconciliation, scoring interpretation, or another material unresolved choice.
+Return a finding to Flow 2 when it requires a new product/design decision, authority reconciliation, scoring interpretation, acceptance meaning that depends on an unresolved behavior, or another material choice.
 
-Flow 4 may improve wording only when approved meaning is already clear. It may not invent values, mechanics, formulas, workarounds, or project decisions merely to make the document pass.
+Flow 4 may improve wording only when approved meaning is already clear. It may not invent values, mechanics, formulas, workarounds, or acceptance behavior merely to make the PRD pass.
 
 ## Humanized writing review
 
-Flag prose when it materially reduces usability, especially:
+Flag prose when it materially reduces usability, especially task-summary full Gameplay Flow, comma-stacked database prose, generic statements hiding behavior, vague/promotional filler, terminology drift, or dense prose that removes cause/effect/context.
 
-- task-summary Gameplay Flow instead of player journey;
-- comma-stacked database-like prose;
-- generic statements that hide actual behavior;
-- vague filler or promotional language;
-- terminology drift;
-- dense prose that removes cause/effect/context.
-
-Do not create a separate Humanize approval round. Review writing inside the same semantic pass.
+Do not create a separate Humanize approval round.
 
 ## Desktop visual sanity by default
 
@@ -128,10 +100,10 @@ A representative visual smoke normally inspects only:
 Overview
 + one Gameplay Flow page
 + one Level Design page
-+ one dense Developer page
++ one dense Developer page including Acceptance & Verification
 ```
 
-Check obvious layout/composition, navigation to the representative package, tabs, table readability/overflow, scoring/result placement, and broken visual structure.
+Check obvious composition, representative navigation/tabs, table readability/overflow, scoring/result placement, acceptance placement, and broken visual structure.
 
 Do not routinely retest every navigation link, every Terms disclosure, themes, localStorage, or mobile viewport.
 
@@ -155,7 +127,9 @@ Critical: N
 Major: N
 ```
 
-Critical/Major block readiness.
+Package-level Acceptance & Verification lives in the PRD. `work/acceptance.md` records whether the document itself passed Flow 4; do not merge these two meanings.
+
+Critical/Major findings block readiness.
 
 ## Handoff entry
 
@@ -166,7 +140,7 @@ python kits/project-document-generator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-The handoff validator confirms current status/version/artifact references and that the compact acceptance record actually authorizes `handoff_ready`.
+The handoff validator confirms current status/version/artifact references and that compact document acceptance authorizes `handoff_ready`.
 
 `Visual sanity: NOT PROVEN` remains allowed when actual browser proof was unavailable; it is not a visual PASS claim.
 
