@@ -39,7 +39,11 @@ BILINGUAL_SCALAR_FIELDS = {
 RENDERER_CONTRACT_STYLE = """<style id="prd-renderer-contract-style">
 @media(min-width:761px){
   .document-main .journey{grid-template-columns:repeat(var(--prd-journey-columns,6),1fr)}
+  .document-main .journey article:nth-child(n+7){border-top:1px solid var(--line)}
+  .document-main .journey article:nth-child(6n+1){border-left:0}
   .document-main .flow{grid-template-columns:repeat(var(--prd-flow-columns,4),1fr)}
+  .document-main .flow article:nth-child(n+5){border-top:1px solid var(--line)}
+  .document-main .flow article:nth-child(4n+1){border-left:0}
 }
 html[data-document-languages="en"] .language-panel{display:none!important}
 </style>"""

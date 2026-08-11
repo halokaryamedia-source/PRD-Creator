@@ -366,6 +366,31 @@ class ProjectDocumentContracts(unittest.TestCase):
             html,
         )
 
+    def test_renderer_preserves_wrap_boundaries_beyond_golden_capacity(self) -> None:
+        data = render_data()
+        data["overview"]["journey"] = [
+            {"title": f"Stage {index}", "description": f"Stage {index} result."}
+            for index in range(1, 8)
+        ]
+        data["global_development"][0]["flow"] = [
+            {"step": index, "title": f"Step {index}", "description": f"Do step {index}."}
+            for index in range(1, 6)
+        ]
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertIn('style="--prd-journey-columns:6"', html)
+        self.assertIn('style="--prd-flow-columns:4"', html)
+        for rule in (
+            ".document-main .journey article:nth-child(n+7){border-top:1px solid var(--line)}",
+            ".document-main .journey article:nth-child(6n+1){border-left:0}",
+            ".document-main .flow article:nth-child(n+5){border-top:1px solid var(--line)}",
+            ".document-main .flow article:nth-child(4n+1){border-left:0}",
+        ):
+            self.assertIn(rule, html)
+
     def test_renderer_enforces_explicit_bilingual_localized_values(self) -> None:
         data = bilingual_render_data()
         data["overview"]["project_context"] = {"en": "English only."}

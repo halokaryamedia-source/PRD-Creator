@@ -116,11 +116,11 @@ Omit role metadata when default Gameplay visibility is correct. Do not repeat ev
 
 Golden component language stays fixed while item distribution follows actual content.
 
-- Overview Journey: one desktop column per item up to six, then wrap at the existing Golden capacity.
-- Golden Flow cards: one desktop column per item up to four, then wrap at the existing Golden capacity.
+- Overview Journey: one desktop column per item up to six; items beyond six wrap to later rows with an explicit row separator and no false left-edge divider on the first item of each wrapped row.
+- Golden Flow cards: one desktop column per item up to four; items beyond four use the same wrapped-row separator/reset behavior.
 - Existing Golden mobile behavior remains authoritative.
 
-This uses bounded CSS variables only; do not create layout profiles, scoring, or another responsive system.
+This uses bounded CSS variables/selectors only; do not create layout profiles, scoring, or another responsive system. Static contract proof can verify the wrap mechanics exist, but actual visual fidelity still requires rendered/browser inspection.
 
 ## Renderer ownership
 
