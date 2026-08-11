@@ -82,11 +82,17 @@ For intentional EN + ID output:
 "languages": ["en", "id"]
 ```
 
-Localized prose objects must contain both values. Missing translations fail before rendering; the renderer does not silently copy one language into the other.
+Every user-visible textual value must use an explicit localized object containing both values. Missing translations and ordinary scalar display text fail before rendering; the renderer does not silently copy English into Indonesian.
 
-Proper names, IDs, codes, numbers, formulas, and intentionally language-neutral values may remain scalar.
+If a displayed proper name is intentionally unchanged, make that intent explicit:
 
-This is a language-availability contract, not a translation framework.
+```json
+{"en": "Core Trial", "id": "Core Trial"}
+```
+
+Scalar strings remain valid only for renderer-defined non-linguistic/structural values: stable `id`/`key`/`code`, version/brand mark, language/role tokens, numeric scoring weight, step/row identifiers, `canonical_content_sha256`, and an exact formula. Numeric/boolean values remain unchanged.
+
+This is a strict language-availability contract, not a translation framework.
 
 ## Role-specific Terms Used
 
@@ -141,7 +147,7 @@ Do not add template copies, renderer profiles, snapshot systems, or generalized 
 
 ## Mechanical fidelity
 
-Flow 4 validator owns structural checks such as Flow 2 readiness, canonical-content/projection revision binding, page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set.
+Flow 4 validator owns structural checks such as Flow 2 readiness, canonical-content/projection revision binding, page IDs/order, navigation reachability, duplicate IDs, placeholders, scoring/completion invariants, and the small Golden composition-marker set. The renderer itself owns bilingual input-shape rejection because invalid localization must fail before HTML is produced.
 
 Do not duplicate those checks in authoring instructions. Structural PASS is not visual PASS.
 

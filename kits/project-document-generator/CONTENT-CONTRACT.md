@@ -129,8 +129,9 @@ Clarity never outranks source fidelity.
 
 - English-only is default unless intentional EN + ID output is approved/produced.
 - Expose Indonesian selection only when actual bilingual content exists.
-- A localized `en`/`id` value in bilingual output must contain both sides; never silently copy the available language into the missing one.
-- Proper names, IDs, codes, numbers, formulas, and intentionally language-neutral values may remain scalar.
+- In intentional bilingual output, every user-visible textual value must explicitly provide both `en` and `id`; never treat an ordinary scalar sentence/label/name as an implicit translation.
+- If a displayed proper name is intentionally identical in both languages, state it explicitly as the same `en` and `id` value.
+- Scalar strings remain valid only for non-linguistic/structural values the renderer defines as language-neutral, such as stable IDs/keys/codes, version/brand mark, language/role tokens, numeric weights, step/row identifiers, canonical revision hash, and an exact formula.
 
 Do not build translation-memory/localization machinery for this boundary.
 

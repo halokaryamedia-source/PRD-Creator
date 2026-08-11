@@ -13,6 +13,21 @@ ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
 VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
 APPROVED_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "approved-document.html"
+BILINGUAL_SCALAR_FIELDS = {
+    "canonical_content_sha256",
+    "id",
+    "key",
+    "code",
+    "version",
+    "brand_mark",
+    "languages",
+    "roles",
+    "weight",
+    "step",
+    "no",
+    "number",
+    "formula",
+}
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
@@ -185,6 +200,25 @@ def render_data() -> dict:
     }
 
 
+def bilingual_render_data() -> dict:
+    def localized(value: object, field: str | None = None) -> object:
+        if isinstance(value, dict):
+            keys = set(value)
+            if keys and keys.issubset({"en", "id"}):
+                return value
+            return {key: localized(child, key) for key, child in value.items()}
+        if isinstance(value, list):
+            return [localized(child, field) for child in value]
+        if isinstance(value, str) and value and field not in BILINGUAL_SCALAR_FIELDS:
+            return {"en": value, "id": f"ID · {value}"}
+        return value
+
+    data = localized(render_data())
+    assert isinstance(data, dict)
+    data["document"]["languages"] = ["en", "id"]
+    return data
+
+
 class ProjectDocumentContracts(unittest.TestCase):
     def make_project(self, data: dict) -> Path:
         temp = tempfile.TemporaryDirectory()
@@ -333,8 +367,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
 
     def test_renderer_enforces_explicit_bilingual_localized_values(self) -> None:
-        data = render_data()
-        data["document"]["languages"] = ["en", "id"]
+        data = bilingual_render_data()
         data["overview"]["project_context"] = {"en": "English only."}
         project = self.make_project(data)
 
@@ -347,9 +380,22 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
         self.assertFalse((project / "output" / "final.html").exists())
 
+    def test_renderer_rejects_scalar_user_facing_text_in_bilingual_document(self) -> None:
+        data = bilingual_render_data()
+        data["packages"][0]["gameplay"]["main_objective"] = "English-only objective."
+        project = self.make_project(data)
+
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertNotIn("Traceback", rendered.stderr)
+        self.assertIn(
+            "render_data.packages[0].gameplay.main_objective must use an explicit en/id localized value",
+            rendered.stderr,
+        )
+        self.assertFalse((project / "output" / "final.html").exists())
+
     def test_renderer_keeps_bilingual_switch_only_for_declared_bilingual_document(self) -> None:
-        data = render_data()
-        data["document"]["languages"] = ["en", "id"]
+        data = bilingual_render_data()
         data["overview"]["project_context"] = {
             "en": "A bilingual contract fixture.",
             "id": "Fixture kontrak bilingual.",
@@ -362,6 +408,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertIn('data-document-languages="en,id"', html)
         self.assertNotIn('id="prd-single-language-enforcer"', html)
         self.assertIn('data-id="Fixture kontrak bilingual."', html)
+        self.assertIn('data-id="Gambaran Gameplay"', html)
 
     def test_renderer_applies_role_specific_terms_visibility(self) -> None:
         data = render_data()

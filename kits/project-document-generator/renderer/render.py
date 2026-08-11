@@ -20,6 +20,21 @@ SPEC_VERSION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="specificatio
 GLOSSARY_ASSIGN_RE = re.compile(r"const glossary = .*?;\n\s*const tooltip =", re.S)
 HTML_TAG_RE = re.compile(r"<html\b[^>]*>", re.I)
 TERM_ROLES = {"gameplay", "level_design", "developer"}
+BILINGUAL_SCALAR_FIELDS = {
+    "canonical_content_sha256",
+    "id",
+    "key",
+    "code",
+    "version",
+    "brand_mark",
+    "languages",
+    "roles",
+    "weight",
+    "step",
+    "no",
+    "number",
+    "formula",
+}
 
 RENDERER_CONTRACT_STYLE = """<style id="prd-renderer-contract-style">
 @media(min-width:761px){
@@ -49,7 +64,7 @@ def document_languages(data: dict[str, Any]) -> list[str]:
     return list(raw)
 
 
-def validate_bilingual_values(value: Any, path: str) -> None:
+def validate_bilingual_values(value: Any, path: str, field: str | None = None) -> None:
     if isinstance(value, dict):
         keys = set(value)
         if keys and keys.issubset({"en", "id"}):
@@ -59,10 +74,14 @@ def validate_bilingual_values(value: Any, path: str) -> None:
                     raise ValueError(f"{path}.{language} is required for bilingual document")
             return
         for key, child in value.items():
-            validate_bilingual_values(child, f"{path}.{key}")
+            validate_bilingual_values(child, f"{path}.{key}", key)
     elif isinstance(value, list):
         for index, child in enumerate(value):
-            validate_bilingual_values(child, f"{path}[{index}]")
+            validate_bilingual_values(child, f"{path}[{index}]", field)
+    elif isinstance(value, str) and value and field not in BILINGUAL_SCALAR_FIELDS:
+        raise ValueError(
+            f"{path} must use an explicit en/id localized value for bilingual document"
+        )
 
 
 def validate_aliases(aliases: Any, context: str) -> None:

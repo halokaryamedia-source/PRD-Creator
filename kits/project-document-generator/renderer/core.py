@@ -174,14 +174,18 @@ def page(
 
 
 def tabs(pid: str, active: str) -> str:
-    items = [("requirement", "1", "Gameplay Overview"), ("level", "2", "Level Design"), ("developer", "3", "Developer")]
+    items = [
+        ("requirement", "1", bi("Gameplay Overview", "Gambaran Gameplay")),
+        ("level", "2", bi("Level Design", "Level Design")),
+        ("developer", "3", bi("Developer", "Developer")),
+    ]
     links = []
     for key, code, label in items:
         target = f"dev-{pid}-{key}"
         active_attrs = ' aria-current="page"' if key == active else ""
         active_class = " is-active" if key == active else ""
         links.append(
-            f'<a aria-label="Open {esc(label)}" class="section-tab section-tab-link{active_class}" data-section-target="{esc(target)}" href="#{esc(target)}"{active_attrs}>'
+            f'<a aria-label="Open {esc(txt(label)["en"])}" class="section-tab section-tab-link{active_class}" data-section-target="{esc(target)}" href="#{esc(target)}"{active_attrs}>'
             f'<b>{i18n(code)}</b><span>{i18n(label)}</span></a>'
         )
     return '<div aria-label="Current gameplay development section" class="section-tabs package-tabs">' + "".join(links) + "</div>"
