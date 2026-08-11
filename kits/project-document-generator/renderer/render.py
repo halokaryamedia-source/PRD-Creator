@@ -20,6 +20,13 @@ SPEC_VERSION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="specificatio
 GLOSSARY_ASSIGN_RE = re.compile(r"const glossary = .*?;\n\s*const tooltip =", re.S)
 HTML_TAG_RE = re.compile(r"<html\b[^>]*>", re.I)
 TERM_ROLES = {"gameplay", "level_design", "developer"}
+GOLDEN_GLOBAL_SECTIONS = (
+    ("development-overview", "Development Overview"),
+    ("game-system", "Game System"),
+    ("data-reset", "Data and Reset"),
+    ("gameplay-development", "Gameplay Development"),
+)
+GOLDEN_OVERVIEW_FACT_KEYS = {"session-model", "target-playtime", "game-structure"}
 BILINGUAL_SCALAR_FIELDS = {
     "canonical_content_sha256",
     "id",
@@ -119,6 +126,214 @@ def validate_term_roles(roles: Any, context: str) -> None:
         raise ValueError(f"{context}.roles contains unsupported role: {invalid[0]}")
 
 
+def _has_text(value: Any) -> bool:
+    return bool(txt(value)["en"].strip())
+
+
+def _require_text(container: dict[str, Any], field: str, context: str) -> None:
+    if not _has_text(container.get(field)):
+        raise ValueError(f"{context}.{field} is required by the Golden mandatory contract")
+
+
+def _require_nonempty_list(container: dict[str, Any], field: str, context: str) -> list[Any]:
+    value = container.get(field)
+    if not isinstance(value, list) or not value:
+        raise ValueError(f"{context}.{field} must be a non-empty array under the Golden mandatory contract")
+    return value
+
+
+def _validate_flow_steps(items: list[Any], context: str) -> None:
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            raise ValueError(f"{context}[{index}] must be an object")
+        title = item.get("title") or item.get("stage") or item.get("trigger")
+        description = item.get("description") or item.get("details") or item.get("action") or item.get("behavior")
+        if not _has_text(title) or not _has_text(description):
+            raise ValueError(f"{context}[{index}] requires title/trigger and description/action")
+
+
+def _validate_notes(items: list[Any], context: str) -> None:
+    for index, item in enumerate(items):
+        if isinstance(item, dict):
+            title = item.get("title") or item.get("label")
+            description = item.get("description") or item.get("details") or item.get("note")
+            if not _has_text(title) or not _has_text(description):
+                raise ValueError(f"{context}[{index}] requires title and description")
+        elif not _has_text(item):
+            raise ValueError(f"{context}[{index}] must contain visible note text")
+
+
+def _validate_requirement_groups(groups: list[Any], context: str) -> None:
+    found = False
+    for group_index, group in enumerate(groups):
+        if not isinstance(group, dict):
+            raise ValueError(f"{context}[{group_index}] must be an object")
+        items = group.get("items") or group.get("objects")
+        if not isinstance(items, list) or not items:
+            raise ValueError(f"{context}[{group_index}] must contain requirement items")
+        for item_index, item in enumerate(items):
+            if not isinstance(item, dict):
+                raise ValueError(f"{context}[{group_index}].items[{item_index}] must be an object")
+            title = item.get("title") or item.get("requirement") or item.get("object")
+            details = item.get("details") or item.get("requirements") or item.get("build_and_visual")
+            result = item.get("result") or item.get("expected_result") or item.get("gameplay_function")
+            if not _has_text(title) or not _has_text(details) or not _has_text(result):
+                raise ValueError(
+                    f"{context}[{group_index}].items[{item_index}] requires title/object, details, and result/gameplay_function"
+                )
+            found = True
+    if not found:
+        raise ValueError(f"{context} must contain at least one material requirement row")
+
+
+def _validate_result_contract(dev: dict[str, Any], context: str) -> None:
+    scoring = dev.get("scoring") if isinstance(dev.get("scoring"), dict) else None
+    completion = dev.get("completion_data") if isinstance(dev.get("completion_data"), dict) else None
+    if (scoring is None) == (completion is None):
+        raise ValueError(f"{context} must define exactly one of scoring or completion_data")
+
+    if scoring is not None:
+        if scoring.get("produces_score") is not True:
+            raise ValueError(f"{context}.scoring.produces_score must be true")
+        for field in (
+            "score_name",
+            "timer_start",
+            "timer_stop",
+            "no_score_condition",
+            "duplicate_prevention",
+            "final_result_relationship",
+            "player_facing_display",
+            "telemetry_export",
+        ):
+            _require_text(scoring, field, f"{context}.scoring")
+        components = scoring.get("components")
+        if not (isinstance(components, list) and components) and not (
+            _has_text(scoring.get("formula")) or _has_text(scoring.get("summary"))
+        ):
+            raise ValueError(
+                f"{context}.scoring requires components or an explicit formula/summary"
+            )
+    else:
+        assert completion is not None
+        if completion.get("produces_score") is not False:
+            raise ValueError(f"{context}.completion_data.produces_score must be false for explicit No Objective Score")
+        for field in (
+            "completion_name",
+            "valid_completion_condition",
+            "recorded_data",
+            "interrupted_completion_behavior",
+            "duplicate_prevention",
+            "handoff_result",
+            "final_result_relationship",
+            "player_facing_display",
+            "telemetry_export",
+        ):
+            _require_text(completion, field, f"{context}.completion_data")
+
+
+def validate_mandatory_contract(data: dict[str, Any]) -> None:
+    overview_data = data["overview"]
+    _require_text(overview_data, "project_context", "overview")
+    _require_text(overview_data, "main_experience", "overview")
+    facts = _require_nonempty_list(overview_data, "facts", "overview")
+    fact_keys = {
+        str(item.get("key"))
+        for item in facts
+        if isinstance(item, dict) and isinstance(item.get("key"), str)
+    }
+    missing_fact_keys = sorted(GOLDEN_OVERVIEW_FACT_KEYS - fact_keys)
+    if missing_fact_keys:
+        raise ValueError(f"overview.facts missing Golden fact keys: {missing_fact_keys}")
+    for index, item in enumerate(facts):
+        if not isinstance(item, dict) or not _has_text(item.get("label")) or not _has_text(item.get("value")):
+            raise ValueError(f"overview.facts[{index}] requires key, label, and value")
+    systems = _require_nonempty_list(overview_data, "main_systems", "overview")
+    for index, item in enumerate(systems):
+        if not isinstance(item, dict) or not _has_text(item.get("title")) or not _has_text(item.get("description")):
+            raise ValueError(f"overview.main_systems[{index}] requires title and description")
+
+    packages = data["packages"]
+    if not packages:
+        raise ValueError("packages must contain at least one gameplay package")
+
+    flow = data["gameplay_flow"]
+    expected_flow_ids = ["journey-begins", *[pkg["id"] for pkg in packages]]
+    actual_flow_ids = [item["id"] for item in flow]
+    if actual_flow_ids != expected_flow_ids:
+        raise ValueError(
+            f"gameplay_flow must contain The Journey Begins followed by one page per package; expected IDs {expected_flow_ids}, got {actual_flow_ids}"
+        )
+    if txt(flow[0].get("title"))["en"].strip() != "The Journey Begins":
+        raise ValueError('gameplay_flow[0].title must be "The Journey Begins"')
+    for index, item in enumerate(flow):
+        context = f"gameplay_flow[{index}]"
+        _require_text(item, "title", context)
+        _require_text(item, "narrative_context", context)
+        beats = _require_nonempty_list(item, "beats", context)
+        _validate_flow_steps(beats, f"{context}.beats")
+        _require_text(item, "next_destination", context)
+
+    global_sections = data["global_development"]
+    expected_global_ids = [section_id for section_id, _ in GOLDEN_GLOBAL_SECTIONS]
+    actual_global_ids = [item["id"] for item in global_sections]
+    if actual_global_ids != expected_global_ids:
+        raise ValueError(
+            f"global_development must use the four fixed Golden functions in order; expected IDs {expected_global_ids}, got {actual_global_ids}"
+        )
+    for index, ((section_id, section_title), item) in enumerate(zip(GOLDEN_GLOBAL_SECTIONS, global_sections)):
+        context = f"global_development[{index}]"
+        if txt(item.get("title"))["en"].strip() != section_title:
+            raise ValueError(f'{context}.title must be "{section_title}" for {section_id}')
+        _require_text(item, "overview", context)
+        steps = _require_nonempty_list(item, "flow", context)
+        _validate_flow_steps(steps, f"{context}.flow")
+        requirements = _require_nonempty_list(item, "requirements", context)
+        _validate_requirement_groups(requirements, f"{context}.requirements")
+        notes = _require_nonempty_list(item, "notes", context)
+        _validate_notes(notes, f"{context}.notes")
+
+    for index, pkg in enumerate(packages):
+        context = f"packages[{index}]"
+        _require_text(pkg, "title", context)
+        _require_text(pkg, "package_label", context)
+
+        gameplay = pkg["gameplay"]
+        for field in (
+            "context",
+            "main_objective",
+            "result",
+            "purpose",
+            "gameplay_time",
+            "start_condition",
+            "end_condition",
+            "blocked_or_fail_condition",
+        ):
+            _require_text(gameplay, field, f"{context}.gameplay")
+        player_flow = _require_nonempty_list(gameplay, "player_flow", f"{context}.gameplay")
+        _validate_flow_steps(player_flow, f"{context}.gameplay.player_flow")
+
+        level = pkg["level_design"]
+        _require_text(level, "overview", f"{context}.level_design")
+        level_flow = _require_nonempty_list(level, "flow", f"{context}.level_design")
+        _validate_flow_steps(level_flow, f"{context}.level_design.flow")
+        level_requirements = _require_nonempty_list(level, "requirements", f"{context}.level_design")
+        _validate_requirement_groups(level_requirements, f"{context}.level_design.requirements")
+        level_notes = _require_nonempty_list(level, "notes", f"{context}.level_design")
+        _validate_notes(level_notes, f"{context}.level_design.notes")
+
+        dev = pkg["developer"]
+        _require_text(dev, "overview", f"{context}.developer")
+        dev_flow = _require_nonempty_list(dev, "flow", f"{context}.developer")
+        _validate_flow_steps(dev_flow, f"{context}.developer.flow")
+        dev_requirements = _require_nonempty_list(dev, "requirements", f"{context}.developer")
+        _validate_requirement_groups(dev_requirements, f"{context}.developer.requirements")
+        if not dev.get("reset"):
+            raise ValueError(f"{context}.developer.reset is required by the Golden mandatory contract")
+        dev_notes = _require_nonempty_list(dev, "notes", f"{context}.developer")
+        _validate_notes(dev_notes, f"{context}.developer.notes")
+        _validate_result_contract(dev, f"{context}.developer")
+
+
 def validate(data: dict) -> list[str]:
     if not isinstance(data, dict):
         raise ValueError("render data root must be an object")
@@ -155,9 +370,6 @@ def validate(data: dict) -> list[str]:
         for key in ("gameplay", "level_design", "developer"):
             if not isinstance(pkg.get(key), dict):
                 raise ValueError(f'Package {pkg["id"]} requires {key}')
-        if not pkg["developer"].get("scoring") and not pkg["developer"].get("completion_data"):
-            raise ValueError(f'Package {pkg["id"]} developer requires scoring or completion_data')
-
         terms = pkg.get("terms", [])
         if not isinstance(terms, list):
             raise ValueError(f'Package {pkg["id"]}.terms must be an array')
@@ -168,9 +380,31 @@ def validate(data: dict) -> list[str]:
             validate_aliases(term.get("aliases"), context)
             validate_term_roles(term.get("roles"), context)
 
+    data["gameplay_flow"] = collections["gameplay_flow"]
+    data["global_development"] = collections["global_development"]
+    data["packages"] = packages
+    validate_mandatory_contract(data)
+
     if OPEN_RE.search(json.dumps(data, ensure_ascii=False)):
         raise ValueError("Render data contains unresolved placeholder text")
     return languages
+
+
+def apply_result_summaries(data: dict[str, Any]) -> None:
+    """Make the Gameplay Information result row explicit without inventing meaning."""
+    for pkg in data.get("packages", []):
+        gameplay = pkg["gameplay"]
+        if _has_text(gameplay.get("scoring_criteria")) or _has_text(gameplay.get("scoring_summary")):
+            continue
+        dev = pkg["developer"]
+        completion = dev.get("completion_data") if isinstance(dev.get("completion_data"), dict) else None
+        if completion is None:
+            continue
+        handoff = txt(completion.get("handoff_result"))
+        gameplay["scoring_criteria"] = {
+            "en": f'No Objective Score — {handoff["en"]}',
+            "id": f'Tanpa Objective Score — {handoff["id"]}',
+        }
 
 
 def require_exact_once(src: str, marker: str, label: str) -> None:
@@ -244,6 +478,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
     data = json.loads(render_data_bytes.decode("utf-8"))
     render_data_sha = hashlib.sha256(render_data_bytes).hexdigest()
     languages = validate(data)
+    apply_result_summaries(data)
     src = template.read_text(encoding="utf-8")
     require_namespace_tokens(src)
     src = apply_document_runtime_contract(src, languages)
