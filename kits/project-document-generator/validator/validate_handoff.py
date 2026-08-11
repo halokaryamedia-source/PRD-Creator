@@ -22,6 +22,7 @@ ACCEPTANCE_REQUIRED = {
     "New Reader": {"PASS"},
     "Level Designer": {"PASS"},
     "Developer": {"PASS"},
+    "Acceptance": {"PASS"},
     "Project Consistency": {"PASS"},
     "Critical": {"0"},
     "Major": {"0"},
@@ -68,7 +69,7 @@ def validate_acceptance(path: Path) -> tuple[bool, str]:
 
     if failures:
         return False, "; ".join(failures)
-    return True, "acceptance.md authorizes handoff_ready with no Critical/Major blocker"
+    return True, "acceptance.md authorizes handoff_ready with every semantic lens passed and no Critical/Major blocker"
 
 
 def validate(project: Path) -> dict[str, Any]:
