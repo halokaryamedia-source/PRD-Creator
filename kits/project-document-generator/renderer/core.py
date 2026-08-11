@@ -179,6 +179,7 @@ def page(
     *,
     context: Any = "",
     classes: str = "sheet",
+    package_id: str = "",
     glossary_scope: str = "",
     journey_target: str = "",
     role: str = "",
@@ -187,6 +188,8 @@ def page(
     footer_title: Any = "",
 ) -> str:
     attrs = [f'class="{esc(classes)}"', f'id="{esc(pid)}"']
+    if package_id:
+        attrs.append(f'data-package="{esc(package_id)}"')
     if glossary_scope:
         attrs.append(f'data-glossary-scope="{esc(glossary_scope)}"')
     if journey_target:
