@@ -4,28 +4,28 @@ Updated: 2026-08-12
 
 ## Current Status
 
-`PRD_EXACT_GOLDEN_RUNTIME_AND_MATERIAL_CONSERVATION_LOCKED_REGEN_PROOF_NEEDED`
+`PRD_GOLDEN_REVERSE_FILL_CONTRACT_LOCKED_REGEN_PROOF_NEEDED`
 
 Working branch: **`Local` only**.
 
 ## Current system state
 
-The approved AFTERSHOCK Golden HTML is retained verbatim at both runtime/reference paths:
+The approved AFTERSHOCK Golden HTML remains retained verbatim at both runtime/reference paths:
 
 ```text
 kits/project-document-generator/template/golden-sample.html
 kits/project-document-generator/template/approved-document.html
 ```
 
-Both files are intentionally byte-identical to approved Git blob:
+Both files remain intentionally byte-identical to approved Git blob:
 
 ```text
 e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 ```
 
-The default renderer now uses that exact Golden artifact as the presentation source. It no longer renders through a cleaned/generic PRD shell. Project-specific metadata, storage namespace, navigation, page content, glossary data, and revision binding are applied only to a temporary render copy; checked-in Golden CSS/runtime/DOM stays unchanged.
+The default renderer uses that exact Golden artifact as the presentation source. Project-specific metadata, storage namespace, navigation, page content, glossary data, and revision binding are applied only to a temporary render copy; checked-in Golden CSS/runtime/DOM stays unchanged.
 
-Golden projection now preserves the approved runtime vocabulary rather than generic aliases, including:
+Golden projection preserves the approved runtime vocabulary, including:
 
 ```text
 flow-start
@@ -41,55 +41,73 @@ quarry-*
 data-phase="dev-*"
 ```
 
-Flow 3 also has an explicit material-detail conservation rule: independent source conditions, values, exceptions, recovery behavior, scoring/reset rules, build constraints, glossary meaning, and observable results may be rewritten more directly but may not be deleted or flattened merely to make the PRD shorter.
+Flow 3 has an explicit material-detail conservation rule: independent source conditions, values, exceptions, recovery behavior, scoring/reset rules, build constraints, glossary meaning, and observable results may be rewritten more directly but may not be deleted or flattened merely to make the PRD shorter.
 
-Flow 4/handoff requires both:
+## Reverse-derived Golden fill contract
+
+Golden is now interpreted in the correct direction:
+
+```text
+exact approved Reference
+→ map the fixed visible slots and the question each slot answers
+→ fill those slots from current project authority
+→ preserve material detail inside the owning slot
+→ generate through the exact Golden runtime
+→ validate the result against the same fill map
+```
+
+The reverse map locks only what the Sample actually demonstrates as presentation/authoring structure. It does **not** turn AFTERSHOCK-specific mechanics or numbers into global requirements.
+
+Fixed Golden authoring pattern includes:
+
+- Overview: 3 fixed fact slots plus one journey card per gameplay package;
+- Gameplay Flow: story-page reading pattern with data-driven narrative depth;
+- four Global Development pages: 4 Development Flow cards + requirements + 4 notes + Terms Used;
+- Gameplay Overview: 3 context cards + 6 fixed Gameplay Information rows + 5 compact flow beats + Terms Used;
+- Level Design: 4 Design Flow cards + Golden Build Requirements columns + 4 notes;
+- Developer: 4 Development Flow cards + Golden Development Requirements columns + 4 notes;
+- table group/row counts and glossary term counts remain data-driven where Golden demonstrates variable content.
+
+`CONTENT-CONTRACT.md` now defines what each of these slots is responsible for answering so future generation does not merely reproduce the right boxes with the wrong or incomplete content.
+
+Golden fidelity proof is now explicitly bidirectional:
+
+```text
+Reference → Fill Map
+Project Authority → Filled Golden
+```
+
+`tests/test_prd_golden_reference.py` contains the focused reverse-reference regression proof. Existing renderer/validator contract tests remain the forward projection proof.
+
+Flow 4/handoff still requires both:
 
 ```text
 Material Conservation: PASS
 Golden Fidelity: PASS
 ```
 
-## Audit result that caused this correction
+## Why this refinement was needed
 
-The failed AFTERSHOCK v2.4 regeneration exposed two independent failure modes:
+The failed AFTERSHOCK v2.4 regeneration exposed two different classes of failure:
 
-1. the outer 30-page shell and visual CSS/runtime could match while dense lists, requirement rows, glossary terms, and multi-paragraph gameplay meaning were compressed or omitted;
-2. the runtime generator had normalized exact Golden IDs/classes/components into generic aliases, while its own regression tests treated those aliases as the desired result.
+1. a page can use the correct shell/CSS while detailed source meaning is compressed or omitted;
+2. a generator can gradually redefine what it thinks the Golden structure is unless the contract is first derived from the exact approved Sample itself.
 
-Therefore page count, headings, CSS similarity, or generic component presence alone are no longer accepted as Golden fidelity.
+Therefore neither page-count/CSS parity nor a manually imagined generic PRD schema is enough.
 
-## Current proof
+## Proof boundary
 
-Implemented correction chain:
+Repository/static proof can verify:
 
-```text
-f3422e29  fix: prevent lossy Golden PRD regeneration
-b6c05583  fix: project PRDs through exact Golden DOM
-db59c7ff  fix: make Golden glossary validation source-aware
-```
+- exact Golden artifact retention;
+- the reverse-derived Sample signature;
+- fixed Golden DOM/component/cardinality rules;
+- generated projection contracts;
+- material-conservation handoff gating.
 
-Latest contract proof:
+A freshly regenerated real AFTERSHOCK v2.4 under the corrected contract has **not** yet been produced and browser-compared because the current authoritative AFTERSHOCK Flow 2/Flow 3 source/render-data is not present in the active repository evidence available here.
 
-```text
-PRD Verify #124        — PASS
-Repository Verify #220 — PASS
-```
-
-Regression coverage now verifies:
-
-- both runtime/reference template paths are byte-identical to the approved Golden blob;
-- generated page IDs and Golden component/navigation classes use the approved DOM vocabulary;
-- generic `package-*`/renamed projection aliases are rejected;
-- project storage keys are namespaced at render time without modifying the Golden file;
-- package glossary data is not silently reduced by role filtering;
-- handoff cannot pass without Material Conservation and Golden Fidelity.
-
-Static/CI proof is complete for the generator correction.
-
-A freshly regenerated real AFTERSHOCK v2.4 under the corrected contract has **not** yet been produced and browser-compared. The repository/current uploads provide the approved HTML and failed generated HTML, but not the current authoritative AFTERSHOCK Flow 2/Flow 3 source/render-data required to regenerate without treating generated output as project authority.
-
-No mobile or Voice proof is required for this correction.
+Static checks do not claim browser/visual parity.
 
 ## Next Step
 

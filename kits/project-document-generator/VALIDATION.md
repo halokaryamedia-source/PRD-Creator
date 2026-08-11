@@ -2,6 +2,26 @@
 
 `CONTENT-CONTRACT.md` owns PRD meaning and Golden prototype fidelity. This file owns only how Flow 4 proves the current revision is ready.
 
+## Golden proof model
+
+Golden fidelity is proved in two directions, because either direction alone can miss a real failure:
+
+```text
+1. Reference → Fill Map
+   Read the exact approved Golden first and verify that the fixed prototype contract
+   actually matches what the Sample demonstrates.
+
+2. Project Authority → Filled Golden
+   Verify that current project meaning is placed into those same slots without
+   omission, invention, relocation, or unapproved presentation changes.
+```
+
+The reverse/reference check owns **prototype truth**, not project facts. It may lock visible page family, labels, card/sequence cardinality, table columns, component order, glossary placement, and the semantic job of each slot. It must not turn AFTERSHOCK-specific story, object names, numeric values, package count, arena count, scoring values, or other project facts into generic requirements.
+
+The forward/project check then asks whether the generated PRD fills the mapped prototype with the complete current-project meaning. A page can therefore fail even when its shell matches perfectly, and a project can also fail if the contract itself drifted away from what the approved Golden actually contains.
+
+`tests/test_prd_golden_reference.py` is the focused static proof for the first direction. Normal renderer/validator contract tests and Flow 4 review cover the second direction. Do not add a generic schema, similarity score, word-count gate, or another reference model for the same job.
+
 ## Sequence
 
 ```text
@@ -38,7 +58,7 @@ Review once through these lenses:
 | Material Conservation | every independent material rule recovered in Flow 2 still has an owned readable representation; structured rules were not flattened into summaries |
 | Acceptance | package criteria in project state are observable and sufficient for Flow 4 review |
 | Project Consistency | terminology, timing, scoring, reset and package handoff agree across the revision |
-| Golden Fidelity | each page uses the matching Golden visible structure, labels, component order, reading pattern and comparable information density |
+| Golden Fidelity | the reverse-derived fill map still matches the exact Golden, and each generated page uses the matching visible structure, labels, component order, reading pattern and comparable information density |
 
 A **Major** finding exists when a production role must reopen source for a material rule, independent source rules were merged/omitted during Flow 3, a new unapproved visible component replaces Golden composition, or prose becomes materially harder to scan than the Golden reference.
 

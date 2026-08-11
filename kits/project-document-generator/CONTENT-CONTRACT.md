@@ -93,6 +93,158 @@ Total pages remain:
 6 + 4N
 ```
 
+## Reverse-derived Golden fill map
+
+The Golden contract is established **from the approved reference first**, then used to fill new projects. Do not start from an imagined generic PRD and try to make it look similar afterward.
+
+Use this direction:
+
+```text
+exact Golden reference
+→ identify each fixed visible slot and what question that slot answers
+→ fill those slots only from current project authority
+→ preserve project-specific material detail inside the owning slot
+→ render through the exact Golden prototype
+→ validate the generated page against the same slot map
+```
+
+This is a finite authoring map, **not** a new schema or abstraction layer.
+
+### What is fixed vs variable
+
+The approved Golden demonstrates two different kinds of rules. Keep them separate:
+
+| Locked by Golden | Filled from project authority |
+|---|---|
+| page family, page order, visible section names and component order | project title, story, mechanics, timings, scoring values and implementation facts |
+| Overview has 3 fixed fact slots: Session Model, Target Playtime, Game Structure | the value inside each fact slot |
+| Global Development pages use 4 Development Flow cards and 4 Important Development Notes | the project-specific stage summaries, requirement groups/rows and note text |
+| Gameplay Overview uses 3 context cards, 6 fixed Gameplay Information rows and a 5-beat compact Gameplay Flow | the actual context, objective, result, conditions, scoring meaning and five high-level beats |
+| Level Design uses 4 Design Flow cards, the Golden Build Requirements columns and 4 Important Build Notes | project-specific areas/objects, spatial constraints, build requirements and functions; table row count remains data-driven |
+| Developer uses 4 Development Flow cards, the Golden Development Requirements columns and 4 Important Development Notes | project-specific mechanic/setup/data/scoring/interruption/reset requirements; table row count remains data-driven |
+| Terms Used placement | actual glossary entries and glossary count |
+| one Complete Gameplay Journey card per package | package count and package-specific journey summary |
+| Gameplay Flow story-page composition | number of narrative sections/paragraphs needed to conserve approved meaning |
+
+Do **not** turn a number that is merely an AFTERSHOCK project fact into a global rule. For example, six packages, four scored objectives, five arenas, ore counts, storm timings, and named objects are reference-project facts, not Golden fill requirements.
+
+### Slot meaning — Overview
+
+| Golden slot | It must answer |
+|---|---|
+| Project-context lead | What is this experience, what situation drives it, what broad journey does the player complete, and what state/result closes the experience? Keep it one readable overview paragraph, not a mechanic dump. |
+| Session Model | How is one play session/player run organized, including concurrency/isolation only when relevant? |
+| Target Playtime | What duration target or broad timing model should production expect? Do not invent a hard timeout. |
+| Game Structure | How many gameplay packages/stages exist and what broad result structure matters? |
+| Complete Gameplay Journey | What happens in each package in one short action/result summary, in chronological order? Exactly one journey card per package. |
+| Global Gameplay Direction | What project-wide player/gameplay invariants apply across packages? Use direct rules, not architecture notes or repeated package detail. |
+
+### Slot meaning — Gameplay Flow
+
+Each Gameplay Flow page is the **player-readable chronological truth** for that journey segment.
+
+| Golden slot | It must answer |
+|---|---|
+| Title / eyebrow / intro | Where is the player now, what is the immediate situation, and what is this segment about? |
+| Story-flow sections | In order: what the player encounters, what they do, what visible/system response follows, what setback/recovery applies when relevant, and what state changes next. Use as many distinct paragraphs as material meaning requires. |
+| Transition | What completion state hands the player into the next package or final state? |
+| Terms Used | Which non-obvious project terms are needed to understand this flow? Use the full relevant glossary scope; do not shrink it merely because another role page does not display Terms Used. |
+
+Story-flow depth is **data-driven**. Golden fixes the reading pattern, not a universal number of narrative paragraphs.
+
+### Slot meaning — the four Global Development pages
+
+The page names are fixed, and each has a distinct job:
+
+| Page | Owns |
+|---|---|
+| Development Overview | project-wide development topology: how the complete journey, shared systems, package handoffs, result handling and reuse fit together |
+| Game System | shared runtime/session ownership, isolation, player state, global objective control, protected items/feedback and lifecycle rules |
+| Data and Reset | timing ownership, active/completed data, valid result storage, interruption behavior, recovery/reset verification and reusable state |
+| Gameplay Development | the common implementation contract for every gameplay package: mechanic, area integration, data/result handling, handoff and reset expectations |
+
+For every Global Development page:
+
+- **Overview context block** states the page's responsibility and boundary in one compact explanation.
+- **4 Development Flow cards** summarize the four major lifecycle/stage steps. They are orientation, not a substitute for requirements.
+- **Development Requirements** contains the actionable grouped rules. Group and row count are data-driven; independent rules must survive as independent readable items.
+- **System Result** states the observable project/system outcome of that requirement group or item.
+- **4 Important Development Notes** hold the highest-risk invariants, exceptions, or must-not-break constraints. They are not an overflow bucket for omitted requirements.
+
+### Slot meaning — Gameplay Overview
+
+The three context cards are fixed summaries:
+
+| Card | It must answer |
+|---|---|
+| Gameplay Context | Where/when does this package begin and what player-visible situation exists? |
+| Main Objective | What must the player accomplish, in one direct objective statement? |
+| Result | What player/world/session state is true immediately after valid completion, including the next handoff when relevant? |
+
+Gameplay Information always uses these six rows with these meanings:
+
+| Row | It must answer |
+|---|---|
+| Game Purpose | Why does this gameplay package exist in the player journey and what core interaction/progression does it provide? |
+| Gameplay Time | What target/limit/no-limit timing rule should the reader understand at gameplay level? Detailed timer implementation belongs on Developer. |
+| Starting Condition | What prerequisites and observable starting state must be true when the package becomes playable? |
+| End Condition | What exact valid completion state ends the package? |
+| Fail Condition | What counts as failure/setback/no-fail, and what retry/recovery behavior matters to the player? Negative rules must be explicit. |
+| Scoring Criteria | Does the package produce an Objective Score or completion data only, and what high-level inputs determine it? Detailed formula/storage/display/export rules belong on Developer. |
+
+The compact Gameplay Flow uses **5 high-level beats**. Map approved meaning to the five visible stages without inventing mechanics. Normally the beats move from entry/setup through core progression to valid completion and transition, but their titles/content remain project-specific.
+
+### Slot meaning — Level Design
+
+- **Level Design Overview** answers what spatial experience must be built, how its main areas relate, and what must stay readable to the player.
+- **4 Design Flow cards** are the four most useful build milestones/areas in the package's actual spatial progression. Do not force generic labels when the level's structure is different.
+- **Build Requirements** is the full build-owned specification. Row count is data-driven.
+- **4 Important Build Notes** are the strongest spatial/readability/hazard/recovery constraints that must survive implementation.
+
+Build Requirements columns mean:
+
+```text
+No.                          grouping/order
+Object                       buildable area, route, object or grouped spatial element
+Area Size                    approved dimension or direct spatial constraint
+Build and Visual Requirements geometry, placement, route, readability, visual state and build-owned constraints
+Gameplay Function            why that built element exists in play / what player-facing function it supports
+```
+
+### Slot meaning — Developer
+
+- **Developer Overview** states the package's complete runtime responsibility in compact form: core mechanic, valid completion/result, and reset/handoff boundary.
+- **4 Development Flow cards** summarize the implementation lifecycle. The Golden pattern normally covers setup/initialization, core execution/validation, result/data/completion handling, and reset/reuse/handoff. Preserve four cards, but use project-appropriate titles.
+- **Development Requirements** owns the complete actionable technical behavior. Requirement/group count is data-driven.
+- **4 Important Development Notes** are the highest-risk runtime invariants, duplication guards, interruption rules, ordering constraints or reset guarantees.
+
+Development Requirements columns mean:
+
+```text
+No.                      grouping/order
+Setup                    requirement group or concrete setup/behavior item
+Development Requirements exact mechanic, trigger, validation, state, timing, data, scoring, interruption or reset rule
+Gameplay Function        observable gameplay/system result and why the requirement exists
+```
+
+Scoring summaries, completion-data summaries, interruption handling and reset stay inside this existing hierarchy; do not create new visible panels for them.
+
+### Reverse/forward proof rule
+
+Golden fidelity is checked in two directions:
+
+```text
+Reference → Fill Map
+Does the exact approved sample actually demonstrate the fixed pattern we claim?
+
+Project Authority → Filled Golden
+Does the generated PRD fill that same pattern with complete current-project meaning?
+```
+
+The first direction prevents the contract from drifting away from the real Sample. The second prevents a generator from satisfying the Sample mechanically while omitting or relocating project meaning.
+
+Reference-specific words are not compared literally for unrelated projects. Literal content parity is relevant only when regenerating the same reference project from its current approved authority.
+
 ## 1. Overview — Golden prototype
 
 Visible order is fixed:
