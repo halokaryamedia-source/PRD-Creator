@@ -121,11 +121,11 @@ def render_data() -> dict:
             {
                 "id": "core",
                 "title": "Core Trial",
-                "narrative_context": "The player enters the isolated arena with the trial target already visible.",
+                "narrative_context": "The player enters the isolated arena with the Core Trial target already visible.",
                 "beats": [
                     {
                         "title": "Activate the Trial",
-                        "description": "Entering the marked start area activates the objective and confirms that the interaction is ready.",
+                        "description": "Entering the marked start area activates the Core Trial and confirms that the interaction is ready.",
                     },
                     {
                         "title": "Complete the Interaction",
@@ -269,10 +269,17 @@ def render_data() -> dict:
                 },
                 "terms": [
                     {
+                        "key": "core-trial",
+                        "label": "Core Trial",
+                        "definition": "The complete fixture gameplay package from activation through result and exit.",
+                        "roles": ["gameplay", "level_design", "developer"],
+                    },
+                    {
                         "key": "fixture-score",
                         "label": "Fixture Score",
                         "definition": "The Objective Score created by a valid Core Trial completion.",
-                    }
+                        "roles": ["gameplay", "developer"],
+                    },
                 ],
             }
         ],
@@ -356,6 +363,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
         for text in (
             "Document Control",
+            "document-control-strip",
             "Session &amp; Runtime System",
             "Data, Recovery &amp; Reset",
             "Gameplay Package Integration",
@@ -368,6 +376,13 @@ class ProjectDocumentContracts(unittest.TestCase):
             "Acceptance &amp; Verification",
             "Player-Facing Result",
             "Telemetry / Export",
+            "flow-orientation",
+            "developer-flow",
+            "System Behavior",
+            "Gameplay Journey",
+            "Full Production",
+            "id=\"flow-core\" data-phase=\"dev-core\" data-page-role=\"gameplay-flow\"",
+            ".terms-used-collapsible,a,button",
         ):
             self.assertIn(text, html)
 
