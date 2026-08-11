@@ -4,54 +4,58 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`PRD_REPRESENTATIVE_FLOW2_NEEDS_AFTERSHOCK_SCORING_DECISION`
+`PRD_REPRESENTATIVE_SEMANTIC_DESKTOP_PASS_EXACT_RENDER_PENDING`
 
 Working branch: **`Local` only**.
 
 ## Current system state
 
-The three pre-test deterministic blockers are closed:
+The deterministic pre-test blockers are closed and the stable-version rule is active:
 
 - glossary role visibility is consistent between inline highlighting and Terms Used;
-- Reset / Interruption requires an explicit post-reset Expected System Result;
-- Flow 4/handoff requires an explicit Acceptance lens PASS.
+- Reset / Interruption requires an explicit Expected System Result;
+- Flow 4/handoff requires an explicit Acceptance lens PASS;
+- `document.version` is not an edit counter and remains stable through normal review/testing.
 
-Current focused proof:
-
-```text
-PRD Verify #108 — PASS
-```
-
-## Representative test status
-
-Representative Flow 2 testing has started with AFTERSHOCK `FINAL v2.4`.
-
-The test correctly stopped before Flow 3 because current scoring meaning is unresolved:
+Current focused repository proof:
 
 ```text
-current v2.4
-→ no player-facing score/results
-→ no score/aggregate/interpretation in raw telemetry
-→ objective progress/outcome data exists
-→ no current internal Objective Score formula is defined
-
-older Golden Sample
-→ internal Objective Scores + Final Total exist
-→ several formulas depend on older mechanics that no longer match v2.4
+PRD Verify #109 — PASS
+Repository Verify #197 — PASS
 ```
 
-Therefore neither of these is valid without a new approved decision:
+## Representative AFTERSHOCK status
+
+Current authority remains `Gameplay Development Specification | FINAL v2.4`.
+
+The user approved the progress-based internal scoring model and requested the document remain version **2.4** through this representative test.
+
+Representative Flow 2 is now `ready_for_prd`.
+
+Representative Flow 3/4 review has also completed a correction pass:
 
 ```text
-infer No Objective Score from display/export rules
-OR
-copy the old Golden scoring formulas into v2.4
+30-page fixed document family                confirmed
+New Reader                                   PASS
+Level Designer                               PASS
+Developer                                    PASS
+Acceptance                                   PASS
+Project Consistency                          PASS
+Critical                                     0
+Major                                        0
+Targeted Chromium desktop preview             PASS
 ```
 
-Flow 2 must remain `needs_decision` for this representative project until the current internal scoring model is resolved.
+The review removed generator/meta-language from project content and restored source-grounded details including Flat Mode default OFF, Beacon free-pickup recovery, Relay target gale pacing, and explicit invalid Final Total handling.
 
-No representative HTML/browser/mobile/Voice proof should be run while this material scoring decision remains unresolved.
+Desktop preview evidence also confirmed readable role pages, no horizontal overflow, working role-scoped glossary behavior, non-empty Reset Expected Result, and visible Acceptance & Verification. Mobile/Voice proof was intentionally not run.
+
+## Current proof boundary
+
+The active production renderer/template is regression-proven by PRD Verify, and the representative candidate is semantic + desktop-preview proven.
+
+The remaining gap is narrow: this sandbox could inspect the GitHub renderer source through the connector but could not materialize the repository source into the local runtime, so the exact representative `render-data.json` has not yet been executed through the production renderer/validator. Do not call the representative handoff ready until that exact mechanical step passes.
 
 ## Next Step
 
-**Resolve and approve the current AFTERSHOCK internal scoring model for the v2.4 mechanics; then resume the same representative proof at Flow 3 without restarting completed intake work.**
+**Execute the resolved AFTERSHOCK v2.4 representative candidate through the exact repository production renderer + validator in an environment where the `Local` checkout is executable, then record canonical mechanical/handoff status without changing document version 2.4.**
