@@ -22,6 +22,7 @@ ACCEPTANCE_REQUIRED = {
     "New Reader": {"PASS"},
     "Level Designer": {"PASS"},
     "Developer": {"PASS"},
+    "Material Conservation": {"PASS"},
     "Acceptance": {"PASS"},
     "Project Consistency": {"PASS"},
     "Golden Fidelity": {"PASS"},
@@ -70,7 +71,7 @@ def validate_acceptance(path: Path) -> tuple[bool, str]:
 
     if failures:
         return False, "; ".join(failures)
-    return True, "acceptance.md authorizes handoff_ready with every semantic lens and Golden Fidelity passed and no Critical/Major blocker"
+    return True, "acceptance.md authorizes handoff_ready with semantic lenses, Material Conservation, and Golden Fidelity passed and no Critical/Major blocker"
 
 
 def validate(project: Path) -> dict[str, Any]:

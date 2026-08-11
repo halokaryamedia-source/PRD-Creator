@@ -22,7 +22,7 @@ Generated output never becomes project authority. Golden/reference material supp
 
 ## Single semantic owner
 
-Do not maintain another Golden checklist here. The gameplay PRD blueprint, mandatory surfaces, Scoring / Result rules, mandatory-slot states, role completeness, terminology/glossary semantics, and Humanize behavior are owned by:
+Do not maintain another Golden checklist here. The gameplay PRD blueprint, mandatory surfaces, Scoring / Result rules, mandatory-slot states, role completeness, terminology/glossary semantics, material-detail conservation, and Humanize behavior are owned by:
 
 ```text
 kits/project-document-generator/CONTENT-CONTRACT.md
@@ -55,19 +55,26 @@ Fill the fixed PRD family with **complete material production meaning without us
 
 A new reader, Level Designer, and Developer should not need original source to rediscover a material rule that belongs in the PRD.
 
-Apply the bounded Humanize behavior from `CONTENT-CONTRACT.md` after meaning is complete. If authoring exposes an unresolved material decision, return it to Flow 2 instead of hiding it behind polished prose.
+Before polishing prose, run a material-conservation pass. Every independent resolved rule from Flow 2 must have an owned location in `content.md`. Preserve independent conditions, values, exceptions, recovery rules, scoring rules, reset behavior, build constraints, and observable results even when several of them belong inside one Golden table cell.
+
+When deriving `render-data.json`, preserve meaningful structure. Multi-rule requirement content stays as separate list items/rows; distinct Gameplay Flow action/response/recovery paragraphs stay distinct where the Golden surface supports them. Do not flatten structured content into one scalar summary merely because it is shorter or easier for the renderer.
+
+Apply the bounded Humanize behavior from `CONTENT-CONTRACT.md` only after meaning is complete. Humanize can shorten wording, but it cannot remove material facts. If authoring exposes an unresolved material decision, return it to Flow 2 instead of hiding it behind polished prose.
 
 ## Flow 4 judgment
 
 Use `VALIDATION.md` for one integrated semantic review against the current authoritative evidence and PRD.
 
-Critical/Major findings block readiness. A production role having to reopen source for an omitted material rule is Major.
+Critical/Major findings block readiness. A production role having to reopen source for an omitted material rule is Major. Treat independent source rules that were collapsed or deleted during Flow 3 as the same severity.
+
+For a representative regeneration of the project used to establish the Golden Sample, compare the regenerated document against both current project authority and the approved reference. Matching page shells while materially reducing rule/detail density is a Golden/source-fidelity failure, not a successful simplification.
 
 Mechanical validation proves deterministic structure only; browser/visual claims require actual browser/visual evidence.
 
 ## Proof economy
 
 - do not load the full reference/Golden HTML during normal authoring;
+- do load the canonical Golden artifact during a Golden-regression audit or representative parity review;
 - do not reread unchanged packages during bounded revisions;
 - default visual proof is targeted desktop-only unless the task is specifically mobile/responsive;
 - do not rerun Voice checks for PRD-only work unless shared code changed;

@@ -50,7 +50,8 @@ jobs:
             tests/test_prd_contracts.py \
             tests/test_prd_handoff_contracts.py \
             tests/test_prd_flow2_state_contracts.py \
-            tests/test_prd_hierarchy_contracts.py
+            tests/test_prd_hierarchy_contracts.py \
+            tests/test_prd_golden_reference.py
 
       - name: Project Document contracts
         run: |
@@ -58,4 +59,5 @@ jobs:
             tests.test_prd_contracts \
             tests.test_prd_handoff_contracts \
             tests.test_prd_flow2_state_contracts \
-            tests.test_prd_hierarchy_contracts -v
+            tests.test_prd_hierarchy_contracts \
+            tests.test_prd_golden_reference -v

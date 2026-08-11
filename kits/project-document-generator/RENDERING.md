@@ -7,11 +7,29 @@
 ```text
 work/content.md
 → work/render-data.json
-→ approved-document.html + renderer
+→ runtime template + renderer
 → output/final.html
 ```
 
 The renderer does not invent project meaning and does not choose a new layout.
+
+## Canonical Golden artifact versus runtime shell
+
+Two different artifacts have different jobs and must not be conflated again:
+
+```text
+template/golden-sample.html
+→ exact approved Golden reference artifact
+→ canonical evidence for visible composition, spacing, component order, navigation behavior and information-density review
+
+template/approved-document.html
+→ maintained runtime shell consumed by renderer
+→ may be cleaned internally only when the rendered result still matches the canonical Golden artifact
+```
+
+`golden-sample.html` is not a generic starter template and must not be replaced by a reduced or normalized interpretation of the reference. If the Golden Sample itself is intentionally redesigned, that requires explicit user approval and both the canonical artifact and runtime projection contract must be updated together.
+
+A refactor of `approved-document.html`, renderer class names, CSS organization, or runtime JS is acceptable only when it is representation-preserving. “Cleaner code” is not evidence that Golden fidelity was preserved.
 
 ## Locked visible shell
 
@@ -35,14 +53,16 @@ Gameplay packages
 
 For `N` packages the page count is `6 + 4N`.
 
-Stable internal IDs remain:
+The canonical Golden reference uses these stable representative section IDs:
 
 ```text
 development-overview  → Development Overview
-game-system           → Game System
-data-reset             → Data and Reset
-gameplay-development   → Gameplay Development
+shared-systems        → Game System
+shared-data-reset     → Data and Reset
+phase-development     → Gameplay Development
 ```
+
+Project data may use internal semantic IDs such as `game-system`, `data-reset`, or `gameplay-development`, but projection must map them to the visible Golden page family instead of leaking alternate names/structure into the final HTML.
 
 ## Golden prototype rule
 
@@ -58,7 +78,21 @@ In particular, do not render:
 - Terms Used blocks on Level Design or Developer pages;
 - renamed Global Development pages or renamed Golden table headings.
 
-If content does not fit clearly, improve or relocate the copy to the correct existing Golden surface. Do not redesign the page.
+If content does not fit clearly, improve or relocate the copy to the correct existing Golden surface. Do not redesign the page and do not delete material rules to make the surface look cleaner.
+
+## Projection is lossless for material structure
+
+`render-data.json` is derived, but it may not be a lossy summary of canonical content.
+
+The projection must preserve structured material meaning needed by Golden components:
+
+- several independent requirements in one canonical requirement group remain several visible bullets/rows;
+- independently meaningful table children are not concatenated into one prose scalar;
+- Gameplay Flow paragraphs that represent different action/response/recovery states are not collapsed merely for brevity;
+- scoring/result/reset sub-rules remain independently readable in their approved Developer hierarchy;
+- glossary terms supported by canonical content are not silently dropped during projection.
+
+The renderer may transform representation, not meaning cardinality. If structured canonical detail cannot be represented by the current projection schema, fix the projection/schema owner rather than truncating the content.
 
 ## Visible package composition
 
@@ -132,16 +166,18 @@ Terms Used never highlights its own definitions.
 
 ## Template ownership
 
-`template/approved-document.html` owns stable Golden presentation/runtime:
+`template/golden-sample.html` owns approved reference evidence for:
 
-- page size, spacing, typography, tables and flow cards;
-- sidebar/navigation;
-- Overview / Full Detail view mode;
+- visible page composition and component order;
+- typography/spacing/reading rhythm;
+- sidebar/navigation hierarchy;
+- Overview / Full Detail behavior;
 - light/dark presentation;
-- glossary tooltip;
-- responsive/print behavior.
+- glossary tooltip behavior;
+- responsive/print behavior;
+- representative information density.
 
-The template uses one maintained stylesheet/runtime layer. Do not append version-labelled CSS/JS patches or reference-project namespaces.
+`template/approved-document.html` owns the maintained runtime implementation of that behavior. It may not silently redefine the Golden reference.
 
 The renderer owns only project metadata, pages, navigation contents, glossary data/scopes, language availability, storage namespace, and render revision binding.
 

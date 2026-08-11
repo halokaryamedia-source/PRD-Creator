@@ -53,6 +53,7 @@ class PrdHandoffContracts(unittest.TestCase):
             "New Reader: PASS\n"
             "Level Designer: PASS\n"
             "Developer: PASS\n"
+            "Material Conservation: PASS\n"
             "Acceptance: PASS\n"
             "Project Consistency: PASS\n"
             "Golden Fidelity: PASS\n"
@@ -120,6 +121,7 @@ class PrdHandoffContracts(unittest.TestCase):
             "mechanical failure": "Mechanical: FAIL",
             "visual failure": "Visual sanity: FAIL",
             "developer failure": "Developer: FAIL",
+            "material conservation failure": "Material Conservation: FAIL",
             "acceptance failure": "Acceptance: FAIL",
             "golden fidelity failure": "Golden Fidelity: FAIL",
             "critical blocker": "Critical: 1",
@@ -139,6 +141,18 @@ class PrdHandoffContracts(unittest.TestCase):
                 validated = run_cli(HANDOFF_VALIDATOR, project)
                 self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
                 self.assertIn("acceptance_allows_handoff", "\n".join(json.loads(validated.stdout)["errors"]))
+
+    def test_missing_material_conservation_cannot_authorize_flow5(self) -> None:
+        project = self.make_project()
+        path = project / "work" / "acceptance.md"
+        text = path.read_text(encoding="utf-8")
+        text = "\n".join(
+            line for line in text.splitlines() if not line.startswith("Material Conservation:")
+        ) + "\n"
+        path.write_text(text, encoding="utf-8")
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Material Conservation must appear exactly once", validated.stdout)
 
     def test_acceptance_allows_visual_not_proven_without_claiming_pass(self) -> None:
         project = self.make_project()

@@ -8,7 +8,7 @@ This file is the **single semantic and visible-composition owner** for the gamep
 
 The approved Golden Sample is not merely inspiration or a minimum quality floor.
 
-> **The Golden Sample is the canonical page prototype. Generated PRDs must use the same visible page structure, labels, component order, and reading pattern.**
+> **The Golden Sample is the canonical page prototype. Generated PRDs must use the same visible page structure, labels, component order, reading pattern, and comparable information density.**
 
 Project facts are dynamic. Package count is dynamic. The visible document design is not.
 
@@ -35,6 +35,28 @@ Defined | Explicit No | Not Applicable | Blocked
 ```
 
 `missing` is not a valid state.
+
+## Material-detail conservation
+
+Flow 3 is allowed to rewrite wording. It is **not** allowed to reduce distinct production meaning merely to make the PRD shorter, cleaner, or easier to render.
+
+Treat every independently actionable source rule as conserved material meaning. This includes separate conditions, values, exceptions, recovery behavior, ownership boundaries, timing rules, scoring rules, reset behavior, build constraints, interaction states, and observable results.
+
+The conservation rule is:
+
+```text
+resolved material rule in authority
+→ one owned canonical representation
+→ one matching Golden surface in render-data/final.html
+```
+
+Two rules may be merged only when they are genuinely the same production instruction. A shorter sentence is acceptable; deleting one of two independent requirements is not.
+
+When source meaning naturally contains multiple requirements inside one table cell or requirement group, preserve that structure as multiple list items/rows in canonical data rather than flattening it into one summary sentence. When a Gameplay Flow beat needs multiple paragraphs to explain distinct action/response/recovery states, retain the distinct paragraphs. Do not collapse them simply because a single scalar field would be easier to render.
+
+`Humanize`, `direct writing`, and `concise summary` apply to **wording and placement**, not to the number of material facts retained.
+
+A generated PRD is incomplete when a Level Designer or Developer would need to reopen the source to recover a rule that was present during Flow 2. For a representative project that is also the Golden reference project, regeneration must preserve all current approved project meaning even when the wording changes.
 
 ## Stable document version
 
@@ -335,7 +357,7 @@ After the tower is complete, the route to the Relay opens.
 Avoid:
 
 - long setup phrases before the actual rule;
-- repeated explanation of the same consequence;
+- repeated explanation of the same rule;
 - meta-language about the document/generator;
 - marketing tone;
 - comma-stacked requirement dumps;
@@ -356,7 +378,9 @@ Flow 3 writes complete project meaning **inside the locked Golden prototypes**.
 
 The author may adapt wording and project-specific row count where Golden tables are data-driven, but may not choose a different visible component or section order.
 
-Humanize means clearer/directer wording, not more prose and not a new presentation pattern.
+Before Humanize, perform a conservation pass: verify that each material rule recovered in Flow 2 has an owned location in `content.md`. When deriving `render-data.json`, preserve list/row/paragraph structure needed to keep independent rules independently readable. Do not use scalar summaries to hide detail that exists canonically.
+
+Humanize means clearer/directer wording, not more prose and not a new presentation pattern. It also never means fewer material facts.
 
 ## Flow 4
 
@@ -364,6 +388,7 @@ Flow 4 checks:
 
 ```text
 source fidelity
+material-detail conservation
 Golden prototype fidelity
 New Reader usability
 Level Designer usability
@@ -378,6 +403,7 @@ A **Major** finding exists when:
 - a new unapproved visible component is introduced;
 - prose becomes harder to scan than the Golden reference;
 - a role must reopen source for material meaning;
+- independent source rules were collapsed or omitted during Flow 3;
 - project facts drift or are invented.
 
 Mechanical presence alone is not acceptance.
@@ -389,8 +415,9 @@ Before render, ask:
 ```text
 Does every page look and read like the matching Golden page prototype?
 Is the information in the same visible place a Golden reader would expect?
-Is every summary concise?
-Are detailed rules moved into the correct table/flow instead of cramped cards?
+Did every distinct material source rule survive into canonical content?
+Did structured multi-rule content stay structured instead of becoming one summary sentence?
+Is every summary concise without deleting facts owned elsewhere?
 Did we add any visible UI that Golden does not contain?
 ```
 

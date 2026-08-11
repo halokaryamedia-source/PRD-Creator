@@ -7,7 +7,7 @@
 ```text
 current PRD revision
 → one mechanical validation
-→ one integrated semantic + Golden-fidelity review
+→ one integrated semantic + material-conservation + Golden-fidelity review
 → targeted desktop visual sanity when needed
 → fix first wrong owner
 → development_ready | handoff_ready
@@ -24,7 +24,7 @@ python kits/project-document-generator/validator/validate.py \
 
 Mechanical validation checks deterministic state such as Flow 2 readiness, required files, revision bindings, IDs/page order/navigation, scoring arithmetic, and required Golden prototype markers.
 
-Mechanical PASS does not prove source fidelity, writing quality, or visual readability.
+Mechanical PASS does not prove source fidelity, material-detail conservation, writing quality, or visual readability.
 
 ## 2. Integrated review
 
@@ -35,17 +35,36 @@ Review once through these lenses:
 | New Reader | the gameplay journey, objective, result, setback/recovery and transition are clear without reopening source |
 | Level Designer | build-owned requirements are sufficient and presented in the Golden Level Design prototype |
 | Developer | runtime/scoring/reset/handoff requirements are sufficient and presented in the Golden Developer prototype |
+| Material Conservation | every independent material rule recovered in Flow 2 still has an owned readable representation; structured rules were not flattened into summaries |
 | Acceptance | package criteria in project state are observable and sufficient for Flow 4 review |
 | Project Consistency | terminology, timing, scoring, reset and package handoff agree across the revision |
-| Golden Fidelity | each page uses the matching Golden visible structure, labels, component order and information density |
+| Golden Fidelity | each page uses the matching Golden visible structure, labels, component order, reading pattern and comparable information density |
 
-A **Major** finding exists when a production role must reopen source for a material rule, a new unapproved visible component replaces Golden composition, or prose becomes materially harder to scan than the Golden reference.
+A **Major** finding exists when a production role must reopen source for a material rule, independent source rules were merged/omitted during Flow 3, a new unapproved visible component replaces Golden composition, or prose becomes materially harder to scan than the Golden reference.
 
 Acceptance criteria remain required project/review meaning, but they are **not a new visible Developer-page panel**. They are recorded in Flow 4 acceptance state.
 
 Return to Flow 2 only for unresolved product/design decisions or authority conflicts. Flow 4 may improve wording when the approved meaning is already clear.
 
-## 3. Writing usability
+## 3. Material-conservation review
+
+Do not use word count or raw row count as a quality score. Instead, compare material meaning at the affected authority boundary.
+
+For each changed or regenerated package, sample the dense source-owned surfaces and ask:
+
+```text
+What independent rules existed before Flow 3?
+Where is each rule represented now?
+Did any condition/value/exception/recovery/result disappear?
+Did a multi-rule list/table cell become one vague summary?
+Could Level Design or Development implement without reopening source?
+```
+
+For a representative regeneration of the same project used to establish the Golden Sample, perform direct page-family comparison against the approved reference as well as current project authority. A matching page shell with materially thinner content is **FAIL**, not Golden Fidelity PASS.
+
+Do not mark `Golden Fidelity: PASS` solely because the page count, headings, or CSS classes match.
+
+## 4. Writing usability
 
 Flag:
 
@@ -54,11 +73,12 @@ Flag:
 - meta-language about the generator/document;
 - task/database-like prose where Golden uses normal player-story paragraphs;
 - implementation detail placed in Gameplay Context/Main Objective/Result instead of the correct table;
-- vague wording that leaves the next material question unanswered.
+- vague wording that leaves the next material question unanswered;
+- aggressive shortening that removes distinct constraints instead of only improving wording.
 
-Humanize means **clearer and shorter**, not more prose.
+Humanize means **clearer and shorter wording**, not fewer material facts.
 
-## 4. Targeted desktop visual sanity
+## 5. Targeted desktop visual sanity
 
 Default visual proof is desktop-only unless a mobile defect is specifically under review.
 
@@ -72,7 +92,7 @@ Overview
 + one dense Developer page
 ```
 
-Compare them directly against the corresponding Golden page prototype. Check:
+Compare them directly against `template/golden-sample.html`, the canonical approved Golden artifact. Check:
 
 - same visible section order and labels;
 - readable summary-card copy;
@@ -81,13 +101,14 @@ Compare them directly against the corresponding Golden page prototype. Check:
 - scoring/reset placement inside Developer requirements;
 - Terms Used only on Golden-approved surfaces;
 - glossary affordance when relevant;
-- no obvious overflow/broken structure.
+- no obvious overflow/broken structure;
+- no suspiciously thin page caused by omitted material rules.
 
 Do not routinely retest mobile, every link, theme, localStorage, or unrelated Voice behavior.
 
 If browser proof is unavailable, record `Visual sanity: NOT PROVEN`. Static HTML inspection is never a visual PASS.
 
-## 5. Acceptance record
+## 6. Acceptance record
 
 Keep `work/acceptance.md` compact:
 
@@ -99,6 +120,7 @@ Visual sanity: PASS | FAIL | NOT PROVEN
 New Reader: PASS | FAIL
 Level Designer: PASS | FAIL
 Developer: PASS | FAIL
+Material Conservation: PASS | FAIL
 Acceptance: PASS | FAIL
 Project Consistency: PASS | FAIL
 Golden Fidelity: PASS | FAIL
@@ -107,7 +129,9 @@ Critical: N
 Major: N
 ```
 
-## 6. Handoff
+`Material Conservation: PASS` is required for a new handoff. Older acceptance records without the field remain historical evidence only and must not be reused as proof for a regenerated revision.
+
+## 7. Handoff
 
 Before Flow 5:
 
@@ -122,9 +146,10 @@ Handoff must refer to the current accepted document version. Normal review corre
 
 ```text
 update affected truth/content
+→ verify material conservation in affected scope
 → regenerate projection + HTML
 → one mechanical check
-→ targeted semantic/Golden/desktop review
+→ targeted semantic/Golden/desktop review of invalidated scope
 → stop
 ```
 
