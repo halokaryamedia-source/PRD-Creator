@@ -23,6 +23,25 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
             "next_step: Build canonical PRD content.\n",
             encoding="utf-8",
         )
+        (project / "state" / "source-inventory.yaml").write_text(
+            "sources:\n"
+            "  - id: SRC-001\n"
+            "    type: instruction\n"
+            "    role: authoritative\n"
+            "    origin: user\n"
+            "    summary: Contract fixture source.\n"
+            "    inspection: full\n",
+            encoding="utf-8",
+        )
+        (project / "state" / "requirement-register.yaml").write_text(
+            "requirements:\n"
+            "  - id: REQ-001\n"
+            "    area: gameplay\n"
+            "    statement: Complete one deterministic fixture trial.\n"
+            "    provenance: [SRC-001]\n"
+            "    impact: high\n",
+            encoding="utf-8",
+        )
         (project / "work" / "content.md").write_text(
             "# Contract Fixture\n\nCanonical fixture content with no unresolved placeholders.\n",
             encoding="utf-8",
@@ -45,6 +64,29 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
 
     def validate(self, project: Path):
         return run_cli(VALIDATOR, project)
+
+    def test_ready_rejects_missing_or_empty_required_persisted_state(self) -> None:
+        variants = {
+            "missing source inventory": ("source-inventory.yaml", None),
+            "missing requirement register": ("requirement-register.yaml", None),
+            "empty source inventory": ("source-inventory.yaml", "sources:\n"),
+            "empty requirement register": ("requirement-register.yaml", "requirements:\n"),
+        }
+        for name, (filename, replacement) in variants.items():
+            with self.subTest(name=name):
+                project = self.make_project()
+                path = project / "state" / filename
+                if replacement is None:
+                    path.unlink()
+                else:
+                    path.write_text(replacement, encoding="utf-8")
+
+                validated = self.validate(project)
+                self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+                result = json.loads(validated.stdout)
+                joined = "\n".join(result["errors"])
+                self.assertIn("flow2_persisted_state_consistent", joined)
+                self.assertIn(filename, joined)
 
     def test_ready_rejects_explicit_requirement_blockers(self) -> None:
         markers = {
@@ -87,6 +129,27 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         joined = "\n".join(result["errors"])
         self.assertIn("flow2_persisted_state_consistent", joined)
         self.assertIn("inspection='blocked'", joined)
+
+    def test_ready_ignores_blocked_inspection_on_superseded_source(self) -> None:
+        project = self.make_project()
+        (project / "state" / "source-inventory.yaml").write_text(
+            "sources:\n"
+            "  - id: SRC-001\n"
+            "    path: source/originals/legacy-source.docx\n"
+            "    role: authoritative\n"
+            "    status: superseded\n"
+            "    inspection: blocked\n"
+            "  - id: SRC-002\n"
+            "    type: instruction\n"
+            "    role: authoritative\n"
+            "    origin: user\n"
+            "    summary: Current fixture authority.\n"
+            "    inspection: full\n",
+            encoding="utf-8",
+        )
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
 
     def test_ready_allows_nonblocking_persisted_state(self) -> None:
         project = self.make_project()
