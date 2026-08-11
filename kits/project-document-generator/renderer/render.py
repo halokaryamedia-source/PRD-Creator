@@ -247,6 +247,8 @@ def validate_mandatory_contract(data: dict[str, Any]) -> None:
     for index, item in enumerate(facts):
         if not isinstance(item, dict) or not _has_text(item.get("label")) or not _has_text(item.get("value")):
             raise ValueError(f"overview.facts[{index}] requires key, label, and value")
+    journey = _require_nonempty_list(overview_data, "journey", "overview")
+    _validate_flow_steps(journey, "overview.journey")
     systems = _require_nonempty_list(overview_data, "main_systems", "overview")
     for index, item in enumerate(systems):
         if not isinstance(item, dict) or not _has_text(item.get("title")) or not _has_text(item.get("description")):
@@ -261,7 +263,7 @@ def validate_mandatory_contract(data: dict[str, Any]) -> None:
     actual_flow_ids = [item["id"] for item in flow]
     if actual_flow_ids != expected_flow_ids:
         raise ValueError(
-            f"gameplay_flow must contain The Journey Begins followed by one page per package; expected IDs {expected_flow_ids}, got {actual_flow_ids}"
+            f"Golden mandatory contract: gameplay_flow must contain The Journey Begins followed by one page per package; expected IDs {expected_flow_ids}, got {actual_flow_ids}"
         )
     if txt(flow[0].get("title"))["en"].strip() != "The Journey Begins":
         raise ValueError('gameplay_flow[0].title must be "The Journey Begins"')
@@ -278,7 +280,7 @@ def validate_mandatory_contract(data: dict[str, Any]) -> None:
     actual_global_ids = [item["id"] for item in global_sections]
     if actual_global_ids != expected_global_ids:
         raise ValueError(
-            f"global_development must use the four fixed Golden functions in order; expected IDs {expected_global_ids}, got {actual_global_ids}"
+            f"Golden mandatory contract: global_development must use the four fixed Golden functions in order; expected IDs {expected_global_ids}, got {actual_global_ids}"
         )
     for index, ((section_id, section_title), item) in enumerate(zip(GOLDEN_GLOBAL_SECTIONS, global_sections)):
         context = f"global_development[{index}]"
