@@ -47,10 +47,14 @@ Use the existing PRD `document.version` as the lightweight downstream revision t
 
 A later canonical meaning change that invalidates the accepted handoff advances `document.version` and resets handoff state to `pending_review`. After the affected scope is rerendered/reviewed, Flow 4 may restore `handoff_ready` for the new version.
 
-Before Flow 5 starts, `kits/project-document-generator/validator/validate_handoff.py` must pass. This is a version/status/path consistency guard only; it does not add a new hash chain or replace semantic review.
+Before Flow 5 starts, `kits/project-document-generator/validator/validate_handoff.py` must pass. The guard checks the existing handoff status/version/path lifecycle **and** the compact `work/acceptance.md` truth. A handoff cannot authorize Flow 5 when acceptance says `needs_revision`, a required review lens fails, mechanical validation fails, visual sanity explicitly fails, or Critical/Major blockers are non-zero.
+
+`Visual sanity: NOT PROVEN` remains an honest allowed state when no browser/page proof is available; it is not silently upgraded to visual PASS.
+
+This is still a lightweight lifecycle/acceptance consistency guard. It does not add a new hash chain, semantic scoring engine, or second approval workflow.
 
 ## Handoff meaning
 
-`handoff_ready` means the accepted PRD is usable as a production reference for the defined scope and the recorded accepted version is still current. It does not mean client approval, implementation completion, QA pass, release approval, or completed Voice Production.
+`handoff_ready` means the accepted PRD is usable as a production reference for the defined scope, the recorded accepted version is still current, and the compact acceptance record does not contradict that handoff. It does not mean client approval, implementation completion, QA pass, release approval, or completed Voice Production.
 
 Flow 5 decides downstream Voice requirements.
