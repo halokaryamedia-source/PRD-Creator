@@ -51,11 +51,17 @@ f379ad4a5b27cdc208bfdfcf9406159e9c93d29a  focused regression tests
 119063ca8d57cd816f01a1dfae5ae00ade517a64  Production Verify includes handoff contracts
 ```
 
-GitHub evidence on the implementation HEAD:
+Final synchronized HEAD before this continuity-only note:
 
 ```text
-Repository Verify #80 — PASS
-Production Verify #37 — PASS
+14bac07d4a269504f32d7ad5bf77471f546f44b3
+```
+
+GitHub evidence for that synchronized implementation/policy state:
+
+```text
+Repository Verify #82 — PASS
+Production Verify #39 — PASS
 Project Document contracts (including handoff tests) — PASS
 ```
 
