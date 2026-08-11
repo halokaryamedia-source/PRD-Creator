@@ -47,18 +47,19 @@ The active PRD Generator now avoids the main AI-slop patterns found during revie
 - no reference-project naming in active template/component/runtime hooks;
 - no internal presentation patch/version history in the template;
 - no stacked UI patch layers;
-- no stale `phase` terminology for gameplay-package presentation;
-- no semantic `Golden` naming inside generic mechanical composition checks;
-- no 17-step ritualized Flow 2 sequence;
+- no stale package-presentation terminology inherited from old project-specific implementations;
+- no semantic-reference naming inside generic mechanical composition checks;
+- no ritualized multi-scan Flow 2 sequence;
 - no duplicate detailed PRD procedure across skill/workflow/rules/validation owners;
-- current evidence/continuation docs no longer act as debugging-history logs.
+- no unused legacy table helper kept for hypothetical compatibility;
+- current evidence/continuation docs do not act as debugging-history logs.
 
 The real project `document.version` remains valid document metadata.
 
 ## Current proof
 
 ```text
-PRD Verify #98 — PASS
+PRD Verify #99 — PASS
 ```
 
 This is repository/regression evidence only, not representative semantic/browser proof.
