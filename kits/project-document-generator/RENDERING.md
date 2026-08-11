@@ -1,21 +1,21 @@
 # Rendering Contract
 
-`CONTENT-CONTRACT.md` owns the gameplay PRD's mandatory Golden semantics. This file owns only projection/render mechanics.
+`CONTENT-CONTRACT.md` owns gameplay PRD meaning. This file owns only projection, template, and generated-HTML mechanics.
 
 ## Authority chain
 
 ```text
 work/content.md
 → work/render-data.json
-→ current renderer + approved Golden template
+→ generic approved PRD template + renderer
 → output/final.html
 ```
 
-The renderer does not decide whether a Golden function is optional. `CONTENT-CONTRACT.md` already decides that.
+The renderer does not decide whether a Golden function is optional and does not repair missing project meaning.
 
-## Fail-closed mandatory shell
+## Mandatory shell
 
-Before HTML is produced, render data must represent the complete fixed gameplay PRD shell:
+Before HTML is produced, render data must represent the complete gameplay PRD family:
 
 ```text
 Overview
@@ -33,13 +33,11 @@ Gameplay packages
   Developer
 ```
 
-Mandatory package/global blocks may contain an explicit negative or `Not Applicable` production statement where the semantic contract permits it, but they may not be silently omitted.
+Mandatory package/global blocks may contain an explicit negative or `Not Applicable` production statement where `CONTENT-CONTRACT.md` permits it, but they may not silently disappear.
 
-The renderer fails before writing `final.html` when deterministic mandatory shell data is missing. This includes current Overview document-control values and package-level `Acceptance & Verification` content.
+## Projection boundary
 
-## Projection shape
-
-`render-data.json` remains a disposable structured projection, not a second semantic document.
+`render-data.json` is a disposable structured projection, not another semantic document.
 
 ```json
 {
@@ -52,13 +50,13 @@ The renderer fails before writing `final.html` when deterministic mandatory shel
 }
 ```
 
-The existing `canonical_content_sha256` is retained for now as a narrow stale-projection binding. It is not semantic proof and must not be treated as evidence of completeness.
+The existing `canonical_content_sha256` remains a narrow stale-projection binding only. `final.html` receives the current `render-data-sha256` marker for stale rendered-output detection. Neither hash proves semantic quality.
 
-`final.html` receives the current `render-data-sha256` marker so stale deterministic HTML cannot be mistaken for the current projection. No additional hash/checksum chain is added.
+No additional checksum chain is added.
 
-## Fixed deterministic identifiers
+## Stable identifiers
 
-Global Development keeps stable IDs/order while using the professional display names owned by `CONTENT-CONTRACT.md`:
+Global Development keeps these internal IDs while displaying the professional names owned by `CONTENT-CONTRACT.md`:
 
 ```text
 development-overview  → Development Overview
@@ -67,37 +65,95 @@ data-reset             → Data, Recovery & Reset
 gameplay-development   → Gameplay Package Integration
 ```
 
-The first Gameplay Flow item uses `journey-begins`. Remaining Gameplay Flow IDs match package IDs in package order.
+The first Gameplay Flow ID is `journey-begins`. Remaining Gameplay Flow IDs match package IDs in package order.
 
-## Required Overview projection
+## Generic template rule
 
-Overview preserves the fixed Golden project facts:
+`template/approved-document.html` is a **generic PRD presentation/runtime template**.
+
+It may contain stable component names such as:
+
+```text
+package
+requirement
+development
+glossary
+journey
+production
+result
+```
+
+It must not carry implementation-history or reference-project naming such as:
+
+```text
+V19 / V20 / V90 / V94
+v14-style / v18-style
+"final polish" iteration labels
+source-document revision chains
+aftershock-*
+quarry-*
+phase-* when the actual concept is gameplay package
+```
+
+The document's real `document.version` is valid project metadata and is not the same thing as internal CSS/feature iteration numbering.
+
+When presentation needs improvement, edit the correct stable component/template rule. Do **not** create a new version-labeled style/script patch at the end of the template.
+
+## Template / renderer ownership
+
+The generic template owns stable presentation and browser interaction:
+
+- document/sidebar layout;
+- light/dark presentation;
+- Gameplay Journey / Full Production reading views;
+- package-focused navigation behavior;
+- glossary tooltip interaction;
+- responsive/print presentation.
+
+The renderer owns project projection into that template:
+
+- metadata/title/brand;
+- document pages inside `.document-main`;
+- navigation contents;
+- package/glossary scope attributes;
+- glossary JSON;
+- project-local storage prefix;
+- language availability;
+- current render-data revision marker.
+
+The renderer must not inject another stylesheet/runtime layer merely to compensate for a badly structured template. The template must not contain project facts.
+
+Never patch generated `final.html` manually.
+
+## Overview projection
+
+Overview carries:
 
 ```text
 session-model
 target-playtime
 game-structure
+document_scope
+intended_use
 ```
 
-It also carries `document_scope` and `intended_use` for the rendered Document Control block. Current approval/handoff state is intentionally not rendered there; lifecycle truth stays in Flow 4 state so approval does not require a cosmetic rerender.
-
-Document Control renders as compact metadata. Main Systems renders as production content rather than reusing the same warning/note treatment.
-
-Additional project facts are allowed when materially useful.
+Document Control is compact metadata. Main Systems is production information and remains visually distinct from metadata.
 
 ## Package projection
 
-Gameplay Overview renders the short `player_flow` projection as **Objective Sequence**. The separate top-level Gameplay Flow collection remains the full chronological player narrative.
+Gameplay Overview renders `player_flow` as **Objective Sequence**. Top-level Gameplay Flow remains the complete chronological player journey.
 
-For a package-owned full Gameplay Flow page, renderer adds the owning package phase scope. This lets existing Golden runtime features—including package glossary indexing and active-package navigation—operate on the full narrative without creating another mapping artifact.
+Package-owned Gameplay Flow and its three production pages use the same stable package ID for:
 
-Package full Gameplay Flow may also render a compact orientation summary using already-defined Main Objective, previous flow position, and `next_destination`. This is derived presentation only; renderer must not invent missing project meaning.
+- active package navigation;
+- glossary scope;
+- role-local Terms Used.
 
-Every package carries a non-empty `acceptance` list for the Developer-page **Acceptance & Verification** block. These are observable package-level definition-of-done statements, not a QA test-case framework.
+A package Gameplay Flow may derive its orientation summary from already-defined Main Objective, previous flow position, and `next_destination`. Renderer must not invent missing meaning.
 
-Developer Flow keeps `trigger`, `behavior`, `data`, and `result` visibly separated when those fields exist. Renderer must not concatenate them into a dense punctuation-based sentence merely for compactness.
+Developer Flow keeps `trigger`, `behavior`, `data`, and `result` visually distinct when those fields exist.
 
-Level Design and Developer table labels follow `CONTENT-CONTRACT.md`; renderer code does not redefine their semantics.
+Every package also renders non-empty `Acceptance & Verification` content on the Developer page.
 
 ## Scoring / Result projection
 
@@ -111,77 +167,32 @@ completion_data
 
 `scoring` represents an Objective Score. `completion_data` represents explicit `No Objective Score` behavior.
 
-Both forms carry current project truth for final-result relationship, player-facing display, telemetry/export behavior, and interruption/duplicate behavior where required.
+Both preserve final-result relationship, player-facing display, telemetry/export behavior, and interruption/duplicate behavior required by the semantic contract.
 
-The renderer displays these distinctions and never infers `No Objective Score` from a display/export prohibition.
+A display/export prohibition must never be interpreted as `No Objective Score`.
 
-## Glossary Index projection
+## Glossary projection
 
 `packages[].terms` is the canonical package glossary source.
 
-The renderer projects it to both:
+The renderer projects it to:
 
 ```text
 inline glossary JSON
-→ approved Golden runtime can identify/highlight matching aliases
-
-Terms Used
-→ page/role-local term index
++ role-local Terms Used index
 ```
 
-Package-owned full Gameplay Flow receives the same package term index as Gameplay Overview / Level Design / Developer according to role visibility. Do not duplicate the package term set inside `gameplay_flow[].terms`.
+Package Gameplay Flow uses the owning package term index. `The Journey Begins` may carry its own opening-specific terms only when those terms genuinely do not belong to a package.
 
-The runtime excludes `.terms-used-collapsible` from inline matching so a glossary definition does not recursively highlight itself.
+The Terms Used block does not recursively highlight its own definitions.
 
-The approved Golden tooltip engine remains the interaction authority. Renderer supplies correct package scope/data and a visible but restrained glossary affordance; it does not create a second tooltip system.
-
-## Reading-experience layer
-
-The approved Golden template remains the presentation foundation, but new PRD-specific refinements are centralized in the renderer-owned contract style/runtime rather than added as another sequence of versioned template patch styles.
-
-Current screen-oriented refinements include:
-
-- wider desktop reading surface while preserving print behavior;
-- content-height sheets on screen instead of forcing print-height whitespace;
-- compact Document Control metadata;
-- distinct Main Systems cards;
-- full Gameplay Flow orientation + readable narrative rhythm;
-- structured Developer Flow (`Trigger / System Behavior / Data / Expected Result`);
-- more readable production tables and stronger requirement-group/result hierarchy;
-- observable Acceptance & Verification checks;
-- active-focused package subnavigation;
-- clear view labels: **Gameplay Journey** and **Full Production**;
-- visible inline glossary affordance while keeping Terms Used clean.
-
-These are reading/presentation rules only. They must not mutate project meaning.
-
-## English and bilingual values
+## Language
 
 Default output is English-only.
 
-For intentional EN + ID output, every user-visible textual value must explicitly provide both `en` and `id`. Structural values such as IDs, keys, version, weights, and step codes may remain language-neutral scalars.
+For intentional EN + ID output, every user-visible text value must explicitly provide both `en` and `id`. Structural values such as IDs, keys, version, weights, and step codes may remain language-neutral scalars.
 
-This proves localization completeness only, not translation quality. Do not enable bilingual output merely because placeholder/machine-like Indonesian strings exist.
-
-## Template boundary
-
-The approved Golden template supplies the base visual/runtime behavior.
-
-The renderer may replace or augment only project-owned/bounded surfaces already required by the family:
-
-- metadata/title/brand;
-- navigation;
-- document pages inside `.document-main`;
-- glossary data and package scope needed by the existing glossary engine;
-- project local-storage namespace;
-- language availability;
-- bounded content-driven grid variables;
-- centralized renderer reading-style/runtime overrides;
-- current render-data revision marker.
-
-Do not add another versioned template `<style>` patch merely to make a new generated surface readable when the renderer-owned reading layer is the correct owner.
-
-Never patch `final.html` manually to repair missing semantics or presentation.
+This validates localization completeness only, not translation quality.
 
 ## Normal production
 
@@ -191,8 +202,8 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-Normal authoring does not load the full template or generated HTML into model context. Renderer/validator may consume them directly; semantic review uses canonical content and actual rendered pages only where needed.
+Normal authoring does not load the full template or generated HTML into model context. Inspect template/HTML source only for a concrete presentation defect and only at the smallest useful range.
 
 ## Boundary
 
-The renderer enforces deterministic shell completeness and presentation mechanics. It does not invent project meaning, decide materiality, repair Flow 2 gaps, or replace Flow 4 semantic acceptance.
+The template and renderer organize approved meaning into a stable readable artifact. They do not invent product meaning, decide materiality, repair Flow 2 gaps, or replace Flow 4 semantic acceptance.
