@@ -203,7 +203,7 @@ def _has_narrative_beat(item: dict[str, Any]) -> bool:
     )
 
 
-def golden_required_content_errors(data: dict[str, Any]) -> list[str]:
+def required_content_errors(data: dict[str, Any]) -> list[str]:
     failures: list[str] = []
     for item in data.get("gameplay_flow", []):
         if not isinstance(item, dict) or not isinstance(item.get("id"), str):
@@ -443,11 +443,11 @@ def validate(project: Path) -> dict[str, Any]:
                         errors.append(f"package_{package_id}: scoring weights total {sum(parsed):g}, expected 100")
 
     if structure_ok:
-        required_content = golden_required_content_errors(data)
+        required_content = required_content_errors(data)
         check(
-            "golden_required_content",
+            "required_content",
             not required_content,
-            "required Golden content slots are populated" if not required_content else "; ".join(required_content),
+            "required content slots are populated" if not required_content else "; ".join(required_content),
         )
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
