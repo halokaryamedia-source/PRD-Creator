@@ -15,6 +15,15 @@ Flow 5 exists to prevent two failure modes:
 
 Normal entry requires `state/handoff-state.yaml: handoff_ready` for the same PRD revision being extracted.
 
+The accepted handoff revision is the existing PRD `document.version`, recorded as `accepted_prd_version` in `handoff-state.yaml`. Before extraction, run:
+
+```bash
+python kits/project-document-generator/validator/validate_handoff.py \
+  workspace/active/<project>/
+```
+
+PASS means the handoff state is ready, its accepted version matches the current PRD version, and the existing canonical/render/HTML/acceptance/team-handoff paths are present. This is a lightweight lifecycle guard, not a new checksum chain.
+
 Rendering success or `development_ready` alone is not the normal Flow 5 entry because the repository sequence explicitly finishes the concise team handoff before downstream production begins.
 
 ## Canonical owner

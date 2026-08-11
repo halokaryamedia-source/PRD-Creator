@@ -41,8 +41,16 @@ Mechanical validation proves structural/render/navigation contracts only. Semant
 
 Do not restore Content Freeze/release ceremony. A later canonical meaning change reopens only the affected revision/review boundary.
 
+## Revision-specific handoff
+
+Use the existing PRD `document.version` as the lightweight downstream revision token. `state/handoff-state.yaml` records `accepted_prd_version` plus the existing canonical/render/HTML/acceptance/handoff paths.
+
+A later canonical meaning change that invalidates the accepted handoff advances `document.version` and resets handoff state to `pending_review`. After the affected scope is rerendered/reviewed, Flow 4 may restore `handoff_ready` for the new version.
+
+Before Flow 5 starts, `kits/project-document-generator/validator/validate_handoff.py` must pass. This is a version/status/path consistency guard only; it does not add a new hash chain or replace semantic review.
+
 ## Handoff meaning
 
-`handoff_ready` means the accepted PRD is usable as a production reference for the defined scope. It does not mean client approval, implementation completion, QA pass, release approval, or completed Voice Production.
+`handoff_ready` means the accepted PRD is usable as a production reference for the defined scope and the recorded accepted version is still current. It does not mean client approval, implementation completion, QA pass, release approval, or completed Voice Production.
 
 Flow 5 decides downstream Voice requirements.

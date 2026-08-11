@@ -43,6 +43,7 @@ Never patch a derived artifact to hide an upstream defect.
 - `renderer/render.py` → deterministic template mutation/output mechanics
 - `template/approved-document.html` → only when the Golden template itself is proven wrong
 - `validator/validate.py` → mechanical Flow 4 checks
+- `validator/validate_handoff.py` → narrow Flow 4 → Flow 5 handoff-entry consistency check using existing `document.version` + `handoff-state.yaml`; it must not grow into a generic artifact manifest/revision framework
 
 Renderer/validator code may organize/check approved meaning; it may not invent project facts or decisions.
 
@@ -92,8 +93,8 @@ observe failure
 Focused repository proof:
 
 ```text
-python -m unittest tests.test_prd_contracts -v
-python -m compileall -q kits/project-document-generator tests/test_prd_contracts.py
+python -m unittest tests.test_prd_contracts tests.test_prd_handoff_contracts -v
+python -m compileall -q kits/project-document-generator tests/test_prd_contracts.py tests/test_prd_handoff_contracts.py
 ```
 
 `Production Verify` is the canonical CI gate for affected production contracts. Do not repeatedly run manual/local project tests during an unfinished refinement batch. Browser/visual PASS still requires actual browser/visual evidence.

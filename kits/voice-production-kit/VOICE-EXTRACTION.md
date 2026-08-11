@@ -7,11 +7,21 @@ Flow 5 converts an accepted PRD revision into a traceable set of justified voice
 Start only when the current project has:
 
 - `state/handoff-state.yaml` with `status: handoff_ready`;
-- accepted `work/content.md` for the same revision;
-- `output/team-handoff.md` for navigation/context;
+- `accepted_prd_version` matching the current `work/render-data.json → document.version`;
+- accepted `work/content.md` for that same PRD version;
+- `work/acceptance.md` and `output/team-handoff.md` present at the paths recorded by the handoff state;
 - no unresolved upstream decision affecting the voice scope.
 
-If the PRD revision changes after extraction, the existing voice requirements are stale. Reset Flow 5 to `pending_extraction` and re-check affected moments before Flow 6.
+Before extraction, run:
+
+```bash
+python kits/project-document-generator/validator/validate_handoff.py \
+  workspace/active/<project>/
+```
+
+Do not start Flow 5 when this guard fails. It is a lightweight lifecycle check using the existing PRD `document.version`; it does not add a new hash/checksum chain and does not replace semantic PRD acceptance.
+
+If accepted PRD meaning changes after extraction, the PRD revision must advance upstream and the existing voice requirements become stale. Reset Flow 5 to `pending_extraction` and re-check affected moments before Flow 6.
 
 ## Authority
 
@@ -28,6 +38,8 @@ Do not extract a new project fact from the Aftershock sample.
 ## Extraction sequence
 
 ```text
+current handoff guard PASS
+↓
 handoff_ready PRD
 ↓
 identify player-facing story / communication system
@@ -159,7 +171,7 @@ Use one section per gameplay package/scene and one entry per justified moment:
 ```text
 # Voice Requirements
 
-Source PRD revision: <accepted revision>
+Source PRD revision: <accepted document.version>
 Voice system: <speaker/channel summary>
 
 ## <Gameplay Section>
@@ -200,7 +212,7 @@ Maintain `state/voice-state.yaml`:
 flow: 5
 status: voice_requirements_ready
 source_handoff: state/handoff-state.yaml
-source_revision: <accepted PRD revision>
+source_revision: <accepted document.version>
 canonical_prd: work/content.md
 requirements: work/voice-requirements.md
 unresolved_upstream: 0
