@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Mechanical Flow 4 validation for a repository-backed PRD project.
-
-Checks current artifact structure, render-data invariants, navigation, and a small
-set of Golden Sample composition markers. It does not judge semantic or visual
-quality; those remain part of the Flow 4 review.
-"""
+"""Mechanical Flow 4 validation for a repository-backed PRD project."""
 from __future__ import annotations
 
 import argparse
@@ -23,18 +18,10 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 WEIGHT_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%?\s*$")
 INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
 INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
-FLOW2_REQUIRED_STATE = {
-    "source-inventory.yaml": "SRC",
-    "requirement-register.yaml": "REQ",
-}
+FLOW2_REQUIRED_STATE = {"source-inventory.yaml": "SRC", "requirement-register.yaml": "REQ"}
 FLOW2_EXPLICIT_BLOCKERS = {
-    "requirement-register.yaml": {
-        "approval_status": {"pending"},
-        "recovery_class": {"blocked"},
-    },
-    "source-inventory.yaml": {
-        "inspection": {"blocked"},
-    },
+    "requirement-register.yaml": {"approval_status": {"pending"}, "recovery_class": {"blocked"}},
+    "source-inventory.yaml": {"inspection": {"blocked"}},
 }
 
 
@@ -109,13 +96,11 @@ def scoring_weight(value: Any) -> float | None:
 def flow2_readiness(path: Path) -> tuple[bool, str]:
     if not path.is_file():
         return False, f"missing Flow 2 intake state: {path}"
-
     text = path.read_text(encoding="utf-8")
     statuses = INTAKE_STATUS_RE.findall(text)
     readiness = INTAKE_READY_RE.findall(text)
     if len(statuses) != 1 or len(readiness) != 1:
         return False, "intake-state.yaml must define exactly one status and one ready_for_prd boolean"
-
     status = statuses[0]
     ready = readiness[0].lower() == "true"
     if status != "ready_for_prd" or not ready:
@@ -131,14 +116,8 @@ def _clean_state_scalar(value: str) -> str:
 
 
 def _flow2_state_entries(path: Path, prefix: str) -> list[dict[str, Any]]:
-    """Read only stable Flow 2 list entries and their scalar fields.
-
-    This is intentionally bounded to the existing SRC/REQ state shape. It is not
-    a generic YAML parser or schema validator.
-    """
     entries: list[dict[str, Any]] = []
     current: dict[str, Any] | None = None
-
     for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         line = raw.split("#", 1)[0].strip()
         if not line:
@@ -149,22 +128,18 @@ def _flow2_state_entries(path: Path, prefix: str) -> list[dict[str, Any]]:
         key, raw_value = candidate.split(":", 1)
         key = key.strip()
         value = _clean_state_scalar(raw_value)
-
         if key == "id" and re.fullmatch(rf"{re.escape(prefix)}-\d+", value):
             current = {"id": value, "line": lineno, "fields": {}}
             entries.append(current)
             continue
-
         if current is not None:
             current["fields"][key] = (value, lineno)
-
     return entries
 
 
 def flow2_persisted_state_consistency(project: Path) -> tuple[bool, str]:
     findings: list[str] = []
     parsed: dict[str, list[dict[str, Any]]] = {}
-
     for filename, prefix in FLOW2_REQUIRED_STATE.items():
         path = project / "state" / filename
         if not path.is_file():
@@ -220,25 +195,16 @@ def _has_narrative_beat(item: dict[str, Any]) -> bool:
     explicit = item.get("beats")
     if isinstance(explicit, list):
         for beat in explicit:
-            if isinstance(beat, dict) and (
-                _has_text(beat.get("description")) or _has_text(beat.get("details"))
-            ):
+            if isinstance(beat, dict) and (_has_text(beat.get("description")) or _has_text(beat.get("details"))):
                 return True
     return any(
         _has_text(item.get(key))
-        for key in (
-            "player_experience",
-            "main_obstacle_or_change",
-            "player_result",
-            "narrative_context",
-        )
+        for key in ("player_experience", "main_obstacle_or_change", "player_result", "narrative_context")
     )
 
 
 def golden_required_content_errors(data: dict[str, Any]) -> list[str]:
-    """Check only deterministic content slots already declared required by Golden."""
     failures: list[str] = []
-
     for item in data.get("gameplay_flow", []):
         if not isinstance(item, dict) or not isinstance(item.get("id"), str):
             continue
@@ -260,28 +226,24 @@ def golden_required_content_errors(data: dict[str, Any]) -> list[str]:
     for pkg in data.get("packages", []):
         if not isinstance(pkg, dict) or not isinstance(pkg.get("id"), str):
             continue
-        pid = pkg["id"]
+        package_id = pkg["id"]
         gameplay = pkg.get("gameplay") if isinstance(pkg.get("gameplay"), dict) else {}
         level = pkg.get("level_design") if isinstance(pkg.get("level_design"), dict) else {}
         developer = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
-
         if not (_has_text(gameplay.get("context")) or _has_text(gameplay.get("overview"))):
-            failures.append(f"package-{pid}: Gameplay Context is required")
+            failures.append(f"package-{package_id}: Gameplay Context is required")
         if not _has_text(gameplay.get("main_objective")):
-            failures.append(f"package-{pid}: Main Objective is required")
+            failures.append(f"package-{package_id}: Main Objective is required")
         if not _has_text(gameplay.get("result")):
-            failures.append(f"package-{pid}: Result is required")
+            failures.append(f"package-{package_id}: Result is required")
         if not _has_dict_entry(gameplay.get("player_flow")):
-            failures.append(f"package-{pid}: at least one player_flow step is required")
-
+            failures.append(f"package-{package_id}: at least one player_flow step is required")
         if not _has_text(level.get("overview")):
-            failures.append(f"package-{pid}: Level Design overview is required")
+            failures.append(f"package-{package_id}: Level Design overview is required")
         if not _has_requirement_rows(level.get("requirements")):
-            failures.append(f"package-{pid}: at least one Build Requirement row is required")
-
+            failures.append(f"package-{package_id}: at least one Build Requirement row is required")
         if not _has_text(developer.get("overview")):
-            failures.append(f"package-{pid}: Developer overview is required")
-
+            failures.append(f"package-{package_id}: Developer overview is required")
     return failures
 
 
@@ -290,12 +252,16 @@ def expected_page_ids(data: dict[str, Any]) -> list[str]:
     ids += [f'flow-{item["id"]}' for item in data.get("gameplay_flow", [])]
     ids += [f'global-{item["id"]}' for item in data.get("global_development", [])]
     for pkg in data.get("packages", []):
-        pid = pkg["id"]
-        ids += [f"dev-{pid}-requirement", f"dev-{pid}-level", f"dev-{pid}-developer"]
+        package_id = pkg["id"]
+        ids += [
+            f"dev-{package_id}-requirement",
+            f"dev-{package_id}-level",
+            f"dev-{package_id}-developer",
+        ]
     return ids
 
 
-def golden_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[str]:
+def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[str]:
     failures: list[str] = []
 
     def require(section_id: str, required: set[str]) -> None:
@@ -308,40 +274,47 @@ def golden_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[st
         require(f'flow-{item["id"]}', {"narrative-page", "narrative-sequence"})
 
     for item in data.get("global_development", []):
-        section_id = f'global-{item["id"]}'
         required = {"package-tabs", "section-context"}
         if item.get("flow"):
-            required.add("quarry-development-flow")
+            required.add("development-flow-grid")
         if item.get("requirements"):
-            required.add("production-table")
-        require(section_id, required)
+            required.add("development-requirements-table")
+        if item.get("notes"):
+            required.add("note-grid")
+        require(f'global-{item["id"]}', required)
 
     for pkg in data.get("packages", []):
-        pid = pkg["id"]
+        package_id = pkg["id"]
         gameplay = pkg.get("gameplay") if isinstance(pkg.get("gameplay"), dict) else {}
         level = pkg.get("level_design") if isinstance(pkg.get("level_design"), dict) else {}
         developer = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
 
-        gameplay_required = {"package-tabs", "phase-context-grid", "phase-overview-table"}
+        gameplay_required = {"package-tabs", "package-context-grid", "gameplay-info-table"}
         if gameplay.get("player_flow"):
-            gameplay_required.add("role-sequence")
-        require(f"dev-{pid}-requirement", gameplay_required)
+            gameplay_required.add("objective-sequence")
+        require(f"dev-{package_id}-requirement", gameplay_required)
 
         level_required = {"package-tabs", "section-context"}
         if level.get("flow"):
-            level_required.add("quarry-design-flow")
+            level_required.add("design-flow-grid")
         if level.get("requirements"):
-            level_required.add("quarry-build-table")
+            level_required.add("build-requirements-table")
         if level.get("notes"):
-            level_required.add("quarry-note-grid")
-        require(f"dev-{pid}-level", level_required)
+            level_required.add("note-grid")
+        require(f"dev-{package_id}-level", level_required)
 
-        developer_required = {"package-tabs", "section-context", "quarry-development-table", "quarry-score-summary"}
+        developer_required = {
+            "package-tabs",
+            "section-context",
+            "development-requirements-table",
+            "result-summary",
+            "acceptance",
+        }
         if developer.get("flow"):
             developer_required.add("developer-flow")
         if developer.get("notes"):
-            developer_required.add("quarry-note-grid")
-        require(f"dev-{pid}-developer", developer_required)
+            developer_required.add("note-grid")
+        require(f"dev-{package_id}-developer", developer_required)
 
     return failures
 
@@ -351,7 +324,6 @@ def validate(project: Path) -> dict[str, Any]:
     content_path = project / "work" / "content.md"
     data_path = project / "work" / "render-data.json"
     html_path = project / "output" / "final.html"
-
     errors: list[str] = []
     warnings: list[str] = []
     checks: list[dict[str, str]] = []
@@ -361,11 +333,11 @@ def validate(project: Path) -> dict[str, Any]:
         if not ok:
             errors.append(f"{name}: {detail}")
 
-    flow2_ready, flow2_detail = flow2_readiness(intake_path)
-    check("flow2_ready_for_prd", flow2_ready, flow2_detail)
-    if flow2_ready:
-        flow2_consistent, flow2_consistency_detail = flow2_persisted_state_consistency(project)
-        check("flow2_persisted_state_consistent", flow2_consistent, flow2_consistency_detail)
+    ready, ready_detail = flow2_readiness(intake_path)
+    check("flow2_ready_for_prd", ready, ready_detail)
+    if ready:
+        consistent, consistency_detail = flow2_persisted_state_consistency(project)
+        check("flow2_persisted_state_consistent", consistent, consistency_detail)
     check("canonical_content_exists", content_path.is_file(), str(content_path))
     check("render_data_exists", data_path.is_file(), str(data_path))
     check("rendered_html_exists", html_path.is_file(), str(html_path))
@@ -373,14 +345,17 @@ def validate(project: Path) -> dict[str, Any]:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
     content = content_path.read_text(encoding="utf-8")
-    check("canonical_content_has_no_open_placeholders", OPEN_RE.search(content) is None, "content.md contains no unresolved placeholder token")
+    check(
+        "canonical_content_has_no_open_placeholders",
+        OPEN_RE.search(content) is None,
+        "content.md contains no unresolved placeholder token",
+    )
 
     try:
         data = json.loads(data_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         errors.append(f"render_data_json: {exc}")
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
-
     if not isinstance(data, dict):
         errors.append("render_data_root: render-data must be an object")
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
@@ -400,9 +375,9 @@ def validate(project: Path) -> dict[str, Any]:
         binding_detail = "render-data is bound to the current canonical content revision"
     check("render_data_matches_canonical_content", binding_valid, binding_detail)
 
-    doc = data.get("document")
-    check("document_object", isinstance(doc, dict), "render-data.document must be an object")
-    title = text_en(doc.get("title")) if isinstance(doc, dict) else ""
+    document = data.get("document")
+    check("document_object", isinstance(document, dict), "render-data.document must be an object")
+    title = text_en(document.get("title")) if isinstance(document, dict) else ""
     check("document_title", bool(title.strip()), "document title is present")
     check("overview_object", isinstance(data.get("overview"), dict), "render-data.overview must be an object")
 
@@ -432,65 +407,48 @@ def validate(project: Path) -> dict[str, Any]:
     gameplay_flow = collections["gameplay_flow"]
     global_development = collections["global_development"]
     packages = collections["packages"]
-    check(
-        "gameplay_flow_array",
-        len(gameplay_flow) > 0,
-        "at least one Gameplay Flow page is required for this gameplay PRD profile",
-    )
-    check(
-        "global_development_array",
-        len(global_development) > 0,
-        "at least one Global Development page is required for this gameplay PRD profile",
-    )
-    check("packages_array", len(packages) > 0, "at least one gameplay package is required for this template profile")
+    check("gameplay_flow_array", len(gameplay_flow) > 0, "at least one Gameplay Flow page is required")
+    check("global_development_array", len(global_development) > 0, "at least one Global Development page is required")
+    check("packages_array", len(packages) > 0, "at least one gameplay package is required")
 
-    seen_pkg: set[str] = set()
+    seen_packages: set[str] = set()
     for pkg in packages:
-        pid = pkg["id"]
-        if pid in seen_pkg:
-            errors.append(f"package_{pid}: duplicate package id")
-        seen_pkg.add(pid)
+        package_id = pkg["id"]
+        if package_id in seen_packages:
+            errors.append(f"package_{package_id}: duplicate package id")
+        seen_packages.add(package_id)
         for role in ("gameplay", "level_design", "developer"):
             if not isinstance(pkg.get(role), dict):
-                errors.append(f"package_{pid}: missing {role} object")
-        dev = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
-        has_score = isinstance(dev.get("scoring"), dict) and bool(dev.get("scoring"))
-        has_completion = isinstance(dev.get("completion_data"), dict) and bool(dev.get("completion_data"))
+                errors.append(f"package_{package_id}: missing {role} object")
+        developer = pkg.get("developer") if isinstance(pkg.get("developer"), dict) else {}
+        has_score = isinstance(developer.get("scoring"), dict) and bool(developer.get("scoring"))
+        has_completion = isinstance(developer.get("completion_data"), dict) and bool(developer.get("completion_data"))
         if has_score == has_completion:
-            errors.append(f"package_{pid}: developer must define exactly one of scoring or completion_data")
+            errors.append(f"package_{package_id}: developer must define exactly one of scoring or completion_data")
         if has_score:
-            components = dev["scoring"].get("components", [])
+            components = developer["scoring"].get("components", [])
             if isinstance(components, list):
-                raw_weights = [
-                    component.get("weight") if isinstance(component, dict) else None
-                    for component in components
-                ]
-                has_weighted_scoring = any(weight not in (None, "") for weight in raw_weights)
-                if has_weighted_scoring:
-                    parsed_weights: list[float] = []
+                raw_weights = [item.get("weight") if isinstance(item, dict) else None for item in components]
+                if any(weight not in (None, "") for weight in raw_weights):
+                    parsed = []
                     for index, weight in enumerate(raw_weights):
-                        parsed = scoring_weight(weight)
-                        if parsed is None:
+                        current = scoring_weight(weight)
+                        if current is None:
                             errors.append(
-                                f"package_{pid}: scoring component {index} weight must be numeric or a numeric percentage string"
+                                f"package_{package_id}: scoring component {index} weight must be numeric or a numeric percentage string"
                             )
                         else:
-                            parsed_weights.append(parsed)
-                    if len(parsed_weights) == len(raw_weights):
-                        total = sum(parsed_weights)
-                        if abs(total - 100.0) > 1e-9:
-                            errors.append(f"package_{pid}: scoring weights total {total:g}, expected 100")
+                            parsed.append(current)
+                    if len(parsed) == len(raw_weights) and abs(sum(parsed) - 100.0) > 1e-9:
+                        errors.append(f"package_{package_id}: scoring weights total {sum(parsed):g}, expected 100")
 
     if structure_ok:
         required_content = golden_required_content_errors(data)
         check(
             "golden_required_content",
             not required_content,
-            "required Golden content slots are populated"
-            if not required_content
-            else "; ".join(required_content),
+            "required Golden content slots are populated" if not required_content else "; ".join(required_content),
         )
-
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
@@ -502,45 +460,43 @@ def validate(project: Path) -> dict[str, Any]:
         errors.append(f"html_parse: {exc}")
 
     actual_render_data_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
-    html_bindings = facts.render_data_sha256
-    html_binding_valid = (
-        len(html_bindings) == 1
-        and SHA256_RE.fullmatch(html_bindings[0]) is not None
-        and html_bindings[0] == actual_render_data_sha
+    bindings = facts.render_data_sha256
+    binding_ok = (
+        len(bindings) == 1
+        and SHA256_RE.fullmatch(bindings[0]) is not None
+        and bindings[0] == actual_render_data_sha
     )
-    if not html_bindings:
+    if not bindings:
         html_binding_detail = "rendered HTML is missing render-data-sha256 revision binding"
-    elif len(html_bindings) != 1:
-        html_binding_detail = f"rendered HTML must contain exactly one render-data-sha256 binding; found {len(html_bindings)}"
-    elif SHA256_RE.fullmatch(html_bindings[0]) is None:
+    elif len(bindings) != 1:
+        html_binding_detail = f"rendered HTML must contain exactly one render-data-sha256 binding; found {len(bindings)}"
+    elif SHA256_RE.fullmatch(bindings[0]) is None:
         html_binding_detail = "rendered HTML render-data-sha256 binding is invalid"
-    elif html_bindings[0] != actual_render_data_sha:
+    elif bindings[0] != actual_render_data_sha:
         html_binding_detail = "rendered HTML is stale relative to work/render-data.json; rerender final.html"
     else:
         html_binding_detail = "rendered HTML is bound to the current render-data revision"
-    check("html_matches_current_render_data", html_binding_valid, html_binding_detail)
+    check("html_matches_current_render_data", binding_ok, html_binding_detail)
 
-    duplicates = sorted(k for k, count in Counter(facts.ids).items() if count > 1)
+    duplicates = sorted(key for key, count in Counter(facts.ids).items() if count > 1)
     check("html_ids_unique", not duplicates, f"duplicate ids: {duplicates}" if duplicates else "no duplicate HTML ids")
 
     expected = expected_page_ids(data)
     actual_pages = facts.document_section_ids
-    missing_expected = [page_id for page_id in expected if page_id not in actual_pages]
-    extra_generated = [page_id for page_id in actual_pages if page_id not in expected]
     exact_pages = actual_pages == expected
     check(
         "generated_page_set_matches_current_render_data",
         exact_pages,
         f"generated pages match expected order/set: {len(expected)} pages"
         if exact_pages
-        else f"expected {expected}; actual {actual_pages}; missing {missing_expected}; extra {extra_generated}",
+        else f"expected {expected}; actual {actual_pages}",
     )
 
-    composition = golden_composition_errors(data, facts)
+    composition = document_composition_errors(data, facts)
     check(
-        "golden_page_composition",
+        "document_page_composition",
         not composition,
-        "Golden Sample composition markers present on generated pages" if not composition else "; ".join(composition),
+        "required document composition markers are present" if not composition else "; ".join(composition),
     )
 
     id_set = set(facts.ids)
@@ -548,10 +504,20 @@ def validate(project: Path) -> dict[str, Any]:
     check("fragment_navigation_reachable", not broken, f"broken targets: {broken}" if broken else "all fragment links resolve")
 
     browser_title = "".join(facts.title_parts).strip()
-    check("browser_title_matches_project", bool(title) and title.lower() in html_lib.unescape(browser_title).lower(), f"browser title: {browser_title!r}")
+    check(
+        "browser_title_matches_project",
+        bool(title) and title.lower() in html_lib.unescape(browser_title).lower(),
+        f"browser title: {browser_title!r}",
+    )
 
     status = "pass" if not errors else "fail"
-    return {"status": status, "errors": errors, "warnings": warnings, "checks": checks, "expected_pages": expected}
+    return {
+        "status": status,
+        "errors": errors,
+        "warnings": warnings,
+        "checks": checks,
+        "expected_pages": expected,
+    }
 
 
 def main() -> int:
