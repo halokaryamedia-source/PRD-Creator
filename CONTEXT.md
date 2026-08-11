@@ -85,7 +85,9 @@ HTML remains a professional document, not a dashboard.
 
 - `approved-document.html` is generic PRD presentation/runtime infrastructure;
 - stable component/runtime names describe function, not implementation history or a reference project;
-- project `document.version` is real document metadata, not presentation-patch numbering;
+- project `document.version` is real document/release metadata, not presentation-patch numbering or an edit counter;
+- normal drafting, rerendering, Humanize, review fixes, and representative tests keep the same document version;
+- version changes only for an explicit user/source revision or an intentionally declared release/handoff milestone;
 - Gameplay Journey and Full Production are the two reading views;
 - package terminology can be highlighted through the shared glossary index;
 - generated HTML is derived and is never manually patched.
