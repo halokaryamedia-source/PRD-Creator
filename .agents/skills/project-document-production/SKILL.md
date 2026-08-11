@@ -5,19 +5,7 @@ description: Semantic/product-contract owner for PRD-Creator Flow 2–4. Use for
 
 # Project Document Production
 
-Own Flow 2–4 semantic judgment. Detailed mechanics remain in `kits/project-document-generator/`.
-
-## Single Golden owner
-
-For the gameplay PRD family, **do not maintain a second Golden checklist here**.
-
-The mandatory document blueprint, required surfaces, Scoring / Result rules, mandatory-slot states, role completeness, and Humanize behavior are owned only by:
-
-```text
-kits/project-document-generator/CONTENT-CONTRACT.md
-```
-
-Flow 2, Flow 3, Flow 4, renderer policy, and acceptance must point to that contract instead of paraphrasing it into competing versions.
+Own Flow 2–4 semantic judgment. Detailed procedure and mechanics stay with the nearest kit owner.
 
 ## Authority chain
 
@@ -30,78 +18,61 @@ originals + current user instruction + approved decisions
 → acceptance / handoff
 ```
 
-Generated output never becomes project authority. Golden supplies document function/quality, not project-specific mechanics, counts, lore, scoring, or implementation facts.
+Generated output never becomes project authority. Golden/reference material supplies document function/quality, not project-specific mechanics, counts, lore, scoring, or implementation facts.
+
+## Single semantic owner
+
+Do not maintain another Golden checklist here. The gameplay PRD blueprint, mandatory surfaces, Scoring / Result rules, mandatory-slot states, role completeness, terminology/glossary semantics, and Humanize behavior are owned by:
+
+```text
+kits/project-document-generator/CONTENT-CONTRACT.md
+```
 
 ## Active owners
 
-- Flow 2 recovery/readiness → `SOURCE-INTAKE.md`
-- Golden mandatory content/quality → `CONTENT-CONTRACT.md`
-- projection/render mechanics → `RENDERING.md`
+- Flow 2 source recovery/readiness → `SOURCE-INTAKE.md`
+- Flow 3 content/quality → `CONTENT-CONTRACT.md`
+- projection/template mechanics → `RENDERING.md`
 - Flow 4 acceptance/handoff → `VALIDATION.md`
 
-Use only the smallest owner needed by the active problem.
+Use only the smallest owner needed by the current problem.
 
 ## Flow 2 judgment
 
-Flow 2 must recover enough production meaning that Flow 3 can fill every applicable mandatory Golden concern without guessing.
+Use `SOURCE-INTAKE.md` to recover enough supported project meaning that Flow 3 does not have to invent material behavior.
 
-Use this order:
-
-```text
-source authority + sufficient inspection
-→ explicit facts / exclusions / topology / terminology
-→ cross-role implications
-→ lifecycle / scoring-result / quantitative / operational clarity
-→ global-vs-local coherence
-→ Resolution Ladder
-→ impact propagation
-→ ready_for_prd | decision needed | blocked
-```
-
-For mandatory concerns, resolve meaning as defined by `CONTENT-CONTRACT.md`:
+Mandatory concerns resolve only as defined by `CONTENT-CONTRACT.md`:
 
 ```text
 Defined | Explicit No | Not Applicable | Blocked
 ```
 
-Do not create another checklist artifact or schema merely to store these labels. Use normal requirement state and explicit project wording.
-
-Before escalating to the user, use existing authority first, then safe Completion, then a responsible Proposal. Do not manufacture a recommendation when options are genuinely balanced.
+Before asking the user, use existing authority first, then safe Completion, then a responsible Proposal when evidence supports one. Do not create a second checklist/state framework around this process.
 
 ## Flow 3 judgment
 
-Flow 3 fills the fixed Golden shell with **minimum complete production detail**.
+Fill the fixed PRD family with **complete material production meaning without useless repetition**.
 
-Do not optimize for the smallest document. Optimize for a document that lets a new reader, Level Designer, and Developer work without reopening original source for material rules.
+A new reader, Level Designer, and Developer should not need original source to rediscover a material rule that belongs in the PRD.
 
-Apply the bounded Humanize behavior from `CONTENT-CONTRACT.md` after meaning is complete and before projection.
-
-If drafting exposes a material unresolved product/design decision, return it to Flow 2 instead of hiding it with polished prose or renderer-friendly values.
+Apply the bounded Humanize behavior from `CONTENT-CONTRACT.md` after meaning is complete. If authoring exposes an unresolved material decision, return it to Flow 2 instead of hiding it behind polished prose.
 
 ## Flow 4 judgment
 
-Perform one integrated semantic review using the relevant authoritative requirement/source evidence plus the current PRD.
+Use `VALIDATION.md` for one integrated semantic review against the current authoritative evidence and PRD.
 
-Use these lenses together:
+Critical/Major findings block readiness. A production role having to reopen source for an omitted material rule is Major.
 
-- New Reader / Player Context;
-- Level Designer;
-- Developer;
-- Project Consistency.
+Mechanical validation proves deterministic structure only; browser/visual claims require actual browser/visual evidence.
 
-The key question is not whether every page contains text. It is whether the mandatory Golden functions are fulfilled with current-project truth and every production role has the material information it needs.
+## Proof economy
 
-Critical/Major findings block readiness. A production role having to reopen original source for an omitted material rule is Major.
-
-## Context and proof economy
-
-- Do not load full Golden HTML during normal authoring.
-- Do not reread unchanged packages during bounded revision.
-- Mechanical validator proves deterministic structure only.
-- Default browser proof is targeted desktop-only unless the task explicitly requires mobile/responsive behavior.
-- Do not rerun Voice checks for PRD-only semantic work unless shared code actually changed.
-- Do not add word-count, row-count, semantic-similarity, or checksum machinery as a substitute for semantic review.
+- do not load the full reference/Golden HTML during normal authoring;
+- do not reread unchanged packages during bounded revisions;
+- default visual proof is targeted desktop-only unless the task is specifically mobile/responsive;
+- do not rerun Voice checks for PRD-only work unless shared code changed;
+- do not add word-count, row-count, semantic-similarity, snapshot, or checksum machinery as a substitute for semantic review.
 
 ## Boundary
 
-This skill owns PRD Flow 2–4 semantics only. Voice remains downstream. Never patch `final.html` as source of truth.
+This skill owns PRD Flow 2–4 semantics only. Renderer/validator mechanics stay in the kit, Voice stays downstream, and `final.html` is never edited as source of truth.
