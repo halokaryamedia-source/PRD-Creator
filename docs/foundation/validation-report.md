@@ -18,15 +18,15 @@ Root evidence labels remain authoritative. Static/GitHub proof must not be upgra
 
 Current working branch: `Local`.
 
-The latest correction work was performed through repository inspection and GitHub Actions only. The changed contracts therefore have **current repository/static proof**, while real-project/browser proof for those changed contracts remains deferred by user direction.
+The audited PRD-side Flow 1–4 correction set is complete at the **repository/static/regression** level. The latest changes were not re-executed on a current real project or browser, so those proof classes remain intentionally separate.
 
 | Flow | Current evidence state | Current note |
 |---|---|---|
-| 1. Repository Boot & Project Memory | **current repository/static proof** | Current-state owners separate current versus historical proof. |
-| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | Flow 4 now rejects only unambiguous persisted blockers that contradict `ready_for_prd`; this narrow guard has not been re-run on a current real project. |
-| 3. PRD Generation | **historical real-project proof + current static contract proof** | Earlier canonical PRD/rendering production was proven; current content→projection and projection→HTML bindings plus bilingual/scoring/grid corrections are regression/CI proven. |
-| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Current mechanical checks cover explicit Flow 2 readiness blockers, stale projection/HTML, and handoff-version consistency. |
-| 5. Voice Requirement Extraction | **historical real-project proof** | The Clockwork Vault previously exercised real Voice scope extraction. No current-revision Voice production proof was created by the current PRD-side correction batch. |
+| 1. Repository Boot & Project Memory | **current repository/static proof** | Current-state owners separate current versus historical proof; CI bookkeeping no longer requires chasing the newest run number after every documentation-only sync. |
+| 2. Source Intake & Requirement Recovery | **historical real-project proof + current static contract proof** | `ready_for_prd` now requires persisted source/requirement evidence owners, rejects unambiguous current blockers, and does not let an explicitly superseded source's old blocked inspection invalidate current readiness. |
+| 3. PRD Generation | **historical real-project proof + current static contract proof** | Existing stale-derivation guards remain; scoring display normalization and deterministic required Golden content presence are regression proven. |
+| 4. PRD Validation & Handoff | **historical real-project proof + current static contract proof** | Handoff now requires current version/path consistency and a compact acceptance record that actually authorizes `handoff_ready`. |
+| 5. Voice Requirement Extraction | **historical real-project proof** | The Clockwork Vault previously exercised real Voice scope extraction. No current-revision Voice hardening is claimed by this PRD-side batch. |
 | 6. Voice Script + DOCX | **historical real-project proof** | Earlier Voice ID/Type parity and DOCX generation were exercised. |
 | 7. Voice Validation & Delivery | **historical real-project proof** | Earlier real DOCX visual QA found/fixed the blank-page defect. Audio evidence for that proof remained `not_provided`. |
 
@@ -46,51 +46,69 @@ not:
 all later repository changes are automatically CURRENT-PROJECT VERIFIED
 ```
 
-## Current PRD false-green correction sequence
+## Current PRD-side correction set
 
-Current PRD-side contracts now protect these concrete cases:
+The current PRD contracts now protect these concrete cases:
 
-- Flow 4 rejects missing/ambiguous/non-ready `state/intake-state.yaml`;
-- if Flow 2 claims readiness, Flow 4 rejects only unambiguous persisted blockers already present in the existing state files:
-  - `requirement-register.yaml`: `approval_status: pending` or `recovery_class: blocked`;
-  - `source-inventory.yaml`: `inspection: blocked`;
-- `evidence_status: conflict` alone is intentionally **not** a blocker because conflicting evidence may already have a valid higher-authority/approved resolution;
-- approved proposals, targeted inspection, omitted defaults, optional/advisory ideas, and non-material open detail are not mechanically promoted into blockers;
-- `work/render-data.json` remains bound to current `work/content.md` through the narrow existing `canonical_content_sha256` field;
-- generated `output/final.html` remains bound to current `work/render-data.json` through one `render-data-sha256` marker;
-- Flow 4 → Flow 5 uses the existing `document.version` / `accepted_prd_version` lifecycle rather than adding another hash;
-- weighted scoring, intentional bilingual display text, and bounded wrapped-grid mechanics remain protected.
+- `state/intake-state.yaml` must explicitly report `ready_for_prd`;
+- `state/source-inventory.yaml` and `state/requirement-register.yaml` must both exist and contain at least one stable `SRC-###` / `REQ-###` entry before `ready_for_prd` can pass;
+- current requirement blockers `approval_status: pending` and `recovery_class: blocked` fail readiness;
+- current source `inspection: blocked` fails readiness, while an entry explicitly marked `status: superseded` does not block merely because that old source was unreadable/uninspected;
+- `evidence_status: conflict` alone remains nonblocking because a higher-authority approved resolution may already exist;
+- deterministic Golden slots that the gameplay PRD family already defines as mandatory cannot disappear silently: narrative presence, Gameplay Context/Main Objective/Result/player flow, Level Design overview/build requirement, Global Development overview/requirement, and Developer overview are mechanically checked for presence;
+- numeric weights and percentage strings render with one `%`; unweighted scoring components do not receive invented percentage markers or equal weights;
+- `work/render-data.json` remains bound to current `work/content.md` through the existing narrow `canonical_content_sha256` stale-projection guard;
+- generated `output/final.html` remains bound to current `work/render-data.json` through the existing `render-data-sha256` stale-render guard;
+- Flow 4 → Flow 5 continues to use existing `document.version` / `accepted_prd_version`, not another hash;
+- `validate_handoff.py` now rejects a `handoff_ready` state when `work/acceptance.md` says `needs_revision`, mechanical/review failure, explicit visual failure, or non-zero Critical/Major blockers;
+- `Visual sanity: NOT PROVEN` remains valid when no actual browser/page proof exists and is never promoted to visual PASS;
+- prior weighted-scoring, intentional bilingual display-text, and bounded wrapped-grid protections remain active.
 
-Repository/CI evidence for the final narrowed Flow 2 persisted-state behavior before documentation synchronization:
+## Stable repository proof anchor
+
+The executable correction set is anchored by:
 
 ```text
-70139643c799d451d5a671d5768392fb19ab1e4d  initial validator guard
-25104df7e15bad3ed424fd7dc7bcf50070ce29a2  initial focused regression tests
-432eef641b695102d7446337a297e35136d3bc95  Production Verify includes Flow 2 state contracts
-efcd194b33bce08519d6d586d6948f4bdae67949  remove ambiguous conflict-only blocker
-114df1b4c6a7de1c3359091a98338820d5a1adc5  prove resolved conflict remains allowed
+d37fa3655e62548aeec0be153b42bca6077cb9ad
+```
 
-Repository Verify #89 — PASS
-Production Verify #45 — PASS
+GitHub Actions on that implementation state recorded:
+
+```text
+Repository Verify #96 — PASS
+Production Verify #52 — PASS
 Project Document contracts — PASS
 ```
 
-These checks prove the exercised static/regression contracts. They do **not** prove current real-project recovery quality, browser appearance, or semantic completeness beyond the exact contracts implemented.
+The aligned kit validation procedure at:
 
-## Anti-overdevelopment decision — current interpretation
+```text
+ebf1e784850b5f2eb3b6229494e7dea6fa21feb3
+```
 
-PRD-Creator does not restore a broad checksum/revision framework, generic YAML/schema registry, semantic-comparison engine, package manifest system, or deep artifact-binding architecture merely for theoretical safety.
+also recorded:
 
-The two existing SHA boundaries remain narrow mechanical guards:
+```text
+Repository Verify #99 — PASS
+Production Verify #53 — PASS
+```
+
+These are **proof anchors**, not a requirement that this report be edited whenever a later documentation-only commit creates a newer run number. Live GitHub Actions remains the authoritative execution history for newer commits. Update this report when the evidence class, protected claim, or known limitation materially changes—not merely to chase CI numbering.
+
+## Anti-overdevelopment decision — final PRD-side interpretation
+
+PRD-Creator does not add a broad checksum/revision framework, generic YAML/schema registry, semantic-comparison engine, package manifest system, DOM/pixel scoring, or deep artifact-binding architecture merely for theoretical safety.
+
+The two existing SHA boundaries remain narrow mechanical stale-derivation guards:
 
 ```text
 content.md → render-data.json
 render-data.json → final.html
 ```
 
-No SHA was added for handoff or Flow 2 persisted-state consistency.
+The first does **not** prove semantic equivalence between canonical content and projection; semantic agreement remains part of Flow 4 review. The second is appropriate for the deterministic renderer boundary. No SHA was added for Flow 2 state, handoff, acceptance, or Voice.
 
-The Flow 2 check is not a YAML validator. It scans only exact, unambiguous blocker markers already meaningful to the production state and does not infer materiality from missing/optional fields.
+Do not extend the hash chain without a concrete failing current use case.
 
 ## Verification gates
 
@@ -119,13 +137,14 @@ The current revision still does not claim proof for:
 - practical Flow 2 recovery quality after the latest guards on a new/current real-project run;
 - browser visual fidelity of the latest renderer changes;
 - hidden semantic omissions or unresolved meaning that were never persisted with an unambiguous blocker marker;
+- semantic equivalence of `content.md` and `render-data.json` beyond revision binding + human/semantic review;
 - operator mistakes that change accepted PRD meaning without advancing the existing `document.version` lifecycle;
 - Flow 5 requirement completeness at the executable parser boundary;
 - current Voice requirement/script/DOCX revision integrity beyond existing Voice checks;
 - generated-audio quality without supplied/reviewed audio.
 
-These limitations are not permission to add broad preventive architecture. Address only concrete bounded defects/current needs through the smallest owner.
+These limitations are not permission to add preventive machinery. The next useful evidence for PRD Flow 2–4 is a representative current-project production run, not another generic guard.
 
 ## Current boundary
 
-The audited PRD-side false-ready boundary for unambiguous persisted Flow 2 blockers is closed at the static/regression level. Per current user direction, do not run local/manual real-project or browser proof until explicitly allowed.
+All **concrete PRD-side Flow 1–4 defects identified in the latest audit** are closed at the static/regression level. Further PRD guard work should be driven by a failing representative current-project run or another concrete defect, not by hypothetical completeness.
