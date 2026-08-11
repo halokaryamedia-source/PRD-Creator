@@ -7,53 +7,49 @@
 ```text
 work/content.md
 → work/render-data.json
-→ runtime template + renderer
+→ exact Golden template + deterministic projection
 → output/final.html
 ```
 
 The renderer does not invent project meaning and does not choose a new layout.
 
-## Canonical Golden artifact versus runtime shell
+## Exact Golden template identity
 
-Two different artifacts have different jobs and must not be conflated again:
+The repository intentionally keeps two paths pointing to the **same approved HTML bytes**:
 
 ```text
 template/golden-sample.html
-→ exact approved Golden reference artifact
-→ canonical evidence for visible composition, spacing, component order, navigation behavior and information-density review
+→ canonical Golden reference evidence
 
 template/approved-document.html
-→ maintained runtime shell consumed by renderer
-→ may be cleaned internally only when the rendered result still matches the canonical Golden artifact
+→ default runtime template alias used by renderer
 ```
 
-`golden-sample.html` is not a generic starter template and must not be replaced by a reduced or normalized interpretation of the reference. If the Golden Sample itself is intentionally redesigned, that requires explicit user approval and both the canonical artifact and runtime projection contract must be updated together.
-
-A refactor of `approved-document.html`, renderer class names, CSS organization, or runtime JS is acceptable only when it is representation-preserving. “Cleaner code” is not evidence that Golden fidelity was preserved.
-
-## Locked visible shell
-
-The generated HTML follows the Golden Sample page prototypes exactly:
+Both files must remain byte-identical to the approved Golden artifact. Current approved Git blob:
 
 ```text
-Overview
-Gameplay Flow
-  The Journey Begins
-  one page per gameplay package
-Development
-  Development Overview
-  Game System
-  Data and Reset
-  Gameplay Development
-Gameplay packages
-  Gameplay Overview
-  Level Design
-  Developer
+e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 ```
 
-For `N` packages the page count is `6 + 4N`.
+Do not replace either path with a cleaned, normalized, reconstructed, or generic interpretation. A visual redesign requires explicit user approval and a deliberate Golden revision.
 
-The canonical Golden reference uses these stable representative section IDs:
+The runtime may perform only non-visual project binding in a temporary in-memory/on-disk copy before projection:
+
+- strip Golden sample identity metadata;
+- namespace localStorage keys for the current project;
+- replace browser title/description/version metadata;
+- replace sidebar navigation;
+- replace document `<main>` pages;
+- replace glossary data;
+- bind render-data revision metadata.
+
+The repository template itself stays unchanged. Runtime preprocessing must not rewrite Golden CSS, JS behavior, DOM vocabulary, spacing, or component design.
+
+## Locked Golden DOM vocabulary
+
+Generated HTML must project into the same Golden DOM contract instead of generic aliases.
+
+Stable global page IDs:
 
 ```text
 development-overview  → Development Overview
@@ -62,21 +58,90 @@ shared-data-reset     → Data and Reset
 phase-development     → Gameplay Development
 ```
 
-Project data may use internal semantic IDs such as `game-system`, `data-reset`, or `gameplay-development`, but projection must map them to the visible Golden page family instead of leaking alternate names/structure into the final HTML.
+Stable opening Gameplay Flow ID:
+
+```text
+flow-start             → The Journey Begins
+```
+
+Package IDs remain:
+
+```text
+flow-<package>
+dev-<package>-requirement
+dev-<package>-level
+dev-<package>-developer
+```
+
+Golden phase/runtime binding uses:
+
+```text
+data-phase="dev-flow"
+data-phase="dev-system"
+data-phase="dev-<package>"
+data-clean-target="summary"
+```
+
+Golden navigation/component namespaces are preserved, including:
+
+```text
+phase-navigation
+phase-nav-item
+phase-nav-main
+phase-page-list
+phase-page-link professional-nav-item
+phase-context-grid
+quarry-development-flow
+quarry-design-flow
+quarry-dev-table
+quarry-overview-table
+quarry-build-table
+quarry-development-table
+quarry-sequence
+quarry-note-grid
+quarry-score-summary
+quarry-inline-score-table
+```
+
+Do not rename these to `package-*`, `global-*`, generic grid names, or other “cleaner” aliases. The runtime JavaScript and approved CSS are part of the Golden contract.
+
+## Locked page family
+
+```text
+01 Overview
+
+02 Gameplay Flow
+   The Journey Begins
+   one Gameplay Flow page per package
+
+03 Development
+   Development Overview
+   Game System
+   Data and Reset
+   Gameplay Development
+
+04+ Gameplay Packages
+   Gameplay Overview
+   Level Design
+   Developer
+```
+
+For `N` packages the page count is `6 + 4N`.
 
 ## Golden prototype rule
 
 The renderer may repeat project data inside the approved Golden components. It may not introduce a different visible component because the content is long or complex.
 
-In particular, do not render:
+Do not render:
 
 - Document Control or extra metadata panels on Overview;
 - orientation cards on Gameplay Flow;
-- numbered narrative-card replacements for Golden story-flow;
+- numbered-card replacements for Golden story-flow;
 - Trigger / System Behavior / Data / Expected Result matrices as Developer Flow;
 - a visible Acceptance & Verification panel on Developer pages;
 - Terms Used blocks on Level Design or Developer pages;
-- renamed Global Development pages or renamed Golden table headings.
+- renamed Global Development pages/table headings;
+- generic component namespaces that bypass Golden CSS/runtime behavior.
 
 If content does not fit clearly, improve or relocate the copy to the correct existing Golden surface. Do not redesign the page and do not delete material rules to make the surface look cleaner.
 
@@ -86,13 +151,13 @@ If content does not fit clearly, improve or relocate the copy to the correct exi
 
 The projection must preserve structured material meaning needed by Golden components:
 
-- several independent requirements in one canonical requirement group remain several visible bullets/rows;
+- several independent requirements in one canonical group remain several visible bullets/rows;
 - independently meaningful table children are not concatenated into one prose scalar;
-- Gameplay Flow paragraphs that represent different action/response/recovery states are not collapsed merely for brevity;
-- scoring/result/reset sub-rules remain independently readable in their approved Developer hierarchy;
-- glossary terms supported by canonical content are not silently dropped during projection.
+- Gameplay Flow action/response/recovery paragraphs remain distinct when they express distinct rules;
+- scoring/result/reset sub-rules remain independently readable in the approved Developer hierarchy;
+- package glossary terms are not silently removed by role-based projection.
 
-The renderer may transform representation, not meaning cardinality. If structured canonical detail cannot be represented by the current projection schema, fix the projection/schema owner rather than truncating the content.
+The renderer may transform representation, not meaning cardinality. If current projection cannot represent canonical detail, fix projection/schema ownership rather than truncating content.
 
 ## Visible package composition
 
@@ -146,42 +211,23 @@ Columns:
 No. | Setup | Development Requirements | Gameplay Function
 ```
 
-Scoring/result and Reset/Interruption stay inside the Development Requirements hierarchy.
+Scoring/result and Reset/Interruption stay inside Development Requirements.
 
 ## Glossary
 
-`packages[].terms` remains the canonical package glossary source.
+`packages[].terms` is the canonical package glossary source. Projection uses the complete package term set for that package's Golden phase scope; role filters must not silently reduce the visible/reference glossary.
 
-Inline highlighting may be role-scoped, but visible Terms Used follows Golden:
+Visible Terms Used follows Golden:
 
 ```text
-Gameplay Flow        yes
-Global Development   yes
-Gameplay Overview    yes
+Gameplay Flow        yes when terms exist
+Global Development   yes when terms exist
+Gameplay Overview    yes when terms exist
 Level Design         no
 Developer            no
 ```
 
-Terms Used never highlights its own definitions.
-
-## Template ownership
-
-`template/golden-sample.html` owns approved reference evidence for:
-
-- visible page composition and component order;
-- typography/spacing/reading rhythm;
-- sidebar/navigation hierarchy;
-- Overview / Full Detail behavior;
-- light/dark presentation;
-- glossary tooltip behavior;
-- responsive/print behavior;
-- representative information density.
-
-`template/approved-document.html` owns the maintained runtime implementation of that behavior. It may not silently redefine the Golden reference.
-
-The renderer owns only project metadata, pages, navigation contents, glossary data/scopes, language availability, storage namespace, and render revision binding.
-
-Never patch generated `final.html` manually.
+Inline highlighting may still appear on phase-owned prose. Terms Used never highlights its own definitions.
 
 ## Version
 
@@ -195,4 +241,4 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-The renderer/template organize approved meaning; they do not replace Flow 2 decisions or Flow 4 review.
+Never patch generated `final.html` manually. The renderer/template organize approved meaning; they do not replace Flow 2 decisions or Flow 4 review.

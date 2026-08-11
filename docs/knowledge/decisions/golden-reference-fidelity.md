@@ -7,41 +7,84 @@ Status: current
 
 A representative AFTERSHOCK v2.4 regeneration kept the expected 30-page family and reused the Golden visual CSS/runtime, yet materially diverged from the approved document. The generated `<main>` was substantially thinner: dense requirement lists, table rows/cells, glossary coverage, and multi-paragraph gameplay explanation were compressed or omitted even though the outer page shell still matched.
 
-Git history also showed that the exact approved Golden HTML had been replaced in the active template path by a cleaned runtime interpretation. That made the repository capable of testing a reconstructed shell without retaining the full approved reference as current evidence.
+Git history also showed two independent drift sources:
+
+1. the full approved Golden HTML had been replaced in the active runtime template path by a cleaned/reconstructed interpretation;
+2. renderer helpers/tests had normalized Golden IDs/classes (`phase-*`, `quarry-*`, exact global IDs) into generic aliases and then tested those aliases as if they were correct.
+
+That allowed a generated document to look approximately related to the reference while no longer using the same approved composition contract.
 
 ## Decision
 
-Keep two separate artifacts with separate authority:
+The exact approved Golden artifact is both the canonical reference and the runtime template source.
+
+The repository keeps two paths for clarity, but they intentionally point to identical bytes:
 
 ```text
 template/golden-sample.html
-→ exact approved Golden reference artifact
-→ canonical evidence for visible composition, interaction behavior, spacing, and representative information density
+→ canonical Golden evidence
 
 template/approved-document.html
-→ maintained runtime shell used by the renderer
-→ implementation may be refactored only when projection remains faithful to the Golden reference
+→ default runtime alias
 ```
 
-The Golden Sample remains **presentation/structure authority only**. It does not supply project-specific mechanics, story, scoring, counts, or implementation facts.
+Current approved Git blob:
 
-Flow 3 must also conserve every independently actionable material rule recovered from project authority. Humanize/concise writing may shorten wording, but may not delete or flatten distinct conditions, values, exceptions, recovery behavior, scoring/reset rules, build constraints, or observable results.
+```text
+e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
+```
 
-Flow 4 therefore requires a separate `Material Conservation: PASS` in addition to `Golden Fidelity: PASS` before a new handoff can be accepted.
+A cleaned, normalized, reconstructed, or generic alternative is not an acceptable replacement for either path.
 
-## Why
+The renderer may make only non-visual project-specific changes in a temporary copy during generation: sample identity metadata removal, localStorage namespacing, project metadata binding, navigation replacement, page-content replacement, glossary-data replacement, and render revision binding. The checked-in Golden CSS/runtime/DOM vocabulary remains unchanged.
 
-Page-count and component-presence checks can prove the shell while missing destructive semantic compression. Conversely, making the full approved document the runtime source would unnecessarily couple project facts to presentation. Separating the canonical reference from the runtime shell keeps the implementation maintainable while preserving exact evidence of what the renderer is required to reproduce.
+The Golden Sample remains **presentation/structure authority only**. It never supplies project-specific mechanics, story, scoring, counts, or implementation facts.
 
-## Supersedes
+Flow 3 must separately conserve every independently actionable material rule recovered from project authority. Humanize/concise writing may shorten wording, but may not delete or flatten distinct conditions, values, exceptions, recovery behavior, scoring/reset rules, build constraints, glossary meaning, or observable results.
 
-This decision supersedes the earlier shorthand that the “approved PRD template is preserved as a shell” when that wording is interpreted as allowing a reduced reconstruction to replace the full approved reference.
+Flow 4 therefore requires both:
 
-It also refines “Golden Samples are references, not project requirements”:
+```text
+Material Conservation: PASS
+Golden Fidelity: PASS
+```
+
+before a new handoff can be accepted.
+
+## Why exact runtime reuse is required
+
+The earlier idea of keeping a separate “maintainable runtime shell” was still too permissive. In practice it invited silent normalization of:
+
+- `flow-start` into alternate IDs;
+- `shared-systems`, `shared-data-reset`, and `phase-development` into `global-*` aliases;
+- `phase-nav-*` into `package-nav-*`;
+- `phase-context-grid` and `quarry-*` component names into generic grids/tables;
+- package glossary coverage into role-filtered subsets.
+
+Those changes were not harmless internals because the Approved CSS/JS targets those exact names and because they changed what the sample actually demonstrated.
+
+Using the exact Golden bytes as the runtime source avoids a second presentation implementation. Project facts remain safely dynamic because the renderer replaces only project-owned surfaces (`<main>`, navigation, glossary data, document metadata) rather than treating sample facts as authority.
+
+## Material-detail conservation
+
+Page-count and component-presence checks can prove a shell while missing destructive semantic compression. Therefore shape parity alone is not enough.
+
+For every independent source rule recovered in Flow 2, Flow 3 must retain one owned readable representation. Structured multi-rule content stays structured rather than being flattened into a single summary sentence for convenience.
+
+## Supersedes / refines
+
+This decision supersedes:
+
+- the shorthand that the “approved PRD template is preserved as a shell” when that wording permits a reduced reconstruction;
+- the initial 2026-08-12 split where `golden-sample.html` was exact but `approved-document.html` could remain a separate cleaned runtime interpretation.
+
+It refines “Golden Samples are references, not project requirements”:
 
 - still true for project facts/mechanics;
-- **not** true for the approved PRD's visible document composition and demonstrated information-density standard, which are binding representation requirements for this generator until the user explicitly approves a new Golden design.
+- **not** true for the explicitly approved visible document composition, runtime DOM vocabulary, interaction behavior, and demonstrated information-density standard.
 
 ## Proof boundary
 
-Repository and PRD CI may prove artifact retention, contract enforcement, and handoff gating. A regenerated project's visual parity still requires an actual browser/visual comparison; static checks do not claim that proof.
+Repository and PRD CI prove exact artifact retention, Golden DOM projection contracts, material-conservation handoff gating, and deterministic generation behavior.
+
+A freshly regenerated real AFTERSHOCK document still requires an actual browser/visual comparison before representative visual parity can be claimed. Static checks do not claim that proof.

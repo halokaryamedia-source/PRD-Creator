@@ -4,12 +4,12 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
-### Exact Golden reference and material-detail conservation are separate from the runtime shell
+### Exact Golden artifact is also the runtime template; material detail is conserved
 
-- **Decision:** keep the exact approved PRD artifact at `kits/project-document-generator/template/golden-sample.html` as canonical representation evidence, while `template/approved-document.html` remains the maintained runtime shell. Flow 3 must conserve every independently actionable material rule; Flow 4 requires `Material Conservation: PASS` separately from `Golden Fidelity: PASS` before new handoff.
-- **Reason:** AFTERSHOCK v2.4 proved that page count, CSS, IDs/classes, and component presence can all look correct while lists, rows, glossary coverage, and multi-rule content are materially compressed or omitted. A cleaned runtime interpretation is not sufficient evidence of exact Golden fidelity.
-- **Boundary:** Golden remains presentation/structure authority only and never supplies project-specific mechanics or facts. Runtime refactors are allowed only when representation remains faithful to the retained Golden reference.
-- **Supersedes/refines:** supersedes the old shorthand “Approved PRD template is preserved as a shell” when read as permission to replace the full reference with a reduced reconstruction; refines “Golden Samples are references, not project requirements” so it remains true for project facts but not for approved visible composition/information-density requirements.
+- **Decision:** keep `kits/project-document-generator/template/golden-sample.html` and `template/approved-document.html` byte-identical to the exact approved PRD artifact. The renderer may apply project-specific metadata/storage/navigation/content/glossary binding only to a temporary render copy. Flow 3 must conserve every independently actionable material rule; Flow 4 requires `Material Conservation: PASS` separately from `Golden Fidelity: PASS` before new handoff.
+- **Reason:** AFTERSHOCK v2.4 proved two separate drift modes: a matching page/CSS shell can still lose dense source meaning, and a cleaned/generic runtime reconstruction can silently rename Golden IDs/classes/components while its own tests certify the reconstruction instead of the Approved document.
+- **Boundary:** Golden remains presentation/structure/runtime-DOM authority only and never supplies project-specific mechanics or facts. Exact Golden names (`flow-start`, `shared-*`, `phase-*`, `quarry-*`, `data-phase`) are representation requirements; temporary project metadata/storage namespacing is non-visual runtime binding.
+- **Supersedes/refines:** supersedes both the old shorthand “Approved PRD template is preserved as a shell” and the initial 2026-08-12 idea that the exact Golden and a separate cleaned runtime shell could coexist. Refines “Golden Samples are references, not project requirements” so it remains true for project facts but not for explicitly approved visible composition/runtime behavior/information-density requirements.
 - **Owner:** `docs/knowledge/decisions/golden-reference-fidelity.md`.
 - **Date:** 2026-08-12
 
@@ -203,7 +203,7 @@ Use this note only for durable decisions whose reasons must survive future sessi
 ### Golden Samples are references, not project requirements
 
 - **Status:** refined by `docs/knowledge/decisions/golden-reference-fidelity.md`.
-- **Decision:** Golden/reference content never supplies project-specific facts; however the explicitly approved PRD Golden artifact is binding for visible document composition and demonstrated information-density/fidelity requirements until the user approves a new design.
+- **Decision:** Golden/reference content never supplies project-specific facts; however the explicitly approved PRD Golden artifact is binding for visible document composition, runtime behavior/DOM vocabulary, and demonstrated information-density/fidelity requirements until the user approves a new design.
 - **Date:** 2026-08-10
 
 ### Adopt BuildIT principles, not BuildIT domain structure 1:1
