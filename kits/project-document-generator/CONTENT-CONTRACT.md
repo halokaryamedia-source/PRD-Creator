@@ -89,6 +89,8 @@ Mandatory functions:
 
 Do not use a mutable approval status inside rendered Document Control. Flow 4 lifecycle state remains in acceptance/handoff state so approving the same PRD does not require a cosmetic rerender.
 
+Document Control is metadata, not a warning/note surface. Main Systems is production meaning, not metadata; presentation should keep those roles visually distinct.
+
 Terms Used appears only when project-specific production terminology materially helps the reader.
 
 ## 2. Gameplay Flow — The Journey Begins
@@ -119,6 +121,16 @@ entry / current situation
 → result
 → transition to the next stage
 ```
+
+Before the detailed beats, the reader should be able to orient quickly around three questions using already-approved project truth:
+
+```text
+What is the player trying to achieve here?
+Where did the player come from?
+Where does completion take the player next?
+```
+
+This orientation is a reading aid, not a new product requirement. Do not invent a goal, previous stage, or next destination to populate it.
 
 Keep this page focused on player experience and visible consequences. Exact durability rules, internal counters, duplicate-prevention logic, storage mechanics, and similar implementation detail belong in Gameplay Information or Developer unless the player directly experiences them.
 
@@ -275,6 +287,19 @@ Carry all material runtime-owned meaning supported by the project, including whe
 - transition/handoff;
 - implementation constraints that prevent materially wrong behavior.
 
+### Developer Flow reading contract
+
+Development Flow must preserve the lifecycle sequence **and** keep different kinds of information visibly distinguishable when they exist:
+
+```text
+Trigger / entry condition
+→ System Behavior
+→ Data / state affected
+→ Expected Result
+```
+
+Do not flatten these fields into one punctuation-heavy sentence merely to save space. A short step may omit a genuinely non-applicable field, but it must not hide material trigger, data, or result meaning that already exists.
+
 A Developer must not need original source to rediscover a material runtime requirement that belongs here.
 
 ## 8. Acceptance & Verification — mandatory per package
@@ -348,9 +373,33 @@ This block is not a dumping ground.
 
 A rule that changes the primary build/runtime behavior belongs in Build Requirements or Development Requirements. Use Critical Constraints & Notes only for warnings, cross-references, edge constraints, or production reminders that prevent mistakes but do not deserve a duplicate requirement row.
 
-## Terms Used
+## Terms Used and inline Glossary Index
 
-Use Terms Used only for project-specific or production-critical terminology that materially helps the page reader. Do not repeat every ordinary noun. Prefer local terms needed by that role; other definitions remain available through the shared glossary/tooltips.
+`packages[].terms` is the **canonical package term index** for this gameplay PRD family.
+
+A package term may define:
+
+- stable key;
+- canonical label;
+- concise production definition;
+- aliases when the same approved term appears in another written form;
+- role visibility when the term is relevant only to Gameplay, Level Design, or Developer readers.
+
+The same package term index serves both reading surfaces:
+
+```text
+inline occurrence in package-owned prose
+→ subtle glossary highlight / tooltip
+
+Terms Used block
+→ local index of terms relevant to that page/role
+```
+
+Do not maintain a second copy of package terminology inside `gameplay_flow[].terms`. Full package Gameplay Flow uses the owning package's term index. `The Journey Begins` may carry opening-specific terms only when they do not belong to a gameplay package.
+
+The Terms Used block itself is an index and must not recursively highlight its own definitions.
+
+Use glossary highlighting as a comprehension aid, not decoration. Highlight only approved project/production terms; do not turn ordinary nouns into glossary entries merely because they repeat often.
 
 ## Terminology style
 
@@ -396,15 +445,47 @@ Flow 3 fills the fixed shell using **minimum complete production detail**.
 
 Do not ask how little a page can contain and still look valid. Ask what supported material meaning that page must carry so its reader can work correctly without reopening source.
 
-After meaning is complete, apply one bounded Humanize pass:
+### Humanize: close the reader's next question
+
+After meaning is complete, apply one bounded Humanize pass. The governing test is:
+
+> **Before moving to the next idea, has this section answered the next reasonable production question created by the previous sentence?**
+
+Prefer an explicit causal sequence when the subject is behavioral:
+
+```text
+context / trigger
+→ action or system behavior
+→ response / state change
+→ consequence / result
+→ next state or handoff when relevant
+```
+
+Examples of questions that should not be left implicit when the approved meaning already answers them:
+
+```text
+When does this start?
+What does the player do?
+What does the system do in response?
+What changes after that?
+What happens if the player fails, retries, exits, or disconnects?
+When is the objective actually complete?
+What result is stored or displayed?
+Where does the player/system go next?
+```
+
+Humanize should:
 
 - explain context before instruction;
 - prefer cause → action → response → consequence;
 - turn comma-stacked dumps into readable sentences;
 - keep full Gameplay Flow as a readable player journey;
 - make role overviews explain the work before dense tables;
+- keep distinct technical fields visually/verbally distinct rather than compressing them into one sentence;
 - preserve exact technical facts;
 - do not add promotional language or unsupported detail.
+
+Humanize is not permission to answer a question that authority does not resolve. A material unanswered question returns to Flow 2 rather than being hidden behind fluent prose.
 
 ## Flow 4 acceptance rule
 
@@ -428,7 +509,8 @@ Mechanical presence is not semantic acceptance. Do not use word counts, row coun
 - Global Development preserves all four fixed functions with the canonical professional names;
 - Level Design and Developer carry complete material role-owned meaning;
 - every package has observable Acceptance & Verification criteria;
-- explanatory prose has received the Humanize pass;
+- package terminology uses the canonical package term index rather than duplicated per-surface copies;
+- explanatory prose has received the Humanize pass and does not leave already-resolved causal questions implicit;
 - material meaning remains traceable to source/recovery/approved decisions;
 - no material Proposal/Blocked item affects output;
 - no unresolved placeholder remains.
