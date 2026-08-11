@@ -1,84 +1,91 @@
 # Rules
 
-## 0. Preserve source provenance
+This file keeps only kit-wide invariants. Detailed Flow 2–4 procedure belongs to `SOURCE-INTAKE.md`, `CONTENT-CONTRACT.md`, `RENDERING.md`, and `VALIDATION.md`.
 
-- Keep original source files unchanged inside the active project package.
-- Record every source in `state/source-inventory.yaml` before using it as authority.
-- Distinguish authoritative source, supporting material, reference/golden material, and prior generated output.
-- Never silently resolve a material source conflict.
-- Do not ask the user for information already recoverable from source or approved state.
+## 1. Preserve authority and provenance
 
-## 1. Preserve project intent
+- Keep original project sources unchanged.
+- Record material evidence in `state/source-inventory.yaml` before relying on it as authority.
+- Distinguish authoritative, supporting, reference, and generated material.
+- Never silently choose between conflicting material claims.
+- Do not ask the user for information already recoverable from current authority/approved state.
 
-- Clarify/complete documentation without replacing original intent.
-- Do not silently change gameplay, mechanics, scoring, progression, learning objectives, win conditions, quantities, or runtime behavior.
-- Every design-changing addition is Proposal until explicitly approved.
+## 2. Preserve project intent
 
-## 2. Complete supported gaps
+- Clarification/Completion may improve documentation without changing project behavior.
+- A material design/product choice is a Proposal until explicitly approved.
+- Blocked material scope remains blocked; renderer/validator cannot solve it downstream.
+- Do not invent gameplay, scoring, progression, quantities, timing, architecture, or implementation behavior to make the document look complete.
 
-- Fill only what strong source/context supports without changing design intent.
-- Keep terminology, constraints, sequence, and scope aligned with source authority.
-- Use Completion only when one reliable evidence-backed result exists at the needed abstraction.
-- When multiple product/design choices remain, use the Flow 2 Resolution Ladder: responsible Proposal when one or a small tradeoff set can be formed; Blocked when evidence is insufficient/conflicting and no responsible proposal can be made.
-- Do not invent metrics merely to make qualitative intent appear precise.
+## 3. Canonical meaning stays upstream
 
-## 3. Approval boundary
+```text
+source + approved decisions
+→ requirement state
+→ work/content.md
+→ work/render-data.json
+→ output/final.html
+```
 
-- Supported Clarification/Completion may enter canonical content.
-- Proposal may not enter canonical content/final HTML before approval.
-- Blocked stops the affected required scope.
-- The model never self-approves a Proposal.
+`content.md` owns PRD meaning. Render projection and HTML are derived and may not add new project facts or decisions.
 
-## 4. Canonical content owns meaning
+If Flow 3/4 discovers a material product gap, return it to Flow 2.
 
-- `work/content.md` is the Flow 3/4 source of truth for PRD meaning.
-- Follow `CONTENT-CONTRACT.md` for hierarchy, role separation, scoring/completion, and critical information.
-- Do not use polished prose to hide unresolved critical information.
-- If Flow 3 discovers a material topology/lifecycle/numeric/clarity/global-local/known-constraint/product-decision gap, return it to Flow 2 instead of deciding it during drafting.
+## 4. Follow the single content contract
 
-## 5. Rendering projection is derived
+`CONTENT-CONTRACT.md` owns the gameplay PRD family: hierarchy, mandatory-slot meaning, role separation, scoring/result behavior, glossary semantics, and Humanize quality.
 
-- `work/render-data.json` exists only to render canonical content deterministically.
-- It must not add a fact, requirement, mechanic, quantity, score rule, or approval.
-- Canonical-content changes require projection regeneration before rerendering.
+Do not maintain a second Golden checklist or project-specific exception list in another rule file.
 
-## 6. Approved Template is fixed
+## 5. Generic template, no derived patching
 
-- Preserve shared CSS, JavaScript, class vocabulary, controls, sidebar shell, typography, spacing, responsive, and print behavior.
-- Project navigation/pages/glossary may be regenerated using the approved component vocabulary.
-- Do not redesign the visual system during project rendering.
+`template/approved-document.html` is generic PRD presentation/runtime infrastructure.
 
-## 7. Preserve Gameplay Package role ownership
+- Project rendering may replace project-owned metadata, pages, navigation, glossary data, package scope, and project storage namespace.
+- Stable presentation components are edited at the template/renderer owner when genuinely wrong.
+- Do not add reference-project names or internal iteration/version labels to active component names.
+- Do not manually patch `final.html`.
 
-- Production-relevant packages use Gameplay Overview → Level Design → Developer.
-- Do not force Aftershock-specific objective count, characters, mechanics, or page count onto another project.
-- Missing role information is a content/recovery problem, not permission to remove the role surface silently.
+## 6. Preserve package role ownership
 
-## 8. No hidden decisions during rendering or validation
+Production-relevant gameplay packages use:
 
-- Renderer/validator may expose defects but may not define product meaning.
-- A missing or conflicting product decision discovered in Flow 4 returns to Flow 2.
-- Flow 4 may fix wording only when the approved underlying meaning is already clear.
-- Never patch `final.html` to make an audit pass; fix its real canonical owner and rerender.
+```text
+Gameplay Overview
+→ Level Design
+→ Developer
+```
 
-## 9. Development-ready requires semantic evidence
+Reference-project mechanics/counts/content do not transfer to another project. Missing role-owned meaning is a recovery/content problem, not permission to silently remove the surface.
 
-- Mechanical validation alone cannot issue `development_ready`.
-- Flow 4 must audit New Reader, Level Designer, Developer, and Project Consistency perspectives.
-- Critical and Major findings block development-ready/team handoff.
-- Minor may remain only when meaning remains safe/implementable and the open item is recorded intentionally.
+## 7. Mechanical proof cannot replace semantic review
 
-## 10. Handoff status is revision-specific
+Renderer/validator may expose deterministic defects but may not define product meaning.
 
-- `document.version` is the existing lightweight PRD lifecycle revision used by downstream handoff; do not add another checksum/manifest layer for this boundary.
-- `state/handoff-state.yaml` records `accepted_prd_version` equal to the reviewed `document.version` and points to the current canonical/render/HTML/acceptance/handoff paths.
-- A later canonical **meaning** change that invalidates the accepted handoff must advance `document.version` and reopen `handoff-state.yaml` to `pending_review` before downstream use.
-- After the affected revision is rerendered/reviewed, Flow 4 may set `handoff_ready` again with the new accepted version.
-- Flow 5 must pass `validator/validate_handoff.py` before extraction; a non-ready state, version mismatch, or missing/current-path mismatch blocks entry.
-- `handoff_ready` does not imply client approval, implementation completion, QA completion, release approval, or Voice Production readiness.
+`development_ready` / team handoff requires Flow 4 semantic review. Critical/Major findings block readiness.
 
-## 11. Keep outputs minimal
+Visual PASS requires actual visual/browser evidence; static HTML inspection is not a visual PASS.
 
-- Produce only files required by the current flow/task.
-- Do not revive Archived builder schemas, Content Freeze ceremony, release reports, ZIP packaging, or multi-profile infrastructure without a concrete current need.
-- `No change required` remains valid.
+## 8. Handoff is revision-specific
+
+`document.version` is the existing PRD revision used by downstream handoff.
+
+When an accepted PRD's **meaning** changes materially:
+
+```text
+advance document.version
+→ reopen handoff state to pending review
+→ rerender/review affected revision
+→ restore handoff_ready only after acceptance
+```
+
+Do not add another revision/checksum/manifest framework for this boundary.
+
+`handoff_ready` means only that the current accepted PRD revision may enter the next production flow. It does not imply client approval, implementation completion, QA completion, release approval, or Voice readiness.
+
+## 9. Keep the system minimal
+
+- Produce only artifacts required by the active flow/task.
+- Reuse existing owners before creating new schemas, profiles, stages, reports, or frameworks.
+- Do not revive archived ceremony without a concrete current need.
+- `No change required` is valid.
