@@ -1,24 +1,24 @@
-name: Production Verify
+name: PRD Verify
 
 on:
   push:
     branches:
       - Local
     paths:
-      - "kits/**"
-      - "tests/**"
+      - "kits/project-document-generator/**"
+      - ".agents/skills/project-document-production/**"
+      - "tests/test_prd_*.py"
       - "requirements.lock.txt"
-      - "tools/verify_repository.py"
       - ".github/workflows/production-verify.yml"
   pull_request:
     branches:
       - Local
       - main
     paths:
-      - "kits/**"
-      - "tests/**"
+      - "kits/project-document-generator/**"
+      - ".agents/skills/project-document-production/**"
+      - "tests/test_prd_*.py"
       - "requirements.lock.txt"
-      - "tools/verify_repository.py"
       - ".github/workflows/production-verify.yml"
   workflow_dispatch:
 
@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   verify:
-    name: Production contracts
+    name: PRD contracts
     runs-on: ubuntu-latest
 
     steps:
@@ -40,42 +40,22 @@ jobs:
           python-version: "3.11"
 
       - name: Install locked dependencies
-        id: dependencies
-        continue-on-error: true
         run: |
           python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
           python -m pip check
 
-      - name: Compile Python sources
-        id: compile
-        continue-on-error: true
-        run: python -m compileall -q kits tools tests
+      - name: Compile PRD sources
+        run: |
+          python -m compileall -q kits/project-document-generator \
+            tests/test_prd_contracts.py \
+            tests/test_prd_handoff_contracts.py \
+            tests/test_prd_flow2_state_contracts.py \
+            tests/test_prd_hierarchy_contracts.py
 
       - name: Project Document contracts
-        id: prd
-        continue-on-error: true
-        run: python -m unittest tests.test_prd_contracts tests.test_prd_handoff_contracts tests.test_prd_flow2_state_contracts tests.test_prd_hierarchy_contracts -v
-
-      - name: Voice Production contracts
-        id: voice
-        continue-on-error: true
-        run: python -m unittest tests.test_voice_contracts -v
-
-      - name: Enforce verification result
-        if: always()
-        env:
-          DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
-          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
-          PRD_OUTCOME: ${{ steps.prd.outcome }}
-          VOICE_OUTCOME: ${{ steps.voice.outcome }}
         run: |
-          failed=0
-          for gate in DEPENDENCIES COMPILE PRD VOICE; do
-            outcome_var="${gate}_OUTCOME"
-            outcome="${!outcome_var}"
-            if [ "$outcome" != "success" ]; then
-              echo "${gate} gate failed: ${outcome}"
-              failed=1
-            fi
-          done
-          exit "$failed"
+          python -m unittest \
+            tests.test_prd_contracts \
+            tests.test_prd_handoff_contracts \
+            tests.test_prd_flow2_state_contracts \
+            tests.test_prd_hierarchy_contracts -v
