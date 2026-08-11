@@ -29,9 +29,9 @@ STORAGE_PREFIX_TOKEN = "__PRD_STORAGE_PREFIX__"
 TERM_ROLES = {"gameplay", "level_design", "developer"}
 MANDATORY_GLOBAL_SECTIONS = (
     ("development-overview", "Development Overview"),
-    ("game-system", "Session & Runtime System"),
-    ("data-reset", "Data, Recovery & Reset"),
-    ("gameplay-development", "Gameplay Package Integration"),
+    ("game-system", "Game System"),
+    ("data-reset", "Data and Reset"),
+    ("gameplay-development", "Gameplay Development"),
 )
 REQUIRED_OVERVIEW_FACT_KEYS = {"session-model", "target-playtime", "game-structure"}
 BILINGUAL_SCALAR_FIELDS = {
