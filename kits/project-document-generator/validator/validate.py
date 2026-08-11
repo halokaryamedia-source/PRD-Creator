@@ -23,6 +23,16 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 WEIGHT_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%?\s*$")
 INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
 INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
+FLOW2_EXPLICIT_BLOCKERS = {
+    "requirement-register.yaml": {
+        "approval_status": {"pending"},
+        "recovery_class": {"blocked"},
+        "evidence_status": {"conflict"},
+    },
+    "source-inventory.yaml": {
+        "inspection": {"blocked"},
+    },
+}
 
 
 class HtmlFacts(HTMLParser):
@@ -110,6 +120,33 @@ def flow2_readiness(path: Path) -> tuple[bool, str]:
     return True, "Flow 2 intake state explicitly reports ready_for_prd"
 
 
+def flow2_persisted_state_consistency(project: Path) -> tuple[bool, str]:
+    findings: list[str] = []
+
+    for filename, rules in FLOW2_EXPLICIT_BLOCKERS.items():
+        path = project / "state" / filename
+        if not path.is_file():
+            continue
+        for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            line = raw.split("#", 1)[0].strip()
+            if not line or ":" not in line:
+                continue
+            if line.startswith("-"):
+                line = line[1:].lstrip()
+            key, value = line.split(":", 1)
+            key = key.strip()
+            value = value.strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+                value = value[1:-1].strip()
+            normalized = value.casefold()
+            if key in rules and normalized in rules[key]:
+                findings.append(f"{filename}:{lineno} {key}={value!r}")
+
+    if findings:
+        return False, "explicit persisted Flow 2 blocker(s): " + "; ".join(findings)
+    return True, "no explicit persisted Flow 2 blocker marker contradicts ready_for_prd"
+
+
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
     ids = ["summary"]
     ids += [f'flow-{item["id"]}' for item in data.get("gameplay_flow", [])]
@@ -188,6 +225,9 @@ def validate(project: Path) -> dict[str, Any]:
 
     flow2_ready, flow2_detail = flow2_readiness(intake_path)
     check("flow2_ready_for_prd", flow2_ready, flow2_detail)
+    if flow2_ready:
+        flow2_consistent, flow2_consistency_detail = flow2_persisted_state_consistency(project)
+        check("flow2_persisted_state_consistent", flow2_consistent, flow2_consistency_detail)
     check("canonical_content_exists", content_path.is_file(), str(content_path))
     check("render_data_exists", data_path.is_file(), str(data_path))
     check("rendered_html_exists", html_path.is_file(), str(html_path))
