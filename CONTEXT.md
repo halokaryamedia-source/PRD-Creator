@@ -29,7 +29,7 @@ User effort stays low:
 - source is inventoried/triaged before deep reading;
 - only materially relevant evidence is read to the depth needed;
 - Flow 2 solves before asking: recover from authority, apply safe Completion, or form a responsible Proposal before escalating;
-- unresolved material decisions are grouped and explained in clear user-facing language;
+- unresolved material decisions are grouped and explained clearly;
 - bounded revisions update only affected scope;
 - internal state/evidence stays internal during normal delivery.
 
@@ -43,7 +43,7 @@ The approved Golden Sample defines the minimum document function for this gamepl
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
-Other Flow 2–4 owners point to that file instead of maintaining their own Golden checklists.
+Other Flow 2–4 owners point there instead of maintaining competing Golden checklists.
 
 The fixed family preserves:
 
@@ -63,7 +63,7 @@ Overview
      Developer
 ```
 
-Projects do not copy Golden-specific facts/counts/mechanics. They fill the fixed functions with current-project truth.
+Projects do not copy Golden-specific facts, counts, mechanics, lore, or scoring. They fill the fixed functions with current-project truth.
 
 Mandatory concerns resolve as:
 
@@ -79,22 +79,20 @@ Key interpretation:
 - every package states Objective Score or explicit No Objective Score;
 - internal scoring/result, player-facing display, and telemetry/export remain separate unless authority joins them;
 - Level Design and Developer pages carry complete material role-owned meaning;
-- package terms use one canonical package glossary index that powers both inline term help and Terms Used;
+- `packages[].terms` is the canonical package glossary index;
 - PRD prose is human-readable production language and closes already-resolved cause/action/result questions without changing exact technical facts.
 
-## Reading experience
+## Presentation direction
 
-HTML remains a professional document, not a dashboard. Current direction prioritizes clarity and scanability:
+HTML remains a professional document, not a dashboard.
 
-- clear reading orientation before dense detail;
-- structured Developer Flow rather than flattened requirement sentences;
-- active-focused package navigation;
-- readable production tables;
-- restrained inline glossary highlighting/tooltips;
-- distinct **Gameplay Journey** and **Full Production** reading modes;
-- desktop-first proof by default.
-
-Presentation improvements must not create or change project meaning.
+- the approved template is generic PRD infrastructure, not an AFTERSHOCK-derived artifact;
+- stable component/runtime names describe their function, not the reference project;
+- internal CSS/feature iterations do not appear as `V19`, `V94`, `v17-style`, or similar pseudo-versions;
+- legitimate `document.version` remains project metadata;
+- Gameplay Journey and Full Production are the two reading views;
+- package terminology can be highlighted through the shared glossary index;
+- generated HTML remains derived and is never manually patched.
 
 ## Proof direction
 
