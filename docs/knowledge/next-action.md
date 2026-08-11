@@ -49,21 +49,7 @@ A mandatory concern may not silently disappear.
 
 ## Professional content behavior
 
-The contract standardizes:
-
-- Overview Document Control;
-- chronological full Gameplay Flow;
-- separate Objective Sequence;
-- Failure / Retry / Recovery;
-- Result / Scoring Model;
-- Level Design Area / Spatial Constraint;
-- Developer/global Expected System Result;
-- Critical Constraints & Notes;
-- package Acceptance & Verification;
-- aggregate Final Result Contract ownership under Data, Recovery & Reset;
-- explicit Objective Score vs `No Objective Score`, player-facing display, telemetry/export, and final-result relationship;
-- English-only default unless bilingual copy is complete and reviewable;
-- Humanize prose that closes already-resolved trigger/action/response/result/next-state questions rather than leaving the reader to infer them.
+The contract standardizes Overview context/control, chronological Gameplay Flow, Objective Sequence, Failure / Retry / Recovery, Result / Scoring Model, role-specific production requirements, Acceptance & Verification, explicit scored/non-scored behavior, and bounded Humanize writing.
 
 ## Reading and glossary behavior
 
@@ -81,21 +67,18 @@ No second glossary engine is used.
 
 ## Generic template cleanup completed
 
-The old approved template still contained reference-project and implementation-history residue even though current PRD semantics were already generic.
+The old approved template contained reference-project and implementation-history residue even though current PRD semantics were already generic.
 
-That residue has now been removed from the active generator:
+The active generator has now removed:
 
-```text
-V90 / V94 / V1.2 style comments
-v14-style ... v18-style patch IDs
-aftershock-* hooks/storage/runtime names
-quarry-* component names
-obsolete phase-* presentation naming
-source-document / template-extraction revision metadata
-stacked visual-polish patch styles
-```
+- internal feature/CSS iteration labels used as pseudo-versions;
+- version-suffixed patch-style IDs;
+- reference-project runtime/storage/component names;
+- obsolete object/phase-specific presentation hooks;
+- extraction/source revision metadata;
+- stacked visual-polish patch layers.
 
-Current ownership is cleaner:
+Current ownership is:
 
 ```text
 CONTENT-CONTRACT.md
@@ -111,16 +94,16 @@ validator
 → current generic mechanical composition
 ```
 
-The real `document.version` remains valid project metadata. Internal feature/CSS iteration numbers are not treated as document versions and must not leak into template/component naming.
+The real `document.version` remains valid project metadata. Internal feature/CSS iteration numbers are not document versions and must not leak into template/component naming.
 
-A narrow regression guard prevents the known reference/patch-history tokens from returning to the approved template.
+A narrow regression guard prevents the known reference/patch-history categories from returning to the approved template.
 
 ## Focused implementation proof
 
-Current cleanup implementation gate:
+Current gate after implementation and rendering-boundary documentation alignment:
 
 ```text
-PRD Verify #88 — PASS
+PRD Verify #89 — PASS
 ```
 
 This is repository/regression evidence only. It is not a browser/visual PASS.
