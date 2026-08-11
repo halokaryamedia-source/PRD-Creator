@@ -10,7 +10,7 @@ Working branch: **`Local` only**.
 
 ## Completed PRD-side correction sequence
 
-The latest audit findings for PRD Flow 1–4 are closed at the repository/static/regression level:
+The latest audit findings and final hierarchy contradiction pass for PRD Flow 1–4 are closed at the repository/static/regression level:
 
 ```text
 Flow 2 intake declaration
@@ -19,7 +19,7 @@ Flow 2 intake declaration
 work/content.md
 ↓ canonical_content_sha256
 work/render-data.json
-↓ required Golden content + scoring/render contracts
+↓ required Golden hierarchy/content + scoring/render contracts
 ↓ render-data-sha256
 output/final.html
 ↓ Flow 4 mechanical + multi-lens acceptance
@@ -38,31 +38,32 @@ Current protections include:
   - current source `inspection: blocked`;
 - a source explicitly marked `status: superseded` does not block merely because its old inspection state is `blocked`;
 - `evidence_status: conflict` alone remains allowed because the conflict may already have a valid higher-authority/approved resolution;
-- required Golden content presence is mechanically guarded for the existing gameplay PRD family: narrative presence, Gameplay Context/Main Objective/Result/player flow, Level Design overview/build requirement, Global Development overview/requirement, and Developer overview;
+- the gameplay PRD hierarchy cannot silently collapse: at least one Gameplay Flow, one Global Development page, and one Gameplay Package are required;
+- required Golden content presence is mechanically guarded: narrative presence, Gameplay Context/Main Objective/Result/player flow, Level Design overview/build requirement, Global Development overview/requirement, and Developer overview;
 - numeric and percentage-string scoring weights render consistently with one `%`; unweighted scoring does not invent percentage markers;
 - existing `content.md → render-data.json` and `render-data.json → final.html` SHA guards remain unchanged and narrow;
 - Flow 4 → Flow 5 continues to use existing `document.version` / `accepted_prd_version`; no handoff SHA was added;
-- `validate_handoff.py` now requires `work/acceptance.md` to actually authorize `handoff_ready`: Mechanical and all four semantic lenses PASS, Critical/Major are zero, and Visual sanity is `PASS` or honestly `NOT PROVEN`;
+- `validate_handoff.py` requires `work/acceptance.md` to actually authorize `handoff_ready`: Mechanical and all four semantic lenses PASS, Critical/Major are zero, and Visual sanity is `PASS` or honestly `NOT PROVEN`;
 - explicit `Visual sanity: FAIL` blocks handoff; `NOT PROVEN` is never upgraded into a visual claim;
-- earlier bilingual display-text, scoring-total, generated-page, and wrapped Golden-grid guards remain active.
+- earlier bilingual display-text, scoring-total, generated-page/navigation, and wrapped Golden-grid guards remain active.
 
 ## Current proof
 
-Stable implementation proof anchor:
+Final executable PRD-side proof anchor:
 
 ```text
-d37fa3655e62548aeec0be153b42bca6077cb9ad
-Repository Verify #96 — PASS
-Production Verify #52 — PASS
+3ccbf5196d3d3e4c173c440f0a2b5e0d2211a671
+Repository Verify #104 — PASS
+Production Verify #56 — PASS
 Project Document contracts — PASS
 ```
 
-Aligned kit validation procedure:
+Aligned canonical validation procedure:
 
 ```text
-ebf1e784850b5f2eb3b6229494e7dea6fa21feb3
-Repository Verify #99 — PASS
-Production Verify #53 — PASS
+207f8c9e4aa0d0602b74c60c13c6c69fccdcc7e7
+Repository Verify #105 — PASS
+Production Verify #57 — PASS
 ```
 
 These run numbers are proof anchors, not running state that documentation must chase after every later docs-only commit. Live GitHub Actions owns newer execution history.
@@ -72,7 +73,7 @@ This remains **repository/static/regression proof**. It does not prove current r
 ## Explicit boundaries
 
 - the bounded SRC/REQ entry reader is not a generic YAML parser/schema;
-- required-content checks prove presence only, not semantic quality;
+- required-hierarchy/content checks prove deterministic presence only, not semantic quality;
 - `canonical_content_sha256` catches accidental stale projection but does not prove semantic equivalence between `content.md` and `render-data.json`;
 - no new SHA/checksum, manifest, revision registry, semantic similarity engine, DOM snapshot, pixel comparison, or materiality classifier was added;
 - no Voice Flow 5–7 behavior was changed in this correction sequence;
