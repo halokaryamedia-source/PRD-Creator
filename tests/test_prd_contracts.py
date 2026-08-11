@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
 VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
 APPROVED_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "approved-document.html"
+GOLDEN_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "golden-sample.html"
 BILINGUAL_SCALAR_FIELDS = {
     "canonical_content_sha256", "id", "key", "code", "version", "brand_mark",
     "languages", "roles", "weight", "step", "no", "number", "formula",
@@ -267,8 +268,16 @@ class ProjectDocumentContracts(unittest.TestCase):
             "Fail Condition", "Scoring Criteria", "Area Size", "Build and Visual Requirements",
             "Important Build Notes", "Development Flow", "Development Requirements",
             "Gameplay Function", "Important Development Notes", "story-flow", "Terms Used",
-            'data-glossary-scope="core-gameplay"', 'data-glossary-scope="core-level-design"',
-            'data-glossary-scope="core-developer"', 'data-page-role="gameplay-flow"',
+            'id="flow-start"', 'id="development-overview"', 'id="shared-systems"',
+            'id="shared-data-reset"', 'id="phase-development"',
+            'data-phase="dev-flow"', 'data-phase="dev-core"',
+            'class="nav-submenu phase-navigation"', 'class="phase-nav-item"',
+            'class="phase-nav-main"', 'class="phase-page-link professional-nav-item"',
+            'class="phase-context-grid"', 'class="flow quarry-development-flow"',
+            'class="production-table phase-overview-table quarry-overview-table"',
+            'class="role-sequence quarry-sequence"', 'class="production-table quarry-build-table"',
+            'class="production-table quarry-development-table"', 'class="outcome quarry-note-grid"',
+            'class="quarry-score-summary"',
         )
         for text in required:
             self.assertIn(text, html)
@@ -279,40 +288,50 @@ class ProjectDocumentContracts(unittest.TestCase):
             "Failure / Retry / Recovery", "Result / Scoring Model", "Area / Spatial Constraint",
             "Expected System Result", "Critical Constraints &amp; Notes", "Acceptance &amp; Verification",
             "flow-orientation", "developer-flow", "System Behavior",
+            "package-context-grid", "package-nav-main", "package-page-link", "package-navigation",
+            "development-flow-grid", "design-flow-grid", "build-requirements-table",
+            "development-requirements-table", "objective-sequence", 'data-glossary-scope=',
         )
         for text in forbidden:
             self.assertNotIn(text, html)
 
         level_section = re.search(r'<section[^>]+id="dev-core-level".*?</section>', html, re.S)
         developer_section = re.search(r'<section[^>]+id="dev-core-developer".*?</section>', html, re.S)
+        gameplay_section = re.search(r'<section[^>]+id="dev-core-requirement".*?</section>', html, re.S)
         self.assertIsNotNone(level_section)
         self.assertIsNotNone(developer_section)
+        self.assertIsNotNone(gameplay_section)
         self.assertNotIn("Terms Used", level_section.group(0))
         self.assertNotIn("Terms Used", developer_section.group(0))
+        self.assertIn("Fixture Score", gameplay_section.group(0))
 
         glossary_match = re.search(r"const glossary = (.*?);\n\s*const tooltip =", html, re.S)
         self.assertIsNotNone(glossary_match)
         glossary_data = json.loads(glossary_match.group(1))
-        self.assertEqual({item["key"] for item in glossary_data["core-gameplay"]}, {"core-trial", "fixture-score"})
-        self.assertEqual({item["key"] for item in glossary_data["core-level-design"]}, {"core-trial"})
-        self.assertEqual({item["key"] for item in glossary_data["core-developer"]}, {"core-trial", "fixture-score"})
+        self.assertEqual(set(glossary_data), {"core"})
+        self.assertEqual({item["key"] for item in glossary_data["core"]}, {"core-trial", "fixture-score"})
 
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         result = json.loads(validated.stdout)
         self.assertEqual(result["status"], "pass")
-        self.assertEqual(len(result["expected_pages"]), 10)
+        self.assertEqual(
+            result["expected_pages"],
+            [
+                "summary", "flow-start", "flow-core", "development-overview", "shared-systems",
+                "shared-data-reset", "phase-development", "dev-core-requirement", "dev-core-level",
+                "dev-core-developer",
+            ],
+        )
 
-    def test_template_has_no_reference_or_patch_history_slop(self) -> None:
+    def test_runtime_template_is_the_exact_golden_artifact(self) -> None:
+        self.assertEqual(APPROVED_TEMPLATE.read_bytes(), GOLDEN_TEMPLATE.read_bytes())
         template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
-        for forbidden in (
-            "aftershock-", "quarry-", "phase-", "V90", "V94", "V1.2", "v14-style",
-            "v15-style", "v16-style", "v17-style", "v18-style", "golden-sample-version",
-            "source-document", "template-extraction-version",
-        ):
-            self.assertNotIn(forbidden, template)
-        self.assertEqual(template.count("<style>"), 1)
-        self.assertIn("__PRD_STORAGE_PREFIX__", template)
+        self.assertIn('name="golden-sample-id" content="aftershock"', template)
+        self.assertIn("quarry-", template)
+        self.assertIn("phase-nav-", template)
+        self.assertNotIn("__PRD_STORAGE_PREFIX__", template)
+        self.assertGreater(template.count("<style"), 1)
 
     def test_renderer_rejects_missing_mandatory_golden_functions(self) -> None:
         variants = {
@@ -355,6 +374,8 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
         self.assertIn("No Objective Score", html)
+        self.assertIn("quarry-score-summary phase-score-summary", html)
+        self.assertIn("score-table-wrap quarry-inline-score-table phase-inline-score-table", html)
 
     def test_percentage_string_does_not_render_double_percent(self) -> None:
         data = render_data()
@@ -395,6 +416,16 @@ class ProjectDocumentContracts(unittest.TestCase):
         html = (project / "output" / "final.html").read_text(encoding="utf-8")
         self.assertNotIn(payload, html)
         self.assertIn(r"\u003c/script\u003e", html)
+
+    def test_default_runtime_strips_sample_identity_but_keeps_golden_runtime(self) -> None:
+        project = self.make_project(render_data())
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        self.assertNotIn('name="golden-sample-id"', html)
+        self.assertNotIn('name="source-document"', html)
+        self.assertIn("prd-contract-fixture-document-theme", html)
+        self.assertNotIn("aftershock-document-theme", html)
 
     def test_template_requires_current_golden_shell_markers(self) -> None:
         project = self.make_project(render_data())

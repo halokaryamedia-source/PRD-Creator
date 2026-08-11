@@ -69,7 +69,7 @@ def production_table(headers: list[Any], rows_html: list[str], cls: str) -> str:
     )
 
 
-def terms(items: list[dict[str, Any]], panel_id: str) -> str:
+def terms(items: list[dict[str, Any]], panel_id: str, *, glossary_enabled: bool = True) -> str:
     if not items:
         return ""
     rows = "".join(
@@ -78,6 +78,9 @@ def terms(items: list[dict[str, Any]], panel_id: str) -> str:
         f'<p>{i18n(item.get("definition", ""))}</p></div>'
         for item in items
     )
+    definition_classes = "definition-list quarry-definition-list"
+    if glossary_enabled:
+        definition_classes += " glossary-definition-list"
     return (
         '<details class="terms-used-collapsible" data-terms-used=""><summary '
         f'aria-controls="{esc(panel_id)}" class="terms-used-summary">'
@@ -88,7 +91,7 @@ def terms(items: list[dict[str, Any]], panel_id: str) -> str:
         f'<span class="terms-used-hide-label">{i18n(bi("Hide Details", "Sembunyikan Detail"))}</span>'
         '<span aria-hidden="true" class="terms-used-chevron"></span></span></summary>'
         f'<div class="terms-used-panel" id="{esc(panel_id)}">'
-        f'<div class="definition-list glossary-definition-list">{rows}</div></div></details>'
+        f'<div class="{definition_classes}">{rows}</div></div></details>'
     )
 
 
@@ -98,7 +101,7 @@ def cards(items: list[tuple[Any, Any]]) -> str:
         for label, value in items
         if present(value)
     )
-    return f'<div class="package-context-grid">{body}</div>' if body else ""
+    return f'<div class="phase-context-grid">{body}</div>' if body else ""
 
 
 def context_block(label: Any, value: Any) -> str:
@@ -125,8 +128,7 @@ def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
             f'<article><b>{i18n(str(step).zfill(2))}</b><strong>{i18n(title)}</strong>'
             f'<p>{i18n(description)}</p></article>'
         )
-    columns = min(len(body), 4)
-    return f'<div class="flow {esc(cls)}" style="--prd-flow-columns:{columns}">{"".join(body)}</div>'
+    return f'<div class="flow {esc(cls)}">{"".join(body)}</div>'
 
 
 def sequence(items: list[dict[str, Any]]) -> str:
@@ -139,7 +141,7 @@ def sequence(items: list[dict[str, Any]]) -> str:
         result = item.get("result")
         text = join_text(description, result, sep=" — ") if present(result) else description
         body.append(f'<div class="role-step"><div><strong>{i18n(title)}</strong><p>{i18n(text)}</p></div></div>')
-    return f'<div class="role-sequence objective-sequence">{"".join(body)}</div>'
+    return f'<div class="role-sequence quarry-sequence">{"".join(body)}</div>'
 
 
 def note_grid(items: list[Any]) -> str:
@@ -154,7 +156,7 @@ def note_grid(items: list[Any]) -> str:
             title = bi("Important Note", "Catatan Penting")
             description = item
         body.append(f'<article><b>{i18n(title)}</b><p>{i18n(description)}</p></article>')
-    return f'<div class="outcome note-grid">{"".join(body)}</div>'
+    return f'<div class="outcome quarry-note-grid">{"".join(body)}</div>'
 
 
 def page(
@@ -165,23 +167,21 @@ def page(
     *,
     context: Any = "",
     classes: str = "sheet",
-    package_id: str = "",
-    glossary_scope: str = "",
-    journey_target: str = "",
+    phase: str = "",
+    clean_target: str = "",
     role: str = "",
     brand: Any = "",
     header: Any = "",
     footer_title: Any = "",
 ) -> str:
-    attrs = [f'class="{esc(classes)}"', f'id="{esc(pid)}"']
-    if package_id:
-        attrs.append(f'data-package="{esc(package_id)}"')
-    if glossary_scope:
-        attrs.append(f'data-glossary-scope="{esc(glossary_scope)}"')
-    if journey_target:
-        attrs.append(f'data-journey-target="{esc(journey_target)}"')
+    attrs = [f'class="{esc(classes)}"']
+    if clean_target:
+        attrs.append(f'data-clean-target="{esc(clean_target)}"')
     if role:
         attrs.append(f'data-page-role="{esc(role)}"')
+    if phase:
+        attrs.append(f'data-phase="{esc(phase)}"')
+    attrs.append(f'id="{esc(pid)}"')
     header_value = header or bi("Gameplay & Development Specification", "Spesifikasi Gameplay & Pengembangan")
     footer_brand = brand or title
     footer_copy = footer_title or title
@@ -226,12 +226,12 @@ def weight_text(value: Any) -> str:
     return f"{value}%"
 
 
-def _score_table(headers: list[Any], rows: list[str]) -> str:
+def _score_table(headers: list[Any], rows: list[str], classes: str = "score-table-wrap quarry-inline-score-table") -> str:
     if not rows:
         return ""
     head = "".join(f"<th>{i18n(value)}</th>" for value in headers)
     return (
-        '<div class="score-table-wrap inline-score-table">'
+        f'<div class="{esc(classes)}">'
         f'<table class="score-table"><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
     )
 
@@ -265,7 +265,7 @@ def score_html(data: dict[str, Any]) -> str:
             for item in components
         ]
         formula = {"en": " + ".join(en_parts), "id": " + ".join(id_parts)}
-    summary = f'<div class="result-summary"><strong>{i18n(score_name)}</strong>'
+    summary = f'<div class="quarry-score-summary"><strong>{i18n(score_name)}</strong>'
     if present(scale):
         summary += f'<span>{i18n(scale)}</span>'
     if present(formula):
@@ -307,7 +307,7 @@ def completion_html(data: dict[str, Any]) -> str:
         else bi("No Objective Score", "Tanpa Objective Score")
     )
     summary = (
-        f'<div class="result-summary"><strong>{i18n(name)}</strong><span>{i18n(status)}</span>'
+        f'<div class="quarry-score-summary phase-score-summary"><strong>{i18n(name)}</strong><span>{i18n(status)}</span>'
         f'<p>{i18n(data.get("summary") or data.get("handoff_result") or "")}</p></div>'
     )
     rows = []
@@ -328,6 +328,7 @@ def completion_html(data: dict[str, Any]) -> str:
         + _score_table(
             [bi("Component", "Komponen"), bi("Status", "Status"), bi("Required Rule", "Aturan Wajib")],
             rows,
+            "score-table-wrap quarry-inline-score-table phase-inline-score-table",
         )
         + _result_context(data)
     )

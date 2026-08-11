@@ -32,6 +32,13 @@ GOLDEN_GLOBAL_TITLES = {
     "gameplay-development": bi("Gameplay Development", "Gameplay Development"),
 }
 
+GOLDEN_GLOBAL_PAGE_IDS = {
+    "development-overview": "development-overview",
+    "game-system": "shared-systems",
+    "data-reset": "shared-data-reset",
+    "gameplay-development": "phase-development",
+}
+
 
 def heading(value: Any) -> str:
     return f'<h3 class="package-section-heading">{i18n(value)}</h3>'
@@ -40,19 +47,6 @@ def heading(value: Any) -> str:
 def _require_count(items: list[Any], expected: int, context: str) -> None:
     if len(items) != expected:
         raise ValueError(f"{context} must contain exactly {expected} items to match the Golden page prototype")
-
-
-def _visible_package_terms(pkg: dict[str, Any], role: str) -> list[dict[str, Any]]:
-    visible: list[dict[str, Any]] = []
-    for term in pkg.get("terms", []):
-        roles = term.get("roles")
-        if roles is None or role in roles:
-            visible.append(term)
-    return visible
-
-
-def _glossary_scope(package_id: str, role: str) -> str:
-    return f"{package_id}-{role.replace('_', '-')}"
 
 
 def _summary_note(items: Any) -> str:
@@ -98,6 +92,7 @@ def overview(data: dict[str, Any]) -> str:
         f'<p>{i18n(item.get("description", ""))}</p></article>'
         for index, item in enumerate(journey_items, 1)
     )
+    journey_style = "" if len(journey_items) == 6 else f' style="grid-template-columns:repeat({max(1, min(len(journey_items), 6))},1fr)"'
 
     body = (
         '<div class="cover-rule"></div>'
@@ -107,7 +102,7 @@ def overview(data: dict[str, Any]) -> str:
         f'<p class="lead">{i18n(overview_data.get("project_context", ""))}</p>'
         f'<div class="facts three">{facts_html}</div>'
         f'<h3>{i18n(bi("Complete Gameplay Journey", "Perjalanan Gameplay Lengkap"))}</h3>'
-        f'<div class="journey" style="--prd-journey-columns:{min(len(journey_items), 6)}">{journey_html}</div>'
+        f'<div class="journey"{journey_style}>{journey_html}</div>'
     )
     direction = overview_data.get("global_gameplay_direction") or overview_data.get("main_systems", [])
     body += _summary_note(direction)
@@ -122,7 +117,7 @@ def overview(data: dict[str, Any]) -> str:
         bi("Overview", "Gambaran Umum"),
         body,
         context=context,
-        classes="sheet",
+        classes="sheet clean-visible",
         brand=brand,
         footer_title=bi("Overview", "Gambaran Umum"),
     )
@@ -149,6 +144,14 @@ def _story_flow(item: dict[str, Any]) -> str:
     return "".join(body)
 
 
+def flow_page_id(item: dict[str, Any], index: int) -> str:
+    return "flow-start" if index == 0 else f'flow-{item["id"]}'
+
+
+def flow_phase(item: dict[str, Any], index: int) -> str:
+    return "dev-flow" if index == 0 else f'dev-{item["id"]}'
+
+
 def flow_pages(data: dict[str, Any]) -> list[str]:
     pages: list[str] = []
     brand = data["document"].get("brand") or data["document"]["title"]
@@ -156,7 +159,7 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
     packages = {pkg["id"]: pkg for pkg in data.get("packages", [])}
 
     for index, item in enumerate(flow_items):
-        page_id = f'flow-{item["id"]}'
+        page_id = flow_page_id(item, index)
         pkg = packages.get(item["id"])
         body = f'<h2>{i18n(item.get("display_title") or item.get("title", ""))}</h2>'
         if item.get("eyebrow"):
@@ -165,15 +168,8 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
             body += f'<p class="section-intro">{i18n(item["narrative_context"])}</p>'
         body += _story_flow(item)
 
-        if pkg is not None:
-            visible_terms = _visible_package_terms(pkg, "gameplay")
-            glossary_scope = _glossary_scope(pkg["id"], "gameplay")
-            package_id = pkg["id"]
-        else:
-            visible_terms = item.get("terms", [])
-            glossary_scope = f'{item["id"]}-opening' if visible_terms else ""
-            package_id = ""
-        body += terms(visible_terms, f"{page_id}-terms-used-details")
+        visible_terms = pkg.get("terms", []) if pkg is not None else item.get("terms", [])
+        body += terms(visible_terms, f"{page_id}-terms-used-details", glossary_enabled=True)
 
         context = item.get("context_label") or item.get("title", "")
         pages.append(
@@ -186,10 +182,9 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
                 header=bi("02 — Gameplay Flow", "02 — Alur Gameplay"),
                 footer_title=join_text(bi("Gameplay Flow", "Alur Gameplay"), item.get("title", ""), sep=" · "),
                 brand=brand,
-                package_id=package_id,
-                glossary_scope=glossary_scope,
+                phase=flow_phase(item, index),
                 role="gameplay-flow",
-                classes="sheet gameplay-flow-page story-page glossary-enabled-page",
+                classes="sheet clean-visible story-page glossary-enabled-page",
             )
         )
     return pages
@@ -199,10 +194,14 @@ def _golden_global_title(item: dict[str, Any]) -> Any:
     return GOLDEN_GLOBAL_TITLES.get(item.get("id"), item.get("title", ""))
 
 
+def global_page_id(item: dict[str, Any]) -> str:
+    return GOLDEN_GLOBAL_PAGE_IDS.get(item.get("id"), f'global-{item.get("id", "section")}')
+
+
 def _global_tabs(items: list[dict[str, Any]], active_id: str) -> str:
     links = []
     for index, item in enumerate(items, 1):
-        target = f'global-{item["id"]}'
+        target = global_page_id(item)
         active = item["id"] == active_id
         active_class = " is-active" if active else ""
         current = ' aria-current="page"' if active else ""
@@ -222,7 +221,7 @@ def _requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
         group_title = group.get("title") or group.get("group_title") or ""
         if present(group_title):
             rows.append(
-                f'<tr class="requirement-group-row"><td><b>{group_index}</b></td>'
+                f'<tr class="quarry-group-row"><td><b>{group_index}</b></td>'
                 f'<td colspan="3"><b>{i18n(group_title)}</b></td></tr>'
             )
         for item_index, item in enumerate(items):
@@ -239,13 +238,33 @@ def _requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
     return rows
 
 
+def _dedupe_terms(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    output: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items:
+        key = str(item.get("key") or txt(item.get("label") or item.get("term") or "")["en"]).casefold()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        output.append(item)
+    return output
+
+
+def _global_terms(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    terms_all: list[dict[str, Any]] = []
+    for item in items:
+        terms_all.extend(term for term in item.get("terms", []) if isinstance(term, dict))
+    return _dedupe_terms(terms_all)
+
+
 def global_pages(data: dict[str, Any]) -> list[str]:
     pages: list[str] = []
     items = data.get("global_development", [])
     brand = data["document"].get("brand") or data["document"]["title"]
+    system_terms = _global_terms(items)
 
     for index, item in enumerate(items):
-        page_id = f'global-{item["id"]}'
+        page_id = global_page_id(item)
         title = _golden_global_title(item)
         flow = [entry for entry in item.get("flow", []) if isinstance(entry, dict)]
         notes = item.get("notes", [])
@@ -253,22 +272,22 @@ def global_pages(data: dict[str, Any]) -> list[str]:
         _require_count(notes, 4, f"global_development[{index}].notes")
 
         body = (
-            f'<h2 class="package-title">{i18n(title)}</h2>'
-            f'<p class="package-subtitle">{i18n(item.get("subtitle") or bi("Project-wide development", "Pengembangan tingkat project"))}</p>'
+            f'<h2 class="development-package-title">{i18n(title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(item.get("subtitle") or bi("Project-wide development", "Pengembangan tingkat project"))}</p>'
             + _global_tabs(items, item["id"])
             + context_block(join_text(title, bi("Overview", "Gambaran Umum")), item.get("overview", ""))
             + heading(bi("Development Flow", "Alur Pengembangan"))
-            + flow_cards(flow, "development-flow-grid")
+            + flow_cards(flow, "quarry-development-flow")
         )
         requirement_rows = _requirement_rows(item.get("requirements", []))
         if requirement_rows:
             body += heading(bi("Development Requirements", "Kebutuhan Pengembangan")) + production_table(
                 [bi("No.", "No."), bi("Setup", "Setup"), bi("Development Requirements", "Kebutuhan Pengembangan"), bi("System Result", "Hasil Sistem")],
                 requirement_rows,
-                "development-requirements-table",
+                "quarry-dev-table",
             )
         body += heading(bi("Important Development Notes", "Catatan Pengembangan Penting")) + note_grid(notes)
-        body += terms(item.get("terms", []), f"{page_id}-terms-used-details")
+        body += terms(system_terms, f"{page_id}-terms-used-details", glossary_enabled=True)
 
         pages.append(
             page(
@@ -280,9 +299,10 @@ def global_pages(data: dict[str, Any]) -> list[str]:
                 header=bi("03 — Development", "03 — Development"),
                 footer_title=join_text(bi("Development", "Development"), title, sep=" · "),
                 brand=brand,
-                journey_target="summary",
-                role="global-development",
-                classes="sheet production-only global-development-page glossary-enabled-page",
+                phase="dev-system",
+                clean_target="summary",
+                role="developer-overview",
+                classes="sheet professional-only quarry-package-page phase-package-page global-development-page glossary-enabled-page",
             )
         )
     return pages
@@ -327,7 +347,7 @@ def _level_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
         items = group.get("items") or group.get("objects") or []
         group_title = group.get("title") or group.get("group_title") or ""
         if multiple_groups and present(group_title):
-            rows.append(f'<tr class="requirement-group-row"><td><b>{group_index}</b></td><td colspan="4"><b>{i18n(group_title)}</b></td></tr>')
+            rows.append(f'<tr class="quarry-group-row"><td><b>{group_index}</b></td><td colspan="4"><b>{i18n(group_title)}</b></td></tr>')
         for item in items:
             if not isinstance(item, dict):
                 continue
@@ -348,7 +368,7 @@ def _level_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
                 child_area = child.get("area_size") or child.get("size") or "—"
                 child_build = child.get("build_and_visual") or child.get("requirements") or child.get("details") or ""
                 child_function = child.get("gameplay_function") or child.get("result") or ""
-                rows.append(f'<tr class="requirement-child-row"><td><b>{i18n(child_code)}</b></td><td><b>{i18n(child_title)}</b></td><td>{cell_html(child_area)}</td><td>{cell_html(child_build)}</td><td>{cell_html(child_function)}</td></tr>')
+                rows.append(f'<tr class="quarry-child-row"><td><b>{i18n(child_code)}</b></td><td><b>{i18n(child_title)}</b></td><td>{cell_html(child_area)}</td><td>{cell_html(child_build)}</td><td>{cell_html(child_function)}</td></tr>')
     return rows
 
 
@@ -361,7 +381,7 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
         title = group.get("title") or group.get("group_title") or ""
         items = group.get("items") or group.get("objects") or []
         if present(title):
-            rows.append(f'<tr class="requirement-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(title)}</b></td></tr>')
+            rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(title)}</b></td></tr>')
         for item_index, item in enumerate(items):
             if not isinstance(item, dict):
                 continue
@@ -374,24 +394,23 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
 
     if developer.get("scoring"):
         scoring = developer["scoring"]
-        rows.append(f'<tr class="requirement-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Scoring Setup", "Setup Scoring"))}</b></td></tr>')
+        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Scoring Setup", "Setup Scoring"))}</b></td></tr>')
         rows.append(f'<tr><td><b>A</b></td><td><b>{i18n(scoring.get("score_name", bi("Scoring", "Scoring")))}</b></td><td>{score_html(scoring)}</td><td>{cell_html(scoring.get("final_result_relationship", ""))}</td></tr>')
         group_number += 1
     elif developer.get("completion_data"):
         completion = developer["completion_data"]
-        rows.append(f'<tr class="requirement-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Completion and Data", "Completion dan Data"))}</b></td></tr>')
+        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Completion and Data", "Completion dan Data"))}</b></td></tr>')
         rows.append(f'<tr><td><b>A</b></td><td><b>{i18n(completion.get("completion_name", bi("Completion State", "Kondisi Selesai")))}</b></td><td>{completion_html(completion)}</td><td>{cell_html(completion.get("handoff_result", ""))}</td></tr>')
         group_number += 1
 
     if developer.get("reset"):
-        rows.append(f'<tr class="requirement-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Reset Mechanic", "Reset Mechanic"))}</b></td></tr>')
+        rows.append(f'<tr class="quarry-group-row"><td><b>{group_number}</b></td><td colspan="3"><b>{i18n(bi("Reset Mechanic", "Reset Mechanic"))}</b></td></tr>')
         rows.append(f'<tr><td><b>A</b></td><td><b>{i18n(bi("Reset / Interruption", "Reset / Interupsi"))}</b></td><td>{cell_html(developer["reset"])}</td><td>{cell_html(developer.get("reset_result", ""))}</td></tr>')
     return rows
 
 
 def package_pages(data: dict[str, Any]) -> list[str]:
     pages: list[str] = []
-    flow_ids = {item["id"] for item in data.get("gameplay_flow", [])}
     brand = data["document"].get("brand") or data["document"]["title"]
 
     for index, pkg in enumerate(data.get("packages", [])):
@@ -399,14 +418,14 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         code = 4 + index
         package_label = pkg.get("package_label", f"Package {index + 1}")
         title = pkg.get("title", package_id)
-        journey_target = f"flow-{package_id}" if package_id in flow_ids else "summary"
+        phase = f"dev-{package_id}"
 
         gameplay = pkg["gameplay"]
         player_flow = [entry for entry in gameplay.get("player_flow", []) if isinstance(entry, dict)]
         _require_count(player_flow, 5, f"packages[{index}].gameplay.player_flow")
         gameplay_body = (
-            f'<h2 class="package-title">{i18n(title)}</h2>'
-            f'<p class="package-subtitle">{i18n(join_text(package_label, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "))}</p>'
+            f'<h2 class="development-package-title">{i18n(title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "))}</p>'
             + tabs(package_id, "requirement")
             + cards([
                 (bi("Gameplay Context", "Konteks Gameplay"), gameplay.get("context", gameplay.get("overview", ""))),
@@ -414,19 +433,18 @@ def package_pages(data: dict[str, Any]) -> list[str]:
                 (bi("Result", "Hasil"), gameplay.get("result")),
             ])
             + heading(bi("Gameplay Information", "Informasi Gameplay"))
-            + production_table([], _gameplay_info_rows(pkg), "gameplay-info-table")
+            + production_table([], _gameplay_info_rows(pkg), "phase-overview-table quarry-overview-table")
             + heading(bi("Gameplay Flow", "Alur Gameplay"))
             + sequence(player_flow)
-            + terms(_visible_package_terms(pkg, "gameplay"), f"dev-{package_id}-requirement-terms-used-details")
+            + terms(pkg.get("terms", []), f"dev-{package_id}-requirement-terms-used-details", glossary_enabled=False)
         )
         pages.append(page(
             f"dev-{package_id}-requirement", f"{code:02d}A", title, gameplay_body,
             context=join_text(title, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "),
             header=bi("Development — Gameplay", "Development — Gameplay"),
             footer_title=join_text(bi("Development", "Development"), title, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "),
-            brand=brand, package_id=package_id, glossary_scope=_glossary_scope(package_id, "gameplay"),
-            journey_target=journey_target, role="gameplay-overview",
-            classes="sheet production-only package-page role-gameplay-overview glossary-enabled-page",
+            brand=brand, phase=phase, clean_target="summary", role="gameplay-overview",
+            classes="sheet professional-only quarry-package-page phase-package-page role-gameplay-overview",
         ))
 
         level = pkg["level_design"]
@@ -435,17 +453,17 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         _require_count(level_flow, 4, f"packages[{index}].level_design.flow")
         _require_count(level_notes, 4, f"packages[{index}].level_design.notes")
         level_body = (
-            f'<h2 class="package-title">{i18n(title)}</h2>'
-            f'<p class="package-subtitle">{i18n(join_text(package_label, bi("Level Design", "Level Design"), sep=" · "))}</p>'
+            f'<h2 class="development-package-title">{i18n(title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Level Design", "Level Design"), sep=" · "))}</p>'
             + tabs(package_id, "level")
             + context_block(bi("Level Design Overview", "Level Design Overview"), level.get("overview", ""))
             + heading(bi("Design Flow", "Design Flow"))
-            + flow_cards(level_flow, "design-flow-grid")
+            + flow_cards(level_flow, "quarry-design-flow")
             + heading(bi("Build Requirements", "Build Requirements"))
             + production_table([
                 bi("No.", "No."), bi("Object", "Object"), bi("Area Size", "Area Size"),
                 bi("Build and Visual Requirements", "Build and Visual Requirements"), bi("Gameplay Function", "Gameplay Function")
-            ], _level_requirement_rows(level.get("requirements", [])), "build-requirements-table")
+            ], _level_requirement_rows(level.get("requirements", [])), "quarry-build-table")
             + heading(bi("Important Build Notes", "Important Build Notes"))
             + note_grid(level_notes)
         )
@@ -454,9 +472,8 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             context=join_text(title, bi("Level Design", "Level Design"), sep=" · "),
             header=bi("Development — Gameplay", "Development — Gameplay"),
             footer_title=join_text(bi("Development", "Development"), title, bi("Level Design", "Level Design"), sep=" · "),
-            brand=brand, package_id=package_id, glossary_scope=_glossary_scope(package_id, "level_design"),
-            journey_target=journey_target, role="level-design",
-            classes="sheet production-only package-page glossary-enabled-page",
+            brand=brand, phase=phase, clean_target="summary",
+            classes="sheet professional-only quarry-package-page phase-package-page",
         ))
 
         developer = pkg["developer"]
@@ -465,16 +482,16 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         _require_count(developer_flow, 4, f"packages[{index}].developer.flow")
         _require_count(developer_notes, 4, f"packages[{index}].developer.notes")
         developer_body = (
-            f'<h2 class="package-title">{i18n(title)}</h2>'
-            f'<p class="package-subtitle">{i18n(join_text(package_label, bi("Developer", "Developer"), sep=" · "))}</p>'
+            f'<h2 class="development-package-title">{i18n(title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Developer", "Developer"), sep=" · "))}</p>'
             + tabs(package_id, "developer")
             + context_block(bi("Developer Overview", "Developer Overview"), developer.get("overview", ""))
             + heading(bi("Development Flow", "Development Flow"))
-            + flow_cards(developer_flow, "development-flow-grid")
+            + flow_cards(developer_flow, "quarry-development-flow")
             + heading(bi("Development Requirements", "Development Requirements"))
             + production_table([
                 bi("No.", "No."), bi("Setup", "Setup"), bi("Development Requirements", "Development Requirements"), bi("Gameplay Function", "Gameplay Function")
-            ], _developer_requirement_rows(developer), "development-requirements-table")
+            ], _developer_requirement_rows(developer), "quarry-development-table")
             + heading(bi("Important Development Notes", "Important Development Notes"))
             + note_grid(developer_notes)
         )
@@ -483,31 +500,30 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             context=join_text(title, bi("Developer", "Developer"), sep=" · "),
             header=bi("Development — Gameplay", "Development — Gameplay"),
             footer_title=join_text(bi("Development", "Development"), title, bi("Developer", "Developer"), sep=" · "),
-            brand=brand, package_id=package_id, glossary_scope=_glossary_scope(package_id, "developer"),
-            journey_target=journey_target, role="developer",
-            classes="sheet production-only package-page glossary-enabled-page",
+            brand=brand, phase=phase, clean_target="summary",
+            classes="sheet professional-only quarry-package-page phase-package-page",
         ))
     return pages
 
 
 def navigation(data: dict[str, Any]) -> str:
     navigation_items = [
-        f'<a class="nav-link" data-target="summary" href="#summary"><span class="nav-index">01</span><span class="nav-copy">{i18n(bi("Overview", "Overview"))}</span></a>'
+        f'<a class="nav-link" data-target="summary" href="#summary"><span class="nav-index" data-full-index="01" data-overview-index="01">{i18n("01")}</span><span class="nav-copy">{i18n(bi("Overview", "Gambaran Umum"))}</span></a>'
     ]
     flow = data.get("gameplay_flow", [])
     if flow:
         links = "".join(
-            f'<a data-target="flow-{esc(item["id"])}" href="#flow-{esc(item["id"])}">{i18n(item.get("title", item["id"]))}</a>'
-            for item in flow
+            f'<a data-target="{esc(flow_page_id(item, index))}" href="#{esc(flow_page_id(item, index))}">{i18n(item.get("title", item["id"]))}</a>'
+            for index, item in enumerate(flow)
         )
         navigation_items.append(
-            '<div class="nav-group is-open"><button class="nav-group-toggle" aria-expanded="true">'
-            f'<span class="nav-index">02</span><span class="nav-copy">{i18n(bi("Gameplay Flow", "Gameplay Flow"))}</span>'
+            '<div class="nav-group is-open"><button aria-expanded="true" class="nav-group-toggle" type="button">'
+            f'<span class="nav-index" data-full-index="02" data-overview-index="02">{i18n("02")}</span><span class="nav-copy">{i18n(bi("Gameplay Flow", "Alur Gameplay"))}</span>'
             f'<span aria-hidden="true" class="group-chevron"></span></button><div class="nav-submenu">{links}</div></div>'
         )
 
     global_links = "".join(
-        f'<a data-target="global-{esc(item["id"])}" href="#global-{esc(item["id"])}">{i18n(_golden_global_title(item))}</a>'
+        f'<a data-target="{esc(global_page_id(item))}" href="#{esc(global_page_id(item))}">{i18n(_golden_global_title(item))}</a>'
         for item in data.get("global_development", [])
     )
     package_links = []
@@ -516,21 +532,21 @@ def navigation(data: dict[str, Any]) -> str:
         title = pkg.get("title", package_id)
         label = pkg.get("package_label", f"Package {index + 1}")
         subpages = "".join(
-            f'<a class="package-page-link production-nav-item" data-target="dev-{package_id}-{key}" href="#dev-{package_id}-{key}"><span>{i18n(name)}</span></a>'
+            f'<a class="phase-page-link professional-nav-item" data-phase-page-link="" data-target="dev-{package_id}-{key}" href="#dev-{package_id}-{key}"><span>{i18n(name)}</span></a>'
             for key, name in [("requirement", bi("Gameplay Overview", "Gameplay Overview")), ("level", bi("Level Design", "Level Design")), ("developer", bi("Developer", "Developer"))]
         )
         package_links.append(
-            f'<div class="package-nav-item" data-package-nav="{esc(package_id)}">'
-            f'<a class="package-nav-main" data-section-code="{code:02d}" data-target="dev-{package_id}-requirement" href="#dev-{package_id}-requirement">'
-            f'<span>{i18n(title)}</span><small>{i18n(label)}</small></a><div class="package-page-list">{subpages}</div></div>'
+            f'<div class="phase-nav-item" data-phase-nav="dev-{esc(package_id)}">'
+            f'<a class="phase-nav-main" data-phase-link="" data-section-code="{code:02d}" data-target="dev-{package_id}-requirement" href="#dev-{package_id}-requirement">'
+            f'<span>{i18n(title)}</span><small>{i18n(label)}</small></a><div class="phase-page-list">{subpages}</div></div>'
         )
     if global_links or package_links:
         navigation_items.append(
-            '<div class="nav-group is-open production-nav"><button class="nav-group-toggle" aria-expanded="true">'
-            f'<span class="nav-index">03</span><span class="nav-copy">{i18n(bi("Development", "Development"))}</span>'
+            '<div class="nav-group is-open professional-nav"><button aria-expanded="true" class="nav-group-toggle" type="button">'
+            f'<span class="nav-index" data-full-index="03" data-overview-index="">{i18n("03")}</span><span class="nav-copy">{i18n(bi("Development", "Development"))}</span>'
             f'<span aria-hidden="true" class="group-chevron"></span></button>'
             f'<div class="nav-submenu">{global_links}</div>'
-            f'<div class="nav-submenu package-navigation">{"".join(package_links)}</div></div>'
+            f'<div class="nav-submenu phase-navigation">{"".join(package_links)}</div></div>'
         )
     return "".join(navigation_items)
 
@@ -553,16 +569,18 @@ def _glossary_items(items: list[dict[str, Any]], scope: str) -> list[dict[str, A
 
 def glossary(data: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     output: dict[str, list[dict[str, Any]]] = {}
-    for pkg in data.get("packages", []):
-        package_id = pkg["id"]
-        for role in ("gameplay", "level_design", "developer"):
-            scope = _glossary_scope(package_id, role)
-            output[scope] = _glossary_items(_visible_package_terms(pkg, role), scope)
     flow = data.get("gameplay_flow", [])
     if flow:
-        opening = flow[0]
-        opening_terms = opening.get("terms", [])
+        opening_terms = [term for term in flow[0].get("terms", []) if isinstance(term, dict)]
         if opening_terms:
-            scope = f'{opening["id"]}-opening'
-            output[scope] = _glossary_items(opening_terms, scope)
+            output["flow"] = _glossary_items(_dedupe_terms(opening_terms), "flow")
+
+    system_terms = _global_terms(data.get("global_development", []))
+    if system_terms:
+        output["system"] = _glossary_items(system_terms, "system")
+
+    for pkg in data.get("packages", []):
+        package_id = pkg["id"]
+        package_terms = [term for term in pkg.get("terms", []) if isinstance(term, dict)]
+        output[package_id] = _glossary_items(_dedupe_terms(package_terms), package_id)
     return output
