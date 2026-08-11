@@ -4,92 +4,78 @@ Updated: 2026-08-11
 
 ## Current Status
 
-`FLOW4_TO_FLOW5_HANDOFF_VERSION_GUARDED_NEXT_FLOW2_STATE_CONSISTENCY`
+`FLOW2_EXPLICIT_STATE_CONTRADICTIONS_GUARDED_NEXT_FLOW5_REQUIREMENT_COMPLETENESS`
 
 Working branch: **`Local` only**.
 
 ## Completed current correction sequence
 
-The audited PRD false-green chain is now protected through the Flow 4 → Flow 5 handoff boundary without adding another checksum layer:
+The audited PRD-side false-green chain is now protected through explicit Flow 2 persisted-state contradictions and the Flow 4 → Flow 5 handoff boundary:
 
 ```text
-Flow 2 explicit ready state
-↓
+Flow 2 intake declaration
+↓ explicit persisted-state contradiction guard
 work/content.md
 ↓ canonical_content_sha256
 work/render-data.json
-↓ generated render-data-sha256 metadata
+↓ render-data-sha256
 output/final.html
-↓
-Flow 4 review / handoff
-↓ existing document.version
-state/handoff-state.yaml accepted_prd_version
-↓ validate_handoff.py
+↓ Flow 4 review / handoff
+existing document.version
+↓ accepted_prd_version
 Flow 5 entry
 ```
 
 Current guards include:
 
-- Flow 4 rejects missing/ambiguous/non-ready `state/intake-state.yaml`;
-- `render-data.json` must match the exact current bytes of `work/content.md` through the existing `canonical_content_sha256` guard;
-- generated `final.html` must contain exactly one valid `render-data-sha256` marker matching current `render-data.json`;
-- Flow 4 → Flow 5 adds **no new SHA**: the already-existing `document.version` is reused as the accepted handoff revision;
-- `state/handoff-state.yaml` records `accepted_prd_version` plus the existing canonical/render/HTML/acceptance/team-handoff paths;
-- `validator/validate_handoff.py` blocks Flow 5 when handoff is not `handoff_ready`, the accepted version differs from current `document.version`, or the recorded current artifacts are missing/wrong;
-- a material canonical meaning change after handoff must advance `document.version` and reopen state to `pending_review` before downstream use;
-- weighted scoring, bilingual display-text, and wrapped Golden-grid guards remain active.
+- `state/intake-state.yaml` must explicitly report `status: ready_for_prd` + `ready_for_prd: true`;
+- when readiness is claimed, `validator/validate.py` rejects only explicit persisted contradictions already present in current state:
+  - `requirement-register.yaml`: `approval_status: pending`, `recovery_class: blocked`, `evidence_status: conflict`;
+  - `source-inventory.yaml`: `inspection: blocked` when source inspection itself blocks current scope;
+- approved proposals, `inspection: targeted`, omitted defaults, optional/advisory ideas, and other nonblocking detail do not fail this guard;
+- existing content→projection and projection→HTML SHA guards remain unchanged;
+- Flow 4 → Flow 5 uses existing `document.version` / `accepted_prd_version`; no handoff SHA was added;
+- scoring, bilingual display-text, and wrapped Golden-grid guards remain active.
 
-The handoff guard is intentionally a small lifecycle check. It is not an artifact manifest, checksum chain, semantic comparison engine, or new workflow framework.
+The Flow 2 state check is intentionally line-level and bounded. It is not a generic YAML parser/schema, semantic completeness engine, or materiality classifier.
 
 ## Current proof
 
 Implementation sequence:
 
 ```text
-6e75c056bb6dea52a6bcf84481d8b30b6824c80f  handoff entry guard
-f379ad4a5b27cdc208bfdfcf9406159e9c93d29a  focused regression tests
-119063ca8d57cd816f01a1dfae5ae00ade517a64  Production Verify includes handoff contracts
+70139643c799d451d5a671d5768392fb19ab1e4d  validator guard
+25104df7e15bad3ed424fd7dc7bcf50070ce29a2  focused Flow 2 state regression tests
+432eef641b695102d7446337a297e35136d3bc95  Production Verify includes Flow 2 state contracts
 ```
 
-Final synchronized HEAD before this continuity-only note:
+GitHub evidence on that implementation state:
 
 ```text
-14bac07d4a269504f32d7ad5bf77471f546f44b3
+Repository Verify #86 — PASS
+Production Verify #42 — PASS
+Project Document contracts — PASS
 ```
 
-GitHub evidence for that synchronized implementation/policy state:
+This remains repository/static/regression proof only. Per current user direction, **do not run local/manual real-project or browser proof yet**.
 
-```text
-Repository Verify #82 — PASS
-Production Verify #39 — PASS
-Project Document contracts (including handoff tests) — PASS
-```
+## Explicit boundaries
 
-This is repository/static/regression proof only. Per current user direction, **do not run local/manual real-project or browser proof yet**.
+The guard can catch only contradictions that were actually persisted with the explicit blocker markers above. It does not infer a hidden missing requirement, decide whether an unspecified detail is material, or replace Flow 2 semantic review.
 
-## Explicit tradeoff
-
-The Flow 4 → Flow 5 guard deliberately does not hash another boundary. It assumes the existing lifecycle rule is followed: when accepted PRD meaning changes materially, `document.version` advances and handoff returns to `pending_review`.
-
-Therefore the guard can detect:
-
-- stale accepted version;
-- non-ready state;
-- missing/wrong current handoff artifact paths.
-
-It does not automatically detect an operator changing material canonical meaning while incorrectly leaving `document.version` unchanged. That limitation is accepted to avoid turning PRD-Creator into a broad revision/checksum system.
+No new SHA/checksum was added in this slice.
 
 ## Deliberately not changed
 
-- no third SHA/checksum binding for handoff;
-- no artifact manifest or generic revision registry;
-- no Voice requirement/script/DOCX revision framework in this slice;
-- no Flow 5 scope/content redesign;
+- no generic YAML/schema framework;
+- no automatic semantic/materiality scoring;
+- no additional artifact manifest/checksum chain;
+- no change to Flow 5 Voice scope/content yet;
 - no mass renderer vocabulary refactor;
 - no local/manual real-project or browser run.
 
 ## Next Step
 
-Address the remaining audited PRD-side false-ready boundary in **Flow 2**: `state/intake-state.yaml` must not claim `ready_for_prd` while persisted `state/requirement-register.yaml` or `state/source-inventory.yaml` explicitly contains a material pending/blocking state that contradicts readiness.
+Address the next concrete audited weak boundary in **Flow 5 — Voice Requirement Extraction**: the executable requirement parser currently proves only a subset of the documented Voice Requirement contract.
 
-Keep this narrow: detect only explicit persisted contradictions. Do not attempt to automate Flow 2 semantic judgment, create a generic YAML/schema framework, or turn every optional/open detail into a blocker.
+Close only the completeness gap for existing required fields (`Function`, `Necessity`, `Purpose`, non-empty `Must communicate`, `Must not add/repeat`, and `Source refs`) before Flow 6 can rely on a Voice requirement entry. Do not add a Voice schema framework, semantic similarity engine, automatic lore/mechanic inference, or checksum chain.

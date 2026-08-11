@@ -35,13 +35,15 @@ python kits/project-document-generator/validator/validate.py \
 
 The validator first requires `state/intake-state.yaml` to explicitly declare both `status: ready_for_prd` and `ready_for_prd: true`. Missing, ambiguous, or non-ready Flow 2 state fails validation instead of allowing a rendered artifact to bypass the Flow 2 readiness boundary.
 
+When Flow 2 claims readiness, the validator also checks only **explicit persisted contradiction markers** in the existing state files. It fails on `approval_status: pending`, `recovery_class: blocked`, or `evidence_status: conflict` in `requirement-register.yaml`, and on `inspection: blocked` in `source-inventory.yaml`. Approved proposals, `inspection: targeted`, omitted defaults, advisory ideas, and other nonblocking detail remain allowed. This is a narrow contradiction guard, not a YAML schema validator or automated materiality engine.
+
 It also requires `work/render-data.json` to carry `canonical_content_sha256` matching the current exact bytes of `work/content.md`. If canonical content changes without regenerating the projection binding, validation fails as stale instead of accepting an older projection as current.
 
 The generated `output/final.html` must also contain exactly one `render-data-sha256` metadata marker matching the current exact bytes of `work/render-data.json`. A missing, duplicate, invalid, or mismatched marker fails validation. This prevents an older HTML artifact from passing merely because page IDs/composition still resemble the newer projection.
 
-The validator owns current mechanical contracts including Flow 2 readiness state, canonical-content/projection revision binding, projection/HTML revision binding, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
+The validator owns current mechanical contracts including Flow 2 readiness declaration, explicit persisted Flow 2 contradiction detection, canonical-content/projection revision binding, projection/HTML revision binding, artifact presence, placeholders, render-data/package invariants, scoring/completion numeric rules, generated page IDs/order, duplicate IDs, navigation, browser title, and the small Golden composition-marker set.
 
-Mechanical PASS proves these implemented structure/current-revision bindings only—not semantic equivalence or visual quality. Do not expand this into semantic hashing, pixel comparison, DOM snapshots, visual scoring, artifact manifests, or a generic HTML schema.
+Mechanical PASS proves these implemented structure/current-revision/explicit-state contracts only—not semantic equivalence, completeness of arbitrary Flow 2 reasoning, or visual quality. Do not expand this into generic YAML schemas, semantic hashing, pixel comparison, DOM snapshots, visual scoring, artifact manifests, or a generic HTML schema.
 
 ## One-read multi-lens review
 
@@ -136,7 +138,6 @@ Fix the first wrong owner:
 - Golden representation → `CONTENT-CONTRACT.md` / affected projection;
 - renderer mechanics → exact `renderer/*` owner;
 - validator mechanics → `validator/validate.py`;
-- handoff-entry mechanics → `validator/validate_handoff.py`;
 - template mechanics → Golden template only when proven responsible.
 
 Never patch `final.html` as source of truth.
@@ -148,7 +149,6 @@ Keep `work/acceptance.md` compact:
 ```text
 # PRD Acceptance
 Status: needs_revision | development_ready | handoff_ready
-PRD Version: <document.version>
 Mechanical: PASS | FAIL
 Visual sanity: PASS | FAIL | NOT PROVEN
 New Reader: PASS | FAIL
@@ -162,54 +162,18 @@ Major: N
 
 Do not add evidence prose when everything passes.
 
-## Handoff lifecycle
-
-`document.version` is the existing lightweight PRD revision token for downstream handoff. Do **not** create another SHA/checksum chain for Flow 4 → Flow 5.
-
-When the accepted revision is ready for downstream use, maintain `state/handoff-state.yaml` as:
-
-```yaml
-status: handoff_ready
-accepted_prd_version: <document.version>
-content: work/content.md
-render_data: work/render-data.json
-html: output/final.html
-acceptance: work/acceptance.md
-handoff: output/team-handoff.md
-next_step: flow_5_voice_requirement_extraction
-```
-
-A canonical **meaning** change after `handoff_ready` invalidates that acceptance. Advance `document.version`, set the handoff state back to `pending_review`, update/rerender the affected PRD scope, and re-run only the invalidated Flow 4 review. When that revision passes, write the new `accepted_prd_version` and restore `handoff_ready`.
-
-Before Flow 5 starts, run the narrow handoff-entry guard:
-
-```bash
-python kits/project-document-generator/validator/validate_handoff.py \
-  workspace/active/<project>/
-```
-
-PASS requires:
-
-- `handoff-state.yaml: status: handoff_ready`;
-- one non-empty `accepted_prd_version` matching current `render-data.json → document.version`;
-- the existing canonical PRD/render/HTML/acceptance/team-handoff paths recorded by the state and present.
-
-This guard does not compare semantic content, does not add hashes, and does not replace Flow 4 review. It only prevents an older accepted version or incomplete handoff package from authorizing downstream Voice extraction.
-
 ## Development-ready gate
 
-Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, current canonical content is bound to the current render projection, current `final.html` is bound to that exact projection, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
+Set `development_ready` only when Flow 2 explicitly remains `ready_for_prd`, no explicit persisted Flow 2 blocker contradicts that readiness, current canonical content is bound to the current render projection, current `final.html` is bound to that exact projection, mechanical/Golden structural checks pass, all four lenses pass, Critical=0/Major=0, no material unresolved decision affects scope, requested language coverage is usable, and claims do not exceed actual visual/runtime evidence.
 
 ## Revision path
 
 ```text
 approved change
-→ if accepted meaning/handoff is invalidated: advance document.version + state = pending_review
 → affected requirement/content
 → affected projection + refreshed canonical-content binding + rerender
 → one mechanical check
 → one targeted multi-lens/visual review
-→ refresh acceptance/team handoff + accepted_prd_version when handoff_ready again
 ```
 
 Do not replay unrelated source intake, full-document review, or unchanged evidence.
