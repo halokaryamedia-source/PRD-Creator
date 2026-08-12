@@ -4,7 +4,7 @@ Updated: 2026-08-12
 
 ## Current Status
 
-`PRD_SIMPLE_CHAT_PREVIEW_GATE_LOCKED_CLOCKWORK_DECISIONS_PENDING`
+`PRD_GOLDEN_GUIDED_COMPLETE_PREVIEW_PROPOSAL_FLOW_LOCKED_CLOCKWORK_PREVIEW_NEXT`
 
 Working branch: **`Local` only**.
 
@@ -17,52 +17,71 @@ Reference → Fill Map
 Project Authority → Filled Golden
 ```
 
-Flow 2 also performs bounded cross-surface consistency checks before production readiness, so a mature source is not assumed internally consistent merely because it is labelled authoritative.
+The Reverse-derived Golden fill map now serves two bounded jobs:
 
-The Flow 2 → Flow 3 boundary now includes a mandatory **Simple Chat Preview** for initial PRD production:
+1. **Flow 2 completeness guide** — tells the AI what each global/objective/Gameplay/Level Design/Developer surface must eventually answer;
+2. **Flow 3/4 rendering and fidelity contract** — tells the renderer/reviewer where approved meaning belongs and what visible composition must be preserved.
+
+Golden supplies slot responsibility and reading structure. It does **not** supply Aftershock-specific facts to unrelated projects.
+
+## Flow 2 → Flow 3 boundary
+
+Initial PRD production now follows:
 
 ```text
 Source
-→ recover + safely complete meaning
-→ detect / resolve material conflicts
+→ recover source-backed meaning
+→ detect gaps/conflicts
+→ Golden fill-map completeness pass
+→ fill missing/conflicting material meaning with concrete AI proposals
+→ propagate one coherent complete model
 → Simple Chat Preview
 → user correction / approval
+→ promote represented proposals to approved project decisions
 → ready_for_prd
 → BUILD PRD
 ```
 
-The preview is intentionally simple and objective-based:
+This deliberately allows the AI to make material recommendations/decisions before preview. The user reviews a **complete model**, not a list of unanswered questions.
+
+The semantic distinction remains explicit internally:
+
+```text
+source-backed meaning = evidence from source/user authority
+AI proposal          = suggested decision, pending until preview approval
+```
+
+A proposal may be specific: mechanic behavior, timing, quantity, recovery, scoring behavior, Level Design expectation, Developer behavior, naming, or another PRD-level decision. Specificity is acceptable because approval state—not vagueness—protects authority.
+
+## Simple Chat Preview
+
+The preview stays intentionally simple:
 
 ```text
 Project Overview
+
 Objective N
   Tujuan
   Apa yang Player Lakukan
   Hasil
   Level Design
   Developer
-  Perlu Konfirmasi — only when material unresolved meaning exists
+  Saran AI — optional, only for material choices worth calling out
 ```
 
-It is not a new Flow and not a new project artifact. Internal requirement IDs, YAML, provenance, recovery classes, Golden DOM vocabulary, and validator output stay out of the normal preview.
+Every objective should be filled. The detailed underlying model may contain more Golden-required meaning than is shown in the chat summary.
 
-Only a minimal continuity signal is added to Flow 2 state:
+`Perlu Konfirmasi` is reserved for the rare case where no responsible proposal can be made because the missing answer is genuinely external/user-only or all plausible choices violate a known constraint.
 
-```yaml
-preview_approved: false | true
-```
+User approval of the complete preview approves the represented pending proposals unless a specific proposal is corrected/rejected.
 
-Before initial approval, Flow 2 remains non-ready. After natural-language user approval, `preview_approved: true` accompanies `ready_for_prd: true`. Material corrections are persisted as authoritative user instructions and only affected objective/global slices are re-previewed.
+The existing `preview_approved: true` readiness gate remains unchanged.
 
-The existing PRD validator now has one bounded mechanical guard: if a state explicitly says `preview_approved: false`, `ready_for_prd` validation fails. Existing historical/project fixtures that predate the field are not rewritten solely for this change; the active Flow 2 contract requires new initial production to persist the field explicitly.
+## Clockwork real-source proof
 
-For bounded revisions, the full project preview is not replayed. Only affected objective/global meaning is previewed when interpretation changed; an explicit user instruction that already states the complete intended bounded result may serve as approval for that slice.
+The real non-AFTERSHOCK source remains **The Clockwork Vault - Adventure Map - Final Review.html**, whose authoritative hash matches the previous system-integration proof.
 
-## Real-source proof boundary
-
-The real non-AFTERSHOCK forward-fill test remains **The Clockwork Vault - Adventure Map - Final Review.html**, whose authoritative hash matches the previous system-integration proof.
-
-That test exposed five unresolved same-authority conflicts before regeneration:
+The earlier source-consistency audit found five same-authority conflicts:
 
 1. Resonance Engine target timing/progression;
 2. Broken Gallery checkpoint-vs-three-route collapse model;
@@ -70,14 +89,33 @@ That test exposed five unresolved same-authority conflicts before regeneration:
 4. Gremlin’s Workshop permanent broken connection vs Elbow-rule inversion;
 5. Ending reward name (`Clockwork Wayfinder` vs `Vault Explorer Banner`).
 
-Those are correct preview-stage blockers. The generator must not choose one side silently merely to reach Golden rendering.
+These are still valid source conflicts, but they are **no longer reasons to stop before preview**.
+
+For the next live run, Flow 2 should:
+
+```text
+record each conflict
+→ choose one recommended Clockwork resolution
+→ propagate it through the complete objective model
+→ show the resulting complete Clockwork Simple Chat Preview
+→ call out the chosen resolution under Saran AI only where useful
+```
+
+The user then corrects/approves the complete model. Only after approval are those proposals promoted to project authority and used to build the Golden PRD.
 
 ## Proof boundary
 
-This change modifies only the Flow 2/kit procedure, high-level Flow 2→3 boundary, one bounded readiness guard in the existing validator, focused contract tests, package version/readme alignment, and this current-state owner. It does not add a preview renderer, preview document, new workflow status, new schema, or generic approval framework.
+This refinement changes only semantic/procedural owners and package version documentation. It does **not** add:
 
-Static CI can prove the procedure/mechanical contract remains present. A real production run is still needed to prove user-facing preview usability in practice.
+- a new Flow;
+- a preview file/renderer;
+- a new schema;
+- a new approval framework;
+- a new status machine;
+- a Golden/template/renderer change.
+
+The existing preview approval guard remains sufficient mechanically. The next useful proof is real use, not another framework/test layer.
 
 ## Next Step
 
-**Use the five Clockwork conflicts as the first live Simple Chat Preview decision bundle, capture the user's corrections/approval, then regenerate Clockwork through the approved Golden fill contract.**
+**Run The Clockwork Vault through the revised Flow 2: use the Golden fill map to complete every material objective detail, choose concrete AI proposals for the five known conflicts and any other Golden-required gaps, then present one simple complete objective-by-objective Chat Preview for user review.**

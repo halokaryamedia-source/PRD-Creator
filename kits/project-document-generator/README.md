@@ -1,8 +1,8 @@
 # Project Document Generator
 
-**Version:** 1.10.0
+**Version:** 1.11.0
 
-A compact repository-backed system for recovering uneven project direction, solving material documentation/design gaps without inventing product decisions, previewing the recovered gameplay in simple objective-based chat form for user approval, writing practical development-oriented PRD content, projecting it through the approved Golden Sample hierarchy/page composition, and validating whether the current revision is ready for team handoff.
+A compact repository-backed system for recovering uneven project direction, using the Golden fill map to identify what production detail must exist, completing missing or conflicting material meaning with explicit AI proposals, previewing the complete gameplay model in simple objective-based chat form for user approval, writing practical development-oriented PRD content, projecting it through the approved Golden Sample hierarchy/page composition, and validating whether the current revision is ready for team handoff.
 
 ## Normal use
 
@@ -12,9 +12,9 @@ Project Source
 → explicit facts/rules/exclusions
 → topology + terminology + cross-role implications
 → production coverage + lifecycle + quantitative/clarity/coherence checks
-→ problem framing + Resolution Ladder
-→ humanized grouped decisions only if needed
-→ Simple Chat Preview
+→ Golden fill-map completeness pass
+→ concrete AI proposals for missing/conflicting material detail
+→ complete Simple Chat Preview
 → user correction / approval
 → ready_for_prd
 → Canonical content.md
@@ -31,20 +31,25 @@ The skill will:
 1. preserve and inventory project sources, including material user instructions that arrive without a file;
 2. recover traceable facts, requirements, exclusions, topology, terminology, implications, gaps, and conflicts;
 3. record enough source inspection coverage for resumability without rereading unchanged material;
-4. check relevant mechanic lifecycle, related numeric consistency, materially vague wording, global/local rule coherence, and authoritative known constraints before drafting;
-5. resolve supported Clarification/Completion automatically and use the Resolution Ladder before escalating Proposal/Blocked decisions;
-6. recommend one option only when evidence/goals/constraints actually favor it, otherwise present a concise balanced tradeoff;
-7. show one simple objective-by-objective Chat Preview before initial PRD generation so the user can correct or approve the recovered gameplay without reading the full production document;
-8. keep internal IDs/YAML/provenance/recovery jargon out of that preview and show `Perlu Konfirmasi` only for unresolved material meaning;
-9. write canonical PRD content using `CONTENT-CONTRACT.md` only after the preview-approved Flow 2 boundary, keeping Gameplay, Level Design, and Developer responsibilities separate;
-10. render project facts through the approved Golden hierarchy, component composition, and presentation foundation without adding new meaning;
-11. keep project language availability explicit instead of presenting an unavailable translation as supported;
-12. run mechanical validation plus one-read New Reader / Level Designer / Developer / Project Consistency review;
-13. block handoff on Critical/Major findings and return missed product/design gaps to Flow 2 rather than hiding them downstream.
+4. use the Reverse-derived Golden fill map as a completeness guide for what each objective/global/role surface must eventually answer;
+5. keep Golden project facts out of unrelated projects—the Golden supplies slot meaning and structure, not Aftershock mechanics/numbers;
+6. complete missing material detail with one concrete project-consistent AI proposal instead of leaving the preview half-empty;
+7. keep source-backed meaning and AI-proposed meaning distinct internally until preview approval;
+8. select a coherent recommended default when source surfaces conflict or several plausible designs exist, while surfacing uncertainty only when it helps review;
+9. reserve `Blocked` / direct user-only questions for cases where no responsible proposal can be formed;
+10. propagate recovered/proposed decisions across affected Gameplay, Level Design, Developer, timing/scoring, transition, interruption and reset meaning before preview;
+11. show one simple objective-by-objective Chat Preview before initial PRD generation so the user can correct or approve the complete proposed gameplay model without reading the full production document;
+12. keep internal IDs/YAML/provenance/recovery jargon out of that preview; optionally show `Saran AI` only for material choices worth calling out;
+13. treat approval of the complete preview as approval of the represented pending AI proposals unless the user explicitly corrects/rejects them;
+14. write canonical PRD content using `CONTENT-CONTRACT.md` only after the preview-approved Flow 2 boundary, keeping Gameplay, Level Design, and Developer responsibilities separate;
+15. render approved project meaning through the Golden hierarchy, component composition, and presentation foundation without adding new meaning during Flow 3;
+16. keep project language availability explicit instead of presenting an unavailable translation as supported;
+17. run mechanical validation plus one-read New Reader / Level Designer / Developer / Project Consistency review;
+18. block handoff on Critical/Major findings and return newly exposed missing material meaning to Flow 2 rather than hiding it downstream.
 
-The Simple Chat Preview is not a new Flow or project artifact. Only material corrections/approval needed for continuity are persisted. Bounded revisions preview only the affected objective/global slice when interpretation changed.
+The Simple Chat Preview is not a new Flow or project artifact. Only material corrections, proposal/approval state, and decisions needed for continuity are persisted. Bounded revisions preview only the affected objective/global slice when interpretation changed.
 
-Cross-project rendering keeps the Golden visual language while allowing content-driven variation: project/package count and data-driven requirement density may vary, while the approved Golden page family, component composition, labels, and reading pattern remain fixed.
+Cross-project rendering keeps the Golden visual language while allowing content-driven variation: project/package count and data-driven requirement density may vary, while the approved Golden page family, component composition, labels, reading pattern, and slot responsibilities remain fixed.
 
 ## Package structure
 
