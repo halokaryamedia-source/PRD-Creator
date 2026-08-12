@@ -4,27 +4,26 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`CLOCKWORK_CANONICAL_HANDOFF_READY`
+`ELEVEN_V3_KNOWLEDGE_INTEGRATION_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator remains **v1.13.0**. The approved Clockwork production package remains at `workspace/active/the-clockwork-vault/` and its accepted meaning/rendered HTML were not changed by repository cleanup or documentation synchronization.
+Project Document Generator remains **v1.13.0**. The approved Clockwork production package remains at `workspace/active/the-clockwork-vault/` and its accepted PRD meaning/rendered HTML remain unchanged.
 
-Flow 2–4 technical documentation is now synchronized with current production behavior:
+Voice Production Kit remains **v1.3.0**. Current Flow 5–7 contracts, DOCX builder, validator, and accepted Clockwork Voice integration proof remain unchanged.
 
-- complete model → Simple Chat Preview → approval → `ready_for_prd`;
-- concrete AI Proposal is allowed but remains pending until preview approval;
-- source provenance is mandatory while in-repo source-file duplication is conditional on production value;
-- the Golden Sample is the canonical visible page prototype and `runtime-template.html` is its byte-identical runtime alias;
-- Flow 4 records Mechanical + integrated Semantic Readiness + Material Conservation + Visual sanity without duplicate PASS ceremony;
-- unchanged Golden/reference proof is not replayed for content-only work.
+Repository navigation remains normalized. A new Voice Production knowledge layer now records current Eleven v3 production guidance without changing Flow 5–7 ownership:
 
-No renderer, Golden template, validator behavior, Clockwork canonical content, render-data, or `final.html` was changed by this documentation sync.
+- `kits/voice-production-kit/references/elevenlabs/README.md` — operational front door / decision map;
+- `kits/voice-production-kit/references/elevenlabs/v3-performance-writing.md` — spoken-writing, punctuation, CAPS, pause, beat, and direction rules;
+- `kits/voice-production-kit/references/elevenlabs/v3-duration-planning.md` — duration budgeting and calibration rules;
+- `kits/voice-production-kit/references/elevenlabs/v3-production-reference.md` — evidence-backed model/voice/settings/generation/pronunciation/continuity guidance;
+- `kits/voice-production-kit/references/elevenlabs/source-register.md` — source freshness and authority register.
 
-Repository navigation is now normalized: one knowledge entry point, explicit work/ownership/authority names, symmetric `workflows/`, domain `README.md` indexes for decisions/reviews/skills, historical proof under `reviews/`, operational notes limited to boot baseline/backlog, `prd-verify.yml` matching the PRD workflow name, lowercase Voice reference paths, and `workspace/archive/` for inactive retained projects.
+These references are downstream production guidance only. They do not override accepted PRD facts, Flow 5 Voice scope, or canonical Flow 6 wording authority.
 
 ## Next Step
 
-**Use the current Clockwork package for the next user-requested bounded revision or downstream implementation/Voice handoff; otherwise make no further PRD-Creator changes without a concrete task or defect.**
+**Use the new Eleven v3 knowledge layer to improve the next bounded SoundMaker / Voice Production task. Do not add more prompting rules unless supported by current official evidence, a clearly labeled creator/community observation, or project-calibrated approved audio.**
