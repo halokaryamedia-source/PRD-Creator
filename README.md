@@ -23,22 +23,25 @@ Normal project production is **Production Execution**. `development-brief` is re
 ## PRD path
 
 ```text
-project source
+project source / current instruction
 → automatic internal bootstrap
 → relevance/authority triage
 → requirement recovery + problem solving
-→ humanized grouped unresolved decisions only if needed
+→ concrete Completion / Proposal for material gaps
+→ complete Simple Chat Preview
+→ user correction / approval
 → canonical PRD
-→ deterministic Golden projection/render
-→ integrated review
-→ final PRD
+→ deterministic exact-Golden projection/render
+→ integrated Semantic Readiness + Material Conservation
+→ targeted visual sanity
+→ final PRD / handoff
 ```
 
-Flow 2 should solve before asking: recover from authority, apply safe Completion, or form a responsible Proposal/tradeoff before escalating a material decision to the user.
+Flow 2 should solve before asking: recover from authority, apply safe Completion, or form a responsible Proposal before escalating a material decision to the user. A Proposal is not project truth until the relevant preview is approved/corrected.
 
 ## Golden PRD contract
 
-The approved Golden Sample is the required hierarchy, page-composition, component-language, and presentation authority for this gameplay-document family:
+The approved Golden Sample is the required **canonical visible page prototype** for this gameplay-document family. It locks hierarchy, page composition, component language, labels, reading pattern, and presentation behavior unless the user explicitly approves a Golden revision.
 
 ```text
 Overview
@@ -50,20 +53,23 @@ Overview
      → Developer
 ```
 
-Future projects replace project facts; they do not redesign this document language or copy Aftershock-specific facts/counts.
+Future projects replace project facts; they do not redesign this document language or copy Aftershock-specific mechanics/counts.
+
+`template/golden-sample.html` stores the canonical approved reference bytes. `template/approved-document.html` is the runtime template alias and must remain byte-identical to the Golden artifact.
 
 ## PRD quality and efficiency
 
 - source fidelity before polish;
-- production-relevant requirement granularity instead of sentence-by-sentence extraction;
-- relevance-first source reading rather than loading every byte;
-- Flow 2 resolves topology, lifecycle, numeric/clarity/coherence issues, known constraint conflicts, and cross-role implications before drafting when material;
-- recommendations are honest about evidence and tradeoffs rather than forcing a false default;
-- minimum sufficient detail inside the Golden structure;
-- plain, human-readable production language without changing technical meaning;
-- canonical meaning first, compact derived projection second;
-- deterministic renderer/validator consume large HTML at runtime;
-- bounded revisions/reviews touch only affected scope;
+- source provenance is mandatory while duplicating every source file into Git is not;
+- Flow 2 uses the Golden fill map to ensure required production meaning exists without copying reference-project facts;
+- complete missing material meaning with a concrete Proposal when authority does not settle it, then obtain user approval through the Simple Chat Preview;
+- minimum complete production detail, not minimum-looking output;
+- plain human-readable language without changing technical meaning;
+- one semantic model feeds both `content.md` and direct `render-data.json` projection;
+- deterministic full-file rerender is preferred over partial-render/cache infrastructure;
+- Flow 4 persists Mechanical + one integrated Semantic Readiness + Material Conservation + Visual sanity, not duplicated role-by-role PASS fields;
+- bounded revisions touch only invalidated semantic/review scope;
+- unchanged Golden/reference proof is not replayed for ordinary content-only work;
 - no new machinery without a concrete current need.
 
 ## Main owners
