@@ -1,0 +1,622 @@
+name: Normalize repository naming once
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/repository-naming-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Normalize repository structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git mv .github/workflows/production-verify.yml .github/workflows/prd-verify.yml
+
+          mkdir -p docs/knowledge/workflows
+          git mv docs/knowledge/flow.md docs/knowledge/work-routing.md
+          git mv docs/knowledge/flows/development-flow.md docs/knowledge/workflows/development.md
+          git mv docs/knowledge/maintenance/maintenance-flow.md docs/knowledge/workflows/maintenance.md
+          git mv docs/knowledge/sources/source-map.md docs/knowledge/source-authority.md
+
+          git mv docs/knowledge/decision-log.md docs/knowledge/decisions/README.md
+          git mv docs/knowledge/decisions/change-decision-guide.md docs/knowledge/decisions/recording-policy.md
+
+          git mv docs/knowledge/reviews/review-graph.md docs/knowledge/reviews/README.md
+          git mv docs/knowledge/reviews/review-template.md docs/knowledge/reviews/template.md
+          git mv docs/knowledge/operations/archived-retirement-audit.md docs/knowledge/reviews/archived-retirement-audit.md
+          git mv docs/knowledge/operations/operating-parity-acceptance.md docs/knowledge/reviews/operating-parity-acceptance.md
+          git mv docs/knowledge/operations/system-integration-proof.md docs/knowledge/reviews/system-integration-proof.md
+          git mv docs/foundation/validation-report.md docs/knowledge/reviews/current-validation.md
+
+          git mv docs/knowledge/operations/context-boot-baseline.md docs/knowledge/operations/boot-baseline.md
+          git mv docs/knowledge/operations/task-board.md docs/knowledge/operations/backlog.md
+          git mv docs/knowledge/skills/skill-map.md docs/knowledge/skills/README.md
+
+          git mv workspace/saved workspace/archive
+          git mv kits/voice-production-kit/REFERENCE kits/voice-production-kit/references
+          git mv kits/voice-production-kit/references/Aftershock kits/voice-production-kit/references/aftershock
+
+          git rm docs/knowledge/index.md
+          git rm docs/knowledge/minimal-nav.md
+          git rm docs/knowledge/workspace-map.md
+          git rm docs/knowledge/implementation-map.md
+          git rm docs/knowledge/modules/module-map.md
+          git rm kits/voice-production-kit/INSTRUCTIONS.md
+
+          cat > docs/knowledge/README.md <<'EOF'
+          # Repository Knowledge
+
+          Updated: 2026-08-13
+
+          This directory is the navigation and operating-memory layer for PRD-Creator. Use one owner per question; do not broad-read the whole directory.
+
+          ## Start Here
+
+          For a normal session:
+
+          1. `../../AGENTS.md` — repository rules, work modes, proof, branch policy.
+          2. `../../CONTEXT.md` — stable product context and production boundaries.
+          3. `next-action.md` — current status and the single continuation point.
+          4. Open only the smallest owner needed after that.
+
+          ## Current Owners
+
+          | Need | Owner |
+          |---|---|
+          | Work-mode routing | `work-routing.md` |
+          | Repository/code/procedure ownership | `ownership.md` |
+          | Source/state authority | `source-authority.md` |
+          | Developing workflow | `workflows/development.md` |
+          | Maintenance workflow | `workflows/maintenance.md` |
+          | Skill inventory | `skills/README.md` |
+          | Skill selection | `skills/activation-matrix.md` |
+          | Durable decision register | `decisions/README.md` |
+          | Decision-recording threshold | `decisions/recording-policy.md` |
+          | Current + historical review evidence | `reviews/README.md` |
+          | Future/non-active work | `operations/backlog.md` |
+          | Boot/routing regression baseline | `operations/boot-baseline.md` |
+
+          ## Directory Structure
+
+          ```text
+          docs/knowledge/
+          ├── README.md
+          ├── next-action.md
+          ├── work-routing.md
+          ├── ownership.md
+          ├── source-authority.md
+          ├── workflows/
+          │   ├── development.md
+          │   └── maintenance.md
+          ├── skills/
+          │   ├── README.md
+          │   └── activation-matrix.md
+          ├── decisions/
+          │   ├── README.md
+          │   ├── recording-policy.md
+          │   └── <decision records>.md
+          ├── reviews/
+          │   ├── README.md
+          │   ├── current-validation.md
+          │   ├── template.md
+          │   └── <historical evidence>.md
+          └── operations/
+              ├── boot-baseline.md
+              └── backlog.md
+          ```
+
+          ## Separation Rule
+
+          ```text
+          active task              → next-action.md
+          durable choice/reason    → decisions/
+          current/historical proof → reviews/
+          future work              → operations/backlog.md
+          production policy        → ../foundation/
+          project-specific state   → ../../workspace/
+          ```
+
+          Historical review bodies remain capture-time evidence. Current policy comes from active owners, not from whichever audit has the strongest wording.
+          EOF
+
+          cat > docs/knowledge/ownership.md <<'EOF'
+          # Repository Ownership
+
+          Updated: 2026-08-13
+
+          Use this file to locate the current owner before creating, moving, or editing repository structure. It combines area-level ownership and exact implementation/procedure routing so there is only one ownership map.
+
+          ## Repository Areas
+
+          | Area | Responsibility |
+          |---|---|
+          | `AGENTS.md` | repository-wide work modes, proof, branch and edit rules |
+          | `CONTEXT.md` | stable product context and terminology |
+          | `.agents/skills/` | reusable semantic routing/judgment |
+          | `docs/foundation/` | durable Flow 1–7 production policy |
+          | `docs/knowledge/` | current repository memory, ownership, decisions, evidence and operations |
+          | `kits/project-document-generator/` | Flow 2–4 PRD implementation/procedure |
+          | `kits/voice-production-kit/` | Flow 5–7 Voice implementation/procedure |
+          | `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering and repeatable CI contracts |
+          | `workspace/active/` | current project production packages |
+          | `workspace/archive/` | inactive retained project packages |
+
+          ## Operating Owners
+
+          | Boundary | Owner |
+          |---|---|
+          | Active continuation | `docs/knowledge/next-action.md` |
+          | Work-mode routing | `docs/knowledge/work-routing.md` |
+          | Developing workflow | `docs/knowledge/workflows/development.md` |
+          | Maintenance workflow | `docs/knowledge/workflows/maintenance.md` |
+          | Root skill routing | `docs/knowledge/skills/activation-matrix.md` |
+          | Source/state authority | `docs/knowledge/source-authority.md` |
+          | Review/evidence status | `docs/knowledge/reviews/README.md` |
+          | Durable decisions | `docs/knowledge/decisions/README.md` |
+          | Decision-recording policy | `docs/knowledge/decisions/recording-policy.md` |
+          | Future/non-active work | `docs/knowledge/operations/backlog.md` |
+
+          ## PRD Owners
+
+          | Boundary | Owner |
+          |---|---|
+          | End-to-end production sequence | `docs/foundation/01-production-flow.md` |
+          | Flow 2 policy | `docs/foundation/02-source-intake-recovery.md` |
+          | Flow 2 detailed procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
+          | Flow 3 PRD + Golden contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
+          | PRD rendering | `kits/project-document-generator/RENDERING.md` + `renderer/` |
+          | Flow 4 policy | `docs/foundation/04-prd-validation-handoff.md` |
+          | Flow 4 detailed validation/handoff | `kits/project-document-generator/VALIDATION.md` |
+          | PRD mechanical validator | `kits/project-document-generator/validator/validate.py` |
+          | PRD handoff consistency | `kits/project-document-generator/validator/validate_handoff.py` |
+          | PRD regressions | `tests/test_prd_*` |
+          | Current system/project evidence | `docs/knowledge/reviews/current-validation.md` |
+
+          ## Voice Owners
+
+          | Boundary | Owner |
+          |---|---|
+          | Flow 5 Voice extraction | `kits/voice-production-kit/VOICE-EXTRACTION.md` |
+          | Flow 6 performance wording | `kits/voice-production-kit/SCRIPT-PRODUCTION.md` |
+          | DOCX presentation | `kits/voice-production-kit/DOCX-FORMAT.md` |
+          | DOCX builder | `kits/voice-production-kit/builder/build_docx.py` |
+          | Flow 7 Voice validation | `kits/voice-production-kit/VOICE-VALIDATION.md` + `validator/validate.py` |
+          | Voice regressions | `tests/test_voice_contracts.py` |
+
+          ## Golden Ownership
+
+          ```text
+          CONTENT-CONTRACT.md
+          → semantic + visible-composition authority
+
+          RENDERING.md
+          → deterministic binding contract
+
+          template/golden-reference.html
+          → canonical reference bytes
+
+          template/runtime-template.html
+          → renderer runtime alias; byte-identical to the reference
+          ```
+
+          ## New-Owner Rule
+
+          Create a new owner only when an existing owner cannot represent the responsibility without mixing unrelated jobs. Do not create a new map, registry, skill, schema, or compatibility layer solely because a current filename is inconvenient.
+          EOF
+
+          cat > docs/knowledge/operations/boot-baseline.md <<'EOF'
+          # Boot and Routing Baseline
+
+          Updated: 2026-08-13
+
+          This baseline checks that a new session reaches the correct owner without unnecessary repository-wide reading.
+
+          ## Expected Boot
+
+          ```text
+          AGENTS.md
+          → CONTEXT.md
+          → docs/knowledge/next-action.md
+          → smallest relevant owner
+          ```
+
+          Use `skills/activation-matrix.md` only when the correct specialist is genuinely ambiguous.
+
+          ## Expected Routing
+
+          | Scenario | Mode | Expected route |
+          |---|---|---|
+          | Create/revise a PRD with the existing system | Production Execution | `project-document-production` → active PRD Flow owner |
+          | Create/revise Voice output from an accepted PRD | Production Execution | `voice-production` → active Voice Flow owner |
+          | Change PRD-Creator policy/skills/repository structure | Developing | `development-brief` + at most one useful specialist |
+          | Fix a concrete bug/regression | Maintenance | first wrong owner → smallest correction |
+          | Clean stale docs without changing architecture | Maintenance | current doc owner → link/ownership proof |
+          | Decide an ungrounded high-impact architecture change | Plan | inspect authority/ownership before editing |
+
+          Normal project Production Execution does **not** use `development-brief`.
+
+          ## Pass Condition
+
+          A route passes when:
+
+          - the correct owner is reached without broad-reading unrelated docs/projects;
+          - project production is not misclassified as repository development;
+          - no redundant skill/state system is activated;
+          - evidence expectations match the execution channel;
+          - known repository context is reused instead of asking the user to reconstruct it.
+
+          Add a scenario only after a real routing failure exposes a missing case. Do not maintain ceremonial routing telemetry.
+          EOF
+
+          cat > docs/knowledge/operations/backlog.md <<'EOF'
+          # Backlog
+
+          Updated: 2026-08-13
+
+          This file contains **future/non-active work only**. It never overrides `../next-action.md`.
+
+          ## Current Backlog
+
+          There is no standing parity, hardening, or cleanup backlog.
+
+          Future work begins only from:
+
+          - a real new project through the existing production flow;
+          - an explicit user-requested product/system change;
+          - Maintenance for a concrete observed defect.
+
+          Completed remediation checklists, CI run IDs, and one-off proof cycles stay in decisions/reviews/Git history instead of being duplicated here.
+          EOF
+
+          python - <<'PY'
+          from __future__ import annotations
+          import os
+          import re
+          from pathlib import Path
+
+          ROOT = Path('.')
+
+          path_map = {
+              Path('.github/workflows/production-verify.yml'): Path('.github/workflows/prd-verify.yml'),
+              Path('docs/knowledge/index.md'): Path('docs/knowledge/README.md'),
+              Path('docs/knowledge/minimal-nav.md'): Path('docs/knowledge/README.md'),
+              Path('docs/knowledge/workspace-map.md'): Path('docs/knowledge/README.md'),
+              Path('docs/knowledge/flow.md'): Path('docs/knowledge/work-routing.md'),
+              Path('docs/knowledge/flows/development-flow.md'): Path('docs/knowledge/workflows/development.md'),
+              Path('docs/knowledge/maintenance/maintenance-flow.md'): Path('docs/knowledge/workflows/maintenance.md'),
+              Path('docs/knowledge/implementation-map.md'): Path('docs/knowledge/ownership.md'),
+              Path('docs/knowledge/modules/module-map.md'): Path('docs/knowledge/ownership.md'),
+              Path('docs/knowledge/sources/source-map.md'): Path('docs/knowledge/source-authority.md'),
+              Path('docs/knowledge/decision-log.md'): Path('docs/knowledge/decisions/README.md'),
+              Path('docs/knowledge/decisions/change-decision-guide.md'): Path('docs/knowledge/decisions/recording-policy.md'),
+              Path('docs/knowledge/reviews/review-graph.md'): Path('docs/knowledge/reviews/README.md'),
+              Path('docs/knowledge/reviews/review-template.md'): Path('docs/knowledge/reviews/template.md'),
+              Path('docs/knowledge/operations/archived-retirement-audit.md'): Path('docs/knowledge/reviews/archived-retirement-audit.md'),
+              Path('docs/knowledge/operations/operating-parity-acceptance.md'): Path('docs/knowledge/reviews/operating-parity-acceptance.md'),
+              Path('docs/knowledge/operations/system-integration-proof.md'): Path('docs/knowledge/reviews/system-integration-proof.md'),
+              Path('docs/foundation/validation-report.md'): Path('docs/knowledge/reviews/current-validation.md'),
+              Path('docs/knowledge/operations/context-boot-baseline.md'): Path('docs/knowledge/operations/boot-baseline.md'),
+              Path('docs/knowledge/operations/task-board.md'): Path('docs/knowledge/operations/backlog.md'),
+              Path('docs/knowledge/skills/skill-map.md'): Path('docs/knowledge/skills/README.md'),
+              Path('workspace/saved/README.md'): Path('workspace/archive/README.md'),
+              Path('kits/voice-production-kit/REFERENCE/Aftershock/README.md'): Path('kits/voice-production-kit/references/aftershock/README.md'),
+          }
+
+          origin_map = {
+              Path('docs/knowledge/work-routing.md'): Path('docs/knowledge/flow.md'),
+              Path('docs/knowledge/workflows/development.md'): Path('docs/knowledge/flows/development-flow.md'),
+              Path('docs/knowledge/workflows/maintenance.md'): Path('docs/knowledge/maintenance/maintenance-flow.md'),
+              Path('docs/knowledge/source-authority.md'): Path('docs/knowledge/sources/source-map.md'),
+              Path('docs/knowledge/decisions/README.md'): Path('docs/knowledge/decision-log.md'),
+              Path('docs/knowledge/decisions/recording-policy.md'): Path('docs/knowledge/decisions/change-decision-guide.md'),
+              Path('docs/knowledge/reviews/README.md'): Path('docs/knowledge/reviews/review-graph.md'),
+              Path('docs/knowledge/reviews/template.md'): Path('docs/knowledge/reviews/review-template.md'),
+              Path('docs/knowledge/reviews/archived-retirement-audit.md'): Path('docs/knowledge/operations/archived-retirement-audit.md'),
+              Path('docs/knowledge/reviews/operating-parity-acceptance.md'): Path('docs/knowledge/operations/operating-parity-acceptance.md'),
+              Path('docs/knowledge/reviews/system-integration-proof.md'): Path('docs/knowledge/operations/system-integration-proof.md'),
+              Path('docs/knowledge/reviews/current-validation.md'): Path('docs/foundation/validation-report.md'),
+              Path('docs/knowledge/operations/boot-baseline.md'): Path('docs/knowledge/operations/context-boot-baseline.md'),
+              Path('docs/knowledge/operations/backlog.md'): Path('docs/knowledge/operations/task-board.md'),
+              Path('docs/knowledge/skills/README.md'): Path('docs/knowledge/skills/skill-map.md'),
+              Path('workspace/archive/README.md'): Path('workspace/saved/README.md'),
+              Path('kits/voice-production-kit/references/aftershock/README.md'): Path('kits/voice-production-kit/REFERENCE/Aftershock/README.md'),
+              Path('.github/workflows/prd-verify.yml'): Path('.github/workflows/production-verify.yml'),
+          }
+
+          link_re = re.compile(r'(?<!!)\[([^\]]+)\]\(([^)]+)\)')
+
+          def norm(path: Path) -> Path:
+              return Path(os.path.normpath(path.as_posix()))
+
+          for md in ROOT.rglob('*.md'):
+              rel = md.relative_to(ROOT)
+              old_source = origin_map.get(rel, rel)
+              text = md.read_text(encoding='utf-8')
+
+              def replace_link(match: re.Match[str]) -> str:
+                  label, raw = match.group(1), match.group(2).strip()
+                  if not raw or raw.startswith('#') or '://' in raw or raw.lower().startswith(('mailto:', 'tel:', 'data:', 'skills:', 'sandbox:')):
+                      return match.group(0)
+                  path_part, hash_sep, anchor = raw.partition('#')
+                  query_part = ''
+                  if '?' in path_part:
+                      path_part, query_part = path_part.split('?', 1)
+                      query_part = '?' + query_part
+                  if not path_part:
+                      return match.group(0)
+                  old_target = norm(old_source.parent / path_part)
+                  new_target = path_map.get(old_target, old_target)
+                  if old_source == rel and old_target == new_target:
+                      return match.group(0)
+                  new_raw = os.path.relpath(new_target, rel.parent).replace('\\', '/')
+                  suffix = query_part + (('#' + anchor) if hash_sep else '')
+                  return f'[{label}]({new_raw}{suffix})'
+
+              text = link_re.sub(replace_link, text)
+              md.write_text(text, encoding='utf-8')
+
+          exact_replacements = {
+              '.github/workflows/production-verify.yml': '.github/workflows/prd-verify.yml',
+              'docs/knowledge/flow.md': 'docs/knowledge/work-routing.md',
+              'docs/knowledge/flows/development-flow.md': 'docs/knowledge/workflows/development.md',
+              'docs/knowledge/maintenance/maintenance-flow.md': 'docs/knowledge/workflows/maintenance.md',
+              'docs/knowledge/modules/module-map.md': 'docs/knowledge/ownership.md',
+              'docs/knowledge/implementation-map.md': 'docs/knowledge/ownership.md',
+              'docs/knowledge/sources/source-map.md': 'docs/knowledge/source-authority.md',
+              'docs/knowledge/reviews/review-graph.md': 'docs/knowledge/reviews/README.md',
+              'docs/knowledge/decision-log.md': 'docs/knowledge/decisions/README.md',
+              'docs/knowledge/decisions/change-decision-guide.md': 'docs/knowledge/decisions/recording-policy.md',
+              'docs/knowledge/operations/context-boot-baseline.md': 'docs/knowledge/operations/boot-baseline.md',
+              'docs/knowledge/operations/task-board.md': 'docs/knowledge/operations/backlog.md',
+              'docs/knowledge/skills/skill-map.md': 'docs/knowledge/skills/README.md',
+              'docs/foundation/validation-report.md': 'docs/knowledge/reviews/current-validation.md',
+              'workspace/saved': 'workspace/archive',
+              'kits/voice-production-kit/REFERENCE/Aftershock': 'kits/voice-production-kit/references/aftershock',
+              'REFERENCE/Aftershock': 'references/aftershock',
+              'flows/development-flow.md': 'workflows/development.md',
+              'maintenance/maintenance-flow.md': 'workflows/maintenance.md',
+              'modules/module-map.md': 'ownership.md',
+              'sources/source-map.md': 'source-authority.md',
+              'decisions/change-decision-guide.md': 'decisions/recording-policy.md',
+              'operations/context-boot-baseline.md': 'operations/boot-baseline.md',
+              'operations/task-board.md': 'operations/backlog.md',
+              'skills/skill-map.md': 'skills/README.md',
+          }
+
+          text_ext = {'.md', '.py', '.yml', '.yaml', '.txt'}
+          for path in ROOT.rglob('*'):
+              if not path.is_file() or path.suffix.lower() not in text_ext:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              for old, new in exact_replacements.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          # Current owner titles/terminology.
+          title_replacements = {
+              Path('docs/knowledge/work-routing.md'): [('# Agent Work Routing Flow', '# Work Routing')],
+              Path('docs/knowledge/workflows/development.md'): [('# Development Flow', '# Development Workflow')],
+              Path('docs/knowledge/workflows/maintenance.md'): [('# Maintenance Flow', '# Maintenance Workflow')],
+              Path('docs/knowledge/source-authority.md'): [('# Source Authority Map', '# Source Authority')],
+              Path('docs/knowledge/skills/README.md'): [('# Skill Map', '# Skill Catalog')],
+              Path('docs/knowledge/decisions/README.md'): [('# Decision Log', '# Decision Register')],
+              Path('docs/knowledge/decisions/recording-policy.md'): [('# Change Decision Guide', '# Decision Recording Policy')],
+              Path('docs/knowledge/reviews/README.md'): [('# Review Graph', '# Review Register')],
+              Path('docs/knowledge/reviews/current-validation.md'): [('# Production + Operating Validation Report', '# Current Validation Status'), ('Updated: 2026-08-12', 'Updated: 2026-08-13')],
+              Path('workspace/archive/README.md'): [('# Saved Projects', '# Archived Projects'), ('finalized/saved', 'inactive/retained')],
+          }
+          for path, reps in title_replacements.items():
+              text = path.read_text(encoding='utf-8')
+              for old, new in reps:
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          # Current review register: current validation now lives with evidence.
+          review = Path('docs/knowledge/reviews/README.md')
+          text = review.read_text(encoding='utf-8')
+          text = text.replace('This page owns only their **current meaning**.', 'This register owns their **current meaning** and points to the current validation status.')
+          text = text.replace('[Foundation Validation Report]', '[Current Validation Status]')
+          review.write_text(text, encoding='utf-8')
+
+          # Decision register: record the durable naming taxonomy.
+          decisions = Path('docs/knowledge/decisions/README.md')
+          text = decisions.read_text(encoding='utf-8')
+          marker = '## Current Decisions\n'
+          entry = '''## Current Decisions\n\n### Repository navigation uses explicit domain naming\n\n- **Decision:** domain folders use `README.md` as their index/register; cross-domain files use explicit names such as `work-routing.md`, `ownership.md`, and `source-authority.md`. Historical proof belongs under `reviews/`; `operations/` contains only active/future operational notes. Old navigation aliases are retired rather than preserved as compatibility files.\n- **Reason:** the previous mix of `map`, `graph`, `log`, `index`, `minimal-nav`, `flow`, and `flows/` made multiple files appear to own the same question.\n- **Boundary:** production semantics, project artifact contracts, Golden bytes, Voice output contracts, and accepted Clockwork content are unchanged.\n- **Date:** 2026-08-13\n\n'''
+          if marker in text and '### Repository navigation uses explicit domain naming' not in text:
+              text = text.replace(marker, entry, 1)
+          text = text.replace('decision log', 'decision register').replace('Decision Log', 'Decision Register')
+          decisions.write_text(text, encoding='utf-8')
+
+          policy = Path('docs/knowledge/decisions/recording-policy.md')
+          text = policy.read_text(encoding='utf-8')
+          text = text.replace('decision log', 'decision register').replace('Decision Log', 'Decision Register')
+          text = text.replace('`decision-log.md`', '`README.md`')
+          policy.write_text(text, encoding='utf-8')
+
+          # Foundation is policy-only; current evidence moved to reviews.
+          foundation = Path('docs/foundation/README.md')
+          text = foundation.read_text(encoding='utf-8')
+          lines = [line for line in text.splitlines() if 'validation-report.md' not in line]
+          text = '\n'.join(lines).replace('durable workflow/product policy', 'durable workflow/product policy') + '\n'
+          foundation.write_text(text, encoding='utf-8')
+
+          # Root AGENTS: point to the consolidated navigation owners.
+          agents = Path('AGENTS.md')
+          text = agents.read_text(encoding='utf-8')
+          text = text.replace('Use `docs/knowledge/minimal-nav.md` or ownership maps only when direct ownership is unclear.', 'Use `docs/knowledge/README.md`, `docs/knowledge/ownership.md`, or `docs/knowledge/source-authority.md` only when direct ownership is unclear.')
+          text = text.replace('durable decisions/reasons → `docs/knowledge/decision-log.md` + `docs/knowledge/decisions/`;', 'durable decisions/reasons → `docs/knowledge/decisions/README.md` + focused records in `docs/knowledge/decisions/`;')
+          agents.write_text(text, encoding='utf-8')
+
+          # Active routing terms.
+          active_docs = [
+              Path('docs/knowledge/work-routing.md'),
+              Path('docs/knowledge/workflows/development.md'),
+              Path('docs/knowledge/workflows/maintenance.md'),
+              Path('docs/knowledge/source-authority.md'),
+              Path('docs/knowledge/skills/README.md'),
+              Path('docs/knowledge/skills/activation-matrix.md'),
+              Path('docs/knowledge/decisions/recording-policy.md'),
+              Path('docs/knowledge/reviews/template.md'),
+              Path('kits/project-document-generator/AGENTS.md'),
+              Path('kits/voice-production-kit/AGENTS.md'),
+          ]
+          phrase_replacements = {
+              'Agent Routing Flow': 'Work Routing',
+              'Agent Flow': 'Work Routing',
+              'Development Flow': 'Development Workflow',
+              'Maintenance Flow': 'Maintenance Workflow',
+              'Module Map': 'Repository Ownership',
+              'Implementation Map': 'Repository Ownership',
+              'Source Map': 'Source Authority',
+              'Skill Map': 'Skill Catalog',
+              'Review Graph': 'Review Register',
+              'Change Decision Guide': 'Decision Recording Policy',
+          }
+          for path in active_docs:
+              text = path.read_text(encoding='utf-8')
+              for old, new in phrase_replacements.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          # Workflow terminology matches the actual workflow names.
+          for path in [
+              Path('kits/project-document-generator/AGENTS.md'),
+              Path('kits/project-document-generator/README.md'),
+              Path('kits/project-document-generator/VALIDATION.md'),
+          ]:
+              text = path.read_text(encoding='utf-8').replace('Production Verify', 'PRD Verify')
+              path.write_text(text, encoding='utf-8')
+          for path in [Path('kits/voice-production-kit/AGENTS.md'), Path('kits/voice-production-kit/README.md')]:
+              text = path.read_text(encoding='utf-8').replace('Production Verify', 'Voice Verify')
+              path.write_text(text, encoding='utf-8')
+
+          # Voice reference path and runtime documentation.
+          voice_readme = Path('kits/voice-production-kit/README.md')
+          text = voice_readme.read_text(encoding='utf-8').replace('`REFERENCE/Aftershock/README.md`', '`references/aftershock/README.md`')
+          voice_readme.write_text(text, encoding='utf-8')
+
+          # PRD workflow self-reference.
+          prd_workflow = Path('.github/workflows/prd-verify.yml')
+          text = prd_workflow.read_text(encoding='utf-8').replace('.github/workflows/production-verify.yml', '.github/workflows/prd-verify.yml')
+          prd_workflow.write_text(text, encoding='utf-8')
+
+          # Repository verifier owns the new canonical navigation names and prevents retired paths from returning.
+          verify = Path('tools/verify_repository.py')
+          text = verify.read_text(encoding='utf-8')
+          start = text.index('REQUIRED_PATHS = [')
+          end = text.index('\n]\n\nMARKDOWN_ROOTS', start) + 2
+          new_required = '''REQUIRED_PATHS = [\n    ".github/workflows/repository-verify.yml",\n    ".github/workflows/prd-verify.yml",\n    ".github/workflows/voice-verify.yml",\n    "AGENTS.md",\n    "CONTEXT.md",\n    "requirements.lock.txt",\n    "tests/test_prd_contracts.py",\n    "tests/test_voice_contracts.py",\n    "docs/knowledge/README.md",\n    "docs/knowledge/next-action.md",\n    "docs/knowledge/work-routing.md",\n    "docs/knowledge/workflows/development.md",\n    "docs/knowledge/workflows/maintenance.md",\n    "docs/knowledge/ownership.md",\n    "docs/knowledge/source-authority.md",\n    "docs/knowledge/reviews/README.md",\n    "docs/knowledge/reviews/current-validation.md",\n    "docs/knowledge/decisions/README.md",\n    "docs/knowledge/decisions/recording-policy.md",\n    "docs/knowledge/skills/activation-matrix.md",\n    "docs/knowledge/skills/README.md",\n    "docs/knowledge/operations/boot-baseline.md",\n    "docs/knowledge/operations/backlog.md",\n    "kits/project-document-generator/AGENTS.md",\n    "kits/project-document-generator/SKILL.md",\n    "kits/voice-production-kit/AGENTS.md",\n    "kits/voice-production-kit/SKILL.md",\n    "kits/voice-production-kit/requirements.txt",\n    "kits/voice-production-kit/references/aftershock/README.md",\n    "workspace/archive/README.md",\n]'''
+          text = text[:start] + new_required + text[end:]
+          old_func = '''def check_retired_boundaries(errors: list[str]) -> None:\n    if (ROOT / "Production Document Builder").exists():\n        fail(errors, "retired Production Document Builder/ must not return to live tree")\n'''
+          new_func = '''def check_retired_boundaries(errors: list[str]) -> None:\n    retired = [\n        "Production Document Builder",\n        ".github/workflows/production-verify.yml",\n        "docs/knowledge/index.md",\n        "docs/knowledge/minimal-nav.md",\n        "docs/knowledge/workspace-map.md",\n        "docs/knowledge/flow.md",\n        "docs/knowledge/flows",\n        "docs/knowledge/maintenance",\n        "docs/knowledge/modules",\n        "docs/knowledge/sources",\n        "docs/knowledge/implementation-map.md",\n        "docs/knowledge/decision-log.md",\n        "docs/knowledge/decisions/change-decision-guide.md",\n        "docs/knowledge/reviews/review-graph.md",\n        "docs/knowledge/reviews/review-template.md",\n        "docs/knowledge/operations/context-boot-baseline.md",\n        "docs/knowledge/operations/task-board.md",\n        "docs/foundation/validation-report.md",\n        "workspace/saved",\n        "kits/voice-production-kit/REFERENCE",\n        "kits/voice-production-kit/INSTRUCTIONS.md",\n    ]\n    for rel in retired:\n        if (ROOT / rel).exists():\n            fail(errors, f"retired repository path must not return: {rel}")\n'''
+          if old_func not in text:
+              raise SystemExit('retired-boundary function shape changed unexpectedly')
+          text = text.replace(old_func, new_func)
+          verify.write_text(text, encoding='utf-8')
+
+          # Root README gets one clear navigation entry point.
+          root_readme = Path('README.md')
+          text = root_readme.read_text(encoding='utf-8')
+          nav = '''\n## Repository navigation\n\nStart with `docs/knowledge/README.md` for current repository navigation. Use `docs/knowledge/ownership.md` for owner lookup and `docs/knowledge/source-authority.md` for authority lookup. Current continuation remains `docs/knowledge/next-action.md`.\n'''
+          if '## Repository navigation' not in text:
+              text = text.replace('\n## Main owners\n', nav + '\n## Main owners\n')
+          root_readme.write_text(text, encoding='utf-8')
+
+          # Current continuation records the repository refactor without changing project status.
+          next_action = Path('docs/knowledge/next-action.md')
+          text = next_action.read_text(encoding='utf-8')
+          text = text.replace('Updated: 2026-08-12', 'Updated: 2026-08-13')
+          current_marker = 'No renderer, Golden template, validator behavior, Clockwork canonical content, render-data, or `final.html` was changed by this documentation sync.'
+          addition = current_marker + '''\n\nRepository navigation is now normalized: one knowledge entry point, explicit work/ownership/authority names, symmetric `workflows/`, domain `README.md` indexes for decisions/reviews/skills, historical proof under `reviews/`, operational notes limited to boot baseline/backlog, `prd-verify.yml` matching the PRD workflow name, lowercase Voice reference paths, and `workspace/archive/` for inactive retained projects.'''
+          if current_marker in text and 'Repository navigation is now normalized' not in text:
+              text = text.replace(current_marker, addition)
+          next_action.write_text(text, encoding='utf-8')
+
+          # Current validation notes the naming-only repository migration.
+          current_validation = Path('docs/knowledge/reviews/current-validation.md')
+          text = current_validation.read_text(encoding='utf-8')
+          if '## Repository navigation proof' not in text:
+              text += '''\n## Repository navigation proof\n\nThe 2026-08-13 repository naming refactor changes navigation/path ownership only. PRD/Voice semantic contracts, Golden reference/runtime bytes, and the accepted Clockwork project package remain unchanged. Repository verification, PRD contracts, Voice contracts, and exact Clockwork rerender comparison are the acceptance proof for this refactor.\n'''
+          current_validation.write_text(text, encoding='utf-8')
+
+          # Archive wording.
+          archive = Path('workspace/archive/README.md')
+          text = archive.read_text(encoding='utf-8').replace('Folder location alone is not proof of client approval or production validation.', 'Archive location means inactive retention only; it is not proof of client approval or production validation.')
+          archive.write_text(text, encoding='utf-8')
+          PY
+
+          git diff --check
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Verify repository and production contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/verify_repository.py
+          python -m compileall -q kits tools tests
+          python -m unittest \
+            tests.test_prd_contracts \
+            tests.test_prd_handoff_contracts \
+            tests.test_prd_flow2_state_contracts \
+            tests.test_prd_hierarchy_contracts \
+            tests.test_prd_golden_reference -v
+          python -m unittest tests.test_voice_contracts -v
+
+          python kits/project-document-generator/renderer/render.py \
+            workspace/active/the-clockwork-vault/work/render-data.json \
+            /tmp/clockwork-final.html
+          cmp /tmp/clockwork-final.html workspace/active/the-clockwork-vault/output/final.html
+          test "$(sha256sum /tmp/clockwork-final.html | awk '{print $1}')" = \
+            "0502e3cb78e5c834e540d9715d78cb3fbdf1f8519ab5b6a8c976c257a59d7024"
+
+          test "$(git hash-object kits/project-document-generator/template/golden-reference.html)" = \
+            "e1dccd77d7a5335213caea7a09d74ba78b2ae8e1"
+          test "$(git hash-object kits/project-document-generator/template/runtime-template.html)" = \
+            "e1dccd77d7a5335213caea7a09d74ba78b2ae8e1"
+
+          if git ls-files | grep -E '(^|/)__pycache__/|\.py[co]$'; then
+            echo "Tracked Python bytecode residue found" >&2
+            exit 1
+          fi
+
+          git diff --check
+
+      - name: Commit normalized structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/repository-naming-once.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+          git diff --check
+          git config user.name "halokaryamedia-source"
+          git config user.email "halokaryamedia@gmail.com"
+          git add -A
+          git commit -m "refactor: normalize repository navigation"
+          git push origin HEAD:Local
