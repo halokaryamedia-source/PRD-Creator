@@ -1,0 +1,66 @@
+project: the-clockwork-vault
+requirements:
+  - id: REQ-001
+    area: gameplay
+    statement: The Antechamber is story briefing, Custodian Key pickup, and Resonance Engine seal activation; it does not add a separate warm-up puzzle or Objective Score.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-002
+    area: gameplay
+    statement: The Resonance Engine begins with approximately 90 seconds of free play while the target display is blank or inactive, then runs Target 1 followed by Target 2.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-003
+    area: gameplay
+    statement: The Broken Gallery uses three checkpoints; collapse appears only in Checkpoint 3 around 50 percent of final-checkpoint progress and failure must remain recoverable.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-004
+    area: gameplay
+    statement: Echo Pebble has unlimited use and disables valid wall or floor traps for four seconds of game-time; ceiling traps remain timing and observation challenges.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-005
+    area: gameplay
+    statement: The Gremlin Workshop uses Straight, Elbow, and Split conduits; after Ring 2 stabilizes one authored active connection is permanently sabotaged and the player must reroute, while Vex assistance remains highlight-only.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-006
+    area: result
+    statement: The ending grants Clockwork Wayfinder once, adds no fifth Objective Score, and uses idempotent reward and completion-save behavior.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-007
+    area: scoring
+    statement: The four scored objectives retain a 0 to 100 Objective Score scale and their approved component weights total 100 percent within each objective; Antechamber and ending remain no-score progression packages.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: proposal
+    approval_status: approved
+    impact: high
+  - id: REQ-008
+    area: document-content
+    statement: Project-facing copy must describe Clockwork gameplay and production behavior without exposing Golden, page-contract, renderer, validator, content-lock, or other document-production mechanics; material gameplay meaning must not be deleted during Humanize cleanup.
+    provenance: [SRC-002]
+    evidence_status: supported
+    recovery_class: none
+    approval_status: not_required
+    impact: high

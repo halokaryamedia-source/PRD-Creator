@@ -1,0 +1,8 @@
+project: the-clockwork-vault
+status: handoff_ready
+accepted_prd_version: Final Review
+content: work/content.md
+render_data: work/render-data.json
+html: output/final.html
+acceptance: work/acceptance.md
+handoff: output/team-handoff.md

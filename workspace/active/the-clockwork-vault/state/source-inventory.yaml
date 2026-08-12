@@ -1,0 +1,27 @@
+project: the-clockwork-vault
+sources:
+  - id: SRC-001
+    type: file
+    role: authoritative
+    status: current
+    origin: user-provided source
+    filename: The Clockwork Vault - Adventure Map - Final Review.html
+    sha256: f4d58341ce3cb7fb17bfc9986b5df67a23058d1b94a0bc78c1dad09abdd445d0
+    inspection: full
+    retention: external
+    summary: Exact authoritative source used for the accepted regeneration; recovered project meaning is persisted in canonical state rather than duplicating the large source HTML in Git.
+  - id: SRC-002
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: Approved Clockwork gameplay resolutions and bounded Content Purity plus Humanize cleanup.
+  - id: SRC-003
+    type: generated
+    role: generated
+    status: current
+    origin: prior review artifact
+    inspection: full
+    sha256: 82025447edb630d9b18918f0707e36c103937ab41ff8bee86dbbc3fde2a51016
+    summary: Humanized review used only as supporting wording and placement evidence.
