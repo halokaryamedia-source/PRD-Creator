@@ -18,14 +18,9 @@ EXPECTED_REFS = {
 ACCEPTANCE_REQUIRED = {
     "Status": {"handoff_ready"},
     "Mechanical": {"PASS"},
-    "Visual sanity": {"PASS", "NOT PROVEN"},
-    "New Reader": {"PASS"},
-    "Level Designer": {"PASS"},
-    "Developer": {"PASS"},
+    "Semantic Readiness": {"PASS"},
     "Material Conservation": {"PASS"},
-    "Acceptance": {"PASS"},
-    "Project Consistency": {"PASS"},
-    "Golden Fidelity": {"PASS"},
+    "Visual sanity": {"PASS", "NOT PROVEN"},
     "Critical": {"0"},
     "Major": {"0"},
 }
@@ -71,7 +66,7 @@ def validate_acceptance(path: Path) -> tuple[bool, str]:
 
     if failures:
         return False, "; ".join(failures)
-    return True, "acceptance.md authorizes handoff_ready with semantic lenses, Material Conservation, and Golden Fidelity passed and no Critical/Major blocker"
+    return True, "acceptance.md authorizes handoff_ready with Mechanical, Semantic Readiness, Material Conservation, and no Critical/Major blocker"
 
 
 def validate(project: Path) -> dict[str, Any]:

@@ -1,0 +1,149 @@
+name: Persist Clockwork package once
+on:
+  push:
+    branches: [Local]
+    paths: [".github/workflows/clockwork-persist-once.yml"]
+permissions:
+  contents: write
+jobs:
+  persist:
+    if: "github.event.head_commit.message == 'chore: stage Clockwork persistence'"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - name: Restore canonical files
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          python - <<'PY'
+          import base64,bz2,hashlib,json,os,urllib.request
+          from pathlib import Path
+          repo,token=os.environ['GITHUB_REPOSITORY'],os.environ['GH_TOKEN']
+          P=Path('workspace/active/the-clockwork-vault')
+          for d in ('state','work','output'): (P/d).mkdir(parents=True,exist_ok=True)
+          def blob(sha):
+              q=urllib.request.Request(f'https://api.github.com/repos/{repo}/git/blobs/{sha}',headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(q) as r: x=json.load(r)
+              return base64.b64decode(x['content'])
+          def restore(shas,expected,path):
+              raw=bz2.decompress(base64.b64decode(b''.join(blob(s) for s in shas)))
+              got=hashlib.sha256(raw).hexdigest()
+              if got!=expected: raise SystemExit(f'{path}: {got} != {expected}')
+              (P/path).write_bytes(raw)
+          restore(['2480baa61f6257cff15bbad536e6ac25156700af','e5c922fb631c5bfe9ae1b6d4f11a38c1081550ee','ca62c761cfa2f3f14aca5ffaadf99a4b0e81da64','f71cd3fe66208b333ec5e4bf71595e641271d4a0','78c3ce96d423b24da1235dc1b55e4aa554b1c66a','ae8db262dd9eb4d3dc64afa14002123fd9384a3d','b1158f3a101ec6840f7ac281c65b6983f8df98c3'],'5aa7bacab594b98e062fbca035583df78e7691c680ee2654e15bfa17cecf65de','work/content.md')
+          restore(['46f5ab28939310091d7d5318fa2a05feff526bc4','f5bd3072bea9ad56fa5adde0dc0f2a81331a108a','a02785afcf94dd26d51bf461ad3fc1d8c23695e0','5184ba97e2ba8a5b00bfbe9a60821f12fad227e7','b0af563f8224d016babf987a7938895f3eafdf4d','c09d7bc34afe28f77a086f1c85eaa3caf8cb7f13','e48f7090b25c30e4bee35d8fc6708c82c3cb6205','cb5064cf41fbb40c9363d2d4c6d1ad0d7ce77517','799d3441eda1b969ff100f143595d9a4475ac431'],'bf3e0eccf2cf5495c489e843bd27be99fbf547b51d4c7de321969868f7706bd0','work/render-data.json')
+          (P/'state/requirement-register.yaml').write_bytes(blob('f084860a80bd2708ad45ab389007cc7ba4f5b180'))
+          PY
+          P=workspace/active/the-clockwork-vault
+          cat > "$P/state/intake-state.yaml" <<'EOF'
+          project: the-clockwork-vault
+          flow: 2
+          status: ready_for_prd
+          ready_for_prd: true
+          preview_approved: true
+          EOF
+          cat > "$P/state/source-inventory.yaml" <<'EOF'
+          project: the-clockwork-vault
+          sources:
+            - id: SRC-001
+              type: file
+              role: authoritative
+              status: current
+              origin: user-provided source
+              filename: The Clockwork Vault - Adventure Map - Final Review.html
+              sha256: f4d58341ce3cb7fb17bfc9986b5df67a23058d1b94a0bc78c1dad09abdd445d0
+              inspection: full
+              retention: external
+              summary: Exact authoritative source used for the accepted regeneration; recovered project meaning is persisted in canonical state rather than duplicating the large source HTML in Git.
+            - id: SRC-002
+              type: instruction
+              role: authoritative
+              status: current
+              origin: user
+              inspection: full
+              summary: Approved Clockwork gameplay resolutions and bounded Content Purity plus Humanize cleanup.
+            - id: SRC-003
+              type: generated
+              role: generated
+              status: current
+              origin: prior review artifact
+              inspection: full
+              sha256: 82025447edb630d9b18918f0707e36c103937ab41ff8bee86dbbc3fde2a51016
+              summary: Humanized review used only as supporting wording and placement evidence.
+          EOF
+          cat > "$P/state/handoff-state.yaml" <<'EOF'
+          project: the-clockwork-vault
+          status: handoff_ready
+          accepted_prd_version: Final Review
+          content: work/content.md
+          render_data: work/render-data.json
+          html: output/final.html
+          acceptance: work/acceptance.md
+          handoff: output/team-handoff.md
+          EOF
+          cat > "$P/work/acceptance.md" <<'EOF'
+          # PRD Acceptance
+          Status: handoff_ready
+          Mechanical: PASS
+          Semantic Readiness: PASS
+          Material Conservation: PASS
+          Visual sanity: PASS
+          Critical: 0
+          Major: 0
+          EOF
+          cat > "$P/output/team-handoff.md" <<'EOF'
+          # The Clockwork Vault — Team Handoff
+
+          Status: handoff_ready
+          Accepted PRD version: Final Review
+
+          Current production authority:
+          - `work/content.md` — canonical project meaning
+          - `work/render-data.json` — deterministic projection
+          - `output/final.html` — rendered Golden PRD
+          - `work/acceptance.md` — current acceptance state
+
+          Mechanical, semantic readiness, material conservation, and targeted desktop visual sanity are PASS. The approved Golden CSS was not changed.
+          EOF
+      - name: Render and validate
+        run: |
+          P=workspace/active/the-clockwork-vault
+          python kits/project-document-generator/renderer/render.py "$P/work/render-data.json" "$P/output/final.html" --template kits/project-document-generator/template/approved-document.html
+          test "$(sha256sum "$P/output/final.html"|cut -d' ' -f1)" = "0502e3cb78e5c834e540d9715d78cb3fbdf1f8519ab5b6a8c976c257a59d7024"
+          python kits/project-document-generator/validator/validate.py "$P"
+          python kits/project-document-generator/validator/validate_handoff.py "$P"
+      - name: Commit package and remove bridge
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          Updated: 2026-08-12
+
+          ## Current Status
+
+          `CLOCKWORK_CANONICAL_HANDOFF_READY`
+
+          Working branch: **`Local` only**.
+
+          ## Current state
+
+          Project Document Generator remains **v1.13.0**. `workspace/active/the-clockwork-vault/` is now the sole Clockwork production authority. Flow 4 records one integrated `Semantic Readiness` result instead of duplicate PASS fields; Material Conservation and Visual sanity remain separate because they prove different failure classes. Full Golden reverse proof is repeated only when its template/composition contract changes.
+
+          The approved Clockwork meaning and final HTML are unchanged. The official renderer reproduces the approved HTML byte-for-byte; Golden CSS is unchanged.
+
+          ## Next Step
+
+          **Use the persisted Clockwork package for the next user-requested bounded revision or downstream implementation/Voice handoff; do not return to standalone review HTML as authority.**
+          EOF
+          rm .github/workflows/clockwork-persist-once.yml
+          git diff --check
+          git config user.name halokaryamedia-source
+          git config user.email halokaryamedia@gmail.com
+          git add workspace/active/the-clockwork-vault docs/knowledge/next-action.md
+          git add -u .github/workflows/clockwork-persist-once.yml
+          git commit -m "feat: persist approved Clockwork package"
+          git fetch origin Local
+          test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/Local)"
+          git push origin HEAD:Local

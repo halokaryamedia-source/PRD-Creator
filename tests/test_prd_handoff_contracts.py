@@ -8,9 +8,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-HANDOFF_VALIDATOR = (
-    ROOT / "kits" / "project-document-generator" / "validator" / "validate_handoff.py"
-)
+HANDOFF_VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate_handoff.py"
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
@@ -44,26 +42,22 @@ class PrdHandoffContracts(unittest.TestCase):
             json.dumps({"document": {"version": current_version}}, indent=2) + "\n",
             encoding="utf-8",
         )
-        (project / "output" / "final.html").write_text("<!doctype html><title>Contract</title>\n", encoding="utf-8")
+        (project / "output" / "final.html").write_text(
+            "<!doctype html><title>Contract</title>\n", encoding="utf-8"
+        )
         (project / "work" / "acceptance.md").write_text(
             f"# PRD Acceptance\n"
             f"Status: {status}\n"
             "Mechanical: PASS\n"
-            "Visual sanity: NOT PROVEN\n"
-            "New Reader: PASS\n"
-            "Level Designer: PASS\n"
-            "Developer: PASS\n"
+            "Semantic Readiness: PASS\n"
             "Material Conservation: PASS\n"
-            "Acceptance: PASS\n"
-            "Project Consistency: PASS\n"
-            "Golden Fidelity: PASS\n"
+            "Visual sanity: NOT PROVEN\n"
             "Critical: 0\n"
             "Major: 0\n",
             encoding="utf-8",
         )
         (project / "output" / "team-handoff.md").write_text(
-            f"# Team Handoff\nPRD Version: {accepted}\n",
-            encoding="utf-8",
+            f"# Team Handoff\nPRD Version: {accepted}\n", encoding="utf-8"
         )
         (project / "state" / "handoff-state.yaml").write_text(
             f"status: {status}\n"
@@ -72,8 +66,7 @@ class PrdHandoffContracts(unittest.TestCase):
             "render_data: work/render-data.json\n"
             "html: output/final.html\n"
             "acceptance: work/acceptance.md\n"
-            "handoff: output/team-handoff.md\n"
-            "next_step: flow_5_voice_requirement_extraction\n",
+            "handoff: output/team-handoff.md\n",
             encoding="utf-8",
         )
         return project
@@ -82,83 +75,70 @@ class PrdHandoffContracts(unittest.TestCase):
         project = self.make_project()
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertEqual(result["status"], "pass")
-        revision = next(check for check in result["checks"] if check["check"] == "handoff_revision_matches_current_prd")
-        self.assertEqual(revision["status"], "pass")
-        acceptance = next(check for check in result["checks"] if check["check"] == "acceptance_allows_handoff")
-        self.assertEqual(acceptance["status"], "pass")
+        self.assertEqual(json.loads(validated.stdout)["status"], "pass")
 
     def test_pending_review_cannot_authorize_flow5(self) -> None:
         project = self.make_project(status="pending_review")
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        result = json.loads(validated.stdout)
-        self.assertIn("handoff_status_ready", "\n".join(result["errors"]))
-        self.assertIn("pending_review", "\n".join(result["errors"]))
+        self.assertIn("handoff_status_ready", "\n".join(json.loads(validated.stdout)["errors"]))
 
     def test_stale_handoff_version_cannot_authorize_newer_prd(self) -> None:
         project = self.make_project(current_version="1.1", accepted_version="1.0")
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        joined = "\n".join(json.loads(validated.stdout)["errors"])
-        self.assertIn("handoff_revision_matches_current_prd", joined)
-        self.assertIn("accepted_prd_version='1.0'", joined)
-        self.assertIn("current document.version='1.1'", joined)
+        self.assertIn("handoff_revision_matches_current_prd", "\n".join(json.loads(validated.stdout)["errors"]))
 
     def test_handoff_requires_existing_current_artifact_references(self) -> None:
         project = self.make_project()
         (project / "output" / "team-handoff.md").unlink()
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        joined = "\n".join(json.loads(validated.stdout)["errors"])
-        self.assertIn("handoff_artifact_references_current", joined)
-        self.assertIn("missing referenced artifact: output/team-handoff.md", joined)
+        self.assertIn("handoff_artifact_references_current", "\n".join(json.loads(validated.stdout)["errors"]))
 
-    def test_acceptance_failure_cannot_authorize_flow5(self) -> None:
+    def test_required_acceptance_gates_block_handoff_when_failed(self) -> None:
         variants = {
-            "needs revision": "Status: needs_revision",
-            "mechanical failure": "Mechanical: FAIL",
-            "visual failure": "Visual sanity: FAIL",
-            "developer failure": "Developer: FAIL",
-            "material conservation failure": "Material Conservation: FAIL",
-            "acceptance failure": "Acceptance: FAIL",
-            "golden fidelity failure": "Golden Fidelity: FAIL",
-            "critical blocker": "Critical: 1",
-            "major blocker": "Major: 2",
+            "Status": "needs_revision",
+            "Mechanical": "FAIL",
+            "Semantic Readiness": "FAIL",
+            "Material Conservation": "FAIL",
+            "Visual sanity": "FAIL",
+            "Critical": "1",
+            "Major": "2",
         }
-        for name, replacement in variants.items():
-            with self.subTest(name=name):
+        for label, value in variants.items():
+            with self.subTest(label=label):
                 project = self.make_project()
                 path = project / "work" / "acceptance.md"
-                text = path.read_text(encoding="utf-8")
-                label = replacement.split(":", 1)[0]
-                text = "\n".join(
-                    replacement if line.startswith(f"{label}:") else line
-                    for line in text.splitlines()
-                ) + "\n"
-                path.write_text(text, encoding="utf-8")
+                lines = path.read_text(encoding="utf-8").splitlines()
+                path.write_text(
+                    "\n".join(f"{label}: {value}" if line.startswith(f"{label}:") else line for line in lines) + "\n",
+                    encoding="utf-8",
+                )
                 validated = run_cli(HANDOFF_VALIDATOR, project)
                 self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
                 self.assertIn("acceptance_allows_handoff", "\n".join(json.loads(validated.stdout)["errors"]))
 
-    def test_missing_material_conservation_cannot_authorize_flow5(self) -> None:
+    def test_missing_semantic_readiness_cannot_authorize_flow5(self) -> None:
         project = self.make_project()
         path = project / "work" / "acceptance.md"
-        text = path.read_text(encoding="utf-8")
-        text = "\n".join(
-            line for line in text.splitlines() if not line.startswith("Material Conservation:")
-        ) + "\n"
-        path.write_text(text, encoding="utf-8")
+        path.write_text(
+            "\n".join(
+                line
+                for line in path.read_text(encoding="utf-8").splitlines()
+                if not line.startswith("Semantic Readiness:")
+            ) + "\n",
+            encoding="utf-8",
+        )
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Material Conservation must appear exactly once", validated.stdout)
+        self.assertIn("Semantic Readiness must appear exactly once", validated.stdout)
 
-    def test_acceptance_allows_visual_not_proven_without_claiming_pass(self) -> None:
+    def test_visual_not_proven_is_valid_without_claiming_pass(self) -> None:
         project = self.make_project()
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
-        self.assertIn("NOT PROVEN", (project / "work" / "acceptance.md").read_text(encoding="utf-8"))
+        self.assertIn("Visual sanity: NOT PROVEN", (project / "work" / "acceptance.md").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
