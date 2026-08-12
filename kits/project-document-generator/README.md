@@ -2,132 +2,94 @@
 
 **Version:** 1.13.0
 
-A compact repository-backed system for recovering uneven project direction, using the Golden fill map to identify what production detail must exist, completing missing or conflicting material meaning with explicit AI proposals, previewing the complete gameplay model in simple objective-based chat form for user approval, purifying/humanizing the approved model once, projecting that same model through the approved Golden Sample hierarchy/page composition, and validating the current revision with bounded AI/render/review cost.
+Repository-backed system for turning uneven project direction into a development-ready gameplay PRD while preserving authority, approved project meaning, the exact Golden page prototype, and bounded proof cost.
 
 ## Normal use
 
 ```text
-Project Source
+Project Source / Current Instruction
 → inventory + authority/relevance inspection
-→ explicit facts/rules/exclusions
-→ topology + terminology + cross-role implications
-→ production coverage + lifecycle + quantitative/clarity/coherence checks
-→ Golden fill-map completeness pass
-→ concrete AI proposals for missing/conflicting material detail
+→ recover facts/rules/exclusions/topology/terminology
+→ one integrated production-completeness pass
+→ concrete Completion / Proposal for material missing or conflicting meaning
 → complete Simple Chat Preview
 → user correction / approval
 → ready_for_prd
 → one Content Purity + Humanize pass
-→ Canonical content.md + direct render-data projection from the same approved model
-→ one planned Golden Sample render
-→ final.html
-→ one mechanical/content-purity + one-read multi-lens review
+→ content.md + direct render-data projection from the same approved model
+→ one deterministic exact-Golden render
+→ mechanical validation
+→ integrated Semantic Readiness + Material Conservation
 → targeted desktop visual sanity
-→ development_ready
-→ current handoff boundary
+→ development_ready / handoff_ready
 ```
 
-The skill will:
+The system should solve before asking. Golden tells the agent what each required document surface must be able to answer, but never supplies another project's mechanics, counts, lore, scoring, timings, or implementation facts.
 
-1. preserve and inventory project sources, including material user instructions that arrive without a file;
-2. recover traceable facts, requirements, exclusions, topology, terminology, implications, gaps, and conflicts;
-3. record enough source inspection coverage for resumability without rereading unchanged material;
-4. use the Reverse-derived Golden fill map as a completeness guide for what each objective/global/role surface must eventually answer;
-5. keep Golden project facts and Golden/document-process rules out of unrelated project content—the Golden supplies slot meaning and structure, not project mechanics or PRD-Creator narration;
-6. complete missing material detail with one concrete project-consistent AI proposal instead of leaving the preview half-empty;
-7. keep source-backed meaning and AI-proposed meaning distinct internally until preview approval;
-8. select a coherent recommended default when source surfaces conflict or several plausible designs exist, while surfacing uncertainty only when it helps review;
-9. reserve `Blocked` / direct user-only questions for cases where no responsible proposal can be formed;
-10. propagate recovered/proposed decisions across affected Gameplay, Level Design, Developer, timing/scoring, transition, interruption and reset meaning before preview;
-11. show one simple objective-by-objective Chat Preview before initial PRD generation so the user can correct or approve the complete proposed gameplay model without reading the full production document;
-12. keep internal IDs/YAML/provenance/recovery jargon out of that preview; optionally show `Saran AI` only for material choices worth calling out;
-13. treat approval of the complete preview as approval of the represented pending AI proposals unless the user explicitly corrects/rejects them;
-14. run one Content Purity + Humanize pass after approval: remove process leakage, keep summary surfaces role-pure, use semantic titles, decompose multi-rule prose, and keep visible terminology consistent without deleting material meaning;
-15. write `content.md` and derive compact `render-data.json` from the same purified approved model instead of asking AI to independently summarize the project a second time;
-16. render approved project meaning through the Golden hierarchy without using HTML generation as the drafting loop;
-17. keep initial preview chat-only, plan one full render after approval, and rerender again only after a concrete finding or later approved change;
-18. keep revisions bounded: patch affected meaning/projection, rerender the full HTML mechanically once, then review only invalidated scope;
-19. use the Golden fill map during normal authoring instead of repeatedly loading the large Golden HTML;
-20. keep project language availability explicit instead of presenting an unavailable translation as supported;
-21. run full mechanical validation plus one integrated semantic/content-purity review and representative desktop visual sanity for ordinary content-only generation;
-22. escalate to full every-page/browser review only when template/CSS/runtime/page-composition changed, a global visual defect is suspected, or the user explicitly requests it;
-23. block handoff on Critical/Major findings and return newly exposed missing material meaning to Flow 2 rather than hiding it downstream.
+## Production principles
 
-The Simple Chat Preview is not a new Flow or project artifact. Only material corrections, proposal/approval state, and decisions needed for continuity are persisted. Bounded revisions preview only the affected objective/global slice when interpretation changed.
+1. **Authority first.** Persist material source/instruction provenance before relying on it.
+2. **Source retention is purposeful.** Keep originals in-repo when later direct inspection materially helps; otherwise external retention is allowed when exact identity/provenance is recorded and relevant meaning has already been recovered.
+3. **Complete the model before drafting.** Use Completion when one answer is implied; use a concrete Proposal when AI must choose a material default; use Blocked only when no responsible proposal can be formed.
+4. **Preview before initial PRD generation.** The Simple Chat Preview is an objective-based chat checkpoint, not another artifact.
+5. **Approval promotes proposals.** Pending proposals represented in an approved preview become approved project meaning unless corrected/rejected.
+6. **One semantic model, one semantic write.** Purify/humanize once, write `content.md`, and derive `render-data.json` directly from that same approved model.
+7. **Golden is canonical presentation.** The visible page family/component language is fixed unless the user explicitly approves a Golden revision.
+8. **Do not patch derived HTML.** Fix upstream meaning/projection/renderer ownership and regenerate.
+9. **Review once through multiple semantic lenses.** Persist one `Semantic Readiness` result instead of duplicated role/consistency/acceptance PASS fields.
+10. **Keep independent proof independent.** Mechanical, Semantic Readiness, Material Conservation, and Visual sanity answer different failure classes.
+11. **Bound revisions.** Revisit only invalidated truth/content/projection/review scope; full HTML rerender remains deterministic and cheap.
+12. **Stop when ready.** Do not add schemas, checksum registries, preview renderers, screenshot systems, quality scores, or parity machinery without a concrete need.
 
-## Content purity / Humanize
+## Content Purity + Humanize
 
-The final project PRD should read as though it was written directly for the project team.
+Run once before the planned render on the approved project model/canonical copy.
 
-Do not leak:
+Keep visible project copy focused on the project itself. Do not leak PRD-Creator, Golden/template/page-production narration, internal IDs/YAML, or approval mechanics into the PRD.
+
+Humanize by relocating/decomposing, not deleting:
 
 ```text
-Golden HTML / Golden Sample
-PRD-Creator
-content.md / render-data.json / final.html
-page/template structure
-"one Gameplay Overview / Level Design / Developer page"
-three-page contract
-content-lock / document-production workflow
+long player-facing Result
+→ short readable Result
++ complete technical detail in Developer
+
+one requirement with four independent actions
+→ four readable list items in the same owning requirement
 ```
 
-Do not use generic filler labels such as `Global Rule 1` or `Important Note 2`. Name the actual rule.
+Material rules, values, exceptions, recovery, scoring, reset, build constraints, and observable results must remain conserved.
 
-Summary surfaces stay short because detailed material meaning is **relocated**, not deleted:
-
-```text
-Gameplay Result
-= player/world state after completion
-
-Developer
-= telemetry, scoring formula, storage, interruption, reset
-```
-
-When one requirement contains several independent rules, render them as separate bullets/list items in the same owning requirement rather than one dense paragraph.
-
-## Execution economy
+## Execution modes
 
 ```text
 MODE A — Understand / Preview
-Source → complete model → Chat Preview
-No preview HTML, no render-data, no browser QA.
+Source → complete model → Simple Chat Preview
+No preview HTML, render-data, or browser QA.
 
 MODE B — Production Render
 Approved preview → one purity/humanize pass
-→ write content.md + direct render projection from the same model
-→ one planned full final.html render
+→ content.md + direct projection
+→ one planned full render
 → one mechanical validation
-→ one integrated semantic review
-→ representative visual sanity.
+→ one integrated semantic/material review
+→ representative desktop visual sanity.
 
-MODE C — Revision
+MODE C — Bounded Revision
 Affected meaning only → affected preview if needed
-→ purity/humanize affected slice
-→ patch content/projection
-→ one planned full rerender
+→ affected purity/humanize + canonical/projection update
+→ one full deterministic rerender
 → one mechanical check
-→ targeted review.
+→ targeted semantic/material/visual review.
 ```
 
-The full HTML file may be rewritten on every approved revision. That deterministic file write is cheaper and safer than adding partial-render/cache infrastructure. Optimize AI reading/reasoning/review scope instead.
-
-The main efficiency gain is **one semantic model, one semantic write**:
-
-```text
-approved model
-→ purity/humanize once
-→ content.md
-→ direct render-data projection
-```
-
-Do not reread `final.html` or ask the model to rewrite the same project from scratch merely to create rendering data.
-
-Cross-project rendering keeps the Golden visual language while allowing content-driven variation: project/package count and data-driven requirement density may vary, while the approved Golden page family, component composition, labels, reading pattern, and slot responsibilities remain fixed.
+Optimize AI reading/reasoning/review scope, not file-writing. Do not add partial-render/cache infrastructure merely to avoid rewriting `final.html`.
 
 ## Package structure
 
 ```text
 kits/project-document-generator/
+├── AGENTS.md
 ├── SKILL.md
 ├── README.md
 ├── RULES.md
@@ -138,43 +100,49 @@ kits/project-document-generator/
 ├── VALIDATION.md
 ├── GLOSSARY.md
 ├── template/
-│   └── approved-document.html
+│   ├── golden-sample.html       # canonical approved reference bytes
+│   └── approved-document.html   # runtime alias; byte-identical
 ├── renderer/
 │   ├── render.py
+│   ├── _engine.py
 │   ├── core.py
 │   └── pages.py
 └── validator/
-    └── validate.py
+    ├── validate.py
+    ├── _engine.py
+    └── validate_handoff.py
 ```
 
 ## Project artifact lifecycle through Flow 4
 
-Create only what the active Flow needs.
+Create only what the active Flow actually needs.
 
 ```text
 Flow 2 core
-source/originals/
 state/source-inventory.yaml
 state/requirement-register.yaml
 state/intake-state.yaml
 
 Flow 2 conditional
-work/review.md              # only when a user-facing decision/recovery summary adds value
+source/originals/*            # only when in-repo retention materially helps
+work/review.md                # only when a readable decision summary helps
 
 Flow 2 chat checkpoint
-Simple Chat Preview         # user-facing chat only; not a file artifact
+Simple Chat Preview           # chat only; not a file artifact
 
-Flow 3 core/derived — only after preview approval
+Flow 3 canonical / derived
 work/content.md
-work/render-data.json       # direct derived projection
-output/final.html           # deterministic derived artifact
+work/render-data.json
+output/final.html
 
-Flow 4 current handoff boundary
+Flow 4 current handoff
 work/acceptance.md
 state/handoff-state.yaml
 output/team-handoff.md
 ```
 
-Do not pre-create HTML/render artifacts during the initial chat preview loop. Do not pre-create Voice/downstream artifacts for a PRD-only project.
+A file source retained externally should still be represented unambiguously in `state/source-inventory.yaml`; record filename/hash/retention when available and useful for exact continuity.
 
-`handoff_ready` is a production-document readiness status, not client approval, implementation completion, QA completion, or release approval.
+Do not pre-create Voice/downstream artifacts for a PRD-only project.
+
+`handoff_ready` means the accepted PRD is usable as the current production reference. It does not mean client approval, implementation completion, gameplay QA, release approval, or Voice completion.

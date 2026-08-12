@@ -15,18 +15,18 @@ Do not broad-read the whole kit by default.
 
 ## HTML context budget
 
-Normal production must not load `template/approved-document.html` or generated `final.html` in full into model context.
+Normal production must not load `template/approved-document.html`, `template/golden-sample.html`, or generated `final.html` in full into model context.
 
 - renderer/validator may read large files directly at runtime;
 - canonical meaning review uses `content.md`;
 - projection investigation uses only the affected `render-data.json` subtree;
-- HTML source is inspected only for a concrete component/marker/runtime defect and only in the smallest useful range;
+- Golden/HTML source is inspected only for a concrete component/marker/runtime defect or explicit Golden regression audit, in the smallest useful range;
 - visual claims require actual rendered/browser/page evidence.
 
 ## Canonical boundary
 
 ```text
-project originals + approved decisions
+source evidence + current user instruction + approved decisions
 → requirement state
 → content.md
 → render-data.json
@@ -34,14 +34,15 @@ project originals + approved decisions
 → acceptance / handoff evidence
 ```
 
-Never patch a derived artifact to hide an upstream defect.
+A source file may be retained in-repo or externally according to `SOURCE-INTAKE.md`; source identity/provenance must still be durable. Never patch a derived artifact to hide an upstream defect.
 
 ## Implementation ownership
 
 - `renderer/core.py` → reusable PRD rendering helpers/primitives
-- `renderer/pages.py` → render data → PRD page composition
-- `renderer/render.py` → deterministic template projection/output mechanics
-- `template/approved-document.html` → generic stable PRD presentation/browser runtime
+- `renderer/pages.py` → render data → approved Golden page composition
+- `renderer/render.py` → deterministic Golden template projection/output mechanics
+- `template/golden-sample.html` → canonical approved Golden reference bytes
+- `template/approved-document.html` → runtime template alias; must remain byte-identical to Golden
 - `validator/validate.py` → mechanical Flow 4 checks
 - `validator/validate_handoff.py` → narrow Flow 4 → Flow 5 handoff-entry consistency
 
@@ -52,9 +53,10 @@ Renderer/validator code may organize/check approved meaning; it may not invent p
 Initial build:
 
 ```text
-finish canonical meaning
-→ derive compact projection
-→ render
+complete + approve Flow 2 model
+→ one purity/humanize pass
+→ content.md + direct projection from the same approved model
+→ render once
 → validate/review
 ```
 
@@ -64,7 +66,7 @@ Bounded revision:
 approved delta
 → affected content + cross-references
 → affected projection
-→ rerender
+→ full deterministic rerender
 → targeted review
 ```
 
@@ -91,6 +93,8 @@ observe failure
 ```
 
 `Production Verify` is the canonical CI gate for affected production contracts. Do not repeatedly run local/manual project checks during an unfinished refinement batch.
+
+Flow 4 uses one integrated `Semantic Readiness` result plus separate `Material Conservation` and `Visual sanity` proof channels. Do not recreate one persisted PASS field per semantic lens.
 
 Browser/visual PASS still requires actual browser/visual evidence.
 

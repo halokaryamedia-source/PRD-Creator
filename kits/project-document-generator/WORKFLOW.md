@@ -3,27 +3,33 @@
 Project Document Generator has three production steps. This file owns **sequence only**; detailed behavior stays in each owner.
 
 ```text
-Flow 2  UNDERSTAND
+Flow 2  UNDERSTAND + COMPLETE
 Flow 3  BUILD PRD
 Flow 4  REVIEW & HANDOFF
 ```
 
 Normal project creation/revision is Production Execution, not repository Developing.
 
-## Flow 2 — UNDERSTAND
+## Flow 2 — UNDERSTAND + COMPLETE
 
 Owner: `SOURCE-INTAKE.md`.
 
 ```text
-source authority
-→ requirement truth
-→ one integrated production-readiness pass
-→ resolve only material gaps
-→ propagate approved meaning
-→ ready_for_prd | needs_decision | blocked
+source evidence + current instruction
+→ authority/relevance triage
+→ recover facts/rules/exclusions/topology/terminology
+→ one integrated production-completeness pass
+→ Completion or concrete Proposal for material missing/conflicting meaning
+→ propagate affected Gameplay / Level Design / Developer / timing / scoring / reset meaning
+→ complete objective-based Simple Chat Preview
+→ user correction / approval
+→ promote represented pending proposals
+→ ready_for_prd
 ```
 
-Exit rule: Flow 3 must not need to invent package order, shared/local ownership, transitions, material role behavior, scoring/result meaning, or another product decision.
+Flow 2 must produce a **complete reviewable project model**, not a list of gaps. Golden supplies the finite questions/slot responsibilities; it does not supply project facts.
+
+Use `Blocked` only when no responsible proposal can be formed. Do not enter Flow 3 until the relevant preview meaning is approved. For a bounded revision, preview only the invalidated objective/global slice when interpretation changed; an unambiguous current user instruction may itself approve that slice.
 
 Once ready, stop Flow 2. Optional redesign ideas are not part of intake.
 
@@ -33,33 +39,34 @@ Semantic owner: `CONTENT-CONTRACT.md`.
 Projection mechanics: `RENDERING.md` only when needed.
 
 ```text
-ready requirement state
+preview-approved requirement state
+→ one Content Purity + Humanize pass
 → work/content.md
-→ bounded Humanize pass
-→ work/render-data.json
-→ generic approved PRD template + renderer
+→ direct work/render-data.json projection from the same approved model
+→ exact approved Golden template + deterministic renderer
 → output/final.html
 ```
 
 `content.md` owns meaning. Projection and HTML are derived.
 
-If authoring exposes a material unresolved decision, return that issue to Flow 2. Do not hide it with prose or renderer-friendly defaults.
+Do not use HTML generation as the drafting loop and do not perform a second AI rewrite merely to create render data. If authoring exposes a new material product/design decision, return only that affected slice to Flow 2.
 
 ## Flow 4 — REVIEW & HANDOFF
 
 Owner: `VALIDATION.md`.
 
 ```text
-mechanical validation
-+ one integrated semantic review
-+ targeted desktop visual sanity when actually required/available
+one mechanical validation
++ one integrated Semantic Readiness review
++ Material Conservation
++ targeted desktop visual sanity when the claim requires it
 → fix first wrong owner
 → development_ready | handoff_ready
 ```
 
-Mechanical PASS is not semantic or visual approval.
+Mechanical PASS is not semantic or visual approval. New Reader, Level Designer, Developer, Content Purity, Project Consistency, and Golden Placement are lenses inside one semantic review, not separate persisted gates.
 
-Review the affected document/package once through the relevant reader lenses rather than rereading it separately for each role.
+Normal content-only production does not re-prove the full Golden reference when the template/composition contract is unchanged.
 
 ## Bounded revision
 
@@ -67,16 +74,16 @@ Review the affected document/package once through the relevant reader lenses rat
 approved change
 → affected Flow 2 truth only
 → affected canonical content/projection
-→ rerender
+→ one full deterministic rerender
 → one mechanical check
-→ targeted semantic/visual review of invalidated scope
+→ targeted semantic/material/visual review of invalidated scope
 → stop
 ```
 
-Do not replay unchanged intake, packages, evidence, mobile QA, or downstream Voice work.
+Do not replay unchanged intake, packages, evidence, mobile QA, Golden reverse proof, or downstream Voice work.
 
 ## Delivery
 
 Default user delivery is the requested PRD plus material changes/attention items. Internal source inventory, requirement state, render projection, and validator details stay internal unless needed.
 
-Do not add workflow stages, template profiles, quality scores, screenshot systems, or HTML frameworks merely to make the process look more rigorous.
+Do not add workflow stages, template profiles, quality scores, screenshot systems, checksum registries, or HTML frameworks merely to make the process look more rigorous.

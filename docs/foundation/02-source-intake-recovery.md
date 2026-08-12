@@ -4,208 +4,152 @@ Status: active Flow 2 policy
 
 ## Purpose
 
-Turn uneven project material into a trustworthy production requirement state before PRD drafting. Flow 2 must recover explicit meaning, project structure, required implications, exclusions, terminology, missing material behavior, practical resolutions, and known constraint conflicts without inventing unsupported design choices.
+Turn uneven project material into a trustworthy, **complete reviewable project model** before PRD drafting. Flow 2 recovers explicit authority, project structure, exclusions, terminology, necessary production implications, material gaps/conflicts, and practical resolutions; it then presents the complete model through the Simple Chat Preview for user approval.
+
+Detailed procedure lives in `kits/project-document-generator/SOURCE-INTAKE.md`. This foundation page owns only durable policy.
 
 ## Canonical sequence
 
 ```text
-Preserve + inventory source
-↓
-Authority/relevance triage + sufficient inspection
-↓
-Recover explicit facts/rules/exclusions
-↓
-Recover project topology + terminology
-↓
-Cross-role implication pass
-↓
-Production coverage + lifecycle + quantitative + clarity/coherence checks
-↓
-Problem framing + Resolution Ladder
-↓
-Impact propagation
-↓
-Humanized grouped decision package only if needed
-↓
-ready_for_prd | needs_decision | blocked
+inventory source/instruction evidence
+→ authority/relevance triage + sufficient inspection
+→ recover facts/rules/exclusions/topology/terminology
+→ one integrated production-completeness pass
+→ authority / Completion / concrete Proposal / Blocked
+→ propagate affected production meaning
+→ complete Simple Chat Preview
+→ user correction / approval
+→ promote represented pending proposals
+→ ready_for_prd
 ```
 
-Inventory completeness and reading depth are different concerns. Supporting/reference/generated material need only be read to the depth required by current scope; uncertain evidence that could materially change the PRD must still be inspected.
+Flow 2 should **solve before asking**. It does not stop at listing gaps when a responsible coherent proposal can be formed.
 
-## Source authority and persistence
+## Authority
 
 Precedence:
 
 1. current explicit user/creative-owner instruction;
 2. approved project decisions;
 3. current authoritative project source;
-4. explicitly superseding source/decision;
-5. supporting material;
-6. generated prior output;
-7. reference/Golden material for demonstrated structure/quality only.
+4. normalized current requirement state;
+5. supporting/generated evidence for context only;
+6. Golden/reference material for demonstrated document structure/quality only.
 
-Material user instructions must be persisted in source inventory even when no file exists. Do not rely on chat history as the only durable authority.
+A polished filename such as `FINAL` does not override higher authority by itself. Same-authority material conflicts remain explicit until resolved; do not silently select the more convenient sentence.
 
-A source filename or internal label such as `FINAL` does not by itself override a higher-authority current user instruction or approved project decision. Resolve conflicts through the authority chain, not filename confidence.
+Material user instructions must be persisted even when no file exists.
 
-Persist reading coverage compactly (`targeted` + scope or `full`) when it materially helps resumability. Source-level supersession applies only when the whole source is superseded; partial changes are resolved at the affected claim/requirement.
+## Source retention
 
-## Recovery behavior
+Source identity/provenance is mandatory; **duplicating every source file into Git is not**.
 
-- Recover explicit positive and negative constraints (`remove`, `do not use`, `replaced by`, `only`, etc.).
-- Do not over-broaden a negative statement. `Do not display score`, `do not export score`, and `this package has no Objective Score` are different requirements unless authority explicitly connects them.
-- Recover ordered packages/stages, shared/global ownership, dependencies/transitions, and final result when needed by the project.
-- Normalize terminology when multiple labels may refer to one concept; unresolved ambiguity is surfaced rather than synonym-cycled.
-- For each material mechanic/system, inspect necessary implications for Gameplay, Level Design, Developer, and result/reset/handoff.
-- Record only implications logically required by source/approved state; do not invent exact quantities, timings, objects, dimensions, implementation architecture, or decorative detail.
+Keep a supplied original under `source/originals/` when later direct inspection/reproduction materially benefits from in-repo bytes. A large/static source may remain externally retained when:
 
-## Scoring / Result recovery
+- relevant authority has already been inspected to sufficient depth;
+- source inventory records its exact identity/provenance and retention boundary;
+- filename and SHA-256 are recorded for file sources when available/useful for exact continuity;
+- recovered/approved production meaning is persisted in requirement/canonical state.
 
-For **every gameplay package**, Flow 2 must recover the result model that authority actually defines:
+External retention cannot be used to avoid reading material authority or to replace source with generated output.
 
-```text
-Scored package
-→ Objective Score exists
-→ recover applicable scale/components/weights/timer/no-score/final-result relationship
+## Completion / Proposal / Blocked
 
-Non-scored package
-→ explicit No Objective Score
-→ recover valid completion/result and final-result relationship
-```
-
-Keep these concerns separate whenever source distinguishes them:
+Use the smallest truthful recovery class:
 
 ```text
-internal scoring/result
-player-facing score/result display
-telemetry/export payload
+Existing authority resolves it
+→ recover.
+
+One necessary evidence-backed answer exists
+→ Completion.
+
+AI must choose among plausible product/design/development answers
+→ one concrete Proposal.
+
+No responsible answer can be formed from authority + known constraints
+→ Blocked/direct decision.
 ```
 
-A rule that hides score from the player does not remove internal scoring. A rule that excludes score from raw telemetry/export does not remove internal scoring. Conversely, a package with no Objective Score must say so explicitly rather than merely omitting score information.
+A Proposal may choose material gameplay, quantities, timing, scoring/recovery behavior, naming, build expectations, runtime behavior, or implementation rules at PRD abstraction level. It is **not project truth until the user approves/corrects the relevant preview**.
 
-When scoring facts differ across sources or approved decisions, use normal authority resolution. Do not infer a simpler model just because it is easier to document.
+The objective is not to avoid AI decisions. It is to give the user one coherent model to approve without misrepresenting unsupported choices as source facts.
 
-## Coverage and coherence
+## Production completeness
 
-Before readiness, scan only applicable concerns for:
+Before preview, inspect only applicable material concerns:
 
-- project topology/global ownership;
-- Gameplay objective/start/end/fail-or-retry/result;
-- Level Design areas/objects/relationships/known constraints/gameplay function;
-- Developer activation/state/completion-or-score/timing/data/reset/interruption/result;
-- critical counts, timing boundaries, scoring/result, player-facing display, telemetry/export, handoff, reset/disconnect, and final-result rules.
+- topology: ordered packages/stages, global/local ownership, transitions, final result/handoff;
+- Gameplay: objective, start, player actions/feedback, completion, fail/retry/recovery, result;
+- Level Design: areas/objects/routes, relationships, spatial constraints, gameplay function;
+- Developer: activation, state/progression, timing/quantities, completion/result, data, interruption/reset, handoff;
+- lifecycle: precondition → trigger → active → success/fail/interruption → result → retry/reset;
+- quantitative coherence: related timings/counts/capacities/scoring values can coexist;
+- global/local coherence: shared defaults and legitimate exceptions agree;
+- authoritative known constraints: no silent conflict with required behavior;
+- operational clarity: competent production roles should not reasonably build materially different behavior from the approved model.
 
-For material mechanics, inspect relevant lifecycle stages: precondition, trigger, active behavior, success, fail/timeout/interruption, result/transition, and retry/reset. Missing stages are material only when downstream production cannot proceed safely without them.
+Optional/decorative detail is not a gap merely because it could be specified.
 
-When related numeric facts exist, check that they can coexist. A mismatch is evidence to resolve, not permission to silently change a value.
+## Golden-guided completeness
 
-Also check whether material wording is operationally clear enough that two competent roles would not produce materially different product behavior while both reasonably claiming compliance. Do not invent numeric thresholds merely to make qualitative direction look measurable.
+The Reverse-derived Golden fill map in `CONTENT-CONTRACT.md` is the finite guide for what the PRD must eventually be able to answer.
 
-Reconcile shared/global defaults with explicit local exceptions. A package must not silently contradict a global rule, and legitimate local differences must not be erased merely for consistency.
+Golden supplies **questions, placement, page family, labels, and presentation behavior**. It never supplies another project's mechanics, counts, timings, lore, scoring values, or implementation facts.
 
-When authoritative project/platform/production constraints are known, check material requirements against them. A conflict is surfaced and resolved through normal authority/Proposal rules; speculative external limitations or generic best practice are not project authority.
+When a material Golden-required answer is absent, resolve it through current authority, Completion, Proposal, Explicit No / Not Applicable where truthful, or Blocked as last resort. Do not leave a material future slot empty merely because source is incomplete.
 
-This is not a mandatory-field form. Irrelevant or intentionally unspecified detail is not a gap. **Scoring/Result is the exception at the package level only in the sense that the package must explicitly say which result model applies; it does not require inventing scoring.**
+## Propagation
 
-## Problem-solving boundary
-
-Flow 2 should help solve a material issue before asking the user.
-
-First frame the actual problem using observed issue, consequence, project constraints, intended outcome, and affected roles. Then use the least-assumptive Resolution Ladder:
-
-1. existing authority resolves it → recover;
-2. one necessary evidence-backed result exists → Completion;
-3. one option is materially better supported by project goals/constraints → Proposal with one recommendation;
-4. options are genuinely balanced → Proposal with the smallest useful tradeoff set and no fake recommendation;
-5. no responsible resolution/options can be formed → Blocked/direct decision.
-
-Reference/previous-project patterns may help generate an option, but they do not become current-project authority.
-
-A source can also expose a concrete gameplay/production concern even when documentation is complete. Such concern is advisory only until approved. Optional improvements should stay out of the user's way unless requested or unusually valuable.
-
-## Safe Completion and materiality
-
-Use Completion only when one reliable result follows from evidence/necessary implication at the abstraction needed by the PRD, without choosing among multiple plausible designs or inventing unsupported values/implementation detail.
-
-A missing detail is material only when leaving it unresolved forces a downstream role to make a product/design decision or changes player experience, build scope, runtime behavior, scoring/completion, timing, handoff, reset/interruption, or final result.
-
-If a material gap does not meet the Completion test, use Proposal or Blocked. Clarification only improves existing meaning.
-
-## Impact propagation
-
-A recovered Completion or approved Proposal must be reconciled across all actually affected requirements: topology/global ownership, Gameplay, Level Design, Developer, timing/quantities/scoring, transition/handoff, and retry/reset/interruption where relevant.
-
-Use existing requirements + `affects`; do not create a dependency-graph artifact. Resolve partial supersession at claim level.
-
-## User-facing resolution communication
-
-Group related issues into one solution package only when one root decision genuinely resolves them. Do not bundle independent decisions merely to reduce question count.
-
-Use a bounded Humanize pass on Flow 2 user-facing explanations:
+Every recovered Completion or proposed/approved decision must reconcile all actually affected meaning:
 
 ```text
-Masalah
-Saran — only when one option is genuinely recommended
-Kenapa
-Dampak
-Alternatif — only when useful
+requirement
+→ topology/global ownership
+→ Gameplay
+→ Level Design
+→ Developer
+→ timing/quantities/scoring
+→ transition/handoff
+→ retry/interruption/reset
 ```
 
-When evidence does not support a clear default, use a concise `Pilihan`/tradeoff presentation instead of pretending one option is recommended.
+Do not create a dependency graph merely to record this propagation.
 
-Humanize improves clarity/order and hides unnecessary internal jargon. It must never alter official terminology, quantities, timings, formulas, triggers, mechanics, uncertainty, provenance, or approval state. It is presentation behavior, not a new authority/recovery class/root skill.
+## Simple Chat Preview
 
-## Persistent state
+The initial Flow 2 user checkpoint is one complete, objective-based **Simple Chat Preview**. It is chat output, not another file/Flow.
 
-Repository-backed Flow 2 uses:
+Default information:
 
-- `state/source-inventory.yaml` — compact source/provenance/inspection/exception state;
-- `state/requirement-register.yaml` — explicit and recovered production requirements, including exclusions/topology/terminology/cross-role implications where material;
-- `state/intake-state.yaml` — one status, explicit positive readiness, and one next step;
-- `work/review.md` — conditional human-facing solution/decision summary only when useful.
+```text
+Project Overview
+Objective N
+  Tujuan
+  Apa yang Player Lakukan
+  Hasil
+  Level Design
+  Developer
+  Saran AI       # only when useful
+```
 
-Sparse state may omit defaults, but must never hide conflict, pending approval, blocker, supersession, inspection boundary needed for continuation, or material recovery class.
+Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker.
 
-When `intake-state.yaml` claims `ready_for_prd`, repository-backed validation requires both persistent evidence owners to exist and contain at least one stable entry: one `SRC-###` in `source-inventory.yaml` and one `REQ-###` in `requirement-register.yaml`. Missing or empty evidence owners cannot be treated as proof that there are no blockers.
+Approval of the complete preview promotes the represented pending Proposals unless the user corrects/rejects them. A bounded revision previews only the affected slice when interpretation changed; an unambiguous current user instruction may itself approve that slice.
 
-Flow 4 then performs one narrow persisted-state contradiction check. It blocks only on markers that are unambiguously unresolved:
+## Persistent readiness
 
-- `requirement-register.yaml`: `approval_status: pending` or `recovery_class: blocked`;
-- current `source-inventory.yaml` entries: `inspection: blocked`.
+Repository-backed Flow 2 keeps:
 
-A source entry explicitly marked `status: superseded` does not block readiness merely because its old inspection state is `blocked`; that source is no longer the current authority. `inspection: targeted`, approved proposals, omitted defaults, optional/advisory ideas, and merely unpopulated non-material detail are not blockers. `evidence_status: conflict` alone is also not treated as a blocker because conflicting source evidence may already have a valid higher-authority resolution.
+- `state/source-inventory.yaml`;
+- `state/requirement-register.yaml`;
+- `state/intake-state.yaml`;
+- `work/review.md` only when useful.
 
-This check remains bounded to the existing SRC/REQ entry shape. It does not infer materiality, validate arbitrary YAML semantics, or replace Flow 2 judgment; it only prevents missing evidence owners or an unambiguous current blocker from coexisting with `ready_for_prd: true`.
+`ready_for_prd` requires real stable source/requirement evidence, sufficient inspection, approved preview meaning, and no current unambiguous blocker such as `approval_status: pending`, `recovery_class: blocked`, or current authoritative source `inspection: blocked` affecting scope.
 
-Detailed contract: `kits/project-document-generator/SOURCE-INTAKE.md` plus the root `project-document-production` semantic owner for current scoring/result interpretation.
+After Flow 2 completes, do not preserve a stale Flow-2 `next_step` merely because the schema once allowed it; later continuation belongs to current canonical/handoff state and repository `next-action.md`.
 
-## Question economy
+## Stop rule
 
-Ask only after explicit recovery, topology/terminology/exclusion reconciliation, cross-role implications, coverage/lifecycle/quantitative/clarity/coherence checks, problem framing, and the Resolution Ladder have been attempted. Group related Proposal/Blocked items into one understandable decision package when possible. Zero questions is preferred when evidence is sufficient.
-
-## Flow 2 completion gate
-
-`ready_for_prd` requires:
-
-- materially relevant source inspected to sufficient depth;
-- material user instructions persisted;
-- explicit rules/exclusions recovered without broadening their meaning;
-- sufficient project topology for Flow 3;
-- material terminology ambiguity resolved or surfaced;
-- necessary cross-role implications recovered;
-- applicable lifecycle and quantitative coherence checked;
-- each gameplay package has a resolved Scoring / Result model: Objective Score or explicit No Objective Score;
-- player-facing display and telemetry/export distinctions are preserved when source defines them;
-- material wording operationally clear enough for production;
-- shared/global rules and local exceptions reconciled;
-- authoritative known constraints do not silently conflict with required behavior;
-- production coverage scan complete for applicable concerns;
-- every material issue passed through the Resolution Ladder before escalation;
-- every recovered/approved resolution propagated to affected meaning;
-- every material requirement traceable to evidence/approved state;
-- every Completion within the safe-completion boundary;
-- no unresolved material Proposal/Blocked item affecting requested output.
-
-Once this gate passes, stop generating optional redesign ideas. Flow 2 is a production-recovery/problem-solving stage, not an endless design workshop.
-
-Flow 3 may organize and humanize approved meaning, but must not become the first place required product structure, lifecycle behavior, scoring interpretation, numeric consistency, global/local coherence, known feasibility conflict, implications, or decisions are invented.
+Once current scope is complete, approved, and truthfully `ready_for_prd`, stop. Flow 2 is not an endless redesign workshop and must not generate optional hardening, extra artifacts, or additional approval layers for ceremony.

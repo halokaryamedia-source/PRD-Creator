@@ -4,46 +4,57 @@ This file keeps only kit-wide invariants. Detailed Flow 2–4 procedure belongs 
 
 ## 1. Preserve authority and provenance
 
-- Keep original project sources unchanged.
-- Record material evidence in `state/source-inventory.yaml` before relying on it as authority.
+- Record every material source/instruction in `state/source-inventory.yaml` before relying on it as durable authority.
+- Keep a supplied original in `source/originals/` when repository retention materially helps continuity or the source is needed for later direct inspection.
+- Do **not** duplicate a large/static source in Git only for ceremony. External retention is allowed when the exact source identity/provenance needed for continuity is recorded (for file sources, normally filename plus SHA-256 when available) and recovered project meaning is fully persisted upstream.
 - Distinguish authoritative, supporting, reference, and generated material.
 - Never silently choose between conflicting material claims.
 - Do not ask the user for information already recoverable from current authority/approved state.
 
-## 2. Preserve project intent
+## 2. Preserve project intent and approval boundaries
 
-- Clarification/Completion may improve documentation without changing project behavior.
-- A material design/product choice is a Proposal until explicitly approved.
-- Blocked material scope remains blocked; renderer/validator cannot solve it downstream.
-- Do not invent gameplay, scoring, progression, quantities, timing, architecture, or implementation behavior to make the document look complete.
+- Clarification improves explanation without changing meaning.
+- Completion may fill a missing answer only when one evidence-backed/necessary result is implied.
+- When the system must choose among plausible product/design/development answers, use a concrete **Proposal**. It is pending until the user approves/corrects the relevant Simple Chat Preview.
+- A Proposal may include gameplay, scoring, progression, quantities, timing, build expectations, runtime behavior, or implementation rules at PRD abstraction level; it must never be mislabeled as source fact.
+- Use `Blocked` only when no responsible proposal can be formed from current authority and known constraints.
+- After preview approval, promote represented pending proposals into approved requirement/project state before Flow 3.
 
 ## 3. Canonical meaning stays upstream
 
 ```text
-source + approved decisions
+source evidence + current user instruction + approved decisions
 → requirement state
 → work/content.md
 → work/render-data.json
 → output/final.html
+→ acceptance / handoff
 ```
 
-`content.md` owns PRD meaning. Render projection and HTML are derived and may not add new project facts or decisions.
+`content.md` owns PRD meaning. Render projection and HTML are derived and may not introduce new project facts or decisions.
 
-If Flow 3/4 discovers a material product gap, return it to Flow 2.
+If Flow 3/4 exposes a real unresolved product/design decision, return only that affected slice to Flow 2.
 
 ## 4. Follow the single content contract
 
-`CONTENT-CONTRACT.md` owns the gameplay PRD family: hierarchy, mandatory-slot meaning, role separation, scoring/result behavior, glossary semantics, and Humanize quality.
+`CONTENT-CONTRACT.md` owns the gameplay PRD family: hierarchy, mandatory-slot meaning, role separation, scoring/result behavior, glossary semantics, material-detail conservation, Humanize quality, and Golden visible composition.
 
 Do not maintain a second Golden checklist or project-specific exception list in another rule file.
 
-## 5. Generic template, no derived patching
+## 5. Exact Golden template, no derived patching
 
-`template/approved-document.html` is generic PRD presentation/runtime infrastructure.
+The approved Golden is preserved through two intentional paths:
 
-- Project rendering may replace project-owned metadata, pages, navigation, glossary data, package scope, and project storage namespace.
-- Stable presentation components are edited at the template/renderer owner when genuinely wrong.
-- Do not add reference-project names or internal iteration/version labels to active component names.
+```text
+template/golden-sample.html     canonical reference evidence
+template/approved-document.html runtime template alias
+```
+
+Both must remain byte-identical unless the user explicitly approves a Golden revision.
+
+- Project rendering may bind project-owned metadata, pages, navigation, glossary data, package scope, and project storage namespace.
+- Stable presentation components are changed only at the template/renderer owner when the Golden contract itself is intentionally revised or a real implementation defect exists.
+- Do not add reference-project facts to another project.
 - Do not manually patch `final.html`.
 
 ## 6. Preserve package role ownership
@@ -58,35 +69,41 @@ Gameplay Overview
 
 Reference-project mechanics/counts/content do not transfer to another project. Missing role-owned meaning is a recovery/content problem, not permission to silently remove the surface.
 
-## 7. Mechanical proof cannot replace semantic review
+## 7. Mechanical proof cannot replace semantic or visual proof
 
 Renderer/validator may expose deterministic defects but may not define product meaning.
 
-`development_ready` / team handoff requires Flow 4 semantic review. Critical/Major findings block readiness.
+Flow 4 records the minimum independent proof channels:
 
-Visual PASS requires actual visual/browser evidence; static HTML inspection is not a visual PASS.
+```text
+Mechanical
+Semantic Readiness
+Material Conservation
+Visual sanity
+```
+
+Critical/Major findings block `development_ready` / `handoff_ready`.
+
+`Semantic Readiness` is one integrated review result; do not persist separate PASS fields for New Reader, Level Designer, Developer, Project Consistency, Acceptance, Content Purity semantics, or Golden Placement.
+
+Visual PASS requires actual rendered/browser evidence. Static HTML inspection is not a visual PASS.
 
 ## 8. Keep document versions stable
 
-`document.version` is real project/release metadata, not an edit counter.
+`document.version` is project/release metadata, not an edit counter.
 
-Keep the same `document.version` through normal drafting, clarification, Humanize, rendering, review findings, and representative testing. Do **not** bump it for every content correction or rerender.
-
-A version changes only when one of these is true:
+Keep the same version through normal drafting, clarification, Humanize, rendering, review correction, representative testing, and documentation-only system cleanup. Change it only when:
 
 - the user explicitly requests a new version;
 - an authoritative source declares a new project/document revision;
 - the team intentionally establishes a new release/handoff milestone.
 
-When the meaning of an already accepted or handed-off PRD changes, reopen handoff state to `pending_review`, regenerate and review the affected scope, and restore `handoff_ready` only after acceptance. This invalidation does not itself require a version bump.
-
-Do not add another revision/checksum/manifest framework for this boundary.
-
-`handoff_ready` means only that the currently accepted PRD content at the stated document version may enter the next production flow. It does not imply client approval, implementation completion, QA completion, release approval, or Voice readiness.
+When accepted PRD meaning changes, reopen handoff state, regenerate/review affected scope, and restore readiness only after acceptance. Do not add a revision/checksum registry for this.
 
 ## 9. Keep the system minimal
 
-- Produce only artifacts required by the active flow/task.
-- Reuse existing owners before creating new schemas, profiles, stages, reports, or frameworks.
-- Do not revive archived ceremony without a concrete current need.
+- Produce only artifacts required by the active Flow/task.
+- Reuse existing owners before creating schemas, profiles, stages, reports, or frameworks.
+- Use the cheapest proof that can falsify the active claim; do not replay unchanged checks for ceremony.
+- Do not revive archived parity/remediation programs without a concrete current defect.
 - `No change required` is valid.
