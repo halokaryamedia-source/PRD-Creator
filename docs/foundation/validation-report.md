@@ -47,26 +47,29 @@ final.html
 
 Current artifact proof:
 
-- Flow 2 state recovered with no material open decision;
-- 30 expected Golden pages in the required order;
-- unique HTML IDs and reachable fragment navigation;
-- canonical-content → render-data → HTML revision bindings match;
+- Flow 2 state has no material open decision;
+- 30 expected Golden pages are present in the required order;
+- HTML IDs are unique and fragment navigation is reachable;
+- canonical-content → render-data → HTML bindings match;
 - four scored objectives retain the approved 0–100 scale and 100% component-weight totals;
-- content-purity check reports no observed project/document-process leakage or generic filler-note data;
+- content-purity validation reports no observed project/document-process leakage or generic filler-note data;
 - approved Clockwork mechanics remain materially conserved;
-- targeted Chromium desktop review passed on Overview, Resonance Gameplay Flow, Development Overview, Workshop Gameplay Overview, Workshop Level Design, and Workshop Developer;
+- targeted Chromium desktop review passed on the representative affected pages;
 - no clipping, collision, horizontal overflow, or concrete readability defect was observed;
 - Golden CSS was not changed.
 
 ## Repository evidence boundary
 
-The accepted Clockwork package has **not yet been persisted in the connected GitHub `Local` branch**. Repository state must therefore distinguish:
+The accepted Clockwork package is now persisted on `Local` under:
 
 ```text
-accepted runtime artifact = verified
-remote project package     = not yet persisted
+workspace/active/the-clockwork-vault/
 ```
 
-Do not cite the standalone Humanized Review artifact, recovery scripts, screenshots, or earlier Clockwork integration proof as the current project authority. Those are supporting or historical evidence only.
+That package is the sole current Clockwork production authority. Its canonical content, render-data projection, final HTML, acceptance state, and handoff state are stored together in the active workspace.
+
+The authoritative source HTML remains externally retained with its exact filename and SHA-256 recorded in `state/source-inventory.yaml`; duplicating the large source file in Git is not required for current production.
+
+Standalone review HTML, recovery scripts, screenshots, one-off transport workflows, and earlier integration proof are supporting or historical evidence only and must not be used as current project authority.
 
 Current continuation is owned by `docs/knowledge/next-action.md`.
