@@ -15,11 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONDONTWRITEBYTECODE: "1"
+      AUDIT_SOURCE_COMMIT: "675f454e5f6747749994d84abe7ab11a5bf4df3d"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,7 +31,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git show HEAD^:.github/workflows/repository-naming-once.yml > /tmp/full-audit.yml
+          git fetch --no-tags --depth=1 origin "$AUDIT_SOURCE_COMMIT"
+          git show "$AUDIT_SOURCE_COMMIT:.github/workflows/repository-naming-once.yml" > /tmp/full-audit.yml
           python - <<'PY'
           from pathlib import Path
 
