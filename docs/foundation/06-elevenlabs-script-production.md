@@ -1,26 +1,28 @@
-# ElevenLabs Performance Script Production
+# Eleven v3 Performance Script Production
 
 Status: active Flow 6 policy
 
 ## Purpose
 
-Convert `voice_requirements_ready` into canonical spoken/performance wording and a reference-styled `Voice Production.docx` without changing upstream voice scope or project meaning.
+Convert `voice_requirements_ready` into canonical spoken/performance wording for **Eleven v3** and a reference-styled `Voice Production.docx` without changing upstream Voice scope or project meaning.
 
 Flow 6 owns:
 
 - final spoken wording for approved Voice IDs;
-- concise performance directions;
-- selective spoken emphasis;
-- purposeful pause/line-break structure;
+- SoundMaker v3 performance quality;
+- emotional/performance beat construction;
+- concise audible performance directions;
+- purposeful punctuation, selective CAPS, pause/line structure;
 - Estimated Duration ranges;
 - deterministic DOCX presentation based on the approved Voice Production reference.
 
 Flow 6 does **not** own:
 
-- adding/removing voice moments without reopening Flow 5;
+- adding/removing Voice moments without reopening Flow 5;
 - changing speaker/channel/trigger/project facts;
-- audio generation quality;
-- final continuity/pronunciation/delivery approval.
+- Sound Effects generation;
+- claiming generated-audio quality without actual audio evidence;
+- final revision acceptance, which remains Flow 7.
 
 ## Canonical sequence
 
@@ -28,6 +30,8 @@ Flow 6 does **not** own:
 state/voice-state.yaml = voice_requirements_ready
 ↓
 work/voice-requirements.md
+↓
+SoundMaker v3 quality pass per Voice ID
 ↓
 write canonical work/voice-production.md
 ↓
@@ -44,41 +48,80 @@ Flow 7
 
 `work/voice-production.md` is the Flow 6 source of truth for final spoken wording and performance notation.
 
-`output/Voice Production.docx` is a derived presentation artifact and may not be patched as the content owner.
+`SOUNDMAKER.md` is the one-entry-at-a-time v3 quality/execution procedure inside Flow 6. It is not a second source of truth.
+
+`output/Voice Production.docx` is derived presentation and may not be patched as the content owner.
 
 ## Scope parity
 
 Every Flow 5 Voice ID must appear exactly once in Flow 6 unless Flow 5 scope is explicitly reopened. Flow 6 may refine wording, but it may not:
 
-- create a new Voice ID;
-- drop a required Voice ID;
-- change Main Story ↔ Radio/other type;
+- create/drop Voice IDs;
+- change Voice Type;
 - move a trigger by implication;
-- invent a speaker/channel;
+- invent speaker/channel;
 - add unsupported lore/mechanics/rewards.
 
-The builder enforces ID/type parity mechanically when given the Flow 5 requirements file.
+The builder enforces ID/type parity mechanically when given Flow 5 requirements.
+
+## SoundMaker v3 quality contract
+
+For each entry, construct performance in this order:
+
+```text
+requirement meaning
+→ target duration first when specified
+→ voice fit
+→ performance arc
+→ spoken wording
+→ beat architecture
+→ punctuation / line structure
+→ selective CAPS
+→ minimal Audio Tags
+→ pronunciation safety
+```
+
+Rules:
+
+- Eleven v3 is the model scope; do not auto-fallback to another model family;
+- emotional changes need a scene/communication reason;
+- script must remain understandable without Audio Tags;
+- a flat script is not repaired by tag stacking;
+- reactions are treated as timeline events;
+- Eleven v3 does not use SSML `<break>` tags;
+- when timing matters, plan word budget before final wording rather than compressing afterward.
+
+Detailed execution procedure: `kits/voice-production-kit/SOUNDMAKER.md`.
+
+Evidence-backed technique: `kits/voice-production-kit/references/elevenlabs/README.md`.
+
+## Actual generation and canonical sync
+
+Audio generation is optional unless requested.
+
+When actual ElevenLabs generation occurs:
+
+- work one Voice ID at a time;
+- show one best paste-ready prompt by default;
+- if the user edits the prompt before generation, the exact prompt actually used supersedes the assistant draft;
+- after approval, synchronize the exact generated prompt back into `work/voice-production.md`;
+- if canonical wording changed after DOCX/acceptance was produced, rebuild/reopen only the affected derived scope.
+
+Do not claim current script/audio alignment while canonical wording differs from the approved generated prompt.
 
 ## Performance notation
 
-Square-bracket directions, selective CAPS, ellipses, and line breaks are allowed only when they improve spoken delivery.
+Square-bracket directions, punctuation, selective CAPS, ellipses/em dashes, and line breaks are allowed only when they improve spoken delivery.
 
-Directions describe performance, not project events. Do not use them as a hidden way to introduce new facts.
+Directions describe audible performance, not project events. Do not use them as a hidden way to introduce facts.
 
-Estimated Duration is always an estimate until audio exists.
+Estimated Duration is always an estimate until actual audio exists.
 
 ## DOCX presentation
 
-The audited original Aftershock Voice Production DOCX is the primary demonstrated layout/performance benchmark. Its SHA-256 and derived contract are recorded in `kits/voice-production-kit/references/aftershock/README.md` and `DOCX-FORMAT.md`; the active builder does not require a copied binary. Reuse the demonstrated hierarchy and visual treatment, not its project-specific content or counts.
+The audited original Aftershock Voice Production DOCX remains the demonstrated layout benchmark. Its SHA-256 and derived contract are recorded in `kits/voice-production-kit/references/aftershock/README.md` and `DOCX-FORMAT.md`.
 
-The active builder:
-
-- creates Letter pages with compact margins;
-- uses reference-like title/section/type hierarchy;
-- styles bracketed directions separately from spoken text;
-- uses pale blue Main Story panels and neutral Radio/other panels;
-- preserves canonical line breaks;
-- starts each gameplay section on a new page.
+Reuse hierarchy and visual treatment, not project-specific content/counts.
 
 ## Flow 6 gate
 
@@ -86,11 +129,12 @@ Set `voice_script_ready` only when:
 
 - Flow 5 status was `voice_requirements_ready` for the same accepted PRD revision;
 - all required Voice IDs are present exactly once;
-- types match Flow 5;
+- Types match Flow 5;
 - every entry has title, Estimated Duration, and Performance Script;
-- no visible unresolved placeholder remains;
-- no known upstream fact is missing or contradicted;
-- DOCX successfully builds from canonical Markdown;
-- current project DOCX receives visual QA when an actual production deliverable is being produced.
+- SoundMaker v3 pre-generation quality was applied;
+- no unresolved placeholder remains;
+- no known upstream fact is missing/contradicted;
+- DOCX successfully builds from canonical Markdown when DOCX is in scope;
+- current project DOCX receives visual QA during actual production.
 
-Flow 6 stop does not equal final delivery approval. Flow 7 remains required for final voice acceptance.
+Flow 6 stop does not equal generated-audio approval. Flow 7 remains required for current-revision acceptance.
