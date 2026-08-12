@@ -17,7 +17,7 @@ Flow 2–4 technical documentation is now synchronized with current production b
 - complete model → Simple Chat Preview → approval → `ready_for_prd`;
 - concrete AI Proposal is allowed but remains pending until preview approval;
 - source provenance is mandatory while in-repo source-file duplication is conditional on production value;
-- the Golden Sample is the canonical visible page prototype and `approved-document.html` is its byte-identical runtime alias;
+- the Golden Sample is the canonical visible page prototype and `runtime-template.html` is its byte-identical runtime alias;
 - Flow 4 records Mechanical + integrated Semantic Readiness + Material Conservation + Visual sanity without duplicate PASS ceremony;
 - unchanged Golden/reference proof is not replayed for content-only work.
 

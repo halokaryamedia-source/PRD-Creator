@@ -100,8 +100,8 @@ kits/project-document-generator/
 ├── VALIDATION.md
 ├── GLOSSARY.md
 ├── template/
-│   ├── golden-sample.html       # canonical approved reference bytes
-│   └── approved-document.html   # runtime alias; byte-identical
+│   ├── golden-reference.html       # canonical approved reference bytes
+│   └── runtime-template.html   # runtime alias; byte-identical
 ├── renderer/
 │   ├── render.py
 │   ├── _engine.py

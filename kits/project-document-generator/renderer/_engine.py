@@ -571,7 +571,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
 
 def main() -> int:
-    default_template = HERE.parent / "template" / "approved-document.html"
+    default_template = HERE.parent / "template" / "runtime-template.html"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("render_data", type=Path)
     parser.add_argument("output", type=Path)

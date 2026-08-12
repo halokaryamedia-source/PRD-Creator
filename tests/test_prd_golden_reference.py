@@ -8,8 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "kits" / "project-document-generator"
-GOLDEN = KIT / "template" / "golden-sample.html"
-RUNTIME = KIT / "template" / "approved-document.html"
+GOLDEN = KIT / "template" / "golden-reference.html"
+RUNTIME = KIT / "template" / "runtime-template.html"
 APPROVED_GIT_BLOB = "e1dccd77d7a5335213caea7a09d74ba78b2ae8e1"
 PACKAGES = ("docks", "quarry", "ascent", "beacon", "relay", "ending")
 GLOBAL_PAGES = ("development-overview", "shared-systems", "shared-data-reset", "phase-development")

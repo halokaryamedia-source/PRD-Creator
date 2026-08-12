@@ -48,7 +48,7 @@ Primary source inspected:
 kits/project-document-generator/renderer/core.py
 kits/project-document-generator/renderer/pages.py
 kits/project-document-generator/renderer/render.py
-kits/project-document-generator/template/approved-document.html
+kits/project-document-generator/template/runtime-template.html
 kits/project-document-generator/validator/validate.py
 kits/project-document-generator/CONTENT-CONTRACT.md
 kits/project-document-generator/RENDERING.md
@@ -297,7 +297,7 @@ Owner:
 
 ```text
 kits/project-document-generator/renderer/render.py
-kits/project-document-generator/template/approved-document.html
+kits/project-document-generator/template/runtime-template.html
 kits/project-document-generator/validator/validate.py
 ```
 

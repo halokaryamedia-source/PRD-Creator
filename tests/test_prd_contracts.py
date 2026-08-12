@@ -12,8 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
 VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
-APPROVED_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "approved-document.html"
-GOLDEN_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "golden-sample.html"
+RUNTIME_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "runtime-template.html"
+GOLDEN_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "golden-reference.html"
 BILINGUAL_SCALAR_FIELDS = {
     "canonical_content_sha256", "id", "key", "code", "version", "brand_mark",
     "languages", "roles", "weight", "step", "no", "number", "formula",
@@ -325,8 +325,8 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
 
     def test_runtime_template_is_the_exact_golden_artifact(self) -> None:
-        self.assertEqual(APPROVED_TEMPLATE.read_bytes(), GOLDEN_TEMPLATE.read_bytes())
-        template = APPROVED_TEMPLATE.read_text(encoding="utf-8")
+        self.assertEqual(RUNTIME_TEMPLATE.read_bytes(), GOLDEN_TEMPLATE.read_bytes())
+        template = RUNTIME_TEMPLATE.read_text(encoding="utf-8")
         self.assertIn('name="golden-sample-id" content="aftershock"', template)
         self.assertIn("quarry-", template)
         self.assertIn("phase-nav-", template)
@@ -431,7 +431,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(render_data())
         broken = project / "broken-template.html"
         broken.write_text(
-            APPROVED_TEMPLATE.read_text(encoding="utf-8").replace('<nav class="sidebar-nav">', '<nav class="sidebar-nav-broken">', 1),
+            RUNTIME_TEMPLATE.read_text(encoding="utf-8").replace('<nav class="sidebar-nav">', '<nav class="sidebar-nav-broken">', 1),
             encoding="utf-8",
         )
         rendered = self.render(project, broken)

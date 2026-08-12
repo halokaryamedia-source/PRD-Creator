@@ -46,8 +46,8 @@ Do not maintain a second Golden checklist or project-specific exception list in 
 The approved Golden is preserved through two intentional paths:
 
 ```text
-template/golden-sample.html     canonical reference evidence
-template/approved-document.html runtime template alias
+template/golden-reference.html     canonical reference evidence
+template/runtime-template.html runtime template alias
 ```
 
 Both must remain byte-identical unless the user explicitly approves a Golden revision.

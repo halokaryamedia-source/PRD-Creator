@@ -55,7 +55,7 @@ Overview
 
 Future projects replace project facts; they do not redesign this document language or copy Aftershock-specific mechanics/counts.
 
-`template/golden-sample.html` stores the canonical approved reference bytes. `template/approved-document.html` is the runtime template alias and must remain byte-identical to the Golden artifact.
+`template/golden-reference.html` stores the canonical approved reference bytes. `template/runtime-template.html` is the runtime template alias and must remain byte-identical to the Golden artifact.
 
 ## PRD quality and efficiency
 

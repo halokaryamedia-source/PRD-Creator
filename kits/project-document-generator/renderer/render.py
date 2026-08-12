@@ -65,7 +65,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
     try:
         _engine.STORAGE_PREFIX_TOKEN = GOLDEN_SPEC_MARKER
         with tempfile.TemporaryDirectory(prefix="prd-golden-") as tmp:
-            prepared_path = Path(tmp) / "approved-document.html"
+            prepared_path = Path(tmp) / "runtime-template.html"
             prepared_path.write_text(prepared, encoding="utf-8")
             _engine.render(prepared_path, render_data, output)
     finally:
@@ -73,7 +73,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
 
 def main() -> int:
-    default_template = HERE.parent / "template" / "approved-document.html"
+    default_template = HERE.parent / "template" / "runtime-template.html"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("render_data", type=Path)
     parser.add_argument("output", type=Path)

@@ -18,10 +18,10 @@ The renderer does not invent project meaning and does not choose a new layout.
 The repository intentionally keeps two paths pointing to the **same approved HTML bytes**:
 
 ```text
-template/golden-sample.html
+template/golden-reference.html
 → canonical Golden reference evidence
 
-template/approved-document.html
+template/runtime-template.html
 → default runtime template alias used by renderer
 ```
 

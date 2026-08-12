@@ -15,7 +15,7 @@ Do not broad-read the whole kit by default.
 
 ## HTML context budget
 
-Normal production must not load `template/approved-document.html`, `template/golden-sample.html`, or generated `final.html` in full into model context.
+Normal production must not load `template/runtime-template.html`, `template/golden-reference.html`, or generated `final.html` in full into model context.
 
 - renderer/validator may read large files directly at runtime;
 - canonical meaning review uses `content.md`;
@@ -41,8 +41,8 @@ A source file may be retained in-repo or externally according to `SOURCE-INTAKE.
 - `renderer/core.py` → reusable PRD rendering helpers/primitives
 - `renderer/pages.py` → render data → approved Golden page composition
 - `renderer/render.py` → deterministic Golden template projection/output mechanics
-- `template/golden-sample.html` → canonical approved Golden reference bytes
-- `template/approved-document.html` → runtime template alias; must remain byte-identical to Golden
+- `template/golden-reference.html` → canonical approved Golden reference bytes
+- `template/runtime-template.html` → runtime template alias; must remain byte-identical to Golden
 - `validator/validate.py` → mechanical Flow 4 checks
 - `validator/validate_handoff.py` → narrow Flow 4 → Flow 5 handoff-entry consistency
 

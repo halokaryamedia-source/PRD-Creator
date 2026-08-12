@@ -67,10 +67,10 @@ CONTENT-CONTRACT.md
 RENDERING.md
 → deterministic projection/binding contract
 
-template/golden-sample.html
+template/golden-reference.html
 → canonical approved Golden reference bytes
 
-template/approved-document.html
+template/runtime-template.html
 → runtime template alias; byte-identical to Golden
 ```
 

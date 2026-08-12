@@ -16,7 +16,7 @@
 | Canonical Content | `work/content.md`; source of truth for accepted PRD meaning. |
 | Gameplay Package | One gameplay unit represented by Gameplay Overview, Level Design, and Developer production surfaces. |
 | Render Projection | `work/render-data.json`; compact derived structure needed by the deterministic renderer. It is not semantic authority. |
-| Approved PRD Template | `template/approved-document.html`; the runtime template path. Its bytes must remain identical to `template/golden-sample.html`, the canonical Golden reference artifact. It is not a generic redesign surface. |
+| Runtime PRD Template | `template/runtime-template.html`; the runtime template path. Its bytes must remain identical to `template/golden-reference.html`, the canonical Golden reference artifact. It is not a generic redesign surface. |
 | Rendering | Deterministically projecting current canonical PRD meaning into the exact approved Golden prototype without inventing or changing project facts. |
 | Semantic Readiness | The single persisted Flow 4 result for the integrated New Reader, Level Designer, Developer, Content Purity, Project Consistency, and Golden Placement lenses. |
 | Material Conservation | Separate Flow 4 proof that independently actionable approved rules were not lost during Humanize/projection/rendering. |

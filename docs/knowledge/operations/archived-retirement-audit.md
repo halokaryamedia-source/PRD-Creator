@@ -24,7 +24,7 @@ Archived package inventory reports:
 - JSON schemas, YAML project state/examples, modular templates, renderer/validator scripts, tests/fixtures, package manifests/checksums, and the Aftershock Golden Sample;
 - Golden Sample SHA-256 `6af765b1c40100728b126fe219c88e5f0f734816f6c9a596d1cd90292c380901`.
 
-The archived Golden HTML and active `kits/project-document-generator/template/approved-document.html` share the exact same Git blob SHA:
+The archived Golden HTML and active `kits/project-document-generator/template/runtime-template.html` share the exact same Git blob SHA:
 
 `e1dccd77d7a5335213caea7a09d74ba78b2ae8e1`
 

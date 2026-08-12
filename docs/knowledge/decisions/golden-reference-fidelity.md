@@ -21,10 +21,10 @@ The exact approved Golden artifact is both the canonical reference and the runti
 The repository keeps two paths for clarity, but they intentionally point to identical bytes:
 
 ```text
-template/golden-sample.html
+template/golden-reference.html
 → canonical Golden evidence
 
-template/approved-document.html
+template/runtime-template.html
 → default runtime alias
 ```
 
@@ -76,7 +76,7 @@ For every independent source rule recovered in Flow 2, Flow 3 must retain one ow
 This decision supersedes:
 
 - the shorthand that the “approved PRD template is preserved as a shell” when that wording permits a reduced reconstruction;
-- the initial 2026-08-12 split where `golden-sample.html` was exact but `approved-document.html` could remain a separate cleaned runtime interpretation.
+- the initial 2026-08-12 split where `golden-reference.html` was exact but `runtime-template.html` could remain a separate cleaned runtime interpretation.
 
 It refines “Golden Samples are references, not project requirements”:
 
