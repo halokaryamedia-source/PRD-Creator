@@ -256,7 +256,7 @@ Saran AI                 # optional
 
 Use one short Global Rules block only when shared rules materially affect all objectives.
 
-Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, or validator detail by default.
+Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, or validator detail by default. **do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
 
 `Perlu Konfirmasi` is the exception for a genuinely user/external-only blocker, not the normal response to incomplete design.
 
