@@ -98,11 +98,25 @@ Flag:
 
 Humanize means **clearer and shorter wording**, not fewer material facts.
 
-## 5. Targeted desktop visual sanity
+## 5. Validation economy
 
-Default visual proof is desktop-only unless a mobile defect is specifically under review.
+Validation should prove the current revision without turning every content change into a full regression campaign.
 
-Normally inspect only:
+### Normal initial production
+
+For a content-only project generation where the Golden/template/renderer foundation is unchanged:
+
+```text
+full mechanical validator
++ one integrated semantic/material-conservation review
++ representative desktop visual sanity
+```
+
+The mechanical validator may inspect the full generated structure. The model should not semantically reread the entire generated HTML merely because the file is large; review canonical/current project meaning and the relevant rendered page families instead.
+
+### Representative visual set
+
+Normally inspect:
 
 ```text
 Overview
@@ -112,7 +126,39 @@ Overview
 + one dense Developer page
 ```
 
-Compare them directly against `template/golden-sample.html`, the canonical approved Golden artifact. Check:
+Choose the densest or highest-risk package where useful. If a glossary-heavy or special scoring page is materially different, include that page instead of blindly adding more pages.
+
+### Escalate to full visual sweep only when justified
+
+Inspect every page / broader browser behavior only when at least one is true:
+
+- Golden template, CSS, JS/runtime behavior, or page-composition renderer changed;
+- a targeted finding suggests a global layout/overflow defect;
+- a new page family/component behavior was explicitly approved;
+- the user explicitly requests full visual proof.
+
+Do not run full every-page/mobile/theme/localStorage/Voice checks merely because project content changed.
+
+### Bounded revision
+
+For an approved bounded change:
+
+```text
+affected truth/content
+→ affected render projection
+→ one full-file rerender
+→ one mechanical check
+→ semantic/material/Golden review only where invalidated
+→ visual check only for affected/high-risk page(s)
+```
+
+A full-file HTML rewrite does **not** imply a full-project reasoning/review restart.
+
+## 6. Targeted desktop visual sanity
+
+Default visual proof is desktop-only unless a mobile defect is specifically under review.
+
+Compare representative pages directly against `template/golden-sample.html`, the canonical approved Golden artifact. Check:
 
 - same visible section order and labels;
 - readable summary-card copy;
@@ -128,7 +174,7 @@ Do not routinely retest mobile, every link, theme, localStorage, or unrelated Vo
 
 If browser proof is unavailable, record `Visual sanity: NOT PROVEN`. Static HTML inspection is never a visual PASS.
 
-## 6. Acceptance record
+## 7. Acceptance record
 
 Keep `work/acceptance.md` compact:
 
@@ -151,7 +197,7 @@ Major: N
 
 `Material Conservation: PASS` is required for a new handoff. Older acceptance records without the field remain historical evidence only and must not be reused as proof for a regenerated revision.
 
-## 7. Handoff
+## 8. Handoff
 
 Before Flow 5:
 
@@ -167,10 +213,10 @@ Handoff must refer to the current accepted document version. Normal review corre
 ```text
 update affected truth/content
 → verify material conservation in affected scope
-→ regenerate projection + HTML
+→ regenerate projection + full HTML once
 → one mechanical check
 → targeted semantic/Golden/desktop review of invalidated scope
 → stop
 ```
 
-Do not replay unchanged intake, mobile QA, or Voice tests for ceremony.
+Do not replay unchanged intake, mobile QA, every-page visual QA, or Voice tests for ceremony.

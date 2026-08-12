@@ -233,6 +233,60 @@ Inline highlighting may still appear on phase-owned prose. Terms Used never high
 
 `document.version` is project/release metadata, not an edit counter. Normal writing fixes, rerenders, reviews, and tests do not change it.
 
+## Render economy
+
+Rendering is the **mechanical end of an approved semantic workflow**. Do not use HTML generation as the user-facing drafting loop.
+
+### Initial project production
+
+```text
+Source / requirement recovery
+→ complete Simple Chat Preview
+→ user approval
+→ content.md
+→ compact render-data.json
+→ one planned full final.html render
+```
+
+Do not generate preview HTML or repeatedly rerender `final.html` while the user is still correcting gameplay in chat. If a validator/review finding exposes a real defect after the planned render, fix the first wrong owner and rerender again. A concrete finding justifies the extra render; speculative iteration does not.
+
+### Bounded revision
+
+```text
+approved affected meaning
+→ patch affected content.md meaning
+→ patch affected render-data projection
+→ one planned full final.html rerender
+```
+
+The renderer may rewrite the **whole HTML file** even when only one objective changed. This is expected. Do not build partial-page rendering, per-page artifacts, incremental HTML caches, or a second preview renderer merely to avoid a cheap deterministic full-file write.
+
+The expensive work to keep bounded is model reasoning/review: do not reread unchanged source, rebuild unchanged meaning, or semantically review unrelated pages just because `final.html` was regenerated as one file.
+
+### Golden access economy
+
+Normal project authoring should use the Reverse-derived Golden fill map in `CONTENT-CONTRACT.md`. Do **not** load the full Golden HTML into model context simply to remember what each page/slot needs.
+
+Load the exact Golden artifact only when the artifact itself is required evidence, such as:
+
+- Golden regression / reference audit;
+- template/CSS/runtime investigation;
+- renderer page-composition investigation;
+- targeted visual comparison or fidelity defect.
+
+### Compact render data
+
+`render-data.json` contains only the structured fields needed to fill the approved Golden surfaces. Keep out:
+
+- chain-of-thought/reasoning;
+- source-audit notes;
+- rejected alternatives;
+- approval conversation/transcript;
+- confidence scores;
+- duplicate prose that exists only for convenience.
+
+This keeps projection deterministic and reduces model/context work without sacrificing material detail.
+
 ## Normal production
 
 ```bash

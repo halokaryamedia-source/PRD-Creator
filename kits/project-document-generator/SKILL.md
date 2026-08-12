@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
-description: Recover project requirements, complete missing production detail with explicit AI proposals guided by the Golden fill map, preview the complete gameplay model in simple chat form for user approval, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness.
-version: 1.11.0
+description: Recover project requirements, complete missing production detail with explicit AI proposals guided by the Golden fill map, preview the complete gameplay model in simple chat form for user approval, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness with bounded render/review cost.
+version: 1.12.0
 ---
 
 # Project Document Generator
@@ -172,6 +172,36 @@ Rules:
 
 If Flow 3 discovers a missing material answer, return that gap to Flow 2, create/update the proposed model, preview the affected slice, and obtain approval rather than inventing inside the renderer/content projection step.
 
+### Execution economy
+
+Optimize **AI reasoning and review scope**, not HTML file-writing. The deterministic renderer may rewrite the complete `final.html`; that is intentionally cheaper and safer than inventing partial-render/cache machinery.
+
+Use three modes:
+
+```text
+A. UNDERSTAND + PREVIEW
+   Source → complete project model → Simple Chat Preview
+   No preview HTML, no render-data generation, no browser QA.
+
+B. PRODUCTION RENDER
+   Approved preview → content.md → compact render-data.json
+   → one planned full render → one mechanical validation
+   → one integrated semantic review → representative desktop visual sanity.
+
+C. BOUNDED REVISION
+   Affected meaning only → affected preview only when interpretation changed
+   → patch affected canonical content/projection → one planned full rerender
+   → one mechanical check → targeted review of invalidated scope.
+```
+
+For initial production, do **not** repeatedly generate HTML while the user is still correcting gameplay in chat. Stabilize and approve the model first. Plan one render for the approved revision; rerender again only after a concrete validator/review finding or a later approved change.
+
+During normal authoring, use `CONTENT-CONTRACT.md` / the Golden fill map instead of loading the large Golden HTML. Load the exact Golden artifact only for Golden regression, template/renderer investigation, or actual visual comparison where the artifact itself is evidence.
+
+`render-data.json` should contain only the structured project data needed to fill Golden surfaces. Do not copy reasoning, source-analysis notes, rejected alternatives, approval dialogue, confidence scores, or duplicate prose into render data.
+
+Do **not** add a preview renderer, per-page renderer, incremental HTML cache, generic rendering framework, or second template solely for speed. Full-file deterministic rerender remains the normal path.
+
 ## 3. REVIEW — Flow 4
 
 Owner: `VALIDATION.md`.
@@ -187,6 +217,8 @@ mechanical validator
 
 Review the relevant document/package slice once and evaluate New Reader, Level Designer, Developer, and Consistency together. Do not load full `final.html` for semantic review; validator handles full-file mechanics.
 
+For normal content-only production, use representative desktop visual sanity rather than every-page browser inspection. Escalate to a full visual sweep only when template/CSS/runtime/page-composition behavior changed, a finding suggests a global layout defect, or the user explicitly asks for full visual proof.
+
 ## Revision fast path
 
 ```text
@@ -199,7 +231,7 @@ approved bounded change
 → user approval/correction for that slice
 → affected canonical content + required cross-references
 → affected render projection
-→ rerender
+→ one planned full rerender
 → one mechanical check
 → targeted semantic/visual review
 ```

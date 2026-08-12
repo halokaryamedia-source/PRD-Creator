@@ -1,8 +1,8 @@
 # Project Document Generator
 
-**Version:** 1.11.0
+**Version:** 1.12.0
 
-A compact repository-backed system for recovering uneven project direction, using the Golden fill map to identify what production detail must exist, completing missing or conflicting material meaning with explicit AI proposals, previewing the complete gameplay model in simple objective-based chat form for user approval, writing practical development-oriented PRD content, projecting it through the approved Golden Sample hierarchy/page composition, and validating whether the current revision is ready for team handoff.
+A compact repository-backed system for recovering uneven project direction, using the Golden fill map to identify what production detail must exist, completing missing or conflicting material meaning with explicit AI proposals, previewing the complete gameplay model in simple objective-based chat form for user approval, writing practical development-oriented PRD content, projecting it through the approved Golden Sample hierarchy/page composition, and validating the current revision with bounded render/review cost.
 
 ## Normal use
 
@@ -19,9 +19,10 @@ Project Source
 → ready_for_prd
 → Canonical content.md
 → Derived render-data.json
-→ Golden Sample projection / render
+→ one planned Golden Sample projection / render
 → final.html
-→ mechanical + one-read multi-lens review
+→ one mechanical + one-read multi-lens review
+→ targeted desktop visual sanity
 → development_ready
 → current handoff boundary
 ```
@@ -42,12 +43,34 @@ The skill will:
 12. keep internal IDs/YAML/provenance/recovery jargon out of that preview; optionally show `Saran AI` only for material choices worth calling out;
 13. treat approval of the complete preview as approval of the represented pending AI proposals unless the user explicitly corrects/rejects them;
 14. write canonical PRD content using `CONTENT-CONTRACT.md` only after the preview-approved Flow 2 boundary, keeping Gameplay, Level Design, and Developer responsibilities separate;
-15. render approved project meaning through the Golden hierarchy, component composition, and presentation foundation without adding new meaning during Flow 3;
-16. keep project language availability explicit instead of presenting an unavailable translation as supported;
-17. run mechanical validation plus one-read New Reader / Level Designer / Developer / Project Consistency review;
-18. block handoff on Critical/Major findings and return newly exposed missing material meaning to Flow 2 rather than hiding it downstream.
+15. render approved project meaning through the Golden hierarchy without using HTML generation as the drafting loop;
+16. keep initial preview chat-only, plan one full render after approval, and rerender again only after a concrete finding or later approved change;
+17. keep revisions bounded: patch affected meaning/projection, rerender the full HTML mechanically once, then review only invalidated scope;
+18. use the Golden fill map during normal authoring instead of repeatedly loading the large Golden HTML;
+19. keep project language availability explicit instead of presenting an unavailable translation as supported;
+20. run full mechanical validation plus one integrated semantic review and representative desktop visual sanity for ordinary content-only generation;
+21. escalate to full every-page/browser review only when template/CSS/runtime/page-composition changed, a global visual defect is suspected, or the user explicitly requests it;
+22. block handoff on Critical/Major findings and return newly exposed missing material meaning to Flow 2 rather than hiding it downstream.
 
 The Simple Chat Preview is not a new Flow or project artifact. Only material corrections, proposal/approval state, and decisions needed for continuity are persisted. Bounded revisions preview only the affected objective/global slice when interpretation changed.
+
+## Execution economy
+
+```text
+MODE A — Understand / Preview
+Source → complete model → Chat Preview
+No preview HTML, no render-data, no browser QA.
+
+MODE B — Production Render
+Approved preview → content.md → render-data.json → one planned full final.html render
+→ one mechanical validation → one integrated semantic review → representative visual sanity.
+
+MODE C — Revision
+Affected meaning only → affected preview if needed → patch content/projection
+→ one planned full rerender → one mechanical check → targeted review.
+```
+
+The full HTML file may be rewritten on every approved revision. That deterministic file write is cheaper and safer than adding partial-render/cache infrastructure. Optimize AI reading/reasoning/review scope instead.
 
 Cross-project rendering keeps the Golden visual language while allowing content-driven variation: project/package count and data-driven requirement density may vary, while the approved Golden page family, component composition, labels, reading pattern, and slot responsibilities remain fixed.
 
@@ -91,7 +114,7 @@ work/review.md              # only when a user-facing decision/recovery summary 
 Flow 2 chat checkpoint
 Simple Chat Preview         # user-facing chat only; not a file artifact
 
-Flow 3 core/derived
+Flow 3 core/derived — only after preview approval
 work/content.md
 work/render-data.json       # derived
 output/final.html           # derived
@@ -102,6 +125,6 @@ state/handoff-state.yaml
 output/team-handoff.md
 ```
 
-Do not pre-create Voice/downstream artifacts for a PRD-only project.
+Do not pre-create HTML/render artifacts during the initial chat preview loop. Do not pre-create Voice/downstream artifacts for a PRD-only project.
 
 `handoff_ready` is a production-document readiness status, not client approval, implementation completion, QA completion, or release approval.

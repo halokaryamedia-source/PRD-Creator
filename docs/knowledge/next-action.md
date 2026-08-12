@@ -4,7 +4,7 @@ Updated: 2026-08-12
 
 ## Current Status
 
-`PRD_GOLDEN_GUIDED_COMPLETE_PREVIEW_PROPOSAL_FLOW_LOCKED_CLOCKWORK_PREVIEW_NEXT`
+`PRD_GOLDEN_GUIDED_COMPLETE_PREVIEW_AND_RENDER_ECONOMY_LOCKED_CLOCKWORK_PREVIEW_NEXT`
 
 Working branch: **`Local` only**.
 
@@ -17,7 +17,7 @@ Reference → Fill Map
 Project Authority → Filled Golden
 ```
 
-The Reverse-derived Golden fill map now serves two bounded jobs:
+The Reverse-derived Golden fill map serves two bounded jobs:
 
 1. **Flow 2 completeness guide** — tells the AI what each global/objective/Gameplay/Level Design/Developer surface must eventually answer;
 2. **Flow 3/4 rendering and fidelity contract** — tells the renderer/reviewer where approved meaning belongs and what visible composition must be preserved.
@@ -26,7 +26,7 @@ Golden supplies slot responsibility and reading structure. It does **not** suppl
 
 ## Flow 2 → Flow 3 boundary
 
-Initial PRD production now follows:
+Initial PRD production follows:
 
 ```text
 Source
@@ -51,7 +51,41 @@ source-backed meaning = evidence from source/user authority
 AI proposal          = suggested decision, pending until preview approval
 ```
 
-A proposal may be specific: mechanic behavior, timing, quantity, recovery, scoring behavior, Level Design expectation, Developer behavior, naming, or another PRD-level decision. Specificity is acceptable because approval state—not vagueness—protects authority.
+## Render / review economy
+
+Normal execution now uses three modes:
+
+```text
+MODE A — UNDERSTAND + PREVIEW
+Source → complete model → Simple Chat Preview
+No preview HTML, no render-data generation, no browser QA.
+
+MODE B — PRODUCTION RENDER
+Approved preview → content.md → compact render-data.json
+→ one planned full final.html render
+→ one mechanical validation
+→ one integrated semantic/material/Golden review
+→ representative desktop visual sanity.
+
+MODE C — BOUNDED REVISION
+Affected meaning only → affected preview only when interpretation changed
+→ patch affected canonical content/projection
+→ one planned full final.html rerender
+→ one mechanical check
+→ targeted review of invalidated scope.
+```
+
+The renderer may rewrite the full HTML file even for a one-objective change. That deterministic write is intentionally kept simple; the expensive work that stays bounded is AI reading, reasoning, and review.
+
+Additional render/review cycles are justified only by a concrete validator/review finding or a later approved change. Do not generate HTML repeatedly while gameplay is still being corrected in chat.
+
+Normal authoring uses `CONTENT-CONTRACT.md` / the Golden fill map instead of loading the large Golden HTML into model context. The exact Golden artifact is loaded only when it is itself evidence: Golden regression, template/renderer investigation, or targeted visual comparison.
+
+`render-data.json` remains compact and projection-only; reasoning notes, source-audit notes, rejected alternatives, approval transcript, confidence scores, and duplicate prose do not belong there.
+
+Full every-page/browser review is not the default for a content-only project generation. Escalate only when template/CSS/JS/page-composition behavior changed, a targeted finding suggests a global visual defect, or the user explicitly asks for full visual proof.
+
+No preview renderer, partial-page renderer, incremental HTML cache, generic rendering framework, or second template is added for speed.
 
 ## Simple Chat Preview
 
@@ -89,33 +123,22 @@ The earlier source-consistency audit found five same-authority conflicts:
 4. Gremlin’s Workshop permanent broken connection vs Elbow-rule inversion;
 5. Ending reward name (`Clockwork Wayfinder` vs `Vault Explorer Banner`).
 
-These are still valid source conflicts, but they are **no longer reasons to stop before preview**.
-
-For the next live run, Flow 2 should:
-
-```text
-record each conflict
-→ choose one recommended Clockwork resolution
-→ propagate it through the complete objective model
-→ show the resulting complete Clockwork Simple Chat Preview
-→ call out the chosen resolution under Saran AI only where useful
-```
-
-The user then corrects/approves the complete model. Only after approval are those proposals promoted to project authority and used to build the Golden PRD.
+These are valid source conflicts but are no longer reasons to stop before preview. Flow 2 should choose one coherent proposal for each, propagate it through the complete objective model, then show the result for user approval.
 
 ## Proof boundary
 
-This refinement changes only semantic/procedural owners and package version documentation. It does **not** add:
+This refinement changes only existing procedure/render/review owners and package version documentation. It does **not** add:
 
 - a new Flow;
-- a preview file/renderer;
-- a new schema;
-- a new approval framework;
-- a new status machine;
-- a Golden/template/renderer change.
+- preview HTML;
+- partial/incremental renderer;
+- cache framework;
+- new schema;
+- new approval framework;
+- Golden/template/renderer code changes.
 
-The existing preview approval guard remains sufficient mechanically. The next useful proof is real use, not another framework/test layer.
+The next useful proof is real project execution, not additional framework work.
 
 ## Next Step
 
-**Run The Clockwork Vault through the revised Flow 2: use the Golden fill map to complete every material objective detail, choose concrete AI proposals for the five known conflicts and any other Golden-required gaps, then present one simple complete objective-by-objective Chat Preview for user review.**
+**Run The Clockwork Vault through the current Flow 2 and present one complete objective-by-objective Simple Chat Preview. After user approval, generate the Golden PRD once through the compact render path and perform one mechanical + representative targeted review.**
