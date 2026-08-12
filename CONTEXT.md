@@ -15,7 +15,7 @@ Flow 2  Source Intake & Requirement Recovery
 Flow 3  Project Document / PRD Generation
 Flow 4  PRD Validation & Team Handoff
 Flow 5  Voice Requirement Extraction
-Flow 6  ElevenLabs Performance Script Production
+Flow 6  Eleven v3 Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
@@ -94,6 +94,24 @@ Avoid:
 - extra UI created merely to fit verbose content.
 
 Humanize means clearer and shorter, not more prose.
+
+## Voice Production direction
+
+Voice Production Kit owns Flow 5–7.
+
+Flow 6 operational generation is **Eleven v3 only**. `SOUNDMAKER.md` is the one-entry-at-a-time v3 quality/execution procedure inside Flow 6; it is not a new Flow or root skill.
+
+Canonical Voice authority remains:
+
+```text
+accepted PRD
+→ work/voice-requirements.md
+→ SoundMaker v3 quality pass
+→ work/voice-production.md
+→ derived DOCX / optional generated-audio evidence
+```
+
+When actual generated wording is approved, the exact prompt actually used must be synchronized back into canonical `work/voice-production.md` before current script/DOCX/audio alignment is claimed.
 
 ## Version policy
 
