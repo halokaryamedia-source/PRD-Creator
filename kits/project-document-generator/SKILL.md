@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
-description: Recover project requirements, complete missing production detail with explicit AI proposals guided by the Golden fill map, preview the complete gameplay model in simple chat form for user approval, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness with bounded render/review cost.
-version: 1.12.0
+description: Recover project requirements, complete missing production detail with explicit AI proposals guided by the Golden fill map, preview the complete gameplay model in simple chat form for user approval, produce content-pure and humanized canonical PRD meaning, project it through the approved Golden hierarchy/page composition, and validate development readiness with bounded AI/render/review cost.
+version: 1.13.0
 ---
 
 # Project Document Generator
@@ -64,6 +64,7 @@ Rules:
 - check material requirements against authoritative known project/platform constraints without importing unrelated generic best practice as authority;
 - use the **Reverse-derived Golden fill map** in `CONTENT-CONTRACT.md` as the completeness guide: it tells the AI what each required slot must answer;
 - never copy AFTERSHOCK-specific facts from the Golden into another project; Golden supplies the question/shape, not the answer;
+- never turn Golden/template/page/validation/process instructions into project facts merely because a visible slot must be filled;
 - when source does not answer a Golden-required material question, create one practical project-consistent proposal at the abstraction needed by the PRD;
 - when same-authority source surfaces conflict, record the conflict internally and select one recommended preview resolution instead of leaving the objective half-empty;
 - use Completion when one answer is implied by evidence; use Proposal when AI is choosing among plausible product/design options;
@@ -150,8 +151,10 @@ Primary owner: `CONTENT-CONTRACT.md`.
 Entry condition: Flow 2 meaning is production-ready **and the complete Simple Chat Preview has been approved**.
 
 ```text
-work/content.md
-→ compact work/render-data.json
+approved project model
+→ one Content Purity + Humanize pass
+→ work/content.md
+→ direct compact work/render-data.json projection from the same approved model
 → deterministic renderer
 → Golden Sample
 → output/final.html
@@ -164,13 +167,57 @@ Rules:
 - approved preview proposals are project meaning at this boundary; unapproved proposals are not;
 - renderer is a black box in normal production—do not hand-author `final.html`;
 - do not load the full Golden template/generated HTML into model context;
-- derive the main projection after canonical content is stable enough to render;
+- do not perform a second AI summarization when creating `render-data.json`; project the same purified/humanized approved model directly;
+- derive the main projection after canonical meaning is stable enough to render;
 - bounded revision patches only affected content/projection/cross-references;
 - English-only projection uses scalar strings where appropriate;
 - package term `roles` metadata is written only when visibility differs from the default;
 - read `RENDERING.md` only when projection/HTML mechanics are actually relevant.
 
 If Flow 3 discovers a missing material answer, return that gap to Flow 2, create/update the proposed model, preview the affected slice, and obtain approval rather than inventing inside the renderer/content projection step.
+
+### Content Purity + Humanize gate
+
+Run this **once before the planned render**, on the approved project model/canonical copy. This is not another Flow or artifact.
+
+Check:
+
+```text
+PROJECT CONTENT ONLY
+- visible copy explains the project/game, not PRD-Creator, Golden, templates, page structure or approval workflow;
+
+ROLE OWNERSHIP
+- Gameplay summaries stay player-facing;
+- Level Design owns spatial/build meaning;
+- Developer owns runtime, telemetry, scoring formula, interruption and reset detail;
+
+SUMMARY DISCIPLINE
+- Overview facts and 3-card Gameplay summaries answer one question each;
+- do not use a summary card as an overflow bucket for implementation detail;
+
+SEMANTIC LABELS
+- note/rule/card titles describe the actual meaning;
+- avoid "Global Rule 1", "Important Note 2" and similar generated filler labels;
+
+MATERIAL DECOMPOSITION
+- when one requirement contains several independently actionable rules, store them as separate list items/rows rather than one long sentence;
+
+TERMINOLOGY
+- use one visible term for the same concept unless a technical distinction is intentional.
+```
+
+Humanize by **relocating and decomposing**, not deleting:
+
+```text
+long technical Result card
+→ short player-facing Result
++ complete technical detail in Developer
+
+long requirement paragraph with four actions
+→ four readable bullets in the same requirement row
+```
+
+Do not remove a material rule merely to shorten copy.
 
 ### Execution economy
 
@@ -184,12 +231,14 @@ A. UNDERSTAND + PREVIEW
    No preview HTML, no render-data generation, no browser QA.
 
 B. PRODUCTION RENDER
-   Approved preview → content.md → compact render-data.json
+   Approved preview → one purity/humanize pass
+   → write canonical content + direct render projection from the same model
    → one planned full render → one mechanical validation
    → one integrated semantic review → representative desktop visual sanity.
 
 C. BOUNDED REVISION
    Affected meaning only → affected preview only when interpretation changed
+   → purity/humanize only the invalidated slice
    → patch affected canonical content/projection → one planned full rerender
    → one mechanical check → targeted review of invalidated scope.
 ```
@@ -198,7 +247,9 @@ For initial production, do **not** repeatedly generate HTML while the user is st
 
 During normal authoring, use `CONTENT-CONTRACT.md` / the Golden fill map instead of loading the large Golden HTML. Load the exact Golden artifact only for Golden regression, template/renderer investigation, or actual visual comparison where the artifact itself is evidence.
 
-`render-data.json` should contain only the structured project data needed to fill Golden surfaces. Do not copy reasoning, source-analysis notes, rejected alternatives, approval dialogue, confidence scores, or duplicate prose into render data.
+`render-data.json` should contain only the structured project data needed to fill Golden surfaces. Do not copy reasoning, source-analysis notes, rejected alternatives, approval dialogue, confidence scores, document-process instructions, or duplicate prose into render data.
+
+The same approved in-memory model should feed `content.md` and `render-data.json` in one semantic pass. Do not reread the generated HTML or ask the model to independently rewrite the project a second time just to create projection data.
 
 Do **not** add a preview renderer, per-page renderer, incremental HTML cache, generic rendering framework, or second template solely for speed. Full-file deterministic rerender remains the normal path.
 
@@ -208,6 +259,7 @@ Owner: `VALIDATION.md`.
 
 ```text
 mechanical validator
++ content-purity check
 + Golden composition markers
 + one-read multi-lens semantic review
 + actual visual sanity when available
@@ -215,7 +267,7 @@ mechanical validator
 → re-review only invalidated scope
 ```
 
-Review the relevant document/package slice once and evaluate New Reader, Level Designer, Developer, and Consistency together. Do not load full `final.html` for semantic review; validator handles full-file mechanics.
+Review the relevant document/package slice once and evaluate New Reader, Level Designer, Developer, Content Purity, and Consistency together. Do not load full `final.html` for semantic review; validator handles full-file mechanics.
 
 For normal content-only production, use representative desktop visual sanity rather than every-page browser inspection. Escalate to a full visual sweep only when template/CSS/runtime/page-composition behavior changed, a finding suggests a global layout defect, or the user explicitly asks for full visual proof.
 
@@ -229,8 +281,9 @@ approved bounded change
 → fill any newly missing material detail with a concrete proposal
 → Simple Chat Preview of affected objective/global slice when interpretation changed
 → user approval/correction for that slice
+→ purity/humanize affected slice
 → affected canonical content + required cross-references
-→ affected render projection
+→ direct affected render projection
 → one planned full rerender
 → one mechanical check
 → targeted semantic/visual review
@@ -278,4 +331,4 @@ Do not dump YAML, IDs, render data, validator output, CI logs, or internal evide
 
 ## Stop condition
 
-Stop when source + preview-approved decisions support canonical meaning, Flow 2 recovery/completion is truthfully ready, the Simple Chat Preview has been approved, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.
+Stop when source + preview-approved decisions support canonical meaning, Flow 2 recovery/completion is truthfully ready, the Simple Chat Preview has been approved, visible project content is free of generator/document-process leakage, Golden rendering/mechanical contracts pass, the semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.
