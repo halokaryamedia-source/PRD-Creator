@@ -9,6 +9,11 @@ from pathlib import Path
 from tests.test_prd_contracts import RENDERER, VALIDATOR, render_data, run_cli
 
 
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_INTAKE = ROOT / "kits" / "project-document-generator" / "SOURCE-INTAKE.md"
+KIT_SKILL = ROOT / "kits" / "project-document-generator" / "SKILL.md"
+
+
 class Flow2StateConsistencyContracts(unittest.TestCase):
     def make_project(self) -> Path:
         temp = tempfile.TemporaryDirectory()
@@ -65,6 +70,23 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
     def validate(self, project: Path):
         return run_cli(VALIDATOR, project)
 
+    def test_flow2_contract_requires_simple_preview_before_build(self) -> None:
+        source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")
+        skill = KIT_SKILL.read_text(encoding="utf-8")
+
+        for marker in (
+            "## 6. Simple Chat Preview and user approval",
+            "Apa yang Player Lakukan",
+            "Perlu Konfirmasi",
+            "preview_approved: true",
+            "do not turn the preview into a second PRD",
+        ):
+            self.assertIn(marker, source_intake)
+
+        self.assertIn("→ SIMPLE PREVIEW\n→ BUILD PRD", skill)
+        self.assertIn("the Simple Chat Preview has been approved", skill)
+        self.assertIn("The Simple Chat Preview is not a new artifact", skill)
+
     def test_ready_rejects_missing_or_empty_required_persisted_state(self) -> None:
         variants = {
             "missing source inventory": ("source-inventory.yaml", None),
@@ -106,7 +128,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
                 )
 
                 validated = self.validate(project)
-                self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+                self.assertEqual(validated.returncode, 1)
                 result = json.loads(validated.stdout)
                 joined = "\n".join(result["errors"])
                 self.assertIn("flow2_persisted_state_consistent", joined)

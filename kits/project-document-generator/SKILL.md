@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
-description: Recover project requirements, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness without inventing product decisions.
-version: 1.9.0
+description: Recover project requirements, preview the recovered gameplay in simple chat form for user approval, create canonical development-oriented PRD content, render it through the approved Golden hierarchy/page composition, and validate development readiness without inventing product decisions.
+version: 1.10.0
 ---
 
 # Project Document Generator
@@ -11,6 +11,7 @@ Use for normal PRD **Production Execution** and bounded PRD revisions. Ordinary 
 ```text
 source / approved change
 → UNDERSTAND
+→ SIMPLE PREVIEW
 → BUILD PRD
 → REVIEW
 → final PRD
@@ -33,6 +34,9 @@ inventory + authority/relevance inspection
 → problem framing + Resolution Ladder
 → impact propagation
 → one humanized grouped decision package only if needed
+→ Simple Chat Preview
+→ user correction / approval
+→ ready_for_prd
 ```
 
 Flow 2 must improve incomplete source **without turning ambiguity into invented design**.
@@ -56,7 +60,50 @@ Rules:
 - group related issues only when one root decision genuinely resolves them;
 - keep optional advisory ideas out of the user's way by default;
 - missing optional/irrelevant detail stays open/neutral rather than becoming filler or a question;
-- stop Flow 2 once production readiness is reached instead of continuing speculative optimization.
+- present one complete Simple Chat Preview before initial `ready_for_prd`;
+- keep the preview human-readable and objective-based; do not expose internal IDs/YAML/provenance/recovery jargon by default;
+- do not enter Flow 3 until the user approves the preview or provides corrections that are then incorporated and re-previewed where affected;
+- stop Flow 2 once production readiness **and preview approval** are reached instead of continuing speculative optimization.
+
+### Simple Chat Preview
+
+The preview is a **chat checkpoint**, not another project artifact or documentation layer. Its job is to answer one question for the user:
+
+> Does the AI understand the game/project correctly before it produces the full Golden PRD?
+
+Default format:
+
+```text
+Project Overview
+<1–3 short paragraphs or bullets>
+
+Objective N — <Name>
+Tujuan
+<direct objective>
+
+Apa yang Player Lakukan
+- chronological player actions / visible responses
+
+Hasil
+<valid completion/result/transition>
+
+Level Design
+- only material build-owned meaning
+
+Developer
+- only material runtime/data/reset meaning
+
+Perlu Konfirmasi
+- only unresolved material decisions, otherwise omit this block
+```
+
+Keep it simple. It is not a miniature 30-page PRD. Combine safely recovered meaning into one coherent explanation rather than labeling every sentence as source-derived vs AI-completed. Surface provenance only when needed to explain a real conflict or blocker.
+
+If there are project-wide rules that materially affect every objective, show one short **Global Rules** block once instead of repeating them under every objective.
+
+If unresolved material decisions exist, show them under `Perlu Konfirmasi` using the normal bounded decision format. After the user resolves them, persist the decision, re-run only affected readiness checks, and re-preview only the invalidated objective(s)/global slice unless the change is broad.
+
+For a bounded revision, do not replay the whole preview. Show only the affected objective(s) or global slice when interpretation changed. If the user's instruction already states the complete intended bounded result unambiguously, that instruction may serve as approval for that slice.
 
 ### User-facing decisions
 
@@ -79,6 +126,8 @@ If uncertain evidence could materially change the PRD, inspect it. Exit truthful
 ## 2. BUILD PRD — Flow 3
 
 Primary owner: `CONTENT-CONTRACT.md`.
+
+Entry condition: Flow 2 meaning is production-ready **and the Simple Chat Preview has been approved**.
 
 ```text
 work/content.md
@@ -124,6 +173,8 @@ approved bounded change
 → persist authoritative instruction if needed
 → affected requirement + topology/terminology/exclusion/implication checks
 → lifecycle/quantitative/clarity/global-local/feasibility checks only where invalidated
+→ Simple Chat Preview of affected objective/global slice when interpretation changed
+→ user approval/correction for that slice
 → affected canonical content + required cross-references
 → affected render projection
 → rerender
@@ -131,7 +182,7 @@ approved bounded change
 → targeted semantic/visual review
 ```
 
-Do not re-inventory unchanged source, re-ask resolved decisions, or replay unrelated packages/reviews.
+Do not re-inventory unchanged source, re-ask resolved decisions, replay the full preview for a bounded change, or replay unrelated packages/reviews.
 
 ## Artifact lifecycle
 
@@ -153,6 +204,8 @@ DOWNSTREAM
 Voice artifacts only after entering Voice Flow
 ```
 
+The Simple Chat Preview is not a new artifact. Persist only material corrections/approvals needed for continuation.
+
 Use sparse state where defaults are defined; persist every non-default conflict, approval, blocker, supersession, inspection boundary needed for continuation, and positive readiness explicitly.
 
 ## Default delivery
@@ -171,4 +224,4 @@ Do not dump YAML, IDs, render data, validator output, CI logs, or internal evide
 
 ## Stop condition
 
-Stop when source/approved decisions support canonical meaning, Flow 2 recovery/problem-solving is truthfully ready, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.
+Stop when source/approved decisions support canonical meaning, Flow 2 recovery/problem-solving is truthfully ready, the Simple Chat Preview has been approved, Golden rendering/mechanical contracts pass, the four semantic lenses have no Critical/Major finding, unresolved material decisions are absent, and the user receives the current final PRD. Do not claim visual fidelity beyond actual inspection or downstream implementation/QA/Voice completion.

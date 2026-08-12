@@ -13,7 +13,9 @@ state/intake-state.yaml
 work/review.md                 only when user decisions need a readable summary
 ```
 
-Do not create another topology map, coverage checklist, dependency graph, or recovery schema.
+The mandatory Simple Chat Preview is **not** stored as another artifact. Persist only material corrections/approvals needed for continuation.
+
+Do not create another topology map, coverage checklist, dependency graph, recovery schema, or preview document.
 
 ## 1. Bootstrap and source authority
 
@@ -280,31 +282,111 @@ Reuse existing REQs and `affects` where useful. Do not create a dependency graph
 
 If one decision controls several symptoms, group them for the user as one solution package while keeping independently traceable requirements separate internally.
 
-## 6. User-facing decision communication
+## 6. Simple Chat Preview and user approval
 
-Expose only unresolved material decisions or important non-blocking concerns. Keep internal IDs/state private unless needed to explain a blocker.
+After recovery/problem-solving is complete enough to explain the project coherently, **show one Simple Chat Preview before initial `ready_for_prd`**. This is the user checkpoint between UNDERSTAND and BUILD PRD.
 
-When one recommendation is justified:
+The preview should be easy to scan and should explain the project **objective by objective**, not expose the internal recovery machinery.
+
+Default format:
+
+```text
+Project Overview
+<short project/session/journey summary>
+
+Objective N — <Name>
+
+Tujuan
+<what the player must accomplish>
+
+Apa yang Player Lakukan
+- main chronological actions
+- visible/system response only when needed to understand the gameplay
+
+Hasil
+<valid completion/result/transition>
+
+Level Design
+- material build-owned meaning only
+
+Developer
+- material runtime/data/reset meaning only
+
+Perlu Konfirmasi
+- only unresolved material decisions; omit when none
+```
+
+Rules:
+
+- keep wording direct and simple;
+- preserve official names, numbers, timings, formulas, mechanics, triggers, and uncertainty;
+- do not dump `SRC-###`, `REQ-###`, YAML, confidence scores, provenance, Golden DOM terms, or validator jargon;
+- do not label every recovered sentence as “AI added”; present one coherent recovered gameplay model;
+- do not hide a real source conflict behind a polished summary;
+- use one short **Global Rules** block only when shared rules materially affect all objectives;
+- do not turn the preview into a second PRD or a 30-page-equivalent chat response.
+
+### When decisions remain
+
+If unresolved material decisions exist, keep the relevant objective readable and place only the unresolved items under `Perlu Konfirmasi`.
+
+Use the bounded decision pattern:
 
 ```text
 Masalah
-<what is unclear or risky>
-
-Saran
-<recommended resolution>
-
-Alasan
-<why this follows from project evidence/constraints>
-
+Saran — only when one option is genuinely recommended
+Kenapa
 Dampak
-<what materially changes>
+Alternatif — only when meaningful
 ```
 
-When no option is clearly favored, replace `Saran` with `Pilihan` and state the tradeoff without pretending one option is recommended.
+When no option is clearly favored, use `Pilihan` + concise tradeoff instead.
 
-Humanize wording without changing official terminology, quantities, timings, coordinates, formulas, triggers, mechanics, uncertainty, provenance, or approval status.
+Status remains `needs_decision` / `blocked` as appropriate. After the user resolves the issue:
 
-Recommendations remain pending until explicitly approved.
+1. persist the user decision as authoritative instruction/requirement state;
+2. rerun only affected readiness checks;
+3. re-preview only the affected objective(s)/global slice unless the correction is broad.
+
+### When no decisions remain
+
+Even when AI recovery resolved everything responsibly, **do not skip the initial preview**.
+
+Before approval, keep Flow 2 non-ready, for example:
+
+```yaml
+status: audit_in_progress
+ready_for_prd: false
+preview_approved: false
+next_step: Await Simple Chat Preview approval or corrections.
+```
+
+After explicit user approval:
+
+```yaml
+status: ready_for_prd
+ready_for_prd: true
+preview_approved: true
+next_step: Build canonical PRD content.
+```
+
+Natural-language approval is sufficient. Do not ask the user to type a special command.
+
+If the user corrects the preview, persist the material correction, re-run only invalidated reasoning, then show the corrected affected preview before setting `preview_approved: true`.
+
+### Bounded revision
+
+A bounded approved revision does not require a full-project preview replay.
+
+```text
+approved change
+→ update affected meaning
+→ preview affected objective/global slice when interpretation changed
+→ approval/correction of that slice
+→ continue downstream revision
+```
+
+If the user's current instruction already states the complete intended bounded result unambiguously, that instruction may serve as approval for that slice. Do not manufacture an extra confirmation step.
 
 ## 7. Intake state and readiness
 
@@ -312,18 +394,21 @@ Keep one status and one practical next step.
 
 ```yaml
 status: audit_in_progress
+ready_for_prd: false
+preview_approved: false
 next_step: Complete remaining requirement recovery.
 ```
 
-Positive readiness remains explicit:
+Positive readiness remains explicit and now includes preview approval:
 
 ```yaml
 status: ready_for_prd
 ready_for_prd: true
+preview_approved: true
 next_step: Build canonical PRD content.
 ```
 
-Statuses:
+Statuses remain:
 
 ```text
 collecting_sources
@@ -332,6 +417,8 @@ needs_decision
 blocked
 ready_for_prd
 ```
+
+Do not add a `preview_ready` status; preview approval is a small readiness field, not a new workflow state machine.
 
 Flow 2 is ready only when:
 
@@ -343,6 +430,9 @@ Flow 2 is ready only when:
 - every Completion passes the safe-completion rule;
 - every material requirement traces to evidence/approved state;
 - unresolved material Proposal/Blocked items do not remain;
+- the Simple Chat Preview has been shown for the initial project scope;
+- user corrections, if any, have been propagated to affected meaning;
+- `preview_approved: true` truthfully records user approval;
 - `intake-state.yaml` truthfully reports `ready_for_prd: true`.
 
 When this gate passes, **stop Flow 2**. Do not keep generating redesign ideas, optional metrics, extra alternatives, or hypothetical edge cases.
@@ -357,7 +447,6 @@ approved change
 → update affected requirements/exclusions/topology/terminology
 → rerun only invalidated readiness concerns
 → propagate affected meaning
-→ continue downstream revision
+→ preview only affected objective/global slice when interpretation changed
+→ continue downstream revision after that slice is approved
 ```
-
-Reopen broader intake only when authority, shared rules, topology, broader scope, or unresolved material decisions are materially affected.
