@@ -1,0 +1,37 @@
+name: Retry repository naming once
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/repository-naming-retry-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch transient empty-directory cleanup and retrigger
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/repository-naming-once.yml')
+          text = path.read_text(encoding='utf-8')
+          needle = '          git rm kits/voice-production-kit/INSTRUCTIONS.md\n'
+          insert = needle + '          rmdir docs/knowledge/flows docs/knowledge/maintenance docs/knowledge/modules docs/knowledge/sources 2>/dev/null || true\n'
+          if needle not in text:
+              raise SystemExit('expected naming workflow anchor not found')
+          path.write_text(text.replace(needle, insert, 1), encoding='utf-8')
+          PY
+          rm .github/workflows/repository-naming-retry-once.yml
+          git config user.name "halokaryamedia-source"
+          git config user.email "halokaryamedia@gmail.com"
+          git add -A
+          git commit -m "chore: fix naming audit runner cleanup"
+          git push origin HEAD:Local
