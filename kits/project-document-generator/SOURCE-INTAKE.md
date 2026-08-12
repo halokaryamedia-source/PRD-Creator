@@ -223,7 +223,7 @@ Reuse existing REQs + `affects` where useful. Do not build a dependency-graph ar
 
 Before approval, Proposal stays pending. After the user approves the relevant preview, promote represented pending proposals to approved project decisions/requirement state unless explicitly corrected/rejected.
 
-## 6. Simple Chat Preview
+## 6. Simple Chat Preview and user approval
 
 After the model is complete enough to review coherently, show one objective-based preview before initial readiness.
 
