@@ -1,4 +1,4 @@
-# Source Authority Map
+# Source Authority
 
 Use this note only when source/authority routing is unclear. Detailed Flow 2 behavior lives in `kits/project-document-generator/SOURCE-INTAKE.md`.
 
@@ -13,7 +13,7 @@ Use this note only when source/authority routing is unclear. Detailed Flow 2 beh
 | PRD production behavior | `kits/project-document-generator/` + relevant proof |
 | Voice production behavior | `kits/voice-production-kit/` + relevant proof |
 | Project-specific meaning | `workspace/active/<project>/` current source/state/canonical work |
-| Historical evidence meaning | `docs/knowledge/reviews/review-graph.md` |
+| Historical evidence meaning | `docs/knowledge/reviews/README.md` |
 
 ## Project authority chain
 

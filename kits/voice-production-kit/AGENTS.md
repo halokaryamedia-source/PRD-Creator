@@ -107,7 +107,7 @@ Repository verification uses exact transitive pins from root:
 requirements.lock.txt
 ```
 
-Do not broaden or update dependency versions casually. A dependency change must run `Production Verify` and remain compatible with the builder/validator contracts.
+Do not broaden or update dependency versions casually. A dependency change must run `Voice Verify` and remain compatible with the builder/validator contracts.
 
 ## Verification Commands
 
@@ -150,7 +150,7 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>
 ```
 
-For repository-side production changes, `Production Verify` is the canonical repeatable CI gate. Run only checks invalidated by the active change when working locally.
+For repository-side production changes, `Voice Verify` is the canonical repeatable CI gate. Run only checks invalidated by the active change when working locally.
 
 ## Flow 7 Acceptance Boundary
 

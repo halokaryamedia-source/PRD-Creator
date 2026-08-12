@@ -92,7 +92,7 @@ observe failure
 → stop
 ```
 
-`Production Verify` is the canonical CI gate for affected production contracts. Do not repeatedly run local/manual project checks during an unfinished refinement batch.
+`PRD Verify` is the canonical CI gate for affected production contracts. Do not repeatedly run local/manual project checks during an unfinished refinement batch.
 
 Flow 4 uses one integrated `Semantic Readiness` result plus separate `Material Conservation` and `Visual sanity` proof channels. Do not recreate one persisted PASS field per semantic lens.
 

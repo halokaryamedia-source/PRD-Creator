@@ -64,7 +64,7 @@ kits/voice-production-kit/validator/validate.py
 tests/test_prd_contracts.py
 tests/test_voice_contracts.py
 requirements.lock.txt
-.github/workflows/production-verify.yml
+.github/workflows/prd-verify.yml
 tools/verify_repository.py
 ```
 
@@ -323,7 +323,7 @@ Required direction:
 
 Owner:
 
-`.github/workflows/production-verify.yml`
+`.github/workflows/prd-verify.yml`
 
 Observed behavior:
 

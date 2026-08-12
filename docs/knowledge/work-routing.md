@@ -1,4 +1,4 @@
-# Agent Work Routing Flow
+# Work Routing
 
 Updated: 2026-08-11
 
@@ -109,7 +109,7 @@ Use when the problem, architecture, or high-impact decision is not yet grounded.
 - inspect repository/project evidence before proposing structure;
 - separate goal from suggested method;
 - identify the canonical owner before proposing a new file/skill/layer;
-- use `decisions/change-decision-guide.md` only when a cross-owner durable change threshold is actually met;
+- use `decisions/recording-policy.md` only when a cross-owner durable change threshold is actually met;
 - do not implement merely to make the plan feel concrete;
 - end with one actionable next step.
 
@@ -137,7 +137,7 @@ Keep user effort low: auto-bootstrap internal project state, inspect before aski
 
 Use `development-brief` before non-trivial **repository/system** implementation.
 
-See `flows/development-flow.md` for the detailed route.
+See `workflows/development.md` for the detailed route.
 
 ## Maintenance Mode
 
@@ -145,7 +145,7 @@ Use for bugs, regressions, cleanup, stale routing/docs, and behavior-preserving 
 
 Canonical procedure:
 
-`maintenance/maintenance-flow.md`
+`workflows/maintenance.md`
 
 Maintenance does not automatically use `development-brief`. It begins from concrete defect/drift evidence and root cause, then uses the smallest semantic owner/proof needed.
 
@@ -153,8 +153,8 @@ Maintenance does not automatically use `development-brief`. It begins from concr
 
 When the owner or authority is unclear:
 
-1. `modules/module-map.md` — which repository area owns the responsibility;
-2. `sources/source-map.md` — which source/state/artifact is authoritative for the claim;
+1. `ownership.md` — which repository area owns the responsibility;
+2. `source-authority.md` — which source/state/artifact is authoritative for the claim;
 3. `implementation-map.md` — exact current implementation/procedure location.
 
 Do not broad-scan the repository when one of these maps already resolves the boundary.
@@ -188,11 +188,11 @@ Open the activation matrix **only when the correct owner/skill is genuinely ambi
 
 ## Related
 
-- [Development Flow](flows/development-flow.md)
-- [Maintenance Flow](maintenance/maintenance-flow.md)
+- [Development Workflow](workflows/development.md)
+- [Maintenance Workflow](workflows/maintenance.md)
 - [Skill Activation Matrix](skills/activation-matrix.md)
-- [Skill Map](skills/skill-map.md)
-- [Module Map](modules/module-map.md)
-- [Source Map](sources/source-map.md)
-- [Review Graph](reviews/review-graph.md)
-- [Implementation Map](implementation-map.md)
+- [Skill Catalog](skills/README.md)
+- [Repository Ownership](ownership.md)
+- [Source Authority](source-authority.md)
+- [Review Register](reviews/README.md)
+- [Repository Ownership](ownership.md)

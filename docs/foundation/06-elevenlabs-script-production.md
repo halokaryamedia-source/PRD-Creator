@@ -69,7 +69,7 @@ Estimated Duration is always an estimate until audio exists.
 
 ## DOCX presentation
 
-The audited original Aftershock Voice Production DOCX is the primary demonstrated layout/performance benchmark. Its SHA-256 and derived contract are recorded in `kits/voice-production-kit/REFERENCE/Aftershock/README.md` and `DOCX-FORMAT.md`; the active builder does not require a copied binary. Reuse the demonstrated hierarchy and visual treatment, not its project-specific content or counts.
+The audited original Aftershock Voice Production DOCX is the primary demonstrated layout/performance benchmark. Its SHA-256 and derived contract are recorded in `kits/voice-production-kit/references/aftershock/README.md` and `DOCX-FORMAT.md`; the active builder does not require a copied binary. Reuse the demonstrated hierarchy and visual treatment, not its project-specific content or counts.
 
 The active builder:
 

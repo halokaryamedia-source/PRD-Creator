@@ -1,4 +1,4 @@
-# Change Decision Guide
+# Decision Recording Policy
 
 Updated: 2026-08-10
 
@@ -7,11 +7,11 @@ Use this guide to decide **where a change decision belongs** and when ordinary b
 ## Source-Of-Truth Routing
 
 - current active task/status → `docs/knowledge/next-action.md`;
-- durable decision/reason → `docs/knowledge/decision-log.md` or a dedicated note in `decisions/`;
+- durable decision/reason → `docs/knowledge/decisions/README.md` or a dedicated note in `decisions/`;
 - stable production policy → `docs/foundation/`;
 - current implementation ownership → `implementation-map.md` / `modules/`;
 - evidence/findings → `reviews/` or a focused operations proof note;
-- future/non-active work → `operations/task-board.md`;
+- future/non-active work → `operations/backlog.md`;
 - project-specific state → the active `workspace/<project>/` owner.
 
 Do not create a second planning/state hierarchy.
@@ -41,7 +41,7 @@ Evidence / validation boundary
 Follow-up owner
 ```
 
-A short entry in `decision-log.md` is preferred. Create a dedicated decision note only when the reasoning is too substantial or cross-linked to stay readable in the log.
+A short entry in `README.md` is preferred. Create a dedicated decision note only when the reasoning is too substantial or cross-linked to stay readable in the log.
 
 ## Cross-Owner Change Threshold
 
@@ -53,7 +53,7 @@ Escalate to a durable coordinated change note only when one of these is true:
 - a migration/compatibility promise spans multiple phases or project packages;
 - several developers/sessions need one shared architectural contract;
 - changing one owner invalidates multiple downstream authority/state contracts;
-- existing `next-action` + decision log cannot represent the tradeoff clearly.
+- existing `next-action` + decision register cannot represent the tradeoff clearly.
 
 A coordinated change note should define:
 
@@ -99,6 +99,6 @@ review finding
 
 ## Related
 
-- [Decision Log](../decision-log.md)
-- [Review Graph](../reviews/review-graph.md)
-- [Module Map](../modules/module-map.md)
+- [Decision Register](README.md)
+- [Review Register](../reviews/README.md)
+- [Repository Ownership](../ownership.md)

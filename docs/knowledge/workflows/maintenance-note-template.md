@@ -1,4 +1,4 @@
-# Maintenance Template
+# Maintenance Note Template
 
 Use only when a maintenance note is genuinely useful; do not create one for every small fix.
 

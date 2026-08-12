@@ -12,7 +12,6 @@ This folder owns durable workflow/product policy. Active task state belongs in `
 - `05-voice-requirement-extraction.md` — Flow 5 accepted PRD → voice requirements.
 - `06-elevenlabs-script-production.md` — Flow 6 requirements → performance script/DOCX.
 - `07-voice-validation-delivery.md` — Flow 7 final script/DOCX acceptance and truthful audio evidence.
-- `validation-report.md` — current implementation/evidence state.
 
 ## Rule
 

@@ -1,6 +1,6 @@
 # Next Action
 
-Updated: 2026-08-12
+Updated: 2026-08-13
 
 ## Current Status
 
@@ -22,6 +22,8 @@ Flow 2–4 technical documentation is now synchronized with current production b
 - unchanged Golden/reference proof is not replayed for content-only work.
 
 No renderer, Golden template, validator behavior, Clockwork canonical content, render-data, or `final.html` was changed by this documentation sync.
+
+Repository navigation is now normalized: one knowledge entry point, explicit work/ownership/authority names, symmetric `workflows/`, domain `README.md` indexes for decisions/reviews/skills, historical proof under `reviews/`, operational notes limited to boot baseline/backlog, `prd-verify.yml` matching the PRD workflow name, lowercase Voice reference paths, and `workspace/archive/` for inactive retained projects.
 
 ## Next Step
 

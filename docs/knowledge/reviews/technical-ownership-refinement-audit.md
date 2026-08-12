@@ -87,7 +87,7 @@ Current shared technical concerns are:
 - exact dependency pins: `requirements.lock.txt`;
 - generic regression contracts: `tests/`;
 - static repository contract: `tools/verify_repository.py`;
-- executable gate: `.github/workflows/production-verify.yml`;
+- executable gate: `.github/workflows/prd-verify.yml`;
 - static gate: `.github/workflows/repository-verify.yml`.
 
 These are repository-engineering owners, not another production semantic domain.

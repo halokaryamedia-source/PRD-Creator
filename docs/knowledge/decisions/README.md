@@ -1,8 +1,16 @@
-# Decision Log
+# Decision Register
 
 Use this note only for durable decisions whose reasons must survive future sessions. Active task status belongs in `next-action.md`.
 
 ## Current Decisions
+
+### Repository navigation uses explicit domain naming
+
+- **Decision:** domain folders use `README.md` as their index/register; cross-domain files use explicit names such as `work-routing.md`, `ownership.md`, and `source-authority.md`. Historical proof belongs under `reviews/`; `operations/` contains only active/future operational notes. Old navigation aliases are retired rather than preserved as compatibility files.
+- **Reason:** the previous mix of `map`, `graph`, `log`, `index`, `minimal-nav`, `flow`, and `flows/` made multiple files appear to own the same question.
+- **Boundary:** production semantics, project artifact contracts, Golden bytes, Voice output contracts, and accepted Clockwork content are unchanged.
+- **Date:** 2026-08-13
+
 
 ### Exact Golden artifact is also the runtime template; material detail is conserved
 
@@ -24,14 +32,14 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ### Review bodies preserve captured evidence; review graph owns current interpretation
 
-- **Decision:** dedicated review/audit bodies are time-captured evidence and are not rewritten merely because later implementation changes their status. `docs/knowledge/reviews/review-graph.md` owns the current interpretation (`active evidence`, `implemented`, `historical`, `superseded`, etc.).
+- **Decision:** dedicated review/audit bodies are time-captured evidence and are not rewritten merely because later implementation changes their status. `docs/knowledge/reviews/README.md` owns the current interpretation (`active evidence`, `implemented`, `historical`, `superseded`, etc.).
 - **Reason:** rewriting old reviews destroys reasoning provenance and can make historical findings appear to describe current source.
 - **Boundary:** active work order remains in `next-action.md`; durable choices move to the decision owner rather than remaining only in review prose.
 - **Date:** 2026-08-10
 
 ### Maintenance is root-cause-first and does not automatically use development-brief
 
-- **Decision:** bug/regression/cleanup work follows `docs/knowledge/maintenance/maintenance-flow.md`; it starts from observed drift/root cause and uses the smallest owner. `development-brief` remains mandatory for non-trivial Developing work, not Maintenance by default.
+- **Decision:** bug/regression/cleanup work follows `docs/knowledge/workflows/maintenance.md`; it starts from observed drift/root cause and uses the smallest owner. `development-brief` remains mandatory for non-trivial Developing work, not Maintenance by default.
 - **Reason:** forcing create/change ceremony onto every defect increases context and risks turning repair into redesign.
 - **P0.2 refinement:** a pure technical Maintenance task may use no root specialist when nearest module rules + exact implementation owner are sufficient.
 - **Date:** 2026-08-10
@@ -47,12 +55,12 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 - **Decision:** ordinary bounded work does not create OpenSpec-style/formal change machinery. A durable coordinated change note is justified only when several semantic owners, migration phases, or compatibility promises must change as one contract and existing state/decision owners cannot represent it clearly.
 - **Reason:** preserve BuildIT's cross-cutting-change discipline without reintroducing planning ceremony for local edits.
-- **Owner:** `docs/knowledge/decisions/change-decision-guide.md`.
+- **Owner:** `docs/knowledge/decisions/recording-policy.md`.
 - **Date:** 2026-08-10
 
 ### Context boot efficiency is measured by scenarios, not assumed from documentation
 
-- **Decision:** `docs/knowledge/operations/context-boot-baseline.md` records expected routes and measurement fields, but an unrun scenario stays unverified.
+- **Decision:** `docs/knowledge/operations/boot-baseline.md` records expected routes and measurement fields, but an unrun scenario stays unverified.
 - **Reason:** having good routing documents does not prove agents actually reach the correct owner efficiently in real tasks.
 - **Date:** 2026-08-10
 
@@ -69,7 +77,7 @@ Use this note only for durable decisions whose reasons must survive future sessi
 - **Reason:** these remain the smallest reusable root procedures after P0.2. Product/representation semantics stay with root production specialists; pure renderer/template/validator/builder mechanics stay module-local; shared dependency/test/CI mechanics stay repository-engineering owned.
 - **Supersedes:** the Phase 1 wording that renderer/validator/DOCX builder mechanics automatically belonged to the semantic specialist whenever those files were involved.
 - **Freeze:** do not rename/split/merge/add a root skill unless repeated work proves a reusable ownership/procedure gap that cannot be represented by root policy, foundation, nearest kit procedure/AGENTS, repository engineering, or one current specialist.
-- **Owners:** `docs/knowledge/skills/skill-map.md`, `docs/knowledge/skills/activation-matrix.md`, `docs/knowledge/decisions/technical-ownership-boundary.md`.
+- **Owners:** `docs/knowledge/skills/README.md`, `docs/knowledge/skills/activation-matrix.md`, `docs/knowledge/decisions/technical-ownership-boundary.md`.
 - **Date:** 2026-08-10
 
 ### Developing uses a mandatory brief plus at most one specialist

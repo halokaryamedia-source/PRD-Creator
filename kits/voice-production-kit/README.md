@@ -51,4 +51,4 @@ Default `voice_delivery_ready` scope is the accepted **script + DOCX** for downs
 
 ## Reference
 
-`REFERENCE/Aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. The active builder/validation workflow does not depend on that binary at runtime.
+`references/aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. The active builder/validation workflow does not depend on that binary at runtime.

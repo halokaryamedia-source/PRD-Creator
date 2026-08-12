@@ -22,27 +22,36 @@ CANONICAL_SKILLS = {
 
 REQUIRED_PATHS = [
     ".github/workflows/repository-verify.yml",
-    ".github/workflows/production-verify.yml",
+    ".github/workflows/prd-verify.yml",
+    ".github/workflows/voice-verify.yml",
     "AGENTS.md",
     "CONTEXT.md",
     "requirements.lock.txt",
     "tests/test_prd_contracts.py",
     "tests/test_voice_contracts.py",
+    "docs/knowledge/README.md",
     "docs/knowledge/next-action.md",
-    "docs/knowledge/flow.md",
-    "docs/knowledge/flows/development-flow.md",
-    "docs/knowledge/maintenance/maintenance-flow.md",
-    "docs/knowledge/modules/module-map.md",
-    "docs/knowledge/sources/source-map.md",
-    "docs/knowledge/reviews/review-graph.md",
-    "docs/knowledge/decisions/change-decision-guide.md",
+    "docs/knowledge/work-routing.md",
+    "docs/knowledge/workflows/development.md",
+    "docs/knowledge/workflows/maintenance.md",
+    "docs/knowledge/workflows/maintenance-note-template.md",
+    "docs/knowledge/ownership.md",
+    "docs/knowledge/source-authority.md",
+    "docs/knowledge/reviews/README.md",
+    "docs/knowledge/reviews/current-validation.md",
+    "docs/knowledge/decisions/README.md",
+    "docs/knowledge/decisions/recording-policy.md",
     "docs/knowledge/skills/activation-matrix.md",
-    "docs/knowledge/skills/skill-map.md",
+    "docs/knowledge/skills/README.md",
+    "docs/knowledge/operations/boot-baseline.md",
+    "docs/knowledge/operations/backlog.md",
     "kits/project-document-generator/AGENTS.md",
     "kits/project-document-generator/SKILL.md",
     "kits/voice-production-kit/AGENTS.md",
     "kits/voice-production-kit/SKILL.md",
     "kits/voice-production-kit/requirements.txt",
+    "kits/voice-production-kit/references/aftershock/README.md",
+    "workspace/archive/README.md",
 ]
 
 MARKDOWN_ROOTS = [
@@ -119,8 +128,32 @@ def check_skill_root(errors: list[str]) -> None:
 
 
 def check_retired_boundaries(errors: list[str]) -> None:
-    if (ROOT / "Production Document Builder").exists():
-        fail(errors, "retired Production Document Builder/ must not return to live tree")
+    retired = [
+        "Production Document Builder",
+        ".github/workflows/production-verify.yml",
+        "docs/knowledge/index.md",
+        "docs/knowledge/minimal-nav.md",
+        "docs/knowledge/workspace-map.md",
+        "docs/knowledge/flow.md",
+        "docs/knowledge/flows",
+        "docs/knowledge/maintenance",
+        "docs/knowledge/modules",
+        "docs/knowledge/sources",
+        "docs/knowledge/implementation-map.md",
+        "docs/knowledge/decision-log.md",
+        "docs/knowledge/decisions/change-decision-guide.md",
+        "docs/knowledge/reviews/review-graph.md",
+        "docs/knowledge/reviews/review-template.md",
+        "docs/knowledge/operations/context-boot-baseline.md",
+        "docs/knowledge/operations/task-board.md",
+        "docs/foundation/validation-report.md",
+        "workspace/saved",
+        "kits/voice-production-kit/REFERENCE",
+        "kits/voice-production-kit/INSTRUCTIONS.md",
+    ]
+    for rel in retired:
+        if (ROOT / rel).exists():
+            fail(errors, f"retired repository path must not return: {rel}")
 
 
 def check_next_action(errors: list[str]) -> None:

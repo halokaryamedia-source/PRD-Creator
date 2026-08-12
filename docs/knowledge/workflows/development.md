@@ -1,4 +1,4 @@
-# Development Flow
+# Development Workflow
 
 Updated: 2026-08-10
 
@@ -144,7 +144,7 @@ Do not create a planning note per task.
 Update only the canonical owner:
 
 - active goal/status/blocker/proof/next step → `docs/knowledge/next-action.md`;
-- durable decision/reason → `docs/knowledge/decision-log.md`;
+- durable decision/reason → `docs/knowledge/decisions/README.md`;
 - stable production policy → `docs/foundation/` only when policy itself changes;
 - skill inventory/routing → `docs/knowledge/skills/` only when skill architecture changes;
 - detailed Flow procedure → affected kit/foundation owner.
@@ -165,6 +165,6 @@ Distinguish implemented from verified when material proof is still pending.
 
 ## Parent
 
-- [Agent Routing Flow](../flow.md)
+- [Work Routing](../work-routing.md)
 - [Skill Activation Matrix](../skills/activation-matrix.md)
-- [Knowledge Dashboard](../index.md)
+- [Knowledge Dashboard](../README.md)

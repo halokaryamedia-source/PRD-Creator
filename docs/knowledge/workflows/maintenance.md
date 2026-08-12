@@ -1,4 +1,4 @@
-# Maintenance Flow
+# Maintenance Workflow
 
 Updated: 2026-08-10
 
@@ -108,7 +108,7 @@ A note/tool/path can be retired when its useful behavior has moved to the canoni
 
 ## Related
 
-- [Agent Flow](../flow.md)
-- [Module Map](../modules/module-map.md)
-- [Review Graph](../reviews/review-graph.md)
-- [Change Decision Guide](../decisions/change-decision-guide.md)
+- [Work Routing](../work-routing.md)
+- [Repository Ownership](../ownership.md)
+- [Review Register](../reviews/README.md)
+- [Decision Recording Policy](../decisions/recording-policy.md)

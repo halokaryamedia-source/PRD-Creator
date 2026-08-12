@@ -6,7 +6,7 @@ This folder stores project-specific production packages. Reusable behavior belon
 
 ```text
 active project → workspace/active/<project>/
-saved project  → workspace/saved/<project>/
+saved project  → workspace/archive/<project>/
 ```
 
 Project packages grow **by Flow**, not by pre-creating the final folder tree.

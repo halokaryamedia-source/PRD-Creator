@@ -72,6 +72,10 @@ Future projects replace project facts; they do not redesign this document langua
 - unchanged Golden/reference proof is not replayed for ordinary content-only work;
 - no new machinery without a concrete current need.
 
+## Repository navigation
+
+Start with `docs/knowledge/README.md` for current repository navigation. Use `docs/knowledge/ownership.md` for owner lookup and `docs/knowledge/source-authority.md` for authority lookup. Current continuation remains `docs/knowledge/next-action.md`.
+
 ## Main owners
 
 ```text

@@ -20,7 +20,7 @@ Use this order:
 2. accepted `work/content.md` — project context and official meaning;
 3. `state/requirement-register.yaml` — requirement traceability when needed;
 4. `output/team-handoff.md` — navigation/scope aid only;
-5. `DOCX-FORMAT.md` + `REFERENCE/Aftershock/README.md` — codified formatting/performance-quality reference contract based on the audited original DOCX.
+5. `DOCX-FORMAT.md` + `references/aftershock/README.md` — codified formatting/performance-quality reference contract based on the audited original DOCX.
 
 Do not use the Aftershock script as a source of project facts, voice counts, wording, speakers, channels, or pacing quotas.
 

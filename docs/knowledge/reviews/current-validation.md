@@ -1,6 +1,6 @@
-# Production + Operating Validation Report
+# Current Validation Status
 
-Updated: 2026-08-12
+Updated: 2026-08-13
 
 This file records the **current evidence state only**. Historical debugging and superseded preview detail belong in Git history and review evidence.
 
@@ -73,3 +73,7 @@ The authoritative source HTML remains externally retained with its exact filenam
 Standalone review HTML, recovery scripts, screenshots, one-off transport workflows, and earlier integration proof are supporting or historical evidence only and must not be used as current project authority.
 
 Current continuation is owned by `docs/knowledge/next-action.md`.
+
+## Repository navigation proof
+
+The 2026-08-13 repository naming refactor changes navigation/path ownership only. PRD/Voice semantic contracts, Golden reference/runtime bytes, and the accepted Clockwork project package remain unchanged. Repository verification, PRD contracts, Voice contracts, and exact Clockwork rerender comparison are the acceptance proof for this refactor.

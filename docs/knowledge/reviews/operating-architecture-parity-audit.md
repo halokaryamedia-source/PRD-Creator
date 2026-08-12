@@ -101,6 +101,6 @@ At capture time it did not.
 
 Do not use this body as current status. Current implementation meaning is owned by:
 
-- `docs/knowledge/reviews/review-graph.md`;
+- `docs/knowledge/reviews/README.md`;
 - `docs/knowledge/next-action.md`;
 - current source/docs.

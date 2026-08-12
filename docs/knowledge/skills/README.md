@@ -1,4 +1,4 @@
-# Skill Map
+# Skill Catalog
 
 Use this note for repository skill inventory, ownership, and lineage. Use `activation-matrix.md` for routing.
 
@@ -187,5 +187,5 @@ Durable decision:
 ## Parent
 
 - [Activation Matrix](activation-matrix.md)
-- [Agent Routing Flow](../flow.md)
-- [Implementation Map](../implementation-map.md)
+- [Work Routing](../work-routing.md)
+- [Repository Ownership](../ownership.md)

@@ -14,7 +14,7 @@ For every material session, boot with only:
 2. `docs/knowledge/next-action.md` — current status + one next step;
 3. the smallest owner required by the task.
 
-Open `docs/knowledge/skills/activation-matrix.md` only when the correct skill/owner is genuinely ambiguous. Use `docs/knowledge/minimal-nav.md` or ownership maps only when direct ownership is unclear. Do not broad-read saved projects, all docs, review history, generated output, or Git history by default.
+Open `docs/knowledge/skills/activation-matrix.md` only when the correct skill/owner is genuinely ambiguous. Use `docs/knowledge/README.md`, `docs/knowledge/ownership.md`, or `docs/knowledge/source-authority.md` only when direct ownership is unclear. Do not broad-read saved projects, all docs, review history, generated output, or Git history by default.
 
 ## Work modes
 
@@ -154,7 +154,7 @@ Canonical current-state owners:
 
 - stable facts/terminology → `CONTEXT.md`;
 - active continuation → `docs/knowledge/next-action.md`;
-- durable decisions/reasons → `docs/knowledge/decision-log.md` + `docs/knowledge/decisions/`;
+- durable decisions/reasons → `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/`;
 - durable production policy → `docs/foundation/`;
 - detailed production procedure/mechanics → affected `kits/*` owner;
 - project facts/state/output → current project package;
