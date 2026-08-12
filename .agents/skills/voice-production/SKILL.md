@@ -1,11 +1,11 @@
 ---
 name: voice-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is Voice Requirement scope, performance-script meaning, what the Voice Production artifact must represent, or final Voice validation/delivery semantics. Do not select merely because DOCX builder/validator mechanics fail when canonical Voice semantics are already correct; pure technical Maintenance may route directly to the nearest kit implementation owner. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, or audio evidence.
+description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is Voice Requirement scope, Eleven v3 performance wording/SoundMaker quality, what the Voice Production artifact must represent, or final Voice validation/delivery semantics. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, or audio evidence.
 ---
 
 # Voice Production
 
-Own semantic/product-contract judgment around Voice Production Kit Flow 5–7. Detailed production and executable mechanics remain in `kits/voice-production-kit/`; this skill protects the accepted-PRD → Voice scope → wording → artifact → acceptance contract instead of becoming a generic Python/DOCX/tooling owner.
+Own semantic/product-contract judgment around Voice Production Kit Flow 5–7. Detailed production mechanics remain in `kits/voice-production-kit/`; this skill protects the accepted-PRD → Voice scope → SoundMaker v3 wording → artifact → acceptance contract.
 
 ## Trigger
 
@@ -13,10 +13,10 @@ Use when the actual wrong contract is one of:
 
 - accepted PRD → Voice Requirements;
 - Voice moment scope / ID / Type / speaker / channel / trigger;
-- Voice Requirements → final spoken/performance wording;
+- Voice Requirements → final Eleven v3 spoken/performance wording;
+- SoundMaker prompt quality, duration planning, performance arc, or canonical prompt sync;
 - what the canonical script / DOCX is required to represent;
-- script/DOCX acceptance and delivery-readiness semantics;
-- a builder/validator change whose required behavior changes or misrepresents the Flow 5–7 product contract.
+- script/DOCX/audio acceptance and delivery-readiness semantics.
 
 Do **not** select merely because:
 
@@ -25,24 +25,26 @@ Do **not** select merely because:
 - `validator/validate.py` has a mechanical implementation bug;
 - CI/test/dependency tooling fails.
 
-Pure technical Maintenance may route directly through `kits/voice-production-kit/AGENTS.md` to the exact implementation owner without a root specialist.
+Pure technical Maintenance may route directly through `kits/voice-production-kit/AGENTS.md` to the exact implementation owner without this semantic specialist.
 
 ## Required Routing
 
 1. Verify the upstream accepted PRD revision before Voice extraction.
-2. Identify whether the defect is semantic/product-contract or executable mechanics.
-3. For semantic/product-contract work, identify the active Flow owner:
+2. Identify whether the issue is semantic/product-contract or executable mechanics.
+3. Identify the active Flow owner:
    - Flow 5 → `VOICE-EXTRACTION.md` + `work/voice-requirements.md`;
-   - Flow 6 → `SCRIPT-PRODUCTION.md`, `DOCX-FORMAT.md`, `work/voice-production.md`, artifact representation contract; when the task materially depends on Eleven v3 performance/model/voice/duration/pronunciation behavior, enter through `kits/voice-production-kit/references/elevenlabs/README.md` and read only the relevant supporting page;
+   - Flow 6 project-level script → `SCRIPT-PRODUCTION.md`;
+   - Flow 6 actual one-line Eleven v3 generation/revision → `SOUNDMAKER.md` + only the relevant `references/elevenlabs/` page;
    - Flow 7 → `VOICE-VALIDATION.md`, acceptance/delivery state.
-4. Read only the smallest relevant kit procedure/source.
-5. Route missing project facts upstream instead of repairing them in dialogue or formatting.
+4. Read only the smallest relevant source.
+5. Route missing project facts upstream instead of repairing them in performance wording.
 
 ## Authority Guard
 
 ```text
 accepted PRD
 → voice-requirements.md
+→ SoundMaker v3 execution quality
 → voice-production.md
 → Voice Production.docx (derived)
 → voice-acceptance.md
@@ -52,11 +54,13 @@ accepted PRD
 Rules:
 
 - Flow 5 owns **which Voice moments exist and what they must communicate**;
-- Flow 6 owns **final wording/performance notation**, not Voice scope;
+- Flow 6 owns **final Eleven v3 wording/performance notation**, not Voice scope;
+- `SOUNDMAKER.md` is an execution/quality procedure inside Flow 6, not a second wording owner;
 - Flow 7 owns **revision-specific acceptance/delivery evidence**, not rewritten dialogue;
-- DOCX is presentation, never the editable wording authority;
+- DOCX is presentation, never editable wording authority;
 - generated audio, when supplied, is evidence/delivery material only and never upstream project authority;
-- ElevenLabs references own production technique only and never become a project-fact source.
+- the exact prompt actually generated/approved must be synchronized into canonical `work/voice-production.md` before current alignment is claimed;
+- ElevenLabs references own production technique only and never become project-fact sources.
 
 ## Flow 5 Judgment
 
@@ -65,20 +69,43 @@ Rules:
 - speaker/channel/trigger/function must already be supported or explicitly resolved;
 - do not create a radio/communicator layer because a reference used one;
 - deduplicate repeated objective narration unless function/trigger genuinely differs;
-- `no_voice_required` is a valid result;
-- implementation-only details that are not player-facing do not become narration merely because they exist in the PRD.
+- `no_voice_required` is valid;
+- implementation-only details do not become narration merely because they exist in the PRD.
 
-## Flow 6 Judgment
+## Flow 6 / SoundMaker Judgment
 
-- preserve the exact Flow 5 Voice ID and Type set unless Flow 5 is explicitly reopened;
+SoundMaker model scope is **Eleven v3 only**.
+
+Preserve the exact Flow 5 Voice ID and Type set unless Flow 5 is explicitly reopened.
+
+Build quality in this order:
+
+```text
+requirement meaning
+→ target duration first when specified
+→ voice fit
+→ performance arc
+→ natural spoken wording
+→ beat architecture
+→ punctuation / line structure
+→ selective CAPS
+→ minimal Audio Tags
+→ pronunciation safety
+```
+
+Rules:
+
 - performance directions describe delivery only;
 - CAPS, punctuation, ellipsis, line breaks, and Audio Tags are purposeful performance notation, not decoration;
-- when target duration matters, budget it before final wording rather than forcing an oversized script to fit afterward;
-- estimated duration is an expectation, not measured audio proof;
-- wording must preserve official terminology and project facts;
-- use the evidence-backed ElevenLabs reference instead of inventing universal tag, duration, voice, or settings rules;
-- builder output must be regenerated from canonical Markdown rather than edited directly;
-- decide what the Voice artifact must represent, but leave pure parser/DOCX implementation mechanics to the kit-local owner when semantics are already correct.
+- emotional changes need scene/communication reasons;
+- a flat script is not repaired by stacking tags;
+- reactions are timeline events;
+- no SSML `<break>` for v3;
+- when target duration matters, budget before final wording instead of forcing an oversized script to fit afterward;
+- estimated duration is an expectation, not measured proof;
+- use evidence-backed v3 references instead of inventing universal tag, duration, voice, or settings rules;
+- if a user edits the exact prompt before generation and then approves it, that actually-used prompt becomes the canonical Flow 6 wording for the affected Voice ID;
+- builder output is regenerated from canonical Markdown rather than edited directly.
 
 ## Flow 7 Judgment
 
@@ -89,6 +116,7 @@ Validate the exact current revision for:
 - speaker/channel/trigger consistency;
 - terminology and material pronunciation risk;
 - whole-project performance continuity, pacing, and notation;
+- canonical prompt ↔ actual generated prompt alignment when audio is in scope;
 - DOCX mechanical integrity;
 - rendered-page visual quality when a visual-ready claim is made;
 - actual generated-audio quality only when audio exists and was reviewed.
@@ -97,35 +125,9 @@ Critical/Major findings block `voice_delivery_ready`.
 
 ## Technical Handoff Rule
 
-If investigation proves:
+If Voice scope/wording/artifact contract is correct but executable builder/validator mechanics are wrong, route Maintenance to `kits/voice-production-kit/AGENTS.md` → exact implementation source.
 
-```text
-Voice scope/wording/artifact contract is correct
-+ executable builder/validator mechanics are wrong
-```
-
-then route Maintenance to:
-
-`kits/voice-production-kit/AGENTS.md` → exact implementation source.
-
-Do not keep this root specialist loaded solely as a Python/DOCX debugging wrapper. Shared dependency/test/CI failures belong to root repository-engineering owners (`requirements.lock.txt`, `tests/`, `tools/`, workflows).
-
-The real blank-page defect is the model example: Voice semantics were correct; builder pagination mechanics owned the correction.
-
-## Maintenance Rule
-
-For a Voice defect:
-
-```text
-observe defect
-→ classify semantic/product contract vs executable mechanics
-→ semantic wrong: use this specialist + smallest Flow owner
-→ semantics correct, mechanics wrong: nearest kit AGENTS + exact implementation owner
-→ rebuild derived artifact when needed
-→ rerun only the proof invalidated by the change
-```
-
-Do not patch the DOCX directly when canonical script/builder logic is wrong. Do not edit `voice-acceptance.md` to hide a defect in an upstream owner.
+Do not keep this root specialist loaded solely as a Python/DOCX debugging wrapper. Shared dependency/test/CI failures belong to root repository-engineering owners.
 
 ## Audio Evidence Boundary
 
@@ -140,10 +142,11 @@ Never infer generated-audio quality from script quality or DOCX appearance.
 
 ## Acceptance Gate
 
-Before completion re-check the original development-brief criteria and verify as applicable:
+Before completion verify as applicable:
 
-- no new unsupported Voice scope appeared;
-- wording communicates the required facts without inventing upstream design;
+- no unsupported Voice scope appeared;
+- wording communicates required facts without inventing upstream design;
+- v3 performance construction follows the current SoundMaker contract;
 - canonical script and DOCX materially agree;
-- visual/audio claims match actual evidence;
+- if audio is claimed, the actual generated prompt is synchronized and the audio was actually reviewed;
 - delivery state applies to the exact current revision.
