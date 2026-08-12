@@ -1,0 +1,63 @@
+name: PRD Verify
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - "kits/project-document-generator/**"
+      - ".agents/skills/project-document-production/**"
+      - "tests/test_prd_*.py"
+      - "requirements.lock.txt"
+      - ".github/workflows/prd-verify.yml"
+  pull_request:
+    branches:
+      - Local
+      - main
+    paths:
+      - "kits/project-document-generator/**"
+      - ".agents/skills/project-document-production/**"
+      - "tests/test_prd_*.py"
+      - "requirements.lock.txt"
+      - ".github/workflows/prd-verify.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: PRD contracts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Compile PRD sources
+        run: |
+          python -m compileall -q kits/project-document-generator \
+            tests/test_prd_contracts.py \
+            tests/test_prd_handoff_contracts.py \
+            tests/test_prd_flow2_state_contracts.py \
+            tests/test_prd_hierarchy_contracts.py \
+            tests/test_prd_golden_reference.py
+
+      - name: Project Document contracts
+        run: |
+          python -m unittest \
+            tests.test_prd_contracts \
+            tests.test_prd_handoff_contracts \
+            tests.test_prd_flow2_state_contracts \
+            tests.test_prd_hierarchy_contracts \
+            tests.test_prd_golden_reference -v
