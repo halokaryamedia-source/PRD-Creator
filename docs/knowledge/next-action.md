@@ -54,6 +54,8 @@ preview_approved: false | true
 
 Before initial approval, Flow 2 remains non-ready. After natural-language user approval, `preview_approved: true` accompanies `ready_for_prd: true`. Material corrections are persisted as authoritative user instructions and only affected objective/global slices are re-previewed.
 
+The existing PRD validator now has one bounded mechanical guard: if a state explicitly says `preview_approved: false`, `ready_for_prd` validation fails. Existing historical/project fixtures that predate the field are not rewritten solely for this change; the active Flow 2 contract requires new initial production to persist the field explicitly.
+
 For bounded revisions, the full project preview is not replayed. Only affected objective/global meaning is previewed when interpretation changed; an explicit user instruction that already states the complete intended bounded result may serve as approval for that slice.
 
 ## Real-source proof boundary
@@ -72,9 +74,9 @@ Those are correct preview-stage blockers. The generator must not choose one side
 
 ## Proof boundary
 
-The new change deliberately modifies only the Flow 2/kit procedure, high-level Flow 2→3 boundary, a focused contract regression, and this current-state owner. It does not add a preview renderer, preview document, new workflow status, new schema, or generic approval framework.
+This change modifies only the Flow 2/kit procedure, high-level Flow 2→3 boundary, one bounded readiness guard in the existing validator, focused contract tests, package version/readme alignment, and this current-state owner. It does not add a preview renderer, preview document, new workflow status, new schema, or generic approval framework.
 
-Static CI can prove the procedure contract remains present. A real production run is still needed to prove user-facing preview usability in practice.
+Static CI can prove the procedure/mechanical contract remains present. A real production run is still needed to prove user-facing preview usability in practice.
 
 ## Next Step
 

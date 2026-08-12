@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,24 @@ GOLDEN_GLOBAL_PAGE_IDS = {
     "data-reset": "shared-data-reset",
     "gameplay-development": "phase-development",
 }
+PREVIEW_APPROVED_RE = re.compile(r"(?mi)^\s*preview_approved:\s*(true|false)\s*(?:#.*)?$")
+_BASE_FLOW2_READINESS = _engine.flow2_readiness
+
+
+def flow2_readiness(path: Path) -> tuple[bool, str]:
+    ready, detail = _BASE_FLOW2_READINESS(path)
+    if not ready:
+        return ready, detail
+
+    text = path.read_text(encoding="utf-8")
+    preview_flags = PREVIEW_APPROVED_RE.findall(text)
+    if len(preview_flags) > 1:
+        return False, "intake-state.yaml must define preview_approved at most once"
+    if preview_flags and preview_flags[0].lower() != "true":
+        return False, "Flow 2 Simple Chat Preview is not approved: preview_approved=false"
+    if preview_flags:
+        return True, detail + "; Simple Chat Preview is approved"
+    return True, detail
 
 
 def _global_page_id(item: dict[str, Any]) -> str:
@@ -121,6 +140,7 @@ def document_composition_errors(data: dict[str, Any], facts: Any) -> list[str]:
     return failures
 
 
+_engine.flow2_readiness = flow2_readiness
 _engine.expected_page_ids = expected_page_ids
 _engine.document_composition_errors = document_composition_errors
 validate = _engine.validate

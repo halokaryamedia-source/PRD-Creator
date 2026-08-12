@@ -87,6 +87,23 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         self.assertIn("the Simple Chat Preview has been approved", skill)
         self.assertIn("The Simple Chat Preview is not a new artifact", skill)
 
+    def test_ready_rejects_explicit_preview_not_approved(self) -> None:
+        project = self.make_project()
+        (project / "state" / "intake-state.yaml").write_text(
+            "status: ready_for_prd\n"
+            "ready_for_prd: true\n"
+            "preview_approved: false\n"
+            "next_step: Await Simple Chat Preview approval or corrections.\n",
+            encoding="utf-8",
+        )
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        joined = "\n".join(result["errors"])
+        self.assertIn("flow2_ready_for_prd", joined)
+        self.assertIn("preview_approved=false", joined)
+
     def test_ready_rejects_missing_or_empty_required_persisted_state(self) -> None:
         variants = {
             "missing source inventory": ("source-inventory.yaml", None),
