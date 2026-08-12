@@ -33,7 +33,7 @@ Pure technical Maintenance may route directly through `kits/voice-production-kit
 2. Identify whether the defect is semantic/product-contract or executable mechanics.
 3. For semantic/product-contract work, identify the active Flow owner:
    - Flow 5 → `VOICE-EXTRACTION.md` + `work/voice-requirements.md`;
-   - Flow 6 → `SCRIPT-PRODUCTION.md`, `DOCX-FORMAT.md`, `work/voice-production.md`, artifact representation contract;
+   - Flow 6 → `SCRIPT-PRODUCTION.md`, `DOCX-FORMAT.md`, `work/voice-production.md`, artifact representation contract; when the task materially depends on Eleven v3 performance/model/voice/duration/pronunciation behavior, enter through `kits/voice-production-kit/references/elevenlabs/README.md` and read only the relevant supporting page;
    - Flow 7 → `VOICE-VALIDATION.md`, acceptance/delivery state.
 4. Read only the smallest relevant kit procedure/source.
 5. Route missing project facts upstream instead of repairing them in dialogue or formatting.
@@ -55,7 +55,8 @@ Rules:
 - Flow 6 owns **final wording/performance notation**, not Voice scope;
 - Flow 7 owns **revision-specific acceptance/delivery evidence**, not rewritten dialogue;
 - DOCX is presentation, never the editable wording authority;
-- generated audio, when supplied, is evidence/delivery material only and never upstream project authority.
+- generated audio, when supplied, is evidence/delivery material only and never upstream project authority;
+- ElevenLabs references own production technique only and never become a project-fact source.
 
 ## Flow 5 Judgment
 
@@ -71,9 +72,11 @@ Rules:
 
 - preserve the exact Flow 5 Voice ID and Type set unless Flow 5 is explicitly reopened;
 - performance directions describe delivery only;
-- CAPS, ellipsis, and line breaks are purposeful performance notation, not decoration;
+- CAPS, punctuation, ellipsis, line breaks, and Audio Tags are purposeful performance notation, not decoration;
+- when target duration matters, budget it before final wording rather than forcing an oversized script to fit afterward;
 - estimated duration is an expectation, not measured audio proof;
 - wording must preserve official terminology and project facts;
+- use the evidence-backed ElevenLabs reference instead of inventing universal tag, duration, voice, or settings rules;
 - builder output must be regenerated from canonical Markdown rather than edited directly;
 - decide what the Voice artifact must represent, but leave pure parser/DOCX implementation mechanics to the kit-local owner when semantics are already correct.
 

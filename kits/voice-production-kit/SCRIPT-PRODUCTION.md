@@ -20,9 +20,25 @@ Use this order:
 2. accepted `work/content.md` — project context and official meaning;
 3. `state/requirement-register.yaml` — requirement traceability when needed;
 4. `output/team-handoff.md` — navigation/scope aid only;
-5. `DOCX-FORMAT.md` + `references/aftershock/README.md` — codified formatting/performance-quality reference contract based on the audited original DOCX.
+5. `references/elevenlabs/README.md` — ElevenLabs production technique only when model/voice/performance/duration/pronunciation/generation guidance is in scope;
+6. `DOCX-FORMAT.md` + `references/aftershock/README.md` — codified formatting/performance-quality reference contract based on the audited original DOCX.
+
+The ElevenLabs reference may shape **how** approved meaning is performed. It may not supply a project fact, speaker, channel, trigger, Voice ID, reward, mechanic, or new communication moment.
 
 Do not use the Aftershock script as a source of project facts, voice counts, wording, speakers, channels, or pacing quotas.
+
+## Eleven v3 production routing
+
+When the final script is intended for Eleven v3, or the user specifies an emotional-performance or duration target:
+
+1. read `references/elevenlabs/README.md`;
+2. open only the relevant supporting page:
+   - wording/tags/punctuation/CAPS/long emotional arc → `references/elevenlabs/v3-performance-writing.md`;
+   - target/max/fixed duration → `references/elevenlabs/v3-duration-planning.md`;
+   - model/voice/settings/pronunciation/generation behavior → `references/elevenlabs/v3-production-reference.md`;
+3. return to the canonical Flow 6 script owner.
+
+Do not load the full research set by default.
 
 ## Canonical Flow 6 output
 
@@ -93,19 +109,31 @@ Do not repeat the full objective briefing. Do not add `[radio transmission]` or 
 
 ## Performance notation
 
+For Eleven v3, follow the detailed production contract in `references/elevenlabs/v3-performance-writing.md`.
+
+Default construction order:
+
+```text
+spoken wording
+→ beat structure
+→ punctuation / line breaks
+→ selective CAPS
+→ minimal performance tags
+```
+
 ### Square-bracket directions
 
-Use square brackets for concise performance direction, for example:
+Use square brackets for concise audible performance direction, for example:
 
 ```text
 [calm, practical]
 [becoming serious]
-[radio transmission, controlled urgency]
+[controlled urgency]
 ```
 
 Directions describe how the line should be performed. They must not introduce a new event, action, sound effect, speaker, or project fact.
 
-Use only as many direction changes as the performance needs. Avoid decorative or contradictory tags.
+Use only as many direction changes as the performance needs. Avoid decorative, redundant, or contradictory tags.
 
 ### CAPS
 
@@ -119,17 +147,21 @@ We MUST restore the beacon.
 
 Avoid full-sentence CAPS or emphasizing every project term by default.
 
-### Ellipses
+### Ellipses / punctuation
 
-Use `...` for purposeful hesitation, transition, suspense, or breathing room. Do not place ellipses after every sentence.
+Use `...` for purposeful hesitation, transition, suspense, or weight. Standard punctuation and sentence boundaries should carry natural rhythm before extra tags are added.
+
+Eleven v3 does not use SSML `<break>` tags for pause control.
 
 ### Line breaks
 
-Use short line breaks to support phrasing and breath. Do not break every few words merely to imitate the reference. A line break should improve delivery when pasted into ElevenLabs.
+Use line breaks to support phrasing and beat structure. Do not treat a newline as an exact-duration pause command.
 
 ## Estimated duration
 
 Every entry requires an `Estimated Duration` range. It is an estimate, not measured audio.
+
+When timing matters, plan the word budget **before** final writing using `references/elevenlabs/v3-duration-planning.md`.
 
 Estimate from the intended natural delivery of the spoken text, excluding bracketed performance directions. Account for purposeful pauses and the performance tone. Do not claim exact audio duration before generation/playback.
 

@@ -1,4 +1,4 @@
-# Voice Production Kit v1.3.0
+# Voice Production Kit v1.3.1
 
 Repository-backed voice workflow for turning an accepted PRD into traceable communication requirements, ElevenLabs-ready performance wording, a reference-styled `Voice Production.docx`, and revision-specific delivery acceptance.
 
@@ -26,6 +26,27 @@ handoff_ready PRD
 - `work/voice-acceptance.md` — current revision validation evidence;
 - `state/voice-state.yaml` — Flow 5–7 lifecycle owner.
 
+## ElevenLabs production reference
+
+For actual Eleven v3 performance/model/voice/duration/pronunciation decisions, start at:
+
+```text
+references/elevenlabs/README.md
+```
+
+It is an operational production-technique reference, not a project-fact source. Open only the supporting page required by the active question.
+
+The reference currently covers:
+
+- v3 vs Multilingual v2 model choice;
+- voice-fit and Stability guidance;
+- spoken-writing and emotional beat architecture;
+- punctuation, CAPS, line structure, Audio Tags, stacking and reactions;
+- target/max/fixed duration planning;
+- credits/character usage;
+- nondeterministic generation and regeneration diagnosis;
+- pronunciation, normalization, long-form continuity, and current documentation conflicts.
+
 ## Build DOCX
 
 ```bash
@@ -49,6 +70,7 @@ The validator checks mechanical parity/integrity. Final Flow 7 acceptance still 
 
 Default `voice_delivery_ready` scope is the accepted **script + DOCX** for downstream ElevenLabs use. If actual audio is not supplied, the system records `audio_evidence: not_provided` and does not claim audio quality.
 
-## Reference
+## References
 
-`references/aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. The active builder/validation workflow does not depend on that binary at runtime.
+- `references/aftershock/README.md` records the audited original Aftershock DOCX benchmark and source SHA-256. The active builder/validation workflow does not depend on that binary at runtime.
+- `references/elevenlabs/README.md` stores current evidence-backed ElevenLabs production guidance and a source register. It does not define project-specific voice counts, wording, speakers, or story facts.
