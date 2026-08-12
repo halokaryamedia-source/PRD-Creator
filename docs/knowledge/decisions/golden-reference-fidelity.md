@@ -42,14 +42,15 @@ The Golden Sample remains **presentation/structure authority only**. It never su
 
 Flow 3 must separately conserve every independently actionable material rule recovered from project authority. Humanize/concise writing may shorten wording, but may not delete or flatten distinct conditions, values, exceptions, recovery behavior, scoring/reset rules, build constraints, glossary meaning, or observable results.
 
-Flow 4 therefore requires both:
+Flow 4 therefore requires the current compact gates:
 
 ```text
+Semantic Readiness: PASS   # includes Golden Placement
 Material Conservation: PASS
-Golden Fidelity: PASS
+Visual sanity: PASS | NOT PROVEN, according to actual evidence
 ```
 
-before a new handoff can be accepted.
+Critical/Major findings still block handoff. Golden placement is evaluated inside Semantic Readiness instead of being persisted as a duplicate `Golden Fidelity` gate.
 
 ## Why exact runtime reuse is required
 
@@ -76,7 +77,7 @@ For every independent source rule recovered in Flow 2, Flow 3 must retain one ow
 This decision supersedes:
 
 - the shorthand that the “approved PRD template is preserved as a shell” when that wording permits a reduced reconstruction;
-- the initial 2026-08-12 split where `golden-reference.html` was exact but `runtime-template.html` could remain a separate cleaned runtime interpretation.
+- the initial 2026-08-12 split where the file then named `golden-sample.html` (now `golden-reference.html`) was exact but `approved-document.html` (now `runtime-template.html`) could remain a separate cleaned runtime interpretation.
 
 It refines “Golden Samples are references, not project requirements”:
 
