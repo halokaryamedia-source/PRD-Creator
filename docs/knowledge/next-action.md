@@ -4,92 +4,115 @@ Updated: 2026-08-12
 
 ## Current Status
 
-`PRD_CLOCKWORK_PREVIEW_APPROVED_GOLDEN_RENDER_VERIFIED_ARTIFACT_READY`
+`PRD_CONTENT_PURITY_HUMANIZE_GATE_LOCKED_CLOCKWORK_HUMANIZED_REVIEW_READY`
 
 Working branch: **`Local` only**.
 
 ## Current system state
 
-The approved AFTERSHOCK Golden remains the canonical page/runtime prototype. Normal PRD production now follows the bounded workflow already locked in Project Document Generator v1.12.0:
+Project Document Generator is now **v1.13.0**.
+
+Normal production remains:
 
 ```text
 Source
 → UNDERSTAND + COMPLETE using Golden Fill Map
 → Simple Chat Preview
 → user approval
-→ canonical content
-→ compact render data
-→ deterministic Golden render
-→ one mechanical + integrated review
+→ one Content Purity + Humanize pass
+→ canonical content.md + direct render-data projection from the same approved model
+→ one deterministic Golden render
+→ one mechanical/content-purity + integrated review
 → representative desktop visual sanity
 ```
 
-HTML is not used as the drafting loop. Full rerender remains cheap/deterministic; AI reading, reasoning, and review stay bounded to affected scope.
+The efficiency principle is now **one semantic model, one semantic write**. Do not ask AI to independently summarize the project again when creating `render-data.json`, and do not reread/rewrite `final.html` for semantic drafting.
 
-## Clockwork current-project proof
+## Root cause fixed
 
-Authoritative source:
+The verified Clockwork render exposed a class of AI-slop that prior review did not stop strongly enough:
 
-```text
-The Clockwork Vault - Adventure Map - Final Review.html
-SHA-256: f4d58341ce3cb7fb17bfc9986b5df67a23058d1b94a0bc78c1dad09abdd445d0
-```
+1. **project/document-process leakage** — visible project copy mentioned Golden HTML/page structure, page-role layout, document order/content lock, or other PRD-production mechanics;
+2. **generic filler labels** — plain notes rendered as `Important Note 1/2/...`, and overview invariants could use labels such as `Global Rule 1`;
+3. **mixed abstraction** — Gameplay Context/Result could carry Developer-owned telemetry, save/retry, final-score or reset detail;
+4. **summary overload** — Overview facts and gameplay summary cards repeated detailed information already owned by journey/requirements;
+5. **dense requirement prose** — several independently actionable rules could be written as one prose block instead of readable bullets;
+6. **terminology drift** — visible project copy could alternate between reader-facing terms without a real technical distinction.
 
-The user approved the complete Simple Chat Preview on 2026-08-12. The approved resolutions are:
+## System correction
 
-1. Antechamber uses story briefing → Custodian Key → keyed Resonance Engine seal; the older separate warm-up interaction course is not required.
-2. Resonance target display is physically present but blank/inactive during approximately 90 seconds of free experimentation, followed by Target 1 then Target 2.
-3. Broken Gallery uses three progression checkpoints; route families remain spatial variations, and collapse occurs only in Checkpoint 3 around 50% final-checkpoint progress with a valid recovery continuation.
-4. Echo Pebble disables wall/floor traps only for four seconds of game-time; ceiling traps remain timing/observation only.
-5. Gremlin’s Workshop keeps the normal Straight / Elbow / Split conduit grammar. About 20 seconds after Ring 2 stabilizes, the Gremlin permanently breaks one authored active connection; the player reroutes around that edge. Vex assist is highlight-only.
-6. Final reward name is `Clockwork Wayfinder`; the ending adds no fifth Objective Score and uses idempotent reward/save handling.
-
-A complete canonical model, render-data projection, acceptance record, and final Golden HTML were generated in the current execution runtime. Current hashes:
+Flow 3 now performs one bounded **Content Purity + Humanize gate before the planned render**:
 
 ```text
-content.md       c99deb0b5300fab8a2c29701e397e2d2b1e43def0a7456ff6a958666a883bf4a
-render-data.json 02813f08abebb0a6c9018344c37bb3aaa064204212a7273e2a29fc0fb8a09d05
-final.html       697fcc8a9c94a55895d360057e8a795b641b8353ee2b21c40b3179766fef5020
+approved project model
+→ remove document/generator-process leakage
+→ enforce Gameplay / Level Design / Developer ownership
+→ make summary surfaces answer one question each
+→ use semantic titles instead of numbered filler labels
+→ decompose independent rules into bullets/rows
+→ normalize visible terminology
+→ write content.md
+→ directly project the same model into render-data.json
 ```
 
-Mechanical proof passes:
+Humanize remains relocation/decomposition, **not material deletion**.
 
-- Flow 2 `ready_for_prd` and preview approval are true;
-- no current pending/blocked requirement state remains;
-- canonical-content and render-data revision bindings match;
-- all four scored objectives retain the authoritative source-defined `0–100` scale and component weights totaling 100%;
-- generated document has exactly 30 Golden pages in the required order;
-- HTML IDs are unique and all fragment navigation resolves;
-- exact Golden component families/classes are present;
-- Golden CSS style blocks remain unchanged;
-- superseded conflict behavior is absent;
-- key source/approved rules are present, including the fixed Gallery kit, 90-second free play, four-second Echo Pebble window, 50% final-checkpoint collapse, permanent Gremlin sabotage, Straight/Elbow/Split node types, and Clockwork Wayfinder.
+The existing validator now has one narrow `content_purity` check for the concrete observed failure class. It rejects explicit project/process leakage (`Golden HTML`, internal artifacts, page-role narration, three-page-contract/document-process narration), generic `Global Rule N`, and plain note strings that would render generic `Important Note N` cards. It is deliberately not a word-count/readability score or broad keyword framework.
 
-Representative Chromium visual sanity also passes on the current content-only render:
+Focused regression coverage was added in `tests/test_prd_content_purity.py`.
+
+Proof on commit `509480d4844dafa3d933503085f6e32d843f2746`:
+
+- **PRD Verify #133 — PASS**
+- **Repository Verify #234 — PASS**
+
+No partial renderer, HTML cache, preview renderer, similarity score, word-count gate, or second template was added.
+
+## Clockwork humanized review revision
+
+User feedback approved the gameplay/mechanics and requested only content-purity/readability cleanup.
+
+A bounded humanized review artifact was prepared in the current execution runtime from the already-approved Clockwork Golden output. The revision keeps:
+
+- the same 30 Golden page IDs/order;
+- the same base Golden CSS style blocks;
+- the same script set and navigation targets;
+- the approved Clockwork mechanics/scoring/detail, including 90-second Resonance free play, fixed Gallery kit, Checkpoint 3 collapse, 4-second Echo Pebble, Straight/Elbow/Split conduit types, permanent Gremlin sabotage, and Clockwork Wayfinder.
+
+It changes only review-approved presentation/copy ownership:
+
+- Overview facts are scan-first (`Solo · 1 player per isolated lane`, `≈45 minutes total`, `Introduction → 4 Objectives → Ending`);
+- Global Gameplay Direction uses semantic project rules instead of `Global Rule N` and removes localization/platform/document-process overflow;
+- Development Overview / Data and Reset / Gameplay Development no longer narrate Golden/page/document workflow;
+- Gameplay Context/Main Objective/Result are shorter and player-facing;
+- detailed score formulas remain in Developer, while Gameplay Overview states only high-level scoring inputs;
+- generic `Important Note N` titles are replaced with semantic titles such as `Lane Isolation`, `No State Carryover`, `Immediate Input Feedback`;
+- long actionable requirement detail remains as lists where the existing Golden structure already supports independent bullets.
+
+Current review-artifact SHA-256:
 
 ```text
-Overview
-Resonance Engine — Gameplay Flow
-Broken Gallery — Gameplay Overview
-Warden Halls — Level Design
-Gremlin’s Workshop — Developer
+82025447edb630d9b18918f0707e36c103937ab41ff8bee86dbbc3fde2a51016
 ```
 
-No clipping, broken table structure, component drift, or suspiciously thin material surface was observed.
+Static checks on the review artifact:
 
-## Review corrections made before acceptance
+- 30 document sections preserved;
+- no duplicate IDs;
+- all fragment navigation targets resolve;
+- base Golden `<style>` blocks remain byte-equivalent after parsing/serialization comparison;
+- no observed process-leak phrases remain in visible `<main>` copy;
+- no generic `Important Note N` titles remain;
+- approved key mechanics remain present.
 
-The first planned render exposed two concrete semantic/material-conservation findings. Both were fixed upstream and rerendered:
+## Proof boundary
 
-1. an initial projection had incorrectly rescaled the source scoring from `0–100` to `0–25`; the authoritative `0–100` scoring contract and source point rules were restored;
-2. the Workshop physical-sabotage resolution had accidentally dropped the still-valid authored `Straight`, `Elbow`, and `Split` conduit node types; those node types were restored while keeping the approved no-global-rule-change behavior.
+The humanized HTML above is a **bounded review artifact**, not yet a new authoritative renderer-produced workspace revision, because the verified Clockwork canonical package (`content.md` / `render-data.json` / state) was not persisted under `workspace/active/` in the connected GitHub channel.
 
-These fixes are why the extra rerender cycles were justified; no speculative HTML iteration was performed.
+Do not claim current browser visual PASS for this humanized revision from this execution environment; browser loading was unavailable for the local artifact. The previous pre-feedback Clockwork render had representative Chromium proof, but that proof does not automatically transfer to changed copy.
 
-## Execution boundary
-
-The verified final HTML exists as the current conversation/runtime artifact. The connected GitHub channel writes repository files through serialized text API operations rather than a mounted checkout, so the large generated project package was not duplicated into `workspace/active/` in this turn merely for ceremony. No placeholder/fake project package was committed.
+Do not patch or commit the humanized HTML as project authority. The user-approved content cleanup should be reflected upstream in canonical content/render data when the Clockwork package is persisted/regenerated.
 
 ## Next Step
 
-**Persist the exact verified Clockwork source/state/canonical/render/final/acceptance package under `workspace/active/the-clockwork-vault/` on `Local` using a file-capable checkout, then run the existing PRD validator once without rerendering unless the persisted bytes or approved meaning change.**
+**Persist/recover the approved Clockwork canonical package under `workspace/active/the-clockwork-vault/`, apply the humanized/content-pure copy upstream, run the official renderer once, then perform targeted desktop visual sanity on Overview + Development Overview + one Gameplay Overview + one dense Developer page. Only change Golden CSS if the purified copy still demonstrates a concrete readability defect.**
