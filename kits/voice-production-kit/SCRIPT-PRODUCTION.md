@@ -1,6 +1,6 @@
-# ElevenLabs Performance Script Production
+# Eleven v3 Performance Script Production
 
-Flow 6 converts approved Flow 5 voice requirements into final performance wording and a production-ready DOCX. It does not add new voice moments or upstream project facts.
+Flow 6 converts approved Flow 5 Voice Requirements into final Eleven v3 performance wording and a production-ready DOCX. It does not add new Voice moments or upstream project facts.
 
 ## Entry gate
 
@@ -10,41 +10,46 @@ Start only when `state/voice-state.yaml` has:
 status: voice_requirements_ready
 ```
 
-The referenced `work/voice-requirements.md` and accepted PRD revision must still be current. If the PRD or voice requirements changed, stop and re-open the owning upstream flow before scripting.
+The referenced `work/voice-requirements.md` and accepted PRD revision must still be current. If the PRD or Voice Requirements changed, stop and re-open the owning upstream flow before scripting.
 
 ## Authority
 
 Use this order:
 
-1. `work/voice-requirements.md` — canonical voice-moment scope, speaker/channel/trigger/purpose, required facts, and guardrails;
+1. `work/voice-requirements.md` — canonical Voice scope, speaker/channel/trigger/purpose, required facts, and guardrails;
 2. accepted `work/content.md` — project context and official meaning;
-3. `state/requirement-register.yaml` — requirement traceability when needed;
-4. `output/team-handoff.md` — navigation/scope aid only;
-5. `references/elevenlabs/README.md` — ElevenLabs production technique only when model/voice/performance/duration/pronunciation/generation guidance is in scope;
-6. `DOCX-FORMAT.md` + `references/aftershock/README.md` — codified formatting/performance-quality reference contract based on the audited original DOCX.
+3. current `work/voice-production.md` — existing canonical wording when revising;
+4. `SOUNDMAKER.md` — one-entry-at-a-time Eleven v3 quality/execution procedure;
+5. `references/elevenlabs/README.md` — Eleven v3 production technique;
+6. `DOCX-FORMAT.md` + `references/aftershock/README.md` — DOCX presentation reference only.
 
-The ElevenLabs reference may shape **how** approved meaning is performed. It may not supply a project fact, speaker, channel, trigger, Voice ID, reward, mechanic, or new communication moment.
+Production references may shape **how** approved meaning is performed. They may not supply a project fact, speaker, channel, trigger, Voice ID, reward, mechanic, or new communication moment.
 
-Do not use the Aftershock script as a source of project facts, voice counts, wording, speakers, channels, or pacing quotas.
+## SoundMaker execution profile
 
-## Eleven v3 production routing
+Every Flow 6 entry uses the SoundMaker quality order internally:
 
-When the final script is intended for Eleven v3, or the user specifies an emotional-performance or duration target:
+```text
+requirement fidelity
+→ target duration first when specified
+→ voice-fit check
+→ performance map
+→ spoken wording
+→ beat architecture
+→ punctuation / line structure
+→ selective CAPS
+→ minimal Audio Tags
+→ pronunciation safety
+→ one generation-ready prompt
+```
 
-1. read `references/elevenlabs/README.md`;
-2. open only the relevant supporting page:
-   - wording/tags/punctuation/CAPS/long emotional arc → `references/elevenlabs/v3-performance-writing.md`;
-   - target/max/fixed duration → `references/elevenlabs/v3-duration-planning.md`;
-   - model/voice/settings/pronunciation/generation behavior → `references/elevenlabs/v3-production-reference.md`;
-3. return to the canonical Flow 6 script owner.
+For a real one-line production/revision task, read `SOUNDMAKER.md` and only the relevant supporting v3 reference.
 
-Do not load the full research set by default.
+SoundMaker is not a separate wording authority. Its final prompt is written into the matching `work/voice-production.md` entry.
 
 ## Canonical Flow 6 output
 
-Create `work/voice-production.md`. This is the source of truth for final spoken wording and performance notation.
-
-Use:
+Create/update `work/voice-production.md`:
 
 ```text
 # <Project> Voice Production
@@ -58,13 +63,13 @@ Type: Main Story | Radio Communication | <explicit supported type>
 Estimated Duration: <range>
 
 ```performance
-[clear performance direction]
+[concise audible direction when needed]
 
 Spoken text...
 ```
 ```
 
-Every Flow 5 voice ID must appear exactly once unless upstream scope is explicitly reopened. Do not create additional IDs in Flow 6.
+Every Flow 5 Voice ID must appear exactly once unless Flow 5 scope is explicitly reopened. Do not create additional IDs in Flow 6.
 
 ## Writing contract
 
@@ -74,42 +79,15 @@ For every entry:
 2. communicate every required `Must communicate` fact that belongs in this moment;
 3. obey every `Must not add/repeat` guardrail;
 4. preserve approved speaker, channel, trigger, names, terminology, sequence, mechanics, outcomes, and rewards;
-5. write for natural spoken delivery rather than documentation prose;
-6. remove implementation detail that the player would never need to hear;
-7. avoid repeating another voice moment unless Flow 5 explicitly justified a distinct trigger/function.
+5. write natural spoken language, not documentation prose;
+6. remove implementation detail the player never needs to hear;
+7. avoid repeating another Voice moment unless Flow 5 justified a distinct trigger/function.
 
-If the requirement cannot be satisfied without inventing a fact, set the voice state to `needs_upstream_decision` and return the issue upstream.
+If the requirement cannot be satisfied without inventing a fact, set the Voice state to `needs_upstream_decision` and return the issue upstream.
 
-## Main Story
+## Performance quality contract
 
-Main Story may carry more context than Radio Communication. Use it for narrative briefing, arrival, transition, reveal, completion, reward, or farewell when the corresponding Flow 5 moment exists.
-
-Prefer:
-
-- clear spoken sentences;
-- one communication purpose per entry;
-- progressive information order;
-- character-appropriate but restrained wording;
-- enough context to understand the moment without narrating every implementation detail.
-
-Do not turn a developer specification into dialogue.
-
-## Radio Communication
-
-Radio Communication must stay concise and useful during active play.
-
-Prefer:
-
-- immediate warning/actionable feedback;
-- short progress acknowledgement;
-- urgency or encouragement tied to the approved trigger;
-- reminder/recovery wording that repeats only the minimum needed fact.
-
-Do not repeat the full objective briefing. Do not add `[radio transmission]` or another radio effect unless that production direction is appropriate to the approved channel.
-
-## Performance notation
-
-For Eleven v3, follow the detailed production contract in `references/elevenlabs/v3-performance-writing.md`.
+Detailed rules live in `SOUNDMAKER.md` and `references/elevenlabs/v3-performance-writing.md`.
 
 Default construction order:
 
@@ -121,65 +99,73 @@ spoken wording
 → minimal performance tags
 ```
 
-### Square-bracket directions
+### Emotional movement
 
-Use square brackets for concise audible performance direction, for example:
-
-```text
-[calm, practical]
-[becoming serious]
-[controlled urgency]
-```
-
-Directions describe how the line should be performed. They must not introduce a new event, action, sound effect, speaker, or project fact.
-
-Use only as many direction changes as the performance needs. Avoid decorative, redundant, or contradictory tags.
-
-### CAPS
-
-Use selective CAPS only for words that genuinely need spoken emphasis.
-
-Good:
+For long-form narration, create performance changes only when the scene or communication function changes. Prefer a real arc such as:
 
 ```text
-We MUST restore the beacon.
+establish
+→ reveal
+→ react
+→ escalate
+→ instruct
+→ payoff
 ```
 
-Avoid full-sentence CAPS or emphasizing every project term by default.
+Do not assign one global emotional tag to a long script that contains several real state changes. Do not manufacture emotion changes when the scene is actually stable.
 
-### Ellipses / punctuation
+### Punctuation / CAPS / line structure
 
-Use `...` for purposeful hesitation, transition, suspense, or weight. Standard punctuation and sentence boundaries should carry natural rhythm before extra tags are added.
+Use punctuation semantically. Ellipses, em dashes, questions, exclamations, sentence boundaries, and line breaks shape rhythm but are not exact timing controls.
+
+Use CAPS selectively for words that genuinely need stress.
+
+### Audio Tags
+
+Use audible directions only. Default to 0–1 tag at a beat; two are valid when they control distinct compatible dimensions. Triple stacks are exceptional. Do not use redundant or contradictory tag stacks.
 
 Eleven v3 does not use SSML `<break>` tags for pause control.
 
-### Line breaks
+### Reactions
 
-Use line breaks to support phrasing and beat structure. Do not treat a newline as an exact-duration pause command.
+Treat sighs, gasps, laughs, gulps, hesitation, and similar reactions as timeline events rather than decorative tag clusters.
 
-## Estimated duration
+## Duration contract
 
 Every entry requires an `Estimated Duration` range. It is an estimate, not measured audio.
 
-When timing matters, plan the word budget **before** final writing using `references/elevenlabs/v3-duration-planning.md`.
+When timing matters, plan the word budget **before** final wording using `references/elevenlabs/v3-duration-planning.md`.
 
-Estimate from the intended natural delivery of the spoken text, excluding bracketed performance directions. Account for purposeful pauses and the performance tone. Do not claim exact audio duration before generation/playback.
+Do not finish an oversized script and try to force it under a cap with `[rushed]`, tag spam, or extreme speed changes.
 
-No fixed duration quota is inherited from Aftershock. Radio is normally shorter than Main Story because of its gameplay function, not because of a hard numeric rule.
+If approved audio exists for the same project/voice/performance family, project-calibrated duration evidence is stronger than generic WPM planning.
+
+## Actual generation / approval sync
+
+Script/DOCX-only production does not require generated audio.
+
+When actual ElevenLabs generation is part of the task:
+
+1. work one Voice ID at a time;
+2. show one best v3 prompt;
+3. wait for `APPROVED` or specific feedback before moving to the next active line;
+4. if the user edited the prompt before generation, the exact prompt actually used supersedes the assistant draft;
+5. synchronize the exact approved prompt back into `work/voice-production.md`;
+6. rebuild DOCX and reopen affected Flow 7 acceptance if canonical wording changed after an earlier ready state.
+
+Do not keep a different generated prompt and canonical script while claiming current alignment.
 
 ## Section ordering
 
-Keep gameplay sections in accepted project order. Within a section, order entries according to the approved trigger sequence, not by voice type merely for visual symmetry.
-
-The final DOCX displays the explicit type before each entry, so Main Story and Radio moments can remain in the correct chronological order.
+Keep gameplay sections in accepted project order. Within a section, order entries by approved trigger sequence, not voice type for visual symmetry.
 
 ## Flow 6 mechanical gate
 
 Before building DOCX:
 
-- every Flow 5 voice ID appears exactly once;
-- no extra voice ID exists;
-- type matches the Flow 5 requirement;
+- every Flow 5 Voice ID appears exactly once;
+- no extra Voice ID exists;
+- Type matches Flow 5;
 - title, duration, and performance block are present;
 - no `TBD`, `TODO`, `FIXME`, or `[OPEN]` placeholder remains;
 - no required fact is knowingly omitted;
@@ -195,8 +181,6 @@ python kits/voice-production-kit/builder/build_docx.py \
 ```
 
 ## Voice state after Flow 6
-
-Update the same `state/voice-state.yaml` lifecycle owner:
 
 ```yaml
 flow: 6
@@ -216,16 +200,16 @@ Allowed Flow 6 statuses:
 - `voice_script_ready`
 - `blocked`
 
-`no_voice_required` from Flow 5 bypasses Flow 6; do not generate an empty DOCX merely to satisfy the pipeline.
+`no_voice_required` from Flow 5 bypasses Flow 6.
 
 ## Flow 6 stop gate
 
 Flow 6 stops when:
 
-- canonical performance wording exists for every justified voice moment;
+- canonical performance wording exists for every justified Voice moment;
+- SoundMaker pre-generation quality has been applied to the wording;
 - the mechanical gate passes;
-- `Voice Production.docx` is generated from the canonical script;
-- the DOCX structure/layout is visually inspected during actual project production;
-- voice state is `voice_script_ready`.
+- `Voice Production.docx` is generated from canonical script when DOCX is in scope;
+- current project DOCX is visually inspected during actual production.
 
-Do **not** claim final voice delivery, continuity approval, terminology/pronunciation approval, or generated-audio quality. Those belong to Flow 7.
+Do **not** claim generated-audio quality or measured duration without actual audio evidence. Flow 7 owns final current-revision acceptance.
