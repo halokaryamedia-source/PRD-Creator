@@ -1,141 +1,72 @@
 # Production + Operating Validation Report
 
-Updated: 2026-08-11
+Updated: 2026-08-12
 
-This file records the **current evidence state** only. Historical debugging belongs in Git history.
+This file records the **current evidence state only**. Historical debugging and superseded preview detail belong in Git history and review evidence.
 
-## Current status
+## Current system state
 
 Working branch: `Local`.
 
-The PRD Generator now uses the approved Golden Sample as the **canonical visible page prototype**.
+Project Document Generator is **v1.13.0**. Current PRD production remains:
 
 ```text
-SOURCE-INTAKE.md
-→ project truth
-
-CONTENT-CONTRACT.md
-→ project semantics + locked Golden visible composition
-
-approved-document.html + renderer
-→ deterministic Golden-prototype projection
-
-validator
-→ deterministic mechanical composition checks
-
-VALIDATION.md
-→ semantic + Golden-fidelity + targeted visual review
+source / approved decisions
+→ normalized requirement state
+→ one Content Purity + Humanize pass
+→ canonical content.md
+→ direct render-data projection
+→ deterministic approved-Golden render
+→ mechanical/content-purity validation
+→ integrated semantic review
+→ targeted desktop visual sanity
+→ handoff
 ```
 
-## Corrected direction
+The approved Golden Sample remains the canonical visible page prototype. Generated HTML is derived and is never patched to hide an upstream defect.
 
-The previous representative preview introduced visible composition that was not present in Golden, including:
+## Current Clockwork acceptance proof
 
-- verbose 3-card Gameplay Overview summaries;
-- orientation cards on Gameplay Flow;
-- 2×2 Trigger / System Behavior / Data / Expected Result Developer Flow;
-- extra Acceptance & Verification presentation;
-- renamed Global Development pages;
-- Terms Used on surfaces where Golden does not show it;
-- a wider/looser document treatment that reduced reading clarity.
+The user approved the final Clockwork preview on 2026-08-12.
 
-That preview is **rejected and superseded as visual evidence**. It must not be cited as a visual PASS.
-
-The active generator has been rolled back to Golden page prototypes instead of adding another redesign layer.
-
-## Current Golden composition
+Accepted bindings:
 
 ```text
-Overview
-Gameplay Flow
-Development
-  Development Overview
-  Game System
-  Data and Reset
-  Gameplay Development
-Gameplay package
-  Gameplay Overview
-  Level Design
-  Developer
+source
+f4d58341ce3cb7fb17bfc9986b5df67a23058d1b94a0bc78c1dad09abdd445d0
+
+content.md
+5aa7bacab594b98e062fbca035583df78e7691c680ee2654e15bfa17cecf65de
+
+render-data.json
+bf3e0eccf2cf5495c489e843bd27be99fbf547b51d4c7de321969868f7706bd0
+
+final.html
+0502e3cb78e5c834e540d9715d78cb3fbdf1f8519ab5b6a8c976c257a59d7024
 ```
 
-For `N` packages: `6 + 4N` pages.
+Current artifact proof:
 
-Visible package rules now match Golden:
+- Flow 2 state recovered with no material open decision;
+- 30 expected Golden pages in the required order;
+- unique HTML IDs and reachable fragment navigation;
+- canonical-content → render-data → HTML revision bindings match;
+- four scored objectives retain the approved 0–100 scale and 100% component-weight totals;
+- content-purity check reports no observed project/document-process leakage or generic filler-note data;
+- approved Clockwork mechanics remain materially conserved;
+- targeted Chromium desktop review passed on Overview, Resonance Gameplay Flow, Development Overview, Workshop Gameplay Overview, Workshop Level Design, and Workshop Developer;
+- no clipping, collision, horizontal overflow, or concrete readability defect was observed;
+- Golden CSS was not changed.
+
+## Repository evidence boundary
+
+The accepted Clockwork package has **not yet been persisted in the connected GitHub `Local` branch**. Repository state must therefore distinguish:
 
 ```text
-Gameplay Overview
-→ 3 short summary cards
-→ Gameplay Information
-→ Gameplay Flow
-→ Terms Used
-
-Level Design
-→ Level Design Overview
-→ 4-card Design Flow
-→ Build Requirements
-→ Important Build Notes
-
-Developer
-→ Developer Overview
-→ 4-card Development Flow
-→ Development Requirements
-→ Important Development Notes
+accepted runtime artifact = verified
+remote project package     = not yet persisted
 ```
 
-Acceptance remains required Flow 4 project/review meaning but is not rendered as a new Developer-page panel.
+Do not cite the standalone Humanized Review artifact, recovery scripts, screenshots, or earlier Clockwork integration proof as the current project authority. Those are supporting or historical evidence only.
 
-Terms Used is rendered only on Gameplay Flow, Global Development and Gameplay Overview. Inline glossary highlighting remains role-scoped.
-
-## Anti-regression behavior
-
-The focused PRD regression now explicitly rejects the discarded experimental visible vocabulary/components, including:
-
-```text
-Document Control
-Session & Runtime System
-Data, Recovery & Reset
-Gameplay Package Integration
-Objective Sequence
-Failure / Retry / Recovery
-Result / Scoring Model
-Area / Spatial Constraint
-Expected System Result
-Critical Constraints & Notes
-Acceptance & Verification
-flow-orientation
-developer-flow
-System Behavior
-```
-
-Level Design and Developer are also checked not to render a visible Terms Used block.
-
-## Stable version policy
-
-`document.version` is project/release metadata, not an edit counter.
-
-Clarification, Humanize, review correction, rerendering and representative testing keep the same version. AFTERSHOCK remains **2.4** until a real revision/release milestone is intentionally declared.
-
-## AFTERSHOCK project truth retained
-
-The previously approved v2.4 scoring decision remains project truth:
-
-```text
-Docks    → No Objective Score
-Quarry   → 0–100 main Forge progress normalized to Gold; Stretch excluded
-Ascent   → 100 on Signal Horn/cable-car valid completion; otherwise highest checkpoint progress
-Beacon   → 0–100 final valid scaffold completion
-Relay    → 100 on Relay activation; otherwise farthest valid route progress
-Ending   → No Objective Score
-Final Total = (Quarry + Ascent + Beacon + Relay) ÷ 4
-```
-
-Internal scores remain hidden from the player and excluded from raw telemetry/export.
-
-## Evidence boundary
-
-Current repository/regression evidence proves the strict Golden prototype contract and renderer/validator behavior. The old experimental AFTERSHOCK desktop preview is no longer valid visual evidence.
-
-A fresh AFTERSHOCK v2.4 artifact must be regenerated with the locked Golden prototypes before representative desktop quality can be accepted.
-
-No mobile or Voice proof is required for this correction.
+Current continuation is owned by `docs/knowledge/next-action.md`.
