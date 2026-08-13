@@ -1,6 +1,6 @@
 # Voice Requirement Extraction
 
-Flow 5 converts an accepted PRD revision into a traceable set of justified voice moments. It does **not** write performance scripts.
+Flow 5 converts an accepted PRD revision into a traceable set of justified voice moments that are **ready for SoundMaker to write without inventing project meaning**. It does not write performance scripts.
 
 ## Entry gate
 
@@ -9,8 +9,8 @@ Start only when the current project has:
 - `state/handoff-state.yaml` with `status: handoff_ready`;
 - `accepted_prd_version` matching the current `work/render-data.json → document.version`;
 - accepted `work/content.md` for that same PRD version;
-- `work/acceptance.md` and `output/team-handoff.md` present at the paths recorded by the handoff state;
-- no unresolved upstream decision affecting the voice scope.
+- `work/acceptance.md` and `output/team-handoff.md` at the recorded handoff paths;
+- no unresolved upstream decision affecting current Voice scope.
 
 Before extraction, run:
 
@@ -19,60 +19,51 @@ python kits/project-document-generator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-Do not start Flow 5 when this guard fails. It is a lightweight lifecycle check using the existing PRD `document.version`; it does not add a new hash/checksum chain and does not replace semantic PRD acceptance.
-
-If accepted PRD meaning changes after extraction, the PRD revision must advance upstream and the existing voice requirements become stale. Reset Flow 5 to `pending_extraction` and re-check affected moments before Flow 6.
+If accepted PRD meaning changes later, mark affected Voice requirements stale and reopen only the invalidated Flow 5 scope before Flow 6 continues.
 
 ## Authority
 
 Use this order:
 
 1. accepted `work/content.md` — canonical project meaning;
-2. `state/requirement-register.yaml` — traceability and approved requirement state;
-3. `output/team-handoff.md` — navigation/scope aid only;
-4. `output/final.html` — presentation aid only;
+2. `state/requirement-register.yaml` — approved requirement traceability;
+3. `output/team-handoff.md` — navigation/scope aid;
+4. `output/final.html` — presentation aid;
 5. approved Voice Production reference — structure/quality evidence only.
 
-Do not extract a new project fact from the Aftershock sample.
+Reference projects never supply new project facts, speakers, channels, triggers, or Voice moments.
 
 ## Extraction sequence
 
 ```text
 current handoff guard PASS
 ↓
-handoff_ready PRD
-↓
-identify player-facing story / communication system
+identify the approved player-facing communication system
 ↓
 scan overview + gameplay flow + package-local gameplay
 ↓
-inspect developer/global pages only for player-facing triggers/state when needed
+inspect developer/global detail only when needed for player-facing state/trigger
 ↓
-identify candidate voice moments
+identify candidate Voice moments
 ↓
 remove redundant / UI-only / unsupported moments
 ↓
-classify type + function + necessity
+classify Type + Function + Necessity
 ↓
-trace each moment to accepted PRD evidence
+normalize each moment into the Flow 5 → Flow 6 interface contract
+↓
+trace to accepted PRD evidence
 ↓
 work/voice-requirements.md
 ↓
-state/voice-state.yaml
+voice_requirements_ready
 ```
 
 ## Voice types
 
 ### Main Story
 
-Use for player-facing narrative or mission communication whose primary job is to establish or advance the experience, for example:
-
-- mission/context briefing;
-- arrival or section introduction;
-- major transition;
-- important reveal or story-state change;
-- major objective completion when narrative acknowledgement matters;
-- ending, reward, or farewell.
+Use for player-facing narrative/mission communication whose primary job is to establish or advance the experience, for example briefing, arrival, transition, reveal, major completion, reward, or farewell.
 
 Main Story is not a license to narrate every mechanic.
 
@@ -80,93 +71,183 @@ Main Story is not a license to narrate every mechanic.
 
 Use only when the accepted project defines a communicator, remote NPC voice, radio, intercom, or equivalent channel.
 
-Radio should be brief and useful while the player is actively playing. Typical functions:
-
-- warning;
-- progress update;
-- urgency;
-- encouragement;
-- concise reminder;
-- setback/recovery guidance.
-
-Radio must not repeat a full Main Story briefing or restate the complete objective.
+Typical functions are warning, progress, urgency, encouragement, reminder, or setback/recovery guidance. Radio should remain concise during active play and must not replay a complete Main Story briefing.
 
 ### Other Supported Voice
 
-Use only when the PRD explicitly defines a different speaker/channel such as an announcer, PA system, AI system, or direct NPC dialogue that does not fit the two standard types.
+Use only when the accepted project explicitly defines another speaker/channel such as direct NPC dialogue, announcer, PA, or AI system. Do not use a generic `Other` bucket.
 
-Do not use a generic `Other` bucket. Record the explicit source-defined type/speaker/channel. If that information is missing but required, return upstream instead of inventing it.
+## Function and necessity
 
-## Functional classification
+Use one primary Function when applicable:
 
-A voice moment may use one primary function:
+```text
+briefing | arrival | transition | reveal | warning | progress | urgency
+encouragement | reminder | setback_recovery | completion | reward | farewell
+```
 
-- `briefing`
-- `arrival`
-- `transition`
-- `reveal`
-- `warning`
-- `progress`
-- `urgency`
-- `encouragement`
-- `reminder`
-- `setback_recovery`
-- `completion`
-- `reward`
-- `farewell`
+Function describes the **communication job**, not an ElevenLabs Audio Tag.
 
-The function describes what the communication must achieve. It is not an ElevenLabs performance tag.
+Necessity:
 
-## Necessity
+- `required` — the experience depends on this communication or the player would miss a required fact/state;
+- `supporting` — the approved Voice system materially improves clarity/pacing/feedback, while the required fact is also safely communicated elsewhere.
 
-Use:
-
-- `required` — the accepted experience explicitly depends on this voice communication or the player would otherwise miss a required narrative/feedback fact;
-- `supporting` — the voice system is approved and the moment materially improves clarity/pacing/feedback, but the same required fact is also safely communicated another way.
-
-Do not create voice solely because a section exists.
+Do not create a Voice moment merely because a gameplay section exists.
 
 ## Candidate filter
 
-Keep a candidate only when all are true:
+Keep a candidate only when:
 
 1. it is player-facing;
-2. its purpose is supported by the accepted PRD;
-3. the speaker/channel is known or explicitly defined by the project;
-4. the trigger/timing can be tied to an approved gameplay/story state;
-5. it adds information, acknowledgement, warning, or emotional progression that is useful at that moment;
-6. it does not duplicate another voice moment without a distinct gameplay reason.
+2. its Purpose is supported by accepted project meaning;
+3. Speaker and Channel are known/approved;
+4. Trigger is tied to a concrete gameplay/story state;
+5. it adds useful information, acknowledgement, warning, or progression at that moment;
+6. it does not duplicate another Voice moment without a distinct Trigger/Function reason.
 
-Reject candidates that are only:
+Reject developer telemetry, hidden implementation state, decorative unsupported narration, duplicate UI reading, invented lore/mechanics/rewards/triggers, and forced symmetry across packages.
 
-- developer telemetry/save/reset internals;
-- hidden implementation state;
-- decorative narration with no project support;
-- a duplicate reading of UI/objective text;
-- an invented lore/mechanic/reward/trigger;
-- a forced voice entry added to make every package look symmetrical.
-
-A package may legitimately have zero voice moments.
+A package may legitimately have zero Voice moments.
 
 ## Duplicate guard
 
-Two moments may communicate related facts only when their functions or triggers are materially different.
-
-Example:
+Related information may appear twice only when the communication job or Trigger materially differs.
 
 ```text
-Main Story briefing → explains the objective and stakes once
-Radio warning       → warns about a live hazard during play
-Radio reminder      → repeats only the minimum actionable fact after a meaningful delay/setback
+Main Story briefing → objective/stakes once
+Radio warning       → live hazard warning
+Radio reminder      → minimum actionable fact after a justified delay/setback
 ```
 
-Do not copy the briefing into radio form.
+Do not convert the briefing into several paraphrased reminders.
 
-## Canonical output
+# Flow 5 → Flow 6 interface contract
+
+Flow 5 should give SoundMaker enough **authoritative communication intent** to fill Voice Intent Completeness without inventing product meaning. Do not solve performance craft in Flow 5.
+
+## Field meaning
+
+### Function
+
+State the primary communication job. Avoid vague labels such as `information` when a concrete function like `warning`, `transition`, or `completion` is known.
+
+### Speaker / Channel
+
+Use exact approved identities. These are project facts, not production guesses.
+
+### Trigger
+
+Describe the actual event/state that causes the line and include the **listener/player state when it materially changes delivery**.
+
+Prefer:
+
+```text
+Collapse begins while the player is crossing Checkpoint 3.
+```
+
+rather than:
+
+```text
+Objective 2 trigger.
+```
+
+Trigger is not a script or timing estimate; it is the production context needed to understand when the communication happens.
+
+### Purpose
+
+State what the communication must accomplish **for the listener**.
+
+Prefer:
+
+```text
+Warn the player that collapse has started and make the immediate crossing action clear.
+```
+
+rather than:
+
+```text
+Provide warning dialogue.
+```
+
+Purpose should make the intended listener outcome recoverable: what they should know, do, understand, or acknowledge after hearing the line.
+
+### Must communicate
+
+Store material facts as separate concise bullets when they are independently actionable. Do not pre-write dialogue.
+
+Good:
+
+```text
+- Collapse has started.
+- The player must keep moving across the current route.
+```
+
+Avoid one dense prose bullet that hides several independent instructions.
+
+### Must not add/repeat
+
+Record the material exclusions that protect scope, continuity, and anti-repetition. This can include facts the line must not invent and information already delivered elsewhere that should not be re-briefed.
+
+### Timing Constraint — optional, authoritative only
+
+Use an optional field only when accepted project authority defines a material Voice/timeline constraint, for example:
+
+```text
+- Timing Constraint: Must complete before the 10-second collapse window ends.
+```
+
+or:
+
+```text
+- Timing Constraint: Fixed 12-second cinematic slot.
+```
+
+Rules:
+
+- this is **not** `Estimated Duration`;
+- do not invent a timing target in Flow 5;
+- omit the field when no authoritative line/window/sync constraint exists;
+- absence means Flow 6 may plan a reasonable Estimated Duration but must not treat a hard source limit as known.
+
+### Source refs
+
+Keep enough traceability to verify project meaning. Source refs are not operator-facing prompt content.
+
+## What stays in Flow 6
+
+Do **not** add Flow 5 fields for:
+
+- final spoken wording;
+- emotional/performance arc chosen by SoundMaker;
+- landing wording;
+- Audio Tags;
+- CAPS/punctuation/pause strategy;
+- Target Voice Profile or commercial ElevenLabs voice;
+- Stability / Surface / Enhance settings;
+- Estimated Duration when it is only a production estimate.
+
+`Performance Shape` and `Landing` are normally production interpretation derived by SoundMaker from Function, Trigger, Purpose, required facts, Speaker context, and any authoritative Timing Constraint.
+
+## Flow 6 readiness check
+
+Before `voice_requirements_ready`, each included Voice moment must let a competent Flow 6 reader recover, without product-level guessing:
+
+```text
+communication job  ← Function + Purpose
+listener state     ← Trigger + Channel + minimal accepted context
+information load   ← Must communicate
+listener outcome   ← Purpose
+speaker owner      ← Speaker
+hard timing truth  ← optional Timing Constraint when authoritative
+scope exclusions   ← Must not add/repeat
+```
+
+If a material listener state, communication outcome, Speaker/Channel/Trigger, or authoritative timing rule is genuinely unresolved and different answers would change the asset materially, return upstream instead of hiding the decision in SoundMaker.
+
+# Canonical output
 
 Create `work/voice-requirements.md` as the Flow 5 source of truth.
-
-Use one section per gameplay package/scene and one entry per justified moment:
 
 ```text
 # Voice Requirements
@@ -181,30 +262,21 @@ Voice system: <speaker/channel summary>
 - Function: briefing | warning | ...
 - Necessity: required | supporting
 - Speaker: <approved speaker>
-- Channel: <direct / communicator / radio / PA / ...>
-- Trigger: <approved gameplay/story trigger>
-- Purpose: <what this communication must achieve>
+- Channel: <approved channel>
+- Trigger: <approved gameplay/story event + relevant listener state>
+- Purpose: <listener-facing communication outcome>
+- Timing Constraint: <authoritative limit/sync only; omit when none>
 - Must communicate:
-  - <required fact>
+  - <one material fact/action per bullet where practical>
 - Must not add/repeat:
-  - <guardrail>
+  - <scope / continuity guardrail>
 - Source refs:
   - <requirement ID and/or content.md section>
 ```
 
-Do **not** include:
+Do not include final performance wording, tags, emphasis, pause punctuation, production-estimated duration, ElevenLabs settings, or voice selection.
 
-- final spoken wording;
-- square-bracket performance directions;
-- CAPS emphasis decisions;
-- pause punctuation strategy;
-- estimated duration;
-- ElevenLabs settings;
-- voice model selection.
-
-Those belong to Flow 6.
-
-## Voice state
+# Voice state
 
 Maintain `state/voice-state.yaml`:
 
@@ -221,31 +293,24 @@ next_step: flow_6_elevenlabs_script_production
 
 Allowed statuses:
 
-- `pending_extraction`
-- `needs_upstream_decision`
-- `voice_requirements_ready`
-- `no_voice_required`
-- `blocked`
+```text
+pending_extraction | needs_upstream_decision | voice_requirements_ready
+no_voice_required | blocked
+```
 
-`no_voice_required` is valid when the accepted PRD does not define or justify a voice system/moment. Do not invent a narrator merely to continue the pipeline.
+`no_voice_required` remains valid when accepted upstream evidence justifies no Voice production.
 
 ## Upstream return rule
 
-Set `needs_upstream_decision` when a required voice moment depends on an unresolved project choice such as:
+Use `needs_upstream_decision` when a material Voice requirement depends on unresolved project meaning such as Speaker, Channel, Trigger, story/result/reward, contradictory terminology/sequence, or an authoritative communication/timing constraint that cannot responsibly be recovered.
 
-- who is speaking;
-- whether a communicator/radio exists;
-- when a story event actually triggers;
-- what reward/outcome is canonical;
-- contradictory terminology or sequence.
-
-Record the affected source/requirement and return the decision to the correct upstream owner. Do not solve it in Flow 5.
+Do not solve those decisions through performance writing.
 
 ## Flow 5 completion
 
 Flow 5 is complete when either:
 
-- `voice_requirements_ready` — every included voice moment is justified, traceable, non-duplicative, and ready for script production; or
-- `no_voice_required` — accepted upstream evidence supports no voice production for the current scope.
+- `voice_requirements_ready` — every included moment is justified, traceable, non-duplicative, and complete enough for SoundMaker to fill Voice Intent Completeness without inventing project meaning; or
+- `no_voice_required` — accepted upstream evidence supports no Voice production for current scope.
 
 Stop before writing any performance script.
