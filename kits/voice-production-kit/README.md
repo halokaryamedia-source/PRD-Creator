@@ -1,22 +1,24 @@
-# Voice Production Kit v1.5.0
+# Voice Production Kit v1.6.0
 
-Repository-backed workflow for accepted PRD → Voice Requirements → high-quality Eleven v3 performance wording → derived DOCX → current-revision acceptance.
+Repository-backed workflow for accepted PRD → Voice Requirements → high-quality Eleven v3 performance wording → derived DOCX → current-revision acceptance, with audio generation optional.
 
 ## Flow
 
 ```text
 handoff_ready PRD
 → Flow 5 Voice Requirements
-→ Flow 6 canonical script + SoundMaker v3 quality
+→ Flow 6 Preparation Mode
+→ canonical script + SoundMaker v3 quality
 → Voice Production.docx
 → Flow 7 validation/delivery
+→ optional Generation Mode later
 ```
 
 ## Owners
 
 - `VOICE-EXTRACTION.md` — Flow 5 procedure;
 - `SCRIPT-PRODUCTION.md` — Flow 6 lifecycle/canonical artifact procedure;
-- `SOUNDMAKER.md` — **single operational Eleven v3 execution procedure** for an actual line;
+- `SOUNDMAKER.md` — **single operational Eleven v3 procedure** for preparation and generation;
 - `DOCX-FORMAT.md` — derived DOCX presentation;
 - `VOICE-VALIDATION.md` — Flow 7 evidence/delivery gate;
 - `references/elevenlabs/` — deep v3 reference only when needed.
@@ -29,25 +31,41 @@ Canonical project files:
 - `work/voice-acceptance.md` — current revision evidence;
 - `state/voice-state.yaml` — lifecycle state.
 
-## SoundMaker v3
+## Preparation Mode — normal script work
 
-Use `SOUNDMAKER.md` for real Eleven v3 prompt work. It owns the practical sequence:
+Use when audio generation/testing is not requested.
 
 ```text
-understand
-→ duration when needed
-→ voice fit
-→ performance map
-→ spoken beats
-→ punctuation / line structure / CAPS
-→ minimal Audio Tags
-→ pronunciation
-→ generation setup
-→ hear / diagnose
-→ approve / revise
+all Voice Requirements
+→ recover project context
+→ SoundMaker per-line construction
+→ cross-line speaker continuity / anti-repetition pass
+→ duration + pronunciation planning
+→ canonical script
+→ DOCX / script-level validation as requested
 ```
 
-Defaults when no stronger approved project calibration exists:
+Preparation Mode:
+
+- may prepare all Voice IDs in one pass;
+- does not require audio testing;
+- does not require `APPROVED` per line;
+- never invents measured duration, pronunciation proof, or generated-audio quality.
+
+## Generation Mode — optional later
+
+Use only when actual ElevenLabs output is requested:
+
+```text
+one active Voice ID
+→ one exact reviewed prompt
+→ generate / feedback / approve
+→ canonical sync
+```
+
+## SoundMaker v3 defaults
+
+When no stronger approved project calibration exists:
 
 ```text
 Model: Eleven v3
@@ -58,11 +76,34 @@ Enhance on an already-directed SoundMaker prompt: OFF
 
 Long-form v3 that develops whisper/volume/tone/accent drift or breaking may route to **Studio with Eleven v3**. This changes the production surface, not the model scope.
 
+## Project-level quality
+
+A full prepared script is reviewed not only line-by-line but also across the project for:
+
+- recurring speaker identity;
+- information progression between briefing/reminder/success lines;
+- accidental reuse of identical openings, beat chains, tag positions, CAPS climaxes, sentence rhythms, or closing patterns;
+- intentional repetition vs AI-like templating.
+
+Structural variety must never change approved facts or invent personality.
+
+## Duration hierarchy
+
+When timing matters:
+
+```text
+nearest approved similar sample (if one exists)
+→ calibrated project performance rate
+→ generic WPM fallback
+```
+
+With no approved audio, generic planning is valid and remains labeled **Estimated Duration**.
+
 ## Reference map
 
-Start at `references/elevenlabs/README.md` only when a deeper technical question exists.
+Open only for the active issue:
 
-- writing/tags → `v3-performance-writing.md`;
+- writing/tags → `references/elevenlabs/v3-performance-writing.md`;
 - timing → `v3-duration-planning.md`;
 - voice/Stability/Enhance/Studio/troubleshooting/pronunciation → `v3-production-reference.md`;
 - evidence provenance → `source-register.md`.
@@ -79,8 +120,8 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Builder/validator PASS does not prove semantic, visual, pronunciation, or audio quality.
+Builder/validator PASS does not prove generated-audio quality. Audio evidence is optional unless audio delivery is explicitly requested.
 
 ## Boundary
 
-SoundMaker/ElevenLabs knowledge shapes delivery only. It may not invent project facts, Voice moments, speaker/channel/trigger, mechanics, rewards, or lore. Generated audio is approved only when actual audio evidence was reviewed.
+SoundMaker/ElevenLabs knowledge shapes delivery only. It may not invent project facts, Voice moments, speaker/channel/trigger, mechanics, rewards, or lore. Generated audio becomes evidence only when actual generation/review is in scope.
