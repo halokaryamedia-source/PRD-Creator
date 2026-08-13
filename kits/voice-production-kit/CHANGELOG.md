@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.0 — 2026-08-13
+
+- hardened the **Flow 5 → Flow 6 interface** so SoundMaker receives complete communication intent before performance writing;
+- defined the direct mapping `Function + Purpose → Communication Job`, `Trigger + Channel → Listener State`, `Must communicate → Information Payload`, `Purpose → Listener Outcome`, `Speaker → Speaker Owner`, and `Must not add/repeat → Scope Guardrails`;
+- clarified Flow 5 field quality: Trigger must describe the actual gameplay/story state when material, Purpose must express the listener-facing result, and independently actionable required facts should stay distinct enough to conserve downstream;
+- added optional **`Timing Constraint`** to Flow 5 only for authoritative line/window/fixed-sync truth; kept it explicitly separate from Flow 6 `Estimated Duration`;
+- taught SoundMaker to consume the Flow 5 requirement first and reopen accepted PRD context only when genuinely necessary delivery context is missing;
+- required Communication Conservation and Voice Script Readiness to preserve any authoritative Flow 5 timing constraint without converting production estimates into source truth;
+- preserved Performance Shape, Landing, final wording, tags, CAPS/punctuation, Target Voice Profile, selected voice, Stability, Surface, and Estimated Duration as Flow 6 production interpretation;
+- added no new artifact family, lifecycle state, builder/validator mechanics, Flow 6 canonical entry field, dependency, or audio-test requirement.
+
 ## 1.8.0 — 2026-08-13
 
 - adapted the strongest PRD-Creator reasoning patterns into SoundMaker without adding a new Flow, file family, schema, score system, or audio-test requirement;
