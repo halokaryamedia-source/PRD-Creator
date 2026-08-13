@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, re, sys
+import argparse, html, re, sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from docx import Document
@@ -142,6 +142,28 @@ def validate_state(path: Path) -> str:
     return status
 
 
+def validate_project_html(path: Path, sections: list[str], script: dict[str, ScriptEntry]) -> list[str]:
+    source = path.read_text(encoding="utf-8")
+    issues=[]
+    if 'id="production-assets-style"' not in source:
+        issues.append("Project HTML missing Production Assets presentation")
+    if "Production Assets" not in source or "Voice Production" not in source:
+        issues.append("Project HTML missing Voice Production navigation/page labels")
+    if source.count('data-page-role="production-assets"') != len(sections):
+        issues.append("Project HTML Voice page count differs from canonical gameplay sections")
+    for vid,e in script.items():
+        prompt_id=f"voice-prompt-{vid.lower()}"
+        pattern=re.compile(rf'<pre class="voice-script-text" id="{re.escape(prompt_id)}">(.*?)</pre>', re.S)
+        matches=pattern.findall(source)
+        if len(matches)!=1:
+            issues.append(f"Project HTML must contain exact Voice prompt panel once for {vid}")
+            continue
+        actual=html.unescape(matches[0])
+        if actual != e.performance:
+            issues.append(f"Project HTML performance text differs from canonical script for {vid}")
+    return issues
+
+
 def validate_docx(path: Path, sections: list[str], script: dict[str, ScriptEntry]) -> list[str]:
     doc=Document(path)
     paras=[p.text for p in doc.paragraphs]
@@ -174,11 +196,12 @@ def validate_docx(path: Path, sections: list[str], script: dict[str, ScriptEntry
 
 
 def main() -> int:
-    ap=argparse.ArgumentParser(description="Mechanically validate the current Flow 7 Voice requirements/script/DOCX package.")
+    ap=argparse.ArgumentParser(description="Mechanically validate current Voice requirements/script and any derived project HTML/DOCX presentation.")
     ap.add_argument("project",type=Path, help="workspace/active/<project> directory")
     args=ap.parse_args(); p=args.project
-    req=p/"work/voice-requirements.md"; scr=p/"work/voice-production.md"; docx=p/"output/Voice Production.docx"; state=p/"state/voice-state.yaml"
-    missing=[str(x.relative_to(p)) for x in (req,scr,docx,state) if not x.is_file()]
+    req=p/"work/voice-requirements.md"; scr=p/"work/voice-production.md"; state=p/"state/voice-state.yaml"
+    html_path=p/"output/final.html"; docx=p/"output/Voice Production.docx"
+    missing=[str(x.relative_to(p)) for x in (req,scr,state) if not x.is_file()]
     if missing:
         print("VOICE VALIDATION FAILED: missing files: "+", ".join(missing),file=sys.stderr); return 2
     try:
@@ -195,14 +218,18 @@ def main() -> int:
                 issues.append(f"Type mismatch for {vid}")
             if requirements[vid].speaker.casefold()!=script[vid].speaker.casefold():
                 issues.append(f"Speaker mismatch for {vid}")
-        issues.extend(validate_docx(docx,sections,script))
+        if html_path.is_file():
+            issues.extend(validate_project_html(html_path,sections,script))
+        if docx.is_file():
+            issues.extend(validate_docx(docx,sections,script))
         if issues:
             print("VOICE VALIDATION FAILED")
             for x in issues: print("- "+x)
             return 1
         print("VOICE VALIDATION PASS")
         print(f"requirements={len(requirements)} script_entries={len(script)} sections={len(sections)}")
-        print("docx_structure=passed")
+        print("project_html="+("passed" if html_path.is_file() else "not_provided"))
+        print("docx="+("passed" if docx.is_file() else "optional_not_provided"))
         print("semantic_and_visual_review=required")
         return 0
     except (OSError,ValueError) as e:
