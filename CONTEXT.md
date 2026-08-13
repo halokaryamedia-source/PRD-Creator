@@ -7,7 +7,12 @@ Working branch: `Local`
 
 PRD-Creator turns uneven project material into a development-ready PRD and, when needed, downstream production assets derived from that accepted PRD.
 
-Voice is the currently implemented downstream asset lane.
+Current downstream presentation supports:
+
+- compact PRD-derived non-Voice asset requirements through optional `work/asset-requirements.md`;
+- Voice Production through the existing Flow 5–7 canonical sources.
+
+Both are composed into the same objective-first `04 Production Assets` section of `output/final.html`.
 
 ## Production sequence
 
@@ -21,7 +26,7 @@ Flow 6  Eleven v3 Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
-Voice Production is not a separate project/source intake. The accepted PRD is its normal upstream authority.
+Non-Voice Production Assets do **not** introduce another numbered Flow. Their actionable requirement contract is a bounded downstream extension after the accepted PRD. Voice Production is not a separate project/source intake; the accepted PRD remains its normal upstream authority.
 
 Normal project creation/revision is **Production Execution**. `development-brief` is only for changing PRD-Creator itself.
 
@@ -95,16 +100,48 @@ PRD
 = establishes that an asset is required
 
 Asset Requirement
-= concrete asset requirement derived from PRD
+= concrete production requirement derived from PRD
 
 Asset Production
-= exact material/configuration used to produce that asset
+= exact material/configuration used to produce the asset when a dedicated production lane needs it
 
 Final Asset
 = generated/created file used by development
 ```
 
 Do not turn Asset Requirements into a second PRD. Carry only the context/constraints needed to produce the asset correctly and retain traceability to PRD authority.
+
+## Non-Voice Production Asset contract
+
+Current bounded contract owner:
+
+```text
+kits/project-document-generator/PRODUCTION-ASSETS.md
+```
+
+When non-Voice asset requirements exist, the project may add:
+
+```text
+work/asset-requirements.md
+```
+
+The file is objective-first and intentionally simple. It supports only:
+
+```text
+3D Models
+UI & Information
+Audio
+Cinematic & Presentation
+```
+
+Rules:
+
+- state what must be made, not a component inventory;
+- animation/VFX/SFX directly attached to one model/UI/presentation stay inside that owning requirement;
+- UI includes exact player-facing text when known;
+- shared assets are defined once under `Global / Shared Assets`;
+- zero-count categories are absent;
+- Voice canonical content is never duplicated into this file.
 
 ## One project HTML
 
@@ -120,9 +157,20 @@ optional downstream Production Assets
 
 Production Assets is professional-only downstream content, not a new PRD semantic page family.
 
-Therefore a Voice-only production update may rerender `final.html` without reopening PRD acceptance when `work/content.md` and `work/render-data.json` are unchanged.
+Current navigation is objective-first:
 
-PRD core and downstream asset production retain separate canonical owners and acceptance evidence even though humans see one consolidated HTML.
+```text
+04 Production Assets
+   Global / Shared Assets      # only when present
+   <gameplay section title>
+      <Introduction | Objective N | Ending | accepted PRD label>
+```
+
+Categories appear inside the matching page only. They are not nested in the sidebar and empty categories are not rendered.
+
+Therefore downstream-only production updates may rerender `final.html` without reopening PRD acceptance when `work/content.md` and `work/render-data.json` are unchanged.
+
+PRD core, non-Voice asset requirements, and Voice Production retain separate canonical owners even though humans see one consolidated HTML.
 
 Production Assets extends the existing PRD navigation; it does not rebuild or renumber it. Gameplay/objective navigation remains under **03 Development** with the same accepted PRD page identities. Production Assets owns its separate professional top-level number **04**. A project without Production Assets keeps the same PRD-core navigation, and adding Production Assets does not shift PRD package/page codes.
 
@@ -136,7 +184,11 @@ Normal authority:
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/final.html → Production Assets → Voice
+→ output/final.html
+   → Production Assets
+      → matching gameplay section
+         → Audio
+            → Voice Production
 ```
 
 ### Flow 5
@@ -163,28 +215,29 @@ An actor voice may remain pending during Preparation Mode when a Target Voice Pr
 
 ### Production Assets → Voice
 
-Production Assets navigation exposes Voice once as the asset category, then one link per gameplay Voice section. Each link shows the gameplay/section title and the nearest accepted PRD label so a developer can identify ownership without memorizing objective order:
+Voice no longer owns a separate sidebar category. The objective-first Production Assets navigation identifies the gameplay section and accepted PRD label; Voice then appears inside that page's `Audio` category.
 
 ```text
 04 Production Assets
-   VOICE
    <gameplay section title>
-   <Introduction | Objective N | Ending | accepted PRD package label>
+      <Introduction | Objective N | Ending>
+
+page content
+→ Audio
+   → Voice Production
 ```
 
 Navigation labels may wrap naturally inside the sidebar and must remain readable without clipping or ellipsis.
 
-Every gameplay Voice page uses one consistent shell derived from accepted upstream data:
+A gameplay page containing Voice shows the common Production Assets section header, asset counts, then the `Audio` group. The detailed Voice Production block keeps:
 
 ```text
-Voice Production
-→ gameplay section title
-→ accepted PRD package label + gameplay context
-→ Voice line count + Primary Speaker
-→ compact Voice Setup for that gameplay section
+Voice line count + Primary Speaker
+→ compact Voice Setup
+→ Voice entries
 ```
 
-Each Voice entry then shows:
+Each Voice entry shows:
 
 ```text
 title
@@ -199,7 +252,7 @@ The developer-facing Context does not create a new Voice field: it is a presenta
 
 `Copy Prompt` copies only the exact canonical performance payload.
 
-Voice pages use their own Production Assets page identity (`04A`, `04B`, ...). They do not borrow or alter PRD gameplay package numbering.
+Production Assets pages use their own page identity (`04A`, `04B`, ...). They do not borrow or alter PRD gameplay package numbering.
 
 ### DOCX
 
@@ -226,9 +279,9 @@ Preparation Mode may finish with no audio evidence. Generated-audio quality can 
 
 `document.version` is PRD project/release metadata, not an edit counter.
 
-Adding or revising downstream Voice Production does not change PRD `document.version` unless PRD/project meaning itself enters a new declared revision.
+Adding or revising downstream Production Assets does not change PRD `document.version` unless PRD/project meaning itself enters a new declared revision.
 
-Voice Production maintains its own script/kit versioning.
+Voice Production maintains its own script/kit versioning. A shared compositor/presentation change does not require a Voice semantic version bump when Voice scope/content behavior is unchanged.
 
 # Proof direction
 
@@ -245,9 +298,9 @@ Do not replay unchanged browser/mobile/cross-flow tests for ceremony.
 
 Prefer the smallest complete solution.
 
-Do not add generic asset schemas/frameworks, separate Voice HTML, asset manifests, settings databases, workflow engines, approval layers, extra checksums, semantic scoring, or audio-test requirements without a proved current need.
+The concrete non-Voice asset need justified a narrow objective-first requirement/compositor extension. It did **not** justify a generic asset-management system.
 
-Current Production Assets implementation is Voice-specific by design; do not generalize it to SFX/Visual/etc. until a concrete downstream domain is actually being built.
+Do not add generic asset schemas/registries/frameworks, separate asset Flows/Kits, new root skills, second HTML outputs, asset manifests, component databases, workflow engines, approval layers, extra checksums, semantic scoring, or audio-test requirements without a proved current need.
 
 # Continuation
 
