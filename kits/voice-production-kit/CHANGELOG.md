@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.11.2 — 2026-08-13
+
+- restored the accepted PRD sidebar hierarchy in consolidated project HTML instead of rebuilding Overview/Gameplay Flow/Development inside the Production Assets compositor;
+- kept gameplay/objective sections nested under `03 Development` and stopped Production Assets from shifting accepted PRD package/page codes;
+- kept `04 Production Assets` as one additive professional navigation group;
+- collapsed repeated Voice labels into one `VOICE` category, with each section link showing gameplay section title + exact accepted PRD package label such as `Introduction`, `Objective N`, or `Ending`;
+- removed synthetic PRD navigation numbers from Voice section headings while retaining Production Assets page identities such as `04A`, `04B`, and later pages;
+- made Voice sidebar labels wrap naturally and verified no clipping/overflow at 1500px and 1000px desktop widths on Clockwork;
+- added focused regression coverage for preserved Development hierarchy, stable PRD page identity, one Voice category, and Voice section-label parity;
+- changed no Clockwork gameplay meaning, `render-data.json`, Voice wording, performance tags, Voice asset count, production configuration, or audio evidence state.
+
 ## 1.11.1 — 2026-08-13
 
 - unified every Production Assets → Voice gameplay page under one objective shell so short sections such as Antechamber no longer use a visually weaker first-page-only layout;
