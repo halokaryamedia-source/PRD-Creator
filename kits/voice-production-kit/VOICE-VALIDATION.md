@@ -36,6 +36,7 @@ PASS only when:
 - every independently actionable `Must communicate` fact that belongs in the moment remains clearly represented;
 - every `Must not add/repeat` guardrail is respected;
 - approved names, mechanics, result/state, sequence, and terminology retain their meaning;
+- any authoritative Flow 5 `Timing Constraint` remains respected by the planned wording/timing approach;
 - duration/polish did not silently remove required communication;
 - no unsupported project fact was introduced.
 
@@ -55,14 +56,15 @@ Review the current prepared scope once. The lenses below are questions inside on
 | Listener | Each line fits the approved Trigger/player state and gives the right amount of information/action at that moment. |
 | Character | Speaker identity stays coherent across lines without accidental template sameness. |
 | Performance | Emotional movement, beat shape, punctuation, CAPS, tags, and reactions serve the scene rather than decorate it. |
-| Timing | Estimated Duration/density is plausible and no required fact was sacrificed to fit it. |
+| Timing | Estimated Duration/density is plausible, any authoritative Flow 5 timing constraint is honored, and no required fact was sacrificed to fit it. |
 | Continuity | Briefing/reminder/success information progresses and nearby lines avoid accidental repeated openings, beat chains, tag positions, rhythms, CAPS climaxes, or closings. |
-| Operator | Type/Speaker ownership, duration, exact prompt, and any special setup are clear enough to use without production guesswork. |
+| Operator | Type/Speaker ownership, duration, exact prompt, and any special timing/pronunciation/setup action are clear enough to use without production guesswork. |
 
 During this same review also verify:
 
 - exact `Type` and `Speaker` remain compatible with Flow 5;
-- wording remains plausible for approved Channel, Trigger, and Function;
+- wording remains plausible for approved Function, Purpose, Channel, and Trigger;
+- optional `Timing Constraint` is treated as upstream truth, not as the same thing as Estimated Duration;
 - terminology is consistent;
 - material pronunciation risks are `confirmed`, `accepted_as_written`, or honestly left as `needs_confirmation`;
 - no unsupported Eleven v3 notation such as SSML `<break>` exists.
@@ -81,10 +83,10 @@ When a finding exists, fix the earliest owner that is actually wrong:
 project/gameplay/story fact
 → upstream PRD authority
 
-Voice moment / Speaker / Channel / Trigger / required communication
+Voice moment / Speaker / Channel / Trigger / Purpose / required communication / authoritative timing truth
 → Flow 5 voice-requirements.md
 
-correct requirement but weak wording/performance/duration
+correct requirement but weak wording/performance/Estimated Duration
 → Flow 6 / SOUNDMAKER.md / voice-production.md
 
 correct canonical script but wrong DOCX
@@ -159,7 +161,7 @@ Critical or Major findings block delivery.
 
 # 8. Existing state schema
 
-Keep `state/voice-state.yaml` compatible; do not add another state schema for the new review model.
+Keep `state/voice-state.yaml` compatible; do not add another state schema for this interface model.
 
 For script + DOCX delivery, existing fields may remain:
 
@@ -187,7 +189,7 @@ If audio is included, readiness additionally requires canonical prompt ↔ exact
 
 # Severity
 
-- **Critical** — wrong/missing Voice ID, Type or Speaker; wrong project fact; wrong Channel/Trigger; missing required communication; or canonical/generated prompt drift that would produce the wrong asset.
+- **Critical** — wrong/missing Voice ID, Type or Speaker; wrong project fact; wrong Channel/Trigger; missing required communication; ignored authoritative timing constraint; or canonical/generated prompt drift that would produce the wrong asset.
 - **Major** — material wording, v3 performance, continuity, pronunciation, conservation, or layout problem requiring production guesswork.
 - **Minor** — delivery remains correct/usable but clarity/notation/layout can improve without changing meaning.
 - **Suggestion** — optional polish.
