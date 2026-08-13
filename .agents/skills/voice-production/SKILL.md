@@ -12,10 +12,10 @@ Own semantic/product-contract judgment around Voice Production Kit Flow 5–7. D
 Use when the wrong contract concerns:
 
 - accepted PRD → Voice Requirements;
-- Voice ID / Type / speaker / channel / trigger / communication scope;
+- Voice ID / Type / Speaker / Channel / Trigger / communication scope;
 - Voice Requirements → final Eleven v3 wording;
-- SoundMaker preparation/generation behavior, duration planning, voice-fit judgment, or canonical prompt sync;
-- what script/DOCX/audio acceptance is allowed to claim.
+- SoundMaker preparation/generation behavior, duration planning, target voice profile/fit, or canonical prompt sync;
+- what canonical script / operator handoff / DOCX / audio acceptance is allowed to represent.
 
 Do not select merely because a task mentions ElevenLabs, DOCX, audio, Python, or CI. Pure builder/validator mechanics route to the nearest technical owner.
 
@@ -25,7 +25,7 @@ Do not select merely because a task mentions ElevenLabs, DOCX, audio, Python, or
 2. Recover existing project facts before asking the user.
 3. Identify the active owner:
    - Flow 5 → `VOICE-EXTRACTION.md` + `work/voice-requirements.md`;
-   - Flow 6 lifecycle/full-project preparation → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`;
+   - Flow 6 lifecycle/static output/full-project preparation → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`;
    - Flow 6 actual Eleven v3 generation/revision → `SOUNDMAKER.md`;
    - Flow 7 → `VOICE-VALIDATION.md`.
 4. Open only the deep Eleven v3 reference required by the active problem.
@@ -45,10 +45,12 @@ accepted PRD
 
 Rules:
 
-- Flow 5 owns **which Voice moments exist and what they must communicate**;
-- Flow 6 owns **final Eleven v3 wording/performance notation**, not Voice scope;
+- Flow 5 owns which Voice moments exist and what they must communicate;
+- Flow 6 owns final Eleven v3 wording/performance notation, not Voice scope;
+- canonical Flow 6 entries carry exact `Type` **and `Speaker` parity** plus Estimated Duration and exact performance text;
 - `SOUNDMAKER.md` is the operational procedure, not a second wording owner;
-- Flow 7 owns **revision-specific evidence**, not rewritten dialogue;
+- operator handoff is a concise derived view, not another persistent authority by default;
+- Flow 7 owns revision-specific evidence, not rewritten dialogue;
 - generated audio is evidence/output, never upstream project authority;
 - exact generated/approved wording must synchronize into `work/voice-production.md` before current alignment is claimed;
 - ElevenLabs references own production technique only.
@@ -56,9 +58,9 @@ Rules:
 ## Flow 5 judgment
 
 - extract only justified player-facing communication moments;
-- preserve supported speaker/channel/trigger/function;
+- preserve supported Speaker/Channel/Trigger/function;
 - do not invent a radio/communicator layer from references;
-- deduplicate repeated briefing unless trigger/function genuinely differs;
+- deduplicate repeated briefing unless Trigger/function genuinely differs;
 - `no_voice_required` is valid;
 - implementation-only detail does not automatically become narration.
 
@@ -68,38 +70,48 @@ SoundMaker scope is **Eleven v3 only**.
 
 ### Preparation Mode
 
-Use for script/DOCX work when audio generation is not requested.
-
 - full current Voice scope may be prepared in one bounded pass;
+- actual commercial voice selection may wait when a clear Target Voice Profile exists;
 - do not require audio testing or per-line generation approval;
-- apply per-line SoundMaker construction plus project-level speaker continuity/anti-repetition review;
+- apply per-line SoundMaker construction plus project-level speaker continuity/information progression/anti-template review;
 - duration and pronunciation remain planned/unverified until evidence exists.
 
 ### Generation Mode
 
-Use only when actual ElevenLabs generation/revision is requested.
-
 - one active Voice ID;
+- exact project Speaker known;
+- actual selected voice/settings;
 - one exact reviewed prompt;
 - actual feedback/approval loop;
 - approved generated wording syncs back to canonical script.
 
 Semantic guardrails:
 
-- preserve the exact Flow 5 Voice ID/Type set unless Flow 5 is reopened;
+- preserve the exact Flow 5 Voice ID/Type/Speaker set unless Flow 5 is reopened;
 - performance direction may shape delivery but not create facts/events;
 - duration targets are planned before final wording;
 - a flat script is not repaired by tag stacking;
 - batch preparation must detect accidental template repetition across related lines;
 - builder output is regenerated from canonical Markdown.
 
+## Static output judgment
+
+Keep output lean:
+
+- canonical entry → Voice ID/Title + Type + Speaker + Estimated Duration + exact performance block;
+- DOCX → Type · Speaker + Voice ID/Title + Estimated Duration + Performance Script;
+- operator handoff → shared setup once + active line metadata + exact prompt;
+- internal planning/QA/source metadata stays in its owning source and is not copied everywhere.
+
+Do not create a new handoff artifact merely to duplicate the canonical script/DOCX.
+
 ## Flow 7 judgment
 
 Validate the exact current revision for:
 
 - requirement coverage / factual fidelity;
-- Voice ID / Type parity;
-- speaker/channel/trigger consistency;
+- Voice ID / Type / Speaker parity;
+- Speaker/Channel/Trigger consistency;
 - terminology/pronunciation risk;
 - project-level performance continuity and accidental template repetition;
 - canonical prompt ↔ actual generated prompt alignment only when audio is in scope;
@@ -129,6 +141,7 @@ Before completion verify as applicable:
 
 - no unsupported Voice scope appeared;
 - wording preserves required project meaning;
+- Type and Speaker parity remain exact;
 - SoundMaker v3 procedure was applied where relevant;
 - Preparation Mode includes project-level continuity/anti-template review;
 - canonical script and derived artifacts agree;
