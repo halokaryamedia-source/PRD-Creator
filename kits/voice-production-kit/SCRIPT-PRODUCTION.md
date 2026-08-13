@@ -54,9 +54,13 @@ one active Voice ID
 
 Actual generation remains one Voice ID at a time to preserve prompt/settings/evidence clarity.
 
-## Canonical Flow 6 output
+# Output contract
 
-Create/update `work/voice-production.md`:
+Keep three output layers distinct. Do not create another handoff artifact merely to duplicate them.
+
+## 1. Canonical script — source of truth
+
+`work/voice-production.md` owns only the minimum stable production metadata plus the exact Eleven v3 wording:
 
 ```text
 # <Project> Voice Production
@@ -66,15 +70,87 @@ Source Voice Requirements: <revision/reference>
 ## 01. <Gameplay Section>
 
 ### <VOICE-ID> — <Title>
-Type: Main Story | Radio Communication | <explicit supported type>
+Type: <exact Flow 5 type>
+Speaker: <exact Flow 5 speaker>
 Estimated Duration: <range>
 
 ```performance
-<exact generation-ready Eleven v3 wording / performance notation>
+<exact generation-ready Eleven v3 text>
 ```
 ```
 
-Every Flow 5 Voice ID must appear exactly once unless Flow 5 is explicitly reopened.
+Required entry fields are exactly:
+
+- stable Voice ID + human-readable title;
+- `Type` — for Flow 5 parity and production grouping;
+- `Speaker` — so a production operator never has to infer which character/voice owns the line;
+- `Estimated Duration` — planning only until audio exists;
+- `performance` block — exact text intended for Eleven v3.
+
+Do **not** duplicate these Flow 5/internal fields into the canonical script:
+
+- Channel;
+- Trigger;
+- Purpose;
+- Must communicate / Must not add;
+- source refs;
+- performance-map reasoning;
+- word-budget/WPM calculation;
+- voice-fit rating;
+- QA checklist.
+
+They remain in their owning sources and are consulted when needed.
+
+Do not store a commercial ElevenLabs voice name, Stability, Surface, or temporary UI setting in every canonical entry. Those are Generation Mode operator settings unless the project later establishes a concrete need for durable setting metadata.
+
+Every Flow 5 Voice ID must appear exactly once unless Flow 5 is explicitly reopened. `Type` and `Speaker` must match Flow 5 exactly.
+
+## 2. Operator handoff — derived, concise, no new file by default
+
+When showing prepared/generated wording to the human ElevenLabs operator, derive a compact view from current project authority.
+
+Show project/speaker-level setup **once** when it is materially useful:
+
+```text
+Speaker: <character>
+Voice: <selected ElevenLabs voice | target voice profile if still preparation-only>
+Model: Eleven v3
+Stability: Natural | project-calibrated
+Surface: Speech Synthesis | Studio when applicable
+```
+
+Then show each active line with only:
+
+```text
+## <VOICE-ID> — <Title>
+Estimated Duration: <range>
+
+```text
+<exact Eleven v3 prompt>
+```
+```
+
+Add a short production note outside the prompt only when the operator must take an extra action, for example:
+
+- pronunciation dictionary / special pronunciation setup;
+- Fixed Duration / external sync requirement;
+- Studio instead of Speech Synthesis;
+- another explicit UI control required by the approved plan.
+
+Never place internal reasoning, WPM calculations, QA commentary, source refs, or instructions such as `paste this into ElevenLabs` inside the prompt block.
+
+## 3. DOCX — derived production reference
+
+`output/Voice Production.docx` is generated from the canonical script and exposes only operator-useful stable information:
+
+```text
+Type · Speaker
+Voice ID — Title
+Estimated Duration
+Performance Script
+```
+
+The DOCX does not become a settings database, requirements register, or second wording authority.
 
 ## Per-line SoundMaker quality
 
@@ -83,7 +159,7 @@ Every entry must pass `SOUNDMAKER.md` pre-generation construction even in Prepar
 ```text
 requirement meaning
 → duration first when specified
-→ voice fit
+→ voice requirement / target profile
 → performance map
 → spoken beats
 → punctuation / line structure / selective CAPS
@@ -148,7 +224,7 @@ actual approved audio → project-calibrated lock
 When Generation Mode is requested:
 
 1. use one active Voice ID;
-2. present one best prompt;
+2. present one best prompt using the operator handoff contract above;
 3. use the exact reviewed prompt revision for generation;
 4. if the user edits it before generation, that exact generated version supersedes the assistant draft;
 5. after approval, synchronize it into `work/voice-production.md`;
@@ -166,7 +242,8 @@ Before building DOCX:
 
 - every Flow 5 Voice ID appears exactly once;
 - no extra Voice ID exists;
-- Type matches Flow 5;
+- `Type` matches Flow 5;
+- `Speaker` matches Flow 5;
 - title, Estimated Duration, and performance block are present;
 - no `TBD`, `TODO`, `FIXME`, or `[OPEN]` placeholder remains;
 - no required fact is knowingly omitted;
