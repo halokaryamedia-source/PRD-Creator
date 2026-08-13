@@ -1,82 +1,53 @@
-# Voice Production Kit v1.11.1
+# Voice Production Kit v1.11.2
 
-Repository-backed workflow for accepted PRD → Voice asset requirements → high-quality Eleven v3 production wording → **Production Assets inside the same project HTML**, with audio generation and DOCX export optional.
+Repository-backed workflow for accepted PRD → Voice asset requirements → Eleven v3 production wording → **Production Assets inside the same project HTML**. DOCX and audio remain optional downstream scopes.
 
 ## Flow
 
 ```text
 handoff_ready PRD
 → Flow 5 Voice Requirements
-→ Flow 6 Preparation Mode
-     Voice Intent Completeness
-     → Performance Fill Map
-     → SoundMaker writing
-     → Communication Conservation
-     → integrated Voice Script Readiness
+→ Flow 6 Preparation
+   Voice Intent Completeness
+   → SoundMaker writing
+   → Communication Conservation
+   → Voice Script Readiness
 → canonical work/voice-production.md
 → rerender same output/final.html
-     PRD core
-     + Production Assets → Voice
+   PRD core
+   + Production Assets → Voice
 → Flow 7 validation/delivery
-→ optional Generation Mode later
 ```
 
 ## Owners
 
 - `VOICE-EXTRACTION.md` — which Voice assets are required by the accepted PRD;
-- `SCRIPT-PRODUCTION.md` — canonical production/output lifecycle;
-- `SOUNDMAKER.md` — Eleven v3 preparation/generation quality;
+- `SCRIPT-PRODUCTION.md` — canonical script/output lifecycle;
+- `SOUNDMAKER.md` — Eleven v3 writing/performance procedure;
 - `VOICE-VALIDATION.md` — Flow 7 readiness/evidence;
-- `DOCX-FORMAT.md` — optional DOCX export only;
-- `references/elevenlabs/` — deep v3 reference only when needed.
+- `DOCX-FORMAT.md` — optional DOCX export only.
 
-## Project authority
+## Authority
 
 ```text
-PRD
+accepted PRD
 = project/gameplay truth
 
-voice-requirements.md
-= what Voice assets must be produced
+work/voice-requirements.md
+= Voice asset scope + Trigger/Purpose/required communication
 
-voice-production.md
-= selected actor voice when known + exact text to produce
+work/voice-production.md
+= exact production wording + Estimated Duration + Speaker parity
 
-final.html → Production Assets → Voice
-= human/operator presentation
+output/final.html → Production Assets → Voice
+= derived developer/operator presentation
 ```
 
 The HTML is derived. It never becomes a second Voice wording authority.
 
-## Flow 5 → Flow 6 interface
-
-A Voice Requirement lets SoundMaker recover:
-
-```text
-Communication Job   ← Function + Purpose
-Listener State      ← Trigger + Channel
-Information Payload ← Must communicate
-Listener Outcome    ← Purpose
-Speaker Owner       ← Speaker
-Hard Timing Truth   ← optional Timing Constraint
-Scope Guardrails    ← Must not add/repeat
-```
-
-Flow 5 does not pre-write dialogue or choose performance craft.
-
-`Timing Constraint` is optional accepted source truth. `Estimated Duration` remains Flow 6 production planning.
-
 ## Canonical Voice Production
 
-The canonical script may define Voice Cast once:
-
-```text
-Voice Cast:
-- Foreman Brann: William Shanks - Rich and Deep
-- Vex: <selected ElevenLabs voice>
-```
-
-Then gameplay-ordered entries use:
+The script may define shared production setup once before gameplay sections. Each Voice entry then requires:
 
 ```text
 ### <VOICE-ID> — <Title>
@@ -90,7 +61,7 @@ Estimated Duration: <range>
 ```
 ```
 
-Do not repeat actor voice names, Trigger, Purpose, or other Flow 5 metadata in every canonical Flow 6 entry.
+`Type` and `Speaker` must match Flow 5. Do not duplicate Trigger, Purpose, requirement bullets, source refs, reasoning, or QA fields into every canonical Flow 6 entry.
 
 ## Production Assets → Voice
 
@@ -102,76 +73,53 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-If `work/voice-production.md` exists, the renderer appends professional-only Production Assets pages and derives operator context from the accepted upstream owners instead of duplicating it into the canonical script.
-
-Visible content stays intentionally practical:
+Production Assets **extends the accepted PRD navigation**. It does not rebuild Development or renumber PRD pages.
 
 ```text
-Gameplay Order / objective shell
+03 Development
+   global development pages
+   gameplay/objective sections
+
+04 Production Assets
+   VOICE
+   <gameplay section title>
+   <accepted PRD package label>
+```
+
+`VOICE` appears once. Each link shows the section title plus its accepted PRD label (`Introduction`, `Objective N`, `Ending`, or the project's actual label). Sidebar labels wrap naturally instead of being truncated.
+
+Each Voice section page shows:
+
+```text
+Voice Production
+→ gameplay section title
 → accepted PRD package label + gameplay context
 → Voice line count + Primary Speaker
-→ compact Voice Setup for that gameplay section
+→ compact Voice Setup
+```
 
-per Voice line:
-→ title
+Each Voice line shows:
+
+```text
+title
 → <PRD package label> · Voice Line X/Y
 → Context = exact Flow 5 Trigger
 → Speaker · Estimated Duration
-→ exact Eleven v3 text with visible performance-direction tags
+→ exact Eleven v3 prompt
 → Copy Prompt
 ```
 
-The developer-facing `Context` is **derived from the existing Flow 5 Trigger**. It is not a new Flow 6 field and must not be rewritten independently in `voice-production.md`.
+The developer-facing Context is the existing Flow 5 Trigger projected into HTML; it is not a new Flow 6 field. `Copy Prompt` copies only the exact canonical `performance` block.
 
-Scripts remain in gameplay/Trigger order. `Copy Prompt` copies only the exact canonical `performance` block.
+Do not display Flow 5 Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM math, or QA notes in this operator view.
 
-Do not display Flow 5 `Purpose`, `Must communicate`, `Must not add`, source refs, Performance Fill Map, WPM math, or QA notes in this operator view.
+## Preparation boundary
 
-### Consolidated navigation
-
-When Production Assets exists, the one-document professional navigation is:
-
-```text
-01 Overview
-02 Gameplay Flow
-03 Development
-04 Production Assets
-05+ gameplay/objective packages
-```
-
-Package numbering shifts only in the **consolidated HTML presentation** so Production Assets owns number 04 without collision. The PRD canonical package order/meaning is unchanged, and a project with no Production Assets keeps the original PRD-core navigation/numbering.
-
-## Preparation Mode
-
-Preparation Mode may prepare the full Voice scope without audio testing or per-line generation approval. Every standalone Voice ID begins with at least one deliberate initial performance-direction tag; extra transition tags are used only when the scene changes audibly.
-
-An actor voice can remain unselected while a Target Voice Profile is sufficient for script preparation. The HTML honestly shows `Voice selection pending` rather than inventing one.
-
-Actual Generation Mode requires the active Speaker's intended ElevenLabs voice to be selected.
-
-## Generation Mode
-
-```text
-one Voice ID
-→ actor voice selected
-→ exact reviewed prompt
-→ generate / feedback / approve
-→ sync canonical production
-→ rerender same final.html if changed
-```
-
-Default when no stronger project calibration exists:
-
-```text
-Model: Eleven v3
-Stability: Natural
-Surface: Speech Synthesis
-Enhance: OFF on directed SoundMaker prompts
-```
+Preparation may process the full current Voice scope without audio evidence. Every standalone Voice ID begins with at least one deliberate initial performance-direction tag; extra transition tags are used only when the scene changes audibly.
 
 ## Optional DOCX
 
-Generate `output/Voice Production.docx` only when a portable export is requested or materially useful. It is not a prerequisite for normal project HTML Voice delivery.
+Generate `output/Voice Production.docx` only when a portable export is requested or materially useful. It is not a prerequisite for normal project-HTML Voice delivery.
 
 ## Validation
 
@@ -191,22 +139,22 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-When `final.html` exists, the validator checks:
+When `final.html` exists, validation requires:
 
-- Production Assets Voice presentation/navigation exists;
+- accepted PRD navigation/page identity is preserved;
+- one Production Assets Voice category exists;
+- section link title/package-label parity exists;
 - objective shell/page count matches canonical Voice sections;
 - line-position/context presentation exists for every canonical Voice entry;
-- the visible developer context preserves the exact Flow 5 Trigger;
+- visible developer Context preserves the exact Flow 5 Trigger;
 - hidden Copy source preserves exact canonical `performance` text.
 
-When DOCX exists, it checks that optional export too.
+Visual PASS still requires actual rendered/browser evidence.
 
 ## Revision discipline
 
-Fix the first wrong owner and replay only invalidated scope.
-
-A Voice-only wording/actor change rerenders the consolidated HTML but does not reopen PRD acceptance when PRD canonical meaning is unchanged.
+Fix the first wrong owner and replay only invalidated scope. A Voice-only wording/setup change rerenders the consolidated HTML but does not reopen PRD acceptance when PRD canonical meaning is unchanged.
 
 ## Stop rule
 
-Stop when current Voice Production is ready and the requested consolidated output is current. Do not create a separate Voice HTML, asset manifest, settings database, generic asset framework, extra score system, or audio test requirement without a concrete need.
+Stop when current Voice Production is ready and the requested consolidated output is current. Do not create a separate Voice HTML, asset manifest, settings database, generic asset framework, extra score system, or proof layer without a concrete need.
