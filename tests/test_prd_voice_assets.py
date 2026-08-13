@@ -105,6 +105,8 @@ class ProjectHtmlVoiceAssets(unittest.TestCase):
         self.assertIn("Voice Line", html)
         self.assertIn("1/1", html)
         self.assertIn('class="voice-objective-shell"', html)
+        self.assertIn('class="voice-objective-summary"', html)
+        self.assertIn('class="voice-page-setup"', html)
         self.assertIn('class="voice-script-context"', html)
         self.assertIn('data-voice-copy="voice-prompt-vo-intro-01"', html)
         self.assertIn('class="voice-copy-label"', html)
