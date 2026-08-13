@@ -14,7 +14,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
 import _engine  # noqa: E402
-import production_assets  # noqa: E402
+import production_assets_objective as production_assets  # noqa: E402
 
 GOLDEN_SPEC_MARKER = "aftershock-v0.2"
 SAMPLE_META_NAMES = (
