@@ -39,10 +39,30 @@ Allowed categories are intentionally small:
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 A category with zero assets is omitted completely. Do not render empty headings, `0 Assets`, `None`, or placeholder cards.
+
+## Asset discovery and recommendation pass
+
+Production Assets must not depend on the source explicitly naming every model, UI element, sound, or presentation asset.
+
+After the gameplay/PRD meaning is complete, inspect each shared/journey/gameplay section once and ask:
+
+```text
+What custom player-visible, player-readable, player-heard, or authored presentation asset
+must exist for this accepted gameplay to work as specified?
+```
+
+Use this rule:
+
+1. **Explicit requirement** — if accepted authority already names or clearly requires the asset, carry it directly into Production Assets.
+2. **Necessary production implication** — if accepted gameplay logically requires a custom asset even though the source never named it, derive the asset need rather than leaving production to guess. Example: a gameplay rule that requires the player to repair three broken power nodes justifies a `Power Node` model requirement with the necessary Broken/Restored states.
+3. **Material design choice** — if choosing a specific form, name, content, or behavior would change gameplay, lore, player communication, or another accepted project fact, resolve that choice upstream through the existing Completion/Proposal process before finalizing the asset requirement.
+4. **Production-only recommendation** — when several production forms can satisfy the same accepted gameplay without changing project meaning, choose one practical recommendation at the production layer. Do not create another approval framework or pretend the recommendation came from the source.
+
+Recommend only assets with a real gameplay, information, audio, or presentation function. Do not invent decorative models, extra VFX, UI, or sounds merely to fill a category or make the document look complete.
 
 ## Asset requirement rule
 
@@ -76,6 +96,8 @@ Use for player-facing information such as HUD, hologram, objective text, interac
 
 State its function, when it appears/changes/disappears, and include the exact player-facing text whenever that text is already knowable.
 
+Classify by player-facing function rather than implementation technique. A health bar or hologram still belongs here even if its Minecraft implementation uses geometry, entities, textures, or animation.
+
 ### Audio
 
 Use only for audio that is a meaningful independent production asset, such as Voice Over, narration, music, ambience, countdown/global cue, or other sound not better owned by a model/UI/presentation requirement.
@@ -84,11 +106,13 @@ An SFX that exists only because one model/object performs an action stays inside
 
 Voice entries are not duplicated into `asset-requirements.md`; the renderer merges canonical Voice Production into the Audio section of the matching gameplay page.
 
-### Cinematic & Presentation
+### Visual Effects & Presentation
 
-Use for a complete authored presentation sequence such as intro, ending, cutscene, objective reveal, camera sequence, or transition presentation.
+Use for standalone visual effects or complete authored presentation sequences whose primary function is not owned by one model/UI asset. Examples include environmental/area VFX, directional or boundary effects, intro/ending presentation, cutscene, objective reveal, camera sequence, fade, or transition presentation.
 
-Describe the sequence the player must see and when it runs. Do not split the same sequence into separate Camera / Animation / VFX / SFX asset entries.
+Describe what the player must see, when it appears/runs, and any important state or timing relationship. Do not split one presentation sequence into separate Camera / Animation / VFX / SFX asset entries.
+
+A spark, glow, animation, or effect that exists only as part of one model/UI asset remains inside that owning requirement instead of becoming a separate Visual Effects & Presentation entry.
 
 ## Shared assets
 
@@ -109,7 +133,7 @@ Format:
 
 ## <Global / Shared Assets | accepted gameplay section title>
 
-### <3D Models | UI & Information | Audio | Cinematic & Presentation>
+### <3D Models | UI & Information | Audio | Visual Effects & Presentation>
 
 #### <Asset Name>
 Requirement: <exactly what must be made and the important result/state behavior>
@@ -120,9 +144,9 @@ Content:
 ```
 ````
 
-`Requirement` is mandatory. `Usage` and `Content` are included only when useful. Do not add IDs, component lists, status matrices, confidence scores, or implementation-file metadata by default.
+`Requirement` is mandatory. `Usage` and `Content` are included only when useful. Do not add IDs, component lists, status matrices, confidence scores, recommendation flags, or implementation-file metadata by default.
 
-Every non-shared section must map to an accepted PRD gameplay/journey section. If the PRD does not establish enough product truth to define an asset responsibly, resolve that semantic gap upstream instead of inventing it in the asset file or renderer.
+Every non-shared section must map to an accepted PRD gameplay/journey section. If a material asset choice would change accepted project meaning, resolve that semantic gap upstream instead of inventing it in the asset file or renderer. Production-only recommendations that preserve accepted gameplay may stay at this downstream abstraction.
 
 ## HTML presentation
 
@@ -166,4 +190,5 @@ Voice keeps its current detailed production card (Trigger/Context, Speaker, Esti
 - no second default HTML;
 - no duplicated Voice canonical data inside `asset-requirements.md`;
 - no asset requirement invented by the renderer;
+- no optional/decorative asset invented merely to fill a taxonomy;
 - stop once the accepted PRD-derived requirements are actionable and the consolidated output is readable.
