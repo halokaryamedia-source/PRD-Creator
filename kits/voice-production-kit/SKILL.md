@@ -1,7 +1,7 @@
 ---
 name: voice-production-kit
-description: Extract traceable voice requirements from accepted PRDs, prepare high-quality Eleven v3 performance wording through SoundMaker, derive Voice Production DOCX output, and optionally support one-line-at-a-time generation/revision without inventing upstream project facts.
-version: 1.6.0
+description: Extract traceable voice requirements from accepted PRDs, prepare high-quality Eleven v3 performance wording through SoundMaker, derive compact operator-ready Voice Production output, and optionally support one-line-at-a-time generation/revision without inventing upstream project facts.
+version: 1.7.0
 ---
 
 # Voice Production Kit
@@ -15,9 +15,9 @@ version: 1.6.0
 ## Routing
 
 - Flow 5 → `VOICE-EXTRACTION.md`.
-- Flow 6 lifecycle/artifact → `SCRIPT-PRODUCTION.md`.
-- Eleven v3 wording quality → `SOUNDMAKER.md`.
-- DOCX mechanics → `DOCX-FORMAT.md`.
+- Flow 6 lifecycle/static output contract → `SCRIPT-PRODUCTION.md`.
+- Eleven v3 wording quality/operator prompt → `SOUNDMAKER.md`.
+- DOCX presentation → `DOCX-FORMAT.md`.
 - Flow 7 → `VOICE-VALIDATION.md`.
 - Deep Eleven v3 question → only the matching file under `references/elevenlabs/`.
 
@@ -26,10 +26,26 @@ Do not load all reference material by default.
 ## Canonical owners
 
 - `work/voice-requirements.md` — which Voice moments exist and what they must communicate;
-- `work/voice-production.md` — final spoken/performance wording, including exact approved generated wording when generation occurs;
-- `output/Voice Production.docx` — derived presentation;
+- `work/voice-production.md` — final spoken/performance wording;
+- `output/Voice Production.docx` — derived operator presentation;
 - `work/voice-acceptance.md` — revision-specific evidence;
 - `state/voice-state.yaml` — lifecycle state.
+
+## Canonical entry contract
+
+Every Flow 6 entry requires:
+
+```text
+Voice ID + Title
+Type
+Speaker
+Estimated Duration
+exact performance block
+```
+
+`Type` and `Speaker` must match Flow 5. Do not duplicate Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, performance maps, voice-fit ratings, or QA notes into the canonical entry.
+
+The prompt/performance block contains only exact text intended for Eleven v3.
 
 ## SoundMaker modes
 
@@ -37,22 +53,34 @@ Do not load all reference material by default.
 
 ### Preparation Mode
 
-Use for script/DOCX work when audio generation is not requested.
-
 - full current Voice scope may be prepared in one pass;
-- every Voice ID gets per-line SoundMaker quality;
-- run project-level speaker continuity and anti-repetition review;
+- actual commercial voice selection may wait if a clear Target Voice Profile exists;
+- run project-level speaker continuity, information progression, and anti-template review;
 - duration/pronunciation remain planned evidence, not generated proof;
 - do not require audio testing or `APPROVED` per line.
 
 ### Generation Mode
 
-Use only when actual ElevenLabs generation/revision is requested.
-
 - one active Voice ID;
 - one exact reviewed prompt;
-- actual feedback/approval loop;
+- actual selected voice/settings;
+- feedback/approval loop;
 - exact approved generated wording syncs back into `work/voice-production.md`.
+
+## Operator handoff
+
+Do not create another handoff artifact by default. Derive a concise view from current authority.
+
+State shared speaker/voice/settings once when useful, then show per line only:
+
+```text
+Voice ID — Title
+Speaker
+Estimated Duration
+exact Eleven v3 prompt
+```
+
+Add an external production note only when the operator needs an extra action such as pronunciation setup, Fixed Duration, or Studio routing.
 
 ## Default v3 baseline
 
@@ -74,7 +102,6 @@ Long-form instability may route to Studio while keeping Eleven v3.
 - Voice scope cannot change silently after Flow 5.
 - Performance technique cannot create project facts/speakers/channels/triggers/mechanics/rewards/outcomes.
 - Duration is planned before final wording when timing matters.
-- Voice fit is evaluated before adding more direction.
 - Spoken wording/beat architecture precede punctuation/CAPS/Audio Tags.
 - A flat script is not repaired by tag stacking.
 - Batch preparation includes cross-line continuity/anti-template review.
