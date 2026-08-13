@@ -25,6 +25,7 @@ class ScriptEntry:
     voice_id: str
     title: str
     voice_type: str = ""
+    speaker: str = ""
     duration: str = ""
     performance: str = ""
     section: str = ""
@@ -104,6 +105,8 @@ def parse_script(path: Path) -> tuple[list[str], dict[str, ScriptEntry]]:
             meta=lines[i].rstrip()
             if meta.startswith("Type:"):
                 e.voice_type=meta.split(":",1)[1].strip(); i+=1; continue
+            if meta.startswith("Speaker:"):
+                e.speaker=meta.split(":",1)[1].strip(); i+=1; continue
             if meta.startswith("Estimated Duration:"):
                 e.duration=meta.split(":",1)[1].strip(); i+=1; continue
             if meta.strip()=="```performance":
@@ -116,7 +119,12 @@ def parse_script(path: Path) -> tuple[list[str], dict[str, ScriptEntry]]:
                 break
             i+=1
         if not current_section: raise ValueError(f"{vid} appears before a section")
-        for k,v in {"Type":e.voice_type,"Estimated Duration":e.duration,"Performance Script":e.performance}.items():
+        for k,v in {
+            "Type":e.voice_type,
+            "Speaker":e.speaker,
+            "Estimated Duration":e.duration,
+            "Performance Script":e.performance,
+        }.items():
             if not v: raise ValueError(f"{vid} missing {k}")
         out[vid]=e
     if not out: raise ValueError("No Voice IDs found in script")
@@ -152,6 +160,8 @@ def validate_docx(path: Path, sections: list[str], script: dict[str, ScriptEntry
     for vid,e in script.items():
         if full.count(vid) != 1:
             issues.append(f"DOCX must contain {vid} exactly once")
+        if f"Speaker: {e.speaker}" not in full:
+            issues.append(f"DOCX missing speaker for {vid}: {e.speaker}")
         if e.duration not in full:
             issues.append(f"DOCX missing duration for {vid}: {e.duration}")
         if norm(e.performance) not in flat:
@@ -181,7 +191,10 @@ def main() -> int:
             if mi: issues.append("Script missing Voice IDs: "+", ".join(mi))
             if ex: issues.append("Script has extra Voice IDs: "+", ".join(ex))
         for vid in sorted(set(requirements)&set(script)):
-            if requirements[vid].voice_type.casefold()!=script[vid].voice_type.casefold(): issues.append(f"Type mismatch for {vid}")
+            if requirements[vid].voice_type.casefold()!=script[vid].voice_type.casefold():
+                issues.append(f"Type mismatch for {vid}")
+            if requirements[vid].speaker.casefold()!=script[vid].speaker.casefold():
+                issues.append(f"Speaker mismatch for {vid}")
         issues.extend(validate_docx(docx,sections,script))
         if issues:
             print("VOICE VALIDATION FAILED")
