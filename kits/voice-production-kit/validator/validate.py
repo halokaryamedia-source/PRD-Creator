@@ -152,15 +152,27 @@ def validate_state(path: Path) -> str:
     return status
 
 
-def validate_project_html(path: Path, sections: list[str], script: dict[str, ScriptEntry]) -> list[str]:
+def validate_project_html(
+    path: Path,
+    sections: list[str],
+    script: dict[str, ScriptEntry],
+    requirements: dict[str, Requirement],
+) -> list[str]:
     source = path.read_text(encoding="utf-8")
     issues=[]
     if 'id="production-assets-style"' not in source:
         issues.append("Project HTML missing Production Assets presentation")
-    if "Production Assets" not in source or "Voice Production" not in source:
-        issues.append("Project HTML missing Voice Production navigation/page labels")
+    if "Production Assets" not in source or "production-assets-nav" not in source:
+        issues.append("Project HTML missing Production Assets Voice navigation")
     if source.count('data-page-role="production-assets"') != len(sections):
         issues.append("Project HTML Voice page count differs from canonical gameplay sections")
+    if source.count('class="voice-objective-shell"') != len(sections):
+        issues.append("Project HTML objective shell count differs from canonical gameplay sections")
+    if source.count('class="voice-script-position"') != len(script):
+        issues.append("Project HTML Voice line-position count differs from canonical script")
+    if source.count('class="voice-script-context"') != len(script):
+        issues.append("Project HTML Voice developer-context count differs from canonical script")
+
     for vid,e in script.items():
         prompt_id=f"voice-prompt-{vid.lower()}"
         pattern=re.compile(rf'<pre class="voice-script-text" id="{re.escape(prompt_id)}">(.*?)</pre>', re.S)
@@ -171,6 +183,12 @@ def validate_project_html(path: Path, sections: list[str], script: dict[str, Scr
         actual=html.unescape(matches[0])
         if actual != e.performance:
             issues.append(f"Project HTML performance text differs from canonical script for {vid}")
+
+        requirement=requirements.get(vid)
+        if requirement is not None:
+            expected_trigger=html.escape(requirement.trigger, quote=True)
+            if expected_trigger not in source:
+                issues.append(f"Project HTML missing Flow 5 Trigger context for {vid}")
     return issues
 
 
@@ -229,7 +247,7 @@ def main() -> int:
             if requirements[vid].speaker.casefold()!=script[vid].speaker.casefold():
                 issues.append(f"Speaker mismatch for {vid}")
         if html_path.is_file():
-            issues.extend(validate_project_html(html_path,sections,script))
+            issues.extend(validate_project_html(html_path,sections,script,requirements))
         if docx.is_file():
             issues.extend(validate_docx(docx,sections,script))
         if issues:
