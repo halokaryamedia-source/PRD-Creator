@@ -1,10 +1,18 @@
-flow: 6
-status: voice_script_ready
+flow: 7
+status: voice_delivery_ready
 source_handoff: state/handoff-state.yaml
 source_prd_revision: Final Review
 requirements: work/voice-requirements.md
 script: work/voice-production.md
-html: output/final.html
+project_html: output/final.html
+acceptance: work/voice-acceptance.md
 unresolved_upstream: 0
+mechanical: passed
+coverage: passed
+terminology_pronunciation: passed
+speaker_channel_trigger: passed
+performance_continuity: passed
+project_html_visual: passed
 audio_evidence: not_provided
-next_step: flow_7_voice_validation_delivery
+delivery_scope: project_html
+next_step: complete_or_soundmaker_v3_generation
