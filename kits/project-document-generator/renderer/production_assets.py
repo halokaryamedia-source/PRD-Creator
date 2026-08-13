@@ -9,6 +9,8 @@ from core import bi, esc, i18n, page
 
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
+PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
+PERFORMANCE_TAG_RE = re.compile(r"\[[^\[\]\r\n]+\]")
 VOICE_CAST_LABEL = "Voice Cast:"
 STYLE_MARKER = 'id="production-assets-style"'
 SCRIPT_MARKER = 'id="production-assets-copy-script"'
@@ -33,6 +35,11 @@ class VoiceSection:
 class VoiceProduction:
     cast: dict[str, str]
     sections: list[VoiceSection]
+
+
+def _has_initial_performance_tag(performance: str) -> bool:
+    first = next((line.strip() for line in performance.splitlines() if line.strip()), "")
+    return bool(first and PERFORMANCE_TAG_LINE_RE.fullmatch(first))
 
 
 def parse_voice_production(path: Path) -> VoiceProduction:
@@ -118,6 +125,10 @@ def parse_voice_production(path: Path) -> VoiceProduction:
             }.items():
                 if not value:
                     raise ValueError(f"{entry.voice_id} is missing {label}.")
+            if not _has_initial_performance_tag(entry.performance):
+                raise ValueError(
+                    f"{entry.voice_id} performance must begin with at least one initial [performance direction] tag."
+                )
             current_section.entries.append(entry)
             continue
 
@@ -160,12 +171,33 @@ def _cast_html(doc: VoiceProduction) -> str:
         voice = _voice_for(doc.cast, speaker)
         cards.append(
             '<article class="voice-cast-card">'
-            f'<b>{esc(speaker)}</b><span>{esc(voice)}</span></article>'
+            f'<span class="voice-cast-speaker">{esc(speaker)}</span>'
+            f'<strong class="voice-cast-voice">{esc(voice)}</strong>'
+            '<span class="voice-cast-model">Eleven v3</span>'
+            '</article>'
         )
     return (
-        f'<h3 class="package-section-heading">{i18n(bi("Voice Cast", "Voice Cast"))}</h3>'
+        f'<h3 class="package-section-heading">{i18n(bi("Voice Setup", "Setup Voice"))}</h3>'
         f'<div class="voice-cast-grid">{"".join(cards)}</div>'
     )
+
+
+def _performance_html(performance: str) -> str:
+    parts: list[str] = []
+    for raw in performance.splitlines():
+        stripped = raw.strip()
+        if not stripped:
+            parts.append('<div class="voice-script-gap" aria-hidden="true"></div>')
+            continue
+        if PERFORMANCE_TAG_LINE_RE.fullmatch(stripped):
+            tags = "".join(
+                f'<span class="voice-performance-tag">{esc(tag)}</span>'
+                for tag in PERFORMANCE_TAG_RE.findall(stripped)
+            )
+            parts.append(f'<div class="voice-performance-cues">{tags}</div>')
+            continue
+        parts.append(f'<div class="voice-script-line">{esc(raw)}</div>')
+    return "".join(parts)
 
 
 def _entry_html(entry: VoiceEntry, sequence_no: int) -> str:
@@ -173,16 +205,26 @@ def _entry_html(entry: VoiceEntry, sequence_no: int) -> str:
     return (
         '<article class="voice-script-card">'
         '<div class="voice-script-head">'
-        '<div>'
-        f'<span class="voice-script-index">{sequence_no:02d}</span>'
+        '<span class="voice-script-index">'
+        f'{sequence_no:02d}'
+        '</span>'
+        '<div class="voice-script-heading">'
         f'<h4>{esc(entry.title)}</h4>'
-        '</div>'
         '<div class="voice-script-meta">'
-        f'<span><b>{i18n(bi("Actor", "Actor"))}</b>{esc(entry.speaker)}</span>'
-        f'<span><b>{i18n(bi("Estimated", "Estimasi"))}</b>{esc(entry.duration)}</span>'
-        '</div></div>'
+        f'<span>{esc(entry.speaker)}</span>'
+        '<span aria-hidden="true">·</span>'
+        f'<span>{esc(entry.duration)}</span>'
+        '</div>'
+        '</div>'
+        '</div>'
+        '<div class="voice-script-panel">'
+        '<div class="voice-script-panel-head">'
+        f'<span class="voice-script-panel-label">{i18n(bi("ElevenLabs Text", "Teks ElevenLabs"))}</span>'
+        f'<button class="voice-copy-button" data-voice-copy="{prompt_id}" type="button">Copy</button>'
+        '</div>'
         f'<pre class="voice-script-text" id="{prompt_id}">{esc(entry.performance)}</pre>'
-        f'<button class="voice-copy-button" data-voice-copy="{prompt_id}" type="button">Copy Text</button>'
+        f'<div class="voice-script-display">{_performance_html(entry.performance)}</div>'
+        '</div>'
         '</article>'
     )
 
@@ -193,8 +235,8 @@ def voice_pages(render_data: dict, doc: VoiceProduction) -> list[str]:
     pages: list[str] = []
     sequence_no = 1
     intro = bi(
-        "Use the assigned actor voice and copy each script exactly into ElevenLabs in gameplay order.",
-        "Gunakan actor voice yang ditentukan dan copy setiap script ke ElevenLabs sesuai urutan gameplay.",
+        "Choose the assigned ElevenLabs voice, then copy each script exactly in gameplay order.",
+        "Gunakan voice ElevenLabs yang ditentukan, lalu copy setiap script secara tepat sesuai urutan gameplay.",
     )
 
     for section_index, section in enumerate(doc.sections):
@@ -249,28 +291,36 @@ def voice_navigation(render_data: dict, doc: VoiceProduction) -> str:
 
 
 VOICE_STYLE = r'''<style id="production-assets-style">
-.production-assets-page .voice-production-intro{max-width:760px}
-.voice-cast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:14px 0 28px;border:1px solid var(--line)}
-.voice-cast-card{min-height:92px;padding:16px 17px;background:var(--paper)}
-.voice-cast-card+.voice-cast-card{border-left:1px solid var(--line)}
-.voice-cast-card b{display:block;margin-bottom:7px;color:var(--blue);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase}
-.voice-cast-card span{display:block;color:var(--navy);font-size:.9rem;font-weight:700;line-height:1.4}
-.voice-script-list{display:grid;gap:16px;margin-top:12px}
-.voice-script-card{position:relative;padding:18px 19px 17px;border:1px solid var(--line);background:var(--soft);break-inside:avoid}
-.voice-script-head{display:flex;justify-content:space-between;gap:22px;align-items:flex-start}
-.voice-script-head>div:first-child{display:flex;gap:12px;align-items:baseline;min-width:0}
-.voice-script-index{color:var(--amber);font-size:.68rem;font-weight:800;letter-spacing:.08em}
-.voice-script-head h4{margin:0;color:var(--navy);font-size:.9rem;letter-spacing:.015em;text-transform:none}
-.voice-script-meta{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end;color:var(--muted);font-size:.72rem}
-.voice-script-meta span{display:flex;gap:5px;white-space:nowrap}
-.voice-script-meta b{color:var(--blue);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase}
-.voice-script-text{margin:15px 0 12px;padding:16px 18px;border:0;border-left:4px solid var(--blue);background:var(--paper);color:var(--ink);font:600 .92rem/1.62 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
-.voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:7px 12px;border:1px solid var(--line);background:var(--paper);color:var(--navy);font:800 .65rem/1 var(--font);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-.voice-copy-button:hover,.voice-copy-button:focus-visible{border-color:var(--blue);outline:0}
-.voice-copy-button.is-copied{color:var(--green);border-color:var(--green)}
+.production-assets-page .voice-production-intro{max-width:720px;margin-bottom:24px}
+.voice-cast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;margin:10px 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.voice-cast-card{padding:15px 0 16px;background:transparent}
+.voice-cast-card+.voice-cast-card{padding-left:22px;border-left:1px solid var(--line)}
+.voice-cast-speaker{display:block;margin-bottom:4px;color:var(--muted);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.voice-cast-voice{display:block;color:var(--navy);font-size:1rem;line-height:1.35}
+.voice-cast-model{display:block;margin-top:5px;color:var(--blue);font-size:.68rem;font-weight:800;letter-spacing:.04em}
+.voice-script-list{display:grid;gap:0;margin-top:4px}
+.voice-script-card{padding:22px 0 26px;border-top:1px solid var(--line);background:transparent;break-inside:avoid}
+.voice-script-card:first-child{padding-top:6px;border-top:0}
+.voice-script-head{display:flex;gap:13px;align-items:flex-start;margin-bottom:13px}
+.voice-script-index{min-width:25px;padding-top:2px;color:var(--amber);font-size:.7rem;font-weight:800;letter-spacing:.08em}
+.voice-script-heading{min-width:0;flex:1}
+.voice-script-heading h4{margin:0;color:var(--navy);font-size:.96rem;letter-spacing:.01em;text-transform:none}
+.voice-script-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:5px;color:var(--muted);font-size:.72rem}
+.voice-script-panel{border:1px solid var(--line);background:var(--paper)}
+.voice-script-panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:38px;padding:7px 11px 7px 14px;border-bottom:1px solid var(--line);background:var(--soft)}
+.voice-script-panel-label{color:var(--blue);font-size:.64rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.voice-script-text{display:none}
+.voice-script-display{padding:18px 20px 20px}
+.voice-script-line{color:var(--ink);font:500 .95rem/1.66 var(--font);overflow-wrap:anywhere}
+.voice-script-gap{height:12px}
+.voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 9px}
+.voice-performance-tag{display:inline-flex;align-items:center;min-height:25px;padding:3px 8px;border:1px solid var(--line);border-radius:999px;background:var(--soft);color:var(--blue);font-size:.68rem;font-weight:800;letter-spacing:.015em}
+.voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:5px 8px;border:0;background:transparent;color:var(--navy);font:800 .66rem/1 var(--font);letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.voice-copy-button:hover,.voice-copy-button:focus-visible{background:var(--paper);color:var(--blue);outline:0}
+.voice-copy-button.is-copied{color:var(--green)}
 .production-assets-nav .nav-submenu a small{display:block;margin-top:2px}
-@media(max-width:760px){.voice-script-head{flex-direction:column;gap:8px}.voice-script-meta{justify-content:flex-start}.voice-cast-card+.voice-cast-card{border-left:0;border-top:1px solid var(--line)}}
-@media print{.voice-copy-button{display:none!important}.voice-script-card{break-inside:avoid}}
+@media(max-width:760px){.voice-cast-card+.voice-cast-card{padding-left:0;border-left:0;border-top:1px solid var(--line)}.voice-script-display{padding:16px}.voice-script-head{gap:9px}}
+@media print{.voice-copy-button{display:none!important}.voice-script-card{break-inside:avoid}.voice-script-panel-head{padding-right:14px}}
 </style>'''
 
 VOICE_COPY_SCRIPT = r'''<script id="production-assets-copy-script">(function(){
@@ -284,7 +334,7 @@ VOICE_COPY_SCRIPT = r'''<script id="production-assets-copy-script">(function(){
     var button=event.target.closest('[data-voice-copy]');if(!button)return;
     var source=document.getElementById(button.getAttribute('data-voice-copy'));if(!source)return;
     var text=source.textContent||'';
-    var done=function(){button.classList.add('is-copied');button.textContent='Copied';setTimeout(function(){button.classList.remove('is-copied');button.textContent='Copy Text';},1200);};
+    var done=function(){button.classList.add('is-copied');button.textContent='Copied';setTimeout(function(){button.classList.remove('is-copied');button.textContent='Copy';},1200);};
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallbackCopy(text);done();});}
     else{fallbackCopy(text);done();}
   });
