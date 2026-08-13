@@ -16,31 +16,35 @@ Voice Production Kit is now **v1.6.0**.
 
 Flow 5 Voice scope, canonical `work/voice-production.md`, Voice ID/Type artifact structure, DOCX builder, validator mechanics, and PRD behavior remain unchanged.
 
-SoundMaker remains **Eleven v3 only** and now separates two working modes:
+SoundMaker remains **Eleven v3 only** and separates two working modes:
 
 ```text
 Preparation Mode
 → full current Voice scope
 → no audio testing required
 → per-line SoundMaker construction
+→ target voice profile when actual voice is not selected yet
 → project-level speaker continuity / anti-repetition
 → duration + pronunciation planning
 → canonical script / optional DOCX
 
 Generation Mode
 → only when actual ElevenLabs output is requested
+→ actual voice selected + voice fit reviewed
 → one active Voice ID
 → one exact reviewed prompt
 → feedback / approval / canonical sync
 ```
 
-Preparation Mode explicitly recovers current project context before asking the user and may finish at `voice_script_ready` with `audio_evidence: not_provided`.
+Preparation Mode recovers current project context before asking the user and may finish at `voice_script_ready` with `audio_evidence: not_provided`.
+
+An actual ElevenLabs voice is **not required during Preparation Mode** when a clear Target Voice Profile can be derived from project evidence. Actual voice selection and fit become mandatory only before Generation Mode.
 
 Current non-audio quality workflow includes:
 
 - requirement fidelity before performance polish;
 - duration-first planning when timing matters;
-- Voice Performance Envelope without requiring an actual audio test;
+- Target Voice Profile / Voice Performance Envelope without requiring audio testing;
 - spoken beats before punctuation/CAPS/Audio Tags;
 - Enhance OFF by default on already-directed prompts;
 - Speech Synthesis normally; Studio v3 only for long-form instability;
