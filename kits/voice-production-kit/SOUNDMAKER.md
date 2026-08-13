@@ -22,55 +22,94 @@ Voice Requirement
 
 Use when the task is to design, improve, or review Voice Production **without generating audio yet**.
 
-Preparation Mode may process the full current Voice scope in one bounded pass:
-
 ```text
 all Voice Requirements
 → per-line SoundMaker construction
-→ cross-line continuity / anti-repetition pass
+→ cross-line continuity / anti-repetition
 → duration / pronunciation planning
-→ canonical work/voice-production.md
-→ DOCX / Flow 7 script-level readiness as requested
+→ canonical script
+→ optional DOCX / script-level handoff
 ```
 
-Rules:
+Preparation Mode rules:
 
-- do **not** ask the user to generate/test audio merely to finish script preparation;
-- do not require `APPROVED` per line when no actual generation is requested;
-- actual ElevenLabs voice selection is optional during preparation when a clear target voice profile can be derived;
+- do **not** request audio generation/testing merely to finish preparation;
+- do not require `APPROVED` per line;
+- actual ElevenLabs voice selection is optional when a clear Target Voice Profile can be derived;
 - do not invent audio evidence, measured duration, pronunciation proof, or project calibration;
-- all lines still receive the same script-level quality gate;
 - batch preparation is allowed, but every Voice ID remains independently traceable to Flow 5.
 
 ## Generation Mode
 
-Use only when the user wants to generate, revise from a heard take, or approve actual ElevenLabs output.
+Use only when the user wants actual ElevenLabs generation, revision from a heard take, or audio approval.
 
 ```text
 one active Voice ID
-→ one best prompt
+→ one exact reviewed prompt
 → generate
 → APPROVED or specific feedback
-→ lock or revise
+→ canonical sync / revise
 ```
 
-Default visible result:
+One-at-a-time applies to **Generation Mode only**.
+
+# Output contract
+
+## Canonical output
+
+The canonical entry in `work/voice-production.md` contains only:
+
+```text
+### <VOICE-ID> — <Title>
+Type: <Flow 5 type>
+Speaker: <Flow 5 speaker>
+Estimated Duration: <range>
+
+```performance
+<exact Eleven v3 text>
+```
+```
+
+`Type` and `Speaker` must match Flow 5. The `performance` block is the exact generation text, not commentary about it.
+
+Keep Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, performance-map reasoning, voice-fit ratings, and QA checklists in their owning/internal context rather than duplicating them here.
+
+## Operator-facing handoff
+
+When showing a prompt to the ElevenLabs operator, show only what helps execute the generation.
+
+Project/speaker-level setup may be stated **once** when useful:
+
+```text
+Speaker: <character>
+Voice: <selected ElevenLabs voice | target voice profile during Preparation Mode>
+Model: Eleven v3
+Stability: Natural | project-calibrated
+Surface: Speech Synthesis | Studio when applicable
+```
+
+Per active line:
 
 ````markdown
-## <VOICE-ID / TASK NAME>
+## <VOICE-ID> — <Title>
+Speaker: <speaker>
+Estimated Duration: <range>
 
 ```text
 <exact text to paste into ElevenLabs>
 ```
 ````
 
-Inside the code block include only text intended for ElevenLabs. Do not expose internal scoring/checklists unless requested.
+Inside the prompt block include **only** content Eleven v3 should receive.
 
-If no approved project setting exists, state once outside the prompt:
+Add an external production note only when the operator must take an extra action, such as:
 
-```text
-Eleven v3 · Stability: Natural
-```
+- pronunciation dictionary/setup;
+- Fixed Duration / hard sync;
+- Studio instead of Speech Synthesis;
+- another explicit UI control required by the current plan.
+
+Do not expose internal reasoning/checklists by default.
 
 # Fixed operating boundary
 
@@ -82,7 +121,7 @@ Eleven v3 · Stability: Natural
 
 # Context recovery before asking
 
-Before asking the user for information, recover it from current project authority in this order:
+Recover project facts before asking the user:
 
 1. matching `work/voice-requirements.md` entry;
 2. accepted `work/content.md` / current PRD meaning;
@@ -90,19 +129,26 @@ Before asking the user for information, recover it from current project authorit
 4. approved same-project wording/settings/pronunciation evidence when it exists;
 5. relevant Eleven v3 reference only for production technique.
 
-Ask only when a **material creative/production decision remains unresolved** and cannot be recovered safely. Do not ask for information already present in the project package.
+Ask only when a **material creative/production decision remains unresolved** and cannot be recovered safely.
 
-# Generation surface
+# Eleven v3 defaults
 
-Use **Speech Synthesis / Text to Speech** as the normal surface.
+Unless stronger approved project evidence exists:
 
-Use **Studio with Eleven v3** when long-form text begins to show continuity problems such as unintended whispering, volume/tone drift, accent drift, or breaking/distortion, especially once the input is already several hundred characters. Studio is a production-surface change, not a model fallback.
+```text
+Model: Eleven v3
+Stability: Natural
+Surface: Speech Synthesis
+Enhance on directed SoundMaker prompt: OFF
+```
 
-Do not move to Studio merely because a line is long if normal v3 TTS is already stable and easy to review.
+### Surface
 
-# Enhance policy
+Use Speech Synthesis / Text to Speech normally.
 
-SoundMaker already performs deliberate Audio Tag, CAPS, punctuation, and phrasing direction.
+Use Studio with Eleven v3 when long-form input develops continuity problems such as unintended whispering, volume/tone drift, accent drift, or breaking/distortion. Studio is a surface change, not a model fallback.
+
+### Enhance
 
 ```text
 plain / untreated dialogue
@@ -112,20 +158,12 @@ SoundMaker-directed prompt
 → Enhance OFF by default
 ```
 
-If Enhance or another UI rewrite changes a SoundMaker prompt, treat the result as a **new draft**. Re-review it before generation.
+Any Enhance/UI rewrite creates a **new draft** that must be re-reviewed before generation.
 
-# Default v3 setting
+### Stability
 
-Unless stronger approved project evidence exists:
-
-```text
-Model: Eleven v3
-Stability: Natural
-```
-
-- move toward **Creative** only when voice fit + writing + beat structure are already sound and more range is still needed;
-- use **Robust** only when stability/consistency is the actual requirement and reduced directional response is acceptable;
-- do not depend on a Speed control as a required v3 mechanism; use the live UI as authority for control availability;
+- move toward **Creative** only after voice fit, writing, and beat structure are sound and more range is still needed;
+- use **Robust** only when stability/consistency is the actual need and reduced directional response is acceptable;
 - do not change voice, Stability, wording, punctuation, and tags all at once after one weak take.
 
 # Per-line construction
@@ -145,60 +183,48 @@ listener response
 
 Only player-relevant information becomes spoken text.
 
-## 2. Plan duration first when timing matters
+## 2. Plan duration when timing matters
 
-Classify timing before writing:
+Classify before writing:
 
 - **target range** — approximate; naturalness first;
-- **hard maximum** — must remain under the cap;
-- **fixed-sync** — externally fixed timeline.
+- **hard maximum** — must stay below the cap;
+- **fixed-sync** — external timeline.
 
 Use `references/elevenlabs/v3-duration-planning.md`.
 
-Do not write an oversized script and rescue it later with `[rushed]`, tag spam, or forced speed.
+Do not rescue an oversized script later with `[rushed]`, tag spam, or forced speed.
 
 ## 3. Define the voice requirement
 
-If an actual ElevenLabs voice is already selected, evaluate its **Voice Performance Envelope**.
+If an actual ElevenLabs voice is selected, evaluate its **Voice Performance Envelope**:
 
 ```text
-Identity     → age / timbre / persona suitable?
-Baseline     → neutral / warm / theatrical / energetic / restrained?
-Emotion      → required emotional range plausible?
-Projection   → quiet / normal / shout range needed?
-Pacing       → reflective / natural / urgent range needed?
-Language     → language/accent compatible?
-Known risk   → drift, weak shouting, monotone, pronunciation, etc.?
+Identity   → age / timbre / persona
+Baseline   → neutral / warm / theatrical / energetic / restrained
+Emotion    → required emotional range
+Projection → quiet / normal / shout range
+Pacing     → reflective / natural / urgent range
+Language   → language / accent compatibility
+Risk       → drift / monotone / weak shouting / pronunciation / etc.
 ```
 
-Result when a voice exists:
+Result:
 
-- **GOOD FIT** — required range is naturally plausible;
-- **LIMITED FIT** — usable inside a narrower range;
-- **RISKY FIT** — required performance repeatedly exceeds the voice;
-- **UNKNOWN** — insufficient evidence.
+- **GOOD FIT**;
+- **LIMITED FIT**;
+- **RISKY FIT**;
+- **UNKNOWN**.
 
-If no actual voice is selected in Preparation Mode, derive a **Target Voice Profile** instead:
+If no actual voice is selected in Preparation Mode, derive a **Target Voice Profile** from the same dimensions. `VOICE NOT SELECTED` is not a preparation blocker when that profile is clear.
 
-```text
-speaker identity / persona
-baseline tone / energy
-required emotional range
-projection range
-pacing range
-language / accent expectation
-material pronunciation needs
-```
-
-`VOICE NOT SELECTED` is not a Preparation Mode blocker when the target profile is clear. Actual voice-fit validation is deferred to Generation Mode.
-
-Do not invent a commercial voice name merely to complete preparation. Do not compensate for a risky selected voice with synonym stacks.
+Do not invent a commercial voice name merely to finish preparation or compensate for poor fit with tag stacking.
 
 ## 4. Map the performance
 
-Only create emotional movement when the scene actually changes.
+Only change emotional state when the scene/communication function changes.
 
-Typical long-form pattern:
+Typical long-form shape:
 
 ```text
 initial state
@@ -210,7 +236,7 @@ initial state
 
 A simple warning or acknowledgement may correctly use one stable state.
 
-## 5. Write spoken text and beats
+## 5. Write spoken beats
 
 Write speech before tags.
 
@@ -219,11 +245,11 @@ Prefer:
 - one main idea/action per beat;
 - natural spoken wording;
 - active verbs;
-- important information in listener order;
+- listener-first information order;
 - short enough sentences for key thoughts to land;
 - exact approved terminology.
 
-Avoid specification prose, hidden implementation details, filler, and several critical instructions inside one long sentence.
+Avoid specification prose, hidden implementation detail, filler, and multiple critical instructions buried in one long sentence.
 
 The line must remain understandable with all Audio Tags removed.
 
@@ -238,24 +264,22 @@ sentence boundaries
 → selective CAPS
 ```
 
-Use them semantically:
+Production interpretation:
 
 - `.` — complete thought / new beat;
 - `,` — related material in one thought;
 - `?` — questioning contour;
 - `!` — textual intensity;
 - `...` — hesitation / suspense / weight;
-- `—` — hard pivot / interruption / dramatic break;
+- `—` — hard pivot / interruption;
 - line breaks — phrasing/beat boundaries;
-- CAPS — selective spoken emphasis.
+- CAPS — selective emphasis.
 
-Do not treat punctuation or line breaks as exact timing commands.
+These are performance cues, not exact timing commands.
 
 ## 7. Add minimal Audio Tags
 
 Detailed tag knowledge lives in `references/elevenlabs/v3-performance-writing.md`.
-
-Production heuristic:
 
 ```text
 0–1 simultaneous tag → default
@@ -264,9 +288,7 @@ Production heuristic:
 4+ tags               → reject by default
 ```
 
-Place direction close to the intended beat. Do not assume a standard v3 tag lasts exactly N words or until the next tag.
-
-Reactions are timeline events, not decoration.
+Place direction close to the intended beat. Do not assume a tag lasts exactly N words or until the next tag. Reactions are timeline events, not decoration.
 
 ## 8. Protect pronunciation
 
@@ -286,10 +308,10 @@ repeated project term
 → project pronunciation note / dictionary when appropriate
 
 heard + approved
-→ lock as project calibration
+→ project-calibrated lock
 ```
 
-Do not claim pronunciation is verified before actual evidence exists.
+Preparation may identify risk without claiming it verified.
 
 ## 9. Per-line preparation gate
 
@@ -297,26 +319,26 @@ A line is **script-ready** when:
 
 - project meaning is correct;
 - Voice ID/scope are unchanged;
-- target duration is plausible when timing matters;
-- selected voice fit is acceptable/risk is explicit, **or** a clear Target Voice Profile exists when no voice is selected;
-- spoken wording is natural;
-- beat changes have scene reasons;
+- target duration is plausible when relevant;
+- exact `Speaker` is known from Flow 5;
+- selected voice fit is acceptable/risk is explicit, or a clear Target Voice Profile exists;
+- wording is natural and beat changes have scene reasons;
 - punctuation/CAPS are intentional;
-- tags are minimal and audible;
+- tags are minimal/audible;
 - no SSML `<break>` is used;
 - SFX/environment instructions are absent;
-- material pronunciation risk is identified/handled at the planning level;
+- material pronunciation risk is identified;
 - exact canonical wording revision is known.
 
-Actual Generation Mode readiness additionally requires an intentionally selected voice and current generation settings.
+Generation readiness additionally requires an intentionally selected actual voice and current generation settings.
 
 # Project-level preparation pass
 
-After all requested lines are drafted, review the project **across Voice IDs** before calling Preparation Mode complete.
+After requested lines are drafted, review across Voice IDs.
 
 ## Speaker continuity
 
-For each recurring speaker, preserve a coherent internal profile derived from project evidence:
+For each recurring speaker preserve a coherent internal profile:
 
 ```text
 identity / persona
@@ -330,80 +352,75 @@ known performance risks
 
 Do not create a separate speaker-bible file unless a concrete project need requires one.
 
-## Anti-repetition / anti-template gate
+## Anti-repetition / anti-template
 
-Compare nearby lines from the same speaker or same gameplay family.
+Check nearby same-speaker/gameplay-family lines for accidental reuse of:
 
-Look for accidental repetition of:
+- identical openings;
+- identical beat chains;
+- identical Audio Tag placement;
+- identical CAPS climax pattern;
+- identical sentence rhythm;
+- identical closing/catchphrase structure.
 
-- identical openings (`Good work...`, `Now...`, `Listen...`);
-- the same beat chain on every objective;
-- the same Audio Tags at the same positions;
-- the same CAPS climax pattern;
-- the same sentence length/rhythm;
-- the same closing catchphrase or instruction shape.
-
-Preserve **character identity**, but vary the structure when repetition is not intentionally part of the character or gameplay language.
-
-Do not force variety by changing approved facts or inventing personality traits.
+Preserve character identity while varying structure only when repetition is not intentional.
 
 ## Information progression
 
-Across sequential Voice IDs:
+- briefing introduces what is needed at that stage;
+- reminder repeats the minimum actionable fact;
+- success line acknowledges the result instead of replaying the briefing;
+- later lines do not re-explain already-learned information without trigger justification.
 
-- briefing introduces only what is needed at that stage;
-- reminders repeat the minimum actionable fact;
-- success lines acknowledge the result rather than replaying the briefing;
-- later lines do not re-explain information the player already learned unless repetition is justified by the trigger.
+## Preparation Mode stop gate
 
-## Batch preparation stop gate
+Preparation is complete when:
 
-Preparation Mode is complete when:
-
-- every requested Voice ID has **script-ready** canonical wording;
-- any not-yet-selected actual voice has a clear Target Voice Profile where voice characteristics materially affect delivery;
-- cross-line speaker continuity passes;
-- obvious template repetition is removed or intentional;
-- duration targets are planned honestly;
-- material pronunciation risks are identified;
-- no audio-quality claim or measured-duration claim is made.
+- every requested Voice ID has script-ready canonical wording;
+- every entry has exact `Type`, `Speaker`, Estimated Duration, and performance text;
+- not-yet-selected voices have a clear Target Voice Profile where relevant;
+- speaker continuity/information progression pass;
+- accidental template repetition is removed or intentional;
+- pronunciation risks are identified;
+- no audio-quality or measured-duration claim is made.
 
 # Generation Mode handoff
 
-Immediately before actual generation, know:
+Before generation, know:
 
 ```text
 Model: Eleven v3
 Surface: Speech Synthesis | Studio
+Speaker: exact project speaker
 Voice: actual voice selected intentionally
-Voice fit: reviewed for required performance range
+Voice fit: reviewed
 Stability: Natural | project-calibrated
 Prompt: exact reviewed revision
 Timing: none | range | hard max | fixed-sync
-Pronunciation risk: resolved | pending audio review
-Enhance: OFF unless its output was explicitly re-reviewed
+Pronunciation: normal | special setup required
+Enhance: OFF unless rewritten output was explicitly re-reviewed
 ```
+
+Use the operator-facing output contract above. Do not add a second handoff file by default.
 
 # After generation
 
-This section is used only when actual audio work is requested.
+Use this section only when actual audio work is requested.
 
-## Hear the result, then classify the failure
-
-Evaluate the actual take for meaning/intelligibility, voice identity, emotional movement, pacing/breath, emphasis/landing, naturalness, pronunciation, and requested duration.
+Evaluate the heard result for meaning/intelligibility, voice identity, emotional movement, pacing/breath, emphasis/landing, naturalness, pronunciation, and requested duration.
 
 | Heard problem | First action |
 |---|---|
 | one isolated glitch/distortion | review alternate take / eligible same-prompt regeneration |
 | clean but flat | fix spoken beats/textual directing; then consider Stability toward Creative |
-| chaotic / overacted / erratic | inspect Stability and over-direction before rewriting everything |
-| unintended whisper / volume / tone / accent drift | inspect Stability + voice fit; for long-form instability consider Studio v3 |
-| same emotional cue repeatedly ignored | voice-fit problem before adding more tags |
+| chaotic / overacted / erratic | inspect Stability and over-direction first |
+| whisper / volume / tone / accent drift | inspect Stability + voice fit; long-form may route to Studio v3 |
+| same emotional cue repeatedly ignored | treat as voice-fit problem before adding tags |
 | wrong pronunciation | pronunciation control, not emotional rewrite |
-| too long | reduce spoken load / word budget before forcing faster delivery |
-| too short but already natural | do not add filler unless external timing requires it |
+| too long | reduce spoken load / word budget first |
+| too short but natural | do not add filler unless external timing requires it |
 
-Eleven v3 is nondeterministic. A single odd take does not prove the prompt is wrong.
+A single odd take does not prove the prompt is wrong.
 
 ## Revision discipline
 
@@ -420,7 +437,7 @@ meaning
 → voice fit / production surface
 ```
 
-Resolve known issues coherently instead of producing many tiny revisions. Do not reset a successful line from scratch unless the evidence requires it.
+Resolve known issues coherently instead of producing many tiny revisions.
 
 ## Approval lock
 
@@ -429,7 +446,7 @@ When the user says **APPROVED**:
 1. exact prompt actually generated becomes approved wording for that Voice ID;
 2. a user-edited generated prompt supersedes the assistant draft;
 3. synchronize it into `work/voice-production.md`;
-4. rebuild DOCX/reopen affected Flow 7 evidence only when canonical wording changed;
+4. rebuild/reopen only affected derived scope when wording changed;
 5. record actual duration/pronunciation/settings only when evidence exists;
 6. reuse approved behavior as project calibration, never as new project facts.
 
