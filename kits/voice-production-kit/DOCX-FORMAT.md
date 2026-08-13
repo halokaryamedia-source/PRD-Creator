@@ -1,6 +1,8 @@
 # Voice Production DOCX Format
 
-`output/Voice Production.docx` is a derived production artifact built from `work/voice-production.md`. The Markdown script owns wording; the DOCX owns presentation only.
+`output/Voice Production.docx` is an **optional derived export** built from `work/voice-production.md`.
+
+The canonical Markdown owns wording/cast. The default human-facing production surface is now `output/final.html → Production Assets → Voice`. DOCX exists only when a portable document is explicitly requested or materially useful.
 
 ## Approved reference
 
@@ -10,11 +12,11 @@ Reference SHA-256:
 
 `c76ce2562ee1839ae9174373f510b26da09e7b05f90e43a3e1de820633c34020`
 
-The reference demonstrates hierarchy, spacing, script-panel treatment, type labels, duration labels, and readable performance notation. It does not define project-specific voice counts or content.
+The reference demonstrates hierarchy, spacing, script-panel treatment, type labels, duration labels, and readable performance notation. It does not define project-specific Voice counts/content and does not override the consolidated project HTML presentation.
 
-## Visible operator contract
+## Visible export contract
 
-The DOCX is a compact production reference, not a duplicate of Voice Requirements.
+When DOCX is produced:
 
 ```text
 Cover
@@ -22,8 +24,7 @@ Cover
   Version
 
 Section
-  01. <Gameplay Section>
-  <actual Voice types present>
+  <Gameplay Section>
 
 Entry
   TYPE · Speaker: <speaker>
@@ -32,71 +33,50 @@ Entry
   <Performance Script panel>
 ```
 
-Every entry exposes only stable information the operator needs to identify and perform the line:
+Keep the export compact. Do not add Flow 5 Trigger, Channel, Purpose, Must communicate, Must not add/repeat, source refs, WPM calculations, Performance Fill Map reasoning, QA commentary, or other internal state.
 
-- Voice Type;
-- exact Speaker;
-- stable Voice ID + title;
-- Estimated Duration;
-- exact Performance Script.
+The consolidated HTML owns the simple Voice Cast display. DOCX does not need to become a second cast/settings database.
 
-Do not add Flow 5 planning metadata such as Trigger, Channel, Purpose, Must communicate, Must not add/repeat, source refs, WPM calculations, performance maps, voice-fit ratings, or QA commentary to the DOCX by default.
+## Styling contract
 
-Generation settings such as selected commercial voice, Stability, Surface, or temporary UI controls remain operator/session context unless a concrete project requirement later justifies durable presentation.
-
-## Section subtitle
-
-Do not claim a Voice type that is absent. Derive the subtitle from actual section content:
-
-- `Main Story`;
-- `Radio Communication`;
-- `Main Story and Radio Communication`;
-- or the explicit supported types actually present.
-
-## Reference styling contract
-
-The builder reproduces the demonstrated reference style rather than copying project text:
+The builder keeps the demonstrated reference style:
 
 - Letter page size;
 - compact margins;
 - blue Aptos/Aptos Display hierarchy;
 - section headings begin on a new page;
-- Type is blue/uppercase and Speaker shares the same compact metadata row;
+- Type and Speaker share the compact metadata row;
 - title is prominent and dark;
-- duration is small, gray, and italic;
+- duration is small/gray/italic;
 - Performance Script uses a monospaced font;
 - standalone bracketed performance directions are blue italic;
-- Main Story script panels use a pale blue background;
-- Radio/other script panels use a neutral light background;
-- script panels preserve canonical line breaks.
+- Main Story script panels use pale blue;
+- Radio/other script panels use neutral light background;
+- canonical line breaks are preserved.
 
 ## Builder
 
-`builder/build_docx.py` is deterministic presentation tooling. It must not rewrite spoken wording, infer a Speaker, or invent duration/tags.
+```bash
+python kits/voice-production-kit/builder/build_docx.py \
+  workspace/active/<project>/work/voice-production.md \
+  workspace/active/<project>/output/Voice\ Production.docx \
+  --requirements workspace/active/<project>/work/voice-requirements.md
+```
 
-The builder validates:
+The builder must not rewrite wording, infer a Speaker, choose actor voices, or invent duration/tags.
 
-- required Markdown structure;
-- unique Voice IDs;
-- required Type, Speaker, Estimated Duration, and performance text;
-- no visible unresolved placeholder;
-- when `--requirements` is supplied, exact Voice ID parity plus matching Type **and Speaker** against Flow 5 requirements.
+It validates required Markdown structure, unique Voice IDs, Type/Speaker/Estimated Duration/performance presence, unresolved placeholders, and Flow 5 Voice ID/Type/Speaker parity when requirements are supplied.
 
-If the builder exposes a content problem, fix `work/voice-production.md` or the upstream requirement. Do not patch the DOCX as the source of truth.
+The optional `Voice Cast:` header is ignored by the DOCX entry parser because actor selection is shown once in the consolidated HTML rather than repeated throughout this export.
 
 ## Visual QA
 
-For actual project production, DOCX generation is not considered visually verified until rendered to page images and inspected.
+Only claim DOCX visual readiness when the export actually exists and has been rendered/inspected.
 
-Check:
+Check clipping, Type/Speaker association, hierarchy, script-panel readability, line breaks, glyphs, spacing, shading, and pagination.
 
-- no clipped text;
-- Type/Speaker metadata remains attached to the correct title/script;
-- no orphaned labels;
-- readable section hierarchy;
-- script panels remain legible across page breaks;
-- line breaks reflect the canonical script;
-- no missing glyphs;
-- consistent spacing and shading.
+A DOCX defect is fixed in canonical source or builder and regenerated. Never patch the DOCX as source truth.
 
-Flow 6 may establish the builder with synthetic/reference tests, but Flow 7 owns final current-project voice delivery acceptance.
+## Boundary
+
+No DOCX is required for normal Voice Preparation/Delivery when the consolidated project HTML is current and accepted for the requested non-audio scope.
