@@ -1,15 +1,27 @@
 # Changelog
 
+## 1.6.0 — 2026-08-13
+
+- separated **Preparation Mode** from actual ElevenLabs **Generation Mode**;
+- allowed full-project/batch Voice script preparation without audio testing or per-line approval loops;
+- kept actual generation/revision one active Voice ID at a time;
+- added context recovery before asking the user for already-known project facts;
+- added recurring-speaker continuity, information-progression, and cross-line anti-template/repetition gates;
+- clarified pronunciation planning as preparation evidence rather than generated proof;
+- improved duration planning hierarchy: nearest approved similar sample → project-calibrated rate → generic WPM fallback, while keeping no-audio preparation fully valid;
+- synchronized root/kit routing and Flow 6 policy so `one Voice ID at a time` applies only to Generation Mode;
+- changed no builder/validator mechanics, dependencies, Voice ID/Type schema, PRD behavior, or audio generation.
+
 ## 1.5.0 — 2026-08-13
 
-- made `SOUNDMAKER.md` the single operational Eleven v3 execution procedure and removed duplicated prompting workflow from Flow/skill/reference owners;
-- added explicit Enhance policy: untreated text may use Enhance as drafting aid, while an already-directed SoundMaker prompt keeps Enhance off by default and any rewrite becomes a new draft;
+- made `SOUNDMAKER.md` the single operational Eleven v3 procedure and reduced duplicated prompting workflow across reference/Flow files;
+- set directed SoundMaker prompts to **Enhance OFF by default**; Enhance output is a new draft requiring review;
 - added Speech Synthesis → Studio v3 routing for long-form whisper/volume/tone/accent drift or breaking without changing model family;
-- converted voice-fit into a practical Voice Performance Envelope (`GOOD FIT`, `LIMITED FIT`, `RISKY FIT`, `UNKNOWN`);
+- added practical Voice Performance Envelope (`GOOD / LIMITED / RISKY / UNKNOWN`) before compensating with more direction;
 - separated documented Audio Tags, descriptive candidates, and project-calibrated directions;
-- strengthened post-generation diagnosis for take variance, flat delivery, chaotic output, Stability/voice drift, pronunciation, duration, and long-form surface problems;
-- clarified source precedence so explicit v3 guidance overrides conflicting generic TTS guidance;
-- kept Flow 5 scope, canonical `work/voice-production.md`, DOCX builder/validator mechanics, and artifact schema unchanged.
+- expanded heard-result diagnosis to distinguish take variance, flat writing, over-direction/Stability, voice-fit/drift, pronunciation, duration, and long-form surface issues;
+- added explicit precedence for v3-specific official guidance over conflicting generic TTS guidance;
+- kept SoundMaker v3-only and changed no builder/validator mechanics, dependencies, PRD artifacts, or Voice ID/Type schema.
 
 ## 1.4.1 — 2026-08-13
 
