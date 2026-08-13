@@ -91,6 +91,10 @@ SCRIPT = """# Contract Fixture Voice Production
 Version: 1.0
 Source Voice Requirements: work/voice-requirements.md
 
+Voice Cast:
+- Narrator: William Shanks - Rich and Deep
+- Guide: Clara - Calm and Clear
+
 ## Intro
 
 ### VO-INTRO-01 — Welcome
