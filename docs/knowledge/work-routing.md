@@ -1,6 +1,6 @@
 # Work Routing
 
-Updated: 2026-08-11
+Updated: 2026-08-13
 
 Use this note as the single **agent work-routing map**. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
 
@@ -153,20 +153,20 @@ Maintenance does not automatically use `development-brief`. It begins from concr
 
 When the owner or authority is unclear:
 
-1. `ownership.md` — which repository area owns the responsibility;
+1. `ownership.md` — repository-area owner plus exact current implementation/procedure routing;
 2. `source-authority.md` — which source/state/artifact is authoritative for the claim;
-3. `implementation-map.md` — exact current implementation/procedure location.
+3. the nearest owner named by those files — inspect only that active implementation/procedure.
 
-Do not broad-scan the repository when one of these maps already resolves the boundary.
+Do not create or rely on a separate implementation map when `ownership.md` already owns that routing.
 
 ## Review / Decision Separation
 
 ```text
-review evidence/history
-→ reviews/review-graph.md
+current + historical review evidence
+→ reviews/README.md
 
 durable choice/reason
-→ decision-log.md / decisions/
+→ decisions/README.md + matching decision record when one exists
 
 active task status
 → next-action.md
@@ -184,7 +184,7 @@ New session:
 
 `AGENTS.md` → `CONTEXT.md` → `next-action.md`
 
-Open the activation matrix **only when the correct owner/skill is genuinely ambiguous**. Do not load the task board, review graph, or every kit during normal boot unless the active boundary requires them.
+Open the activation matrix **only when the correct owner/skill is genuinely ambiguous**. Do not load every review, decision, or kit during normal boot unless the active boundary requires it.
 
 ## Related
 
@@ -195,4 +195,3 @@ Open the activation matrix **only when the correct owner/skill is genuinely ambi
 - [Repository Ownership](ownership.md)
 - [Source Authority](source-authority.md)
 - [Review Register](reviews/README.md)
-- [Repository Ownership](ownership.md)
