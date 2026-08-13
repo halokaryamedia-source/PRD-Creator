@@ -2,14 +2,14 @@
 
 Root `AGENTS.md` remains authoritative for work mode, proof, repository continuity, and semantic-vs-technical ownership. This file narrows behavior only inside `kits/voice-production-kit/`.
 
-## Module structure
+## Active module structure
 
 ```text
 kits/voice-production-kit/
 ├─ AGENTS.md
+├─ README.md
 ├─ SKILL.md
 ├─ VOICE-EXTRACTION.md
-├─ SCRIPT-PRODUCTION.md
 ├─ SOUNDMAKER.md
 ├─ DOCX-FORMAT.md
 ├─ VOICE-VALIDATION.md
@@ -19,10 +19,13 @@ kits/voice-production-kit/
 └─ requirements.txt
 ```
 
+Flow 6 lifecycle/output is owned by this kit `README.md` plus `docs/foundation/06-elevenlabs-script-production.md`. The former duplicate `SCRIPT-PRODUCTION.md` owner is retired in v1.11.2.
+
 ## Routing
 
 - Flow 5 → `VOICE-EXTRACTION.md`.
-- Flow 6 lifecycle/static output → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`.
+- Flow 6 lifecycle/static output → kit `README.md` + Flow 6 foundation policy.
+- Flow 6 writing/performance detail → `SOUNDMAKER.md`.
 - Flow 7 → `VOICE-VALIDATION.md`.
 - optional DOCX export → `DOCX-FORMAT.md` + builder.
 - deep Eleven v3 evidence → only the matching reference file when needed.
@@ -42,7 +45,7 @@ accepted PRD
 
 - PRD owns project/gameplay truth and the fact that a Voice asset is required.
 - Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, required communication, exclusions, and source timing truth when present.
-- `work/voice-production.md` owns canonical wording and Estimated Duration.
+- `work/voice-production.md` owns canonical production content.
 - `output/final.html` is the default derived operator presentation; it is not wording authority.
 - DOCX is optional export only.
 
@@ -72,24 +75,15 @@ title
 → <PRD package label> · Voice Line X/Y
 → Context = exact Flow 5 Trigger
 → Speaker + Estimated Duration
-→ exact canonical prompt
+→ canonical production text
 → Copy Prompt
 ```
 
-The visible developer `Context` is a direct presentation of the existing Flow 5 Trigger. Do not duplicate it into the canonical Flow 6 entry. Purpose, `Must communicate`, `Must not add/repeat`, source refs, WPM math, reasoning, and QA notes remain internal.
-
-`Copy Prompt` copies only the exact canonical performance payload.
+The visible developer `Context` is a direct presentation of the existing Flow 5 Trigger. Do not duplicate it into canonical Flow 6 content. Purpose, `Must communicate`, `Must not add/repeat`, source refs, reasoning, and QA notes remain internal.
 
 ## Semantic vs technical ownership
 
-Use the root `voice-production` specialist for semantic/product-contract defects such as:
-
-- Voice ID/Type/Speaker/Channel/Trigger/Purpose scope;
-- Flow 5→6 intent completeness;
-- canonical wording/performance meaning;
-- Voice artifact/delivery semantics.
-
-When semantics are already correct, route mechanics directly:
+Use the root `voice-production` specialist for semantic/product-contract defects. When semantics are already correct, route mechanics directly:
 
 - same-HTML Production Assets composition/navigation → `kits/project-document-generator/renderer/production_assets.py`;
 - optional DOCX generation/pagination → `builder/build_docx.py`;
@@ -100,7 +94,7 @@ When semantics are already correct, route mechanics directly:
 ## Validator / builder rules
 
 - exact Voice ID, Type, and Speaker parity are fail-closed;
-- when consolidated `final.html` exists, validator checks section/page parity, developer Context, and exact canonical prompt parity;
+- when consolidated `final.html` exists, validator checks section/page parity, developer Context, and canonical payload parity;
 - when optional DOCX exists, validator checks that export too;
 - builder/validator PASS does not establish semantic or visual quality;
 - never hand-edit `final.html` or DOCX as the source fix.
@@ -138,6 +132,6 @@ Use `Voice Verify` for changed Voice contracts and `PRD Verify` when the Product
 - kit owns Flow 5–7 only;
 - project definition/PRD belongs to Project Document Generator;
 - Production Assets pages are downstream presentation, not a new PRD semantic owner;
-- SFX generation remains separate until explicitly developed;
+- SFX remains separate until explicitly developed;
 - DOCX remains optional compatibility/export, not the default operator surface;
 - do not add a second Voice HTML, generic asset framework, or extra workflow layer without a concrete need.
