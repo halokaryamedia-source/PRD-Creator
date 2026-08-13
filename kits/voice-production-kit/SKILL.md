@@ -1,7 +1,7 @@
 ---
 name: voice-production-kit
-description: Extract Flow 6-ready Voice requirements from accepted PRDs, prepare high-quality Eleven v3 performance wording through SoundMaker, preserve required communication and timing truth, and publish operator-ready Voice Production into the same project HTML without inventing upstream project facts.
-version: 1.10.0
+description: Extract Voice requirements from accepted PRDs, prepare canonical Eleven v3 production wording, conserve required communication, and publish developer-ready Voice Production into the same project HTML without inventing upstream project facts.
+version: 1.11.2
 ---
 
 # Voice Production Kit
@@ -9,19 +9,18 @@ version: 1.10.0
 ## Flow ownership
 
 1. **Flow 5 — Voice Requirement Extraction**: accepted PRD → `work/voice-requirements.md`.
-2. **Flow 6 — Eleven v3 Performance Script Production**: Voice Requirements → canonical `work/voice-production.md` → same project `output/final.html`.
+2. **Flow 6 — Eleven v3 Script Production**: Voice Requirements → canonical `work/voice-production.md` → same project `output/final.html`.
 3. **Flow 7 — Voice Validation & Delivery**: current revision → compact acceptance + delivery state.
 
-Audio generation remains optional. DOCX is an optional export, not the normal human-facing Voice output.
+DOCX and audio remain optional downstream scopes.
 
 ## Routing
 
 - Flow 5 → `VOICE-EXTRACTION.md`.
-- Flow 6 lifecycle/output contract → `SCRIPT-PRODUCTION.md`.
-- Eleven v3 preparation/generation quality → `SOUNDMAKER.md`.
+- Flow 6 lifecycle/output → `SCRIPT-PRODUCTION.md`.
+- writing/performance procedure → `SOUNDMAKER.md`.
 - Flow 7 → `VOICE-VALIDATION.md`.
-- optional DOCX export → `DOCX-FORMAT.md` + builder.
-- deep Eleven v3 question → only the matching file under `references/elevenlabs/`.
+- optional DOCX → `DOCX-FORMAT.md` + builder.
 
 Do not load all reference material by default.
 
@@ -36,19 +35,15 @@ accepted PRD
 → state/voice-state.yaml
 ```
 
-Ownership:
-
-- accepted PRD owns project/gameplay truth and the need for a Voice asset;
-- `voice-requirements.md` owns which Voice assets exist and what each must communicate;
-- `voice-production.md` owns selected actor voice when known, Estimated Duration, and exact Eleven v3 production wording;
-- `final.html` is derived presentation only;
-- audio is optional downstream evidence/output.
-
-Do not create a second Voice HTML or Asset Requirement HTML by default.
+- PRD owns project/gameplay truth and the need for a Voice asset.
+- Flow 5 owns which Voice assets exist and their communication intent/context.
+- Flow 6 owns canonical production wording and Estimated Duration.
+- `final.html` is derived developer/operator presentation only.
+- DOCX is optional export only.
 
 # Flow 5 → Flow 6 interface
 
-A Flow 5 entry is ready only when SoundMaker can recover without product-level guessing:
+A Flow 5 entry is ready only when downstream production can recover without project-level guessing:
 
 ```text
 Communication Job   ← Function + Purpose
@@ -60,24 +55,11 @@ Hard Timing Truth   ← optional Timing Constraint
 Scope Guardrails    ← Must not add/repeat
 ```
 
-Rules:
-
-- Trigger states the actual event/state and relevant listener condition when material.
-- Purpose states the listener-facing outcome, not `provide dialogue`.
-- independently actionable required facts remain distinct enough to conserve downstream.
-- `Timing Constraint` is optional upstream truth; it is not Estimated Duration.
-- Performance Shape, Landing, wording, tags, CAPS/punctuation, voice selection, Stability, Surface, and Estimated Duration stay in Flow 6 unless upstream meaning explicitly constrains them.
+Do not move performance-writing fields into Flow 5 and do not invent project facts to fill downstream presentation.
 
 # Canonical Voice Production
 
-`work/voice-production.md` may contain one optional cast block before gameplay sections:
-
-```text
-Voice Cast:
-- <Speaker>: <selected ElevenLabs voice>
-```
-
-Then every entry requires:
+Each canonical entry requires:
 
 ```text
 Voice ID + Title
@@ -87,102 +69,67 @@ Estimated Duration
 exact performance block
 ```
 
-`Type` and `Speaker` match Flow 5.
-
-Use Voice Cast once per recurring Speaker. Do not repeat commercial voice names in every entry and do not invent one merely to fill the field. `Voice selection pending` is valid during Preparation Mode; actual Generation Mode requires an intentionally selected voice for the active Speaker.
-
-Do not duplicate Channel, Trigger, Purpose, Timing Constraint, requirement bullets, source refs, Performance Fill Map reasoning, WPM math, voice-fit ratings, or QA notes into canonical entries.
-
-# SoundMaker Preparation Mode
-
-For each Voice ID:
-
-```text
-Flow 5 intent
-→ Voice Intent Completeness
-→ internal Performance Fill Map
-→ performance writing
-→ Communication Conservation
-→ script-ready
-```
-
-After per-line preparation, run one integrated **Voice Script Readiness** review over Communication, Listener, Character, Performance, Timing, Continuity, and Operator lenses.
-
-Communication Conservation remains explicit because a polished script can still omit required meaning.
-
-Preparation Mode:
-
-- may prepare the full current Voice scope in one bounded pass;
-- does not require audio generation/testing or per-line `APPROVED`;
-- may use a Target Voice Profile before actual actor voice selection;
-- keeps measured duration/pronunciation/audio claims unverified until evidence exists.
+`Type` and `Speaker` match Flow 5. Do not duplicate Trigger/Purpose/requirements/source refs/reasoning/QA into every canonical entry.
 
 # Project HTML production surface
 
 The same `output/final.html` is the default human-facing project document.
 
-When `work/voice-production.md` exists, the normal PRD renderer appends a professional-only section:
+Production Assets extends the accepted PRD navigation rather than rebuilding it:
 
 ```text
-Production Assets
-└── Voice
+03 Development
+   global development pages
+   gameplay/objective sections
+
+04 Production Assets
+   VOICE
+   <gameplay section title>
+   <accepted PRD package label>
 ```
 
-The HTML intentionally exposes only:
+Gameplay/objective sections remain under Development and accepted PRD page codes stay unchanged. `VOICE` appears once; every linked Voice section shows section title + accepted PRD label, with natural wrapping for long sidebar text.
+
+Each Voice section page shows:
 
 ```text
-Voice Cast once
-→ gameplay-ordered sections
-→ per line:
-   title
-   Actor
-   Estimated Duration
-   exact Eleven v3 text
-   Copy Text
+Voice Production
+→ gameplay section title
+→ accepted PRD package label + gameplay context
+→ Voice line count + Primary Speaker
+→ compact Voice Setup
 ```
 
-`Copy Text` copies only the exact canonical performance block.
+Each line shows:
 
-Internal Flow 5 requirements/reasoning/QA do not appear in the page.
+```text
+title
+→ <PRD package label> · Voice Line X/Y
+→ Context = exact Flow 5 Trigger
+→ Speaker + Estimated Duration
+→ exact canonical prompt
+→ Copy Prompt
+```
+
+The visible Context is the existing Flow 5 Trigger projected into HTML; it is not a new Flow 6 field. Internal Purpose/requirements/source refs/reasoning/QA stay in their owners.
+
+`Copy Prompt` copies only the exact canonical performance payload.
 
 ## Optional DOCX
 
-`output/Voice Production.docx` may still be generated when explicitly requested or materially useful. It is derived export only and never required merely to complete normal Voice Preparation/Delivery.
-
-# Generation Mode
-
-Use only when actual ElevenLabs work is requested:
-
-```text
-one active Voice ID
-→ actor voice selected intentionally
-→ one exact reviewed prompt
-→ generate / feedback / approve
-→ canonical sync
-→ rerender same final.html when actor/prompt changed
-```
-
-Default v3 baseline when no stronger approved project calibration exists:
-
-```text
-Model: Eleven v3
-Stability: Natural
-Surface: Speech Synthesis
-Enhance on directed SoundMaker prompt: OFF
-```
+`output/Voice Production.docx` may be generated when specifically useful. It remains a derived export, not the normal human-facing Voice output.
 
 # First wrong owner / bounded revision
 
 ```text
 project fact → PRD authority
-Voice scope/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
-wording/performance/Estimated Duration/actor-voice selection → Flow 6
+Voice scope/context → Flow 5
+canonical Voice wording/duration → Flow 6
 correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
-optional DOCX-only defect → Voice DOCX builder
-audio-only defect → Generation Mode
+optional DOCX-only defect → Voice builder
 ```
 
-Revise only invalidated Voice IDs/Speaker scope plus continuity materially affected by the change. Voice-only production changes do not reopen PRD acceptance when PRD canonical meaning is unchanged.
+Revise only invalidated Voice/Speaker scope plus continuity materially affected by the change. Voice-only production changes do not reopen PRD acceptance when PRD canonical meaning is unchanged.
 
 # Flow 7 proof
 
@@ -191,9 +138,9 @@ Use:
 ```text
 Mechanical
 + Communication Conservation
-+ one integrated Voice Script Readiness review
++ integrated Voice Script Readiness
 + Project HTML Visual when claimed
-+ optional DOCX Visual when DOCX exists
++ optional DOCX Visual
 + optional Audio Evidence
 ```
 
@@ -205,11 +152,8 @@ Static HTML parity is not visual proof; visual PASS requires actual rendered/bro
 - Voice Production is downstream from accepted PRD, not a separate source-intake project.
 - recover existing project context before asking the user.
 - Voice scope cannot change silently after Flow 5.
-- performance technique cannot create project facts/Speakers/Channels/Triggers/mechanics/rewards/outcomes/timing truth.
-- source timing constraints and Estimated Duration remain distinct.
-- spoken wording/beat architecture precede punctuation/CAPS/Audio Tags.
-- a flat script is not repaired by tag stacking.
-- exact approved/generated wording synchronizes into `work/voice-production.md`.
+- downstream performance/presentation cannot create project facts, Speakers, Channels, Triggers, mechanics, rewards, outcomes, or source timing truth.
+- exact current wording remains owned by `work/voice-production.md`.
 - generated-audio quality requires actual heard evidence.
 - do not create separate Voice HTML, asset manifest, settings database, score system, or extra approval layer without a concrete defect.
 - stop when current requested scope is ready.
