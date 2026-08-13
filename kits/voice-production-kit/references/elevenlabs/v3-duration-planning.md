@@ -1,60 +1,65 @@
 # Eleven v3 Duration Planning
 
-Purpose: make duration a design input before script writing, while staying honest that normal Text to Speech duration is dynamic.
+Purpose: make duration a design input before script writing while staying honest that normal Eleven v3 TTS duration is dynamic.
 
-## 1. What ElevenLabs can and cannot guarantee
+## 1. Duration classes
 
-### Normal Text to Speech / Dynamic Duration
+Resolve timing before final wording:
 
-**OFFICIAL-CURRENT:** generated duration depends on the text and voice. Normal Speech Synthesis does not guarantee that a script will land on an exact second count.
+- **target range** — approximate; naturalness first;
+- **hard maximum** — must remain below a cap;
+- **fixed-sync** — must fit an externally fixed timeline.
 
-An `Estimated Duration` in `work/voice-production.md` remains an expectation until actual audio exists.
+Normal Speech Synthesis does not guarantee exact seconds from text alone. Voiceover Studio has product-specific Fixed Duration, but forcing speech too far from its natural length can sound unnaturally fast or slow.
 
-### Voiceover Studio Fixed Duration
+## 2. Evidence hierarchy
 
-**OFFICIAL-PRODUCT-SPECIFIC:** Voiceover Studio supports **Fixed Duration**, which adjusts generated audio to fit a specified clip length.
-
-Trade-off: ElevenLabs warns that forcing a clip far away from its natural duration can make speech sound unnaturally fast or slow.
-
-Use Fixed Duration when exact synchronization is genuinely more important than fully natural pacing. It is not the default solution for ordinary game VO.
-
-## 2. Duration must be planned before the final wording
-
-When the user says:
+Use the strongest available evidence in this order:
 
 ```text
-"maximum 10 seconds"
-"around 15 seconds"
-"must fit 30 seconds"
+nearest approved same-project sample
+(same voice + similar performance + similar words/beats)
+        ↓
+project-calibrated performance-class rate
+        ↓
+generic planning WPM
 ```
 
-resolve the duration class first:
+Do not fabricate calibration when no approved audio exists.
 
-- **target range** — approximate timing, naturalness first;
-- **hard maximum** — must stay below a cap;
-- **fixed-sync** — must fill an externally defined timeline.
+### Preparation Mode with no audio evidence
 
-Do not finish a long script and then try to compress it using `[rushed]`, tag spam, or extreme playback/speed settings.
+This is valid and does not block script preparation.
 
-## 3. Word-budget formula
+Use generic planning WPM + a safety reserve and label the result only as **Estimated Duration**.
 
-Use this planning formula:
+### When approved audio exists later
+
+Prefer a nearby approved sample over one global project WPM because two lines with the same word count can differ materially when beat count, pauses, reactions, or delivery style differ.
+
+Compare approximately:
+
+```text
+same voice
++ similar performance family
++ similar spoken-word count
++ similar beat/pause density
+```
+
+Use the closest useful evidence rather than forcing every line into one average.
+
+## 3. Generic fallback formula
+
+When no project calibration exists:
 
 ```text
 raw_words = target_seconds × planning_WPM / 60
-```
-
-For expressive speech, leave room for pauses, reactions, reveals, and strong landings:
-
-```text
 safe_words = raw_words × (1 - expressive_reserve)
 ```
 
-The WPM values below are **production heuristics**, not ElevenLabs guarantees.
+These are planning heuristics, not ElevenLabs guarantees.
 
-Suggested fallback planning classes when no project-calibrated audio exists:
-
-| Performance | Planning range |
+| Performance | Fallback planning range |
 |---|---:|
 | Slow / mysterious / emotional | 130–145 WPM |
 | Clear cinematic | 140–155 WPM |
@@ -62,11 +67,11 @@ Suggested fallback planning classes when no project-calibrated audio exists:
 | Energetic | 170–185 WPM |
 | Very urgent | 185–200 WPM only when clarity remains safe |
 
-For a hard duration cap, reserve roughly **10–15%** rather than filling the mathematical maximum. This is an internal safety heuristic, not an ElevenLabs feature.
+For a hard cap, reserve roughly **10–15%** when pauses, reactions, reveal beats, or a strong landing are expected.
 
-## 4. Safe first-draft word budgets
+## 4. Safe first-draft budgets
 
-Use these only as a starting point when no calibrated voice data exists:
+Use only as a no-calibration starting point:
 
 | Target audio | Safe first draft |
 |---:|---:|
@@ -80,19 +85,34 @@ Use these only as a starting point when no calibrated voice data exists:
 | 45 sec | ~90–110 |
 | 60 sec | ~120–145 |
 
-Use the lower side for more pauses/emotional movement. Use the upper side for clean energetic delivery with few pauses.
+Use the lower side for heavier emotional movement/pause density; use the upper side for clean energetic delivery with few pauses.
 
-## 5. Examples
+## 5. Beat-aware planning
+
+Word count alone is not enough.
+
+Before finalizing a timed line, note whether it contains:
+
+- many short beat boundaries;
+- deliberate ellipses / dramatic pivots;
+- vocal reactions;
+- repeated words / hesitation;
+- a slow reveal;
+- a strong isolated ending.
+
+More of these usually requires more timing reserve. Do not invent an exact seconds-per-pause formula.
+
+## 6. Practical examples
 
 ### Maximum 10 seconds
 
-Natural/cinematic planning at 150 WPM:
+At 150 WPM:
 
 ```text
 10 × 150 / 60 = 25 raw words
 ```
 
-With expressive reserve, prefer roughly 20–23 words if the line includes hesitation, a reveal, or a strong final command.
+For an expressive line, roughly 20–23 spoken words is a safer first draft.
 
 ### Around 15 seconds
 
@@ -100,7 +120,7 @@ With expressive reserve, prefer roughly 20–23 words if the line includes hesit
 15 × 150 / 60 = 37.5 raw words
 ```
 
-For expressive cinematic speech, roughly 30–35 spoken words is a safer first draft.
+For expressive cinematic speech, roughly 30–35 spoken words is a safer starting point.
 
 ### Around 30 seconds
 
@@ -108,85 +128,74 @@ For expressive cinematic speech, roughly 30–35 spoken words is a safer first d
 30 × 160 / 60 = 80 raw words
 ```
 
-For a narration with several emotional beats, roughly 65–72 spoken words is a safer first draft.
+For several emotional beats, roughly 65–72 spoken words is a safer starting point.
 
-## 6. Project-calibrated duration is stronger than generic WPM
+## 7. Calibration when audio exists
 
-Once approved audio exists, calculate the actual effective speaking rate:
+A simple calibrated rate can be computed as:
 
 ```text
 calibrated_WPM = spoken_word_count / actual_seconds × 60
 ```
 
-Example:
+Use it only for reasonably similar voice/performance conditions.
+
+If enough evidence eventually exists, keep meaningful performance classes such as:
 
 ```text
-42 spoken words
-17.2 seconds
-≈ 146.5 WPM
+natural narration
+mysterious / reflective
+urgent / warning
 ```
 
-For the next line using the same voice/model/performance family, use that project rate instead of a generic internet average.
+Do not populate categories with guessed values.
 
-Do not assume one global rate for every performance. Maintain calibration by meaningful class when enough evidence exists:
-
-```text
-Voice X / v3
-natural narration      ~ calibrated rate
-mysterious / reflective ~ calibrated rate
-urgent                  ~ calibrated rate
-```
-
-Only create these categories after actual approved audio exists. Do not populate fake values.
-
-## 7. Hard maximum strategy
+## 8. Hard maximum strategy
 
 For `max N seconds`:
 
-1. choose the performance class;
-2. use calibrated WPM if available, otherwise fallback planning WPM;
-3. calculate the raw word budget;
-4. reserve 10–15% when the line needs expressive pauses/reactions;
-5. write the script within the budget;
-6. do not add filler merely to use the full duration;
-7. actual audio remains the final duration evidence.
+1. choose the performance family;
+2. use nearest approved evidence if available;
+3. otherwise use calibrated class rate;
+4. otherwise use fallback WPM;
+5. reserve expressive margin;
+6. write within the resulting spoken-word budget;
+7. preserve required meaning and landing;
+8. do not add filler merely to use the full slot.
 
-A `max 10 sec` line is healthier at 8.5–9.5 seconds than at 10.8 seconds.
+A line safely under the cap is preferable to one that only fits if the model rushes unnaturally.
 
-## 8. Fixed-sync strategy
+## 9. Fixed-sync strategy
 
 For exact external timing:
 
 ```text
-write near the natural word budget
-→ generate/review natural delivery
-→ if exact sync is mandatory, use a product/workflow that supports fixed duration or downstream timing adjustment
+write near natural word budget
+→ preserve required meaning
+→ use a fixed-duration-capable workflow only when exact sync is truly required
 ```
 
-Do not force a script that naturally needs 20 seconds into a 10-second slot. Rewrite the communication scope/wording first if the required meaning can be preserved.
+Do not force a line that naturally needs much longer into a short slot. Rewrite the communication load first when possible.
 
-## 9. Speed control caveat
+## 10. Speed caveat
 
-Current ElevenLabs official documentation is internally inconsistent:
+Current official ElevenLabs documentation has shown conflicting information on Speed availability for v3.
 
-- one current Text to Speech product-guide section says Speed is not available for Eleven v3;
-- an FAQ on current ElevenLabs documentation says Speed 0.7–1.2 is available for all voices/models.
-
-Therefore status is **UNKNOWN / UI-DEPENDENT** for this repository's web v3 workflow.
+Status: **UI-DEPENDENT**.
 
 Rules:
 
-- do not make Speed a required v3 duration-control mechanism;
-- use the actual current ElevenLabs UI as authority for whether the control is present;
-- even when available, word budget and natural performance structure remain the primary duration tools;
-- extreme speed changes may reduce quality according to ElevenLabs.
+- do not make Speed a required duration mechanism;
+- use the live ElevenLabs UI as authority for availability;
+- word budget + spoken architecture remain primary;
+- extreme speed adjustment is not a substitute for a correctly sized script.
 
-## 10. Duration evidence states
+## 11. Evidence labels
 
-Use honest language:
+Use truthful labels:
 
-- **Estimated Duration** — calculated/planned only;
-- **Generated Duration** — actual file exists and duration was measured;
-- **Approved Duration** — generated audio was heard/accepted for the production use case.
+- **Estimated Duration** — planning only; no audio required;
+- **Generated Duration** — actual generated file duration measured;
+- **Approved Duration** — generated audio reviewed/accepted for its use case.
 
-Never call a planned WPM estimate measured audio proof.
+Preparation Mode can stop at Estimated Duration. Never promote an estimate to generated/approved evidence without actual audio.
