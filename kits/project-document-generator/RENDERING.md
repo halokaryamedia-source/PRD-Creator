@@ -1,128 +1,89 @@
 # Rendering Contract
 
-`CONTENT-CONTRACT.md` owns PRD meaning and the approved PRD-core page prototypes. This file owns deterministic projection into those prototypes **and the approved downstream Production Assets composition into the same project HTML**.
+`CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. This file owns deterministic projection into that composition and the approved downstream Production Assets extension inside the same project HTML.
 
 ## Authority chain
-
-PRD core:
 
 ```text
 work/content.md
 → work/render-data.json
 → exact Golden template + deterministic projection
-→ PRD core pages in output/final.html
+→ PRD core in output/final.html
 ```
 
-Optional downstream production extension:
+Optional downstream extension:
 
 ```text
 accepted PRD core
 → downstream canonical production source
-   currently: work/voice-production.md
 → deterministic Production Assets projection
-→ appended professional-only pages in the same output/final.html
+→ same output/final.html
 ```
 
-The renderer does not invent project meaning, Voice wording, actor selection, or a new PRD layout. Production Assets consumes already-owned downstream production data.
+The renderer may represent owned data. It does not invent project meaning or redesign the PRD.
 
-## One project HTML, separate owners
+## One project HTML
 
 `output/final.html` is the single human-facing project document.
 
-Its content has two ownership layers:
-
 ```text
 PRD core pages
-= accepted product / gameplay / level-design / developer truth
+= accepted product/gameplay/level-design/developer truth
 = owned by content.md + render-data.json
 
 Production Assets pages
-= downstream operator-facing production material
-= owned by the matching production source
+= downstream operator/developer material
+= owned by the matching downstream canonical source
 ```
 
-For Voice:
-
-```text
-work/voice-requirements.md
-= internal Voice asset requirement
-
-work/voice-production.md
-= canonical actor/script production content
-
-output/final.html → Production Assets → Voice
-= derived human/operator view only
-```
-
-Do not duplicate Flow 5 requirement reasoning, source refs, `Must communicate`, `Must not add/repeat`, Performance Fill Map reasoning, WPM math, QA notes, or other internal production state into the HTML merely because the renderer can access it.
-
-## PRD acceptance vs downstream acceptance
-
-Adding or updating downstream Production Assets does **not** change accepted PRD meaning when `work/content.md` and `work/render-data.json` are unchanged.
-
-Therefore:
-
-```text
-PRD core change
-→ reopen affected PRD acceptance
-
-Voice production change only
-→ keep PRD core acceptance
-→ rebuild consolidated final.html
-→ validate affected Voice / Production Assets scope
-```
-
-`output/final.html` may therefore receive a downstream Production Assets composition after PRD handoff without pretending that the PRD itself was re-authored.
+Adding a downstream Production Assets view does not reopen PRD acceptance while `content.md` and `render-data.json` remain unchanged.
 
 ## Exact Golden template identity
 
-The repository intentionally keeps two paths pointing to the **same approved HTML bytes**:
+The repository keeps:
 
 ```text
 template/golden-reference.html
-→ canonical Golden reference evidence
-
 template/runtime-template.html
-→ default runtime template alias used by renderer
 ```
 
-Both files remain byte-identical to the approved Golden artifact. Current approved Git blob:
+byte-identical to the approved Golden artifact. Current approved Git blob:
 
 ```text
 e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 ```
 
-Do not replace either path with a cleaned, normalized, reconstructed, or generic interpretation.
+Do not replace either path with a cleaned, reconstructed, or generic interpretation.
 
-The approved Production Assets extension does **not** rewrite the Golden template. The renderer first creates the unchanged PRD core through the Golden contract, then deterministically appends downstream pages and their narrowly scoped extension CSS/JS only when the matching canonical production source exists.
-
-This keeps the PRD prototype stable while allowing the same HTML to become the project production hub approved by the user.
+Production Assets does not rewrite Golden template bytes. The base PRD core is rendered first; downstream pages and narrowly scoped extension styles/interactions are appended only when the matching canonical source exists.
 
 ## Runtime binding
 
-Base runtime preprocessing may perform only non-visual project binding before PRD-core projection:
+Base runtime preprocessing may perform only project binding needed for the PRD render:
 
 - strip Golden sample identity metadata;
 - namespace localStorage keys for the current project;
-- replace browser title/description/version metadata;
-- replace sidebar navigation;
+- bind browser title/description/version metadata;
+- replace sidebar navigation with current PRD navigation;
 - replace document `<main>` PRD pages;
 - replace glossary data;
 - bind render-data revision metadata.
 
-After the base PRD render, the Production Assets compositor may additionally:
+After the PRD core is rendered, the Production Assets compositor may:
 
-- append a professional-only `Production Assets` navigation group;
-- append downstream production pages after all PRD-core pages;
-- inject narrowly scoped Production Assets CSS using existing Golden variables/visual language;
-- inject operator interaction needed by the page, currently Voice `Copy Text`;
-- do nothing when no canonical downstream production source exists.
+- append one professional-only `Production Assets` navigation group to the **existing** PRD sidebar;
+- append downstream pages after PRD-core pages;
+- inject narrowly scoped extension CSS/interactions;
+- do nothing when no downstream canonical production source exists.
 
-It must not modify existing PRD-core page DOM, CSS, copy, IDs, or semantics.
+It must not:
+
+- rebuild Overview, Gameplay Flow, or Development navigation;
+- promote gameplay/objective sections out of Development;
+- renumber accepted PRD package/page codes;
+- hand-patch project meaning into generated HTML.
 
 ## Locked Golden DOM vocabulary — PRD core
-
-Generated PRD-core HTML must project into the same Golden DOM contract instead of generic aliases.
 
 Stable global page IDs:
 
@@ -136,7 +97,7 @@ phase-development     → Gameplay Development
 Stable opening Gameplay Flow ID:
 
 ```text
-flow-start             → The Journey Begins
+flow-start            → The Journey Begins
 ```
 
 Package IDs remain:
@@ -157,7 +118,7 @@ data-phase="dev-<package>"
 data-clean-target="summary"
 ```
 
-Golden navigation/component namespaces are preserved, including:
+Preserve Golden navigation/component namespaces, including:
 
 ```text
 phase-navigation
@@ -178,77 +139,60 @@ quarry-score-summary
 quarry-inline-score-table
 ```
 
-Do not rename these to `package-*`, `global-*`, generic grid names, or other cleaner aliases. The runtime JavaScript and approved CSS are part of the Golden PRD-core contract.
+Do not rename these merely to create cleaner implementation aliases.
 
-## Locked PRD-core page family
+## Locked PRD-core family
 
 ```text
 01 Overview
 
 02 Gameplay Flow
    The Journey Begins
-   one Gameplay Flow page per package
+   one Gameplay Flow page per gameplay section
 
 03 Development
    Development Overview
    Game System
    Data and Reset
    Gameplay Development
-
-04+ Gameplay Packages
-   Gameplay Overview
-   Level Design
-   Developer
+   gameplay/objective sections
+      Gameplay Overview
+      Level Design
+      Developer
 ```
 
-For `N` packages the **PRD-core page count** remains `6 + 4N`.
+For `N` gameplay sections the PRD-core page count remains `6 + 4N`.
 
-Production Assets pages are downstream professional-only extensions and are not counted as PRD-core pages.
+Production Assets pages are downstream extensions and are not counted as PRD-core pages.
 
-## Production Assets — Voice visible contract
+## Production Assets navigation
 
-When `work/voice-production.md` exists beside `render-data.json`, the normal renderer composes Voice into the same `output/final.html` after the PRD core.
-
-Navigation:
+Production Assets is additive:
 
 ```text
-Production Assets
-└── Voice — <gameplay section>
+03 Development
+   existing PRD global + gameplay/objective navigation
+
+04 Production Assets
+   <asset category>
+   <asset-specific links>
 ```
 
-Voice pages follow the canonical `voice-production.md` section/entry order, which Flow 6 already keeps aligned to gameplay/Trigger order.
-
-The first Voice page shows the **Voice Cast** once. Each Voice entry then exposes only:
+Current Voice implementation uses one `VOICE` category. Each Voice link shows:
 
 ```text
-sequence
-Voice title
-Actor
-Estimated Duration
-exact Eleven v3 performance text
-Copy Text
+<gameplay section title>
+<accepted PRD package label>
 ```
 
-Do not show internal Voice Requirement fields in this operator surface.
+Rules:
 
-### Voice Cast
-
-`work/voice-production.md` may contain one compact header block before gameplay sections:
-
-```text
-Voice Cast:
-- <Speaker>: <selected ElevenLabs voice>
-```
-
-When a speaker has no stored selected voice yet, the HTML shows `Voice selection pending` rather than inventing one.
-
-The cast is shown once; per-line cards show only the Actor name.
-
-### Exact prompt integrity
-
-The HTML script panel is derived verbatim from the canonical fenced `performance` block, HTML-escaped for safety while preserving text and line breaks.
-
-`Copy Text` copies only that exact prompt text. Requirement metadata, UI instructions, labels, and internal notes never enter the copied payload.
+- `VOICE` appears once;
+- gameplay/objective navigation remains under Development;
+- PRD page identities remain unchanged;
+- Voice pages use their own Production Assets identities (`04A`, `04B`, ...);
+- long sidebar labels wrap naturally; clipping/ellipsis is not the target behavior;
+- asset-specific semantic/payload integrity remains owned by the matching downstream procedure/validator.
 
 ## Golden visual language for Production Assets
 
@@ -256,45 +200,41 @@ Production Assets must look native to the same project document, not like a sepa
 
 Reuse:
 
-- Golden sidebar/navigation hierarchy;
+- Golden sidebar hierarchy;
 - page header/footer and sheet width;
 - existing typography;
-- `--navy`, `--blue`, `--amber`, `--line`, `--soft`, `--paper`, `--ink`, and `--muted` variables;
-- existing professional-view behavior;
+- existing document variables and professional-view behavior;
 - print behavior.
 
-New component styling is limited to the concrete operator need: Voice Cast cards, exact script panels, and Copy Text action. Do not clone the ElevenLabs UI, add dark code-editor styling, status dashboards, audio players, settings databases, or speculative asset controls.
+Add only concrete asset-specific UI needed by the current production surface. Do not introduce a generic asset framework or speculative dashboard controls.
 
 ## Golden prototype rule — PRD core
 
-The renderer may repeat project data inside approved Golden PRD components. It may not introduce a different PRD-core component because the content is long or complex.
+The renderer may repeat project data inside approved Golden PRD components. It may not introduce a different PRD-core component because content is long or complex.
 
 Do not render in PRD core:
 
-- Document Control or extra metadata panels on Overview;
+- extra document-control panels on Overview;
 - orientation cards on Gameplay Flow;
-- numbered-card replacements for Golden story-flow;
-- Trigger / System Behavior / Data / Expected Result matrices as Developer Flow;
-- a visible Acceptance & Verification panel on Developer pages;
-- Terms Used blocks on Level Design or Developer pages;
+- replacement flow layouts that bypass Golden composition;
+- visible Acceptance panels on Developer pages;
+- Terms Used on Level Design or Developer pages;
 - renamed Global Development pages/table headings;
 - generic component namespaces that bypass Golden CSS/runtime behavior.
 
-If PRD content does not fit clearly, improve or relocate the copy to the correct existing Golden surface. Do not redesign the PRD page and do not delete material rules to make the surface look cleaner.
+If PRD content does not fit clearly, improve or relocate the copy to the correct existing Golden surface. Do not redesign the PRD page and do not delete material rules to make the surface cleaner.
 
 ## Projection is lossless for material PRD structure
 
 `render-data.json` is derived, but it may not be a lossy summary of canonical PRD content.
 
-The projection must preserve structured material meaning needed by Golden components:
-
-- several independent requirements in one canonical group remain several visible bullets/rows;
-- independently meaningful table children are not concatenated into one prose scalar;
+- independent requirements remain independently readable;
+- independently meaningful table children are not flattened into one prose scalar;
 - Gameplay Flow action/response/recovery paragraphs remain distinct when they express distinct rules;
-- scoring/result/reset sub-rules remain independently readable in the approved Developer hierarchy;
+- scoring/result/reset sub-rules remain readable in the owning Developer hierarchy;
 - package glossary terms are not silently removed by role-based projection.
 
-The renderer may transform representation, not meaning cardinality. If current projection cannot represent canonical detail, fix projection/schema ownership rather than truncating content.
+The renderer may transform representation, not meaning cardinality. If projection cannot represent canonical detail, fix projection ownership instead of truncating content.
 
 ## Visible package composition
 
@@ -322,37 +262,25 @@ Scoring Criteria
 
 ```text
 Level Design Overview
-→ Design Flow (4 Golden cards)
+→ Design Flow
 → Build Requirements
 → Important Build Notes
-```
-
-Columns:
-
-```text
-No. | Object | Area Size | Build and Visual Requirements | Gameplay Function
 ```
 
 ### Developer
 
 ```text
 Developer Overview
-→ Development Flow (4 Golden cards)
+→ Development Flow
 → Development Requirements
 → Important Development Notes
-```
-
-Columns:
-
-```text
-No. | Setup | Development Requirements | Gameplay Function
 ```
 
 Scoring/result and Reset/Interruption stay inside Development Requirements.
 
 ## Glossary
 
-`packages[].terms` is the canonical package glossary source. Projection uses the complete package term set for that package's Golden phase scope; role filters must not silently reduce the visible/reference glossary.
+`packages[].terms` is the canonical package glossary source. Production Assets does not create glossary definitions.
 
 Visible Terms Used follows Golden:
 
@@ -365,107 +293,31 @@ Developer            no
 Production Assets    no
 ```
 
-Production Assets does not create glossary definitions; it consumes exact downstream production text.
-
 ## Version
 
 `document.version` remains PRD project/release metadata, not an edit counter.
 
-Adding/updating downstream Voice Production does not change `document.version` unless the accepted PRD/project itself also enters a new declared revision.
-
-Voice Production maintains its own script version/evidence according to the Voice workflow.
+Adding/updating downstream Production Assets does not change `document.version` unless accepted PRD/project meaning also enters a new declared revision.
 
 ## Render economy
 
-Rendering is the mechanical end of an approved semantic workflow.
-
-### Initial PRD production
+Initial PRD production:
 
 ```text
-Source / requirement recovery
-→ complete Simple Chat Preview
-→ user approval
+approved project meaning
 → content.md
-→ compact render-data.json
-→ one planned full final.html PRD-core render
+→ render-data.json
+→ one deterministic full final.html PRD-core render
 ```
 
-If no `voice-production.md` exists, Production Assets composition is a no-op and the normal PRD output stays unchanged.
-
-### Downstream Voice preparation
+Downstream extension:
 
 ```text
 accepted PRD core
-→ voice-requirements.md
-→ voice-production.md
+→ downstream canonical production source
 → one consolidated final.html rerender
-→ Production Assets → Voice appears after PRD core
 ```
 
-Do not create `voice-production.html` as a second default operator document. The same project HTML is the approved human-facing surface.
+If no downstream canonical source exists, Production Assets composition is a no-op.
 
-DOCX may remain an optional derived Voice export when requested/current workflow still needs it.
-
-### Bounded revision
-
-PRD change:
-
-```text
-approved affected PRD meaning
-→ patch affected content.md meaning
-→ patch affected render-data projection
-→ one full final.html rerender
-```
-
-Voice-only change:
-
-```text
-approved/current Voice production change
-→ patch voice-production.md
-→ one full final.html rerender
-→ review only affected Production Assets / continuity scope
-```
-
-The renderer may rewrite the whole HTML file. Do not build partial-page rendering, per-page artifacts, incremental HTML caches, or a second preview renderer merely to avoid a cheap deterministic full-file write.
-
-## Golden access economy
-
-Normal project authoring should use the Reverse-derived Golden fill map in `CONTENT-CONTRACT.md`. Do not load the full Golden HTML into model context simply to remember what each PRD page/slot needs.
-
-Load the exact Golden artifact only when the artifact itself is required evidence, such as:
-
-- Golden regression / reference audit;
-- template/CSS/runtime investigation;
-- renderer page-composition investigation;
-- targeted visual comparison or fidelity defect.
-
-Production Assets extension work should reuse the already-defined Golden variables/components and does not require copying the Golden HTML into another template.
-
-## Compact render data
-
-`render-data.json` contains only the structured fields needed to fill approved PRD-core Golden surfaces. Keep downstream Voice wording out of it.
-
-Do not add:
-
-- Voice scripts;
-- actor selections;
-- chain-of-thought/reasoning;
-- source-audit notes;
-- rejected alternatives;
-- approval conversation/transcript;
-- confidence scores;
-- duplicate prose that exists only for convenience.
-
-Voice remains in its existing canonical `work/voice-production.md`; the compositor reads that source directly.
-
-## Normal production
-
-```bash
-python kits/project-document-generator/renderer/render.py \
-  workspace/active/<project>/work/render-data.json \
-  workspace/active/<project>/output/final.html
-```
-
-The same command automatically includes `work/voice-production.md` when it exists in the same project work directory.
-
-Never patch generated `final.html` manually. The renderer/compositor organizes approved meaning and production content; it does not replace Flow 2 decisions, Flow 4 PRD review, or Flow 7 Voice review.
+Do not create a second default HTML, partial-page renderer, page cache, or speculative preview renderer merely to avoid a cheap deterministic full-file write.
