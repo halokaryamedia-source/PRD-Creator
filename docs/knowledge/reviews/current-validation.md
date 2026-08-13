@@ -14,6 +14,7 @@ Current downstream path:
 
 ```text
 accepted PRD
+→ asset discovery / production-implication check
 → optional work/asset-requirements.md
 → optional Voice canonical sources
 → rerender same output/final.html
@@ -46,12 +47,14 @@ Audio
 Visual Effects & Presentation
 ```
 
-Only non-zero categories are rendered.
+Only non-zero categories are rendered. The semantic contract now also requires explicit asset discovery: necessary custom assets implied by accepted gameplay are not omitted merely because source material did not name them. Material choices that change project meaning use the existing Completion/Proposal process; production-only choices may use one practical recommendation without adding a new approval layer.
 
 Current contract/mechanical evidence:
 
-- PRD regression contracts: PASS;
-- Voice regression/validator contracts: PASS;
+- Production Assets focused contracts: 7/7 PASS;
+- Voice focused contracts: 8/8 PASS;
+- a non-zero `Visual Effects & Presentation` fixture renders successfully;
+- retired `Cinematic & Presentation` is absent from the rendered fixture;
 - no-downstream PRD path remains a no-op;
 - generic asset-only rendering works without Voice sources;
 - generic + Voice content can share one objective-first page;
@@ -60,30 +63,13 @@ Current contract/mechanical evidence:
 
 ## Browser proof
 
-One temporary browser-proof workflow rerendered current Clockwork from canonical sources and built a generic asset-only fixture. The workflow completed successfully, uploaded four screenshots, then removed itself from `Local`.
+Existing objective-first browser proof remains PASS at 1500px and 1000px desktop widths for Clockwork and the earlier generic fixture, with no sidebar/card/page overflow and no zero-count category.
 
-At **1500px and 1000px desktop widths**:
+That earlier generic browser fixture did not contain a non-zero fourth category. Therefore no separate browser PASS is claimed for the exact longer `Visual Effects & Presentation` label; it is mechanically covered and should receive fresh visual proof only when a real project renders it or a visual defect is observed.
 
-### Clockwork
+## The Circuit benchmark
 
-- 6 Production Assets navigation links;
-- 6 Production Assets pages;
-- 12 Voice cards;
-- `Audio` present on all 6 downstream pages;
-- retired `VOICE` sidebar-category layout absent;
-- no sidebar-link overflow;
-- no asset/Voice-card overflow;
-- no page-width overflow;
-- no zero-count category rendered.
-
-### Generic asset fixture
-
-- 2 Production Assets links/pages (`Global / Shared Assets` + gameplay section);
-- one `3D Models` requirement (`Trial Console`);
-- one `UI & Information` requirement with exact player-facing content;
-- no Voice cards;
-- no zero-count categories;
-- no sidebar/card/page overflow.
+The supplied completed Minecraft Bedrock `The Circuit v1.0.1.mcworld` was used only as a reference audit. It supported objective-first grouping, shared assets, function-based classification, primary-owner bundling, and the final four-category boundary. No The Circuit `asset-requirements.md`, HTML, project package, or production output was generated.
 
 ## Current Clockwork state
 
@@ -99,30 +85,22 @@ Critical: 0
 Major: 0
 ```
 
-The objective-first rerender changed **derived presentation only**. Clockwork gameplay meaning, `work/render-data.json`, Voice wording, performance tags, Voice count, actor selection, and Voice production configuration remain unchanged.
-
-Clockwork currently has no generic `work/asset-requirements.md`; non-Voice asset requirements have intentionally not been invented before the real sample audit.
+Clockwork currently has no generic `work/asset-requirements.md`; no non-Voice Clockwork assets were invented merely to exercise the final taxonomy.
 
 ## Current project owners
 
 ```text
+kits/project-document-generator/SOURCE-INTAKE.md
+    production-completeness + implied-asset meaning check
+
 kits/project-document-generator/PRODUCTION-ASSETS.md
-    non-Voice objective-first requirement contract
+    non-Voice objective-first asset discovery/category/requirement contract
 
-workspace/active/the-clockwork-vault/work/content.md
-    canonical PRD meaning
+kits/project-document-generator/renderer/production_assets_objective.py
+    deterministic objective-first presentation mechanics
 
-workspace/active/the-clockwork-vault/work/render-data.json
-    PRD projection
-
-workspace/active/the-clockwork-vault/work/voice-requirements.md
-    Voice requirements
-
-workspace/active/the-clockwork-vault/work/voice-production.md
-    canonical Voice Production
-
-workspace/active/the-clockwork-vault/output/final.html
-    consolidated derived presentation
+kits/voice-production-kit/
+    Voice Flow 5–7 semantic/canonical ownership
 ```
 
 No generated-audio review has been performed.
