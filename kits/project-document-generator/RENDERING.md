@@ -1,6 +1,6 @@
 # Rendering Contract
 
-`CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. This file owns deterministic projection into that composition and the approved downstream Production Assets extension inside the same project HTML.
+`CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. `PRODUCTION-ASSETS.md` owns the compact non-Voice Production Asset requirement contract. This file owns deterministic projection into the approved PRD composition and the downstream Production Assets extension inside the same project HTML.
 
 ## Authority chain
 
@@ -15,12 +15,13 @@ Optional downstream extension:
 
 ```text
 accepted PRD core
-→ downstream canonical production source
-→ deterministic Production Assets projection
+→ optional work/asset-requirements.md
+→ optional Voice canonical production source
+→ deterministic objective-first Production Assets projection
 → same output/final.html
 ```
 
-The renderer may represent owned data. It does not invent project meaning or redesign the PRD.
+The renderer may represent owned data. It does not invent project meaning, asset requirements, or Voice content.
 
 ## One project HTML
 
@@ -33,10 +34,11 @@ PRD core pages
 
 Production Assets pages
 = downstream operator/developer material
-= owned by the matching downstream canonical source
+= non-Voice requirement owner: work/asset-requirements.md
+= Voice production owner: work/voice-production.md
 ```
 
-Adding a downstream Production Assets view does not reopen PRD acceptance while `content.md` and `render-data.json` remain unchanged.
+Adding or revising downstream Production Assets does not reopen PRD acceptance while `content.md` and `render-data.json` remain unchanged.
 
 ## Exact Golden template identity
 
@@ -55,7 +57,7 @@ e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 
 Do not replace either path with a cleaned, reconstructed, or generic interpretation.
 
-Production Assets does not rewrite Golden template bytes. The base PRD core is rendered first; downstream pages and narrowly scoped extension styles/interactions are appended only when the matching canonical source exists.
+Production Assets does not rewrite Golden template bytes. The base PRD core is rendered first; downstream pages and narrowly scoped extension styles/interactions are appended only when at least one accepted downstream canonical source exists.
 
 ## Runtime binding
 
@@ -72,6 +74,9 @@ Base runtime preprocessing may perform only project binding needed for the PRD r
 After the PRD core is rendered, the Production Assets compositor may:
 
 - append one professional-only `Production Assets` navigation group to the **existing** PRD sidebar;
+- create one page per accepted gameplay/shared Production Assets section that actually contains downstream assets;
+- group only non-zero categories inside that page;
+- merge canonical Voice Production into the matching gameplay page's `Audio` category;
 - append downstream pages after PRD-core pages;
 - inject narrowly scoped extension CSS/interactions;
 - do nothing when no downstream canonical production source exists.
@@ -80,6 +85,9 @@ It must not:
 
 - rebuild Overview, Gameplay Flow, or Development navigation;
 - promote gameplay/objective sections out of Development;
+- nest categories or individual asset entries in the sidebar;
+- render empty/zero categories;
+- duplicate Voice canonical data into generic asset requirements;
 - renumber accepted PRD package/page codes;
 - hand-patch project meaning into generated HTML.
 
@@ -167,32 +175,38 @@ Production Assets pages are downstream extensions and are not counted as PRD-cor
 
 ## Production Assets navigation
 
-Production Assets is additive:
+Production Assets is additive and **objective-first**:
 
 ```text
 03 Development
    existing PRD global + gameplay/objective navigation
 
 04 Production Assets
-   <asset category>
-   <asset-specific links>
+   Global / Shared Assets      # only when real shared assets exist
+   <gameplay section title>
+      <Introduction | Objective N | Ending | accepted PRD label>
 ```
 
-Current Voice implementation uses one `VOICE` category. Each Voice link shows:
+The sidebar does not expose category or asset-entry nesting. Inside each page, only categories with at least one asset are rendered:
 
 ```text
-<gameplay section title>
-<accepted PRD package label>
+3D Models
+UI & Information
+Audio
+Cinematic & Presentation
 ```
 
 Rules:
 
-- `VOICE` appears once;
 - gameplay/objective navigation remains under Development;
 - PRD page identities remain unchanged;
-- Voice pages use their own Production Assets identities (`04A`, `04B`, ...);
+- Production Assets pages use their own identities (`04A`, `04B`, ...);
+- page order follows accepted project journey, with `Global / Shared Assets` first only when present;
+- zero-count categories are absent rather than shown as `0`, `None`, or empty headings;
+- Voice appears inside `Audio` on the matching page and retains its detailed Voice Production card, exact Trigger context, Speaker, Estimated Duration, canonical Eleven v3 payload, and Copy Prompt;
 - long sidebar labels wrap naturally; clipping/ellipsis is not the target behavior;
-- asset-specific semantic/payload integrity remains owned by the matching downstream procedure/validator.
+- non-Voice requirement integrity remains owned by `PRODUCTION-ASSETS.md` + project `work/asset-requirements.md`;
+- Voice semantic/payload integrity remains owned by the Voice Production Kit and its project canonical sources.
 
 ## Golden visual language for Production Assets
 
@@ -206,7 +220,25 @@ Reuse:
 - existing document variables and professional-view behavior;
 - print behavior.
 
-Add only concrete asset-specific UI needed by the current production surface. Do not introduce a generic asset framework or speculative dashboard controls.
+Production Assets pages should remain scan-first:
+
+```text
+section title + accepted label + short context
+→ total asset count + non-zero category counts
+→ category heading
+→ direct actionable asset requirements
+```
+
+A generic non-Voice asset entry displays only what production needs:
+
+```text
+Asset Name
+Requirement       # mandatory
+Usage             # optional
+Content           # optional exact player-facing content
+```
+
+Do not render component inventories such as Model / Texture / Animation / Particle / SFX when those are simply parts of one owning asset. Add only concrete asset-specific UI needed by the current production surface; do not introduce a generic asset-management framework or speculative dashboard controls.
 
 ## Golden prototype rule — PRD core
 
@@ -314,10 +346,10 @@ Downstream extension:
 
 ```text
 accepted PRD core
-→ downstream canonical production source
+→ optional asset-requirements.md + optional Voice canonical production
 → one consolidated final.html rerender
 ```
 
 If no downstream canonical source exists, Production Assets composition is a no-op.
 
-Do not create a second default HTML, partial-page renderer, page cache, or speculative preview renderer merely to avoid a cheap deterministic full-file write.
+Do not create a second default HTML, partial-page renderer, page cache, generic asset registry/schema, or speculative preview renderer merely to avoid a cheap deterministic full-file write.
