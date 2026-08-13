@@ -24,7 +24,7 @@ kits/voice-production-kit/
 ## Routing
 
 - Flow 5 → `VOICE-EXTRACTION.md`.
-- Flow 6 lifecycle/full-project preparation → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`.
+- Flow 6 lifecycle/static output/full-project preparation → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`.
 - Actual Eleven v3 generation/revision → `SOUNDMAKER.md` Generation Mode.
 - DOCX presentation/build mechanics → `DOCX-FORMAT.md` + builder.
 - Flow 7 → `VOICE-VALIDATION.md`.
@@ -44,10 +44,10 @@ accepted PRD
 → state/voice-state.yaml
 ```
 
-- Flow 5 owns Voice scope.
+- Flow 5 owns Voice scope and exact Speaker.
 - SoundMaker is an execution procedure, not a wording authority.
-- `work/voice-production.md` owns final wording.
-- DOCX is derived presentation.
+- `work/voice-production.md` owns final wording and repeats only stable operator metadata: Type, Speaker, Estimated Duration.
+- DOCX is derived operator presentation.
 - audio is optional evidence/output only when actually in scope.
 
 If the exact generated/approved prompt differs from canonical wording, synchronize it into `work/voice-production.md` before claiming current alignment.
@@ -59,7 +59,8 @@ SoundMaker is **Eleven v3 only** and stays inside Flow 6.
 ### Preparation Mode
 
 - may process the full current Voice scope in one bounded pass;
-- apply per-line construction plus project-level speaker continuity/anti-repetition;
+- actual commercial voice selection may wait if a clear Target Voice Profile exists;
+- apply per-line construction plus project-level speaker continuity/information progression/anti-template review;
 - do not require audio generation/testing;
 - do not require `APPROVED` per line;
 - keep duration/pronunciation as planned evidence until real proof exists.
@@ -68,23 +69,43 @@ SoundMaker is **Eleven v3 only** and stays inside Flow 6.
 
 - use only when actual ElevenLabs work is requested;
 - one active Voice ID;
+- exact project Speaker known;
+- actual voice/settings selected;
 - one exact reviewed prompt;
 - feedback/approval loop + canonical sync.
 
-Do not duplicate detailed prompting rules here. Durable guardrails are:
+Do not duplicate detailed prompting rules here.
 
-- duration before wording when timing matters;
-- voice fit before compensating with more direction;
-- spoken beats before punctuation/CAPS/tags;
-- Enhance OFF by default on already-directed prompts;
-- Speech Synthesis normally; Studio v3 only when long-form instability makes that surface useful;
-- no audio-quality claim without heard evidence.
+## Static output contract
+
+Canonical Flow 6 entry:
+
+```text
+Voice ID + Title
+Type
+Speaker
+Estimated Duration
+exact performance block
+```
+
+DOCX:
+
+```text
+Type · Speaker
+Voice ID — Title
+Estimated Duration
+Performance Script
+```
+
+Operator handoff is derived and compact; do not create another persistent handoff artifact by default.
+
+Internal planning metadata such as Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, performance maps, voice-fit ratings, and QA notes stays in its owning source rather than being duplicated into the script/DOCX.
 
 ## Semantic vs technical ownership
 
 Use the root `voice-production` specialist for semantic/product-contract defects such as:
 
-- Voice ID/Type/speaker/channel/trigger scope;
+- Voice ID/Type/Speaker/Channel/Trigger scope;
 - final wording/performance meaning;
 - SoundMaker quality behavior;
 - artifact/delivery semantics.
@@ -100,7 +121,7 @@ When semantics are already correct, route pure mechanics directly:
 
 - regenerate DOCX from canonical Markdown; never hand-edit it as the source fix;
 - parser/build failures must fail clearly;
-- exact Voice ID and Type parity is fail-closed;
+- exact Voice ID, Type, and **Speaker** parity are fail-closed;
 - builder/validator PASS does not establish semantic, visual, pronunciation, or audio quality;
 - the known blank-page regression remains guarded by `page_break_before`, not inserted page-break paragraphs.
 
