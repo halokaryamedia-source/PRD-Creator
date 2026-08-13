@@ -1,6 +1,6 @@
 # Current Validation Status
 
-Updated: 2026-08-13
+Updated: 2026-08-14
 
 This file records the **current evidence state only**. Historical debugging and superseded review detail remain in historical review files and Git history.
 
@@ -8,40 +8,86 @@ This file records the **current evidence state only**. Historical debugging and 
 
 Working branch: `Local`.
 
-Project Document Generator remains **v1.13.0**. Voice Production Kit is **v1.11.2**.
+Project Document Generator remains **v1.13.0**. Voice Production Kit remains **v1.11.2**.
 
-Current production path:
+Current downstream path:
 
 ```text
-accepted project meaning
-→ canonical PRD
-→ approved-Golden PRD core
-→ PRD validation / handoff
-→ optional downstream Voice requirements + canonical Voice Production
+accepted PRD
+→ optional work/asset-requirements.md
+→ optional Voice canonical sources
 → rerender same output/final.html
-→ append Production Assets → Voice
-→ Voice validation / delivery
+→ objective-first 04 Production Assets
 ```
 
-The Golden Sample remains the canonical PRD-core prototype. Production Assets is additive downstream presentation and does not change accepted PRD meaning/page identity.
+The Golden Sample remains the canonical PRD-core prototype. Production Assets is additive downstream presentation and does not change accepted PRD meaning, Golden bytes, or PRD page identity.
 
-## Current Clockwork PRD proof
+## Objective-first Production Assets proof
 
-Clockwork PRD remains `handoff_ready`.
+Current navigation contract:
 
-Current evidence:
+```text
+03 Development
+   accepted global development navigation
+   accepted gameplay/objective navigation
 
-- no material Flow 2 decision remains open;
-- PRD core preserves the approved Golden `6 + 4N` family/order;
-- `work/content.md` and `work/render-data.json` remain the PRD owners;
-- mechanical/content-purity validation passed;
-- Semantic Readiness and Material Conservation passed;
-- targeted desktop PRD visual sanity passed;
-- Golden reference/runtime template bytes remain identical and unchanged.
+04 Production Assets
+   Global / Shared Assets      # only when present
+   <gameplay section title>
+      <accepted PRD label>
+```
 
-## Current Clockwork Voice proof
+Categories are page content, not sidebar nesting:
 
-Current Voice state is `voice_delivery_ready` for the non-audio production scope.
+```text
+3D Models
+UI & Information
+Audio
+Cinematic & Presentation
+```
+
+Only non-zero categories are rendered.
+
+Current contract/mechanical evidence:
+
+- PRD regression contracts: PASS;
+- Voice regression/validator contracts: PASS;
+- no-downstream PRD path remains a no-op;
+- generic asset-only rendering works without Voice sources;
+- generic + Voice content can share one objective-first page;
+- unsupported/empty asset categories fail closed;
+- Voice exact prompt/context parity remains enforced.
+
+## Browser proof
+
+One temporary browser-proof workflow rerendered current Clockwork from canonical sources and built a generic asset-only fixture. The workflow completed successfully, uploaded four screenshots, then removed itself from `Local`.
+
+At **1500px and 1000px desktop widths**:
+
+### Clockwork
+
+- 6 Production Assets navigation links;
+- 6 Production Assets pages;
+- 12 Voice cards;
+- `Audio` present on all 6 downstream pages;
+- retired `VOICE` sidebar-category layout absent;
+- no sidebar-link overflow;
+- no asset/Voice-card overflow;
+- no page-width overflow;
+- no zero-count category rendered.
+
+### Generic asset fixture
+
+- 2 Production Assets links/pages (`Global / Shared Assets` + gameplay section);
+- one `3D Models` requirement (`Trial Console`);
+- one `UI & Information` requirement with exact player-facing content;
+- no Voice cards;
+- no zero-count categories;
+- no sidebar/card/page overflow.
+
+## Current Clockwork state
+
+Clockwork PRD remains `handoff_ready` and Voice remains `voice_delivery_ready` for the non-audio scope.
 
 ```text
 Mechanical: PASS
@@ -53,54 +99,32 @@ Critical: 0
 Major: 0
 ```
 
-The v1.11.2 consolidated navigation proof established:
+The objective-first rerender changed **derived presentation only**. Clockwork gameplay meaning, `work/render-data.json`, Voice wording, performance tags, Voice count, actor selection, and Voice production configuration remain unchanged.
+
+Clockwork currently has no generic `work/asset-requirements.md`; non-Voice asset requirements have intentionally not been invented before the real sample audit.
+
+## Current project owners
 
 ```text
-03 Development
-   accepted global development navigation
-   accepted gameplay/objective navigation
+kits/project-document-generator/PRODUCTION-ASSETS.md
+    non-Voice objective-first requirement contract
 
-04 Production Assets
-   VOICE
-   section title
-   accepted PRD package label
+workspace/active/the-clockwork-vault/work/content.md
+    canonical PRD meaning
+
+workspace/active/the-clockwork-vault/work/render-data.json
+    PRD projection
+
+workspace/active/the-clockwork-vault/work/voice-requirements.md
+    Voice requirements
+
+workspace/active/the-clockwork-vault/work/voice-production.md
+    canonical Voice Production
+
+workspace/active/the-clockwork-vault/output/final.html
+    consolidated derived presentation
 ```
 
-Verified behavior:
-
-- gameplay/objective navigation remains under `03 Development`;
-- `04 Production Assets` is additive;
-- accepted PRD page identities are not shifted by Voice;
-- `VOICE` appears once;
-- all six Clockwork Voice links show the correct gameplay title + accepted label (`Introduction`, `Objective 1–4`, `Ending`);
-- developer Context preserves the existing Flow 5 Trigger;
-- Copy payload parity remains exact;
-- browser inspection passed at 1500px and 1000px desktop widths;
-- no Voice sidebar clipping/overflow was detected at those claimed widths;
-- no generated-audio review has been performed.
-
-## Current project package
-
-Current project authority is stored under:
-
-```text
-workspace/active/the-clockwork-vault/
-```
-
-Key owners:
-
-```text
-work/content.md              canonical PRD meaning
-work/render-data.json        PRD projection
-work/acceptance.md           PRD acceptance
-work/voice-requirements.md   Voice requirements
-work/voice-production.md     canonical Voice Production
-work/voice-acceptance.md     Voice acceptance
-state/voice-state.yaml       Voice delivery state
-output/final.html            consolidated PRD + Production Assets presentation
-output/team-handoff.md       team handoff/status
-```
-
-Historical review files keep capture-time evidence. `docs/knowledge/reviews/README.md` owns their current interpretation.
+No generated-audio review has been performed.
 
 Current continuation is owned by `docs/knowledge/next-action.md`.
