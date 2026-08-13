@@ -165,12 +165,16 @@ def validate_project_html(
     if "Production Assets" not in source or "production-assets-nav" not in source:
         issues.append("Project HTML missing Production Assets Voice navigation")
 
+    voice_shell_count = (
+        source.count('class="voice-objective-shell"')
+        + source.count('class="pa-shell voice-objective-shell"')
+    )
     voice_section_count = source.count('data-voice-section="')
     if voice_section_count == 0:
-        voice_section_count = source.count('class="voice-objective-shell"')
+        voice_section_count = voice_shell_count
     if voice_section_count != len(sections):
         issues.append("Project HTML Voice section count differs from canonical gameplay sections")
-    if source.count('voice-objective-shell') != len(sections):
+    if voice_shell_count != len(sections):
         issues.append("Project HTML objective shell count differs from canonical gameplay sections")
     if source.count('class="voice-script-position"') != len(script):
         issues.append("Project HTML Voice line-position count differs from canonical script")
