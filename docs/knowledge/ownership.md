@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-08-13
+Updated: 2026-08-14
 
 Use this file to locate the current owner before creating, moving, or editing repository structure. It combines area-level ownership and exact implementation/procedure routing so there is only one ownership map.
 
@@ -13,7 +13,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | `.agents/skills/` | reusable semantic routing/judgment |
 | `docs/foundation/` | durable Flow 1–7 production policy |
 | `docs/knowledge/` | current repository memory, ownership, decisions, evidence and operations |
-| `kits/project-document-generator/` | Flow 2–4 PRD implementation/procedure + mechanical composition of accepted downstream Production Assets into shared project HTML |
+| `kits/project-document-generator/` | Flow 2–4 PRD implementation/procedure + bounded PRD-derived Production Assets requirement/presentation contract |
 | `kits/voice-production-kit/` | Flow 5–7 Voice requirements/production/validation semantics and optional DOCX export |
 | `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering and repeatable CI contracts |
 | `workspace/active/` | current project production packages |
@@ -30,7 +30,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | Root skill routing | `docs/knowledge/skills/activation-matrix.md` |
 | Source/state authority | `docs/knowledge/source-authority.md` |
 | Review/evidence status | `docs/knowledge/reviews/README.md` |
-| Durable decisions | `docs/knowledge/decisions/README.md` |
+| Durable decisions | `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/` |
 | Decision-recording policy | `docs/knowledge/decisions/recording-policy.md` |
 | Future/non-active work | `docs/knowledge/operations/backlog.md` |
 
@@ -42,10 +42,12 @@ Use this file to locate the current owner before creating, moving, or editing re
 | Flow 2 policy | `docs/foundation/02-source-intake-recovery.md` |
 | Flow 2 detailed procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
 | Flow 3 PRD + Golden semantic contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
+| non-Voice Production Asset requirement contract | `kits/project-document-generator/PRODUCTION-ASSETS.md` + project `work/asset-requirements.md` |
 | PRD-core rendering + shared project HTML composition contract | `kits/project-document-generator/RENDERING.md` |
 | PRD-core page projection | `kits/project-document-generator/renderer/pages.py` |
 | renderer orchestration | `kits/project-document-generator/renderer/render.py` |
-| downstream Production Assets presentation mechanics | `kits/project-document-generator/renderer/production_assets.py` |
+| objective-first Production Assets composition | `kits/project-document-generator/renderer/production_assets_objective.py` |
+| Voice-specific Production Assets parsing/presentation primitives | `kits/project-document-generator/renderer/production_assets.py` |
 | Flow 4 policy | `docs/foundation/04-prd-validation-handoff.md` |
 | Flow 4 detailed validation/handoff | `kits/project-document-generator/VALIDATION.md` |
 | PRD mechanical validator | `kits/project-document-generator/validator/validate.py` |
@@ -53,7 +55,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | PRD/render/compositor regressions | `tests/test_prd_*` |
 | Current system/project evidence | `docs/knowledge/reviews/current-validation.md` |
 
-`renderer/production_assets.py` owns presentation mechanics only. It may not invent Voice/SFX/Visual requirements, scripts, actor selection, or project meaning.
+`PRODUCTION-ASSETS.md` owns only the compact actionable non-Voice requirement contract. `renderer/production_assets_objective.py` owns presentation/composition mechanics and may not invent asset requirements. `renderer/production_assets.py` remains the Voice-specific helper and may not invent Voice scope, scripts, actor selection, or project meaning.
 
 ## Voice Owners
 
@@ -63,12 +65,12 @@ Use this file to locate the current owner before creating, moving, or editing re
 | Flow 6 lifecycle/output contract | `kits/voice-production-kit/README.md` + `docs/foundation/06-elevenlabs-script-production.md` |
 | Flow 6 canonical Voice Asset Production | project `work/voice-production.md` |
 | Eleven v3 performance craft | `kits/voice-production-kit/SOUNDMAKER.md` |
-| default human/operator Voice presentation | shared `output/final.html → Production Assets → Voice`, mechanically composed by PRD renderer from canonical Voice Production |
+| default human/operator Voice presentation | shared `output/final.html → Production Assets → <gameplay section> → Audio → Voice Production` |
 | optional DOCX presentation | `kits/voice-production-kit/DOCX-FORMAT.md` |
 | optional DOCX builder | `kits/voice-production-kit/builder/build_docx.py` |
 | Flow 7 Voice validation | `kits/voice-production-kit/VOICE-VALIDATION.md` + `validator/validate.py` |
 | Voice semantic/validator regressions | `tests/test_voice_contracts.py` |
-| same-HTML Voice composition regression | `tests/test_prd_voice_assets.py` |
+| same-HTML Production Assets/Voice composition regression | `tests/test_prd_voice_assets.py` |
 
 The former duplicate `kits/voice-production-kit/SCRIPT-PRODUCTION.md` owner is retired and must not be used for current routing.
 
@@ -80,13 +82,19 @@ The former duplicate `kits/voice-production-kit/SCRIPT-PRODUCTION.md` owner is r
 PRD core
 ← work/content.md + work/render-data.json
 
-Production Assets → Voice
+Production Assets — non-Voice
+← optional work/asset-requirements.md
+
+Production Assets — Voice
 ← work/voice-production.md
+   with Flow 5 Trigger context from work/voice-requirements.md
 ```
 
 Production Assets extends the accepted PRD sidebar. Gameplay/objective navigation stays under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
 
-A downstream Voice-only change may rerender `final.html` without changing PRD semantic ownership/acceptance when PRD canonical sources remain unchanged.
+The Production Assets sidebar is objective-first. Categories (`3D Models`, `UI & Information`, `Audio`, `Cinematic & Presentation`) appear inside matching pages only, and zero-count categories are omitted. Voice is merged into `Audio` for the matching gameplay section without duplicating canonical Voice data.
+
+A downstream-only change may rerender `final.html` without changing PRD semantic ownership/acceptance when PRD canonical sources remain unchanged.
 
 Never patch `final.html` manually to reconcile owners.
 
@@ -95,6 +103,9 @@ Never patch `final.html` manually to reconcile owners.
 ```text
 CONTENT-CONTRACT.md
 → PRD-core semantic + visible-composition authority
+
+PRODUCTION-ASSETS.md
+→ bounded non-Voice Production Asset requirement contract
 
 RENDERING.md
 → deterministic PRD-core binding + downstream composition contract
@@ -110,4 +121,4 @@ Production Assets does not modify the Golden template bytes or become part of th
 
 ## New-Owner Rule
 
-Create a new owner only when an existing owner cannot represent the responsibility without mixing unrelated jobs. Do not create a new map, generic Asset registry/framework, skill, schema, or compatibility layer solely because a current filename is inconvenient.
+Create a new owner only when an existing owner cannot represent the responsibility without mixing unrelated jobs. Do not create a new map, generic Asset registry/framework, separate asset Flow/Kit, root skill, schema, or compatibility layer solely because a current filename is inconvenient.
