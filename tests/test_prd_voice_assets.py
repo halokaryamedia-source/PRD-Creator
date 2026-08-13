@@ -45,6 +45,12 @@ BEGIN THE CORE TRIAL
 
 TRIAL COMPLETE
 ```
+
+### Visual Effects & Presentation
+
+#### Trial Completion Reveal
+Requirement: Create one short objective-completion presentation with a brief area-wide visual pulse and camera emphasis. It is a standalone presentation response, not a component of the console or hologram assets.
+Usage: Runs once after valid trial completion.
 """
 
 
@@ -121,7 +127,8 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn("3D Models <b>1</b>", html)
         self.assertIn("UI &amp; Information <b>1</b>", html)
         self.assertIn("Audio <b>1</b>", html)
-        self.assertNotIn("Cinematic &amp; Presentation <b>0</b>", html)
+        self.assertIn("Visual Effects &amp; Presentation <b>1</b>", html)
+        self.assertNotIn("Cinematic &amp; Presentation", html)
 
         core_start = html.index("<h2>Core Trial</h2>")
         core_end = html.index('</section><div class="page-foot">', core_start)

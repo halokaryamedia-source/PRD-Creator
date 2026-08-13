@@ -36,7 +36,7 @@ Categories appear inside each page only when non-zero:
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 Generic asset requirements directly state what must be made. They do not use Model / Texture / Animation / Particle / SFX component checklists. Voice remains canonical in `work/voice-requirements.md` + `work/voice-production.md` and appears inside the matching page's `Audio → Voice Production` block.

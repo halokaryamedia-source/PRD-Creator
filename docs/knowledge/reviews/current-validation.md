@@ -43,7 +43,7 @@ Categories are page content, not sidebar nesting:
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 Only non-zero categories are rendered.

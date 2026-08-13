@@ -46,7 +46,7 @@ This optional file contains objective-first actionable requirements using only t
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 A generic entry uses:

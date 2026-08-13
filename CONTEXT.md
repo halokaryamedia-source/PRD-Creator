@@ -131,7 +131,7 @@ The file is objective-first and intentionally simple. It supports only:
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 Rules:

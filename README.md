@@ -17,7 +17,7 @@ output/final.html
     └── <gameplay section> → <accepted PRD label>
 ```
 
-Production Assets pages show only non-zero categories: `3D Models`, `UI & Information`, `Audio`, and `Cinematic & Presentation`.
+Production Assets pages show only non-zero categories: `3D Models`, `UI & Information`, `Audio`, and `Visual Effects & Presentation`.
 
 Optional non-Voice requirements use `work/asset-requirements.md` and are governed by `kits/project-document-generator/PRODUCTION-ASSETS.md`. Voice keeps its existing Flow 5–7 canonical sources and appears inside the matching gameplay page under `Audio → Voice Production`.
 

@@ -193,7 +193,7 @@ The sidebar does not expose category or asset-entry nesting. Inside each page, o
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 Rules:

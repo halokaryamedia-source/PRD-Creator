@@ -36,7 +36,7 @@ Current categories are:
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 Production Assets is objective-first. Sidebar links identify the gameplay/shared section and accepted PRD label; categories appear inside the page only when they contain assets.
