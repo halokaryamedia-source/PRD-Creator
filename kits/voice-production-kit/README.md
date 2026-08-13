@@ -1,4 +1,4 @@
-# Voice Production Kit v1.4.0
+# Voice Production Kit v1.4.1
 
 Repository-backed voice workflow for turning an accepted PRD into traceable communication requirements, high-quality Eleven v3 performance wording, a reference-styled `Voice Production.docx`, and revision-specific delivery acceptance.
 
@@ -43,8 +43,19 @@ Voice Requirement
 → beat architecture
 → punctuation / line breaks / CAPS
 → minimal Audio Tags
+→ generation baseline
 → one prompt ready to paste
+→ actual audio review when audio exists
 ```
+
+Default generation baseline when no stronger approved project calibration exists:
+
+```text
+Eleven v3
+Stability: Natural
+```
+
+Actual audio is reviewed for the heard result, not the apparent quality of the prompt: meaning/intelligibility, voice identity, emotional movement, pacing, emphasis/landing, naturalness, pronunciation, and duration when applicable.
 
 If the user actually generates a different edited prompt and approves it, that exact prompt must be synchronized back to `work/voice-production.md` so project state does not drift from the audio that was really produced.
 
@@ -56,7 +67,7 @@ Start at:
 references/elevenlabs/README.md
 ```
 
-The reference is now **v3-only** for operational production. It covers:
+The reference is **v3-only** for operational production. It covers:
 
 - voice-fit and Stability guidance;
 - spoken-writing and emotional beat architecture;
@@ -85,7 +96,7 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-The validator checks mechanical parity/integrity. Final Flow 7 acceptance still requires semantic review and DOCX page-image inspection. Actual audio quality requires actual audio evidence.
+The validator checks mechanical parity/integrity. Final Flow 7 acceptance still requires semantic review and DOCX page-image inspection. Actual audio quality requires actual audio evidence and the SoundMaker audio-quality gate.
 
 ## Delivery scope
 
