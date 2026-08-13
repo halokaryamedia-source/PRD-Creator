@@ -14,6 +14,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
 import _engine  # noqa: E402
+import production_assets  # noqa: E402
 
 GOLDEN_SPEC_MARKER = "aftershock-v0.2"
 SAMPLE_META_NAMES = (
@@ -49,10 +50,16 @@ def _prepare_golden_template(template: Path, render_data: Path) -> tuple[str, st
     return source, namespace
 
 
+def _augment_production_assets(render_data: Path, output: Path) -> None:
+    voice_production = render_data.parent / "voice-production.md"
+    production_assets.augment_project_html(render_data, output, voice_production)
+
+
 def render(template: Path, render_data: Path, output: Path) -> None:
     source = template.read_text(encoding="utf-8")
     if _engine.STORAGE_PREFIX_TOKEN in source:
         _engine.render(template, render_data, output)
+        _augment_production_assets(render_data, output)
         return
 
     prepared, _namespace = _prepare_golden_template(template, render_data)
@@ -70,6 +77,8 @@ def render(template: Path, render_data: Path, output: Path) -> None:
             _engine.render(prepared_path, render_data, output)
     finally:
         _engine.STORAGE_PREFIX_TOKEN = previous_marker
+
+    _augment_production_assets(render_data, output)
 
 
 def main() -> int:
