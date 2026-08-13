@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.7.0 — 2026-08-13
+
+- formalized a compact three-layer static output contract: canonical script, derived operator handoff, and derived DOCX;
+- added `Speaker:` as the single new required Flow 6 entry field because the ElevenLabs operator must not infer which character owns a line;
+- made builder/validator fail closed on Voice ID, Type, and Speaker parity against Flow 5;
+- exposed `Type · Speaker` in the generated DOCX while keeping Trigger, Channel, Purpose, requirement bullets, source refs, WPM math, performance maps, voice-fit ratings, and QA notes out of the final operator artifact;
+- kept the Eleven v3 prompt block exact and free of internal commentary;
+- defined a compact operator handoff that states shared voice/settings once and shows only Voice ID, Speaker, Estimated Duration, exact prompt, plus exceptional production notes when required;
+- added focused regression coverage for speaker parity and DOCX speaker visibility;
+- created no extra handoff artifact, settings database, workflow layer, or audio test requirement.
+
 ## 1.6.0 — 2026-08-13
 
 - separated **Preparation Mode** from actual ElevenLabs **Generation Mode**;
