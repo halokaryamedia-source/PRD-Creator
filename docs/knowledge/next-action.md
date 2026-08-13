@@ -4,114 +4,97 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`SOUNDMAKER_V3_INTENT_CONSERVATION_READY`
+`VOICE_FLOW5_FLOW6_INTERFACE_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator remains **v1.13.0**. The approved Clockwork production package remains at `workspace/active/the-clockwork-vault/`; its accepted PRD meaning/rendered HTML were not changed.
+Project Document Generator remains **v1.13.0**. The approved Clockwork production package remains unchanged.
 
-Voice Production Kit is now **v1.8.0**.
+Voice Production Kit is now **v1.9.0** and remains **Eleven v3 only**.
 
-SoundMaker remains **Eleven v3 only**. Preparation Mode requires no audio generation/testing; Generation Mode remains optional and one active Voice ID at a time.
-
-The v1.8.0 quality model adopts only the useful reasoning patterns from PRD Creator without copying its artifact/state machinery.
+The Flow 5 → Flow 6 interface is now explicit enough for SoundMaker to complete Voice Intent without reopening the full PRD or inventing product meaning by default.
 
 ```text
-Voice Requirements
-→ Voice Intent Completeness
-→ internal Performance Fill Map
+Flow 5 Voice Requirement
+│
+├─ Function + Purpose        → Communication Job
+├─ Trigger + Channel         → Listener State
+├─ Must communicate         → Information Payload
+├─ Purpose                  → Listener Outcome
+├─ Speaker                  → Speaker Owner
+├─ Timing Constraint?       → authoritative hard/fixed timing truth
+└─ Must not add/repeat      → Scope Guardrails
+        ↓
+Voice Intent Completeness
+→ Performance Fill Map
 → SoundMaker writing
 → Communication Conservation
-→ per-line script-ready
-→ integrated Voice Script Readiness
-→ canonical script / derived DOCX
+→ Voice Script Readiness
 ```
 
-### Voice Intent Completeness
+### Field quality
 
-Before writing, SoundMaker resolves as applicable:
+Flow 5 now requires:
+
+- Trigger to describe the actual gameplay/story event/state and relevant listener condition when material;
+- Purpose to express what the listener should know/do/understand/acknowledge, not a vague `provide dialogue` instruction;
+- independently actionable `Must communicate` facts to remain distinct enough for downstream conservation;
+- `Must not add/repeat` to protect scope and information progression;
+- optional `Timing Constraint` only when accepted upstream authority defines a material line/window/fixed-sync rule.
+
+### Timing boundary
+
+`Timing Constraint` is **Flow 5 authoritative truth** and is optional.
+
+`Estimated Duration` remains **Flow 6 production planning**.
 
 ```text
-communication job
-listener state
-information payload
-listener outcome
-speaker identity
-timing envelope
-performance shape
-landing
+Flow 5: Timing Constraint: fixed 12-second cinematic slot
+        ↓
+Flow 6: word-budget / performance planning
+        ↓
+Estimated Duration compatible with that source boundary
 ```
 
-This is internal reasoning only. No new Voice schema/artifact was added.
+If Flow 5 has no Timing Constraint, SoundMaker may plan a reasonable Estimated Duration but must not invent a hard source limit.
 
-### Communication Conservation
+### What remains Flow 6 craft
 
-Every independently actionable Flow 5 `Must communicate` fact that belongs in the moment must survive performance polish and duration compression clearly. `Must not add/repeat` remains binding.
+Flow 5 does not gain fields for:
 
-Concision can improve wording; it cannot thin material communication.
+- final spoken wording;
+- Performance Shape;
+- Landing wording;
+- Audio Tags;
+- CAPS/punctuation/pause strategy;
+- Target Voice Profile / selected ElevenLabs voice;
+- Stability / Surface / Enhance;
+- production-estimated duration.
 
-### Integrated Voice Script Readiness
+These remain SoundMaker production interpretation unless upstream authority actually constrains them.
 
-Current prepared scope is reviewed once through:
+### Review boundary
+
+Communication Conservation and integrated Voice Script Readiness now explicitly verify that authoritative Flow 5 timing truth survives downstream planning alongside required communication.
+
+The first-wrong-owner rule is:
 
 ```text
-Communication
-Listener
-Character
-Performance
-Timing
-Continuity
-Operator
+project fact → PRD
+Voice scope/Speaker/Channel/Trigger/Purpose/required communication/timing truth → Flow 5
+wording/performance/Estimated Duration → Flow 6
+DOCX-only defect → builder
+actual audio-only defect → Generation Mode
 ```
 
-One semantic readiness decision is recorded; no per-lens scorecards/gates were added.
+### Overdevelopment guard
 
-Communication Conservation remains explicit because a polished script can still omit required meaning.
+No new artifact family, lifecycle state, Flow 6 canonical entry field, builder/validator timing engine, dependency, score system, or audio-test requirement was added.
 
-### Decision boundary
-
-Normal production interpretation—sentence split, beats, punctuation, CAPS, tags, pacing—may be decided inside SoundMaker when approved project meaning remains unchanged.
-
-Material new personality/accent identity, Voice scope, Speaker/Channel/Trigger, mechanic, reward, lore, outcome, or required communication returns upstream when unresolved.
-
-### Review economy
-
-Flow 7 now uses:
-
-```text
-Mechanical
-+ Communication Conservation
-+ one integrated Voice Script Readiness review
-+ DOCX Visual when claimed
-+ optional Audio Evidence
-```
-
-Existing `voice-state.yaml` fields remain compatibility summaries; no new lifecycle schema was created.
-
-### First wrong owner / bounded revision
-
-Fix the earliest owner actually wrong and replay only invalidated Voice/speaker scope plus continuity materially affected by the change.
-
-Do not repair upstream defects with more complicated prompts and do not replay unaffected Voice work for ceremony.
-
-### Existing output contract retained
-
-Canonical `work/voice-production.md` remains minimal:
-
-```text
-Voice ID — Title
-Type
-Speaker
-Estimated Duration
-exact Eleven v3 performance block
-```
-
-Operator handoff remains derived/compact and DOCX remains derived presentation.
-
-No builder/validator mechanics, dependency versions, canonical Flow 6 entry schema, PRD behavior, or audio generation were changed by v1.8.0.
+The existing Voice contract fixture now includes an optional Flow 5 Timing Constraint to prove current builder/validator compatibility while keeping semantic timing decisions outside mechanical tooling.
 
 ## Next Step
 
-**Continue only with another concrete non-audio workflow/content defect or apply Preparation Mode to a real project package when requested. Stop generic hardening when no concrete defect remains; do not require audio testing until the user explicitly enters Generation Mode.**
+**Stop generic SoundMaker hardening unless a concrete non-audio defect is identified; otherwise apply the current Flow 5 → Flow 6 Preparation Mode to a real project package when requested. Audio testing remains unnecessary until the user explicitly enters Generation Mode.**
