@@ -97,9 +97,41 @@ This does not block script/DOCX delivery. It only blocks audio-quality claims.
 If audio is in scope:
 
 1. identify the exact prompt actually generated;
-2. if the user edited the prompt before generation, synchronize that exact version into `work/voice-production.md`;
-3. review the actual audio for clarity, performance, pronunciation, and duration as applicable;
-4. do not preserve an older script/DOCX acceptance as current against newer approved prompt/audio evidence.
+2. identify the actual v3 voice and Stability/visible generation setting when relevant to the finding;
+3. if the user edited the prompt before generation, synchronize that exact version into `work/voice-production.md`;
+4. review the actual audio against the current Voice Requirement and SoundMaker quality contract;
+5. do not preserve an older script/DOCX acceptance as current against newer approved prompt/audio evidence.
+
+### Actual audio quality gate
+
+For each reviewed take, check only dimensions material to the line:
+
+- **meaning / intelligibility** — required information is clearly understood;
+- **voice identity** — the intended narrator/character remains coherent without material persona/timbre drift;
+- **emotional movement** — intended scene-driven state changes are audible and a long line does not remain one flat tone when the script requires real movement;
+- **pacing / breath** — important beats have enough space to land without damaging urgency or clarity;
+- **emphasis / landing** — important words and the final beat receive the intended stress/payoff;
+- **naturalness** — tags, reactions, CAPS, punctuation, and pauses do not create obvious overacting, robotic segmentation, or artificial jumps;
+- **pronunciation** — material names/terms/numbers are acceptable and consistent;
+- **duration** — the actual file meets the requested timing constraint when timing is part of the task.
+
+Disposition:
+
+```text
+all material dimensions pass
+→ reviewed_passed / approve
+
+one odd take + prompt/voice/settings still sound
+→ review alternative / eligible regeneration
+
+same point repeatedly fails
+→ reopen Flow 6 / revise SoundMaker prompt
+
+required performance consistently exceeds selected voice
+→ voice-fit finding
+```
+
+Do not infer immersion from tag count or script appearance. Audio-quality PASS requires the heard performance itself.
 
 ## Acceptance file
 
@@ -137,4 +169,4 @@ If findings remain, use `needs_revision` and name the owning upstream file/flow.
 
 It does **not** mean generated Eleven v3 audio has been heard unless audio evidence says so.
 
-When audio is included, current readiness additionally requires canonical prompt ↔ exact generated prompt alignment and actual audio review.
+When audio is included, current readiness additionally requires canonical prompt ↔ exact generated prompt alignment and actual audio review against the quality gate above.
