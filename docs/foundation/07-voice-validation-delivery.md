@@ -41,7 +41,14 @@ Mechanical PASS cannot establish semantic readiness, Communication Conservation,
 
 Compare each changed/current prepared line to its Flow 5 requirement.
 
-PASS only when every independently actionable `Must communicate` fact remains clearly represented, every `Must not add/repeat` guardrail remains respected, approved meaning remains intact, and duration/performance polish did not silently thin communication.
+PASS only when:
+
+- every independently actionable `Must communicate` fact remains clearly represented;
+- every `Must not add/repeat` guardrail remains respected;
+- approved names/mechanics/result/state/sequence/terminology retain meaning;
+- any authoritative Flow 5 `Timing Constraint` remains respected by the planned wording/timing approach;
+- duration/performance polish did not silently thin communication;
+- no unsupported project fact was added.
 
 Record one result:
 
@@ -61,11 +68,11 @@ Review the current scope once using these lenses:
 | Listener | The line fits approved Trigger/player state and communicates the right amount at that moment. |
 | Character | Speaker identity is coherent without accidental template sameness. |
 | Performance | Beat/emotional/textual direction serves the scene rather than decorating it. |
-| Timing | Estimated density is plausible without sacrificing required meaning. |
+| Timing | Estimated density is plausible, authoritative Flow 5 timing truth is honored, and required meaning was not sacrificed. |
 | Continuity | Information progresses and related lines avoid accidental repeated structures. |
-| Operator | Type/Speaker ownership, duration, exact prompt, and special setup are unambiguous. |
+| Operator | Type/Speaker ownership, duration, exact prompt, and any special timing/pronunciation/setup action are unambiguous. |
 
-During this same review verify terminology, material pronunciation risk, Channel/Trigger/Function compatibility, and absence of unsupported v3 notation such as SSML `<break>`.
+During this same review verify terminology, material pronunciation risk, Function/Purpose/Channel/Trigger compatibility, and absence of unsupported v3 notation such as SSML `<break>`.
 
 A material pronunciation risk may remain at Flow 6 `voice_script_ready`, but `voice_delivery_ready` requires it to be `confirmed` or explicitly `accepted_as_written`.
 
@@ -83,8 +90,8 @@ Fix the earliest wrong owner:
 
 ```text
 project/gameplay/story fact → upstream PRD authority
-Voice moment/Speaker/Channel/Trigger/required communication → Flow 5
-wording/performance/duration → Flow 6 / SoundMaker
+Voice moment/Speaker/Channel/Trigger/Purpose/required communication/timing truth → Flow 5
+wording/performance/Estimated Duration → Flow 6 / SoundMaker
 DOCX-only presentation → builder / DOCX-FORMAT.md
 audio-only issue with correct script → Generation Mode evidence/settings/voice
 ```
@@ -136,7 +143,7 @@ Keep the current `state/voice-state.yaml` schema. Existing fields such as `cover
 
 ## Severity
 
-- **Critical** — wrong/missing Voice ID/Type/Speaker, wrong project fact/Channel/Trigger, missing required communication, or canonical/generated prompt drift that would produce the wrong asset.
+- **Critical** — wrong/missing Voice ID/Type/Speaker, wrong project fact/Channel/Trigger, missing required communication, ignored authoritative timing constraint, or canonical/generated prompt drift that would produce the wrong asset.
 - **Major** — material conservation, wording, v3 performance, continuity, pronunciation, operator-readiness, or layout defect requiring production guesswork.
 - **Minor** — correct/usable delivery with non-blocking clarity/notation/layout polish.
 - **Suggestion** — optional improvement.
