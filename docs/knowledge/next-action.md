@@ -1,124 +1,62 @@
 # Next Action
 
-Updated: 2026-08-13
+Updated: 2026-08-14
 
 ## Current Status
 
-`CLOCKWORK_VOICE_NAVIGATION_READY`
+`OBJECTIVE_FIRST_PRODUCTION_ASSETS_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit is **v1.11.2** and remains **Eleven v3 only**.
+Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit remains **v1.11.2** and **Eleven v3 only**.
 
-Clockwork still uses one human-facing project document:
+The accepted PRD core is unchanged. Optional downstream sources now compose into the same `output/final.html`:
 
 ```text
 accepted PRD
-→ Voice requirements
-→ canonical Voice Production
-→ same output/final.html
-   PRD core
-   + Production Assets → Voice
+→ optional work/asset-requirements.md
+→ optional Voice canonical sources
+→ 04 Production Assets
 ```
 
-The v1.11.2 correction changes presentation/navigation only. Clockwork gameplay meaning, `work/render-data.json`, Voice wording, performance tags, Voice asset count, and production configuration remain unchanged.
-
-## Consolidated navigation
-
-The accepted PRD hierarchy is preserved:
+Production Assets is objective-first:
 
 ```text
-01 Overview
-02 Gameplay Flow
-03 Development
-   Development Overview
-   Game System
-   Data and Reset
-   Gameplay Development
-   gameplay/objective sections
-      Gameplay Overview
-      Level Design
-      Developer
 04 Production Assets
-   VOICE
-   The Antechamber
-      Introduction
-   The Resonance Engine
-      Objective 1
-   The Broken Gallery
-      Objective 2
-   The Warden Halls
-      Objective 3
-   The Gremlin’s Workshop
-      Objective 4
-   Vault Restored
-      Ending
+   Global / Shared Assets      # only when present
+   <gameplay section title>
+      <Introduction | Objective N | Ending | accepted PRD label>
 ```
 
-Production Assets extends the PRD navigation instead of rebuilding it. Gameplay/objective navigation remains inside Development and existing PRD page codes remain unchanged.
-
-Voice appears once as the Production Assets category. Each Voice link shows the gameplay section title plus the accepted PRD package label, and sidebar text is allowed to wrap naturally.
-
-## Voice page contract
-
-Each Voice section page shows:
+Categories appear inside each page only when non-zero:
 
 ```text
-Voice Production
-→ gameplay section title
-→ accepted PRD package label + gameplay context
-→ Voice line count + Primary Speaker
-→ compact Voice Setup
+3D Models
+UI & Information
+Audio
+Cinematic & Presentation
 ```
 
-Each Voice entry remains:
-
-```text
-title
-→ <PRD package label> · Voice Line X/Y
-→ Context = exact Flow 5 Trigger
-→ Speaker · Estimated Duration
-→ exact Eleven v3 prompt
-→ Copy Prompt
-```
-
-The developer-facing Context is a direct presentation of the existing Flow 5 Trigger. Canonical Voice fields were not expanded.
+Generic asset requirements directly state what must be made. They do not use Model / Texture / Animation / Particle / SFX component checklists. Voice remains canonical in `work/voice-requirements.md` + `work/voice-production.md` and appears inside the matching page's `Audio → Voice Production` block.
 
 ## Validation
 
-Current non-audio delivery remains:
+- PRD contracts: PASS.
+- Voice contracts: PASS.
+- Clockwork rerender + Voice mechanical validation: PASS.
+- Browser proof: PASS at 1500px and 1000px for current Clockwork and a generic asset-only fixture.
+- No sidebar/card/page overflow or zero-count category detected.
+- Temporary browser-proof workflow removed itself after proof.
+- Audio evidence: not provided.
 
-```text
-Status: voice_delivery_ready
-Mechanical: PASS
-Voice Script Readiness: PASS
-Communication Conservation: PASS
-Project HTML Visual: PASS
-Audio Evidence: not_provided
-Critical: 0
-Major: 0
-```
-
-Proof completed for v1.11.2:
-
-- focused PRD/Production Assets regression contracts passed;
-- repository verification passed;
-- Clockwork rerender and Voice mechanical validation passed from unchanged canonical sources;
-- actual browser inspection passed at 1500px and 1000px desktop widths;
-- all six Voice navigation links matched section name + accepted package label;
-- no Voice navigation clipping/overflow was detected at those claimed desktop widths;
-- gameplay/objective navigation remained under Development;
-- existing PRD page identities remained unchanged;
-- the temporary browser-review workflow removed itself after proof.
-
-No generated-audio review was performed, so no audio-quality claim is part of this readiness state.
+Clockwork gameplay meaning, render data, Voice wording, performance tags, Voice count, actor selection, and production configuration remain unchanged; only derived Production Assets presentation changed.
 
 ## Overdevelopment guard
 
-Do not add a generic Asset framework, second Voice HTML, duplicate Context field, asset manifest, new Flow, tag score, SFX/Visual implementation, or more proof layers without a concrete production need.
+No new numbered Flow, root Skill, separate Production Asset Kit, generic schema/registry, asset manifest, component database, or second HTML was added.
 
 ## Next Step
 
-**Keep this v1.11.2 non-audio baseline until the user explicitly requests the next Voice production stage or changes an affected Voice requirement.**
+**Audit the provided The Circuit completed Minecraft Bedrock sample against this objective-first Production Assets contract before deriving real project asset requirements.**
