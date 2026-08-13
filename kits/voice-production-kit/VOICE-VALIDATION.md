@@ -64,7 +64,7 @@ Review the current prepared scope once.
 | Communication | Purpose and required meaning are clear without reopening source. |
 | Listener | Each line fits the approved Trigger/player state and communicates the right amount at that moment. |
 | Character | Speaker identity stays coherent without accidental template sameness. |
-| Performance | Emotional/beat/textual direction serves the scene rather than decorating it. |
+| Performance | Every standalone line has an intentional starting direction; transition tags, beat shape, punctuation, and emphasis serve the scene rather than decorating it. |
 | Timing | Estimated Duration is plausible, source timing constraints are honored, and no required fact was sacrificed. |
 | Continuity | Information progresses and nearby lines avoid accidental repeated structures. |
 | Operator | Actor assignment, exact prompt, duration, and any special setup are clear enough to use without guessing. |
@@ -86,9 +86,10 @@ When the consolidated project HTML is claimed current, inspect the Voice section
 Ready when:
 
 - `Production Assets → Voice` appears after PRD core content;
-- Voice Cast is shown once, not repeated per line;
+- Voice Setup is shown once with the selected ElevenLabs voice prominent, not repeated per line;
 - sections and scripts follow canonical gameplay order;
-- each line clearly shows title, Actor, optional Estimated Duration, exact script panel, and Copy Text action;
+- each line clearly shows title, secondary Speaker/Estimated Duration metadata, exact script panel, and an integrated Copy action;
+- performance-direction tags are visually distinct from spoken text without changing the copied canonical payload;
 - internal Flow 5/reasoning/QA metadata is absent from the visible Voice page;
 - exact script line breaks remain readable;
 - no clipping/overlap or obvious visual break from the PRD design language exists.
@@ -219,7 +220,7 @@ Existing projects may retain `docx` / `docx_visual` fields when that export exis
 
 # Severity
 
-- **Critical** — wrong/missing Voice ID/Type/Speaker; wrong project fact/Channel/Trigger; missing required communication; ignored authoritative timing constraint; stale project HTML prompt; or canonical/generated prompt drift that would produce the wrong asset.
+- **Critical** — wrong/missing Voice ID/Type/Speaker; missing initial performance-direction tag; wrong project fact/Channel/Trigger; missing required communication; ignored authoritative timing constraint; stale project HTML prompt; or canonical/generated prompt drift that would produce the wrong asset.
 - **Major** — material wording, actor assignment, v3 performance, continuity, pronunciation, conservation, operator-readiness, or layout problem requiring production guesswork.
 - **Minor** — correct/usable delivery with non-blocking clarity/notation/layout polish.
 - **Suggestion** — optional improvement.

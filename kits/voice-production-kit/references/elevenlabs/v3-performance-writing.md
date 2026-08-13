@@ -179,6 +179,12 @@ Do not use non-auditory stage directions such as `[standing]` or `[looking worri
 
 ## 6. Tag placement and persistence
 
+### SoundMaker initial-direction rule
+
+For this repository, every standalone Voice Production prompt begins with at least one initial Audio/Performance Direction Tag. This is a **creator/production heuristic** used to avoid handing a standalone v3 generation an intentionally unspecified starting performance; it is not an upstream ElevenLabs syntax requirement.
+
+The initial tag establishes the opening delivery. Transition tags remain conditional and appear only when the scene/performance state materially changes. Generation evidence may later justify changing or removing a direction for a specific calibrated voice, but Preparation Mode does not leave the starting performance unspecified.
+
 Current v3 guidance supports moment-to-moment/mid-delivery direction and strategic placement near the dialogue it affects.
 
 Standard Speech Synthesis v3 does **not** document a fixed persistence rule such as:
@@ -202,10 +208,10 @@ ElevenLabs allows combinations, but does not publish an ideal simultaneous count
 Repository heuristic:
 
 ```text
-0–1 tag → default
-2 tags   → normal when dimensions differ and are compatible
-3 tags   → exception / preferably project-calibrated
-4+ tags  → reject by default
+1 initial tag         → default per standalone Voice ID
+2 simultaneous tags  → normal when dimensions differ and are compatible
+3 simultaneous tags  → exception / preferably project-calibrated
+4+ simultaneous tags → reject by default
 ```
 
 Good:

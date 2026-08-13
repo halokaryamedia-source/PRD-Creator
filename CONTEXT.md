@@ -147,7 +147,7 @@ accepted PRD
 
 - exact Voice ID/Type/Speaker parity;
 - Estimated Duration;
-- exact Eleven v3 `performance` text;
+- exact Eleven v3 `performance` text, beginning with at least one deliberate initial performance-direction tag;
 - selected ElevenLabs actor voice once per recurring Speaker when known.
 
 Optional cast header:
@@ -164,14 +164,13 @@ An actor voice may remain pending during Preparation Mode when a Target Voice Pr
 The same project HTML shows only what the operator needs:
 
 ```text
-Voice Cast once
+Voice Setup once with the selected ElevenLabs voice prominent
 → scripts in gameplay order
 → per script:
    title
-   Actor
-   Estimated Duration
-   exact Eleven v3 text
-   Copy Text
+   Speaker + Estimated Duration as secondary metadata
+   exact Eleven v3 text with performance directions visually distinct
+   Copy integrated with the script panel
 ```
 
 Flow 5 Purpose/Trigger/requirements/source refs, SoundMaker reasoning, WPM math, QA, and other internal fields stay out of the HTML.

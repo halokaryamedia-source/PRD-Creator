@@ -209,7 +209,7 @@ Rules:
 
 Ask only if a material unresolved decision still prevents a responsible answer after this mapping.
 
-A short/simple line does not need artificial complexity. If one stable state and one clear action are sufficient, keep it that way.
+A short/simple line does not need artificial complexity. It still needs one deliberate starting performance direction; if one stable state and one clear action are sufficient, one initial tag is enough and no transition tag is required.
 
 ## 2. Duration planning when timing matters
 
@@ -306,13 +306,17 @@ These are performance cues, not exact timing commands.
 
 ### Audio Tags
 
+Every standalone `performance` block must begin with at least one Audio/Performance Direction Tag on its **first non-blank line**. This is a SoundMaker production rule for intentionally directed Eleven v3 work; it is not a claim that Eleven v3 technically rejects untagged text.
+
+Use the initial tag to establish the starting delivery. Add another tag later only when the scene creates a material audible change. A stable reminder may correctly use one initial tag and no transition tags.
+
 Detailed tag knowledge stays in `references/elevenlabs/v3-performance-writing.md`.
 
 ```text
-0–1 simultaneous tag → default
-2 tags                → valid when dimensions differ and are compatible
-3 tags                → exception; preferably project-calibrated
-4+ tags               → reject by default
+1 initial tag         → default for every standalone Voice ID
+2 simultaneous tags  → valid when dimensions differ and are compatible
+3 simultaneous tags  → exception; preferably project-calibrated
+4+ simultaneous tags → reject by default
 ```
 
 Place direction close to the beat it affects. Do not assume a fixed tag-persistence window. Reactions are timeline events, not decoration.
@@ -360,6 +364,7 @@ A line is script-ready when:
 - selected voice fit is acceptable/risk is explicit, or a clear Target Voice Profile exists;
 - wording and performance shape are natural and justified;
 - punctuation/CAPS/tags are purposeful and minimal;
+- the first non-blank performance line contains at least one initial direction tag;
 - no SSML `<break>` or SFX/environment instruction is present;
 - material pronunciation risk is identified;
 - **Communication Conservation passes**;

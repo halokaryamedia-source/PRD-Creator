@@ -89,7 +89,7 @@ Voice Intent Completeness
 → integrated Voice Script Readiness
 ```
 
-SoundMaker may decide sentence split, beats, punctuation, CAPS, tags, pacing, Performance Shape, Landing, and Estimated Duration inside approved intent.
+SoundMaker may decide sentence split, beats, punctuation, CAPS, tags, pacing, Performance Shape, Landing, and Estimated Duration inside approved intent. Every standalone prepared Voice ID begins with at least one deliberate initial performance-direction tag; transition tags remain conditional on a real audible state change.
 
 Return upstream when unresolved work would change project facts, Voice scope, Speaker/Channel/Trigger/Purpose, required communication, or source timing truth.
 
@@ -120,13 +120,12 @@ Production Assets
 The Voice page stays minimal:
 
 ```text
-Voice Cast once
+Voice Setup once with the selected ElevenLabs voice prominent
 → gameplay-ordered Voice sections
 → title
-→ Actor
-→ Estimated Duration
-→ exact Eleven v3 text
-→ Copy Text
+→ Speaker + Estimated Duration as secondary metadata
+→ exact Eleven v3 text with performance directions visually distinct
+→ Copy integrated with the script panel
 ```
 
 Do not expose Trigger/Purpose/requirements/source refs/reasoning/QA merely because they exist internally.

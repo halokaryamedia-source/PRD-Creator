@@ -72,6 +72,7 @@ Speaker: <exact Flow 5 speaker>
 Estimated Duration: <range>
 
 ```performance
+[<initial performance direction>]
 <exact Eleven v3 text>
 ```
 ```
@@ -105,7 +106,7 @@ Every Voice entry still requires exactly:
 - `Type`;
 - `Speaker`;
 - `Estimated Duration`;
-- exact fenced `performance` block.
+- exact fenced `performance` block whose first non-blank line is at least one initial Audio/Performance Direction Tag.
 
 `Type` and `Speaker` must match Flow 5.
 
@@ -141,14 +142,14 @@ The Voice pages are professional-only and appear after the PRD core.
 The HTML intentionally shows only what the production operator needs:
 
 ```text
-Voice Cast once
+Voice Setup once
+→ selected ElevenLabs voice is prominent
 → gameplay-ordered Voice sections
 → per Voice line:
    title
-   Actor
-   Estimated Duration
-   exact Eleven v3 prompt
-   Copy Text
+   Speaker + Estimated Duration as secondary metadata
+   exact Eleven v3 prompt with performance tags visually distinct
+   Copy integrated with the script panel
 ```
 
 The copied text is **only** the exact canonical `performance` block.
@@ -179,8 +180,9 @@ For each Voice ID:
 1. complete Voice Intent from Flow 5;
 2. honor authoritative Timing Constraint when present;
 3. plan Estimated Duration when timing matters;
-4. write the exact performance;
-5. run Communication Conservation;
+4. write the exact performance beginning with one deliberate initial direction tag;
+5. add transition tags only for justified audible state changes;
+6. run Communication Conservation;
 6. mark script-ready only when the SoundMaker gate passes.
 
 After all requested lines are ready, perform one integrated Voice Script Readiness review over Communication, Listener, Character, Performance, Timing, Continuity, and Operator clarity.
@@ -226,6 +228,7 @@ Before `voice_script_ready`:
 - `Type` matches Flow 5;
 - `Speaker` matches Flow 5;
 - title, Estimated Duration, and performance block are present;
+- the first non-blank performance line contains at least one initial direction tag;
 - no unresolved placeholder remains;
 - no required fact is knowingly omitted;
 - no new upstream fact is introduced;

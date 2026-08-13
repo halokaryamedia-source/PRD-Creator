@@ -1,4 +1,4 @@
-# Voice Production Kit v1.10.0
+# Voice Production Kit v1.11.0
 
 Repository-backed workflow for accepted PRD → Voice asset requirements → high-quality Eleven v3 production wording → **Production Assets inside the same project HTML**, with audio generation and DOCX export optional.
 
@@ -85,6 +85,7 @@ Speaker: <Flow 5 speaker>
 Estimated Duration: <range>
 
 ```performance
+[<initial performance direction>]
 <exact Eleven v3 text>
 ```
 ```
@@ -106,13 +107,13 @@ If `work/voice-production.md` exists, the renderer appends a professional-only s
 Visible content stays intentionally simple:
 
 ```text
-Voice Cast
+Voice Setup
+selected ElevenLabs voice
 
 01 Gameplay moment
-Actor
-Estimated Duration
-exact Eleven v3 text
-Copy Text
+Speaker · Estimated Duration
+exact Eleven v3 text with visible performance-direction tags
+Copy
 
 02 Next gameplay moment
 ...
@@ -124,7 +125,7 @@ Do not display Flow 5 `Purpose`, `Must communicate`, `Must not add`, source refs
 
 ## Preparation Mode
 
-Preparation Mode may prepare the full Voice scope without audio testing or per-line generation approval.
+Preparation Mode may prepare the full Voice scope without audio testing or per-line generation approval. Every standalone Voice ID begins with at least one deliberate initial performance-direction tag; extra transition tags are used only when the scene changes audibly.
 
 An actor voice can remain unselected while a Target Voice Profile is sufficient for script preparation. The HTML honestly shows `Voice selection pending` rather than inventing one.
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.11.0 — 2026-08-13
+
+- made one initial Audio/Performance Direction Tag mandatory on the first non-blank line of every standalone Voice Production prompt; this is a SoundMaker production heuristic for directed Eleven v3 work, not an upstream syntax requirement;
+- kept transition tags conditional on real audible state changes and retained minimal stacking to prevent tag spam/AI-template delivery;
+- made renderer and Voice validator fail closed on missing initial performance direction;
+- redesigned Production Assets → Voice from nested grey cards into a lighter editorial layout with prominent Voice Setup, secondary Speaker/duration metadata, integrated Copy, regular-weight spoken text, and visually distinct performance-direction tags;
+- preserved exact copied `performance` payload through a hidden canonical text source while rendering tags separately for readability;
+- revised all 12 Clockwork prompts so each has an explicit starting performance and only justified mid-script transitions;
+- changed no PRD gameplay truth, Voice asset count, Golden PRD core, Eleven v3-only scope, or audio evidence state.
+
 ## 1.10.0 — 2026-08-13
 
 - made the accepted PRD the direct parent of downstream Voice asset production instead of treating Voice as a separate source-intake project;

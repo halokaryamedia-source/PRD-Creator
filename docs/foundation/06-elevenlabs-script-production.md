@@ -84,7 +84,7 @@ Voice ID + Title
 Type
 Speaker
 Estimated Duration
-exact Eleven v3 performance block
+exact Eleven v3 performance block beginning with at least one initial performance-direction tag
 ```
 
 `Type` and `Speaker` match Flow 5.
@@ -103,14 +103,13 @@ Production Assets
 Visible contract:
 
 ```text
-Voice Cast once
+Voice Setup once with the selected ElevenLabs voice prominent
 → gameplay-ordered sections
 → per line:
    title
-   Actor
-   Estimated Duration
-   exact Eleven v3 prompt
-   Copy Text
+   Speaker + Estimated Duration as secondary metadata
+   exact Eleven v3 prompt with performance directions visually distinct
+   Copy integrated with the script panel
 ```
 
 The HTML does not expose Flow 5 requirement detail/reasoning/QA. `Copy Text` copies only the exact canonical performance block.
@@ -162,6 +161,7 @@ Set `voice_script_ready` only when:
 - Voice ID, Type, and Speaker parity are intact;
 - authoritative timing constraints are honored when present;
 - every entry has title, Estimated Duration, and canonical performance wording;
+- every performance block begins with at least one deliberate initial direction tag;
 - Voice Intent Completeness is sufficient;
 - Communication Conservation passes;
 - integrated Voice Script Readiness passes;
