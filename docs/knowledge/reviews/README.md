@@ -1,6 +1,6 @@
 # Review Register
 
-Updated: 2026-08-12
+Updated: 2026-08-13
 
 Review bodies preserve what was observed at capture time. This register owns their **current meaning** and points to the current validation status.
 
@@ -23,16 +23,16 @@ Review bodies preserve what was observed at capture time. This register owns the
 
 ```text
 BuildIT discipline reference
-≠ mandatory BuildIT-equivalent machinery
+is not mandatory BuildIT-equivalent machinery
 ```
 
 ## Historical integrity rule
 
 ```text
-review body  → historical observation
-review graph → current meaning of that evidence
-decisions    → durable chosen rule
-next-action  → active work state
+review body     → historical observation
+reviews/README  → current meaning of that evidence
+decisions       → durable chosen rule
+next-action     → active work state
 ```
 
 Do not rewrite old audits to pretend they reached today's conclusion when captured.
