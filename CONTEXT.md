@@ -124,6 +124,8 @@ Therefore a Voice-only production update may rerender `final.html` without reope
 
 PRD core and downstream asset production retain separate canonical owners and acceptance evidence even though humans see one consolidated HTML.
 
+When Production Assets exists, its professional navigation owns number **04** after Development; gameplay/objective packages are presented as 05+ in that consolidated HTML. This numbering shift is presentation-only. Projects without Production Assets keep the original PRD-core numbering.
+
 # Voice Production direction
 
 Voice Production Kit owns Flow 5–7. Flow 6 model scope is **Eleven v3 only**.
@@ -161,21 +163,29 @@ An actor voice may remain pending during Preparation Mode when a Target Voice Pr
 
 ### Production Assets → Voice
 
-The same project HTML shows only what the operator needs:
+Every gameplay Voice page uses one consistent objective shell derived from accepted upstream data:
 
 ```text
-Voice Setup once with the selected ElevenLabs voice prominent
-→ scripts in gameplay order
-→ per script:
-   title
-   Speaker + Estimated Duration as secondary metadata
-   exact Eleven v3 text with performance directions visually distinct
-   Copy integrated with the script panel
+Gameplay Order / objective title
+→ PRD package label + gameplay context
+→ Voice line count + Primary Speaker
+→ compact Voice Setup
 ```
 
-Flow 5 Purpose/Trigger/requirements/source refs, SoundMaker reasoning, WPM math, QA, and other internal fields stay out of the HTML.
+Each Voice entry then shows:
 
-`Copy Text` copies only the exact canonical performance payload.
+```text
+title
+→ PRD package label · Voice Line X/Y
+→ Context = exact Flow 5 Trigger
+→ Speaker + Estimated Duration
+→ exact Eleven v3 text with performance directions visually distinct
+→ Copy Prompt
+```
+
+The developer-facing Context does not create a new Voice field: it is a presentation of the existing Flow 5 Trigger. Flow 5 Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM math, QA, and other internal fields stay out of the HTML.
+
+`Copy Prompt` copies only the exact canonical performance payload.
 
 ### DOCX
 
