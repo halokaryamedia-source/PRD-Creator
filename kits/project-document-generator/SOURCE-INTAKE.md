@@ -135,6 +135,7 @@ After explicit recovery, run **one reasoning pass**, not separate forms/reviews.
 | Gameplay | purpose/objective, start, player action/feedback, completion/end, fail/retry/recovery, result |
 | Level Design | required areas/objects/routes, relationships, readability, known spatial constraints, gameplay function |
 | Developer | activation, state/progression, timing/quantities, validation, data/result, interruption/reset, handoff |
+| Production Assets | custom 3D models, UI/information, independent audio, and standalone visual-effects/presentation needs implied by the gameplay; shared vs local ownership |
 | Lifecycle | precondition → trigger → active behavior → success/fail/interruption → result → retry/reset |
 | Quantitative coherence | related timings/counts/capacities/scoring inputs/weights agree |
 | Global/local coherence | shared defaults remain shared; local exceptions are explicit |
@@ -142,6 +143,8 @@ After explicit recovery, run **one reasoning pass**, not separate forms/reviews.
 | Operational clarity | competent roles should not reasonably build materially different behavior from the approved model |
 
 Only inspect concerns that apply. Optional/decorative detail is not a reason to inflate scope.
+
+The Production Assets concern is a **meaning check, not a new Flow or artifact**. If accepted gameplay necessarily needs a custom object or information/audio/presentation asset, the model should not leave that production need invisible merely because the source did not name the asset. If choosing a particular form/name/content would materially change gameplay, lore, communication, or scope, use the existing Completion/Proposal rules. Downstream `PRODUCTION-ASSETS.md` later converts accepted needs into the compact actionable requirement set.
 
 ### Golden-guided completeness
 
@@ -300,7 +303,7 @@ ready_for_prd
 - materially relevant authority inspected to sufficient depth;
 - material user instructions persisted;
 - facts/exclusions/topology/terminology recovered;
-- applicable Gameplay / Level Design / Developer / lifecycle / quantitative / global-local / known-constraint implications resolved;
+- applicable Gameplay / Level Design / Developer / Production Assets / lifecycle / quantitative / global-local / known-constraint implications resolved;
 - each material issue passed through the Resolution Ladder;
 - every Proposal represented in the approved preview has been promoted/corrected;
 - no current `approval_status: pending`, `recovery_class: blocked`, or current source `inspection: blocked` affecting scope;
