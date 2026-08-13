@@ -192,6 +192,10 @@ def voice_pages(render_data: dict, doc: VoiceProduction) -> list[str]:
     base_code = 4 + len(render_data.get("packages", []))
     pages: list[str] = []
     sequence_no = 1
+    intro = bi(
+        "Use the assigned actor voice and copy each script exactly into ElevenLabs in gameplay order.",
+        "Gunakan actor voice yang ditentukan dan copy setiap script ke ElevenLabs sesuai urutan gameplay.",
+    )
 
     for section_index, section in enumerate(doc.sections):
         body = (
@@ -201,7 +205,7 @@ def voice_pages(render_data: dict, doc: VoiceProduction) -> list[str]:
         )
         if section_index == 0:
             body += (
-                f'<p class="section-intro voice-production-intro">{i18n(bi('Use the assigned actor voice and copy each script exactly into ElevenLabs in gameplay order.', 'Gunakan actor voice yang ditentukan dan copy setiap script ke ElevenLabs sesuai urutan gameplay.'))}</p>'
+                f'<p class="section-intro voice-production-intro">{i18n(intro)}</p>'
                 + _cast_html(doc)
             )
         body += f'<h3 class="package-section-heading">{esc(section.title)}</h3><div class="voice-script-list">'
