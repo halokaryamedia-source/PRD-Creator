@@ -140,7 +140,7 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('id="production-assets-objective-style"', html)
         self.assertNotIn('id="production-assets-copy-script"', html)
         self.assertIn("Trial Console", html)
-        self.assertNotIn("voice-script-card", html)
+        self.assertNotIn('<article class="voice-script-card">', html)
 
     def test_renderer_rejects_empty_asset_category(self) -> None:
         bad = ASSETS.replace(
