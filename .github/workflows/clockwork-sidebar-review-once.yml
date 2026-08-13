@@ -89,7 +89,9 @@ jobs:
           options.add_argument('--disable-dev-shm-usage')
           driver = webdriver.Chrome(options=options)
           try:
-              for width in (1500, 900):
+              # The template switches responsive behavior below 980px. Check
+              # the normal desktop and the narrowest desktop navigation state.
+              for width in (1500, 1000):
                   driver.set_window_size(width, 1200)
                   driver.get(html.as_uri())
                   driver.execute_script("localStorage.clear(); document.body.classList.remove('view-clean'); document.body.classList.add('view-professional');")
