@@ -1,0 +1,128 @@
+name: Clockwork Voice UI Review Once
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/clockwork-voice-ui-review-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip install --disable-pip-version-check selenium==4.35.0
+
+      - name: Run full PRD contracts
+        run: |
+          python -m compileall -q kits/project-document-generator \
+            tests/test_prd_contracts.py \
+            tests/test_prd_voice_assets.py \
+            tests/test_prd_handoff_contracts.py \
+            tests/test_prd_flow2_state_contracts.py \
+            tests/test_prd_hierarchy_contracts.py \
+            tests/test_prd_golden_reference.py
+          python -m unittest \
+            tests.test_prd_contracts \
+            tests.test_prd_voice_assets \
+            tests.test_prd_handoff_contracts \
+            tests.test_prd_flow2_state_contracts \
+            tests.test_prd_hierarchy_contracts \
+            tests.test_prd_golden_reference -v
+
+      - name: Render Clockwork and validate Voice
+        run: |
+          python kits/project-document-generator/renderer/render.py \
+            workspace/active/the-clockwork-vault/work/render-data.json \
+            workspace/active/the-clockwork-vault/output/final.html
+          python kits/voice-production-kit/validator/validate.py \
+            workspace/active/the-clockwork-vault/
+
+      - name: Assert consolidated navigation and developer context
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('workspace/active/the-clockwork-vault/output/final.html').read_text(encoding='utf-8')
+          checks = [
+              'data-full-index="04" data-overview-index="">04</span>',
+              'data-full-index="05" data-overview-index="">05</span>',
+              'Objective 4',
+              'Voice Line',
+              'The player enters the Workshop and conduit interaction becomes active on the unsabotaged 3×3 grid.',
+              'About 20 seconds after Ring 2 stabilizes, the scripted Gremlin event visibly breaks one authored active connection and input is briefly locked.',
+              'The configured Workshop assist threshold is reached and Vex highlights one useful node, connection, or region without changing the board.',
+          ]
+          for value in checks:
+              if value not in html:
+                  raise SystemExit(f'missing rendered contract: {value}')
+          if html.index('data-full-index="04" data-overview-index="">04</span>') > html.index('data-full-index="05" data-overview-index="">05</span>'):
+              raise SystemExit('Production Assets does not precede gameplay packages')
+          PY
+
+      - name: Capture actual Antechamber and Gremlin pages
+        run: |
+          mkdir -p /tmp/voice-ui-review
+          python - <<'PY'
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+
+          html = Path('workspace/active/the-clockwork-vault/output/final.html').resolve()
+          options = Options()
+          options.add_argument('--headless=new')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--window-size=1500,1150')
+          driver = webdriver.Chrome(options=options)
+          try:
+              driver.get(html.as_uri())
+              driver.execute_script("localStorage.clear(); document.body.classList.remove('view-clean'); document.body.classList.add('view-professional');")
+              targets = [
+                  ('production-assets-voice-1', '/tmp/voice-ui-review/01-antechamber.png'),
+                  ('production-assets-voice-5', '/tmp/voice-ui-review/02-gremlin-workshop.png'),
+              ]
+              for section_id, output in targets:
+                  driver.execute_script("""
+                    const target = arguments[0];
+                    document.querySelectorAll('section.sheet').forEach(s => s.style.display = s.id === target ? 'block' : 'none');
+                    document.querySelector('.document-main').style.paddingTop='24px';
+                    window.scrollTo(0,0);
+                  """, section_id)
+                  section = driver.find_element(By.ID, section_id)
+                  height = min(max(section.size['height'] + 80, 900), 1800)
+                  driver.set_window_size(1500, int(height))
+                  driver.save_screenshot(output)
+          finally:
+              driver.quit()
+          PY
+
+      - name: Upload direct preview images
+        uses: actions/upload-artifact@v4
+        with:
+          name: clockwork-voice-ui-review
+          path: /tmp/voice-ui-review/*.png
+          retention-days: 1
+
+      - name: Commit rendered HTML and remove workflow
+        run: |
+          git config user.name "halokaryamedia-source"
+          git config user.email "halokaryamedia@gmail.com"
+          git rm .github/workflows/clockwork-voice-ui-review-once.yml
+          git add workspace/active/the-clockwork-vault/output/final.html
+          git commit -m "render: refine Clockwork Voice production UI"
+          git push origin HEAD:Local
