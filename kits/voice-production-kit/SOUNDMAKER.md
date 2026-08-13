@@ -96,10 +96,12 @@ Never place internal reasoning or operator instructions inside the Eleven v3 pro
 Recover current project facts before asking the user:
 
 1. matching `work/voice-requirements.md` entry;
-2. accepted `work/content.md` / current PRD meaning;
+2. accepted `work/content.md` / current PRD meaning only when the requirement does not already carry enough context;
 3. current `work/voice-production.md` when revising;
 4. approved same-project wording/settings/pronunciation evidence when it exists;
 5. Eleven v3 references only for production technique.
+
+The Flow 5 requirement is the normal interface. Do not reopen the full PRD merely because richer prose would be convenient.
 
 Separate these two classes:
 
@@ -112,7 +114,8 @@ Examples:
 - punctuation / line breaks / selective CAPS;
 - Audio Tag choice/placement;
 - performance pacing within the approved communication intent;
-- duration-conscious compression that preserves required meaning.
+- duration-conscious compression that preserves required meaning;
+- Performance Shape and final Landing when upstream meaning does not prescribe them.
 
 These do not need a new user approval step merely because the AI made a craft decision.
 
@@ -123,6 +126,7 @@ Examples:
 - changing the speaker's established personality;
 - inventing a new accent/identity that materially defines the character;
 - changing Voice scope, Trigger, Channel, objective meaning, mechanic, reward, lore, or outcome;
+- changing an authoritative timing/sync constraint;
 - dropping a required communication fact because it does not fit the desired duration.
 
 Do not hide an upstream decision inside performance polish.
@@ -178,19 +182,48 @@ Landing
 → What final idea/action/result must land most clearly?
 ```
 
-Derive these answers from current authority. Ask only if a material unresolved decision prevents a responsible answer.
+### Fill from Flow 5 before reopening the PRD
+
+Use the requirement fields directly:
+
+```text
+Communication Job  ← Function + Purpose
+Listener State     ← Trigger + Channel
+Information Payload← Must communicate
+Listener Outcome   ← Purpose
+Speaker Owner      ← Speaker
+Hard timing truth  ← Timing Constraint, only when present
+Scope guardrails   ← Must not add/repeat
+```
+
+Then use accepted project context only for genuinely missing **delivery-relevant context**, such as established speaker characterization or scene state that cannot be understood from the requirement alone.
+
+Rules:
+
+- `Trigger` should already describe the event/state and relevant listener condition when material;
+- `Purpose` should already express the listener-facing result, not merely say `provide dialogue`;
+- `Must communicate` is the authoritative payload, not a rough writing suggestion;
+- an optional Flow 5 `Timing Constraint` is authoritative source truth, **not** the same thing as Flow 6 `Estimated Duration`;
+- if `Timing Constraint` is absent, do not invent a hard source limit—plan a reasonable Estimated Duration instead;
+- Performance Shape and Landing normally remain SoundMaker craft decisions derived from the approved moment.
+
+Ask only if a material unresolved decision still prevents a responsible answer after this mapping.
 
 A short/simple line does not need artificial complexity. If one stable state and one clear action are sufficient, keep it that way.
 
 ## 2. Duration planning when timing matters
 
-Resolve timing before final wording:
+Resolve timing before final wording.
+
+First honor any authoritative Flow 5 `Timing Constraint`. Then plan the production estimate:
 
 - **target range** — approximate; naturalness first;
 - **hard maximum** — stay below the cap;
 - **fixed-sync** — fit an external timeline.
 
 Use `references/elevenlabs/v3-duration-planning.md` only when timing is material.
+
+`Estimated Duration` is Flow 6 planning. It must remain compatible with an authoritative Flow 5 timing constraint but must never be presented as if the estimate came from upstream authority.
 
 Do not write an oversized script and rescue it afterward with `[rushed]`, tag spam, or forced speed. Duration pressure may simplify wording; it may not silently delete required communication.
 
@@ -212,7 +245,7 @@ Internal result may be `GOOD FIT`, `LIMITED FIT`, `RISKY FIT`, or `UNKNOWN`.
 
 If no voice is selected in Preparation Mode, derive a Target Voice Profile from the same dimensions. `VOICE NOT SELECTED` is not a preparation blocker when that profile is clear.
 
-Do not invent a commercial voice name to finish preparation or compensate for risky fit with direction stacks.
+Use approved Speaker characterization when it exists. Do not invent a commercial voice name or new character identity to finish preparation, and do not compensate for risky fit with direction stacks.
 
 ## 4. Write the performance
 
@@ -307,6 +340,7 @@ A line passes only when:
 - every independently actionable `Must communicate` fact that belongs in this moment still has a clear spoken representation;
 - every `Must not add/repeat` guardrail remains respected;
 - required names, mechanics, result/state, sequence, and terminology retain their meaning;
+- any authoritative `Timing Constraint` remains respected by the planned wording/timing approach;
 - performance polish did not introduce a new project fact;
 - duration compression did not hide or delete required communication.
 
@@ -321,7 +355,8 @@ A line is script-ready when:
 - Voice Intent Completeness is sufficient for responsible writing;
 - project meaning and Voice ID scope are intact;
 - Type and Speaker remain exact Flow 5 values;
-- target duration is plausible when relevant;
+- authoritative Flow 5 timing constraints are honored when present;
+- Estimated Duration is plausible when relevant;
 - selected voice fit is acceptable/risk is explicit, or a clear Target Voice Profile exists;
 - wording and performance shape are natural and justified;
 - punctuation/CAPS/tags are purposeful and minimal;
@@ -342,7 +377,7 @@ After all requested lines are script-ready, perform **one project-level semantic
 | Listener | Each line fits the player's state and gives the right amount of information/action at that moment. |
 | Character | Recurring speakers remain recognizable without forcing every line into the same template. |
 | Performance | Emotional movement, beat shape, punctuation, CAPS, and tags serve the scene rather than decorate it. |
-| Timing | Estimated duration/density is plausible and no required fact was sacrificed to fit it. |
+| Timing | Estimated duration/density is plausible, authoritative timing constraints are honored, and no required fact was sacrificed to fit them. |
 | Continuity | Information progresses; nearby lines do not mechanically repeat openings, beat chains, tag positions, CAPS climaxes, rhythms, or closings without reason. |
 | Operator | Speaker ownership, duration, exact prompt, and any special action are clear enough to use without guessing. |
 
@@ -360,10 +395,10 @@ When a finding appears, fix the earliest owner that is actually wrong:
 wrong gameplay/story fact
 → PRD / upstream project authority
 
-wrong Voice moment / Speaker / Channel / Trigger / required communication
+wrong Voice moment / Speaker / Channel / Trigger / Purpose / required communication / authoritative timing truth
 → Flow 5 voice-requirements.md
 
-correct requirement but weak wording/performance/duration
+correct requirement but weak wording/performance/Estimated Duration
 → Flow 6 / SoundMaker / voice-production.md
 
 correct canonical script but wrong DOCX presentation
@@ -416,7 +451,8 @@ Voice: actual voice selected intentionally
 Voice fit: reviewed
 Stability: Natural | project-calibrated
 Prompt: exact reviewed revision
-Timing: none | range | hard max | fixed-sync
+Timing: none | target range | hard max | fixed-sync
+Authoritative timing constraint: none | known
 Pronunciation: normal | special setup required
 Enhance: OFF unless rewritten output was explicitly re-reviewed
 ```
