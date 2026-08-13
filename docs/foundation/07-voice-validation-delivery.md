@@ -13,15 +13,15 @@ Flow 7 does **not** assume generated ElevenLabs audio exists or sounds correct. 
 ```text
 voice_script_ready
 ↓
-mechanical parity / DOCX integrity
+mechanical Voice ID / Type / Speaker parity + DOCX integrity
 ↓
 requirement coverage + factual fidelity
 ↓
 terminology / pronunciation risk
 ↓
-speaker / channel / trigger consistency
+Speaker / Channel / Trigger consistency
 ↓
-SoundMaker v3 performance continuity / pacing / notation
+SoundMaker v3 project continuity / notation
 ↓
 DOCX render + visual QA
 ↓
@@ -51,7 +51,7 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical validation checks required files, placeholders, Voice ID/Type parity, script structure, DOCX content parity, and Letter-page structure. Mechanical pass cannot establish semantic, visual, pronunciation, or audio quality by itself.
+Mechanical validation checks required files, placeholders, exact Voice ID/Type/**Speaker** parity, canonical script structure, DOCX content parity, and Letter-page structure. Mechanical pass cannot establish semantic, visual, pronunciation, or audio quality by itself.
 
 ## Semantic acceptance
 
@@ -62,7 +62,7 @@ For every Voice ID, verify that spoken text:
 - fulfills Flow 5 Purpose;
 - communicates all material required facts;
 - respects `Must not add/repeat` guardrails;
-- preserves approved names, sequence, mechanic, result, reward, trigger, and state;
+- preserves approved names, Speaker, sequence, mechanic, result, reward, Trigger, and state;
 - introduces no new Voice moment or upstream project fact.
 
 Paraphrase is allowed. Changed meaning is not.
@@ -81,33 +81,38 @@ Use one status where needed:
 
 Never claim pronunciation is verified without evidence.
 
-### 3. Speaker / channel / trigger consistency
+### 3. Speaker / Channel / Trigger consistency
 
-Verify the final wording remains plausible for the approved speaker, channel, trigger, and communication function.
+Verify the canonical `Speaker` matches Flow 5 and final wording remains plausible for the approved Speaker, Channel, Trigger, and communication function.
 
 Route defects upstream instead of inventing metadata during review.
 
-### 4. SoundMaker v3 performance continuity
+### 4. SoundMaker v3 project continuity
 
 Review the whole project and check:
 
 - narrator/character identity remains coherent;
 - emotional changes follow scene/communication reasons rather than random escalation;
-- long lines contain meaningful performed beats rather than specification prose;
+- nearby lines do not look mechanically templated;
+- information progresses instead of repeatedly re-briefing the same facts;
 - direction vocabulary is concise/compatible;
-- no contradictory or redundant tag stacking dominates the script;
 - punctuation, line breaks, ellipses/em dashes, and CAPS are purposeful;
-- reactions occur at sensible timeline positions;
 - Estimated Duration remains plausible as an estimate;
-- no SSML `<break>` is used for v3.
+- no unsupported v3 notation such as SSML `<break>`.
 
-Flow 7 may reopen canonical `work/voice-production.md` to fix Flow 6 wording/notation. It must not patch DOCX or audio as the source fix.
+Detailed one-line construction belongs to `SOUNDMAKER.md`; do not duplicate its prompting checklist here.
 
 ## DOCX visual QA
 
 Render current `output/Voice Production.docx` to page images and inspect every page when DOCX is in scope.
 
-Check clipping/overlap, orphaned labels, hierarchy, script-panel legibility, preserved line breaks, glyphs, spacing, and shading.
+Check:
+
+- clipping/overlap;
+- correct `Type · Speaker` association for each Voice ID;
+- readable section/title hierarchy;
+- script-panel legibility and preserved line breaks;
+- glyph, spacing, and shading defects.
 
 A successful `python-docx` load is not visual proof.
 
@@ -133,7 +138,7 @@ Do not infer generated-audio quality from script quality, tags, or estimated dur
 
 ## Severity
 
-- **Critical** — wrong/missing Voice ID, wrong project fact, wrong speaker/channel/trigger, missing required communication, or canonical/generated prompt drift that would produce the wrong asset.
+- **Critical** — wrong/missing Voice ID, Type or Speaker; wrong project fact; wrong Channel/Trigger; missing required communication; or canonical/generated prompt drift that would produce the wrong asset.
 - **Major** — material wording, v3 performance, continuity, pronunciation, or layout problem requiring production guesswork.
 - **Minor** — delivery remains correct/usable but clarity/notation/layout can improve without changing meaning.
 - **Suggestion** — optional polish.
@@ -142,8 +147,8 @@ Critical and Major block `voice_delivery_ready`.
 
 ## Finding ownership
 
-- Voice scope/purpose/speaker/channel/trigger defect → Flow 5 `work/voice-requirements.md`;
-- wording/performance/duration/SoundMaker defect → Flow 6 `work/voice-production.md` + `SOUNDMAKER.md` procedure;
+- Voice scope/Purpose/Speaker/Channel/Trigger defect → Flow 5 `work/voice-requirements.md`;
+- wording/performance/duration/SoundMaker defect → Flow 6 `work/voice-production.md` + `SOUNDMAKER.md`;
 - DOCX presentation defect → Flow 6 builder / `DOCX-FORMAT.md`, then rebuild;
 - upstream project fact defect → PRD/requirement owner;
 - actual-audio-only defect with correct script → voice/settings/generation evidence, not silent script rewrite.
@@ -196,8 +201,8 @@ Set `voice_delivery_ready` only when:
 - mechanical validation passes;
 - requirement coverage/factual fidelity passes;
 - terminology/pronunciation risks are resolved or explicitly accepted;
-- speaker/channel/trigger consistency passes;
-- SoundMaker v3 performance continuity/pacing/notation passes;
+- Speaker/Channel/Trigger consistency passes;
+- SoundMaker v3 project continuity/notation passes;
 - current DOCX visual QA passes when DOCX is in scope;
 - Critical = 0;
 - Major = 0;
