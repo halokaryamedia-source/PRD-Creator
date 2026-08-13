@@ -1,132 +1,76 @@
 ---
 name: voice-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is PRD-derived Voice scope, Flow 5→6 intent completeness, canonical Voice production content, communication conservation, consolidated Production Assets output, or final Voice validation/delivery semantics. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, timing truth, or evidence.
+description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use for PRD-derived Voice scope, Flow 5→6 intent completeness, canonical Voice production content, communication conservation, consolidated Production Assets presentation, or Voice validation/delivery semantics.
 ---
 
 # Voice Production
 
-Own semantic/product-contract judgment around Voice Production Kit Flow 5–7. Detailed procedures remain in `kits/voice-production-kit/`.
-
-## Trigger
-
-Use when the wrong contract concerns:
-
-- accepted PRD → Voice assets required for development;
-- Voice ID / Type / Speaker / Channel / Trigger / Purpose / communication scope;
-- Flow 5 requirement completeness;
-- Voice Requirements → canonical production content;
-- Communication Conservation, duration, or integrated readiness;
-- consolidated `final.html → Production Assets → Voice` meaning;
-- Voice validation/delivery semantics.
-
-Do not select merely because a task mentions ElevenLabs, DOCX, audio, Python, or CI. Pure renderer/builder/validator mechanics route to the nearest technical owner.
-
-## Routing
-
-1. Verify accepted PRD revision and current Voice state.
-2. Treat accepted PRD as the upstream source; do not ask the user to re-enter project source for Voice.
-3. Recover existing project facts before asking the user.
-4. Identify the active owner:
-   - Flow 5 → `VOICE-EXTRACTION.md` + `work/voice-requirements.md`;
-   - Flow 6 lifecycle/output → Voice kit `README.md` + `docs/foundation/06-elevenlabs-script-production.md`;
-   - Flow 6 writing/performance detail → `SOUNDMAKER.md`;
-   - Flow 7 → `VOICE-VALIDATION.md`;
-   - optional DOCX → `DOCX-FORMAT.md`/builder;
-   - correct canonical Voice but wrong same-HTML composition → Project Document Generator Production Assets compositor.
-5. Route missing project facts upstream rather than repairing them downstream.
-
-The former duplicate `SCRIPT-PRODUCTION.md` lifecycle owner is retired from active routing in v1.11.2.
+This skill owns semantic judgment around Voice Production Flow 5–7. Detailed procedure stays in `kits/voice-production-kit/`.
 
 ## Authority
 
 ```text
 accepted PRD
-→ voice-requirements.md
-→ voice-production.md
-→ final.html → Production Assets → Voice
-→ voice-acceptance.md
-→ voice-state.yaml
+→ work/voice-requirements.md
+→ work/voice-production.md
+→ output/final.html
+   → Production Assets
+      → matching gameplay section
+         → Audio
+            → Voice Production
+→ work/voice-acceptance.md
+→ state/voice-state.yaml
 ```
 
-- PRD owns product/gameplay truth and the requirement for a Voice asset.
-- Flow 5 owns which Voice assets exist and their approved communication intent/context.
-- Flow 6 owns canonical production content.
-- `final.html` is derived human/operator presentation, not another authority.
-- DOCX is optional export only.
+PRD owns project/gameplay truth. Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, communication requirements, and source timing truth. Flow 6 owns canonical production wording/performance. Flow 7 owns Voice readiness/evidence.
 
-# Flow 5 judgment
+Generic `work/asset-requirements.md` may share the same Production Assets gameplay page but does not own or duplicate Voice data.
 
-Extract only justified player-facing communication moments from the accepted PRD. A Flow 5 entry is ready only when downstream production can recover communication job, listener state, required information, intended listener outcome, Speaker, optional source timing truth, and scope guardrails without project-level guessing.
+## Routing
 
-Do not move downstream craft into Flow 5.
+- Voice scope/context defect → Flow 5 owners.
+- Voice production wording/performance defect → Flow 6 / `SOUNDMAKER.md`.
+- Voice validation/delivery defect → Flow 7 / `VOICE-VALIDATION.md`.
+- correct canonical Voice but wrong objective-first HTML composition → Project Document Generator Production Assets compositor.
+- optional DOCX-only defect → Voice DOCX owner/builder.
+- missing project fact → return to accepted PRD authority.
 
-# Flow 6 judgment
+## Production output
 
-SoundMaker scope is **Eleven v3 only**. Production may refine delivery inside approved intent but returns upstream when unresolved work would change project facts, Voice scope, Speaker/Channel/Trigger/Purpose, required communication, or source timing truth.
-
-# Production output judgment
-
-Default human-facing output is the **same project HTML**:
+Production Assets sidebar navigation is objective-first:
 
 ```text
-PRD core
-+
 04 Production Assets
-   VOICE
    <gameplay section title>
-   <accepted PRD package label>
+      <accepted PRD label>
 ```
 
-Production Assets is additive. Existing gameplay/objective navigation remains under `03 Development` and accepted PRD page identities are not renumbered.
+Voice appears inside the matching page:
 
-The Voice navigation shows `VOICE` once, then gameplay section title + accepted PRD label. Long sidebar labels wrap naturally.
+```text
+Audio
+→ Voice Production
+```
 
-Each Voice section page shows gameplay title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup.
-
-Each Voice line shows:
+The detailed Voice block retains line count, Primary Speaker, compact Voice Setup, and per-line:
 
 ```text
 title
-→ <PRD package label> · Voice Line X/Y
-→ Context = exact Flow 5 Trigger
-→ Speaker + Estimated Duration
-→ canonical production text
-→ Copy Prompt
+<accepted PRD label> · Voice Line X/Y
+Context = exact Flow 5 Trigger
+Speaker · Estimated Duration
+canonical production text
+Copy Prompt
 ```
 
-The visible Context is the existing Flow 5 Trigger projected into HTML. It is not a new Flow 6 field. Purpose, requirement bullets, source refs, reasoning, and QA remain internal.
+The visible Context is a projection of the existing Flow 5 Trigger, not a new canonical field. Copy Prompt uses the exact canonical performance payload.
 
-Do not create a separate Voice HTML or Asset Requirement HTML by default. Optional DOCX remains allowed when specifically useful.
+## Validation boundary
 
-# First wrong owner / bounded revision
+A Production Assets page can contain Voice plus other asset categories, so Voice mechanical validation checks Voice-specific sections and entries rather than treating every Production Assets page as Voice-only.
 
-```text
-project fact → PRD authority
-Voice scope/context → Flow 5
-canonical production content → Flow 6
-correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
-optional DOCX-only defect → Voice builder
-```
+Static HTML checks do not prove visual quality. Generated-audio quality requires actual audio evidence.
 
-Voice-only production changes rerender `final.html` but do not reopen PRD acceptance when PRD canonical sources are unchanged. Revise only invalidated Voice/Speaker scope plus continuity materially affected by the change.
+## Scope discipline
 
-# Flow 7 judgment
-
-Use:
-
-```text
-Mechanical
-+ Communication Conservation
-+ one integrated Voice Script Readiness review
-+ Project HTML Visual when claimed
-+ optional DOCX Visual
-+ optional Audio Evidence
-```
-
-Static HTML parity is not visual proof. Critical/Major findings block `voice_delivery_ready`.
-
-# Stop rule
-
-Stop once current Voice Production is ready, the requested consolidated HTML is current, and remaining evidence boundaries are stated honestly.
-
-Do not add separate Voice HTML, asset manifests, settings databases, scores, extra approval layers, or speculative hardening without a concrete defect.
+Voice-only changes do not reopen PRD acceptance when PRD canonical sources are unchanged. Voice data is not duplicated into generic asset requirements, and no separate Voice HTML is required by default.
