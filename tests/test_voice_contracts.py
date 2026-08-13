@@ -85,6 +85,7 @@ Source Voice Requirements: work/voice-requirements.md
 
 ### VO-INTRO-01 — Welcome
 Type: Main Story
+Speaker: Narrator
 Estimated Duration: 2–3 seconds
 ```performance
 [calm]
@@ -95,6 +96,7 @@ Begin the trial.
 
 ### VO-END-01 — Complete
 Type: Direct NPC Dialogue
+Speaker: Guide
 Estimated Duration: 2–3 seconds
 ```performance
 [clear]
@@ -125,10 +127,10 @@ class VoiceProductionContracts(unittest.TestCase):
     def build(self, project: Path) -> subprocess.CompletedProcess[str]:
         return run_cli(
             BUILDER,
-            project / "work" / "voice-production.md",
-            project / "output" / "Voice Production.docx",
+            project / "work/voice-production.md",
+            project / "output/Voice Production.docx",
             "--requirements",
-            project / "work" / "voice-requirements.md",
+            project / "work/voice-requirements.md",
         )
 
     def test_builder_and_validator_happy_path_preserves_section_break_contract(self) -> None:
@@ -141,7 +143,11 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         self.assertIn("VOICE VALIDATION PASS", validated.stdout)
 
-        doc = Document(project / "output" / "Voice Production.docx")
+        doc = Document(project / "output/Voice Production.docx")
+        full_text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
+        self.assertIn("Speaker: Narrator", full_text)
+        self.assertIn("Speaker: Guide", full_text)
+
         headings = [
             paragraph
             for paragraph in doc.paragraphs
@@ -169,6 +175,17 @@ class VoiceProductionContracts(unittest.TestCase):
             built.stderr,
         )
 
+    def test_builder_rejects_speaker_mismatch(self) -> None:
+        script = SCRIPT.replace("Speaker: Narrator", "Speaker: Guide", 1)
+        project = self.make_project(script_text=script)
+
+        built = self.build(project)
+        self.assertEqual(built.returncode, 2)
+        self.assertIn(
+            "Voice Speaker differs from Flow 5 requirement for: VO-INTRO-01",
+            built.stderr,
+        )
+
     def test_builder_rejects_empty_section_without_traceback(self) -> None:
         script = SCRIPT.replace("## Ending", "## Empty Section\n\n## Ending", 1)
         project = self.make_project(script_text=script)
@@ -177,7 +194,7 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual(built.returncode, 2)
         self.assertNotIn("Traceback", built.stderr)
         self.assertIn("Voice section has no entries: Empty Section", built.stderr)
-        self.assertFalse((project / "output" / "Voice Production.docx").exists())
+        self.assertFalse((project / "output/Voice Production.docx").exists())
 
 
 if __name__ == "__main__":
