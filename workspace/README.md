@@ -9,66 +9,60 @@ active project → workspace/active/<project>/
 saved project  → workspace/archive/<project>/
 ```
 
-Project packages grow **by Flow**, not by pre-creating the final folder tree.
+Project packages grow only when the current production stage needs an artifact. Do not pre-create a full folder tree.
 
-## Artifact classes
-
-### Core
-
-Create when the owning Flow actually needs the artifact.
-
-Flow 2:
+## Core PRD artifacts
 
 ```text
+Flow 2
 state/source-inventory.yaml
 state/requirement-register.yaml
 state/intake-state.yaml
-```
 
-Flow 3:
-
-```text
+Flow 3
 work/content.md              canonical PRD meaning
 work/render-data.json        deterministic PRD projection
 output/final.html            PRD core at this stage
-```
 
-Flow 4/current PRD handoff boundary:
-
-```text
+Flow 4
 work/acceptance.md
 state/handoff-state.yaml
-output/team-handoff.md       concise current handoff navigation/status
+output/team-handoff.md
 ```
 
-### Conditional source retention
+`source/originals/`, project `README.md`, and `work/review.md` are conditional. Keep them only when they provide real continuity/production value.
 
-`source/originals/` is **not a folder-shape requirement**.
+## Downstream Production Assets
 
-Keep a supplied original in-repo when later direct inspection/reproduction materially benefits from the bytes being present. A large/static source may remain externally retained when duplicating it adds no production value, provided:
-
-- relevant authority has been inspected to sufficient depth;
-- `state/source-inventory.yaml` records unambiguous identity/provenance and the retention boundary;
-- file sources record filename and SHA-256 when available/useful for exact continuity;
-- current recovered/approved project meaning is persisted in requirement/canonical state.
-
-External retention is not permission to throw away unread authority or replace it with generated output.
-
-### Other conditional artifacts
-
-Create only when the condition exists:
+After the PRD is accepted, non-Voice Production Asset requirements may be added only when real asset production needs them:
 
 ```text
-README.md                    project-specific navigation/context only when useful
-work/review.md               readable decision/recovery summary only when useful
-actual audio/evidence files  only when current scope supplies or produces them
+work/asset-requirements.md
 ```
 
-Do not create empty placeholder files to make project packages look uniform.
+This optional file contains objective-first actionable requirements using only the current categories that actually have assets:
 
-### Downstream Voice
+```text
+3D Models
+UI & Information
+Audio
+Cinematic & Presentation
+```
 
-Do not create until Voice Flow 5–7 is requested/entered:
+A generic entry uses:
+
+```text
+Asset Name
+Requirement     mandatory
+Usage           optional
+Content         optional exact player-facing content
+```
+
+Do not create component inventories, empty categories, duplicate shared assets, or a second HTML output.
+
+## Downstream Voice
+
+Create only after entering Voice Flow 5–7:
 
 ```text
 state/voice-state.yaml
@@ -77,52 +71,65 @@ work/voice-production.md
 work/voice-acceptance.md
 ```
 
-When canonical Voice Production exists, the normal PRD renderer rerenders the same project document:
+Voice remains canonical in those files and is not duplicated into `asset-requirements.md`.
+
+When any downstream Production Assets exist, the normal PRD renderer rerenders the same project document:
 
 ```text
 output/final.html
 = accepted PRD core
-+ Production Assets → Voice
++ 04 Production Assets
 ```
 
-Production Assets extends the accepted PRD navigation. Gameplay/objective sections remain under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
+Production Assets navigation is objective-first:
 
-### Optional derived exports
+```text
+04 Production Assets
+   Global / Shared Assets      # only when present
+   <gameplay section title>
+      <accepted PRD label>
+```
+
+Categories appear inside each page only when non-zero. Voice appears inside the matching gameplay page's `Audio → Voice Production` block.
+
+Gameplay/objective PRD sections remain under `03 Development`; downstream composition does not renumber accepted PRD page identities.
+
+## Optional derived exports
 
 ```text
 output/Voice Production.docx
 ```
 
-DOCX is derived from canonical Voice Production only when a portable export is explicitly requested or materially useful. It is not the default Voice delivery surface.
+DOCX is produced only when a portable Voice export is requested or useful. It does not replace canonical Voice Production.
 
-## Typical package after Flow 7
+## Typical package
 
-A project that used the complete PRD + Voice sequence may contain:
+A project may eventually contain:
 
 ```text
 workspace/active/<project>/
-├── source/originals/             # only if source is retained in-repo
+├── source/originals/             # conditional
 ├── state/
 │   ├── source-inventory.yaml
 │   ├── requirement-register.yaml
 │   ├── intake-state.yaml
 │   ├── handoff-state.yaml
-│   └── voice-state.yaml
+│   └── voice-state.yaml          # only when Voice is used
 ├── work/
-│   ├── review.md                 # only if useful
 │   ├── content.md
 │   ├── render-data.json
 │   ├── acceptance.md
-│   ├── voice-requirements.md
-│   ├── voice-production.md
-│   └── voice-acceptance.md
+│   ├── asset-requirements.md     # optional non-Voice Production Assets
+│   ├── voice-requirements.md     # only when Voice is used
+│   ├── voice-production.md       # only when Voice is used
+│   └── voice-acceptance.md       # only when Voice is used
 └── output/
-    ├── final.html                # PRD core + current Production Assets when present
+    ├── final.html
     ├── team-handoff.md
-    └── Voice Production.docx     # optional export only
+    └── Voice Production.docx     # optional
 ```
 
-This is an **eventual example**, not a bootstrap checklist.
+This is an eventual example, not a bootstrap checklist.
 
 ## Authority rule
 
@@ -131,14 +138,10 @@ source evidence + current user instruction + approved decisions
 → requirement state
 → canonical PRD
 → PRD acceptance
-→ Voice requirements
-→ canonical Voice Production
+→ optional non-Voice asset requirements
+→ optional Voice requirements + canonical Voice Production
 → consolidated final.html presentation
-→ Voice acceptance / voice-state
+→ downstream acceptance/state where applicable
 ```
 
-Optional DOCX/audio remain derived export/evidence and do not replace canonical PRD/Voice owners.
-
-A source's physical storage location does not change its authority; provenance/status/current user instruction do.
-
-Derived artifacts may be regenerated. Do not patch `final.html` or DOCX as source of truth. Generated audio, when present, is evidence/output and does not replace canonical requirements or production meaning.
+Derived artifacts may be regenerated. Never patch `final.html` or DOCX as source of truth.
