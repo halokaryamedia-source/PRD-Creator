@@ -87,14 +87,14 @@ Ceiling traps won't. Watch their cycle... then move when the opening is yours.
 ### VO-WARD-02 — The Wardens Still Serve
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 9–11 seconds
+Estimated Duration: 8–10 seconds
 
 ```performance
 The Wardens never stopped protecting the Orrery.
 
-That means the Workshop may still be alive too.
+Parts of this vault are still working.
 
-Keep moving—we're close to the heart of the vault.
+Keep moving—the Workshop is next.
 ```
 
 ## 05. The Gremlin’s Workshop
@@ -144,7 +144,7 @@ Start from that clue—the route is still yours to solve.
 ### VO-END-01 — The Vault Is Awake
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 16–19 seconds
+Estimated Duration: 15–18 seconds
 
 ```performance
 [slows down]
@@ -153,19 +153,15 @@ Listen... the whole vault is moving again.
 You didn't just escape it—you restored what it was built to protect.
 
 The Great Orrery is awake, and the gateway is open.
-Take the Clockwork Wayfinder.
-
-You've earned the right to remember this place.
+Take the Clockwork Wayfinder. You've earned it.
 ```
 
 ### VO-END-02 — Safe Return Cue
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 7–9 seconds
+Estimated Duration: 4–6 seconds
 
 ```performance
 The way home is clear.
 Follow the gateway back to the holding area.
-
-I'll take care of the vault from here.
 ```
