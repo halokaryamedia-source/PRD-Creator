@@ -4,97 +4,122 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`VOICE_FLOW5_FLOW6_INTERFACE_READY`
+`PRODUCTION_ASSETS_VOICE_HTML_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator remains **v1.13.0**. The approved Clockwork production package remains unchanged.
+Project Document Generator PRD core remains **v1.13.0**. The approved Golden template bytes and PRD-core page contract remain unchanged.
 
-Voice Production Kit is now **v1.9.0** and remains **Eleven v3 only**.
+Voice Production Kit is now **v1.10.0** and remains **Eleven v3 only**.
 
-The Flow 5 → Flow 6 interface is now explicit enough for SoundMaker to complete Voice Intent without reopening the full PRD or inventing product meaning by default.
-
-```text
-Flow 5 Voice Requirement
-│
-├─ Function + Purpose        → Communication Job
-├─ Trigger + Channel         → Listener State
-├─ Must communicate         → Information Payload
-├─ Purpose                  → Listener Outcome
-├─ Speaker                  → Speaker Owner
-├─ Timing Constraint?       → authoritative hard/fixed timing truth
-└─ Must not add/repeat      → Scope Guardrails
-        ↓
-Voice Intent Completeness
-→ Performance Fill Map
-→ SoundMaker writing
-→ Communication Conservation
-→ Voice Script Readiness
-```
-
-### Field quality
-
-Flow 5 now requires:
-
-- Trigger to describe the actual gameplay/story event/state and relevant listener condition when material;
-- Purpose to express what the listener should know/do/understand/acknowledge, not a vague `provide dialogue` instruction;
-- independently actionable `Must communicate` facts to remain distinct enough for downstream conservation;
-- `Must not add/repeat` to protect scope and information progression;
-- optional `Timing Constraint` only when accepted upstream authority defines a material line/window/fixed-sync rule.
-
-### Timing boundary
-
-`Timing Constraint` is **Flow 5 authoritative truth** and is optional.
-
-`Estimated Duration` remains **Flow 6 production planning**.
+The approved architecture is now implemented:
 
 ```text
-Flow 5: Timing Constraint: fixed 12-second cinematic slot
+accepted PRD
+= product/gameplay truth
         ↓
-Flow 6: word-budget / performance planning
+Flow 5 voice-requirements.md
+= what Voice assets must be produced
         ↓
-Estimated Duration compatible with that source boundary
+Flow 6 voice-production.md
+= actor selection + exact production text
+        ↓
+same output/final.html
+= PRD core + Production Assets → Voice
 ```
 
-If Flow 5 has no Timing Constraint, SoundMaker may plan a reasonable Estimated Duration but must not invent a hard source limit.
+Voice is a downstream development asset from the accepted PRD, not a separate project/source intake.
 
-### What remains Flow 6 craft
+# One HTML
 
-Flow 5 does not gain fields for:
+`output/final.html` is the single human-facing project document.
 
-- final spoken wording;
-- Performance Shape;
-- Landing wording;
-- Audio Tags;
-- CAPS/punctuation/pause strategy;
-- Target Voice Profile / selected ElevenLabs voice;
-- Stability / Surface / Enhance;
-- production-estimated duration.
+The renderer first creates the unchanged PRD core through the approved Golden contract. When `work/voice-production.md` exists, it then appends professional-only Voice production pages after the PRD core.
 
-These remain SoundMaker production interpretation unless upstream authority actually constrains them.
+If no Voice Production exists, the Production Assets compositor is a no-op and normal PRD output remains unchanged.
 
-### Review boundary
+PRD core still uses `6 + 4N` pages. Production Assets pages are downstream extensions and are not counted as PRD-core pages.
 
-Communication Conservation and integrated Voice Script Readiness now explicitly verify that authoritative Flow 5 timing truth survives downstream planning alongside required communication.
+# Voice page contract
 
-The first-wrong-owner rule is:
+Visible Voice production is intentionally simple:
 
 ```text
-project fact → PRD
-Voice scope/Speaker/Channel/Trigger/Purpose/required communication/timing truth → Flow 5
-wording/performance/Estimated Duration → Flow 6
-DOCX-only defect → builder
-actual audio-only defect → Generation Mode
+Production Assets
+└── Voice
+
+Voice Cast
+- Speaker → selected ElevenLabs voice
+
+Gameplay order
+01 <Voice title>
+   Actor
+   Estimated Duration
+   exact Eleven v3 script
+   Copy Text
+
+02 ...
 ```
 
-### Overdevelopment guard
+The page does not expose Flow 5 Purpose/Trigger/requirements/source refs, Performance Fill Map reasoning, WPM math, QA, or other internal process data.
 
-No new artifact family, lifecycle state, Flow 6 canonical entry field, builder/validator timing engine, dependency, score system, or audio-test requirement was added.
+`Copy Text` copies only the exact canonical fenced `performance` payload.
 
-The existing Voice contract fixture now includes an optional Flow 5 Timing Constraint to prove current builder/validator compatibility while keeping semantic timing decisions outside mechanical tooling.
+# Voice Cast
+
+`work/voice-production.md` may define actor selection once before gameplay sections:
+
+```text
+Voice Cast:
+- <Speaker>: <selected ElevenLabs voice>
+```
+
+A voice may remain unselected in Preparation Mode; the HTML shows `Voice selection pending` rather than inventing one.
+
+Generation Mode requires the active Speaker's intended ElevenLabs voice to be selected.
+
+# PRD vs Voice acceptance
+
+```text
+PRD canonical change
+→ reopen affected PRD acceptance
+
+Voice-only production change
+→ keep PRD acceptance when PRD canonical sources are unchanged
+→ update voice-production.md
+→ rerender same final.html
+→ validate affected Voice / Production Assets scope
+```
+
+This prevents Production Assets from becoming a second PRD while still keeping one project document for humans.
+
+# DOCX
+
+`Voice Production.docx` is now optional export only. It is not required for normal Voice Preparation/Delivery when consolidated `final.html` is current.
+
+Voice validator always checks canonical requirements/script parity; it checks consolidated project HTML when present and DOCX only when that optional export exists.
+
+# Implemented proof coverage
+
+Focused regression coverage now proves:
+
+- Voice Production is composed into the same PRD HTML;
+- Voice Cast and exact scripts are present;
+- script order follows canonical gameplay order;
+- Copy Text panels are generated;
+- a project without `voice-production.md` receives no Production Assets extension;
+- optional `Voice Cast:` does not break existing Voice builder/validator behavior.
+
+No audio generation/listening was performed.
+
+# Overdevelopment guard
+
+No generic Asset framework/schema, asset manifest, second Voice HTML, settings database, new Flow, Golden-template rewrite, SFX/Visual implementation, or audio-test requirement was added.
+
+The current compositor is deliberately Voice-specific. Generalize only when another concrete asset domain is actually approved for implementation.
 
 ## Next Step
 
-**Stop generic SoundMaker hardening unless a concrete non-audio defect is identified; otherwise apply the current Flow 5 → Flow 6 Preparation Mode to a real project package when requested. Audio testing remains unnecessary until the user explicitly enters Generation Mode.**
+**Run the current architecture on a real project's Voice Preparation when requested, then evaluate the actual consolidated HTML visually; do not add more generic asset infrastructure before a concrete production need appears.**
