@@ -49,14 +49,41 @@ Ready to generate. After listening, reply **APPROVED** or give the specific part
 
 Inside the code block include **only** text intended for ElevenLabs.
 
+When a project/voice does not already have an approved generation setting, one short note outside the code block may state the baseline once:
+
+```text
+Eleven v3 · Stability: Natural
+```
+
+Do not repeat the setting on every line after it is established.
+
 ## Hard scope lock
 
-SoundMaker in this repository is now **v3-only**.
+SoundMaker in this repository is **v3-only**.
 
 - Model: Eleven v3.
 - Do not route to Multilingual v2, Flash, Turbo, Dialogue, Dubbing, Voice Changer, or Sound Effects as an automatic fallback.
 - If a selected voice behaves poorly with v3, classify it as a **voice-fit risk** and prefer a better v3-compatible voice rather than changing model families.
 - Keep environment/SFX generation separate from TTS voice performance.
+
+## Default v3 generation baseline
+
+Unless stronger approved project evidence already exists:
+
+```text
+Model: Eleven v3
+Stability: Natural
+```
+
+Rules:
+
+- use **Natural** as the default balance between voice identity and expressive response;
+- move toward **Creative** only after the voice fit, wording, beat structure, and directing are already sound and the performance still needs more range;
+- do not use **Robust** as the default for expressive SoundMaker work because the current reference records it as less responsive to directional prompting;
+- do not depend on Speed as a required quality/duration control; current ElevenLabs documentation has conflicting Speed availability for v3, so the live UI owns whether that control exists;
+- a project-calibrated approved Stability/visible setting is stronger than this generic baseline for the same voice/project.
+
+Do not change voice, Stability, wording, tags, and punctuation simultaneously merely because one take was weak. Preserve causal visibility during revision.
 
 ## Required authority
 
@@ -264,8 +291,8 @@ Production heuristic:
 Good cross-dimension pairs:
 
 ```text
-[nervous][quietly]  → emotion + projection
-[excited][rushed]   → emotion + pace
+[nervous][quietly]   → emotion + projection
+[excited][rushed]    → emotion + pace
 [reflective][softly] → narrative stance + projection
 ```
 
@@ -328,9 +355,25 @@ A prompt is `Ready to generate` only when:
 - there is no SSML `<break>` markup;
 - environment/SFX instructions are not mixed into the voice prompt;
 - material pronunciation risk is addressed;
+- the v3 generation baseline is known for the current project/voice;
 - only one best final prompt is shown.
 
 If a material issue remains, present the same task as a review draft and do not encourage paid generation yet.
+
+## 12. Generation handoff
+
+Immediately before generation, the operator should be able to answer:
+
+```text
+Model: Eleven v3
+Voice: known / intentionally selected
+Stability: Natural or project-calibrated value
+Prompt: exact reviewed version
+Duration target: none / range / hard max / fixed-sync
+Pronunciation risk: resolved / intentionally pending review
+```
+
+Any UI rewrite/enhancement or manual edit that changes the prompt creates a **new prompt revision**. Review that changed wording before generation instead of assuming an automatic rewrite preserves the intended performance.
 
 # Revision after generation
 
@@ -385,6 +428,39 @@ If audio is too long:
 
 If audio is shorter than the target but still correct and natural, do not add filler unless the external timing requirement genuinely needs it.
 
+# Actual audio quality review
+
+When the user supplies or plays back an actual generated take, judge the audio itself rather than inferring quality from the prompt.
+
+Review these dimensions:
+
+1. **Meaning / intelligibility** — required words and instructions are clearly understandable.
+2. **Voice identity** — the speaker still sounds like the intended character/voice rather than drifting into a noticeably different persona.
+3. **Emotional movement** — intended changes in state are audible where the scene changes; a long line should not collapse into one unchanging tone when the script contains real emotional beats.
+4. **Pacing / breath** — important ideas have enough space to land; pauses are not so long/short that meaning or urgency is damaged.
+5. **Emphasis / landing** — important words receive appropriate stress and the final beat ends with the intended confidence, tension, relief, warning, or payoff.
+6. **Naturalness** — tags, reactions, CAPS, and punctuation do not produce obvious overacting, robotic segmentation, or artificial emotional jumps.
+7. **Pronunciation** — material names/terms/numbers are spoken correctly enough for production consistency.
+8. **Duration** — the actual file meets the requested range/hard maximum/fixed-sync requirement when timing is part of the task.
+
+Use the smallest corrective action that matches the evidence:
+
+```text
+all important dimensions pass
+→ APPROVE
+
+one take is odd but prompt/voice/settings remain sound
+→ REVIEW ALTERNATIVE / REGENERATE
+
+same wording/performance point repeatedly fails
+→ REVISE PROMPT
+
+performance range consistently exceeds the selected voice
+→ VOICE-FIT RISK / CHANGE VOICE
+```
+
+Do not call a line immersive merely because it contains many tags. The acceptance question is whether the **heard performance** communicates the scene clearly and changes naturally where the scene changes.
+
 # Approval lock and canonical sync
 
 When the user says **APPROVED**:
@@ -411,4 +487,4 @@ SoundMaker is the **quality/execution profile inside Flow 6**.
 
 When producing script/DOCX only, SoundMaker runs the pre-generation quality engine but does not require audio approval.
 
-When actual ElevenLabs generation is part of the task, use the approval loop and canonical-sync rule above.
+When actual ElevenLabs generation is part of the task, use the generation baseline, audio review, approval loop, and canonical-sync rule above.
