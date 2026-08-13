@@ -4,122 +4,116 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`PRODUCTION_ASSETS_VOICE_HTML_READY`
+`CLOCKWORK_VOICE_PRODUCTION_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator PRD core remains **v1.13.0**. The approved Golden template bytes and PRD-core page contract remain unchanged.
+Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit remains **v1.10.0** and **Eleven v3 only**.
 
-Voice Production Kit is now **v1.10.0** and remains **Eleven v3 only**.
-
-The approved architecture is now implemented:
+The Clockwork Vault now exercises the approved one-document architecture on a real project:
 
 ```text
 accepted PRD
-= product/gameplay truth
-        ↓
-Flow 5 voice-requirements.md
-= what Voice assets must be produced
-        ↓
-Flow 6 voice-production.md
-= actor selection + exact production text
-        ↓
+↓
+12 justified Voice asset requirements
+↓
+Eleven v3 Voice Production
+↓
 same output/final.html
-= PRD core + Production Assets → Voice
+   PRD core
+   + Production Assets → Voice
 ```
 
-Voice is a downstream development asset from the accepted PRD, not a separate project/source intake.
+Voice remains a downstream development asset from the accepted PRD. Clockwork PRD canonical meaning/render-data was not changed by Voice preparation.
 
-# One HTML
+## Clockwork Voice Production
 
-`output/final.html` is the single human-facing project document.
-
-The renderer first creates the unchanged PRD core through the approved Golden contract. When `work/voice-production.md` exists, it then appends professional-only Voice production pages after the PRD core.
-
-If no Voice Production exists, the Production Assets compositor is a no-op and normal PRD output remains unchanged.
-
-PRD core still uses `6 + 4N` pages. Production Assets pages are downstream extensions and are not counted as PRD-core pages.
-
-# Voice page contract
-
-Visible Voice production is intentionally simple:
+Current canonical project files:
 
 ```text
-Production Assets
-└── Voice
-
-Voice Cast
-- Speaker → selected ElevenLabs voice
-
-Gameplay order
-01 <Voice title>
-   Actor
-   Estimated Duration
-   exact Eleven v3 script
-   Copy Text
-
-02 ...
+work/voice-requirements.md
+work/voice-production.md
+work/voice-acceptance.md
+state/voice-state.yaml
+output/final.html
 ```
 
-The page does not expose Flow 5 Purpose/Trigger/requirements/source refs, Performance Fill Map reasoning, WPM math, QA, or other internal process data.
-
-`Copy Text` copies only the exact canonical fenced `performance` payload.
-
-# Voice Cast
-
-`work/voice-production.md` may define actor selection once before gameplay sections:
+Current Voice Cast preparation baseline:
 
 ```text
-Voice Cast:
-- <Speaker>: <selected ElevenLabs voice>
+Custodian Vex → William Shanks - Rich and Deep
 ```
 
-A voice may remain unselected in Preparation Mode; the HTML shows `Voice selection pending` rather than inventing one.
+The commercial voice is selected for preparation/operator use but has **not** been audio-tested or audio-approved.
 
-Generation Mode requires the active Speaker's intended ElevenLabs voice to be selected.
-
-# PRD vs Voice acceptance
+Exactly 12 justified Voice assets are prepared in gameplay order across:
 
 ```text
-PRD canonical change
-→ reopen affected PRD acceptance
-
-Voice-only production change
-→ keep PRD acceptance when PRD canonical sources are unchanged
-→ update voice-production.md
-→ rerender same final.html
-→ validate affected Voice / Production Assets scope
+The Antechamber
+The Resonance Engine
+The Broken Gallery
+The Warden Halls
+The Gremlin's Workshop
+Vault Restored
 ```
 
-This prevents Production Assets from becoming a second PRD while still keeping one project document for humans.
+Voice was deliberately not added to every interaction/checkpoint/chime. Existing visual/local gameplay feedback remains primary where narration would only duplicate information.
 
-# DOCX
+## Production Assets HTML
 
-`Voice Production.docx` is now optional export only. It is not required for normal Voice Preparation/Delivery when consolidated `final.html` is current.
+`output/final.html` remains the single human-facing project document.
 
-Voice validator always checks canonical requirements/script parity; it checks consolidated project HTML when present and DOCX only when that optional export exists.
+`Production Assets → Voice` now shows only operator-useful information:
 
-# Implemented proof coverage
+- Voice Cast once;
+- gameplay-ordered Voice title;
+- Actor;
+- Estimated Duration;
+- exact Eleven v3 performance text;
+- Copy Text.
 
-Focused regression coverage now proves:
+Internal Flow 5 requirement metadata and SoundMaker reasoning remain outside the visible page.
 
-- Voice Production is composed into the same PRD HTML;
-- Voice Cast and exact scripts are present;
-- script order follows canonical gameplay order;
-- Copy Text panels are generated;
-- a project without `voice-production.md` receives no Production Assets extension;
-- optional `Voice Cast:` does not break existing Voice builder/validator behavior.
+## Validation
 
-No audio generation/listening was performed.
+Current non-audio Voice delivery state:
 
-# Overdevelopment guard
+```text
+Status: voice_delivery_ready
+Mechanical: PASS
+Voice Script Readiness: PASS
+Communication Conservation: PASS
+Project HTML Visual: PASS
+Audio Evidence: not_provided
+Critical: 0
+Major: 0
+```
 
-No generic Asset framework/schema, asset manifest, second Voice HTML, settings database, new Flow, Golden-template rewrite, SFX/Visual implementation, or audio-test requirement was added.
+Mechanical validation passed against the accepted PRD handoff, current Voice requirements/script, and consolidated HTML.
 
-The current compositor is deliberately Voice-specific. Generalize only when another concrete asset domain is actually approved for implementation.
+Representative desktop browser inspection passed on:
+
+- Voice Cast + Antechamber;
+- Broken Gallery including the short collapse warning;
+- Gremlin's Workshop including the longer sabotage script;
+- Vault Restored ending.
+
+The Voice page family remained readable and consistent with the PRD design language, with no observed clipping or overlap in those representative pages.
+
+A final semantic cleanup removed unsupported flourish/inference from the Warden transition and ending before the accepted render.
+
+## Audio boundary
+
+No ElevenLabs generation, listening, A/B comparison, measured-duration calibration, or generated-audio quality claim has been performed.
+
+`voice_delivery_ready` currently means the **non-audio script + consolidated project HTML** are production-ready. It does not mean the generated Voice assets are approved.
+
+## Overdevelopment guard
+
+Do not add a generic Asset framework, second Voice HTML, asset manifest, new Flow, SFX/Visual implementation, or more proof layers without a concrete production need.
 
 ## Next Step
 
-**Run the current architecture on a real project's Voice Preparation when requested, then evaluate the actual consolidated HTML visually; do not add more generic asset infrastructure before a concrete production need appears.**
+**Keep the current non-audio Clockwork Voice package as the ready baseline; only reopen affected scripts if the user requests content changes, or enter SoundMaker Generation Mode when the user explicitly asks to generate/test audio.**
