@@ -123,6 +123,20 @@ accepted PRD
 → derived DOCX / optional generated-audio evidence
 ```
 
+Canonical Flow 6 entries deliberately stay small:
+
+```text
+Voice ID + Title
+Type
+Speaker
+Estimated Duration
+exact Eleven v3 performance block
+```
+
+`Type` and `Speaker` must match Flow 5. Planning-only details such as Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, performance-map reasoning, voice-fit ratings, and QA notes remain in their owning/internal sources rather than being copied into every operator artifact.
+
+The derived DOCX exposes `Type · Speaker`, Voice ID/Title, Estimated Duration, and exact Performance Script. A separate operator handoff file is not created by default; a compact handoff is derived from current authority when needed.
+
 Preparation Mode may finish with no audio evidence. When actual generated wording is later approved, the exact prompt actually used must synchronize back into canonical `work/voice-production.md` before current script/DOCX/audio alignment is claimed.
 
 ## Version policy
