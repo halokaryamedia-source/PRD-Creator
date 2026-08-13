@@ -47,6 +47,8 @@ Use when needed:
 - `accepted_as_written` — creative owner intentionally accepts the written form;
 - `needs_confirmation` — do not claim pronunciation-ready.
 
+Preparation-only delivery may retain honest unresolved pronunciation evidence when the downstream producer is expected to confirm it later; do not relabel it as verified.
+
 ## 4. Project performance continuity
 
 Review the whole project for:
@@ -54,6 +56,7 @@ Review the whole project for:
 - coherent narrator/character identity;
 - scene-driven energy/emotional movement;
 - no repeated template that makes nearby lines feel mechanically identical;
+- information progression: briefing introduces, reminders compress, success lines acknowledge rather than re-brief;
 - concise compatible directing;
 - plausible duration estimates;
 - no unsupported v3 notation such as SSML `<break>`.
@@ -74,7 +77,7 @@ If audio is not supplied:
 Audio Evidence: not_provided
 ```
 
-This blocks audio-quality claims, not script/DOCX delivery.
+This blocks audio-quality claims, not script/DOCX delivery or Preparation Mode completion.
 
 When audio is in scope:
 
