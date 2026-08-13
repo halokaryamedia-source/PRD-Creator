@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.0 — 2026-08-13
+
+- adapted the strongest PRD-Creator reasoning patterns into SoundMaker without adding a new Flow, file family, schema, score system, or audio-test requirement;
+- added **Voice Intent Completeness** with one internal Performance Fill Map covering communication job, listener state, information payload, listener outcome, speaker identity, timing envelope, performance shape, and landing;
+- distinguished normal **production interpretation** from unresolved material creative/project decisions so punctuation/tags/phrasing do not require unnecessary approval while project facts still return upstream;
+- added **Communication Conservation** so every material Flow 5 `Must communicate` fact survives wording polish and duration compression while `Must not add/repeat` remains binding;
+- replaced fragmented semantic review behavior with one integrated **Voice Script Readiness** decision using Communication, Listener, Character, Performance, Timing, Continuity, and Operator lenses;
+- kept Communication Conservation explicit because a polished script can still omit required meaning;
+- formalized first-wrong-owner routing and bounded revision so only invalidated Voice/speaker scope is replayed;
+- compacted `work/voice-acceptance.md` semantics while preserving the existing `voice-state.yaml` schema for compatibility;
+- added an explicit Preparation Mode stop rule to prevent optional tag/schema/artifact/proof-layer expansion after current scope is ready;
+- changed no builder/validator mechanics, dependencies, canonical Flow 6 entry schema, PRD behavior, or audio generation.
+
 ## 1.7.0 — 2026-08-13
 
 - formalized a compact three-layer static output contract: canonical script, derived operator handoff, and derived DOCX;
