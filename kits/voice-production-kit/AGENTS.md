@@ -24,20 +24,20 @@ kits/voice-production-kit/
 ## Routing
 
 - Flow 5 → `VOICE-EXTRACTION.md`.
-- Flow 6 lifecycle/canonical artifact → `SCRIPT-PRODUCTION.md`.
-- Actual Eleven v3 prompt/generation/revision → `SOUNDMAKER.md`.
+- Flow 6 lifecycle/full-project preparation → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`.
+- Actual Eleven v3 generation/revision → `SOUNDMAKER.md` Generation Mode.
 - DOCX presentation/build mechanics → `DOCX-FORMAT.md` + builder.
 - Flow 7 → `VOICE-VALIDATION.md`.
 - Deep Eleven v3 evidence → only the matching file under `references/elevenlabs/`.
 
-Do not broad-read every Voice/reference file by default.
+Do not broad-read every Voice/reference file by default. Recover current project facts before asking the user.
 
 ## Canonical boundary
 
 ```text
 accepted PRD
 → work/voice-requirements.md
-→ SoundMaker v3 execution quality
+→ SoundMaker v3 preparation/generation quality
 → work/voice-production.md
 → output/Voice Production.docx
 → work/voice-acceptance.md
@@ -48,15 +48,30 @@ accepted PRD
 - SoundMaker is an execution procedure, not a wording authority.
 - `work/voice-production.md` owns final wording.
 - DOCX is derived presentation.
-- audio is evidence/output only when actually supplied/reviewed.
+- audio is optional evidence/output only when actually in scope.
 
 If the exact generated/approved prompt differs from canonical wording, synchronize it into `work/voice-production.md` before claiming current alignment.
 
-## SoundMaker boundary
+## SoundMaker modes
 
 SoundMaker is **Eleven v3 only** and stays inside Flow 6.
 
-Do not duplicate its prompting rules here. Durable guardrails are:
+### Preparation Mode
+
+- may process the full current Voice scope in one bounded pass;
+- apply per-line construction plus project-level speaker continuity/anti-repetition;
+- do not require audio generation/testing;
+- do not require `APPROVED` per line;
+- keep duration/pronunciation as planned evidence until real proof exists.
+
+### Generation Mode
+
+- use only when actual ElevenLabs work is requested;
+- one active Voice ID;
+- one exact reviewed prompt;
+- feedback/approval loop + canonical sync.
+
+Do not duplicate detailed prompting rules here. Durable guardrails are:
 
 - duration before wording when timing matters;
 - voice fit before compensating with more direction;
