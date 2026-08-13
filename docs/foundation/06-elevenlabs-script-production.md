@@ -93,26 +93,45 @@ Do not duplicate Channel, Trigger, Purpose, Timing Constraint, requirement bulle
 
 # Consolidated project HTML
 
-After canonical Voice Production exists, the normal renderer publishes it into the same `output/final.html` as a professional-only downstream section:
+After canonical Voice Production exists, the normal renderer publishes it into the same `output/final.html` as a professional-only downstream section while preserving the existing accepted PRD navigation/page identity.
 
 ```text
-Production Assets
-└── Voice
+03 Development
+   global development pages
+   gameplay/objective sections
+
+04 Production Assets
+   VOICE
+   <gameplay section title>
+   <accepted PRD package label>
 ```
 
-Visible contract:
+Production Assets is additive. It does not promote gameplay packages out of Development and does not renumber PRD package/page codes.
+
+Each Voice section page uses:
 
 ```text
-Voice Setup once with the selected ElevenLabs voice prominent
-→ gameplay-ordered sections
-→ per line:
-   title
-   Speaker + Estimated Duration as secondary metadata
-   exact Eleven v3 prompt with performance directions visually distinct
-   Copy integrated with the script panel
+Voice Production
+→ gameplay section title
+→ accepted PRD package label + gameplay context
+→ Voice line count + Primary Speaker
+→ compact Voice Setup for that gameplay section
 ```
 
-The HTML does not expose Flow 5 requirement detail/reasoning/QA. `Copy Text` copies only the exact canonical performance block.
+Each Voice line shows:
+
+```text
+title
+→ accepted PRD package label · Voice Line X/Y
+→ Context = exact Flow 5 Trigger
+→ Speaker + Estimated Duration
+→ exact Eleven v3 prompt with performance directions visually distinct
+→ Copy Prompt
+```
+
+The visible `Context` is a direct projection of the existing Flow 5 Trigger, not a duplicate Flow 6 field. Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the HTML.
+
+Voice navigation labels may wrap naturally and must remain readable without clipping. `Copy Prompt` copies only the exact canonical performance block.
 
 No separate Voice HTML is created by default.
 
