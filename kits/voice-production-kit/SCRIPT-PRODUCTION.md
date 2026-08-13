@@ -1,6 +1,6 @@
 # Eleven v3 Performance Script Production
 
-Flow 6 converts approved Flow 5 Voice Requirements into canonical Eleven v3 wording and a production-ready DOCX. It does not add Voice scope or upstream project facts.
+Flow 6 converts approved Flow 5 Voice Requirements into canonical Eleven v3 wording and publishes that production content into the **same project HTML** as the accepted PRD. It does not add Voice scope or upstream project facts.
 
 ## Entry gate
 
@@ -16,56 +16,53 @@ The referenced Voice Requirements and accepted PRD revision must still be curren
 
 Use:
 
-1. `work/voice-requirements.md` — normal Flow 5 → Flow 6 interface and required meaning;
-2. accepted `work/content.md` — only when the requirement does not already carry enough delivery-relevant context;
-3. current `work/voice-production.md` — canonical wording when revising;
+1. `work/voice-requirements.md` — Voice scope and required communication;
+2. accepted `work/content.md` — project context only when the requirement does not already carry enough context;
+3. current `work/voice-production.md` — canonical production wording/cast when revising;
 4. `SOUNDMAKER.md` — Eleven v3 preparation/generation procedure;
-5. `references/elevenlabs/` — deep technical reference only when needed;
-6. `DOCX-FORMAT.md` + Aftershock reference — presentation only.
+5. matching `references/elevenlabs/` file only when deeper production technique is needed.
 
-Recover available facts before asking the user. Do not reopen the full PRD by default when the Flow 5 requirement is already complete enough to author responsibly.
+Production technique may shape **how** approved meaning is performed. It may not create a new project fact, Voice ID, Speaker, Channel, Trigger, mechanic, reward, or outcome.
 
-Production technique may shape **how** approved meaning is performed. It may not create a new project fact, Voice ID, Speaker, Channel, Trigger, mechanic, reward, outcome, or authoritative timing rule.
+# Working modes
 
-## Working modes
-
-### Preparation Mode — default for script/DOCX work
+## Preparation Mode — default
 
 ```text
-all current Voice Requirements
+Voice Requirements
 → Voice Intent Completeness / Performance Fill Map
 → SoundMaker authoring per Voice ID
 → Communication Conservation
 → integrated Voice Script Readiness
 → canonical work/voice-production.md
-→ derived DOCX when requested
+→ consolidated output/final.html
 ```
 
 Batch preparation is allowed. Do not force audio generation/testing or per-line approval loops.
 
-### Generation Mode — only when actual ElevenLabs work is requested
+## Generation Mode — only when actual ElevenLabs work is requested
 
 ```text
 one active Voice ID
+→ actual actor voice selected
 → exact reviewed prompt
 → generate / revise / approve
-→ synchronize approved prompt back to canonical script
+→ synchronize approved prompt + actor selection to canonical production source
 ```
 
-Generation remains one Voice ID at a time to preserve prompt/settings/evidence clarity.
+Generation remains one Voice ID at a time.
 
-# Output contract
+# Canonical `work/voice-production.md`
 
-Keep canonical script, operator handoff, and DOCX distinct. Do not create another handoff artifact merely to duplicate them.
-
-## Canonical script
-
-`work/voice-production.md` owns only stable production metadata plus the exact Eleven v3 wording:
+The canonical script owns the minimum stable production information needed downstream.
 
 ```text
 # <Project> Voice Production
 Version: <script version>
 Source Voice Requirements: <revision/reference>
+
+Voice Cast:
+- <Speaker>: <selected ElevenLabs voice>
 
 ## 01. <Gameplay Section>
 
@@ -79,182 +76,90 @@ Estimated Duration: <range>
 ```
 ```
 
-Required entry fields are exactly:
+## Voice Cast
+
+`Voice Cast` is optional during early Preparation Mode and appears **once**, before gameplay sections.
+
+Use:
+
+```text
+Voice Cast:
+- Foreman Brann: William Shanks - Rich and Deep
+- Vex: <selected ElevenLabs voice>
+```
+
+Rules:
+
+- store the selected ElevenLabs voice once per recurring Speaker;
+- do not repeat commercial voice names in every Voice entry;
+- do not invent a voice name merely to fill the field;
+- if no voice is selected yet, the consolidated HTML may honestly show `Voice selection pending`;
+- Generation Mode requires the actual intended voice to be selected before generation;
+- changing actor voice is production configuration, not a PRD gameplay change.
+
+## Entry fields
+
+Every Voice entry still requires exactly:
 
 - stable Voice ID + title;
 - `Type`;
 - `Speaker`;
 - `Estimated Duration`;
-- exact `performance` block.
+- exact fenced `performance` block.
 
-Do not duplicate Channel, Trigger, Purpose, `Timing Constraint`, `Must communicate`, `Must not add/repeat`, source refs, Performance Fill Map reasoning, WPM math, voice-fit ratings, or QA notes into the canonical script. Those remain in their owning Flow 5/internal context.
+`Type` and `Speaker` must match Flow 5.
 
-Every Flow 5 Voice ID must appear exactly once unless Flow 5 is explicitly reopened. `Type` and `Speaker` must match Flow 5 exactly.
+Do not duplicate Channel, Trigger, Purpose, `Must communicate`, `Must not add/repeat`, source refs, Performance Fill Map reasoning, WPM math, voice-fit ratings, or QA notes into the canonical entry.
 
-## Operator handoff
+# Production presentation
 
-Derive a concise operator view from current authority. State shared speaker/setup once when useful, then show each active Voice ID with Speaker, Estimated Duration, and exact prompt. Show an external production note only when the operator must take an additional action such as pronunciation setup, an authoritative hard/fixed timing requirement, Fixed Duration, or Studio routing.
+## Primary human-facing output — same project HTML
 
-## DOCX
+`output/final.html` remains the one project document.
 
-`output/Voice Production.docx` is derived presentation. It exposes `Type · Speaker`, Voice ID/Title, Estimated Duration, and Performance Script. It is not a settings database, requirement register, or wording authority.
+After `voice-production.md` exists, rerun the normal PRD renderer:
 
-# Flow 5 → Flow 6 intent mapping
-
-Use the Flow 5 entry as the normal source for Voice Intent Completeness:
-
-```text
-Communication Job   ← Function + Purpose
-Listener State      ← Trigger + Channel
-Information Payload ← Must communicate
-Listener Outcome    ← Purpose
-Speaker Owner       ← Speaker
-Hard Timing Truth   ← optional Timing Constraint
-Scope Guardrails    ← Must not add/repeat
+```bash
+python kits/project-document-generator/renderer/render.py \
+  workspace/active/<project>/work/render-data.json \
+  workspace/active/<project>/output/final.html
 ```
 
-Only reopen accepted PRD context when a delivery-relevant detail cannot responsibly be recovered from this interface.
-
-Rules:
-
-- `Purpose` supplies the listener-facing communication result, not performance prose;
-- `Trigger` supplies the event/state and relevant listener condition when material;
-- `Must communicate` is authoritative payload and must not be treated as optional inspiration;
-- optional `Timing Constraint` is upstream truth only when explicitly present;
-- Flow 6 `Estimated Duration` is a production estimate and must not overwrite or masquerade as a Flow 5 timing constraint;
-- Performance Shape and Landing remain SoundMaker interpretation unless upstream authority actually constrains them.
-
-If the Flow 5 entry lacks a material listener state, listener outcome, Speaker/Channel/Trigger, required fact, or authoritative timing truth needed to build the correct asset, return only that issue to Flow 5/upstream instead of improvising.
-
-# Authoring contract
-
-Use `SOUNDMAKER.md` as the single operational quality procedure. Do not duplicate its detailed v3 writing rules here.
-
-For each Voice ID:
-
-1. complete the **Voice Intent** from the Flow 5 interface first;
-2. honor any authoritative timing constraint, then plan Estimated Duration when timing is material;
-3. write the performance using approved meaning and speaker identity;
-4. run **Communication Conservation** against Flow 5;
-5. mark the line script-ready only when SoundMaker's per-line gate passes.
-
-### Voice Intent Completeness
-
-Flow 6 must be able to resolve, as applicable:
+The renderer automatically composes:
 
 ```text
-communication job
-listener state
-information payload
-listener outcome
-speaker identity
-timing envelope
-performance shape
-landing
+PRD core
++
+Production Assets
+└── Voice
 ```
 
-These are internal reasoning questions, not new persisted Flow 6 fields.
+The Voice pages are professional-only and appear after the PRD core.
 
-### Communication Conservation
+### Visible Voice contract
 
-After rewriting, shortening, or performance-polishing a line:
-
-- every independently actionable `Must communicate` fact that belongs in the moment remains clearly represented;
-- `Must not add/repeat` guardrails remain respected;
-- approved names, mechanics, result/state, sequence, and terminology preserve meaning;
-- any authoritative Flow 5 `Timing Constraint` remains respected by the planned wording/timing approach;
-- duration compression does not silently remove required communication;
-- no new project fact is introduced.
-
-Concision may merge equivalent phrasing. It may not thin material communication.
-
-No persisted requirement-to-sentence matrix is created.
-
-# Integrated Voice Script Readiness
-
-After per-line authoring, review the current prepared scope **once** using these lenses:
-
-| Lens | Ready when... |
-|---|---|
-| Communication | Required meaning is clear and conserved. |
-| Listener | Each line fits the player's current state and information need. |
-| Character | Recurring speakers remain coherent without becoming mechanically templated. |
-| Performance | Emotional/beat/textual direction serves the scene. |
-| Timing | Estimated density is plausible, authoritative timing constraints are honored, and required meaning was not sacrificed. |
-| Continuity | Information progresses and accidental cross-line template repetition is absent. |
-| Operator | Speaker ownership, duration, exact prompt, and special actions are unambiguous. |
-
-Treat this as one semantic decision: **Voice Script Readiness: PASS | FAIL**. Do not create seven independent gates, scores, or artifacts.
-
-`Communication Conservation` remains explicit because a script can read well while still omit a required fact.
-
-## First wrong owner
-
-Fix the earliest owner that is actually wrong:
+The HTML intentionally shows only what the production operator needs:
 
 ```text
-project/gameplay/story fact → upstream PRD authority
-Voice moment/Speaker/Channel/Trigger/Purpose/required communication/timing truth → Flow 5
-wording/performance/Estimated Duration → Flow 6 / SoundMaker
-DOCX-only presentation defect → builder / DOCX-FORMAT.md
-audio-only defect with correct script → Generation Mode evidence/settings/voice
+Voice Cast once
+→ gameplay-ordered Voice sections
+→ per Voice line:
+   title
+   Actor
+   Estimated Duration
+   exact Eleven v3 prompt
+   Copy Text
 ```
 
-Do not repair upstream defects by making prompts more elaborate.
+The copied text is **only** the exact canonical `performance` block.
 
-## Bounded revision
+Do not expose Flow 5 requirement metadata, source refs, reasoning, WPM calculations, QA notes, or internal readiness fields in the HTML.
 
-Revise only invalidated scope.
+## DOCX — optional export
 
-A line-specific wording/timing-estimate change normally reopens that Voice ID plus adjacent/project continuity only when materially affected. A change to authoritative Voice timing truth reopens Flow 5 for that requirement first. A speaker-wide identity change may reopen all lines for that speaker. Do not replay unaffected Voice IDs for ceremony.
+`output/Voice Production.docx` is no longer the default human-facing Voice artifact.
 
-# Duration and pronunciation
-
-Every entry requires an `Estimated Duration` range. It remains planning evidence until actual audio exists.
-
-When Flow 5 includes an authoritative `Timing Constraint`:
-
-```text
-Flow 5 Timing Constraint
-→ fixed/hard source boundary
-→ Flow 6 word-budget/performance planning
-→ Estimated Duration compatible with that boundary
-```
-
-When Flow 5 has no `Timing Constraint`, do not invent a hard source limit. Use `references/elevenlabs/v3-duration-planning.md` only when timing is material.
-
-Preparation Mode identifies material pronunciation risk but does not pretend it is verified. Use the smallest appropriate spoken-form / inline IPA / project-note-or-dictionary approach described by SoundMaker.
-
-# Generation / approval sync
-
-When Generation Mode is requested:
-
-1. use one active Voice ID;
-2. present one exact reviewed prompt using the operator contract;
-3. if the user/UI changes the prompt before generation, treat that exact generated version as the new revision;
-4. after approval, synchronize it into `work/voice-production.md`;
-5. rebuild/revalidate only affected derived scope.
-
-Do not claim current script/audio alignment while canonical wording differs from the approved generated prompt.
-
-## Section ordering
-
-Keep gameplay sections in accepted project order. Within a section, order entries by approved Trigger sequence.
-
-# Mechanical gate
-
-Before building DOCX:
-
-- every Flow 5 Voice ID appears exactly once;
-- no extra Voice ID exists;
-- `Type` matches Flow 5;
-- `Speaker` matches Flow 5;
-- title, Estimated Duration, and performance block are present;
-- no unresolved placeholder remains;
-- no required fact is knowingly omitted;
-- no new upstream fact is introduced.
-
-Build:
+Build it only when a portable DOCX export is requested or materially useful:
 
 ```bash
 python kits/voice-production-kit/builder/build_docx.py \
@@ -263,9 +168,88 @@ python kits/voice-production-kit/builder/build_docx.py \
   --requirements workspace/active/<project>/work/voice-requirements.md
 ```
 
-## Voice state after Flow 6
+DOCX remains derived presentation and never becomes a second wording authority.
 
-Keep the existing state schema:
+# Authoring contract
+
+Use `SOUNDMAKER.md` as the single operational quality procedure.
+
+For each Voice ID:
+
+1. complete Voice Intent from Flow 5;
+2. honor authoritative Timing Constraint when present;
+3. plan Estimated Duration when timing matters;
+4. write the exact performance;
+5. run Communication Conservation;
+6. mark script-ready only when the SoundMaker gate passes.
+
+After all requested lines are ready, perform one integrated Voice Script Readiness review over Communication, Listener, Character, Performance, Timing, Continuity, and Operator clarity.
+
+Do not create separate scorecards or persisted per-lens gates.
+
+# Ordering
+
+Gameplay sections follow the accepted project/gameplay order. Within a section, Voice entries follow their approved Trigger order.
+
+The consolidated HTML uses this canonical order directly; the renderer does not reorder Voice production.
+
+# First wrong owner
+
+```text
+project/gameplay/story fact
+→ PRD authority
+
+Voice moment / Speaker / Channel / Trigger / Purpose / required communication / authoritative timing truth
+→ Flow 5 voice-requirements.md
+
+wording / performance / Estimated Duration / actor-voice selection
+→ Flow 6 / SoundMaker / voice-production.md
+
+project HTML composition defect with correct canonical sources
+→ PRD renderer Production Assets compositor
+
+optional DOCX-only defect
+→ Voice DOCX builder
+
+actual generated-audio-only defect
+→ Generation Mode evidence/settings/voice
+```
+
+Do not repair upstream defects by complicating the prompt.
+
+# Mechanical gate
+
+Before `voice_script_ready`:
+
+- every Flow 5 Voice ID appears exactly once;
+- no extra Voice ID exists;
+- `Type` matches Flow 5;
+- `Speaker` matches Flow 5;
+- title, Estimated Duration, and performance block are present;
+- no unresolved placeholder remains;
+- no required fact is knowingly omitted;
+- no new upstream fact is introduced;
+- gameplay/Trigger order is coherent;
+- Communication Conservation passes;
+- integrated Voice Script Readiness passes.
+
+`Voice Cast` may still contain an unselected voice during Preparation Mode, but actual generation cannot begin until the active Speaker's ElevenLabs voice is intentionally selected.
+
+# Publish gate
+
+After canonical wording changes:
+
+```text
+voice-production.md
+→ rerender the same output/final.html
+→ validate affected Voice scope
+```
+
+Do not create `voice-production.html` as another default output.
+
+# Voice state
+
+Keep the existing lifecycle schema. `docx` is optional presentation metadata, not a required canonical owner.
 
 ```yaml
 flow: 6
@@ -273,30 +257,23 @@ status: voice_script_ready
 source_prd_revision: <accepted PRD revision>
 requirements: work/voice-requirements.md
 script: work/voice-production.md
-docx: output/Voice Production.docx
+project_html: output/final.html
 unresolved_upstream: 0
 next_step: flow_7_voice_validation_delivery
 ```
 
-Allowed statuses remain:
-
-- `script_drafting`
-- `needs_upstream_decision`
-- `voice_script_ready`
-- `blocked`
-
-`no_voice_required` from Flow 5 bypasses Flow 6.
+Existing projects may still carry a `docx` path when that export exists.
 
 # Stop gate
 
 Preparation Mode stops when:
 
 - every required Voice ID is script-ready;
-- Communication Conservation passes for current prepared/changed scope;
+- Communication Conservation passes;
 - integrated Voice Script Readiness passes;
-- mechanical parity passes;
-- requested derived artifacts are current;
+- canonical Voice Production is current;
+- consolidated project HTML is rebuilt when project HTML delivery is in scope;
 - material pronunciation risks are represented honestly;
 - no generated-audio or measured-duration claim is made without evidence.
 
-Stop after readiness. Do not add optional tags, schemas, artifacts, review layers, or speculative hardening without a concrete defect.
+Stop after readiness. Do not add separate Voice HTML, asset manifests, settings databases, extra approval layers, or speculative hardening without a concrete defect.
