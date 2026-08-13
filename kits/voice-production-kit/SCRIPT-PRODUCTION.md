@@ -19,11 +19,40 @@ Use:
 1. `work/voice-requirements.md` — Voice scope and required meaning;
 2. accepted `work/content.md` — project context when needed;
 3. current `work/voice-production.md` — canonical wording when revising;
-4. `SOUNDMAKER.md` — one-entry-at-a-time Eleven v3 execution/quality procedure;
-5. `references/elevenlabs/` — deep technical reference only when the active problem requires it;
+4. `SOUNDMAKER.md` — Eleven v3 preparation/generation procedure;
+5. `references/elevenlabs/` — deep technical reference only when needed;
 6. `DOCX-FORMAT.md` + Aftershock reference — presentation only.
 
+Before asking the user, recover available facts from these owners. Ask only for unresolved material decisions that cannot be recovered safely.
+
 Production technique may shape **how** approved meaning is performed. It may not create a new project fact, Voice ID, speaker, channel, trigger, mechanic, reward, or outcome.
+
+## Flow 6 working modes
+
+### Preparation Mode — default for script/DOCX work
+
+Use when audio generation is not requested.
+
+```text
+all current Voice Requirements
+→ draft each Voice ID with SoundMaker
+→ project-level continuity / anti-repetition pass
+→ canonical work/voice-production.md
+→ derived DOCX when requested
+```
+
+Batch preparation is allowed. Do not force an audio-generation approval loop during this mode.
+
+### Generation Mode — only when actual ElevenLabs work is requested
+
+```text
+one active Voice ID
+→ exact reviewed prompt
+→ generate / revise / approve
+→ synchronize approved prompt back to canonical script
+```
+
+Actual generation remains one Voice ID at a time to preserve prompt/settings/evidence clarity.
 
 ## Canonical Flow 6 output
 
@@ -47,26 +76,22 @@ Estimated Duration: <range>
 
 Every Flow 5 Voice ID must appear exactly once unless Flow 5 is explicitly reopened.
 
-## SoundMaker quality
+## Per-line SoundMaker quality
 
-For each entry, use `SOUNDMAKER.md`.
-
-SoundMaker owns the operational path:
+Every entry must pass `SOUNDMAKER.md` pre-generation construction even in Preparation Mode:
 
 ```text
-requirement
-→ duration when needed
+requirement meaning
+→ duration first when specified
 → voice fit
 → performance map
 → spoken beats
-→ textual directing
-→ minimal tags
-→ pronunciation
-→ generation setup
-→ optional heard-audio diagnosis
+→ punctuation / line structure / selective CAPS
+→ minimal Audio Tags
+→ pronunciation planning
 ```
 
-Do not duplicate that detailed procedure here.
+Do not duplicate the detailed technique here.
 
 ## Writing contract
 
@@ -82,19 +107,47 @@ Every entry must:
 
 If required meaning cannot be written without inventing a fact, set `needs_upstream_decision` and return the issue upstream.
 
+## Project-level continuity pass
+
+After per-line drafting, review the full requested scope before Flow 6 is ready.
+
+Check:
+
+- recurring speaker identity remains coherent;
+- sequential information progresses rather than re-briefing the same facts;
+- nearby lines do not accidentally reuse the same opening, beat chain, tag placement, CAPS climax, sentence rhythm, or closing pattern;
+- structural variety does not change approved facts or invent personality;
+- Main Story / active-play communication remain appropriately differentiated by function.
+
+Intentional repetition is valid when it is part of the approved character, terminology, or gameplay feedback language.
+
 ## Duration
 
 Every entry requires an `Estimated Duration` range. It remains an estimate until actual audio exists.
 
 When timing matters, SoundMaker routes to `references/elevenlabs/v3-duration-planning.md` **before** final wording.
 
+No audio evidence is required to prepare a reasonable estimate; use the documented fallback hierarchy honestly.
+
+## Pronunciation planning
+
+Preparation Mode identifies material pronunciation risk but does not pretend it is verified.
+
+Use the smallest appropriate strategy:
+
+```text
+normal word → normal text
+ambiguous number/acronym/symbol → explicit spoken form
+unusual isolated proper noun → inline v3 IPA when needed
+repeated project term → project note/dictionary when appropriate
+actual approved audio → project-calibrated lock
+```
+
 ## Actual generation / approval sync
 
-Script/DOCX-only production does not require generated audio.
+When Generation Mode is requested:
 
-When actual ElevenLabs generation is part of the task:
-
-1. work one Voice ID at a time;
+1. use one active Voice ID;
 2. present one best prompt;
 3. use the exact reviewed prompt revision for generation;
 4. if the user edits it before generation, that exact generated version supersedes the assistant draft;
@@ -152,6 +205,6 @@ Allowed statuses:
 
 ## Stop gate
 
-Flow 6 stops when canonical wording exists for every justified Voice moment, SoundMaker quality has been applied, mechanical parity passes, required derived artifacts are rebuilt, and any requested current visual proof is complete.
+Preparation Mode can finish without any generated audio when canonical wording exists for every required Voice moment, SoundMaker pre-generation quality and project-level continuity pass, mechanical parity passes, and requested derived artifacts are current.
 
-Generated-audio quality and measured duration require actual audio evidence. Flow 7 owns current-revision acceptance.
+Generated-audio quality, measured duration, and heard pronunciation remain separate evidence and are not prerequisites unless the user explicitly requests Generation Mode/audio delivery.
