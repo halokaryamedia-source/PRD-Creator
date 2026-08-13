@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import subprocess
 import sys
 import tempfile
@@ -119,6 +120,23 @@ The trial is complete.
 """
 
 
+def project_html(*, omit_intro_context: bool = False) -> str:
+    intro_trigger = "" if omit_intro_context else html.escape("Trial start before active play begins.")
+    end_trigger = html.escape("Trial completion after the final objective resolves.")
+    return f"""<!doctype html>
+<html><head><style id="production-assets-style"></style></head><body>
+<div class="nav-group production-assets-nav">Production Assets</div>
+<section data-page-role="production-assets"><div class="voice-objective-shell"></div>
+<div class="voice-script-position">Introduction · Voice Line 1/1</div>
+<p class="voice-script-context">{intro_trigger}</p>
+<pre class="voice-script-text" id="voice-prompt-vo-intro-01">[calm]\nBegin the trial.</pre></section>
+<section data-page-role="production-assets"><div class="voice-objective-shell"></div>
+<div class="voice-script-position">Ending · Voice Line 1/1</div>
+<p class="voice-script-context">{end_trigger}</p>
+<pre class="voice-script-text" id="voice-prompt-vo-end-01">[clear]\nThe trial is complete.</pre></section>
+</body></html>"""
+
+
 class VoiceProductionContracts(unittest.TestCase):
     def make_project(self, requirements_text: str | None = None, script_text: str = SCRIPT) -> Path:
         temp = tempfile.TemporaryDirectory()
@@ -170,6 +188,28 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual([paragraph.text for paragraph in headings], ["Intro", "Ending"])
         self.assertIsNot(headings[0].paragraph_format.page_break_before, True)
         self.assertIs(headings[1].paragraph_format.page_break_before, True)
+
+    def test_validator_accepts_current_project_html_objective_contract(self) -> None:
+        project = self.make_project()
+        (project / "output/final.html").write_text(project_html(), encoding="utf-8")
+
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+        self.assertIn("project_html=passed", validated.stdout)
+
+    def test_validator_rejects_missing_flow5_trigger_context_in_project_html(self) -> None:
+        project = self.make_project()
+        (project / "output/final.html").write_text(
+            project_html(omit_intro_context=True),
+            encoding="utf-8",
+        )
+
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1)
+        self.assertIn(
+            "Project HTML missing Flow 5 Trigger context for VO-INTRO-01",
+            validated.stdout,
+        )
 
     def test_builder_rejects_missing_voice_id_parity(self) -> None:
         project = self.make_project(requirements(extra_id=True))
