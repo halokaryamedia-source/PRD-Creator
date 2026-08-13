@@ -1,6 +1,6 @@
 ---
 name: voice-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is PRD-derived Voice scope, Flow 5→6 intent completeness, Eleven v3 canonical wording, communication conservation, consolidated Production Assets output, or final Voice validation/delivery semantics. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, timing truth, or evidence.
+description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is PRD-derived Voice scope, Flow 5→6 intent completeness, canonical Voice production content, communication conservation, consolidated Production Assets output, or final Voice validation/delivery semantics. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, timing truth, or evidence.
 ---
 
 # Voice Production
@@ -14,7 +14,7 @@ Use when the wrong contract concerns:
 - accepted PRD → Voice assets required for development;
 - Voice ID / Type / Speaker / Channel / Trigger / Purpose / communication scope;
 - Flow 5 requirement completeness;
-- Voice Requirements → canonical Eleven v3 production wording;
+- Voice Requirements → canonical production content;
 - Communication Conservation, duration, or integrated readiness;
 - consolidated `final.html → Production Assets → Voice` meaning;
 - Voice validation/delivery semantics.
@@ -28,12 +28,14 @@ Do not select merely because a task mentions ElevenLabs, DOCX, audio, Python, or
 3. Recover existing project facts before asking the user.
 4. Identify the active owner:
    - Flow 5 → `VOICE-EXTRACTION.md` + `work/voice-requirements.md`;
-   - Flow 6 lifecycle/output → `SCRIPT-PRODUCTION.md`;
-   - Flow 6 writing quality → `SOUNDMAKER.md`;
+   - Flow 6 lifecycle/output → Voice kit `README.md` + `docs/foundation/06-elevenlabs-script-production.md`;
+   - Flow 6 writing/performance detail → `SOUNDMAKER.md`;
    - Flow 7 → `VOICE-VALIDATION.md`;
    - optional DOCX → `DOCX-FORMAT.md`/builder;
    - correct canonical Voice but wrong same-HTML composition → Project Document Generator Production Assets compositor.
-5. Route missing project facts upstream rather than repairing them in downstream wording.
+5. Route missing project facts upstream rather than repairing them downstream.
+
+The former duplicate `SCRIPT-PRODUCTION.md` lifecycle owner is retired from active routing in v1.11.2.
 
 ## Authority
 
@@ -48,7 +50,7 @@ accepted PRD
 
 - PRD owns product/gameplay truth and the requirement for a Voice asset.
 - Flow 5 owns which Voice assets exist and their approved communication intent/context.
-- Flow 6 owns canonical wording and Estimated Duration.
+- Flow 6 owns canonical production content.
 - `final.html` is derived human/operator presentation, not another authority.
 - DOCX is optional export only.
 
@@ -56,11 +58,11 @@ accepted PRD
 
 Extract only justified player-facing communication moments from the accepted PRD. A Flow 5 entry is ready only when downstream production can recover communication job, listener state, required information, intended listener outcome, Speaker, optional source timing truth, and scope guardrails without project-level guessing.
 
-Do not pre-write dialogue or move downstream performance craft into Flow 5.
+Do not move downstream craft into Flow 5.
 
 # Flow 6 judgment
 
-SoundMaker scope is **Eleven v3 only**. Production may decide wording/performance craft inside approved intent but returns upstream when unresolved work would change project facts, Voice scope, Speaker/Channel/Trigger/Purpose, required communication, or source timing truth.
+SoundMaker scope is **Eleven v3 only**. Production may refine delivery inside approved intent but returns upstream when unresolved work would change project facts, Voice scope, Speaker/Channel/Trigger/Purpose, required communication, or source timing truth.
 
 # Production output judgment
 
@@ -88,7 +90,7 @@ title
 → <PRD package label> · Voice Line X/Y
 → Context = exact Flow 5 Trigger
 → Speaker + Estimated Duration
-→ exact canonical prompt
+→ canonical production text
 → Copy Prompt
 ```
 
@@ -101,7 +103,7 @@ Do not create a separate Voice HTML or Asset Requirement HTML by default. Option
 ```text
 project fact → PRD authority
 Voice scope/context → Flow 5
-canonical wording/duration → Flow 6
+canonical production content → Flow 6
 correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
 optional DOCX-only defect → Voice builder
 ```
