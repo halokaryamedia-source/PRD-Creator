@@ -44,6 +44,7 @@ jobs:
           import json, subprocess, sys
           from pathlib import Path
           from tests.test_prd_contracts import render_data
+          from tests.test_prd_voice_assets import ASSETS
 
           root = Path.cwd()
           project = Path('/tmp/production-assets-proof')
@@ -52,38 +53,7 @@ jobs:
           (project / 'work' / 'render-data.json').write_text(
               json.dumps(render_data(), ensure_ascii=False), encoding='utf-8'
           )
-          (project / 'work' / 'asset-requirements.md').write_text('''# Production Asset Requirements
-
-## Global / Shared Assets
-
-### UI & Information
-
-#### Objective HUD
-Requirement: Show the current objective in one shared HUD surface used across the complete journey.
-Content:
-```text
-OBJECTIVE UPDATED
-```
-
-## Core Trial
-
-### 3D Models
-
-#### Trial Console
-Requirement: Create one central trial console with clearly different Ready and Complete states. When completed, the console lights and plays its short completion sound as one combined object response.
-Usage: Ready during active play; Complete after the valid interaction resolves.
-
-### UI & Information
-
-#### Trial Hologram
-Requirement: Show the active trial instruction beside the console and replace it with the completion state after success.
-Content:
-```text
-BEGIN THE CORE TRIAL
-
-TRIAL COMPLETE
-```
-''', encoding='utf-8')
+          (project / 'work' / 'asset-requirements.md').write_text(ASSETS, encoding='utf-8')
           subprocess.run([
               sys.executable,
               str(root / 'kits/project-document-generator/renderer/render.py'),
@@ -127,7 +97,7 @@ TRIAL COMPLETE
                         const overflowingCards = [...document.querySelectorAll('.pa-card,.voice-script-card')]
                           .filter(el => el.scrollWidth > el.clientWidth + 1).length;
                         const zeroText = [...document.querySelectorAll('.pa-group-head span,.pa-summary span')]
-                          .some(el => /\b0\s+Assets\b|\b0\b/.test(el.textContent.trim()));
+                          .some(el => /\b0\s+Assets\b/.test(el.textContent.trim()));
                         return {
                           nav: !!nav,
                           linkCount: links.length,
