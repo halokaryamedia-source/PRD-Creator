@@ -97,21 +97,33 @@ Humanize means clearer and shorter, not more prose.
 
 ## Voice Production direction
 
-Voice Production Kit owns Flow 5–7.
+Voice Production Kit owns Flow 5–7. Flow 6 production model scope is **Eleven v3 only**.
 
-Flow 6 operational generation is **Eleven v3 only**. `SOUNDMAKER.md` is the one-entry-at-a-time v3 quality/execution procedure inside Flow 6; it is not a new Flow or root skill.
+`SOUNDMAKER.md` is the Flow 6 operational quality procedure and has two working modes:
+
+```text
+Preparation Mode
+→ full current Voice scope may be prepared without audio testing
+→ per-line construction + project-level continuity/anti-repetition
+
+Generation Mode
+→ actual ElevenLabs work only
+→ one active Voice ID + exact prompt + feedback/approval loop
+```
+
+SoundMaker is not a new Flow or root skill.
 
 Canonical Voice authority remains:
 
 ```text
 accepted PRD
 → work/voice-requirements.md
-→ SoundMaker v3 quality pass
+→ SoundMaker v3 preparation/generation quality
 → work/voice-production.md
 → derived DOCX / optional generated-audio evidence
 ```
 
-When actual generated wording is approved, the exact prompt actually used must be synchronized back into canonical `work/voice-production.md` before current script/DOCX/audio alignment is claimed.
+Preparation Mode may finish with no audio evidence. When actual generated wording is later approved, the exact prompt actually used must synchronize back into canonical `work/voice-production.md` before current script/DOCX/audio alignment is claimed.
 
 ## Version policy
 
