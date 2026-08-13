@@ -135,26 +135,49 @@ Production Assets
 └── Voice
 ```
 
-The Voice pages are professional-only and appear after the PRD core.
+The Voice pages are professional-only downstream views. They do not become a second PRD or Voice wording authority.
 
 ### Visible Voice contract
 
-The HTML intentionally shows only what the production operator needs:
+Each gameplay Voice section uses the same shell:
 
 ```text
-Voice Setup once
-→ selected ElevenLabs voice is prominent
-→ gameplay-ordered Voice sections
-→ per Voice line:
-   title
-   Speaker + Estimated Duration as secondary metadata
-   exact Eleven v3 prompt with performance tags visually distinct
-   Copy integrated with the script panel
+Gameplay Order / objective title
+→ accepted PRD package label + gameplay context
+→ Voice line count + Primary Speaker
+→ compact Voice Setup for that gameplay section
 ```
+
+Each Voice line then shows:
+
+```text
+title
+→ <accepted PRD package label> · Voice Line X/Y
+→ Context = exact Flow 5 Trigger
+→ Speaker + Estimated Duration as secondary metadata
+→ exact Eleven v3 prompt with performance tags visually distinct
+→ Copy Prompt
+```
+
+The developer-facing `Context` is derived directly from Flow 5 `Trigger`. Do **not** add a duplicate `Context` field to `voice-production.md` or rewrite the Trigger independently in Flow 6.
 
 The copied text is **only** the exact canonical `performance` block.
 
-Do not expose Flow 5 requirement metadata, source refs, reasoning, WPM calculations, QA notes, or internal readiness fields in the HTML.
+Do not expose Flow 5 Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM calculations, QA notes, or internal readiness fields in the HTML.
+
+### Consolidated navigation
+
+When Production Assets exists, the professional navigation uses:
+
+```text
+01 Overview
+02 Gameplay Flow
+03 Development
+04 Production Assets
+05+ gameplay/objective packages
+```
+
+The +1 package numbering is presentation-only in the consolidated HTML. It does not change PRD canonical meaning, package identity, or project version. If Production Assets is absent, the original PRD-core navigation/page numbering remains unchanged.
 
 ## DOCX — optional export
 
@@ -183,7 +206,7 @@ For each Voice ID:
 4. write the exact performance beginning with one deliberate initial direction tag;
 5. add transition tags only for justified audible state changes;
 6. run Communication Conservation;
-6. mark script-ready only when the SoundMaker gate passes.
+7. mark script-ready only when the SoundMaker gate passes.
 
 After all requested lines are ready, perform one integrated Voice Script Readiness review over Communication, Listener, Character, Performance, Timing, Continuity, and Operator clarity.
 
@@ -207,7 +230,7 @@ Voice moment / Speaker / Channel / Trigger / Purpose / required communication / 
 wording / performance / Estimated Duration / actor-voice selection
 → Flow 6 / SoundMaker / voice-production.md
 
-project HTML composition defect with correct canonical sources
+project HTML composition / objective shell / navigation defect with correct canonical sources
 → PRD renderer Production Assets compositor
 
 optional DOCX-only defect
@@ -236,6 +259,8 @@ Before `voice_script_ready`:
 - Communication Conservation passes;
 - integrated Voice Script Readiness passes.
 
+When consolidated project HTML is present, validation also requires objective-shell parity, per-line position/context presentation, exact Flow 5 Trigger context, and exact canonical Copy payload parity.
+
 `Voice Cast` may still contain an unselected voice during Preparation Mode, but actual generation cannot begin until the active Speaker's ElevenLabs voice is intentionally selected.
 
 # Publish gate
@@ -247,6 +272,8 @@ voice-production.md
 → rerender the same output/final.html
 → validate affected Voice scope
 ```
+
+After presentation-only changes, rerender from the unchanged canonical PRD/Voice sources and validate the generated HTML; do not hand-patch `final.html`.
 
 Do not create `voice-production.html` as another default output.
 
