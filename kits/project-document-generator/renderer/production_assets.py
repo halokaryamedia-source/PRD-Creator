@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any
 
 from core import bi, esc, i18n, page, txt
-from pages import flow_page_id, global_page_id
 
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
@@ -43,7 +42,6 @@ class VoiceProduction:
 @dataclass
 class SectionPresentation:
     title: str
-    page_code: int | None
     package_label: Any
     context: Any
     voice_count: int
@@ -215,19 +213,30 @@ def _section_speakers(section: VoiceSection) -> list[str]:
     return speakers
 
 
-def _section_metadata(render_data: dict[str, Any], section: VoiceSection) -> SectionPresentation:
+def _journey_label(section_index: int, total_sections: int) -> str:
+    if section_index == 0:
+        return "Introduction"
+    if section_index == total_sections - 1:
+        return "Ending"
+    return "Journey"
+
+
+def _section_metadata(
+    render_data: dict[str, Any],
+    section: VoiceSection,
+    section_index: int,
+    total_sections: int,
+) -> SectionPresentation:
     title = _plain_section_title(section.title)
     key = _title_key(title)
+    speakers = _section_speakers(section)
+    primary = speakers[0] if len(speakers) == 1 else "Multiple speakers"
 
-    packages = render_data.get("packages", [])
-    for index, package in enumerate(packages):
+    for index, package in enumerate(render_data.get("packages", [])):
         package_title = package.get("title", "")
         if _title_key(txt(package_title)["en"]) == key:
-            speakers = _section_speakers(section)
-            primary = speakers[0] if len(speakers) == 1 else "Multiple speakers"
             return SectionPresentation(
                 title=title,
-                page_code=5 + index,
                 package_label=package.get("package_label", f"Gameplay {index + 1}"),
                 context=package.get("gameplay", {}).get("context", ""),
                 voice_count=len(section.entries),
@@ -237,23 +246,17 @@ def _section_metadata(render_data: dict[str, Any], section: VoiceSection) -> Sec
     for journey in render_data.get("overview", {}).get("journey", []):
         journey_title = journey.get("title", "")
         if _title_key(txt(journey_title)["en"]) == key:
-            speakers = _section_speakers(section)
-            primary = speakers[0] if len(speakers) == 1 else "Multiple speakers"
             return SectionPresentation(
                 title=title,
-                page_code=None,
-                package_label="Journey",
+                package_label=_journey_label(section_index, total_sections),
                 context=journey.get("description", ""),
                 voice_count=len(section.entries),
                 primary_speaker=primary,
             )
 
-    speakers = _section_speakers(section)
-    primary = speakers[0] if len(speakers) == 1 else "Multiple speakers"
     return SectionPresentation(
         title=title,
-        page_code=None,
-        package_label="Gameplay",
+        package_label=_journey_label(section_index, total_sections),
         context="",
         voice_count=len(section.entries),
         primary_speaker=primary,
@@ -284,9 +287,10 @@ def _section_shell_html(
     render_data: dict[str, Any],
     doc: VoiceProduction,
     section: VoiceSection,
+    section_index: int,
+    total_sections: int,
 ) -> tuple[str, SectionPresentation]:
-    meta = _section_metadata(render_data, section)
-    number = f"{meta.page_code:02d}. " if meta.page_code is not None else ""
+    meta = _section_metadata(render_data, section, section_index, total_sections)
     context = meta.context or bi(
         "Gameplay context follows the accepted PRD.",
         "Konteks gameplay mengikuti PRD yang diterima.",
@@ -294,8 +298,8 @@ def _section_shell_html(
 
     shell = (
         '<section class="voice-objective-shell">'
-        f'<span class="voice-objective-kicker">{i18n(bi("Gameplay Order", "Urutan Gameplay"))}</span>'
-        f'<h2 class="voice-objective-title">{esc(number)}{esc(meta.title)}</h2>'
+        f'<span class="voice-objective-kicker">{i18n(bi("Voice Production", "Voice Production"))}</span>'
+        f'<h2 class="voice-objective-title">{esc(meta.title)}</h2>'
         f'<p class="voice-objective-label">{i18n(meta.package_label)}</p>'
         '<div class="voice-objective-summary">'
         '<div class="voice-objective-summary-item voice-objective-context">'
@@ -378,9 +382,16 @@ def voice_pages(
     brand = render_data["document"].get("brand") or render_data["document"]["title"]
     pages: list[str] = []
     sequence_no = 1
+    total_sections = len(doc.sections)
 
     for section_index, section in enumerate(doc.sections):
-        shell, meta = _section_shell_html(render_data, doc, section)
+        shell, meta = _section_shell_html(
+            render_data,
+            doc,
+            section,
+            section_index,
+            total_sections,
+        )
         body = shell + '<div class="voice-script-list">'
         line_total = len(section.entries)
 
@@ -418,110 +429,28 @@ def voice_pages(
     return pages
 
 
-def _flow_navigation(render_data: dict[str, Any]) -> str:
-    items = render_data.get("gameplay_flow", [])
-    if not items:
-        return ""
-    links = "".join(
-        f'<a data-target="{esc(flow_page_id(item, index))}" href="#{esc(flow_page_id(item, index))}">{i18n(item.get("title", item["id"]))}</a>'
-        for index, item in enumerate(items)
-    )
-    return (
-        '<div class="nav-group is-open">'
-        '<button aria-expanded="true" class="nav-group-toggle" type="button">'
-        f'<span class="nav-index" data-full-index="02" data-overview-index="02">{i18n("02")}</span>'
-        f'<span class="nav-copy">{i18n(bi("Gameplay Flow", "Alur Gameplay"))}</span>'
-        '<span aria-hidden="true" class="group-chevron"></span></button>'
-        f'<div class="nav-submenu">{links}</div></div>'
-    )
+def _production_assets_navigation(render_data: dict[str, Any], doc: VoiceProduction) -> str:
+    total_sections = len(doc.sections)
+    links = []
+    for index, section in enumerate(doc.sections):
+        meta = _section_metadata(render_data, section, index, total_sections)
+        links.append(
+            f'<a data-target="production-assets-voice-{index + 1}" href="#production-assets-voice-{index + 1}">'
+            f'<span class="production-assets-objective-name">{esc(meta.title)}</span>'
+            f'<small>{i18n(meta.package_label)}</small></a>'
+        )
 
-
-def _development_navigation(render_data: dict[str, Any]) -> str:
-    links = "".join(
-        f'<a data-target="{esc(global_page_id(item))}" href="#{esc(global_page_id(item))}">{i18n(item.get("title", item["id"]))}</a>'
-        for item in render_data.get("global_development", [])
-    )
-    if not links:
-        return ""
-    return (
-        '<div class="nav-group is-open professional-nav">'
-        '<button aria-expanded="true" class="nav-group-toggle" type="button">'
-        f'<span class="nav-index" data-full-index="03" data-overview-index="">{i18n("03")}</span>'
-        f'<span class="nav-copy">{i18n(bi("Development", "Development"))}</span>'
-        '<span aria-hidden="true" class="group-chevron"></span></button>'
-        f'<div class="nav-submenu">{links}</div></div>'
-    )
-
-
-def _production_assets_navigation(doc: VoiceProduction) -> str:
-    links = "".join(
-        f'<a data-target="production-assets-voice-{index + 1}" href="#production-assets-voice-{index + 1}">'
-        f'{i18n(bi("Voice", "Voice"))}<small>{esc(_plain_section_title(section.title))}</small></a>'
-        for index, section in enumerate(doc.sections)
-    )
     return (
         '<div class="nav-group is-open professional-nav production-assets-nav">'
         '<button aria-expanded="true" class="nav-group-toggle" type="button">'
         '<span class="nav-index" data-full-index="04" data-overview-index="">04</span>'
         f'<span class="nav-copy">{i18n(bi("Production Assets", "Aset Produksi"))}</span>'
         '<span aria-hidden="true" class="group-chevron"></span></button>'
-        f'<div class="nav-submenu">{links}</div></div>'
+        '<div class="nav-submenu">'
+        f'<div class="production-assets-category">{i18n(bi("Voice", "Voice"))}</div>'
+        + "".join(links)
+        + '</div></div>'
     )
-
-
-def _package_navigation(render_data: dict[str, Any]) -> str:
-    groups = []
-    for index, package in enumerate(render_data.get("packages", [])):
-        package_id = package["id"]
-        code = 5 + index
-        title = package.get("title", package_id)
-        label = package.get("package_label", f"Gameplay {index + 1}")
-        subpages = "".join(
-            f'<a data-target="dev-{package_id}-{key}" href="#dev-{package_id}-{key}">{i18n(name)}</a>'
-            for key, name in (
-                ("requirement", bi("Gameplay Overview", "Gameplay Overview")),
-                ("level", bi("Level Design", "Level Design")),
-                ("developer", bi("Developer", "Developer")),
-            )
-        )
-        groups.append(
-            '<div class="nav-group is-open professional-nav production-objective-nav">'
-            '<button aria-expanded="true" class="nav-group-toggle" type="button">'
-            f'<span class="nav-index" data-full-index="{code:02d}" data-overview-index="">{code:02d}</span>'
-            f'<span class="nav-copy">{i18n(title)}</span>'
-            '<span aria-hidden="true" class="group-chevron"></span></button>'
-            f'<div class="nav-submenu"><div class="production-objective-label">{i18n(label)}</div>{subpages}</div></div>'
-        )
-    return "".join(groups)
-
-
-def consolidated_navigation(render_data: dict[str, Any], doc: VoiceProduction) -> str:
-    overview = (
-        '<a class="nav-link" data-target="summary" href="#summary">'
-        f'<span class="nav-index" data-full-index="01" data-overview-index="01">{i18n("01")}</span>'
-        f'<span class="nav-copy">{i18n(bi("Overview", "Gambaran Umum"))}</span></a>'
-    )
-    return (
-        overview
-        + _flow_navigation(render_data)
-        + _development_navigation(render_data)
-        + _production_assets_navigation(doc)
-        + _package_navigation(render_data)
-    )
-
-
-def _renumber_package_page_codes(source: str, render_data: dict[str, Any]) -> str:
-    for index, _package in enumerate(render_data.get("packages", [])):
-        old_base = 4 + index
-        new_base = 5 + index
-        for suffix in ("A", "B", "C"):
-            old = f"{old_base:02d}{suffix}"
-            new = f"{new_base:02d}{suffix}"
-            source = source.replace(
-                f'data-en="{old}" data-id="{old}">{old}</span>',
-                f'data-en="{new}" data-id="{new}">{new}</span>',
-            )
-    return source
 
 
 VOICE_STYLE = r'''<style id="production-assets-style">
@@ -563,8 +492,10 @@ VOICE_STYLE = r'''<style id="production-assets-style">
 .voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:9px 13px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .65rem/1 var(--font);letter-spacing:.055em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .voice-copy-button:hover,.voice-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
 .voice-copy-button.is-copied{border-color:var(--green);background:var(--green);color:#fff}
-.production-assets-nav .nav-submenu a small{display:block;margin-top:2px}
-.production-objective-label{padding:6px 10px 3px 14px;color:rgba(255,255,255,.42);font-size:.58rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.production-assets-category{padding:6px 10px 4px 14px;color:rgba(255,255,255,.46);font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.production-assets-nav .nav-submenu a{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.production-assets-nav .nav-submenu a small{display:block;margin-top:2px;white-space:normal;overflow-wrap:anywhere}
+.production-assets-objective-name{min-width:0;white-space:normal;overflow-wrap:anywhere}
 body.theme-dark .voice-objective-summary-item p,body.theme-dark .voice-script-context{color:#c8d7dc}
 body.theme-dark .voice-page-setup{background:#1d2f37}
 body.theme-dark .voice-script-card{border-color:#405761}
@@ -629,17 +560,20 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
         raise ValueError("Production Assets extension already exists in rendered HTML.")
 
     pages = "".join(voice_pages(render_data, doc, requirement_triggers))
-    nav = consolidated_navigation(render_data, doc)
+    nav = _production_assets_navigation(render_data, doc)
 
-    nav_pattern = re.compile(r'(<nav class="sidebar-nav">).*?(</nav>)', re.S)
+    nav_pattern = re.compile(r'(<nav class="sidebar-nav">)(.*?)(</nav>)', re.S)
     main_pattern = re.compile(r'(<main class="document-main">.*?)(</main>)', re.S)
     if len(nav_pattern.findall(source)) != 1:
         raise ValueError("Rendered HTML requires exactly one sidebar navigation container.")
     if len(main_pattern.findall(source)) != 1:
         raise ValueError("Rendered HTML requires exactly one document main container.")
 
-    source = _renumber_package_page_codes(source, render_data)
-    source = nav_pattern.sub(lambda match: match.group(1) + nav + match.group(2), source, count=1)
+    source = nav_pattern.sub(
+        lambda match: match.group(1) + match.group(2) + nav + match.group(3),
+        source,
+        count=1,
+    )
     source = main_pattern.sub(lambda match: match.group(1) + pages + match.group(2), source, count=1)
     source = _insert_before_closing(source, "</head>", VOICE_STYLE, "head")
     source = _insert_before_closing(source, "</body>", VOICE_COPY_SCRIPT, "body")
