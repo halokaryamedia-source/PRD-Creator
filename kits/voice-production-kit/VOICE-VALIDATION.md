@@ -44,10 +44,10 @@ Audit only material pronunciation risk.
 Use when needed:
 
 - `confirmed` — approved pronunciation evidence exists;
-- `accepted_as_written` — creative owner intentionally accepts the written form;
-- `needs_confirmation` — do not claim pronunciation-ready.
+- `accepted_as_written` — creative owner intentionally accepts the written form for downstream production;
+- `needs_confirmation` — risk may remain during Flow 6 Preparation Mode, but blocks `voice_delivery_ready` until resolved or explicitly accepted.
 
-Preparation-only delivery may retain honest unresolved pronunciation evidence when the downstream producer is expected to confirm it later; do not relabel it as verified.
+Preparation Mode does not require audio testing. It may stop at `voice_script_ready` with an honest material pronunciation risk recorded. Do not relabel an unresolved risk as verified merely to pass Flow 7.
 
 ## 4. Project performance continuity
 
@@ -77,7 +77,7 @@ If audio is not supplied:
 Audio Evidence: not_provided
 ```
 
-This blocks audio-quality claims, not script/DOCX delivery or Preparation Mode completion.
+This blocks audio-quality claims, not Flow 6 Preparation Mode or script/DOCX delivery when all non-audio acceptance gates pass.
 
 When audio is in scope:
 
