@@ -275,7 +275,7 @@ def _section_setup_html(doc: VoiceProduction, section: VoiceSection) -> str:
     return (
         '<div class="voice-page-setup">'
         f'<span class="voice-page-setup-label">{i18n(bi("Voice Setup", "Setup Voice"))}</span>'
-        f'<div class="voice-page-setup-rows'>{"".join(rows)}</div>'
+        '<div class="voice-page-setup-rows">' + "".join(rows) + '</div>'
         '</div>'
     )
 
