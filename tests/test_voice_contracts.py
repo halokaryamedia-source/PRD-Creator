@@ -210,6 +210,17 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertIn("Voice section has no entries: Empty Section", built.stderr)
         self.assertFalse((project / "output/Voice Production.docx").exists())
 
+    def test_validator_rejects_voice_without_initial_performance_tag(self) -> None:
+        script = SCRIPT.replace("[calm]\nBegin the trial.", "Begin the trial.", 1)
+        project = self.make_project(script_text=script)
+
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 2)
+        self.assertIn(
+            "VO-INTRO-01 performance must begin with at least one initial [performance direction] tag",
+            validated.stderr,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
