@@ -4,7 +4,7 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`SOUNDMAKER_V3_GENERATION_QA_READY`
+`SOUNDMAKER_V3_KNOWLEDGE_HARDENED`
 
 Working branch: **`Local` only**.
 
@@ -12,55 +12,51 @@ Working branch: **`Local` only**.
 
 Project Document Generator remains **v1.13.0**. The approved Clockwork production package remains at `workspace/active/the-clockwork-vault/`; its accepted PRD meaning/rendered HTML were not changed.
 
-Voice Production Kit is now **v1.4.1**.
+Voice Production Kit is now **v1.5.0**.
 
-Flow 5 Voice scope, DOCX builder/validator mechanics, and Voice ID/Type artifact structure remain unchanged. Flow 6 has a bounded SoundMaker execution profile at:
+Flow 5 Voice scope, canonical `work/voice-production.md`, Voice ID/Type artifact structure, DOCX builder, and validator mechanics remain unchanged.
+
+SoundMaker remains **Eleven v3 only** and is now the single operational execution procedure inside Flow 6:
 
 ```text
 kits/voice-production-kit/SOUNDMAKER.md
 ```
 
-SoundMaker is **Eleven v3 only** and remains inside Flow 6 rather than becoming another root skill or production Flow.
-
-Current quality path:
+The knowledge structure is now intentionally narrow:
 
 ```text
-Voice Requirement
-→ target duration first when specified
-→ voice-fit check
-→ performance map
-→ natural spoken wording
-→ beat architecture
-→ punctuation / line structure
-→ selective CAPS
-→ minimal Audio Tags
-→ pronunciation safety
-→ generation baseline
-→ one paste-ready Eleven v3 prompt
-→ actual audio quality review when audio exists
+SOUNDMAKER.md
+→ actual execution / generation / diagnosis
+
+SCRIPT-PRODUCTION.md
+→ Flow 6 lifecycle + canonical artifact
+
+references/elevenlabs/v3-performance-writing.md
+→ deep writing / tags / non-tag controls
+
+references/elevenlabs/v3-duration-planning.md
+→ timing only
+
+references/elevenlabs/v3-production-reference.md
+→ voice / Stability / Enhance / Studio / troubleshooting / pronunciation
+
+references/elevenlabs/source-register.md
+→ evidence only
 ```
 
-Default generation baseline is:
+Current operating decisions:
 
-```text
-Eleven v3
-Stability: Natural
-```
+- default model: Eleven v3;
+- default Stability: Natural unless stronger project calibration exists;
+- already-directed SoundMaker prompt: Enhance OFF by default;
+- Speech Synthesis is the normal surface;
+- long-form whisper/volume/tone/accent drift or breaking may route to Studio while keeping v3;
+- voice fit uses a practical performance envelope rather than tag stacking;
+- documented tags, descriptive candidates, and project-calibrated directions are distinguished;
+- heard failures are diagnosed as take variance, prompt/beat issue, Stability/over-direction, voice-fit/drift, pronunciation, duration, or long-form surface issue before revision.
 
-unless stronger approved project-calibrated evidence exists for the same production.
-
-Actual generated audio is judged from the heard take for meaning/intelligibility, voice identity, emotional movement, pacing, emphasis/landing, naturalness, pronunciation, and duration when timing matters. A weak result is classified as one of: review alternative/regenerate, revise prompt, or voice-fit risk; a flat take is not repaired automatically by adding more tags.
-
-Actual generation/revision uses one active Voice ID at a time. If the user edits the prompt before generation and approves that result, the exact prompt actually used must be synchronized back into canonical `work/voice-production.md`. Generated audio is not called approved without actual review.
-
-The ElevenLabs reference front door remains:
-
-```text
-kits/voice-production-kit/references/elevenlabs/README.md
-```
-
-Its operational scope is v3-only. Evidence levels still separate current official guidance, product-specific evidence, creator heuristics, project calibration, and unknown/conflicting behavior.
+Official v3-specific guidance has precedence over conflicting generic TTS guidance for v3 capabilities.
 
 ## Next Step
 
-**Use SoundMaker v3 quality behavior on the next real Voice ID/project line, then retain only actual approved prompt/audio behavior as project-calibrated evidence.**
+**Use SoundMaker v3.5 knowledge on the next real Voice ID only if the repository label is corrected to SoundMaker v3; then retain actual approved prompt/audio behavior as project calibration.**
