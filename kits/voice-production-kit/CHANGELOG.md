@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.11.1 — 2026-08-13
+
+- unified every Production Assets → Voice gameplay page under one objective shell so short sections such as Antechamber no longer use a visually weaker first-page-only layout;
+- derived section context, package/objective label, Voice line count, and Primary Speaker from accepted PRD/Voice sources without adding a new canonical Voice metadata schema;
+- exposed per-entry `<package label> · Voice Line X/Y` plus the exact existing Flow 5 `Trigger` as developer-facing context, making implementation timing/order explicit without duplicating Trigger into `voice-production.md`;
+- moved Production Assets to professional navigation number `04` after Development and shifted gameplay-package presentation to `05+` only in consolidated HTML; PRD-only output keeps original core numbering;
+- aligned Voice mechanical validation with the objective-shell/context contract while preserving exact canonical Copy payload parity;
+- rerendered and browser-reviewed Clockwork Antechamber and Gremlin’s Workshop from unchanged canonical PRD/Voice sources;
+- changed no Clockwork gameplay meaning, Voice wording, performance tags, actor selection, Voice asset count, or audio evidence state.
+
 ## 1.11.0 — 2026-08-13
 
 - made one initial Audio/Performance Direction Tag mandatory on the first non-blank line of every standalone Voice Production prompt; this is a SoundMaker production heuristic for directed Eleven v3 work, not an upstream syntax requirement;
