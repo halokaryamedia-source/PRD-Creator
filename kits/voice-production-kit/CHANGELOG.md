@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.5.0 — 2026-08-13
+
+- made `SOUNDMAKER.md` the single operational Eleven v3 execution procedure and removed duplicated prompting workflow from Flow/skill/reference owners;
+- added explicit Enhance policy: untreated text may use Enhance as drafting aid, while an already-directed SoundMaker prompt keeps Enhance off by default and any rewrite becomes a new draft;
+- added Speech Synthesis → Studio v3 routing for long-form whisper/volume/tone/accent drift or breaking without changing model family;
+- converted voice-fit into a practical Voice Performance Envelope (`GOOD FIT`, `LIMITED FIT`, `RISKY FIT`, `UNKNOWN`);
+- separated documented Audio Tags, descriptive candidates, and project-calibrated directions;
+- strengthened post-generation diagnosis for take variance, flat delivery, chaotic output, Stability/voice drift, pronunciation, duration, and long-form surface problems;
+- clarified source precedence so explicit v3 guidance overrides conflicting generic TTS guidance;
+- kept Flow 5 scope, canonical `work/voice-production.md`, DOCX builder/validator mechanics, and artifact schema unchanged.
+
 ## 1.4.1 — 2026-08-13
 
 - added a single default Eleven v3 generation baseline: `Stability: Natural` unless stronger approved project calibration exists;
