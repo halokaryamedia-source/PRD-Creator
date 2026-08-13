@@ -9,6 +9,7 @@ PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 VOICE_ID_RE = re.compile(r"\bVO-[A-Z0-9][A-Z0-9-]*\b")
 STATUS_RE = re.compile(r"^\s*status:\s*([A-Za-z0-9_-]+)\s*$", re.M)
+PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
 
 @dataclass
 class Requirement:
@@ -33,6 +34,11 @@ class ScriptEntry:
 
 def norm(s: str) -> str:
     return " ".join(s.split())
+
+
+def has_initial_performance_tag(performance: str) -> bool:
+    first = next((line.strip() for line in performance.splitlines() if line.strip()), "")
+    return bool(first and PERFORMANCE_TAG_LINE_RE.fullmatch(first))
 
 
 def parse_requirements(path: Path) -> dict[str, Requirement]:
@@ -126,6 +132,10 @@ def parse_script(path: Path) -> tuple[list[str], dict[str, ScriptEntry]]:
             "Performance Script":e.performance,
         }.items():
             if not v: raise ValueError(f"{vid} missing {k}")
+        if not has_initial_performance_tag(e.performance):
+            raise ValueError(
+                f"{vid} performance must begin with at least one initial [performance direction] tag"
+            )
         out[vid]=e
     if not out: raise ValueError("No Voice IDs found in script")
     return sections,out
