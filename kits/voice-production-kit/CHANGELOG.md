@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.10.0 — 2026-08-13
+
+- made the accepted PRD the direct parent of downstream Voice asset production instead of treating Voice as a separate source-intake project;
+- kept `work/voice-requirements.md` as the internal Asset Requirement owner and `work/voice-production.md` as the canonical Asset Production owner;
+- added an optional one-time `Voice Cast:` block so each recurring Speaker maps to its selected ElevenLabs voice without repeating actor configuration per line;
+- made `output/final.html` the default human-facing Voice production surface by appending professional-only `Production Assets → Voice` pages after the unchanged PRD core;
+- kept the visible Voice page intentionally simple: Voice Cast once, gameplay-ordered title, Actor, Estimated Duration, exact Eleven v3 prompt, and Copy Text;
+- ensured Copy Text uses only the exact canonical `performance` payload and does not leak Flow 5 requirements, source refs, reasoning, QA, or UI instructions;
+- preserved the approved Golden template bytes and PRD-core `6 + 4N` contract; Production Assets is a downstream extension, not a new PRD semantic page family;
+- defined PRD acceptance and Voice acceptance separately so Voice-only production changes rerender the same HTML without reopening PRD acceptance when PRD canonical meaning is unchanged;
+- changed `Voice Production.docx` from required/default presentation to optional portable export;
+- updated Voice mechanical validation to check consolidated project-HTML prompt parity when present and DOCX only when that optional export exists;
+- added focused PRD regression coverage for same-HTML Voice composition and the no-Voice no-op path;
+- added no generic asset framework, asset manifest, second Voice HTML, new Flow, audio generation, or audio-test requirement.
+
 ## 1.9.0 — 2026-08-13
 
 - hardened the **Flow 5 → Flow 6 interface** so SoundMaker receives complete communication intent before performance writing;
