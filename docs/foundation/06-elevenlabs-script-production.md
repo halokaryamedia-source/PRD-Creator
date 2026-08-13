@@ -16,9 +16,30 @@ work/voice-requirements.md
 ```
 
 - `work/voice-requirements.md` owns which Voice moments exist and what they must communicate.
-- `SOUNDMAKER.md` owns one-entry-at-a-time Eleven v3 execution quality.
+- `SOUNDMAKER.md` owns Eleven v3 preparation/generation quality.
 - `work/voice-production.md` owns final spoken/performance wording.
-- DOCX is derived presentation and never becomes the editable content authority.
+- DOCX is derived presentation and never becomes editable content authority.
+
+## Flow 6 modes
+
+### Preparation Mode
+
+Default for script/DOCX production when audio generation is not requested.
+
+- full current Voice scope may be prepared in one pass;
+- each Voice ID receives SoundMaker pre-generation quality;
+- run project-level speaker continuity / anti-repetition review;
+- duration/pronunciation remain planned evidence;
+- no audio test or per-line approval loop is required.
+
+### Generation Mode
+
+Used only when actual ElevenLabs output is requested.
+
+- one active Voice ID;
+- one exact reviewed prompt;
+- feedback/approval loop;
+- approved generated wording synchronizes back into canonical script.
 
 ## Scope guard
 
@@ -26,31 +47,26 @@ Flow 6 may refine delivery but may not silently:
 
 - create/drop/retype Voice IDs;
 - change speaker/channel/trigger;
-- introduce new gameplay/lore/mechanic/reward facts;
+- introduce gameplay/lore/mechanic/reward facts;
 - turn Sound Effects into Voice scope;
 - claim generated-audio quality without actual audio evidence.
 
-Missing project meaning returns upstream.
+Missing project meaning returns upstream. Existing project authority must be checked before asking the user.
 
 ## SoundMaker contract
 
-Use `kits/voice-production-kit/SOUNDMAKER.md` for the operational quality procedure. Do not duplicate its detailed prompting rules here.
+Use `kits/voice-production-kit/SOUNDMAKER.md` for the operational procedure. Do not duplicate detailed prompting rules here.
 
 Durable requirements are:
 
 - model scope is Eleven v3;
 - target duration is planned before final wording when timing matters;
-- voice fit is checked before attempting to compensate with more direction;
-- spoken wording and beat architecture precede punctuation/CAPS/Audio Tags;
+- voice fit is checked before compensating with more direction;
+- spoken wording/beat architecture precede punctuation/CAPS/Audio Tags;
 - flat writing is not repaired by tag stacking;
-- exact approved generated wording synchronizes back into canonical `work/voice-production.md`;
-- audio quality is established only from heard evidence.
-
-## Generated prompt alignment
-
-When actual generation occurs, the exact prompt used matters.
-
-If the user or ElevenLabs UI changes the prompt before generation, that changed text is a new revision. After approval, synchronize the exact generated version into `work/voice-production.md` before claiming current script/DOCX/audio alignment.
+- Preparation Mode includes cross-line continuity/anti-template review;
+- exact approved generated wording synchronizes back into canonical `work/voice-production.md` when Generation Mode occurs;
+- audio quality is established only from heard evidence and is optional unless requested.
 
 ## DOCX
 
@@ -63,9 +79,9 @@ Set `voice_script_ready` only when:
 - current Flow 5 status is `voice_requirements_ready` for the same accepted PRD revision;
 - Voice ID/Type parity is intact;
 - every entry has title, Estimated Duration, and canonical performance wording;
-- SoundMaker quality has been applied;
+- per-line SoundMaker quality and project-level continuity review were applied;
 - no unresolved placeholders or known upstream contradictions remain;
 - requested derived artifacts are rebuilt from canonical sources;
 - required visual proof is complete when a visual-ready claim is made.
 
-Flow 6 readiness does not prove generated-audio quality. Flow 7 owns current-revision acceptance.
+Flow 6 readiness may legitimately have `audio_evidence: not_provided`. Generated-audio quality is not a prerequisite unless the current task explicitly includes audio.
