@@ -63,4 +63,4 @@ Its operational scope is v3-only. Evidence levels still separate current officia
 
 ## Next Step
 
-**Use SoundMaker v3.1 quality behavior on the next real Voice ID/project line, then retain only actual approved prompt/audio behavior as project-calibrated evidence.**
+**Use SoundMaker v3 quality behavior on the next real Voice ID/project line, then retain only actual approved prompt/audio behavior as project-calibrated evidence.**
