@@ -4,13 +4,21 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ## Current Decisions
 
+### Consolidated Production Assets preserves accepted PRD navigation identity
+
+- **Decision:** downstream Production Assets extends the existing accepted PRD sidebar instead of rebuilding it. Gameplay/objective sections remain nested under `03 Development`; `04 Production Assets` is additive; existing PRD package/page codes are not shifted. Current Voice navigation uses one `VOICE` category and one link per gameplay Voice section, with section title + exact accepted PRD package label. The existing Flow 5 Trigger may be projected as developer-facing Context without becoming a new Flow 6 field.
+- **Reason:** developers need to identify the owning Objective immediately without memorizing order, while a second navigation implementation created hierarchy drift and made downstream Voice presentation alter accepted PRD identity.
+- **Boundary:** this changes presentation/composition only. PRD gameplay meaning, canonical Voice wording, Voice scope, Golden template bytes, and audio evidence are unchanged. DOCX remains optional export; consolidated project HTML is the default Voice operator/developer surface.
+- **Supersedes/refines:** supersedes the 2026-08-10 decision that Flow 7 default delivery is script/DOCX scope and refines the earlier DOCX-centric acceptance wording below.
+- **Owners:** `CONTEXT.md`, `kits/project-document-generator/RENDERING.md`, `kits/voice-production-kit/`, `docs/foundation/06-elevenlabs-script-production.md`, `docs/foundation/07-voice-validation-delivery.md`.
+- **Date:** 2026-08-13
+
 ### Repository navigation uses explicit domain naming
 
 - **Decision:** domain folders use `README.md` as their index/register; cross-domain files use explicit names such as `work-routing.md`, `ownership.md`, and `source-authority.md`. Historical proof belongs under `reviews/`; `operations/` contains only active/future operational notes. Old navigation aliases are retired rather than preserved as compatibility files.
 - **Reason:** the previous mix of `map`, `graph`, `log`, `index`, `minimal-nav`, `flow`, and `flows/` made multiple files appear to own the same question.
 - **Boundary:** production semantics, project artifact contracts, Golden bytes, Voice output contracts, and accepted Clockwork content are unchanged.
 - **Date:** 2026-08-13
-
 
 ### Exact Golden artifact is also the runtime template; material detail is conserved
 
@@ -133,16 +141,17 @@ Use this note only for durable decisions whose reasons must survive future sessi
 
 ### Flow 7 delivery readiness is script/DOCX scope by default
 
-- **Decision:** `voice_delivery_ready` means the accepted canonical performance script and derived DOCX are ready for downstream ElevenLabs production unless the current task explicitly includes generated audio.
-- **Reason:** this kit's core deliverable is the production script/document. Audio quality cannot be inferred when no audio exists.
-- **Audio rule:** record `not_provided`, `partial_review`, `reviewed_passed`, or `reviewed_with_findings`; never claim more evidence than exists.
-- **Owners:** `docs/foundation/07-voice-validation-delivery.md`, `kits/voice-production-kit/VOICE-VALIDATION.md`.
+- **Status:** superseded by the 2026-08-13 consolidated Production Assets decision above.
+- **Previous decision:** `voice_delivery_ready` meant the accepted canonical performance script and derived DOCX were ready for downstream production unless the current task explicitly included generated audio.
+- **Reason at the time:** the kit's core deliverable was script/document and audio quality could not be inferred without audio evidence.
+- **Current replacement:** canonical Voice Production + current consolidated project HTML is the default non-audio delivery; DOCX is optional export.
 - **Date:** 2026-08-10
 
 ### Flow 7 uses one final acceptance gate
 
-- **Decision:** mechanical integrity + requirement coverage + terminology/pronunciation + speaker/channel/trigger + performance continuity + current DOCX visual QA must pass with Critical=0 and Major=0 before `voice_delivery_ready`.
-- **Reason:** a successful builder or attractive DOCX is insufficient evidence of production correctness, while multiple freeze/release ceremonies would add process without value.
+- **Status:** refined by the current Flow 7 consolidated project-HTML contract.
+- **Decision:** keep one final acceptance gate rather than multiple freeze/release ceremonies. Current gate uses Mechanical + Communication Conservation + integrated Voice Script Readiness + Project HTML Visual when claimed, with optional DOCX/audio evidence only when those scopes exist.
+- **Reason:** mechanical success or attractive presentation alone is insufficient evidence of production correctness, while duplicated review ceremonies add process without value.
 - **Date:** 2026-08-10
 
 ### Pronunciation is evidence-based, not guessed as verified
