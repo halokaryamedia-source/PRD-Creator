@@ -32,9 +32,13 @@ def requirements(extra_id: bool = False, type_override: str | None = None) -> st
 ### VO-INTRO-01 — Welcome
 
 - Type: {intro_type}
+- Function: briefing
+- Necessity: required
 - Speaker: Narrator
 - Channel: Direct
-- Trigger: Trial start
+- Trigger: Trial start before active play begins.
+- Purpose: Tell the player to begin the trial.
+- Timing Constraint: Must fit the 3-second opening slot.
 - Must communicate:
   - Begin the trial.
 - Must not add/repeat:
@@ -47,9 +51,12 @@ def requirements(extra_id: bool = False, type_override: str | None = None) -> st
 ### VO-END-01 — Complete
 
 - Type: Direct NPC Dialogue
+- Function: completion
+- Necessity: required
 - Speaker: Guide
 - Channel: Direct
-- Trigger: Trial completion
+- Trigger: Trial completion after the final objective resolves.
+- Purpose: Acknowledge that the trial is complete.
 - Must communicate:
   - The trial is complete.
 - Must not add/repeat:
@@ -64,9 +71,12 @@ def requirements(extra_id: bool = False, type_override: str | None = None) -> st
 ### VO-EXTRA-01 — Unsupported Extra
 
 - Type: Main Story
+- Function: reminder
+- Necessity: supporting
 - Speaker: Narrator
 - Channel: Direct
 - Trigger: Never
+- Purpose: Exercise the missing-ID parity failure.
 - Must communicate:
   - This requirement is intentionally missing from the script.
 - Must not add/repeat:
