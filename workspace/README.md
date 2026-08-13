@@ -29,9 +29,11 @@ Flow 3:
 
 ```text
 work/content.md              canonical PRD meaning
+work/render-data.json        deterministic PRD projection
+output/final.html            PRD core at this stage
 ```
 
-Flow 4/current handoff boundary:
+Flow 4/current PRD handoff boundary:
 
 ```text
 work/acceptance.md
@@ -64,33 +66,38 @@ actual audio/evidence files  only when current scope supplies or produces them
 
 Do not create empty placeholder files to make project packages look uniform.
 
-### Derived
+### Downstream Voice
 
-Generate from canonical/current state; never hand-edit as authority:
-
-```text
-work/render-data.json        derived from canonical PRD
-output/final.html            deterministic exact-Golden PRD
-output/Voice Production.docx derived from canonical Voice Production script
-```
-
-### Downstream
-
-Do not create until the downstream Flow is requested/entered:
+Do not create until Voice Flow 5–7 is requested/entered:
 
 ```text
 state/voice-state.yaml
 work/voice-requirements.md
 work/voice-production.md
 work/voice-acceptance.md
+```
+
+When canonical Voice Production exists, the normal PRD renderer rerenders the same project document:
+
+```text
+output/final.html
+= accepted PRD core
++ Production Assets → Voice
+```
+
+Production Assets extends the accepted PRD navigation. Gameplay/objective sections remain under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
+
+### Optional derived exports
+
+```text
 output/Voice Production.docx
 ```
 
-A PRD-only project does not need Voice files merely because the repository supports Voice later.
+DOCX is derived from canonical Voice Production only when a portable export is explicitly requested or materially useful. It is not the default Voice delivery surface.
 
 ## Typical package after Flow 7
 
-A project that actually used the complete PRD + Voice sequence may eventually contain:
+A project that used the complete PRD + Voice sequence may contain:
 
 ```text
 workspace/active/<project>/
@@ -110,9 +117,9 @@ workspace/active/<project>/
 │   ├── voice-production.md
 │   └── voice-acceptance.md
 └── output/
-    ├── final.html
+    ├── final.html                # PRD core + current Production Assets when present
     ├── team-handoff.md
-    └── Voice Production.docx
+    └── Voice Production.docx     # optional export only
 ```
 
 This is an **eventual example**, not a bootstrap checklist.
@@ -124,12 +131,14 @@ source evidence + current user instruction + approved decisions
 → requirement state
 → canonical PRD
 → PRD acceptance
-→ voice-requirements.md
-→ voice-production.md
-→ Voice Production.docx
-→ voice-acceptance.md / voice-state
+→ Voice requirements
+→ canonical Voice Production
+→ consolidated final.html presentation
+→ Voice acceptance / voice-state
 ```
+
+Optional DOCX/audio remain derived export/evidence and do not replace canonical PRD/Voice owners.
 
 A source's physical storage location does not change its authority; provenance/status/current user instruction do.
 
-Derived artifacts may be regenerated. Do not patch `final.html` or DOCX as source of truth. Generated audio, when present, is evidence/output and does not replace canonical requirements or script meaning.
+Derived artifacts may be regenerated. Do not patch `final.html` or DOCX as source of truth. Generated audio, when present, is evidence/output and does not replace canonical requirements or production meaning.
