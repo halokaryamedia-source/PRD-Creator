@@ -5,7 +5,9 @@ Working branch: `Local`
 
 ## Product
 
-PRD-Creator turns uneven project material into development-ready PRD documentation and, when needed, downstream Voice Production assets.
+PRD-Creator turns uneven project material into a development-ready PRD and, when needed, downstream production assets derived from that accepted PRD.
+
+Voice is the currently implemented downstream asset lane.
 
 ## Production sequence
 
@@ -19,6 +21,8 @@ Flow 6  Eleven v3 Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
+Voice Production is not a separate project/source intake. The accepted PRD is its normal upstream authority.
+
 Normal project creation/revision is **Production Execution**. `development-brief` is only for changing PRD-Creator itself.
 
 ## Operating direction
@@ -30,37 +34,39 @@ Normal project creation/revision is **Production Execution**. `development-brief
 - information completeness must not be sacrificed for speed;
 - implementation ceremony must not be added without a concrete need.
 
-## Gameplay PRD authority
+# PRD authority
 
-The single owner is:
+The PRD owns product/gameplay truth: what the experience must contain, how gameplay/system behavior works, and which downstream production assets are materially required.
+
+Canonical semantic owner:
 
 ```text
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
-The approved Golden Sample is the **canonical visible page prototype**, not merely a style inspiration or loose quality reference.
+The approved Golden Sample remains the canonical **PRD-core** page prototype.
 
-Project facts are dynamic. The visible page composition is locked unless the user explicitly approves a Golden prototype change.
-
-Fixed family:
+PRD-core family:
 
 ```text
 Overview
 → Gameplay Flow
      The Journey Begins
-     one page per package
+     one page per gameplay section
 → Development
      Development Overview
      Game System
      Data and Reset
      Gameplay Development
-→ Gameplay Package(s)
+→ Gameplay Sections
      Gameplay Overview
      Level Design
      Developer
 ```
 
-For `N` packages: `6 + 4N` pages.
+Internally the renderer may call gameplay sections `packages`; user-facing project copy should use the project's natural Objective/Gameplay naming instead of exposing that implementation term.
+
+For `N` gameplay sections the PRD core remains `6 + 4N` pages.
 
 Reference-project gameplay facts do not transfer automatically.
 
@@ -72,89 +78,154 @@ Defined | Explicit No | Not Applicable | Blocked
 
 ## Golden presentation rules
 
-- Overview, Gameplay Flow, Global Development, Gameplay Overview, Level Design and Developer each follow the matching Golden component order and labels.
-- Gameplay Overview uses short 3-card summaries; detailed rules go to Gameplay Information/Gameplay Flow/Developer.
-- Global/Level/Developer flow uses the Golden horizontal-card pattern rather than new matrices.
+- Overview, Gameplay Flow, Global Development, Gameplay Overview, Level Design and Developer follow matching Golden composition.
+- Gameplay Overview uses short context cards; detailed rules live in their owning Gameplay/Developer surfaces.
 - Acceptance remains Flow 4 review state; no extra visible Acceptance panel is added to Developer pages.
-- Terms Used is visible only where Golden shows it: Gameplay Flow, Global Development, Gameplay Overview.
-- inline glossary highlighting may still help readers without changing page composition.
-- generated HTML is derived and is never manually patched.
+- Terms Used stays where Golden defines it.
+- generated HTML is derived and never manually patched.
+- Golden template bytes remain unchanged when downstream Production Assets are added.
 
-## Writing direction
+# Production Assets relationship
 
-Use direct production prose. One paragraph should answer one main question.
-
-Avoid:
-
-- long copy inside narrow summary cards;
-- repeated explanation;
-- generator/document meta-language;
-- invented professional-sounding labels;
-- database-like prose where Golden uses normal narrative;
-- extra UI created merely to fit verbose content.
-
-Humanize means clearer and shorter, not more prose.
-
-## Voice Production direction
-
-Voice Production Kit owns Flow 5–7. Flow 6 production model scope is **Eleven v3 only**.
-
-`SOUNDMAKER.md` is the Flow 6 operational quality procedure and has two working modes:
+Use this ownership model:
 
 ```text
-Preparation Mode
-→ full current Voice scope may be prepared without audio testing
-→ per-line construction + project-level continuity/anti-repetition
+PRD
+= product / gameplay truth
+= establishes that an asset is required
 
-Generation Mode
-→ actual ElevenLabs work only
-→ one active Voice ID + exact prompt + feedback/approval loop
+Asset Requirement
+= concrete asset requirement derived from PRD
+
+Asset Production
+= exact material/configuration used to produce that asset
+
+Final Asset
+= generated/created file used by development
 ```
 
-SoundMaker is not a new Flow or root skill.
+Do not turn Asset Requirements into a second PRD. Carry only the context/constraints needed to produce the asset correctly and retain traceability to PRD authority.
 
-Canonical Voice authority remains:
+## One project HTML
+
+`output/final.html` is the single human-facing project document.
+
+It contains:
+
+```text
+PRD core
++
+optional downstream Production Assets
+```
+
+Production Assets is professional-only downstream content, not a new PRD semantic page family.
+
+Therefore a Voice-only production update may rerender `final.html` without reopening PRD acceptance when `work/content.md` and `work/render-data.json` are unchanged.
+
+PRD core and downstream asset production retain separate canonical owners and acceptance evidence even though humans see one consolidated HTML.
+
+# Voice Production direction
+
+Voice Production Kit owns Flow 5–7. Flow 6 model scope is **Eleven v3 only**.
+
+Normal authority:
 
 ```text
 accepted PRD
 → work/voice-requirements.md
-→ SoundMaker v3 preparation/generation quality
 → work/voice-production.md
-→ derived DOCX / optional generated-audio evidence
+→ output/final.html → Production Assets → Voice
 ```
 
-Canonical Flow 6 entries deliberately stay small:
+### Flow 5
+
+`voice-requirements.md` is the internal Voice Asset Requirement owner. It records which Voice moments are required and enough approved communication context for SoundMaker to write without product-level guessing.
+
+### Flow 6
+
+`voice-production.md` is canonical Voice Asset Production. It owns:
+
+- exact Voice ID/Type/Speaker parity;
+- Estimated Duration;
+- exact Eleven v3 `performance` text;
+- selected ElevenLabs actor voice once per recurring Speaker when known.
+
+Optional cast header:
 
 ```text
-Voice ID + Title
-Type
-Speaker
-Estimated Duration
-exact Eleven v3 performance block
+Voice Cast:
+- <Speaker>: <selected ElevenLabs voice>
 ```
 
-`Type` and `Speaker` must match Flow 5. Planning-only details such as Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, performance-map reasoning, voice-fit ratings, and QA notes remain in their owning/internal sources rather than being copied into every operator artifact.
+An actor voice may remain pending during Preparation Mode when a Target Voice Profile is enough to prepare wording. Actual Generation Mode requires the active Speaker's intended voice to be selected.
 
-The derived DOCX exposes `Type · Speaker`, Voice ID/Title, Estimated Duration, and exact Performance Script. A separate operator handoff file is not created by default; a compact handoff is derived from current authority when needed.
+### Production Assets → Voice
 
-Preparation Mode may finish with no audio evidence. When actual generated wording is later approved, the exact prompt actually used must synchronize back into canonical `work/voice-production.md` before current script/DOCX/audio alignment is claimed.
+The same project HTML shows only what the operator needs:
 
-## Version policy
+```text
+Voice Cast once
+→ scripts in gameplay order
+→ per script:
+   title
+   Actor
+   Estimated Duration
+   exact Eleven v3 text
+   Copy Text
+```
 
-`document.version` is project/release metadata, not an edit counter.
+Flow 5 Purpose/Trigger/requirements/source refs, SoundMaker reasoning, WPM math, QA, and other internal fields stay out of the HTML.
 
-Normal drafting, Humanize, rerendering, review corrections and representative tests keep the same version. Change it only for an explicit user/source revision or intentionally declared release/handoff milestone.
+`Copy Text` copies only the exact canonical performance payload.
 
-## Proof direction
+### DOCX
 
-Default visual proof is targeted desktop-only. Compare affected pages directly with the matching Golden prototypes.
+`Voice Production.docx` is optional portable export only. It is no longer required for normal Voice Production delivery when the consolidated project HTML is current.
 
-PRD and Voice CI remain scoped separately. Do not replay unchanged browser/mobile/cross-flow tests for ceremony.
+## SoundMaker modes
 
-## Anti-overdevelopment
+```text
+Preparation Mode
+→ full current Voice scope may be prepared without audio testing
+→ per-line construction + project-level readiness/anti-repetition
 
-Prefer the smallest complete solution. Do not add generic schemas, workflow engines, approval layers, extra checksums, semantic similarity scoring, word/row-count gates, or presentation variants without a proved current need.
+Generation Mode
+→ actual ElevenLabs work only
+→ one active Voice ID
+→ actor voice selected
+→ exact prompt + feedback/approval
+→ canonical sync + rerender when changed
+```
 
-## Continuation
+Preparation Mode may finish with no audio evidence. Generated-audio quality can be claimed only from actual heard evidence.
+
+# Version policy
+
+`document.version` is PRD project/release metadata, not an edit counter.
+
+Adding or revising downstream Voice Production does not change PRD `document.version` unless PRD/project meaning itself enters a new declared revision.
+
+Voice Production maintains its own script/kit versioning.
+
+# Proof direction
+
+PRD and Voice CI remain scoped separately.
+
+- PRD renderer/compositor changes → PRD contracts;
+- Voice canonical/validator changes → Voice contracts;
+- consolidated HTML visual PASS requires actual rendered/browser evidence;
+- generated audio quality requires actual audio review.
+
+Do not replay unchanged browser/mobile/cross-flow tests for ceremony.
+
+# Anti-overdevelopment
+
+Prefer the smallest complete solution.
+
+Do not add generic asset schemas/frameworks, separate Voice HTML, asset manifests, settings databases, workflow engines, approval layers, extra checksums, semantic scoring, or audio-test requirements without a proved current need.
+
+Current Production Assets implementation is Voice-specific by design; do not generalize it to SFX/Visual/etc. until a concrete downstream domain is actually being built.
+
+# Continuation
 
 Read `docs/knowledge/next-action.md` for current status and the single next step.
