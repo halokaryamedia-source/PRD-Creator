@@ -164,9 +164,9 @@ def validate_project_html(
         issues.append("Project HTML missing Production Assets presentation")
     if "Production Assets" not in source or "production-assets-nav" not in source:
         issues.append("Project HTML missing Production Assets Voice navigation")
-    if source.count('data-page-role="production-assets"') != len(sections):
-        issues.append("Project HTML Voice page count differs from canonical gameplay sections")
-    if source.count('class="voice-objective-shell"') != len(sections):
+    if source.count('data-voice-section="') != len(sections):
+        issues.append("Project HTML Voice section count differs from canonical gameplay sections")
+    if source.count('voice-objective-shell') != len(sections):
         issues.append("Project HTML objective shell count differs from canonical gameplay sections")
     if source.count('class="voice-script-position"') != len(script):
         issues.append("Project HTML Voice line-position count differs from canonical script")
