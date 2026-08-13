@@ -4,15 +4,15 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`CLOCKWORK_VOICE_DIRECTED_UI_READY`
+`CLOCKWORK_VOICE_OBJECTIVE_UI_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit is now **v1.11.0** and remains **Eleven v3 only**.
+Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit is **v1.11.1** and remains **Eleven v3 only**.
 
-Clockwork continues to use the approved one-document architecture:
+Clockwork continues to use one human-facing project document:
 
 ```text
 accepted PRD
@@ -26,39 +26,11 @@ same output/final.html
    + Production Assets → Voice
 ```
 
-Voice remains a downstream development asset from the accepted PRD. Clockwork PRD canonical meaning/render-data was not changed by this Voice quality pass.
+Clockwork PRD meaning, `work/render-data.json`, Voice wording, performance tags, Voice asset count, and actor selection were not changed by the v1.11.1 UI refinement.
 
-## Directed performance rule
+## Directed performance baseline
 
-Every standalone canonical `performance` block now begins with at least one initial Audio/Performance Direction Tag on its first non-blank line.
-
-This is a **SoundMaker production rule** for intentionally directed Eleven v3 work, not a claim that Eleven v3 technically rejects untagged text.
-
-Use:
-
-```text
-initial direction tag
-→ required once per standalone Voice ID
-
-transition tag
-→ only when the scene creates a material audible state change
-```
-
-Tag stacking remains minimal. One initial tag is enough for a stable reminder; additional tags are not added merely to make the prompt look expressive.
-
-Renderer and Voice validator now fail closed when a Voice Production entry has no initial performance direction.
-
-## Clockwork Voice Production
-
-Current canonical project files:
-
-```text
-work/voice-requirements.md
-work/voice-production.md
-work/voice-acceptance.md
-state/voice-state.yaml
-output/final.html
-```
+Every standalone canonical `performance` block begins with at least one deliberate initial Audio/Performance Direction Tag. Transition tags remain conditional on real audible state changes.
 
 Current Voice Setup baseline:
 
@@ -69,45 +41,67 @@ Model → Eleven v3
 
 The commercial voice is selected for preparation/operator use but has **not** been audio-tested or audio-approved.
 
-Exactly 12 justified Voice assets remain prepared in gameplay order across:
+## Production Assets → Voice v1.11.1
+
+All gameplay Voice pages now use the same objective shell, including short sections such as The Antechamber.
+
+The section shell derives from accepted project data:
 
 ```text
-The Antechamber
-The Resonance Engine
-The Broken Gallery
-The Warden Halls
-The Gremlin's Workshop
-Vault Restored
+Gameplay Order / objective title
+→ PRD package label + gameplay context
+→ Voice line count + Primary Speaker
+→ compact Voice Setup
 ```
 
-All 12 now have explicit starting performance direction. Mid-script transition tags are used only where the delivery materially changes, for example the Antechamber reveal → reassurance, Workshop sabotage reaction → firm reroute instruction, and ending reflection → warm reward landing.
+Each Voice entry derives implementation-facing placement without adding a new canonical field:
 
-Voice was deliberately not added to every interaction/checkpoint/chime. Existing visual/local gameplay feedback remains primary where narration would only duplicate information.
+```text
+title
+→ <PRD package label> · Voice Line X/Y
+→ Context = exact Flow 5 Trigger
+→ Speaker · Estimated Duration
+→ exact Eleven v3 prompt
+→ Copy Prompt
+```
 
-## Production Assets HTML
+Examples now visible in Gremlin's Workshop:
 
-`output/final.html` remains the single human-facing project document.
+```text
+Build One Live Network
+Objective 4 · Voice Line 1/3
+Context: The player enters the Workshop and conduit interaction becomes active on the unsabotaged 3×3 grid.
 
-The Voice presentation has been simplified from nested grey cards into a lighter editorial production layout.
+Gremlin Sabotage Reaction
+Objective 4 · Voice Line 2/3
+Context: About 20 seconds after Ring 2 stabilizes, the scripted Gremlin event visibly breaks one authored active connection and input is briefly locked.
 
-`Production Assets → Voice` now shows:
+Highlight-Only Assist
+Objective 4 · Voice Line 3/3
+Context: The configured Workshop assist threshold is reached and Vex highlights one useful node, connection, or region without changing the board.
+```
 
-- **Voice Setup** once, with the selected ElevenLabs voice prominent;
-- gameplay-ordered Voice title;
-- Speaker + Estimated Duration as secondary metadata;
-- one integrated **ElevenLabs Text** panel;
-- performance-direction tags visually distinct from spoken text;
-- **Copy** integrated into the script panel.
+The exact Flow 5 Trigger remains owned by `work/voice-requirements.md`; it is only projected into HTML for developer setup. `work/voice-production.md` remains minimal and unchanged.
 
-The visible spoken text uses regular/medium weight so CAPS, punctuation, and performance tags retain contrast.
+`Copy Prompt` still copies only the exact hidden canonical `performance` payload.
 
-The exact canonical `performance` payload remains hidden as the Copy source, so visual formatting does not change what is pasted into ElevenLabs.
+## Consolidated navigation
 
-Internal Flow 5 requirement metadata, source refs, SoundMaker reasoning, WPM math, QA, and acceptance state remain outside the visible page.
+When Production Assets exists, professional navigation is now:
+
+```text
+01 Overview
+02 Gameplay Flow
+03 Development
+04 Production Assets
+05+ gameplay/objective packages
+```
+
+The package number shift is presentation-only in the consolidated HTML. A PRD with no Production Assets keeps its original PRD-core navigation/page numbering.
 
 ## Validation
 
-Current non-audio Voice delivery state remains:
+Current non-audio delivery remains:
 
 ```text
 Status: voice_delivery_ready
@@ -120,32 +114,28 @@ Critical: 0
 Major: 0
 ```
 
-Focused regression proof covers:
+Proof completed for v1.11.1:
 
-- renderer rejects a canonical Voice entry without an initial performance direction;
-- Voice validator rejects the same defect;
-- exact copied prompt parity remains intact;
-- visible performance tags are derived from the canonical prompt;
-- projects without Voice Production still receive no Production Assets extension.
-
-Representative desktop browser inspection passed on the redesigned:
-
-- Antechamber page with Voice Setup and two prompts;
-- Gremlin's Workshop page with one baseline tag and one three-beat sabotage transition;
-- Vault Restored page with reflective → warm performance movement.
-
-No clipping, overlap, nested-card heaviness, or loss of PRD visual language was observed in those representative pages.
+- full PRD contract suite passed;
+- Voice contract suite passed with the new project-HTML objective/context contract;
+- Clockwork rerender passed from canonical source;
+- Clockwork Voice mechanical validator passed;
+- consolidated navigation asserts passed (`04 Production Assets`, packages `05+`);
+- exact Flow 5 Trigger context was verified in rendered Gremlin entries;
+- actual desktop browser capture passed for The Antechamber and The Gremlin's Workshop;
+- no clipping/overlap was observed in those representative pages;
+- temporary review workflows self-removed after use.
 
 ## Audio boundary
 
 No ElevenLabs generation, listening, A/B comparison, measured-duration calibration, or generated-audio quality claim has been performed.
 
-`voice_delivery_ready` still means the **non-audio script + consolidated project HTML** are production-ready. It does not mean the generated Voice assets or selected commercial voice are audio-approved.
+`voice_delivery_ready` means the **non-audio script + consolidated project HTML** are production-ready. It does not mean the generated Voice assets or selected commercial voice are audio-approved.
 
 ## Overdevelopment guard
 
-Do not add a generic Asset framework, second Voice HTML, asset manifest, new Flow, tag score, large tag library, SFX/Visual implementation, or more proof layers without a concrete production need.
+Do not add a generic Asset framework, second Voice HTML, duplicate Context field, asset manifest, new Flow, tag score, large tag library, SFX/Visual implementation, or more proof layers without a concrete production need.
 
 ## Next Step
 
-**Keep Clockwork v1.11 as the non-audio directed-production baseline; enter SoundMaker Generation Mode only when the user explicitly asks to generate/test audio, or reopen only the affected Voice ID if content/performance wording is revised.**
+**Keep Clockwork v1.11.1 as the non-audio production baseline. Enter SoundMaker Generation Mode only when the user explicitly asks to generate/test audio, or reopen only affected Voice IDs when content/performance requirements change.**
