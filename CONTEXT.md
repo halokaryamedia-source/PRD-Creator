@@ -58,10 +58,10 @@ Overview
      Game System
      Data and Reset
      Gameplay Development
-→ Gameplay Sections
-     Gameplay Overview
-     Level Design
-     Developer
+     gameplay/objective sections
+          Gameplay Overview
+          Level Design
+          Developer
 ```
 
 Internally the renderer may call gameplay sections `packages`; user-facing project copy should use the project's natural Objective/Gameplay naming instead of exposing that implementation term.
@@ -124,7 +124,7 @@ Therefore a Voice-only production update may rerender `final.html` without reope
 
 PRD core and downstream asset production retain separate canonical owners and acceptance evidence even though humans see one consolidated HTML.
 
-When Production Assets exists, its professional navigation owns number **04** after Development; gameplay/objective packages are presented as 05+ in that consolidated HTML. This numbering shift is presentation-only. Projects without Production Assets keep the original PRD-core numbering.
+Production Assets extends the existing PRD navigation; it does not rebuild or renumber it. Gameplay/objective navigation remains under **03 Development** with the same accepted PRD page identities. Production Assets owns its separate professional top-level number **04**. A project without Production Assets keeps the same PRD-core navigation, and adding Production Assets does not shift PRD package/page codes.
 
 # Voice Production direction
 
@@ -163,13 +163,25 @@ An actor voice may remain pending during Preparation Mode when a Target Voice Pr
 
 ### Production Assets → Voice
 
-Every gameplay Voice page uses one consistent objective shell derived from accepted upstream data:
+Production Assets navigation exposes Voice once as the asset category, then one link per gameplay Voice section. Each link shows the gameplay/section title and the nearest accepted PRD label so a developer can identify ownership without memorizing objective order:
 
 ```text
-Gameplay Order / objective title
-→ PRD package label + gameplay context
+04 Production Assets
+   VOICE
+   <gameplay section title>
+   <Introduction | Objective N | Ending | accepted PRD package label>
+```
+
+Navigation labels may wrap naturally inside the sidebar and must remain readable without clipping or ellipsis.
+
+Every gameplay Voice page uses one consistent shell derived from accepted upstream data:
+
+```text
+Voice Production
+→ gameplay section title
+→ accepted PRD package label + gameplay context
 → Voice line count + Primary Speaker
-→ compact Voice Setup
+→ compact Voice Setup for that gameplay section
 ```
 
 Each Voice entry then shows:
@@ -186,6 +198,8 @@ title
 The developer-facing Context does not create a new Voice field: it is a presentation of the existing Flow 5 Trigger. Flow 5 Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM math, QA, and other internal fields stay out of the HTML.
 
 `Copy Prompt` copies only the exact canonical performance payload.
+
+Voice pages use their own Production Assets page identity (`04A`, `04B`, ...). They do not borrow or alter PRD gameplay package numbering.
 
 ### DOCX
 
