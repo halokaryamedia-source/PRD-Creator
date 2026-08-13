@@ -25,10 +25,10 @@ kits/voice-production-kit/
 
 - Flow 5 → `VOICE-EXTRACTION.md`.
 - Flow 6 lifecycle/static output/full-project preparation → `SCRIPT-PRODUCTION.md` + `SOUNDMAKER.md`.
-- Actual Eleven v3 generation/revision → `SOUNDMAKER.md` Generation Mode.
-- DOCX presentation/build mechanics → `DOCX-FORMAT.md` + builder.
+- actual Eleven v3 generation/revision → `SOUNDMAKER.md` Generation Mode.
 - Flow 7 → `VOICE-VALIDATION.md`.
-- Deep Eleven v3 evidence → only the matching file under `references/elevenlabs/`.
+- optional DOCX export → `DOCX-FORMAT.md` + builder.
+- deep Eleven v3 evidence → only the matching file under `references/elevenlabs/`.
 
 Do not broad-read every Voice/reference file by default. Recover current project facts before asking the user.
 
@@ -37,20 +37,21 @@ Do not broad-read every Voice/reference file by default. Recover current project
 ```text
 accepted PRD
 → work/voice-requirements.md
-→ SoundMaker v3 preparation/generation quality
+→ SoundMaker preparation/generation quality
 → work/voice-production.md
-→ output/Voice Production.docx
+→ output/final.html → Production Assets → Voice
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
 
-- Flow 5 owns Voice scope and exact Speaker.
-- SoundMaker is an execution procedure, not a wording authority.
-- `work/voice-production.md` owns final wording and repeats only stable operator metadata: Type, Speaker, Estimated Duration.
-- DOCX is derived operator presentation.
+- PRD owns project/gameplay truth and the fact that a Voice asset is required.
+- Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, required communication, exclusions, and source timing truth when present.
+- `work/voice-production.md` owns final wording, Estimated Duration, and selected actor voice in one optional `Voice Cast:` header.
+- `output/final.html` is the default derived operator presentation; it is not wording authority.
+- DOCX is optional export only.
 - audio is optional evidence/output only when actually in scope.
 
-If the exact generated/approved prompt differs from canonical wording, synchronize it into `work/voice-production.md` before claiming current alignment.
+If exact generated/approved prompt or actor selection differs from canonical production, synchronize it into `work/voice-production.md` and rerender the same project HTML before claiming alignment.
 
 ## SoundMaker modes
 
@@ -60,25 +61,32 @@ SoundMaker is **Eleven v3 only** and stays inside Flow 6.
 
 - may process the full current Voice scope in one bounded pass;
 - actual commercial voice selection may wait if a clear Target Voice Profile exists;
-- apply per-line construction plus project-level speaker continuity/information progression/anti-template review;
+- apply per-line construction plus integrated project-level continuity/anti-template review;
 - do not require audio generation/testing;
 - do not require `APPROVED` per line;
-- keep duration/pronunciation as planned evidence until real proof exists.
+- keep measured duration/pronunciation/audio evidence unclaimed until proof exists.
 
 ### Generation Mode
 
 - use only when actual ElevenLabs work is requested;
 - one active Voice ID;
 - exact project Speaker known;
-- actual voice/settings selected;
+- actual actor voice/settings selected;
 - one exact reviewed prompt;
-- feedback/approval loop + canonical sync.
-
-Do not duplicate detailed prompting rules here.
+- feedback/approval loop + canonical sync + rerender when canonical production changed.
 
 ## Static output contract
 
-Canonical Flow 6 entry:
+Canonical production may contain:
+
+```text
+Voice Cast:
+- <Speaker>: <selected ElevenLabs voice>
+```
+
+once before gameplay sections.
+
+Each Voice entry remains:
 
 ```text
 Voice ID + Title
@@ -88,52 +96,37 @@ Estimated Duration
 exact performance block
 ```
 
-DOCX:
+The project HTML shows only Voice Cast once, gameplay-ordered title/Actor/Estimated Duration, exact prompt, and Copy Text.
 
-```text
-Type · Speaker
-Voice ID — Title
-Estimated Duration
-Performance Script
-```
+Internal Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, Performance Fill Map, voice-fit ratings, and QA notes stay in their owners and do not leak into the visible production page.
 
-Operator handoff is derived and compact; do not create another persistent handoff artifact by default.
-
-Internal planning metadata such as Channel, Trigger, Purpose, requirement bullets, source refs, WPM math, performance maps, voice-fit ratings, and QA notes stays in its owning source rather than being duplicated into the script/DOCX.
+Do not create a separate Voice HTML or Asset Requirement HTML by default.
 
 ## Semantic vs technical ownership
 
 Use the root `voice-production` specialist for semantic/product-contract defects such as:
 
-- Voice ID/Type/Speaker/Channel/Trigger scope;
-- final wording/performance meaning;
+- Voice ID/Type/Speaker/Channel/Trigger/Purpose scope;
+- Flow 5→6 intent completeness;
+- final wording/performance/actor selection meaning;
 - SoundMaker quality behavior;
-- artifact/delivery semantics.
+- Voice artifact/delivery semantics.
 
-When semantics are already correct, route pure mechanics directly:
+When semantics are already correct, route mechanics directly:
 
-- Markdown/DOCX generation/pagination → `builder/build_docx.py`;
-- presentation contract → `DOCX-FORMAT.md`;
-- mechanical parity → `validator/validate.py`;
-- shared dependency/test/CI → root repository-engineering owners.
+- same-HTML Production Assets composition → `kits/project-document-generator/renderer/production_assets.py`;
+- optional DOCX generation/pagination → `builder/build_docx.py`;
+- optional DOCX presentation contract → `DOCX-FORMAT.md`;
+- Voice mechanical parity → `validator/validate.py`;
+- shared dependency/test/CI → repository-engineering owners.
 
-## Builder / validator rules
+## Validator / builder rules
 
-- regenerate DOCX from canonical Markdown; never hand-edit it as the source fix;
-- parser/build failures must fail clearly;
-- exact Voice ID, Type, and **Speaker** parity are fail-closed;
+- exact Voice ID, Type, and Speaker parity are fail-closed;
+- when consolidated `final.html` exists, validator checks exact canonical prompt parity in Voice Production panels;
+- when optional DOCX exists, validator checks that export too;
 - builder/validator PASS does not establish semantic, visual, pronunciation, or audio quality;
-- the known blank-page regression remains guarded by `page_break_before`, not inserted page-break paragraphs.
-
-## Dependency contract
-
-Kit runtime requirement:
-
-```text
-python-docx==1.2.0
-```
-
-Repository verification uses exact pins from root `requirements.lock.txt`.
+- never hand-edit `final.html` or DOCX as the source fix.
 
 ## Verification
 
@@ -146,7 +139,15 @@ python -m unittest tests.test_voice_contracts -v
 python -m compileall -q kits/voice-production-kit tests/test_voice_contracts.py
 ```
 
-Direct builder:
+Consolidated project HTML is generated with the normal PRD command:
+
+```text
+python kits/project-document-generator/renderer/render.py \
+  workspace/active/<project>/work/render-data.json \
+  workspace/active/<project>/output/final.html
+```
+
+Optional DOCX:
 
 ```text
 python kits/voice-production-kit/builder/build_docx.py \
@@ -155,19 +156,21 @@ python kits/voice-production-kit/builder/build_docx.py \
   --requirements workspace/active/<project>/work/voice-requirements.md
 ```
 
-Direct validator:
+Direct Voice validator:
 
 ```text
 python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>
 ```
 
-Use `Voice Verify` as the repeatable repository-side gate for changed Voice contracts.
+Use `Voice Verify` for changed Voice contracts and `PRD Verify` when the Production Assets compositor changes.
 
 ## Boundaries
 
 - kit owns Flow 5–7 only;
 - SoundMaker is not Flow 8;
 - project definition/PRD belongs to Project Document Generator;
-- SFX generation remains a separate lane;
-- actual audio never becomes upstream project authority.
+- Production Assets pages are downstream presentation, not a new PRD semantic owner;
+- SFX generation remains a separate lane until explicitly developed;
+- actual audio never becomes upstream project authority;
+- DOCX remains optional compatibility/export, not the default operator surface.
