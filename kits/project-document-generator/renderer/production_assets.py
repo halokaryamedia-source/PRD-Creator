@@ -248,7 +248,7 @@ def voice_pages(render_data: dict, doc: VoiceProduction) -> list[str]:
     )
 
     for section_index, section in enumerate(doc.sections):
-        body = f'<p class="eyebrow">{i18n(bi("Production Assets · Voice", "Aset Produksi · Voice"))}</p>'
+        body = ""
         if section_index == 0:
             body += (
                 f'<h2 class="development-package-title">{i18n(bi("Voice Production", "Voice Production"))}</h2>'
