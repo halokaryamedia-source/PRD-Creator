@@ -1,0 +1,138 @@
+name: Production Assets Taxonomy Refinement
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/asset-taxonomy-refinement.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Local
+        uses: actions/checkout@v4
+        with:
+          ref: Local
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Apply bounded taxonomy refinement
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          rename_files = [
+              Path('CONTEXT.md'),
+              Path('README.md'),
+              Path('kits/project-document-generator/README.md'),
+              Path('kits/project-document-generator/RENDERING.md'),
+              Path('kits/project-document-generator/renderer/production_assets_objective.py'),
+              Path('workspace/README.md'),
+              Path('docs/knowledge/reviews/current-validation.md'),
+              Path('docs/knowledge/next-action.md'),
+              Path('tests/test_prd_voice_assets.py'),
+          ]
+
+          old = 'Cinematic & Presentation'
+          new = 'Visual Effects & Presentation'
+          changed = []
+          for path in rename_files:
+              text = path.read_text(encoding='utf-8')
+              if old in text:
+                  text = text.replace(old, new)
+                  path.write_text(text, encoding='utf-8')
+                  changed.append(str(path))
+
+          required = {
+              'CONTEXT.md',
+              'README.md',
+              'kits/project-document-generator/README.md',
+              'kits/project-document-generator/RENDERING.md',
+              'kits/project-document-generator/renderer/production_assets_objective.py',
+              'workspace/README.md',
+              'docs/knowledge/reviews/current-validation.md',
+              'docs/knowledge/next-action.md',
+              'tests/test_prd_voice_assets.py',
+          }
+          missing = sorted(required - set(changed))
+          if missing:
+              raise SystemExit('Expected taxonomy rename target missing: ' + ', '.join(missing))
+
+          test_path = Path('tests/test_prd_voice_assets.py')
+          text = test_path.read_text(encoding='utf-8')
+          fixture_needle = '''TRIAL COMPLETE
+```
+"""'''
+          fixture_replacement = '''TRIAL COMPLETE
+```
+
+### Visual Effects & Presentation
+
+#### Trial Completion Reveal
+Requirement: Create one short objective-completion presentation with a brief area-wide visual pulse and camera emphasis. It is a standalone presentation response, not a component of the console or hologram assets.
+Usage: Runs once after valid trial completion.
+"""'''
+          if text.count(fixture_needle) != 1:
+              raise SystemExit('Could not locate unique Production Assets fixture ending.')
+          text = text.replace(fixture_needle, fixture_replacement, 1)
+
+          zero_assert = '        self.assertNotIn("Visual Effects &amp; Presentation <b>0</b>", html)\n'
+          positive_assert = (
+              '        self.assertIn("Visual Effects &amp; Presentation <b>1</b>", html)\n'
+              '        self.assertNotIn("Cinematic &amp; Presentation", html)\n'
+          )
+          if text.count(zero_assert) != 1:
+              raise SystemExit('Could not locate renamed zero-category assertion.')
+          text = text.replace(zero_assert, positive_assert, 1)
+          test_path.write_text(text, encoding='utf-8')
+
+          renderer = Path('kits/project-document-generator/renderer/production_assets_objective.py').read_text(encoding='utf-8')
+          expected_tuple = 'ASSET_CATEGORIES = ("3D Models", "UI & Information", "Audio", "Visual Effects & Presentation")'
+          if expected_tuple not in renderer:
+              raise SystemExit('Renderer taxonomy did not converge on final four categories.')
+
+          print('Updated taxonomy owners:')
+          for path in changed:
+              print('-', path)
+          PY
+
+      - name: Compile affected sources
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit tests/test_prd_voice_assets.py tests/test_voice_contracts.py
+
+      - name: Run focused contracts
+        run: |
+          python -m unittest tests.test_prd_voice_assets -v
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Commit refinement and self-delete
+        run: |
+          git config user.name "halokaryamedia-source"
+          git config user.email "halokaryamedia@gmail.com"
+          rm .github/workflows/asset-taxonomy-refinement.yml
+          git add \
+            CONTEXT.md \
+            README.md \
+            kits/project-document-generator/README.md \
+            kits/project-document-generator/RENDERING.md \
+            kits/project-document-generator/renderer/production_assets_objective.py \
+            workspace/README.md \
+            docs/knowledge/reviews/current-validation.md \
+            docs/knowledge/next-action.md \
+            tests/test_prd_voice_assets.py \
+            .github/workflows/asset-taxonomy-refinement.yml
+          git commit -m "prd: finalize Production Assets taxonomy"
+          git push origin HEAD:Local
