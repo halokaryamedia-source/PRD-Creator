@@ -1,5 +1,5 @@
 # The Clockwork Vault Voice Production
-Version: 1.0.0
+Version: 1.1.0
 Source Voice Requirements: Final Review / work/voice-requirements.md
 
 Voice Cast:
@@ -13,10 +13,12 @@ Speaker: Custodian Vex
 Estimated Duration: 18–21 seconds
 
 ```performance
+[serious]
 You made it inside... but the entrance won't reopen on its own.
 
 This vault protects the Great Orrery, and four systems between us and that machine have gone dark.
 
+[reassuring]
 Take the Custodian Key. Restore them in order, and the vault will open a way home.
 ```
 
@@ -26,6 +28,7 @@ Speaker: Custodian Vex
 Estimated Duration: 4–6 seconds
 
 ```performance
+[firmly]
 Take the Custodian Key to the marked seal.
 That's our first way forward.
 ```
@@ -54,6 +57,7 @@ Speaker: Custodian Vex
 Estimated Duration: 11–13 seconds
 
 ```performance
+[cautious]
 The Broken Gallery is open.
 
 Carry the Custodian Key to the far pedestal, and spend your supplies carefully. Every repair costs you something, so choose a route you can finish.
@@ -77,6 +81,7 @@ Speaker: Custodian Vex
 Estimated Duration: 12–14 seconds
 
 ```performance
+[serious]
 The Wardens are still active.
 
 Use the Echo Pebble on wall or floor traps and they'll fall silent for four seconds.
@@ -90,6 +95,7 @@ Speaker: Custodian Vex
 Estimated Duration: 8–10 seconds
 
 ```performance
+[thoughtful]
 The Wardens never stopped protecting the Orrery.
 
 Parts of this vault are still working.
@@ -105,6 +111,7 @@ Speaker: Custodian Vex
 Estimated Duration: 12–14 seconds
 
 ```performance
+[focused]
 This grid feeds the Great Orrery.
 
 Rotate the conduits so power reaches Ring One, then extend the same live network to Ring Two and Ring Three.
@@ -124,6 +131,7 @@ Stop! That Gremlin severed an active connection!
 [frustrated]
 That edge is gone.
 
+[firmly]
 The conduit rule HASN'T changed—reroute around the break, restore the lost power, and keep building toward Ring Three.
 ```
 
@@ -133,6 +141,7 @@ Speaker: Custodian Vex
 Estimated Duration: 8–10 seconds
 
 ```performance
+[encouraging]
 Look where I'm marking the grid.
 There's a useful connection there.
 
@@ -153,6 +162,8 @@ Listen... the whole vault is moving again.
 You didn't just escape it—you restored what it was built to protect.
 
 The Great Orrery is awake, and the gateway is open.
+
+[warmly]
 Take the Clockwork Wayfinder. You've earned it.
 ```
 
@@ -162,6 +173,7 @@ Speaker: Custodian Vex
 Estimated Duration: 4–6 seconds
 
 ```performance
+[warmly]
 The way home is clear.
 Follow the gateway back to the holding area.
 ```
