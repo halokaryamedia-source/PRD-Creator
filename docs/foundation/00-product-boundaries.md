@@ -8,45 +8,46 @@ Status: active policy
 - safe Clarification/Completion vs Proposal/Blocked decision boundaries;
 - clear user-facing explanation of material unresolved decisions without changing technical meaning;
 - canonical PRD content and deterministic rendering through the approved Golden hierarchy, page composition, component language, and presentation foundation;
+- same-project HTML composition that preserves accepted PRD hierarchy while appending approved downstream Production Assets;
 - development-readiness validation and concise team handoff.
 
-It does not own downstream voice wording or generated audio.
+It does not own downstream Voice wording.
 
 ## Voice Production Kit Owns
 
 ### Flow 5
 
-- extracting justified voice moments from accepted PRD content;
-- preserving speaker/channel/trigger/purpose and required facts;
-- preventing redundant/unsupported voice scope.
+- extracting justified Voice moments from accepted PRD content;
+- preserving Speaker/Channel/Trigger/Purpose and required facts;
+- preventing redundant or unsupported Voice scope.
 
 ### Flow 6
 
 - final spoken wording and performance notation for accepted Voice IDs;
 - Estimated Duration as an estimate;
-- deterministic `Voice Production.docx` generation.
+- canonical `work/voice-production.md` production content;
+- optional `Voice Production.docx` export when requested or materially useful.
 
 ### Flow 7
 
-- exact-revision Voice ID/type/DOCX integrity validation;
-- requirement coverage/factual fidelity review;
-- terminology/pronunciation risk review;
-- speaker/channel/trigger consistency review;
-- whole-project performance continuity/pacing/notation review;
-- current DOCX visual QA;
-- truthful delivery state and optional actual-audio evidence recording.
+- exact-revision Voice ID/Type/Speaker and derived-output integrity validation;
+- Communication Conservation and integrated Voice Script Readiness;
+- current consolidated project-HTML visual QA when claimed;
+- optional DOCX QA when that export exists;
+- truthful delivery state and evidence boundaries.
 
 ## Voice Production Does Not Own
 
 - repairing unresolved project/PRD decisions by invention;
-- adding new voice moments during script polishing or final audit;
-- claiming pronunciation is verified without evidence;
-- claiming generated audio sounds correct when no audio was reviewed;
-- treating DOCX/audio as higher authority than canonical script/requirements.
+- adding new Voice moments during script polishing or final audit;
+- rebuilding or renumbering accepted PRD navigation/page identity;
+- treating derived HTML or DOCX as higher authority than canonical script/requirements.
 
 ## Default Delivery Scope
 
-The normal kit deliverable is the accepted **Voice Production script + DOCX for ElevenLabs use**. Actual generated audio is a separate evidence/delivery dimension unless the user explicitly includes it in the task.
+The normal non-audio Voice deliverable is the accepted **canonical Voice Production script + current consolidated project HTML (`output/final.html`)**.
+
+`Voice Production.docx` is an optional portable export, not a default readiness requirement. Audio remains a separate evidence/delivery scope when explicitly in scope.
 
 ## Shared Boundary Rule
 
