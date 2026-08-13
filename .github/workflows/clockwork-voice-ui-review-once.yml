@@ -126,3 +126,5 @@ jobs:
           git add workspace/active/the-clockwork-vault/output/final.html
           git commit -m "render: refine Clockwork Voice production UI"
           git push origin HEAD:Local
+
+# Rerun after Voice validator contract synchronization.
