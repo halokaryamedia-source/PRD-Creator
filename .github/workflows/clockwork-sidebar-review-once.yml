@@ -49,7 +49,7 @@ jobs:
               'The Resonance Engine', 'Objective 1',
               'The Broken Gallery', 'Objective 2',
               'The Warden Halls', 'Objective 3',
-              'The Gremlin&#x27;s Workshop', 'Objective 4',
+              'The Gremlin’s Workshop', 'Objective 4',
               'Vault Restored', 'Ending',
           ]
           for value in required:
@@ -79,7 +79,7 @@ jobs:
               ('The Resonance Engine', 'Objective 1'),
               ('The Broken Gallery', 'Objective 2'),
               ('The Warden Halls', 'Objective 3'),
-              ("The Gremlin's Workshop", 'Objective 4'),
+              ('The Gremlin’s Workshop', 'Objective 4'),
               ('Vault Restored', 'Ending'),
           ]
           html = Path('workspace/active/the-clockwork-vault/output/final.html').resolve()
