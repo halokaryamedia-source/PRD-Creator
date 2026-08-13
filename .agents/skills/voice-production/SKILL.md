@@ -1,6 +1,6 @@
 ---
 name: voice-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is Voice Requirement scope, Eleven v3 wording/SoundMaker quality, communication conservation, static Voice output meaning, or final Voice validation/delivery semantics. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, or audio evidence.
+description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when the active boundary is Voice Requirement scope, Flow 5→6 intent completeness, Eleven v3 wording/SoundMaker quality, communication conservation, static Voice output meaning, or final Voice validation/delivery semantics. Preserve exact upstream PRD/Voice scope and never invent gameplay, lore, speaker/channel, trigger, timing truth, or audio evidence.
 ---
 
 # Voice Production
@@ -12,7 +12,8 @@ Own semantic/product-contract judgment around Voice Production Kit Flow 5–7. D
 Use when the wrong contract concerns:
 
 - accepted PRD → Voice Requirements;
-- Voice ID / Type / Speaker / Channel / Trigger / communication scope;
+- Voice ID / Type / Speaker / Channel / Trigger / Purpose / communication scope;
+- Flow 5 requirement completeness for SoundMaker;
 - Voice Requirements → final Eleven v3 wording;
 - Voice Intent Completeness, Performance Fill Map, Communication Conservation, duration, Target Voice Profile/fit, or operator readiness;
 - what canonical script / operator handoff / DOCX / audio acceptance is allowed to represent.
@@ -43,23 +44,43 @@ accepted PRD
 → voice-state.yaml
 ```
 
-- Flow 5 owns which Voice moments exist and what they must communicate.
-- Flow 6 owns final Eleven v3 wording/performance notation, not Voice scope.
+- Flow 5 owns which Voice moments exist, their approved Speaker/Channel/Trigger/Purpose, required communication, exclusions, and authoritative timing truth when one exists.
+- Flow 6 owns final Eleven v3 wording/performance notation and Estimated Duration, not Voice scope or source timing truth.
 - canonical Flow 6 entries carry exact Voice ID/Type/Speaker parity plus Estimated Duration and exact performance text.
 - `SOUNDMAKER.md` is the operational procedure, not a second wording owner.
 - operator handoff is a concise derived view, not another persistent authority.
 - Flow 7 owns revision-specific evidence, not rewritten dialogue.
 - generated audio is evidence/output, never upstream project authority.
 
-## Flow 5 judgment
+# Flow 5 judgment
 
-- extract only justified player-facing communication moments;
-- preserve supported Speaker/Channel/Trigger/Function;
-- deduplicate repeated briefing unless Trigger/Function genuinely differs;
-- implementation-only detail does not automatically become narration;
+Extract only justified player-facing communication moments and preserve supported Speaker/Channel/Trigger/Function.
+
+A Flow 5 entry is ready for Flow 6 only when SoundMaker can recover, without product-level guessing:
+
+```text
+Communication Job   ← Function + Purpose
+Listener State      ← Trigger + Channel
+Information Payload ← Must communicate
+Listener Outcome    ← Purpose
+Speaker Owner       ← Speaker
+Hard Timing Truth   ← optional Timing Constraint
+Scope Guardrails    ← Must not add/repeat
+```
+
+Quality rules:
+
+- Trigger describes the actual event/state and relevant listener condition when material.
+- Purpose describes what the listener should know/do/understand/acknowledge, not merely `provide dialogue`.
+- Independently actionable required facts remain distinct enough to conserve downstream.
+- `Timing Constraint` is optional and only for authoritative line/window/sync truth; it is not Estimated Duration.
+- deduplicate repeated briefing unless Trigger/Function genuinely differs.
+- implementation-only detail does not automatically become narration.
 - `no_voice_required` is valid.
 
-## Flow 6 / SoundMaker judgment
+Do not add Flow 5 fields for performance shape, landing wording, tags, CAPS/punctuation, voice selection, Stability, or production-estimated duration.
+
+# Flow 6 / SoundMaker judgment
 
 SoundMaker scope is **Eleven v3 only**.
 
@@ -74,31 +95,31 @@ Voice Intent Completeness
 → integrated Voice Script Readiness
 ```
 
-### Voice Intent Completeness / Performance Fill Map
+## Voice Intent Completeness / Performance Fill Map
 
-Resolve communication job, listener state, information payload, listener outcome, speaker identity, timing envelope, performance shape, and landing before writing when they are material.
+Use the Flow 5 interface first. Reopen accepted PRD context only when genuinely missing delivery-relevant context prevents responsible authoring.
 
-This is reasoning only. Do not create another schema/artifact.
+Performance Shape and Landing normally remain SoundMaker craft decisions; do not push them upstream merely to make the requirement more detailed.
 
-### Communication Conservation
+## Communication Conservation
 
-Every independently actionable Flow 5 `Must communicate` fact that belongs in the moment must survive wording polish and duration compression clearly. `Must not add/repeat` remains binding.
+Every independently actionable Flow 5 `Must communicate` fact that belongs in the moment must survive wording polish and duration compression clearly. `Must not add/repeat` remains binding. Any authoritative Flow 5 timing constraint must remain respected.
 
 Concision may improve wording; it may not thin material communication.
 
-### Integrated Voice Script Readiness
+## Integrated Voice Script Readiness
 
 Review Communication, Listener, Character, Performance, Timing, Continuity, and Operator clarity as one semantic decision. Do not create separate scorecards/gates for the lenses.
 
-Communication Conservation remains explicit because a script can sound good while still omitting required meaning.
+Communication Conservation remains explicit because a script can sound good while still omit required meaning.
 
-### Production interpretation vs material decision
+## Production interpretation vs material decision
 
-SoundMaker may decide craft details such as sentence split, beat structure, punctuation, CAPS, tags, and pacing within approved intent.
+SoundMaker may decide craft details such as sentence split, beat structure, punctuation, CAPS, tags, pacing, Performance Shape, Landing, and Estimated Duration within approved intent.
 
-Return upstream when unresolved work would materially change Speaker personality/identity, Voice scope, Trigger, Channel, mechanic, reward, lore, or required communication.
+Return upstream when unresolved work would materially change Speaker personality/identity, Voice scope, Trigger, Channel, mechanic, reward, lore, required communication, or an authoritative timing/sync rule.
 
-## Static output judgment
+# Static output judgment
 
 Keep output lean:
 
@@ -109,21 +130,21 @@ Keep output lean:
 
 Do not create another handoff artifact merely to duplicate canonical output.
 
-## First wrong owner / bounded revision
+# First wrong owner / bounded revision
 
 Fix the earliest wrong owner:
 
 ```text
 project fact → PRD authority
-Voice scope/Speaker/Channel/Trigger/required communication → Flow 5
-wording/performance/duration → Flow 6
+Voice scope/Speaker/Channel/Trigger/Purpose/required communication/timing truth → Flow 5
+wording/performance/Estimated Duration → Flow 6
 DOCX-only defect → builder/DOCX contract
 audio-only defect → Generation Mode
 ```
 
 Revise only invalidated Voice IDs/speaker scope plus continuity materially affected by the change.
 
-## Flow 7 judgment
+# Flow 7 judgment
 
 Use:
 
@@ -139,7 +160,7 @@ Existing `voice-state.yaml` semantic fields remain compatibility summaries and d
 
 Critical/Major findings block `voice_delivery_ready`.
 
-## Audio evidence
+# Audio evidence
 
 Use truthful states:
 
@@ -150,7 +171,7 @@ Use truthful states:
 
 Preparation Mode may legitimately finish with `not_provided`. Never infer audio quality from script quality or DOCX appearance.
 
-## Stop rule
+# Stop rule
 
 Stop once current preparation scope is script-ready, Communication Conservation and integrated Voice Script Readiness pass, requested derived artifacts are current, and remaining evidence is stated honestly.
 
