@@ -1,10 +1,10 @@
 # Project Document Generator
 
-**Version:** 1.13.0 — PRD core
+**Version:** 1.13.0
 
 Repository-backed system for turning uneven project direction into a development-ready gameplay PRD while preserving authority, approved project meaning, the exact Golden PRD-core prototype, and bounded proof cost.
 
-The same renderer may also append accepted downstream **Production Assets** to the same project HTML after PRD handoff. That downstream composition does not change PRD-core meaning or version when `content.md` / `render-data.json` remain unchanged.
+Version 1.13.0 continues to describe the PRD core. The same renderer may also append accepted downstream **Production Assets** to the same project HTML after PRD handoff. That downstream composition does not change PRD-core meaning or version when `content.md` / `render-data.json` remain unchanged.
 
 ## Normal PRD use
 
