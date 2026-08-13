@@ -4,57 +4,76 @@ Updated: 2026-08-13
 
 ## Current Status
 
-`CLOCKWORK_VOICE_OBJECTIVE_UI_READY`
+`CLOCKWORK_VOICE_NAVIGATION_READY`
 
 Working branch: **`Local` only**.
 
 ## Current state
 
-Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit is **v1.11.1** and remains **Eleven v3 only**.
+Project Document Generator PRD core remains **v1.13.0**. Voice Production Kit is **v1.11.2** and remains **Eleven v3 only**.
 
-Clockwork continues to use one human-facing project document:
+Clockwork still uses one human-facing project document:
 
 ```text
 accepted PRD
-↓
-12 justified Voice asset requirements
-↓
-Eleven v3 Voice Production
-↓
-same output/final.html
+→ Voice requirements
+→ canonical Voice Production
+→ same output/final.html
    PRD core
    + Production Assets → Voice
 ```
 
-Clockwork PRD meaning, `work/render-data.json`, Voice wording, performance tags, Voice asset count, and actor selection were not changed by the v1.11.1 UI refinement.
+The v1.11.2 correction changes presentation/navigation only. Clockwork gameplay meaning, `work/render-data.json`, Voice wording, performance tags, Voice asset count, and production configuration remain unchanged.
 
-## Directed performance baseline
+## Consolidated navigation
 
-Every standalone canonical `performance` block begins with at least one deliberate initial Audio/Performance Direction Tag. Transition tags remain conditional on real audible state changes.
-
-Current Voice Setup baseline:
+The accepted PRD hierarchy is preserved:
 
 ```text
-Custodian Vex → William Shanks - Rich and Deep
-Model → Eleven v3
+01 Overview
+02 Gameplay Flow
+03 Development
+   Development Overview
+   Game System
+   Data and Reset
+   Gameplay Development
+   gameplay/objective sections
+      Gameplay Overview
+      Level Design
+      Developer
+04 Production Assets
+   VOICE
+   The Antechamber
+      Introduction
+   The Resonance Engine
+      Objective 1
+   The Broken Gallery
+      Objective 2
+   The Warden Halls
+      Objective 3
+   The Gremlin’s Workshop
+      Objective 4
+   Vault Restored
+      Ending
 ```
 
-The commercial voice is selected for preparation/operator use but has **not** been audio-tested or audio-approved.
+Production Assets extends the PRD navigation instead of rebuilding it. Gameplay/objective navigation remains inside Development and existing PRD page codes remain unchanged.
 
-## Production Assets → Voice v1.11.1
+Voice appears once as the Production Assets category. Each Voice link shows the gameplay section title plus the accepted PRD package label, and sidebar text is allowed to wrap naturally.
 
-All gameplay Voice pages now use the same objective shell, including short sections such as The Antechamber.
+## Voice page contract
 
-The section shell derives from accepted project data:
+Each Voice section page shows:
 
 ```text
-Gameplay Order / objective title
-→ PRD package label + gameplay context
+Voice Production
+→ gameplay section title
+→ accepted PRD package label + gameplay context
 → Voice line count + Primary Speaker
 → compact Voice Setup
 ```
 
-Each Voice entry derives implementation-facing placement without adding a new canonical field:
+Each Voice entry remains:
 
 ```text
 title
@@ -65,39 +84,7 @@ title
 → Copy Prompt
 ```
 
-Examples now visible in Gremlin's Workshop:
-
-```text
-Build One Live Network
-Objective 4 · Voice Line 1/3
-Context: The player enters the Workshop and conduit interaction becomes active on the unsabotaged 3×3 grid.
-
-Gremlin Sabotage Reaction
-Objective 4 · Voice Line 2/3
-Context: About 20 seconds after Ring 2 stabilizes, the scripted Gremlin event visibly breaks one authored active connection and input is briefly locked.
-
-Highlight-Only Assist
-Objective 4 · Voice Line 3/3
-Context: The configured Workshop assist threshold is reached and Vex highlights one useful node, connection, or region without changing the board.
-```
-
-The exact Flow 5 Trigger remains owned by `work/voice-requirements.md`; it is only projected into HTML for developer setup. `work/voice-production.md` remains minimal and unchanged.
-
-`Copy Prompt` still copies only the exact hidden canonical `performance` payload.
-
-## Consolidated navigation
-
-When Production Assets exists, professional navigation is now:
-
-```text
-01 Overview
-02 Gameplay Flow
-03 Development
-04 Production Assets
-05+ gameplay/objective packages
-```
-
-The package number shift is presentation-only in the consolidated HTML. A PRD with no Production Assets keeps its original PRD-core navigation/page numbering.
+The developer-facing Context is a direct presentation of the existing Flow 5 Trigger. Canonical Voice fields were not expanded.
 
 ## Validation
 
@@ -114,28 +101,24 @@ Critical: 0
 Major: 0
 ```
 
-Proof completed for v1.11.1:
+Proof completed for v1.11.2:
 
-- full PRD contract suite passed;
-- Voice contract suite passed with the new project-HTML objective/context contract;
-- Clockwork rerender passed from canonical source;
-- Clockwork Voice mechanical validator passed;
-- consolidated navigation asserts passed (`04 Production Assets`, packages `05+`);
-- exact Flow 5 Trigger context was verified in rendered Gremlin entries;
-- actual desktop browser capture passed for The Antechamber and The Gremlin's Workshop;
-- no clipping/overlap was observed in those representative pages;
-- temporary review workflows self-removed after use.
+- focused PRD/Production Assets regression contracts passed;
+- repository verification passed;
+- Clockwork rerender and Voice mechanical validation passed from unchanged canonical sources;
+- actual browser inspection passed at 1500px and 1000px desktop widths;
+- all six Voice navigation links matched section name + accepted package label;
+- no Voice navigation clipping/overflow was detected at those claimed desktop widths;
+- gameplay/objective navigation remained under Development;
+- existing PRD page identities remained unchanged;
+- the temporary browser-review workflow removed itself after proof.
 
-## Audio boundary
-
-No ElevenLabs generation, listening, A/B comparison, measured-duration calibration, or generated-audio quality claim has been performed.
-
-`voice_delivery_ready` means the **non-audio script + consolidated project HTML** are production-ready. It does not mean the generated Voice assets or selected commercial voice are audio-approved.
+No generated-audio review was performed, so no audio-quality claim is part of this readiness state.
 
 ## Overdevelopment guard
 
-Do not add a generic Asset framework, second Voice HTML, duplicate Context field, asset manifest, new Flow, tag score, large tag library, SFX/Visual implementation, or more proof layers without a concrete production need.
+Do not add a generic Asset framework, second Voice HTML, duplicate Context field, asset manifest, new Flow, tag score, SFX/Visual implementation, or more proof layers without a concrete production need.
 
 ## Next Step
 
-**Keep Clockwork v1.11.1 as the non-audio production baseline. Enter SoundMaker Generation Mode only when the user explicitly asks to generate/test audio, or reopen only affected Voice IDs when content/performance requirements change.**
+**Keep this v1.11.2 non-audio baseline until the user explicitly requests the next Voice production stage or changes an affected Voice requirement.**
