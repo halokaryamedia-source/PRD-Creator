@@ -22,7 +22,7 @@ SoundMaker remains **Eleven v3 only** and is now the single operational executio
 kits/voice-production-kit/SOUNDMAKER.md
 ```
 
-The knowledge structure is now intentionally narrow:
+The knowledge structure is intentionally narrow:
 
 ```text
 SOUNDMAKER.md
@@ -59,4 +59,4 @@ Official v3-specific guidance has precedence over conflicting generic TTS guidan
 
 ## Next Step
 
-**Use SoundMaker v3.5 knowledge on the next real Voice ID only if the repository label is corrected to SoundMaker v3; then retain actual approved prompt/audio behavior as project calibration.**
+**Use SoundMaker v3 on the next real Voice ID, then retain only actual approved prompt/audio behavior as project-calibrated evidence.**
