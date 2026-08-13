@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.1 — 2026-08-13
+
+- added a single default Eleven v3 generation baseline: `Stability: Natural` unless stronger approved project calibration exists;
+- added an explicit pre-generation handoff so model, voice, Stability, exact prompt, timing target, and pronunciation risk are known before generation;
+- added actual-audio quality review for intelligibility, voice identity, emotional movement, pacing, emphasis/landing, naturalness, pronunciation, and duration;
+- separated four post-generation outcomes: approve, review alternative/regenerate, revise prompt, or flag voice-fit risk;
+- kept the v3-only scope, Flow 5 Voice authority, canonical `work/voice-production.md`, DOCX builder/validator, and artifact schema unchanged.
+
 ## 1.4.0 — 2026-08-13
 
 - made SoundMaker operational production **Eleven v3 only**;
