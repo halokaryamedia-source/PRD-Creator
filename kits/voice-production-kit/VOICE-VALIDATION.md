@@ -1,21 +1,20 @@
 # Voice Validation & Delivery Procedure
 
-Flow 7 validates the current Flow 6 script/DOCX revision and, when audio is in scope, verifies that reviewed audio corresponds to the current canonical Eleven v3 prompt.
+Flow 7 validates the exact current Flow 6 revision and decides whether the requested delivery scope is ready.
 
 ## Entry
 
 Start from `state/voice-state.yaml: voice_script_ready` for the current Voice Requirements revision.
 
-Read in this order:
+Read only:
 
-1. `VOICE-VALIDATION.md`;
-2. `work/voice-requirements.md`;
-3. `work/voice-production.md`;
-4. `SOUNDMAKER.md` when v3 performance quality or generated-prompt alignment is in scope;
-5. `DOCX-FORMAT.md` when DOCX is in scope;
-6. accepted PRD only when a project fact/term needs verification.
+1. `work/voice-requirements.md`;
+2. `work/voice-production.md`;
+3. `SOUNDMAKER.md` when v3 performance/audio quality is in scope;
+4. `DOCX-FORMAT.md` when DOCX presentation is in scope;
+5. accepted PRD only when a project fact/term needs verification.
 
-## Step 1 — Mechanical validator
+## 1. Mechanical validation
 
 Run:
 
@@ -24,122 +23,82 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-A pass proves parity/integrity only. It does not approve wording, v3 performance, pronunciation, layout, or audio.
+Mechanical PASS proves parity/integrity only. It does not approve wording, pronunciation, v3 performance, layout, or audio.
 
-## Step 2 — Requirement-by-requirement review
+## 2. Requirement coverage
 
-For each Voice ID, compare canonical performance text to Flow 5 requirement.
+For every Voice ID, verify that canonical wording:
 
-PASS only when:
+- satisfies Flow 5 Purpose;
+- communicates all material required facts;
+- respects `Must not add/repeat` guardrails;
+- preserves approved Type, speaker, channel, trigger, terminology, sequence, mechanics, outcomes, and rewards;
+- introduces no unsupported project fact.
 
-- Purpose is satisfied;
-- all material `Must communicate` facts are present;
-- `Must not add/repeat` guardrails are respected;
-- Type is correct;
-- approved speaker/channel/trigger remain compatible;
-- no project fact was invented during SoundMaker/script polish.
+Paraphrase is allowed. Changed meaning is not.
 
-Do not demand literal sentence matching. Meaning and production function are the test.
+## 3. Terminology / pronunciation
 
-## Step 3 — Terminology / pronunciation
+Audit only material pronunciation risk.
 
-Audit official project terms across the full script.
+Use when needed:
 
-Create pronunciation notes only for material risk. Use:
-
-- `confirmed` — explicit approved pronunciation evidence exists;
-- `accepted_as_written` — creative owner accepts written form;
+- `confirmed` — approved pronunciation evidence exists;
+- `accepted_as_written` — creative owner intentionally accepts the written form;
 - `needs_confirmation` — do not claim pronunciation-ready.
 
-Do not claim a spelling guarantees Eleven v3 pronunciation.
+## 4. Project performance continuity
 
-## Step 4 — speaker/channel/trigger continuity
+Review the whole project for:
 
-Check dialogue perspective and wording against approved speaker/channel/trigger/function.
+- coherent narrator/character identity;
+- scene-driven energy/emotional movement;
+- no repeated template that makes nearby lines feel mechanically identical;
+- concise compatible directing;
+- plausible duration estimates;
+- no unsupported v3 notation such as SSML `<break>`.
 
-Route defects to the owning upstream source rather than inventing metadata in the audit.
+Detailed one-line construction belongs to `SOUNDMAKER.md`; do not duplicate its prompting checklist here.
 
-## Step 5 — SoundMaker v3 performance continuity
+## 5. DOCX visual QA
 
-Review the whole project, not each line in isolation.
+When DOCX is in scope, render and inspect every page for clipping, hierarchy, panel legibility, line breaks, glyphs, spacing, and other visible defects.
 
-Check:
+Fix the canonical/builder owner and rebuild; never patch the DOCX as the source fix.
 
-- consistent narrator/character identity;
-- emotional changes follow scene reasons rather than random escalation;
-- long lines use meaningful spoken beats rather than one dense specification paragraph;
-- direction vocabulary is concise/compatible;
-- no contradictory/redundant tag stacking dominates the prompt;
-- CAPS is selective;
-- ellipses/em dashes/line breaks are purposeful;
-- reactions occur at sensible timeline positions;
-- duration labels remain estimates rather than audio claims;
-- no SSML `<break>` is used for v3.
+## 6. Audio evidence
 
-If a wording/notation defect exists, reopen canonical `work/voice-production.md`; never patch DOCX/audio as the authoritative fix.
-
-## Step 6 — DOCX visual QA
-
-Render `output/Voice Production.docx` and inspect every page when DOCX is in scope.
-
-Check clipping/overlap, orphaned labels, hierarchy, panel legibility, line breaks, glyphs, spacing, and shading.
-
-## Step 7 — audio evidence
-
-If no audio is supplied:
+If audio is not supplied:
 
 ```text
 Audio Evidence: not_provided
 ```
 
-This does not block script/DOCX delivery. It only blocks audio-quality claims.
+This blocks audio-quality claims, not script/DOCX delivery.
 
-If audio is in scope:
+When audio is in scope:
 
-1. identify the exact prompt actually generated;
-2. identify the actual v3 voice and Stability/visible generation setting when relevant to the finding;
-3. if the user edited the prompt before generation, synchronize that exact version into `work/voice-production.md`;
-4. review the actual audio against the current Voice Requirement and SoundMaker quality contract;
-5. do not preserve an older script/DOCX acceptance as current against newer approved prompt/audio evidence.
+1. identify the exact generated prompt;
+2. synchronize any user/UI-edited generated wording into `work/voice-production.md`;
+3. identify the actual voice/surface/Stability when relevant;
+4. review the heard take using the **After generation** quality/diagnosis section in `SOUNDMAKER.md`;
+5. record only what was actually reviewed.
 
-### Actual audio quality gate
+Use audio evidence states:
 
-For each reviewed take, check only dimensions material to the line:
+- `partial_review`;
+- `reviewed_passed`;
+- `reviewed_with_findings`.
 
-- **meaning / intelligibility** — required information is clearly understood;
-- **voice identity** — the intended narrator/character remains coherent without material persona/timbre drift;
-- **emotional movement** — intended scene-driven state changes are audible and a long line does not remain one flat tone when the script requires real movement;
-- **pacing / breath** — important beats have enough space to land without damaging urgency or clarity;
-- **emphasis / landing** — important words and the final beat receive the intended stress/payoff;
-- **naturalness** — tags, reactions, CAPS, punctuation, and pauses do not create obvious overacting, robotic segmentation, or artificial jumps;
-- **pronunciation** — material names/terms/numbers are acceptable and consistent;
-- **duration** — the actual file meets the requested timing constraint when timing is part of the task.
+Do not infer immersion from tag count or prompt appearance.
 
-Disposition:
+## 7. Acceptance file
 
-```text
-all material dimensions pass
-→ reviewed_passed / approve
+Create/update `work/voice-acceptance.md` using the compact structure owned by `docs/foundation/07-voice-validation-delivery.md`.
 
-one odd take + prompt/voice/settings still sound
-→ review alternative / eligible regeneration
+Critical or Major findings block delivery.
 
-same point repeatedly fails
-→ reopen Flow 6 / revise SoundMaker prompt
-
-required performance consistently exceeds selected voice
-→ voice-fit finding
-```
-
-Do not infer immersion from tag count or script appearance. Audio-quality PASS requires the heard performance itself.
-
-## Acceptance file
-
-Create/update `work/voice-acceptance.md` using the compact format defined by `docs/foundation/07-voice-validation-delivery.md`.
-
-Critical or Major findings always block delivery.
-
-## State transition
+## 8. State transition
 
 For script + DOCX only:
 
@@ -161,12 +120,8 @@ delivery_scope: script_docx
 next_step: complete_or_soundmaker_v3_generation
 ```
 
-If findings remain, use `needs_revision` and name the owning upstream file/flow.
+If audio is included, readiness additionally requires canonical prompt ↔ exact generated prompt alignment and actual heard-audio review.
 
 ## Final boundary
 
-`voice_delivery_ready` means the accepted current delivery scope is ready.
-
-It does **not** mean generated Eleven v3 audio has been heard unless audio evidence says so.
-
-When audio is included, current readiness additionally requires canonical prompt ↔ exact generated prompt alignment and actual audio review against the quality gate above.
+`voice_delivery_ready` means only the **current requested delivery scope** is ready. It does not imply generated-audio approval, client sign-off, implementation completion, or release.
