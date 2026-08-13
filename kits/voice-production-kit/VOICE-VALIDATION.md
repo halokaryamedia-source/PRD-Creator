@@ -23,6 +23,8 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
+Mechanical validation checks current Voice ID parity, **Type parity, Speaker parity**, required canonical fields, DOCX content parity, and Letter-page structure.
+
 Mechanical PASS proves parity/integrity only. It does not approve wording, pronunciation, v3 performance, layout, or audio.
 
 ## 2. Requirement coverage
@@ -32,7 +34,7 @@ For every Voice ID, verify that canonical wording:
 - satisfies Flow 5 Purpose;
 - communicates all material required facts;
 - respects `Must not add/repeat` guardrails;
-- preserves approved Type, speaker, channel, trigger, terminology, sequence, mechanics, outcomes, and rewards;
+- preserves approved Type, Speaker, Channel, Trigger, terminology, sequence, mechanics, outcomes, and rewards;
 - introduces no unsupported project fact.
 
 Paraphrase is allowed. Changed meaning is not.
@@ -65,7 +67,13 @@ Detailed one-line construction belongs to `SOUNDMAKER.md`; do not duplicate its 
 
 ## 5. DOCX visual QA
 
-When DOCX is in scope, render and inspect every page for clipping, hierarchy, panel legibility, line breaks, glyphs, spacing, and other visible defects.
+When DOCX is in scope, render and inspect every page for:
+
+- clipping/overlap;
+- readable section hierarchy;
+- correct **Type · Speaker** association for each Voice ID;
+- script-panel legibility and preserved line breaks;
+- glyph, spacing, and shading defects.
 
 Fix the canonical/builder owner and rebuild; never patch the DOCX as the source fix.
 
