@@ -1,0 +1,10 @@
+flow: 6
+status: voice_script_ready
+source_handoff: state/handoff-state.yaml
+source_prd_revision: Final Review
+requirements: work/voice-requirements.md
+script: work/voice-production.md
+html: output/final.html
+unresolved_upstream: 0
+audio_evidence: not_provided
+next_step: flow_7_voice_validation_delivery
