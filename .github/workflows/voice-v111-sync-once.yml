@@ -1,0 +1,210 @@
+name: Voice v1.11 Sync Once
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/voice-v111-sync-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Sync approved Voice policy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_one(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one replacement, found {count}: {old[:80]!r}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace_one(
+              'kits/voice-production-kit/SOUNDMAKER.md',
+              'A short/simple line does not need artificial complexity. If one stable state and one clear action are sufficient, keep it that way.',
+              'A short/simple line does not need artificial complexity. It still needs one deliberate starting performance direction; if one stable state and one clear action are sufficient, one initial tag is enough and no transition tag is required.',
+          )
+          replace_one(
+              'kits/voice-production-kit/SOUNDMAKER.md',
+              '### Audio Tags\n\nDetailed tag knowledge stays in `references/elevenlabs/v3-performance-writing.md`.\n\n```text\n0–1 simultaneous tag → default\n2 tags                → valid when dimensions differ and are compatible\n3 tags                → exception; preferably project-calibrated\n4+ tags               → reject by default\n```',
+              '''### Audio Tags\n\nEvery standalone `performance` block must begin with at least one Audio/Performance Direction Tag on its **first non-blank line**. This is a SoundMaker production rule for intentionally directed Eleven v3 work; it is not a claim that Eleven v3 technically rejects untagged text.\n\nUse the initial tag to establish the starting delivery. Add another tag later only when the scene creates a material audible change. A stable reminder may correctly use one initial tag and no transition tags.\n\nDetailed tag knowledge stays in `references/elevenlabs/v3-performance-writing.md`.\n\n```text\n1 initial tag         → default for every standalone Voice ID\n2 simultaneous tags  → valid when dimensions differ and are compatible\n3 simultaneous tags  → exception; preferably project-calibrated\n4+ simultaneous tags → reject by default\n```''',
+          )
+          replace_one(
+              'kits/voice-production-kit/SOUNDMAKER.md',
+              '- punctuation/CAPS/tags are purposeful and minimal;\n- no SSML `<break>` or SFX/environment instruction is present;',
+              '- punctuation/CAPS/tags are purposeful and minimal;\n- the first non-blank performance line contains at least one initial direction tag;\n- no SSML `<break>` or SFX/environment instruction is present;',
+          )
+
+          replace_one(
+              'kits/voice-production-kit/references/elevenlabs/v3-performance-writing.md',
+              '## 6. Tag placement and persistence\n\nCurrent v3 guidance supports moment-to-moment/mid-delivery direction and strategic placement near the dialogue it affects.',
+              '''## 6. Tag placement and persistence\n\n### SoundMaker initial-direction rule\n\nFor this repository, every standalone Voice Production prompt begins with at least one initial Audio/Performance Direction Tag. This is a **creator/production heuristic** used to avoid handing a standalone v3 generation an intentionally unspecified starting performance; it is not an upstream ElevenLabs syntax requirement.\n\nThe initial tag establishes the opening delivery. Transition tags remain conditional and appear only when the scene/performance state materially changes. Generation evidence may later justify changing or removing a direction for a specific calibrated voice, but Preparation Mode does not leave the starting performance unspecified.\n\nCurrent v3 guidance supports moment-to-moment/mid-delivery direction and strategic placement near the dialogue it affects.''',
+          )
+          replace_one(
+              'kits/voice-production-kit/references/elevenlabs/v3-performance-writing.md',
+              '```text\n0–1 tag → default\n2 tags   → normal when dimensions differ and are compatible\n3 tags   → exception / preferably project-calibrated\n4+ tags  → reject by default\n```',
+              '```text\n1 initial tag         → default per standalone Voice ID\n2 simultaneous tags  → normal when dimensions differ and are compatible\n3 simultaneous tags  → exception / preferably project-calibrated\n4+ simultaneous tags → reject by default\n```',
+          )
+
+          replace_one(
+              'kits/voice-production-kit/SCRIPT-PRODUCTION.md',
+              '```performance\n<exact Eleven v3 text>\n```',
+              '```performance\n[<initial performance direction>]\n<exact Eleven v3 text>\n```',
+          )
+          replace_one(
+              'kits/voice-production-kit/SCRIPT-PRODUCTION.md',
+              '- exact fenced `performance` block.\n\n`Type` and `Speaker` must match Flow 5.',
+              '- exact fenced `performance` block whose first non-blank line is at least one initial Audio/Performance Direction Tag.\n\n`Type` and `Speaker` must match Flow 5.',
+          )
+          replace_one(
+              'kits/voice-production-kit/SCRIPT-PRODUCTION.md',
+              '''Voice Cast once\n→ gameplay-ordered Voice sections\n→ per Voice line:\n   title\n   Actor\n   Estimated Duration\n   exact Eleven v3 prompt\n   Copy Text''',
+              '''Voice Setup once\n→ selected ElevenLabs voice is prominent\n→ gameplay-ordered Voice sections\n→ per Voice line:\n   title\n   Speaker + Estimated Duration as secondary metadata\n   exact Eleven v3 prompt with performance tags visually distinct\n   Copy integrated with the script panel''',
+          )
+          replace_one(
+              'kits/voice-production-kit/SCRIPT-PRODUCTION.md',
+              '4. write the exact performance;\n5. run Communication Conservation;',
+              '4. write the exact performance beginning with one deliberate initial direction tag;\n5. add transition tags only for justified audible state changes;\n6. run Communication Conservation;',
+          )
+          replace_one(
+              'kits/voice-production-kit/SCRIPT-PRODUCTION.md',
+              '- title, Estimated Duration, and performance block are present;\n- no unresolved placeholder remains;',
+              '- title, Estimated Duration, and performance block are present;\n- the first non-blank performance line contains at least one initial direction tag;\n- no unresolved placeholder remains;',
+          )
+
+          replace_one(
+              '.agents/skills/voice-production/SKILL.md',
+              'SoundMaker may decide sentence split, beats, punctuation, CAPS, tags, pacing, Performance Shape, Landing, and Estimated Duration inside approved intent.',
+              'SoundMaker may decide sentence split, beats, punctuation, CAPS, tags, pacing, Performance Shape, Landing, and Estimated Duration inside approved intent. Every standalone prepared Voice ID begins with at least one deliberate initial performance-direction tag; transition tags remain conditional on a real audible state change.',
+          )
+          replace_one(
+              '.agents/skills/voice-production/SKILL.md',
+              '''Voice Cast once\n→ gameplay-ordered Voice sections\n→ title\n→ Actor\n→ Estimated Duration\n→ exact Eleven v3 text\n→ Copy Text''',
+              '''Voice Setup once with the selected ElevenLabs voice prominent\n→ gameplay-ordered Voice sections\n→ title\n→ Speaker + Estimated Duration as secondary metadata\n→ exact Eleven v3 text with performance directions visually distinct\n→ Copy integrated with the script panel''',
+          )
+
+          replace_one(
+              'kits/voice-production-kit/VOICE-VALIDATION.md',
+              '| Performance | Emotional/beat/textual direction serves the scene rather than decorating it. |',
+              '| Performance | Every standalone line has an intentional starting direction; transition tags, beat shape, punctuation, and emphasis serve the scene rather than decorating it. |',
+          )
+          replace_one(
+              'kits/voice-production-kit/VOICE-VALIDATION.md',
+              '- Voice Cast is shown once, not repeated per line;\n- sections and scripts follow canonical gameplay order;\n- each line clearly shows title, Actor, optional Estimated Duration, exact script panel, and Copy Text action;',
+              '- Voice Setup is shown once with the selected ElevenLabs voice prominent, not repeated per line;\n- sections and scripts follow canonical gameplay order;\n- each line clearly shows title, secondary Speaker/Estimated Duration metadata, exact script panel, and an integrated Copy action;\n- performance-direction tags are visually distinct from spoken text without changing the copied canonical payload;',
+          )
+          replace_one(
+              'kits/voice-production-kit/VOICE-VALIDATION.md',
+              '- **Critical** — wrong/missing Voice ID/Type/Speaker; wrong project fact/Channel/Trigger; missing required communication; ignored authoritative timing constraint; stale project HTML prompt; or canonical/generated prompt drift that would produce the wrong asset.',
+              '- **Critical** — wrong/missing Voice ID/Type/Speaker; missing initial performance-direction tag; wrong project fact/Channel/Trigger; missing required communication; ignored authoritative timing constraint; stale project HTML prompt; or canonical/generated prompt drift that would produce the wrong asset.',
+          )
+
+          replace_one(
+              'docs/foundation/06-elevenlabs-script-production.md',
+              'Estimated Duration\nexact Eleven v3 performance block',
+              'Estimated Duration\nexact Eleven v3 performance block beginning with at least one initial performance-direction tag',
+          )
+          replace_one(
+              'docs/foundation/06-elevenlabs-script-production.md',
+              '''Voice Cast once\n→ gameplay-ordered sections\n→ per line:\n   title\n   Actor\n   Estimated Duration\n   exact Eleven v3 prompt\n   Copy Text''',
+              '''Voice Setup once with the selected ElevenLabs voice prominent\n→ gameplay-ordered sections\n→ per line:\n   title\n   Speaker + Estimated Duration as secondary metadata\n   exact Eleven v3 prompt with performance directions visually distinct\n   Copy integrated with the script panel''',
+          )
+          replace_one(
+              'docs/foundation/06-elevenlabs-script-production.md',
+              '- every entry has title, Estimated Duration, and canonical performance wording;\n- Voice Intent Completeness is sufficient;',
+              '- every entry has title, Estimated Duration, and canonical performance wording;\n- every performance block begins with at least one deliberate initial direction tag;\n- Voice Intent Completeness is sufficient;',
+          )
+
+          replace_one(
+              'kits/voice-production-kit/README.md',
+              '# Voice Production Kit v1.10.0',
+              '# Voice Production Kit v1.11.0',
+          )
+          replace_one(
+              'kits/voice-production-kit/README.md',
+              '```performance\n<exact Eleven v3 text>\n```',
+              '```performance\n[<initial performance direction>]\n<exact Eleven v3 text>\n```',
+          )
+          replace_one(
+              'kits/voice-production-kit/README.md',
+              '''Voice Cast\n\n01 Gameplay moment\nActor\nEstimated Duration\nexact Eleven v3 text\nCopy Text''',
+              '''Voice Setup\nselected ElevenLabs voice\n\n01 Gameplay moment\nSpeaker · Estimated Duration\nexact Eleven v3 text with visible performance-direction tags\nCopy''',
+          )
+          replace_one(
+              'kits/voice-production-kit/README.md',
+              'Preparation Mode may prepare the full Voice scope without audio testing or per-line generation approval.',
+              'Preparation Mode may prepare the full Voice scope without audio testing or per-line generation approval. Every standalone Voice ID begins with at least one deliberate initial performance-direction tag; extra transition tags are used only when the scene changes audibly.',
+          )
+
+          changelog = Path('kits/voice-production-kit/CHANGELOG.md')
+          text = changelog.read_text(encoding='utf-8')
+          marker = '# Changelog\n\n'
+          if text.count(marker) != 1:
+              raise SystemExit('CHANGELOG header not unique')
+          entry = '''## 1.11.0 — 2026-08-13\n\n- made one initial Audio/Performance Direction Tag mandatory on the first non-blank line of every standalone Voice Production prompt; this is a SoundMaker production heuristic for directed Eleven v3 work, not an upstream syntax requirement;\n- kept transition tags conditional on real audible state changes and retained minimal stacking to prevent tag spam/AI-template delivery;\n- made renderer and Voice validator fail closed on missing initial performance direction;\n- redesigned Production Assets → Voice from nested grey cards into a lighter editorial layout with prominent Voice Setup, secondary Speaker/duration metadata, integrated Copy, regular-weight spoken text, and visually distinct performance-direction tags;\n- preserved exact copied `performance` payload through a hidden canonical text source while rendering tags separately for readability;\n- revised all 12 Clockwork prompts so each has an explicit starting performance and only justified mid-script transitions;\n- changed no PRD gameplay truth, Voice asset count, Golden PRD core, Eleven v3-only scope, or audio evidence state.\n\n'''
+          changelog.write_text(text.replace(marker, marker + entry, 1), encoding='utf-8')
+
+          replace_one(
+              'CONTEXT.md',
+              '- exact Eleven v3 `performance` text;\n- selected ElevenLabs actor voice once per recurring Speaker when known.',
+              '- exact Eleven v3 `performance` text, beginning with at least one deliberate initial performance-direction tag;\n- selected ElevenLabs actor voice once per recurring Speaker when known.',
+          )
+          replace_one(
+              'CONTEXT.md',
+              '''Voice Cast once\n→ scripts in gameplay order\n→ per script:\n   title\n   Actor\n   Estimated Duration\n   exact Eleven v3 text\n   Copy Text''',
+              '''Voice Setup once with the selected ElevenLabs voice prominent\n→ scripts in gameplay order\n→ per script:\n   title\n   Speaker + Estimated Duration as secondary metadata\n   exact Eleven v3 text with performance directions visually distinct\n   Copy integrated with the script panel''',
+          )
+          PY
+
+      - name: Run focused contracts
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit/validator
+          python -m unittest tests.test_prd_voice_assets tests.test_voice_contracts
+
+      - name: Render Clockwork consolidated HTML
+        run: |
+          python kits/project-document-generator/renderer/render.py \
+            workspace/active/the-clockwork-vault/work/render-data.json \
+            workspace/active/the-clockwork-vault/output/final.html
+          python kits/voice-production-kit/validator/validate.py \
+            workspace/active/the-clockwork-vault
+
+      - name: Commit synchronized policy and render
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            .agents/skills/voice-production/SKILL.md \
+            CONTEXT.md \
+            docs/foundation/06-elevenlabs-script-production.md \
+            kits/voice-production-kit/SOUNDMAKER.md \
+            kits/voice-production-kit/SCRIPT-PRODUCTION.md \
+            kits/voice-production-kit/VOICE-VALIDATION.md \
+            kits/voice-production-kit/README.md \
+            kits/voice-production-kit/CHANGELOG.md \
+            kits/voice-production-kit/references/elevenlabs/v3-performance-writing.md \
+            workspace/active/the-clockwork-vault/output/final.html
+          git rm .github/workflows/voice-v111-sync-once.yml
+          git commit -m "feat: finalize directed Voice production v1.11"
+          git push origin HEAD:Local
