@@ -1,6 +1,6 @@
-# Voice Production Kit v1.7.0
+# Voice Production Kit v1.8.0
 
-Repository-backed workflow for accepted PRD → Voice Requirements → high-quality Eleven v3 performance wording → derived DOCX → current-revision acceptance, with audio generation optional.
+Repository-backed workflow for accepted PRD → Voice Requirements → high-quality Eleven v3 performance wording → derived DOCX → compact current-revision acceptance, with audio generation optional.
 
 ## Flow
 
@@ -8,89 +8,102 @@ Repository-backed workflow for accepted PRD → Voice Requirements → high-qual
 handoff_ready PRD
 → Flow 5 Voice Requirements
 → Flow 6 Preparation Mode
-→ canonical script + SoundMaker v3 quality
-→ Voice Production.docx
+     Voice Intent Completeness
+     → Performance Fill Map
+     → SoundMaker writing
+     → Communication Conservation
+     → integrated Voice Script Readiness
+→ canonical voice-production.md
+→ derived Voice Production.docx
 → Flow 7 validation/delivery
 → optional Generation Mode later
 ```
 
 ## Owners
 
-- `VOICE-EXTRACTION.md` — Flow 5 procedure;
-- `SCRIPT-PRODUCTION.md` — Flow 6 lifecycle + static output contract;
+- `VOICE-EXTRACTION.md` — Flow 5 scope/requirement procedure;
+- `SCRIPT-PRODUCTION.md` — Flow 6 lifecycle/output contract;
 - `SOUNDMAKER.md` — single operational Eleven v3 preparation/generation procedure;
 - `DOCX-FORMAT.md` — derived DOCX presentation;
-- `VOICE-VALIDATION.md` — Flow 7 evidence/delivery gate;
+- `VOICE-VALIDATION.md` — Flow 7 integrated readiness/evidence gate;
 - `references/elevenlabs/` — deep v3 reference only when needed.
 
-Canonical project files:
+Canonical project files remain:
 
 - `work/voice-requirements.md` — Voice scope/required meaning;
 - `work/voice-production.md` — final spoken/performance wording;
 - `output/Voice Production.docx` — derived presentation;
-- `work/voice-acceptance.md` — current revision evidence;
+- `work/voice-acceptance.md` — compact current revision evidence;
 - `state/voice-state.yaml` — lifecycle state.
 
-## Preparation Mode — normal script work
+## Preparation quality model
 
-Use when audio generation/testing is not requested.
+### Voice Intent Completeness
 
-```text
-all Voice Requirements
-→ recover project context
-→ SoundMaker per-line construction
-→ cross-line speaker continuity / anti-repetition
-→ duration + pronunciation planning
-→ canonical script
-→ optional DOCX / script-level validation
-```
-
-Preparation Mode may prepare all Voice IDs in one pass and does not require audio testing or per-line approval.
-
-## Static output contract
-
-Each canonical Flow 6 entry contains the minimum stable production data:
+Before writing, SoundMaker resolves the internal Performance Fill Map:
 
 ```text
-### <VOICE-ID> — <Title>
-Type: <Flow 5 type>
-Speaker: <Flow 5 speaker>
-Estimated Duration: <range>
-
-```performance
-<exact Eleven v3 text>
+communication job
+listener state
+information payload
+listener outcome
+speaker identity
+timing envelope
+performance shape
+landing
 ```
-```
 
-`Type` and `Speaker` are mechanically checked against Flow 5. Speaker is also shown in the generated DOCX so a production operator never has to infer which character owns a line.
+This is an internal reasoning map, not another persisted artifact.
 
-Keep planning-only metadata such as Channel, Trigger, Purpose, requirement bullets, source refs, WPM calculations, performance maps, voice-fit ratings, and QA notes in their owning/internal sources instead of duplicating them into the canonical script or DOCX.
+### Communication Conservation
 
-## Operator handoff
+After writing/shortening, every independently actionable Flow 5 `Must communicate` fact that belongs in the moment must remain clearly represented, while `Must not add/repeat` guardrails remain binding.
 
-Do not create another handoff file by default. Derive a compact operator view from current authority.
+Performance polish and duration compression may improve wording; they may not thin material communication.
 
-State shared setup once when useful:
+### Voice Script Readiness
+
+After per-line preparation, review the current scope once through seven lenses:
 
 ```text
-Speaker / selected voice or target voice profile
-Model: Eleven v3
-Stability: Natural | project-calibrated
-Surface: Speech Synthesis | Studio when applicable
+Communication
+Listener
+Character
+Performance
+Timing
+Continuity
+Operator
 ```
 
-Then each active line needs only:
+Record one semantic decision rather than seven separate gates/scores.
+
+`Communication Conservation` remains explicit because an elegant script can still omit required meaning.
+
+## Preparation Mode
+
+Preparation Mode may prepare the full current Voice scope in one bounded pass and requires no audio testing or per-line approval. An actual commercial voice may remain unselected when a clear Target Voice Profile exists.
+
+## Canonical output
+
+Each Flow 6 entry contains only:
 
 ```text
 Voice ID — Title
+Type
 Speaker
 Estimated Duration
-exact Eleven v3 prompt
+exact Eleven v3 performance block
 ```
 
-Only add an external production note when the operator must perform an extra step such as pronunciation-dictionary setup, Fixed Duration, or Studio routing.
+Do not duplicate Channel, Trigger, Purpose, requirement bullets, source refs, Performance Fill Map reasoning, WPM math, voice-fit ratings, or QA notes into the canonical script/DOCX.
 
-## Generation Mode — optional later
+## Operator handoff
+
+Do not create another handoff file by default. State shared speaker/voice/settings once when useful, then show each active line with Voice ID/Title, Speaker, Estimated Duration, and exact Eleven v3 prompt.
+
+Only add an external note when the operator must take a special action such as pronunciation setup, Fixed Duration, or Studio routing.
+
+## Generation Mode
 
 Use only when actual ElevenLabs output is requested:
 
@@ -101,7 +114,7 @@ one active Voice ID
 → canonical sync
 ```
 
-## SoundMaker v3 defaults
+## v3 defaults
 
 When no stronger approved project calibration exists:
 
@@ -109,42 +122,28 @@ When no stronger approved project calibration exists:
 Model: Eleven v3
 Stability: Natural
 Surface: Speech Synthesis
-Enhance on an already-directed SoundMaker prompt: OFF
+Enhance on directed SoundMaker prompt: OFF
 ```
 
-Long-form v3 that develops whisper/volume/tone/accent drift or breaking may route to **Studio with Eleven v3**. This changes the production surface, not the model scope.
+Long-form instability may route to Studio while keeping Eleven v3.
 
-## Project-level quality
+## Validation model
 
-A full prepared script is reviewed across the project for:
-
-- recurring speaker identity;
-- information progression between briefing/reminder/success lines;
-- accidental reuse of identical openings, beat chains, tag positions, CAPS climaxes, sentence rhythms, or closing patterns;
-- intentional repetition vs AI-like templating.
-
-Structural variety must never change approved facts or invent personality.
-
-## Duration hierarchy
-
-When timing matters:
+Flow 7 keeps proof economical:
 
 ```text
-nearest approved similar sample (if one exists)
-→ calibrated project performance rate
-→ generic WPM fallback
+Mechanical
++ Communication Conservation
++ one integrated Voice Script Readiness review
++ DOCX Visual when claimed
++ optional Audio Evidence
 ```
 
-With no approved audio, generic planning is valid and remains labeled **Estimated Duration**.
+Existing `voice-state.yaml` fields remain compatible; they summarize the integrated semantic review and do not create separate review ceremonies.
 
-## Reference map
+## Revision discipline
 
-Open only for the active issue:
-
-- writing/tags → `references/elevenlabs/v3-performance-writing.md`;
-- timing → `v3-duration-planning.md`;
-- voice/Stability/Enhance/Studio/troubleshooting/pronunciation → `v3-production-reference.md`;
-- evidence provenance → `source-register.md`.
+Fix the first wrong owner and revise only invalidated Voice IDs/speaker scope plus continuity materially affected by the change. Do not replay unaffected work for ceremony.
 
 ## Build / validate
 
@@ -158,8 +157,10 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Builder/validator PASS does not prove generated-audio quality. Audio evidence is optional unless audio delivery is explicitly requested.
+Builder/validator PASS does not prove semantic readiness, visual quality, pronunciation, or generated-audio quality.
 
-## Boundary
+## Stop rule
 
-SoundMaker/ElevenLabs knowledge shapes delivery only. It may not invent project facts, Voice moments, speaker/channel/trigger, mechanics, rewards, or lore. Generated audio becomes evidence only when actual generation/review is in scope.
+Stop Preparation Mode when current scope is script-ready, Communication Conservation and Voice Script Readiness pass, requested derived artifacts are current, and remaining evidence is stated honestly.
+
+Do not add optional tags, schemas, scores, artifacts, review layers, or speculative hardening without a concrete defect.
