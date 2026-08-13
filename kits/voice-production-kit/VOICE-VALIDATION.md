@@ -1,6 +1,8 @@
 # Voice Validation & Delivery Procedure
 
-Flow 7 validates the exact current Flow 6 revision and decides whether the requested delivery scope is ready.
+Flow 7 validates the exact current Flow 6 revision and decides whether the requested Voice production scope is ready.
+
+The default human-facing presentation is now the **same `output/final.html` project document** used by the PRD. DOCX is optional export only.
 
 ## Entry
 
@@ -10,9 +12,10 @@ Read only:
 
 1. `work/voice-requirements.md`;
 2. `work/voice-production.md`;
-3. `SOUNDMAKER.md` when v3 wording/performance quality is in scope;
-4. `DOCX-FORMAT.md` when DOCX presentation is in scope;
-5. accepted PRD only when a project fact/term needs verification.
+3. `output/final.html` when the consolidated project HTML is in scope;
+4. `SOUNDMAKER.md` when wording/performance quality is in scope;
+5. `DOCX-FORMAT.md` only when DOCX export exists/is requested;
+6. accepted PRD only when a project fact/term needs verification.
 
 # 1. Mechanical validation
 
@@ -23,9 +26,13 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical validation checks current Voice ID, Type, Speaker, required canonical fields, DOCX content parity, and Letter-page structure.
+Mechanical validation always checks current Voice ID / Type / Speaker parity and canonical script structure.
 
-Mechanical PASS proves parity/integrity only. It does not prove semantic readiness, conservation, visual quality, pronunciation, or audio quality.
+When `output/final.html` exists, it also checks that the consolidated HTML contains the current Production Assets Voice prompt panels with exact canonical performance text.
+
+When `output/Voice Production.docx` exists, it validates that optional export too.
+
+Mechanical PASS does not prove semantic readiness, visual quality, pronunciation, or audio quality.
 
 # 2. Communication Conservation
 
@@ -35,84 +42,92 @@ PASS only when:
 
 - every independently actionable `Must communicate` fact that belongs in the moment remains clearly represented;
 - every `Must not add/repeat` guardrail is respected;
-- approved names, mechanics, result/state, sequence, and terminology retain their meaning;
-- any authoritative Flow 5 `Timing Constraint` remains respected by the planned wording/timing approach;
-- duration/polish did not silently remove required communication;
+- approved names, mechanics, result/state, sequence, and terminology retain meaning;
+- any authoritative Flow 5 `Timing Constraint` remains respected;
+- duration/performance polish did not silently remove required communication;
 - no unsupported project fact was introduced.
 
-Paraphrase and concise merging are allowed. Material thinning is not.
+Record one result:
 
-Record one result: **Communication Conservation: PASS | FAIL**.
+```text
+Communication Conservation: PASS | FAIL
+```
 
-Do not create a requirement-to-sentence matrix merely to prove this gate.
+Do not create a requirement-to-sentence matrix.
 
 # 3. Integrated Voice Script Readiness
 
-Review the current prepared scope once. The lenses below are questions inside one semantic review, not separate workflow stages.
+Review the current prepared scope once.
 
 | Lens | Ready when... |
 |---|---|
-| Communication | Purpose and required meaning are understandable without reopening source. |
-| Listener | Each line fits the approved Trigger/player state and gives the right amount of information/action at that moment. |
-| Character | Speaker identity stays coherent across lines without accidental template sameness. |
-| Performance | Emotional movement, beat shape, punctuation, CAPS, tags, and reactions serve the scene rather than decorate it. |
-| Timing | Estimated Duration/density is plausible, any authoritative Flow 5 timing constraint is honored, and no required fact was sacrificed to fit it. |
-| Continuity | Briefing/reminder/success information progresses and nearby lines avoid accidental repeated openings, beat chains, tag positions, rhythms, CAPS climaxes, or closings. |
-| Operator | Type/Speaker ownership, duration, exact prompt, and any special timing/pronunciation/setup action are clear enough to use without production guesswork. |
+| Communication | Purpose and required meaning are clear without reopening source. |
+| Listener | Each line fits the approved Trigger/player state and communicates the right amount at that moment. |
+| Character | Speaker identity stays coherent without accidental template sameness. |
+| Performance | Emotional/beat/textual direction serves the scene rather than decorating it. |
+| Timing | Estimated Duration is plausible, source timing constraints are honored, and no required fact was sacrificed. |
+| Continuity | Information progresses and nearby lines avoid accidental repeated structures. |
+| Operator | Actor assignment, exact prompt, duration, and any special setup are clear enough to use without guessing. |
 
-During this same review also verify:
+During the same review verify terminology, material pronunciation risk, Channel/Trigger/Function compatibility, and absence of unsupported v3 notation such as SSML `<break>`.
 
-- exact `Type` and `Speaker` remain compatible with Flow 5;
-- wording remains plausible for approved Function, Purpose, Channel, and Trigger;
-- optional `Timing Constraint` is treated as upstream truth, not as the same thing as Estimated Duration;
-- terminology is consistent;
-- material pronunciation risks are `confirmed`, `accepted_as_written`, or honestly left as `needs_confirmation`;
-- no unsupported Eleven v3 notation such as SSML `<break>` exists.
-
-`needs_confirmation` may remain during Preparation Mode / `voice_script_ready`, but blocks `voice_delivery_ready` until resolved or explicitly accepted.
-
-Record one result: **Voice Script Readiness: PASS | FAIL**.
-
-Do not persist seven lens scores or run separate review ceremonies for them.
-
-# 4. First wrong owner
-
-When a finding exists, fix the earliest owner that is actually wrong:
+Record one result:
 
 ```text
-project/gameplay/story fact
-→ upstream PRD authority
-
-Voice moment / Speaker / Channel / Trigger / Purpose / required communication / authoritative timing truth
-→ Flow 5 voice-requirements.md
-
-correct requirement but weak wording/performance/Estimated Duration
-→ Flow 6 / SOUNDMAKER.md / voice-production.md
-
-correct canonical script but wrong DOCX
-→ builder / DOCX-FORMAT.md
-
-correct script but actual generated-audio-only issue
-→ Generation Mode evidence/settings/voice
+Voice Script Readiness: PASS | FAIL
 ```
 
-Do not patch DOCX/audio or complicate the prompt to hide an upstream defect.
+Do not create separate persisted scores/gates for the lenses.
 
-# 5. DOCX visual QA
+# 4. Production Assets HTML review
 
-When DOCX is in scope, render and inspect every page for:
+When the consolidated project HTML is claimed current, inspect the Voice section as a production surface.
 
-- clipping/overlap;
-- readable hierarchy;
-- correct `Type · Speaker` association for each Voice ID;
-- script-panel legibility and preserved line breaks;
-- glyph, spacing, and shading defects.
+Ready when:
 
-Fix the canonical/builder owner and rebuild; never patch the DOCX as the source fix.
+- `Production Assets → Voice` appears after PRD core content;
+- Voice Cast is shown once, not repeated per line;
+- sections and scripts follow canonical gameplay order;
+- each line clearly shows title, Actor, optional Estimated Duration, exact script panel, and Copy Text action;
+- internal Flow 5/reasoning/QA metadata is absent from the visible Voice page;
+- exact script line breaks remain readable;
+- no clipping/overlap or obvious visual break from the PRD design language exists.
 
-Record: **DOCX Visual: PASS | FAIL | NOT PROVEN**.
+Record:
 
-# 6. Audio evidence
+```text
+Project HTML Visual: PASS | FAIL | NOT PROVEN
+```
+
+Static HTML inspection can prove structure/text parity but cannot claim visual PASS without rendered/browser evidence.
+
+# 5. Voice Cast / actor selection
+
+Preparation Mode may remain script-ready with `Voice selection pending` for a Speaker.
+
+Before actual Generation Mode for a Voice ID:
+
+- the active Speaker's intended ElevenLabs voice must be selected;
+- the selected voice should be synchronized into the canonical `Voice Cast` block;
+- the same actor assignment should appear in the consolidated project HTML after rerender.
+
+Do not invent a commercial voice merely to remove a pending state.
+
+# 6. Optional DOCX export
+
+DOCX is no longer a default delivery requirement.
+
+When explicitly produced, render/inspect it for correct Type · Speaker association, section hierarchy, script text, line breaks, glyphs, spacing, and pagination.
+
+Record only when DOCX exists:
+
+```text
+DOCX Visual: PASS | FAIL | NOT PROVEN
+```
+
+A DOCX defect is fixed in the builder/canonical source and rebuilt; never hand-edit the DOCX as source truth.
+
+# 7. Audio evidence
 
 If audio is not supplied:
 
@@ -120,15 +135,16 @@ If audio is not supplied:
 Audio Evidence: not_provided
 ```
 
-This blocks audio-quality claims, not script/DOCX delivery when all non-audio gates pass.
+This blocks audio-quality claims, not non-audio Voice Production readiness.
 
-When audio is in scope:
+When actual audio is in scope:
 
 1. identify the exact generated prompt;
-2. synchronize any user/UI-edited generated wording into `work/voice-production.md`;
-3. identify actual voice/surface/Stability when relevant;
-4. review the heard take using SoundMaker's Generation Mode diagnosis;
-5. record only what was actually reviewed.
+2. identify the actual actor voice / Surface / Stability when relevant;
+3. synchronize any user/UI-edited generated wording into `work/voice-production.md`;
+4. rerender `output/final.html` when canonical actor/prompt changed;
+5. review the heard take using SoundMaker Generation Mode diagnosis;
+6. record only what was actually reviewed.
 
 Use:
 
@@ -136,9 +152,29 @@ Use:
 - `reviewed_passed`;
 - `reviewed_with_findings`.
 
-Do not infer immersion from tag count or prompt appearance.
+# 8. First wrong owner
 
-# 7. Acceptance file
+```text
+project/gameplay/story fact
+→ upstream PRD authority
+
+Voice moment / Speaker / Channel / Trigger / Purpose / required communication / source timing truth
+→ Flow 5 voice-requirements.md
+
+wording / performance / Estimated Duration / actor-voice selection
+→ Flow 6 / SoundMaker / voice-production.md
+
+correct canonical data but wrong Production Assets HTML
+→ PRD renderer Production Assets compositor
+
+optional DOCX-only issue
+→ Voice DOCX builder
+
+actual audio-only issue with correct canonical production
+→ Generation Mode evidence/settings/voice
+```
+
+# 9. Acceptance record
 
 Keep `work/voice-acceptance.md` compact:
 
@@ -148,71 +184,73 @@ Status: needs_revision | voice_delivery_ready
 Mechanical: PASS | FAIL
 Voice Script Readiness: PASS | FAIL
 Communication Conservation: PASS | FAIL
-DOCX Visual: PASS | FAIL | NOT PROVEN
+Project HTML Visual: PASS | FAIL | NOT PROVEN
 Audio Evidence: not_provided | partial_review | reviewed_passed | reviewed_with_findings
+DOCX Visual: PASS | FAIL | NOT PROVEN   # only when DOCX exists/is claimed
 Findings: <only when findings exist>
 Critical: N
 Major: N
 ```
 
-This compact record replaces duplicated persisted semantic-review headings. The review still checks Communication, Listener, Character, Performance, Timing, Continuity, Operator, terminology/pronunciation, and Speaker/Channel/Trigger compatibility; it records one integrated decision.
-
 Critical or Major findings block delivery.
 
-# 8. Existing state schema
+# 10. State compatibility
 
-Keep `state/voice-state.yaml` compatible; do not add another state schema for this interface model.
-
-For script + DOCX delivery, existing fields may remain:
+Use `project_html: output/final.html` for new/current Voice production state.
 
 ```yaml
 flow: 7
 status: voice_delivery_ready
 requirements: work/voice-requirements.md
 script: work/voice-production.md
-docx: output/Voice Production.docx
+project_html: output/final.html
 acceptance: work/voice-acceptance.md
 mechanical: passed
 coverage: passed
 terminology_pronunciation: passed
 speaker_channel_trigger: passed
 performance_continuity: passed
-docx_visual: passed
 audio_evidence: not_provided
-delivery_scope: script_docx
+delivery_scope: project_html
 next_step: complete_or_soundmaker_v3_generation
 ```
 
-These compatibility fields summarize the integrated review; they do **not** require separate review passes.
-
-If audio is included, readiness additionally requires canonical prompt ↔ exact generated prompt alignment and actual heard-audio review.
+Existing projects may retain `docx` / `docx_visual` fields when that export exists. Do not create a migration merely to delete harmless historical compatibility metadata.
 
 # Severity
 
-- **Critical** — wrong/missing Voice ID, Type or Speaker; wrong project fact; wrong Channel/Trigger; missing required communication; ignored authoritative timing constraint; or canonical/generated prompt drift that would produce the wrong asset.
-- **Major** — material wording, v3 performance, continuity, pronunciation, conservation, or layout problem requiring production guesswork.
-- **Minor** — delivery remains correct/usable but clarity/notation/layout can improve without changing meaning.
-- **Suggestion** — optional polish.
+- **Critical** — wrong/missing Voice ID/Type/Speaker; wrong project fact/Channel/Trigger; missing required communication; ignored authoritative timing constraint; stale project HTML prompt; or canonical/generated prompt drift that would produce the wrong asset.
+- **Major** — material wording, actor assignment, v3 performance, continuity, pronunciation, conservation, operator-readiness, or layout problem requiring production guesswork.
+- **Minor** — correct/usable delivery with non-blocking clarity/notation/layout polish.
+- **Suggestion** — optional improvement.
 
 # Bounded revision
 
-Revalidate only invalidated scope plus any adjacent/project continuity materially affected by the change.
+```text
+change
+→ first wrong owner
+→ affected Voice ID / Speaker scope only
+→ Communication Conservation
+→ integrated readiness on materially affected scope
+→ rerender same final.html
+→ recheck affected Production Assets view
+→ stop
+```
 
-Do not replay unaffected Voice IDs, full source review, or audio checks for ceremony.
+Do not replay unaffected Voice IDs, PRD acceptance, or audio checks for ceremony.
 
 # Final boundary
 
-`voice_delivery_ready` means only the current requested delivery scope is ready.
-
-For script/DOCX delivery it requires:
+For default non-audio Voice Production delivery, `voice_delivery_ready` requires:
 
 - Mechanical PASS;
 - Communication Conservation PASS;
 - Voice Script Readiness PASS;
-- DOCX Visual PASS when DOCX is claimed ready;
+- consolidated project HTML current;
+- Project HTML Visual PASS when visual readiness is claimed;
 - Critical = 0;
 - Major = 0;
 - truthful audio evidence state;
-- no stale upstream revision.
+- no stale upstream PRD revision.
 
 It does not imply generated-audio approval, client sign-off, implementation completion, or release.
