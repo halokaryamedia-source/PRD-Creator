@@ -1,4 +1,4 @@
-# Voice Production Kit v1.11.0
+# Voice Production Kit v1.11.1
 
 Repository-backed workflow for accepted PRD → Voice asset requirements → high-quality Eleven v3 production wording → **Production Assets inside the same project HTML**, with audio generation and DOCX export optional.
 
@@ -90,7 +90,7 @@ Estimated Duration: <range>
 ```
 ```
 
-Do not repeat actor voice names in every entry.
+Do not repeat actor voice names, Trigger, Purpose, or other Flow 5 metadata in every canonical Flow 6 entry.
 
 ## Production Assets → Voice
 
@@ -102,26 +102,44 @@ python kits/project-document-generator/renderer/render.py \
   workspace/active/<project>/output/final.html
 ```
 
-If `work/voice-production.md` exists, the renderer appends a professional-only section after the PRD core.
+If `work/voice-production.md` exists, the renderer appends professional-only Production Assets pages and derives operator context from the accepted upstream owners instead of duplicating it into the canonical script.
 
-Visible content stays intentionally simple:
+Visible content stays intentionally practical:
 
 ```text
-Voice Setup
-selected ElevenLabs voice
+Gameplay Order / objective shell
+→ accepted PRD package label + gameplay context
+→ Voice line count + Primary Speaker
+→ compact Voice Setup for that gameplay section
 
-01 Gameplay moment
-Speaker · Estimated Duration
-exact Eleven v3 text with visible performance-direction tags
-Copy
-
-02 Next gameplay moment
-...
+per Voice line:
+→ title
+→ <PRD package label> · Voice Line X/Y
+→ Context = exact Flow 5 Trigger
+→ Speaker · Estimated Duration
+→ exact Eleven v3 text with visible performance-direction tags
+→ Copy Prompt
 ```
 
-Scripts remain in gameplay/Trigger order. `Copy Text` copies only the exact performance block.
+The developer-facing `Context` is **derived from the existing Flow 5 Trigger**. It is not a new Flow 6 field and must not be rewritten independently in `voice-production.md`.
+
+Scripts remain in gameplay/Trigger order. `Copy Prompt` copies only the exact canonical `performance` block.
 
 Do not display Flow 5 `Purpose`, `Must communicate`, `Must not add`, source refs, Performance Fill Map, WPM math, or QA notes in this operator view.
+
+### Consolidated navigation
+
+When Production Assets exists, the one-document professional navigation is:
+
+```text
+01 Overview
+02 Gameplay Flow
+03 Development
+04 Production Assets
+05+ gameplay/objective packages
+```
+
+Package numbering shifts only in the **consolidated HTML presentation** so Production Assets owns number 04 without collision. The PRD canonical package order/meaning is unchanged, and a project with no Production Assets keeps the original PRD-core navigation/numbering.
 
 ## Preparation Mode
 
@@ -173,7 +191,15 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>/
 ```
 
-When `final.html` exists, the validator checks current canonical prompt parity in the Production Assets Voice panels. When DOCX exists, it checks that optional export too.
+When `final.html` exists, the validator checks:
+
+- Production Assets Voice presentation/navigation exists;
+- objective shell/page count matches canonical Voice sections;
+- line-position/context presentation exists for every canonical Voice entry;
+- the visible developer context preserves the exact Flow 5 Trigger;
+- hidden Copy source preserves exact canonical `performance` text.
+
+When DOCX exists, it checks that optional export too.
 
 ## Revision discipline
 
