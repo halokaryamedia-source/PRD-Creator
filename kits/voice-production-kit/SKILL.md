@@ -1,7 +1,7 @@
 ---
 name: voice-production-kit
 description: Extract traceable voice requirements from accepted PRDs, create high-quality Eleven v3 performance prompts and a reference-styled Voice Production DOCX, then validate the current script/DOCX/audio evidence without inventing upstream project facts.
-version: 1.4.0
+version: 1.4.1
 ---
 
 # Voice Production Kit
@@ -54,11 +54,13 @@ Production references never outrank current project Voice Requirements or canoni
 ## Non-negotiable rules
 
 - SoundMaker model scope is **Eleven v3 only**.
+- Default generation baseline is **Stability: Natural** unless approved project-calibrated evidence establishes another setting for the same production.
 - Voice scope cannot change silently after Flow 5.
 - Script polish cannot create a new project fact, speaker, channel, trigger, mechanic, reward, or outcome.
 - Performance quality is built in this order: meaning → spoken wording → beat structure → punctuation/line structure → selective CAPS → minimal Audio Tags.
 - Target duration is planned before final wording when timing matters.
 - A flat script is not repaired by tag stacking.
+- Actual audio quality is judged from the heard take for intelligibility, voice identity, emotional movement, pacing, emphasis/landing, naturalness, pronunciation, and timing as applicable.
 - DOCX is generated from canonical Markdown and is never the editable authority.
 - Critical/Major findings block `voice_delivery_ready`.
 - Pronunciation is not called verified without evidence.
