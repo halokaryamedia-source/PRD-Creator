@@ -1,0 +1,300 @@
+name: Voice UI Polish Once
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/voice-ui-polish-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip install --disable-pip-version-check selenium==4.35.0
+
+      - name: Refine Voice presentation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('kits/project-document-generator/renderer/production_assets.py')
+          source = path.read_text(encoding='utf-8')
+
+          cast_block = '''def _cast_html(doc: VoiceProduction) -> str:
+              rows = []
+              for speaker in _ordered_speakers(doc):
+                  voice = _voice_for(doc.cast, speaker)
+                  rows.append(
+                      '<div class="voice-setup-row">'
+                      '<div class="voice-setup-field">'
+                      f'<span class="voice-setup-label">{i18n(bi("Speaker", "Speaker"))}</span>'
+                      f'<strong>{esc(speaker)}</strong>'
+                      '</div>'
+                      '<div class="voice-setup-field voice-setup-voice">'
+                      f'<span class="voice-setup-label">{i18n(bi("ElevenLabs Voice", "Voice ElevenLabs"))}</span>'
+                      f'<strong>{esc(voice)}</strong>'
+                      '</div>'
+                      '<div class="voice-setup-field voice-setup-model">'
+                      f'<span class="voice-setup-label">{i18n(bi("Model", "Model"))}</span>'
+                      '<strong>Eleven v3</strong>'
+                      '</div>'
+                      '</div>'
+                  )
+              return (
+                  '<section class="voice-setup-block">'
+                  f'<h3 class="voice-setup-title">{i18n(bi("Voice Setup", "Setup Voice"))}</h3>'
+                  f'<div class="voice-setup-rows">{"".join(rows)}</div>'
+                  '</section>'
+              )
+
+
+'''
+          source, n = re.subn(r'def _cast_html\(doc: VoiceProduction\) -> str:\n.*?(?=def _performance_html)', cast_block, source, count=1, flags=re.S)
+          assert n == 1, 'cast block replacement failed'
+
+          entry_block = '''def _entry_html(entry: VoiceEntry, sequence_no: int) -> str:
+              prompt_id = f"voice-prompt-{esc(entry.voice_id.lower())}"
+              return (
+                  '<article class="voice-script-card">'
+                  '<div class="voice-script-card-head">'
+                  '<div class="voice-script-identity">'
+                  f'<span class="voice-script-index">{sequence_no:02d}</span>'
+                  '<div class="voice-script-heading">'
+                  f'<h4>{esc(entry.title)}</h4>'
+                  '<div class="voice-script-meta">'
+                  f'<span>{esc(entry.speaker)}</span>'
+                  '<span aria-hidden="true">·</span>'
+                  f'<span>{esc(entry.duration)}</span>'
+                  '</div>'
+                  '</div>'
+                  '</div>'
+                  f'<button class="voice-copy-button" data-voice-copy="{prompt_id}" type="button" title="Copy exact ElevenLabs prompt">'
+                  f'<span class="voice-copy-label">{i18n(bi("Copy Prompt", "Copy Prompt"))}</span>'
+                  '</button>'
+                  '</div>'
+                  f'<pre class="voice-script-text" id="{prompt_id}">{esc(entry.performance)}</pre>'
+                  f'<div class="voice-script-display">{_performance_html(entry.performance)}</div>'
+                  '</article>'
+              )
+
+
+'''
+          source, n = re.subn(r'def _entry_html\(entry: VoiceEntry, sequence_no: int\) -> str:\n.*?(?=def voice_pages)', entry_block, source, count=1, flags=re.S)
+          assert n == 1, 'entry block replacement failed'
+
+          pages_block = '''def voice_pages(render_data: dict, doc: VoiceProduction) -> list[str]:
+              brand = render_data["document"].get("brand") or render_data["document"]["title"]
+              base_code = 4 + len(render_data.get("packages", []))
+              pages: list[str] = []
+              sequence_no = 1
+              intro = bi(
+                  "Choose the assigned ElevenLabs voice, then copy each prompt exactly in gameplay order.",
+                  "Gunakan voice ElevenLabs yang ditentukan, lalu copy setiap prompt secara tepat sesuai urutan gameplay.",
+              )
+
+              for section_index, section in enumerate(doc.sections):
+                  body = f'<p class="eyebrow">{i18n(bi("Production Assets · Voice", "Aset Produksi · Voice"))}</p>'
+                  if section_index == 0:
+                      body += (
+                          f'<h2 class="development-package-title">{i18n(bi("Voice Production", "Voice Production"))}</h2>'
+                          f'<p class="section-intro voice-production-intro">{i18n(intro)}</p>'
+                          + _cast_html(doc)
+                          + '<div class="voice-section-head">'
+                          + f'<span class="voice-section-label">{i18n(bi("Gameplay Order", "Urutan Gameplay"))}</span>'
+                          + f'<h3>{esc(section.title)}</h3>'
+                          + '</div>'
+                      )
+                  else:
+                      body += (
+                          f'<h2 class="voice-section-page-title">{esc(section.title)}</h2>'
+                          f'<p class="voice-section-page-subtitle">{i18n(bi("Voice Production", "Voice Production"))}</p>'
+                      )
+                  body += '<div class="voice-script-list">'
+                  for entry in section.entries:
+                      body += _entry_html(entry, sequence_no)
+                      sequence_no += 1
+                  body += "</div>"
+
+                  pages.append(
+                      page(
+                          f"production-assets-voice-{section_index + 1}",
+                          f"{base_code:02d}{chr(65 + section_index)}",
+                          bi("Voice Production", "Voice Production"),
+                          body,
+                          context=section.title,
+                          header=bi("Production Assets — Voice", "Aset Produksi — Voice"),
+                          footer_title=bi("Production Assets · Voice", "Aset Produksi · Voice"),
+                          brand=brand,
+                          role="production-assets",
+                          classes="sheet professional-only production-assets-page voice-production-page",
+                      )
+                  )
+              return pages
+
+
+'''
+          source, n = re.subn(r'def voice_pages\(render_data: dict, doc: VoiceProduction\) -> list\[str\]:\n.*?(?=def voice_navigation)', pages_block, source, count=1, flags=re.S)
+          assert n == 1, 'pages block replacement failed'
+
+          style = r'''VOICE_STYLE = r\'\'\'<style id="production-assets-style">
+          .production-assets-page .voice-production-intro{max-width:660px;margin-bottom:22px}
+          .voice-setup-block{margin:20px 0 32px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+          .voice-setup-title{margin:0;padding:12px 0 10px;color:var(--navy);font-size:.82rem;letter-spacing:.02em}
+          .voice-setup-rows{border-top:1px solid var(--line)}
+          .voice-setup-row{display:grid;grid-template-columns:minmax(150px,.85fr) minmax(280px,2fr) minmax(110px,.55fr);gap:24px;padding:14px 0}
+          .voice-setup-row+.voice-setup-row{border-top:1px solid var(--line)}
+          .voice-setup-field{min-width:0}
+          .voice-setup-label{display:block;margin-bottom:4px;color:var(--muted);font-size:.61rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+          .voice-setup-field strong{display:block;color:var(--navy);font-size:.88rem;line-height:1.35}
+          .voice-setup-voice strong{font-size:1rem}
+          .voice-setup-model strong{color:var(--blue);font-size:.82rem}
+          .voice-section-head{display:flex;align-items:baseline;gap:15px;margin:0 0 13px;padding:0 0 10px;border-bottom:1px solid var(--line)}
+          .voice-section-label{color:var(--blue);font-size:.62rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+          .voice-section-head h3{margin:0;color:var(--navy);font-size:1rem}
+          .voice-section-page-title{margin:6px 0 3px;color:var(--navy);font-size:1.55rem;line-height:1.15}
+          .voice-section-page-subtitle{margin:0 0 22px;color:var(--blue);font-size:.65rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+          .voice-script-list{display:grid;gap:16px;margin-top:4px}
+          .voice-script-card{overflow:hidden;border:1px solid var(--line);border-radius:4px;background:var(--paper);break-inside:avoid}
+          .voice-script-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:15px 16px 12px}
+          .voice-script-identity{display:flex;gap:12px;align-items:flex-start;min-width:0}
+          .voice-script-index{min-width:24px;padding-top:2px;color:var(--amber);font-size:.69rem;font-weight:800;letter-spacing:.08em}
+          .voice-script-heading{min-width:0;flex:1}
+          .voice-script-heading h4{margin:0;color:var(--navy);font-size:.96rem;line-height:1.3;letter-spacing:.005em;text-transform:none}
+          .voice-script-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:5px;color:var(--muted);font-size:.7rem}
+          .voice-script-text{display:none}
+          .voice-script-display{padding:17px 18px 20px;border-top:1px solid var(--line);background:#fff}
+          .voice-script-line{max-width:74ch;color:var(--ink);font:500 .94rem/1.7 var(--font);overflow-wrap:anywhere}
+          .voice-script-gap{height:10px}
+          .voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
+          .voice-performance-tag{display:inline-flex;align-items:center;min-height:22px;padding:3px 7px;border:0;border-left:2px solid var(--blue);border-radius:2px;background:var(--soft);color:var(--blue);font-size:.64rem;font-weight:800;letter-spacing:.025em;text-transform:uppercase}
+          .voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 12px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .65rem/1 var(--font);letter-spacing:.055em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+          .voice-copy-button:hover,.voice-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
+          .voice-copy-button.is-copied{border-color:var(--green);background:var(--green);color:#fff}
+          .production-assets-nav .nav-submenu a small{display:block;margin-top:2px}
+          @media(max-width:760px){.voice-setup-row{grid-template-columns:1fr;gap:10px}.voice-script-card-head{gap:12px;padding:14px}.voice-script-display{padding:15px}.voice-copy-button{min-height:32px;padding:7px 9px}.voice-section-head{align-items:flex-start;flex-direction:column;gap:4px}}
+          @media print{.voice-copy-button{display:none!important}.voice-script-card{break-inside:avoid}}
+          </style>\'\'\''''
+          source, n = re.subn(r'VOICE_STYLE = r\'\'\'<style id="production-assets-style">.*?</style>\'\'\'', style, source, count=1, flags=re.S)
+          assert n == 1, 'style replacement failed'
+
+          copy_script = r'''VOICE_COPY_SCRIPT = r\'\'\'<script id="production-assets-copy-script">(function(){
+            function fallbackCopy(text){
+              var area=document.createElement('textarea');
+              area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';
+              document.body.appendChild(area);area.select();
+              try{document.execCommand('copy');}finally{document.body.removeChild(area);}
+            }
+            document.addEventListener('click',function(event){
+              var button=event.target.closest('[data-voice-copy]');if(!button)return;
+              var source=document.getElementById(button.getAttribute('data-voice-copy'));if(!source)return;
+              var text=source.textContent||'';
+              var label=button.querySelector('.voice-copy-label');
+              var original=label?label.textContent:'Copy Prompt';
+              var done=function(){
+                button.classList.add('is-copied');
+                if(label)label.textContent='Copied ✓';else button.textContent='Copied ✓';
+                setTimeout(function(){button.classList.remove('is-copied');if(label)label.textContent=original;else button.textContent=original;},1400);
+              };
+              if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallbackCopy(text);done();});}
+              else{fallbackCopy(text);done();}
+            });
+          })();</script>\'\'\''''
+          source, n = re.subn(r'VOICE_COPY_SCRIPT = r\'\'\'<script id="production-assets-copy-script">.*?</script>\'\'\'', copy_script, source, count=1, flags=re.S)
+          assert n == 1, 'copy script replacement failed'
+
+          path.write_text(source, encoding='utf-8')
+
+          test_path = Path('tests/test_prd_voice_assets.py')
+          tests = test_path.read_text(encoding='utf-8')
+          tests = tests.replace("self.assertIn('class=\"voice-script-panel\"', html)", "self.assertIn('class=\"voice-script-card\"', html)")
+          tests = tests.replace("self.assertIn('class=\"voice-performance-tag\">[warm]</span>', html)", "self.assertIn('class=\"voice-performance-tag\">[warm]</span>', html)\n        self.assertIn('Copy Prompt', html)\n        self.assertNotIn('ElevenLabs Text', html)\n        self.assertIn('voice-section-page-title', html)")
+          test_path.write_text(tests, encoding='utf-8')
+          PY
+
+      - name: Run focused contracts
+        run: |
+          python -m compileall kits/project-document-generator/renderer
+          python -m unittest tests.test_prd_voice_assets
+
+      - name: Render and validate Clockwork
+        run: |
+          python kits/project-document-generator/renderer/render.py \
+            workspace/active/the-clockwork-vault/work/render-data.json \
+            workspace/active/the-clockwork-vault/output/final.html
+          python kits/voice-production-kit/validator/validate.py \
+            workspace/active/the-clockwork-vault
+
+      - name: Capture direct PNG previews
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          import time
+
+          html = Path('workspace/active/the-clockwork-vault/output/final.html').resolve().as_uri()
+          out = Path('voice-ui-preview')
+          out.mkdir()
+          options = Options()
+          options.add_argument('--headless=new')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--hide-scrollbars')
+          options.add_argument('--window-size=1600,1400')
+          driver = webdriver.Chrome(options=options)
+          try:
+              driver.get(html)
+              driver.set_window_size(1600, 1400)
+              time.sleep(.3)
+              targets = [
+                  ('01-antechamber.png', 'production-assets-voice-1'),
+                  ('02-workshop.png', 'production-assets-voice-5'),
+              ]
+              for filename, target_id in targets:
+                  driver.execute_script("""
+                    var target = document.getElementById(arguments[0]);
+                    document.querySelectorAll('main.document-main > section.sheet').forEach(function(el){
+                      el.style.setProperty('display', el===target ? 'block' : 'none', 'important');
+                    });
+                    document.body.classList.remove('view-clean');
+                    document.body.classList.add('view-professional');
+                    window.scrollTo(0,0);
+                  """, target_id)
+                  time.sleep(.15)
+                  driver.save_screenshot(str(out / filename))
+          finally:
+              driver.quit()
+          PY
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: voice-ui-preview
+          path: voice-ui-preview/*.png
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Commit UI refinement and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kits/project-document-generator/renderer/production_assets.py tests/test_prd_voice_assets.py workspace/active/the-clockwork-vault/output/final.html
+          git rm .github/workflows/voice-ui-polish-once.yml
+          git commit -m "ui: refine Voice production presentation"
+          git push origin HEAD:Local
