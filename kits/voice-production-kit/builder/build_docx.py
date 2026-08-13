@@ -29,6 +29,7 @@ class VoiceEntry:
     voice_id: str
     title: str
     voice_type: str = ""
+    speaker: str = ""
     duration: str = ""
     performance: str = ""
 
@@ -92,6 +93,10 @@ def parse_script(path: Path) -> VoiceDocument:
                     entry.voice_type = meta.split(":", 1)[1].strip()
                     i += 1
                     continue
+                if meta.startswith("Speaker:"):
+                    entry.speaker = meta.split(":", 1)[1].strip()
+                    i += 1
+                    continue
                 if meta.startswith("Estimated Duration:"):
                     entry.duration = meta.split(":", 1)[1].strip()
                     i += 1
@@ -110,12 +115,14 @@ def parse_script(path: Path) -> VoiceDocument:
                 if meta.startswith("### ") or meta.startswith("## "):
                     break
                 i += 1
-            if not entry.voice_type:
-                raise ValueError(f"{entry.voice_id} is missing Type.")
-            if not entry.duration:
-                raise ValueError(f"{entry.voice_id} is missing Estimated Duration.")
-            if not entry.performance:
-                raise ValueError(f"{entry.voice_id} has an empty Performance Script.")
+            for name, value in {
+                "Type": entry.voice_type,
+                "Speaker": entry.speaker,
+                "Estimated Duration": entry.duration,
+                "Performance Script": entry.performance,
+            }.items():
+                if not value:
+                    raise ValueError(f"{entry.voice_id} is missing {name}.")
             current_section.entries.append(entry)
             continue
         i += 1
@@ -133,29 +140,51 @@ def parse_script(path: Path) -> VoiceDocument:
     return VoiceDocument(title, version, source_requirements, sections)
 
 
-def parse_requirements(path: Path) -> dict[str, str]:
-    result: dict[str, str] = {}
+def parse_requirements(path: Path) -> dict[str, tuple[str, str]]:
+    result: dict[str, tuple[str, str]] = {}
     current_id: str | None = None
+    current_type = ""
+    current_speaker = ""
+
+    def commit_current() -> None:
+        nonlocal current_id, current_type, current_speaker
+        if current_id is not None:
+            if not current_type or not current_speaker:
+                missing = []
+                if not current_type:
+                    missing.append("Type")
+                if not current_speaker:
+                    missing.append("Speaker")
+                raise ValueError(f"Requirements missing {', '.join(missing)} for: {current_id}")
+            result[current_id] = (current_type, current_speaker)
+
     for line in path.read_text(encoding="utf-8").splitlines():
         match = REQ_ENTRY_RE.match(line.rstrip())
         if match:
+            commit_current()
             current_id = match.group(1)
             if current_id in result:
                 raise ValueError(f"Duplicate Voice ID in requirements: {current_id}")
-            result[current_id] = ""
+            current_type = ""
+            current_speaker = ""
             continue
         if current_id and line.startswith("- Type:"):
-            result[current_id] = line.split(":", 1)[1].strip()
+            current_type = line.split(":", 1)[1].strip()
+        elif current_id and line.startswith("- Speaker:"):
+            current_speaker = line.split(":", 1)[1].strip()
+
+    commit_current()
     if not result:
         raise ValueError("No Voice IDs found in Flow 5 requirements.")
-    missing_type = [key for key, value in result.items() if not value]
-    if missing_type:
-        raise ValueError(f"Requirements missing Type for: {', '.join(missing_type)}")
     return result
 
 
-def validate_parity(doc: VoiceDocument, requirements: dict[str, str]) -> None:
-    actual = {entry.voice_id: entry.voice_type for section in doc.sections for entry in section.entries}
+def validate_parity(doc: VoiceDocument, requirements: dict[str, tuple[str, str]]) -> None:
+    actual = {
+        entry.voice_id: (entry.voice_type, entry.speaker)
+        for section in doc.sections
+        for entry in section.entries
+    }
     req_ids, actual_ids = set(requirements), set(actual)
     if req_ids != actual_ids:
         missing = sorted(req_ids - actual_ids)
@@ -166,9 +195,20 @@ def validate_parity(doc: VoiceDocument, requirements: dict[str, str]) -> None:
         if extra:
             bits.append("extra script IDs: " + ", ".join(extra))
         raise ValueError("Voice requirement parity failed: " + "; ".join(bits))
-    mismatches = [vid for vid in sorted(req_ids) if requirements[vid].casefold() != actual[vid].casefold()]
-    if mismatches:
-        raise ValueError("Voice Type differs from Flow 5 requirement for: " + ", ".join(mismatches))
+
+    type_mismatches = [
+        vid for vid in sorted(req_ids)
+        if requirements[vid][0].casefold() != actual[vid][0].casefold()
+    ]
+    if type_mismatches:
+        raise ValueError("Voice Type differs from Flow 5 requirement for: " + ", ".join(type_mismatches))
+
+    speaker_mismatches = [
+        vid for vid in sorted(req_ids)
+        if requirements[vid][1].casefold() != actual[vid][1].casefold()
+    ]
+    if speaker_mismatches:
+        raise ValueError("Voice Speaker differs from Flow 5 requirement for: " + ", ".join(speaker_mismatches))
 
 
 def rgb(value: str) -> RGBColor:
@@ -314,6 +354,10 @@ def build_docx(data: VoiceDocument, output: Path) -> None:
             r.font.size = Pt(8.5)
             r.font.bold = True
             r.font.color.rgb = rgb(BLUE)
+            r = p.add_run(f"  ·  Speaker: {entry.speaker}")
+            r.font.name = "Aptos"
+            r.font.size = Pt(8.5)
+            r.font.color.rgb = rgb(GRAY)
 
             p = doc.add_paragraph()
             p.paragraph_format.space_after = Pt(1)
