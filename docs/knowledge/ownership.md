@@ -59,8 +59,9 @@ Use this file to locate the current owner before creating, moving, or editing re
 
 | Boundary | Owner |
 |---|---|
-| Flow 5 Voice Asset Requirement | `kits/voice-production-kit/VOICE-EXTRACTION.md` + `work/voice-requirements.md` |
-| Flow 6 canonical Voice Asset Production | `kits/voice-production-kit/SCRIPT-PRODUCTION.md` + `work/voice-production.md` |
+| Flow 5 Voice Asset Requirement | `kits/voice-production-kit/VOICE-EXTRACTION.md` + project `work/voice-requirements.md` |
+| Flow 6 lifecycle/output contract | `kits/voice-production-kit/README.md` + `docs/foundation/06-elevenlabs-script-production.md` |
+| Flow 6 canonical Voice Asset Production | project `work/voice-production.md` |
 | Eleven v3 performance craft | `kits/voice-production-kit/SOUNDMAKER.md` |
 | default human/operator Voice presentation | shared `output/final.html → Production Assets → Voice`, mechanically composed by PRD renderer from canonical Voice Production |
 | optional DOCX presentation | `kits/voice-production-kit/DOCX-FORMAT.md` |
@@ -68,6 +69,8 @@ Use this file to locate the current owner before creating, moving, or editing re
 | Flow 7 Voice validation | `kits/voice-production-kit/VOICE-VALIDATION.md` + `validator/validate.py` |
 | Voice semantic/validator regressions | `tests/test_voice_contracts.py` |
 | same-HTML Voice composition regression | `tests/test_prd_voice_assets.py` |
+
+The former duplicate `kits/voice-production-kit/SCRIPT-PRODUCTION.md` owner is retired and must not be used for current routing.
 
 ## Shared HTML ownership rule
 
@@ -80,6 +83,8 @@ PRD core
 Production Assets → Voice
 ← work/voice-production.md
 ```
+
+Production Assets extends the accepted PRD sidebar. Gameplay/objective navigation stays under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
 
 A downstream Voice-only change may rerender `final.html` without changing PRD semantic ownership/acceptance when PRD canonical sources remain unchanged.
 
