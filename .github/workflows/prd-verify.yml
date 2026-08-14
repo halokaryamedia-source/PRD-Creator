@@ -48,6 +48,7 @@ jobs:
         run: |
           python -m compileall -q kits/project-document-generator \
             tests/test_prd_contracts.py \
+            tests/test_prd_delivery.py \
             tests/test_prd_voice_assets.py \
             tests/test_prd_handoff_contracts.py \
             tests/test_prd_flow2_state_contracts.py \
@@ -58,6 +59,7 @@ jobs:
         run: |
           python -m unittest \
             tests.test_prd_contracts \
+            tests.test_prd_delivery \
             tests.test_prd_voice_assets \
             tests.test_prd_handoff_contracts \
             tests.test_prd_flow2_state_contracts \
