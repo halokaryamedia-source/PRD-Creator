@@ -12,7 +12,8 @@ Separate a generated PRD from a production-ready PRD and preserve only the minim
 - detailed Flow 4 procedure → `kits/project-document-generator/VALIDATION.md`;
 - project handoff state → `state/handoff-state.yaml`;
 - compact document acceptance → `work/acceptance.md`;
-- human-facing handoff navigation/status → `output/team-handoff.md`.
+- stable handoff/resume navigator → `output/README.md`;
+- current versioned delivery bundle → `output/v<document.version>/{prd.html, context.md, index.json}`.
 
 This foundation page does not maintain another Golden checklist or another review matrix.
 
@@ -80,7 +81,7 @@ Do not duplicate checksum tables, CI transcripts, role-by-role PASS fields, or r
 
 ## Handoff boundary
 
-Before Flow 5, `validate_handoff.py` confirms that current accepted revision, artifact paths, acceptance state, handoff state, and `document.version` agree.
+Before Flow 5, `validate_handoff.py` confirms that current accepted revision, canonical inputs, acceptance state, `output/README.md`, versioned `prd.html` / `context.md` / `index.json`, handoff state, and `document.version` agree.
 
 `handoff_ready` means only that the accepted PRD may be used as the current production reference / downstream Voice input. It does not mean client approval, implementation completion, gameplay QA, release approval, or completed Voice Production.
 
