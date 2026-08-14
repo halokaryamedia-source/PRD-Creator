@@ -38,7 +38,7 @@ Do not broad-read every Voice/reference file by default. Recover current project
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/v<document.version>/prd.html → Production Assets → Voice
+→ output/v<document.version>/prd.html → Production Assets → matching gameplay section → Audio → Voice Production
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
@@ -59,14 +59,17 @@ Production Assets extends the existing accepted PRD navigation. It must not rebu
    gameplay/objective sections
 
 04 Production Assets
-   VOICE
    <gameplay section title>
-   <accepted PRD package label>
+      <accepted PRD package label>
+
+page content
+→ Audio
+   → Voice Production
 ```
 
-`VOICE` appears once. Each linked section uses the gameplay/section title plus the accepted PRD label, and long text wraps naturally instead of being truncated.
+Voice does not own a separate sidebar category. Each matching Production Assets link uses the gameplay/section title plus the accepted PRD label, and long text wraps naturally instead of being truncated.
 
-Each Voice section page shows gameplay title, accepted PRD package label/context, Voice line count, Primary Speaker, and compact Voice Setup.
+A gameplay page containing Voice shows the common Production Assets page header and counts, then `Audio → Voice Production` with Voice line count, Primary Speaker, and compact Voice Setup.
 
 Each Voice line shows:
 
@@ -85,7 +88,8 @@ The visible developer `Context` is a direct presentation of the existing Flow 5 
 
 Use the root `voice-production` specialist for semantic/product-contract defects. When semantics are already correct, route mechanics directly:
 
-- same-HTML Production Assets composition/navigation → `kits/project-document-generator/renderer/production_assets.py`;
+- objective-first Production Assets composition/navigation → `kits/project-document-generator/renderer/production_assets_objective.py`;
+- Voice-specific Production Assets parsing/presentation primitives → `kits/project-document-generator/renderer/production_assets.py`;
 - optional DOCX generation/pagination → `builder/build_docx.py`;
 - optional DOCX presentation contract → `DOCX-FORMAT.md`;
 - Voice mechanical parity → `validator/validate.py`;
