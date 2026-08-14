@@ -377,7 +377,7 @@ Initial PRD production:
 approved project meaning
 → content.md
 → render-data.json
-→ one deterministic full final.html PRD-core render
+→ one deterministic versioned prd.html render
 ```
 
 Downstream extension:
@@ -385,7 +385,7 @@ Downstream extension:
 ```text
 accepted PRD core
 → optional asset-requirements.md + optional Voice canonical production
-→ one consolidated final.html rerender
+→ one consolidated versioned prd.html rerender
 ```
 
 If no downstream canonical source exists, Production Assets composition is a no-op.
