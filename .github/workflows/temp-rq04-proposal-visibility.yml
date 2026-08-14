@@ -39,76 +39,70 @@ jobs:
           def write(rel: str, text: str) -> None:
               (ROOT / rel).write_text(text, encoding="utf-8")
 
-          # Durable Flow 2 policy: solve-first remains, but material AI choices must be visible once.
+          def replace_required(rel: str, old: str, new: str) -> None:
+              text = read(rel)
+              if old not in text:
+                  raise SystemExit(f"{rel}: expected text not found: {old[:100]!r}")
+              write(rel, text.replace(old, new, 1))
+
+          # Durable Flow 2 policy: solve-first remains, material AI choices become visible once.
           rel = "docs/foundation/02-source-intake-recovery.md"
-          text = read(rel)
-          old = "  Saran AI       # only when useful"
-          if old not in text:
-              raise SystemExit("foundation Saran AI marker missing")
-          text = text.replace(old, "  Saran AI       # required when material AI Proposals exist", 1)
-          marker = "Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker.\n"
-          addition = marker + "\nEvery **material AI-chosen Proposal** must appear once in the preview's `Saran AI` block before approval. Material means a chosen default that changes gameplay behavior/scope such as timing, quantity, progression, scoring, fail/recovery, reward, build scope, or runtime behavior. Keep the list concise and state the chosen default, not a decision questionnaire. Omit `Saran AI` only when no material AI-chosen Proposal remains in the reviewed slice.\n"
-          if marker not in text:
-              raise SystemExit("foundation preview insertion marker missing")
-          text = text.replace(marker, addition, 1)
-          write(rel, text)
-
-          # Detailed procedure: replace optional visibility with explicit conditional requirement.
-          rel = "kits/project-document-generator/SOURCE-INTAKE.md"
-          text = read(rel)
-          text = text.replace(
-              "Saran AI                 # optional\n- only material choices worth calling out",
-              "Saran AI                 # required when material AI-chosen Proposals exist\n- list each material AI-chosen default once; omit only when none exist",
-              1,
+          replace_required(
+              rel,
+              "  Saran AI       # only when useful",
+              "  Saran AI       # required when material AI-chosen Proposals exist",
           )
-          old = "Do not label every recovered sentence as source-derived versus AI-added. Surface `Saran AI` only when a material proposal is uncertain/conflict-resolving enough that the user benefits from seeing it. A normal preview can simply present the proposed complete model."
-          new = "Do not label every recovered sentence as source-derived versus AI-added. **Every material AI-chosen Proposal must appear once in `Saran AI` before approval**, including chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, or runtime-behavior defaults. Keep this as one compact disclosure list rather than a multi-question approval dialog. Source-backed recovery and non-material production choices do not need individual labels. If no material AI-chosen Proposal exists in the reviewed slice, omit `Saran AI`."
-          if old not in text:
-              raise SystemExit("SOURCE-INTAKE optional Saran AI paragraph missing")
-          text = text.replace(old, new, 1)
-          old = "Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. Persist those approvals before entering Flow 3."
-          new = "Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. A material Proposal counts as represented only when its chosen default is visible once in `Saran AI`; do not promote a hidden material AI choice through blanket approval. Persist those approvals before entering Flow 3."
-          if old not in text:
-              raise SystemExit("SOURCE-INTAKE approval paragraph missing")
-          text = text.replace(old, new, 1)
-          write(rel, text)
+          marker = "Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker."
+          addition = marker + "\n\nEvery **material AI-chosen Proposal** must appear once in the preview's `Saran AI` block before approval. Material means a chosen default that changes gameplay behavior or scope, including timing, quantity, progression, scoring, fail/recovery, reward, build scope, or runtime behavior. State the chosen default concisely; do not turn this into a question-by-question approval flow. Omit `Saran AI` only when the reviewed slice contains no material AI-chosen Proposal."
+          replace_required(rel, marker, addition)
 
-          # Production skill: same human-facing rule, without adding a new approval stage.
+          # Detailed Flow 2 procedure.
+          rel = "kits/project-document-generator/SOURCE-INTAKE.md"
+          replace_required(
+              rel,
+              "Saran AI                 # optional\n- only material choices worth calling out",
+              "Saran AI                 # required when material AI-chosen Proposals exist\n- each material AI-chosen default once; omit only when none exist",
+          )
+          marker = "Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, or validator detail by default. **do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model."
+          addition = marker + "\n\nDo not label every recovered sentence as source-derived versus AI-added. However, every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval. This includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, or runtime-behavior defaults. Source-backed recovery and non-material production choices do not need individual labels. Keep one compact disclosure list rather than a multi-question decision dialog."
+          replace_required(rel, marker, addition)
+          marker = "Natural-language user approval is sufficient. If the user corrects the preview, persist the correction as higher authority, update only affected proposal/requirements, rerun only invalidated reasoning, and re-preview only the affected slice when needed."
+          addition = "Natural-language user approval is sufficient. A material Proposal counts as represented by the preview only when its chosen default appears once in `Saran AI`; do not promote a hidden material AI choice through blanket approval. If the user corrects the preview, persist the correction as higher authority, update only affected proposal/requirements, rerun only invalidated reasoning, and re-preview only the affected slice when needed."
+          replace_required(rel, marker, addition)
+
+          # Production kit skill.
           rel = "kits/project-document-generator/SKILL.md"
-          text = read(rel)
-          text = text.replace(
+          replace_required(
+              rel,
               "Saran AI                     # optional\n- only material choices the AI filled and that are useful to call out",
               "Saran AI                     # required when material AI-chosen Proposals exist\n- each material AI-chosen default once; omit only when none exist",
-              1,
           )
-          old = "Do not label every recovered sentence as source-derived versus AI-added. Surface `Saran AI` only when a material proposal is uncertain/conflict-resolving enough that the user benefits from seeing it. A normal preview can simply present the proposed complete model."
-          new = "Do not label every recovered sentence as source-derived versus AI-added. Every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval; this includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build scope, and runtime behavior. Keep it one compact disclosure list, not a multi-option questionnaire. Omit the block only when the reviewed slice contains no material AI-chosen Proposal."
-          if old not in text:
-              raise SystemExit("kit SKILL optional Saran AI paragraph missing")
-          text = text.replace(old, new, 1)
-          write(rel, text)
+          replace_required(
+              rel,
+              "Do not label every recovered sentence as source-derived versus AI-added. Surface `Saran AI` only when a material proposal is uncertain/conflict-resolving enough that the user benefits from seeing it. A normal preview can simply present the proposed complete model.",
+              "Do not label every recovered sentence as source-derived versus AI-added. Every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval; this includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build scope, and runtime behavior. Keep it one compact disclosure list, not a multi-option questionnaire. Omit the block only when the reviewed slice contains no material AI-chosen Proposal.",
+          )
 
-          # Root semantic specialist gets the same guardrail.
+          # Root semantic specialist.
           rel = ".agents/skills/project-document-production/SKILL.md"
-          text = read(rel)
-          old = "The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Surface `Saran AI` only for material choices whose uncertainty/conflict is useful to the user."
-          new = "The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Every material AI-chosen Proposal must appear once in `Saran AI` before approval, while source-backed recovery and non-material production choices stay unlabeled. Keep the disclosure compact instead of turning it into a question-by-question approval flow."
-          if old not in text:
-              raise SystemExit("root project-document-production Saran AI paragraph missing")
-          text = text.replace(old, new, 1)
-          write(rel, text)
+          replace_required(
+              rel,
+              "The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Surface `Saran AI` only for material choices whose uncertainty/conflict is useful to the user.",
+              "The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Every material AI-chosen Proposal must appear once in `Saran AI` before approval, while source-backed recovery and non-material production choices stay unlabeled. Keep the disclosure compact instead of turning it into a question-by-question approval flow.",
+          )
+          replace_required(
+              rel,
+              "Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. Persist those approvals before entering Flow 3.",
+              "Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. A material Proposal is represented only when its chosen default is visible once in `Saran AI`; hidden material AI choices cannot be promoted by blanket approval. Persist those approvals before entering Flow 3.",
+          )
 
-          # Kit-wide invariant so later procedure rewrites cannot silently weaken the boundary.
+          # Kit-wide invariant.
           rel = "kits/project-document-generator/RULES.md"
-          text = read(rel)
-          marker = "- After preview approval, promote represented pending proposals into approved requirement/project state before Flow 3.\n"
-          addition = marker + "- A material AI-chosen Proposal is represented only when its chosen default appears once in the Simple Chat Preview `Saran AI` block. Do not hide timing, quantity, scoring, fail/recovery, progression, reward, build-scope, or runtime-behavior choices inside otherwise natural preview prose.\n"
-          if marker not in text:
-              raise SystemExit("RULES preview approval marker missing")
-          text = text.replace(marker, addition, 1)
-          write(rel, text)
+          marker = "- After preview approval, promote represented pending proposals into approved requirement/project state before Flow 3."
+          addition = marker + "\n- A material AI-chosen Proposal is represented only when its chosen default appears once in the Simple Chat Preview `Saran AI` block. Do not hide timing, quantity, scoring, fail/recovery, progression, reward, build-scope, or runtime-behavior choices inside otherwise natural preview prose."
+          replace_required(rel, marker, addition)
 
-          # Focused contract proof: procedure and skill must keep the visibility rule.
+          # Focused contract proof.
           rel = "tests/test_prd_flow2_state_contracts.py"
           text = read(rel)
           if 'FOUNDATION_FLOW2 = ROOT / "docs" / "foundation" / "02-source-intake-recovery.md"' not in text:
@@ -117,44 +111,49 @@ jobs:
                   'SOURCE_INTAKE = ROOT / "kits" / "project-document-generator" / "SOURCE-INTAKE.md"\nFOUNDATION_FLOW2 = ROOT / "docs" / "foundation" / "02-source-intake-recovery.md"\n',
                   1,
               )
-          old = '''        source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")\n        skill = KIT_SKILL.read_text(encoding="utf-8")\n'''
-          new = '''        source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")\n        foundation = FOUNDATION_FLOW2.read_text(encoding="utf-8")\n        skill = KIT_SKILL.read_text(encoding="utf-8")\n'''
+          old = '        source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")\n        skill = KIT_SKILL.read_text(encoding="utf-8")\n'
+          new = '        source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")\n        foundation = FOUNDATION_FLOW2.read_text(encoding="utf-8")\n        skill = KIT_SKILL.read_text(encoding="utf-8")\n'
           if old not in text:
-              raise SystemExit("Flow2 contract test setup marker missing")
+              raise SystemExit("Flow2 contract test read marker missing")
           text = text.replace(old, new, 1)
           marker = '        self.assertIn("The Simple Chat Preview is not a new artifact", skill)\n'
-          addition = marker + '''        self.assertIn("Every material AI-chosen Proposal", source_intake)\n        self.assertIn("required when material AI-chosen Proposals exist", source_intake)\n        self.assertIn("material AI-chosen Proposal", foundation)\n        self.assertIn("material AI-chosen Proposals exist", skill)\n'''
           if marker not in text:
               raise SystemExit("Flow2 contract test assertion marker missing")
+          addition = marker + '        self.assertIn("material AI-chosen Proposal", source_intake)\n        self.assertIn("required when material AI-chosen Proposals exist", source_intake)\n        self.assertIn("material AI-chosen Proposal", foundation)\n        self.assertIn("material AI-chosen Proposals exist", skill)\n'
           text = text.replace(marker, addition, 1)
           write(rel, text)
 
-          # Durable tracking.
+          # Durable audit/backlog/continuation.
           rel = "docs/knowledge/reviews/repository-quality-audit-2026-08-14.md"
+          replace_required(
+              rel,
+              "| RQ-04 | P1 | Flow 2 can choose material Proposal defaults (timing, quantities, scoring, recovery, runtime behavior, etc.) while `Saran AI` is optional in the preview. | A polished AI guess can become approved project truth without the user noticing which material facts were AI-chosen. | OPEN |",
+              "| RQ-04 | P1 | Flow 2 could choose material Proposal defaults while `Saran AI` remained optional. | A polished AI guess could become approved project truth without the user noticing which material facts were AI-chosen. | FIXED — every material AI-chosen Proposal is disclosed once before approval |",
+          )
           text = read(rel)
-          old = "| RQ-04 | P1 | Flow 2 can choose material Proposal defaults (timing, quantities, scoring, recovery, runtime behavior, etc.) while `Saran AI` is optional in the preview. | A polished AI guess can become approved project truth without the user noticing which material facts were AI-chosen. | OPEN |"
-          new = "| RQ-04 | P1 | Flow 2 could choose material Proposal defaults while `Saran AI` remained optional. | A polished AI guess could become approved project truth without the user noticing which material facts were AI-chosen. | FIXED — every material AI-chosen Proposal is disclosed once before approval |"
-          if old not in text:
-              raise SystemExit("RQ-04 audit row missing")
-          text = text.replace(old, new, 1)
-          update = '''\n## Remediation update — RQ-04 material Proposal visibility\n\nThe solve-first Flow 2 model is preserved. The change is only the approval boundary: if AI chose a material default that changes gameplay/scope, the chosen value must appear once in the compact `Saran AI` disclosure before blanket preview approval can promote it. This does not add another artifact, approval stage, or option-by-option questionnaire.\n\n'''
           if "## Remediation update — RQ-04 material Proposal visibility" not in text:
               marker = "## Ordered remediation\n"
-              if text.count(marker) != 1:
+              update = "## Remediation update — RQ-04 material Proposal visibility\n\nThe solve-first Flow 2 model is preserved. The change is only the approval boundary: when AI chooses a material default that changes gameplay or production scope, that chosen value must appear once in the compact `Saran AI` disclosure before blanket preview approval can promote it. This adds no artifact, stage, or option-by-option questionnaire.\n\n"
+              if marker not in text:
                   raise SystemExit("audit Ordered remediation marker missing")
               text = text.replace(marker, update + marker, 1)
-          write(rel, text)
+              write(rel, text)
 
-          # Remove RQ-04 from active backlog; retain every other open finding.
           rel = "docs/knowledge/operations/backlog.md"
           text = read(rel)
-          line = "1. **RQ-04 — material AI Proposal visibility (P1):** every AI-chosen material default that changes timing, quantity, scoring, fail/recovery, progression, reward, build scope, or runtime behavior must appear once in the Simple Chat Preview `Saran AI` summary before approval. Keep one complete preview, not a questionnaire.\n"
-          if line not in text:
+          rq04 = "1. **RQ-04 — material AI Proposal visibility (P1):** every AI-chosen material default that changes timing, quantity, scoring, fail/recovery, progression, reward, build scope, or runtime behavior must appear once in the Simple Chat Preview `Saran AI` summary before approval. Keep one complete preview, not a questionnaire.\n"
+          if rq04 not in text:
               raise SystemExit("backlog RQ-04 line missing")
-          text = text.replace(line, "", 1)
-          # Renumber only presentation; backlog ownership/order is unchanged.
-          for old_no, new_no in [(8,7),(7,6),(6,5),(5,4),(4,3),(3,2),(2,1)]:
-              text = text.replace(f"{old_no}. **", f"{new_no}. **", 1)
+          text = text.replace(rq04, "", 1)
+          remaining = [line for line in text.splitlines() if line and re.match(r"^\d+\. \*\*RQ-", line)] if False else None
+          # Explicit renumbering after removing item 1.
+          text = text.replace("2. **RQ-06", "1. **RQ-06", 1)
+          text = text.replace("3. **RQ-05", "2. **RQ-05", 1)
+          text = text.replace("4. **RQ-07", "3. **RQ-07", 1)
+          text = text.replace("5. **RQ-08", "4. **RQ-08", 1)
+          text = text.replace("6. **RQ-09", "5. **RQ-09", 1)
+          text = text.replace("7. **RQ-10", "6. **RQ-10", 1)
+          text = text.replace("8. **RQ-14", "7. **RQ-14", 1)
           text = text.replace(
               "Closed items RQ-01, RQ-02, RQ-03, RQ-12, RQ-15, and RQ-16",
               "Closed items RQ-01, RQ-02, RQ-03, RQ-04, RQ-12, RQ-15, and RQ-16",
