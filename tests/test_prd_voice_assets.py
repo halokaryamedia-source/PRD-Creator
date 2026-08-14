@@ -211,6 +211,32 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('id="production-assets-core"', html_with)
 
 
+    def test_voice_helper_module_contains_primitives_not_retired_compositor(self) -> None:
+        source = (
+            Path(__file__).resolve().parents[1]
+            / "kits"
+            / "project-document-generator"
+            / "renderer"
+            / "production_assets.py"
+        ).read_text(encoding="utf-8")
+        for marker in (
+            "def voice_pages(",
+            "def _production_assets_navigation(",
+            "def augment_project_html(",
+            "def _section_shell_html(",
+        ):
+            self.assertNotIn(marker, source)
+        for marker in (
+            "def parse_voice_production(",
+            "def parse_voice_requirement_triggers(",
+            "def _section_setup_html(",
+            "def _entry_html(",
+            "VOICE_STYLE =",
+            "VOICE_COPY_SCRIPT =",
+        ):
+            self.assertIn(marker, source)
+
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -15,7 +15,6 @@ PERFORMANCE_TAG_RE = re.compile(r"\[[^\[\]\r\n]+\]")
 SECTION_PREFIX_RE = re.compile(r"^\s*\d+\.\s*")
 VOICE_CAST_LABEL = "Voice Cast:"
 STYLE_MARKER = 'id="production-assets-style"'
-SCRIPT_MARKER = 'id="production-assets-copy-script"'
 
 
 @dataclass
@@ -39,13 +38,6 @@ class VoiceProduction:
     sections: list[VoiceSection]
 
 
-@dataclass
-class SectionPresentation:
-    title: str
-    package_label: Any
-    context: Any
-    voice_count: int
-    primary_speaker: str
 
 
 def _has_initial_performance_tag(performance: str) -> bool:
@@ -213,54 +205,6 @@ def _section_speakers(section: VoiceSection) -> list[str]:
     return speakers
 
 
-def _journey_label(section_index: int, total_sections: int) -> str:
-    if section_index == 0:
-        return "Introduction"
-    if section_index == total_sections - 1:
-        return "Ending"
-    return "Journey"
-
-
-def _section_metadata(
-    render_data: dict[str, Any],
-    section: VoiceSection,
-    section_index: int,
-    total_sections: int,
-) -> SectionPresentation:
-    title = _plain_section_title(section.title)
-    key = _title_key(title)
-    speakers = _section_speakers(section)
-    primary = speakers[0] if len(speakers) == 1 else "Multiple speakers"
-
-    for index, package in enumerate(render_data.get("packages", [])):
-        package_title = package.get("title", "")
-        if _title_key(txt(package_title)["en"]) == key:
-            return SectionPresentation(
-                title=title,
-                package_label=package.get("package_label", f"Gameplay {index + 1}"),
-                context=package.get("gameplay", {}).get("context", ""),
-                voice_count=len(section.entries),
-                primary_speaker=primary,
-            )
-
-    for journey in render_data.get("overview", {}).get("journey", []):
-        journey_title = journey.get("title", "")
-        if _title_key(txt(journey_title)["en"]) == key:
-            return SectionPresentation(
-                title=title,
-                package_label=_journey_label(section_index, total_sections),
-                context=journey.get("description", ""),
-                voice_count=len(section.entries),
-                primary_speaker=primary,
-            )
-
-    return SectionPresentation(
-        title=title,
-        package_label=_journey_label(section_index, total_sections),
-        context="",
-        voice_count=len(section.entries),
-        primary_speaker=primary,
-    )
 
 
 def _section_setup_html(doc: VoiceProduction, section: VoiceSection) -> str:
@@ -283,42 +227,6 @@ def _section_setup_html(doc: VoiceProduction, section: VoiceSection) -> str:
     )
 
 
-def _section_shell_html(
-    render_data: dict[str, Any],
-    doc: VoiceProduction,
-    section: VoiceSection,
-    section_index: int,
-    total_sections: int,
-) -> tuple[str, SectionPresentation]:
-    meta = _section_metadata(render_data, section, section_index, total_sections)
-    context = meta.context or bi(
-        "Gameplay context follows the accepted PRD.",
-        "Konteks gameplay mengikuti PRD yang diterima.",
-    )
-
-    shell = (
-        '<section class="voice-objective-shell">'
-        f'<span class="voice-objective-kicker">{i18n(bi("Voice Production", "Voice Production"))}</span>'
-        f'<h2 class="voice-objective-title">{esc(meta.title)}</h2>'
-        f'<p class="voice-objective-label">{i18n(meta.package_label)}</p>'
-        '<div class="voice-objective-summary">'
-        '<div class="voice-objective-summary-item voice-objective-context">'
-        f'<span>{i18n(bi("Context", "Konteks"))}</span>'
-        f'<p>{i18n(context)}</p>'
-        '</div>'
-        '<div class="voice-objective-summary-item">'
-        f'<span>{i18n(bi("Voice Lines", "Voice Lines"))}</span>'
-        f'<strong>{meta.voice_count}</strong>'
-        '</div>'
-        '<div class="voice-objective-summary-item">'
-        f'<span>{i18n(bi("Primary Speaker", "Primary Speaker"))}</span>'
-        f'<strong>{esc(meta.primary_speaker)}</strong>'
-        '</div>'
-        '</div>'
-        + _section_setup_html(doc, section)
-        + '</section>'
-    )
-    return shell, meta
 
 
 def _performance_html(performance: str) -> str:
@@ -374,83 +282,6 @@ def _entry_html(
     )
 
 
-def voice_pages(
-    render_data: dict[str, Any],
-    doc: VoiceProduction,
-    requirement_triggers: dict[str, str],
-) -> list[str]:
-    brand = render_data["document"].get("brand") or render_data["document"]["title"]
-    pages: list[str] = []
-    sequence_no = 1
-    total_sections = len(doc.sections)
-
-    for section_index, section in enumerate(doc.sections):
-        shell, meta = _section_shell_html(
-            render_data,
-            doc,
-            section,
-            section_index,
-            total_sections,
-        )
-        body = shell + '<div class="voice-script-list">'
-        line_total = len(section.entries)
-
-        for line_index, entry in enumerate(section.entries, 1):
-            trigger = requirement_triggers.get(entry.voice_id)
-            if not trigger:
-                raise ValueError(
-                    f"Voice requirement Trigger missing for canonical production entry: {entry.voice_id}"
-                )
-            body += _entry_html(
-                entry,
-                sequence_no,
-                line_index,
-                line_total,
-                meta.package_label,
-                trigger,
-            )
-            sequence_no += 1
-        body += "</div>"
-
-        pages.append(
-            page(
-                f"production-assets-voice-{section_index + 1}",
-                f"04{chr(65 + section_index)}",
-                bi("Voice Production", "Voice Production"),
-                body,
-                context=meta.title,
-                header=bi("Production Assets — Voice", "Aset Produksi — Voice"),
-                footer_title=bi("Production Assets · Voice", "Aset Produksi · Voice"),
-                brand=brand,
-                role="production-assets",
-                classes="sheet professional-only production-assets-page voice-production-page",
-            )
-        )
-    return pages
-
-
-def _production_assets_navigation(render_data: dict[str, Any], doc: VoiceProduction) -> str:
-    total_sections = len(doc.sections)
-    links = []
-    for index, section in enumerate(doc.sections):
-        meta = _section_metadata(render_data, section, index, total_sections)
-        links.append(
-            f'<a data-target="production-assets-voice-{index + 1}" href="#production-assets-voice-{index + 1}">'
-            f'<span class="production-assets-objective-name">{esc(meta.title)}</span>'
-            f'<small>{i18n(meta.package_label)}</small></a>'
-        )
-
-    return (
-        '<div class="nav-group is-open professional-nav production-assets-nav">'
-        '<button aria-expanded="true" class="nav-group-toggle" type="button">'
-        '<span class="nav-index" data-full-index="04" data-overview-index="">04</span>'
-        f'<span class="nav-copy">{i18n(bi("Production Assets", "Aset Produksi"))}</span>'
-        '<span aria-hidden="true" class="group-chevron"></span></button>'
-        '<div class="nav-submenu">'
-        f'<div class="production-assets-category">{i18n(bi("Voice", "Voice"))}</div>'
-        + "".join(links)
-        + '</div></div>'
-    )
 
 
 VOICE_STYLE = r'''<style id="production-assets-style">
@@ -537,51 +368,3 @@ VOICE_COPY_SCRIPT = r'''<script id="production-assets-copy-script">(function(){
     else{fallbackCopy(text);done();}
   });
 })();</script>'''
-
-
-def _insert_before_closing(source: str, closing: str, addition: str, label: str) -> str:
-    if source.count(closing) != 1:
-        raise ValueError(f"Rendered HTML requires exactly one {label} closing marker.")
-    return source.replace(closing, addition + "\n" + closing, 1)
-
-
-def augment_project_html(render_data_path: Path, output: Path, voice_production_path: Path) -> None:
-    if not voice_production_path.is_file():
-        return
-
-    render_data = json.loads(render_data_path.read_text(encoding="utf-8"))
-    doc = parse_voice_production(voice_production_path)
-    requirement_triggers = parse_voice_requirement_triggers(
-        voice_production_path.parent / "voice-requirements.md"
-    )
-    source = output.read_text(encoding="utf-8")
-
-    if STYLE_MARKER in source or SCRIPT_MARKER in source:
-        raise ValueError("Production Assets extension already exists in rendered HTML.")
-
-    pages = "".join(voice_pages(render_data, doc, requirement_triggers))
-    nav = _production_assets_navigation(render_data, doc)
-
-    nav_pattern = re.compile(r'(<nav class="sidebar-nav">)(.*?)(</nav>)', re.S)
-    main_pattern = re.compile(r'(<main class="document-main">.*?)(</main>)', re.S)
-    if len(nav_pattern.findall(source)) != 1:
-        raise ValueError("Rendered HTML requires exactly one sidebar navigation container.")
-    if len(main_pattern.findall(source)) != 1:
-        raise ValueError("Rendered HTML requires exactly one document main container.")
-
-    source = nav_pattern.sub(
-        lambda match: match.group(1) + match.group(2) + nav + match.group(3),
-        source,
-        count=1,
-    )
-    source = main_pattern.sub(lambda match: match.group(1) + pages + match.group(2), source, count=1)
-    source = _insert_before_closing(source, "</head>", VOICE_STYLE, "head")
-    source = _insert_before_closing(source, "</body>", VOICE_COPY_SCRIPT, "body")
-
-    section_ids = set(re.findall(r'<section\b[^>]*\bid="([^"]+)"', source))
-    targets = set(re.findall(r'data-target="([^"]+)"', nav))
-    missing = sorted(targets - section_ids)
-    if missing:
-        raise ValueError(f"Production Assets navigation targets missing from generated pages: {missing}")
-
-    output.write_text(source, encoding="utf-8")

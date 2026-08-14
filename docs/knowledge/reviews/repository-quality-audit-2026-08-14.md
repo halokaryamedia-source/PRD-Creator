@@ -22,7 +22,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-04 | P1 | Flow 2 could choose material Proposal defaults while `Saran AI` remained optional. | A polished AI guess could become approved project truth without the user noticing which material facts were AI-chosen. | FIXED — every material AI-chosen Proposal is disclosed once before approval |
 | RQ-05 | P1 | Development and Production Assets page codes could both produce `04A`, `04B`, etc. | Human/developer page references became ambiguous. | FIXED — Production Assets footer codes use `PA-01`, `PA-02`, ... |
 | RQ-06 | P1 | Base PRD HTML was bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness was not equivalently proven. | Asset requirements could change while a stale consolidated `prd.html` still appeared coherent. | FIXED — one current-source hash binding validated by Flow 4 |
-| RQ-07 | P1/P2 | `production_assets.py` still contains the retired Voice-only compositor/navigation in addition to Voice primitives now reused by `production_assets_objective.py`. | Dead architecture can attract future AI edits to the wrong owner/path. | OPEN |
+| RQ-07 | P1/P2 | `production_assets.py` retained the retired Voice-only compositor/navigation in addition to primitives used by `production_assets_objective.py`. | Dead architecture could attract future AI edits to the wrong owner/path. | FIXED — retired compositor removed; only consumed Voice primitives remain |
 | RQ-08 | P2 | Current validator behavior is layered by monkey-patching functions in `validator/_engine.py` from `validator/validate.py`; the old engine still carries stale assumptions. | Patch accumulation makes legacy assumptions easy to miss and hard to retire. | OPEN |
 | RQ-09 | P2 | Renderer adapts the exact Golden path by temporarily mutating `_engine.STORAGE_PREFIX_TOKEN`. | Global mutable compatibility-style behavior is non-reentrant and obscures the real current renderer contract. | OPEN |
 | RQ-10 | P2 | Golden semantic contract requires exact 4/5/4 flow/note counts in several surfaces. | AI may create filler/paraphrase content only to fill fixed slots, increasing AI-SLOP. | OPEN — design decision required before change |
@@ -114,6 +114,10 @@ The objective-first compositor now embeds one exact binding for `work/asset-requ
 ## Remediation update — RQ-05/RQ-13 Production Assets identity
 
 Production Assets still owns top-level section `04`, but its page footer codes now use a separate `PA-##` namespace and its DOM IDs derive from semantic shared/journey/package identity. Accepted PRD Development page codes/IDs are unchanged. This removes human code ambiguity and position-based deep-link drift without a registry.
+
+## Remediation update — RQ-07 retired Voice compositor
+
+The current objective-first compositor remains the sole Production Assets compositor. `production_assets.py` now contains only Voice parsing/presentation primitives actually consumed by that owner; the old Voice-only page/navigation/augmentation entrypoints were deleted instead of preserved as a fallback.
 
 ## Ordered remediation
 
