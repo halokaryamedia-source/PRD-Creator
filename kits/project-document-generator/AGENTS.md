@@ -37,7 +37,7 @@ source evidence + current user instruction + approved decisions
 → requirement state
 → content.md
 → render-data.json
-→ PRD core in final.html
+→ PRD core in output/v<document.version>/prd.html
 → PRD acceptance / handoff evidence
 ```
 
@@ -48,7 +48,7 @@ accepted PRD
 → optional work/asset-requirements.md
 → optional downstream Voice canonical production source
 → objective-first Production Assets compositor
-→ appended professional-only pages in the same final.html
+→ appended professional-only pages in the same versioned prd.html
 ```
 
 `work/asset-requirements.md` owns actionable non-Voice Production Asset requirements only. Voice continues to use `work/voice-requirements.md` / `work/voice-production.md`; the compositor does **not** own Voice requirements, actor decisions, or wording.
@@ -100,12 +100,12 @@ Asset categories are shown **inside** the matching page only:
 3D Models
 UI & Information
 Audio
-Cinematic & Presentation
+Visual Effects & Presentation
 ```
 
 A zero-count category is omitted. Voice appears inside the matching gameplay page's `Audio` section and retains its canonical detailed Voice cards.
 
-A downstream-only update may rerender the same HTML without reopening PRD acceptance when `content.md` and `render-data.json` are unchanged. Voice workflow still owns Voice acceptance.
+A downstream-only update may rerender the same versioned HTML without reopening PRD acceptance when `content.md` and `render-data.json` are unchanged. Voice workflow still owns Voice acceptance.
 
 ## Efficient production
 
@@ -125,7 +125,7 @@ Downstream Production Assets preparation:
 accepted PRD
 → optional actionable non-Voice asset requirements
 → optional Voice Flow 5–6 canonical sources
-→ rerender same final.html
+→ rerender current versioned prd.html
 → objective-first Production Assets pages
 → validate only affected downstream scope
 ```
