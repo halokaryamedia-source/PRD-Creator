@@ -100,6 +100,10 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('class="nav-group is-open professional-nav production-assets-nav"', html)
         self.assertIn('data-full-index="04" data-overview-index="">04</span>', html)
         self.assertEqual(html.count('data-target="production-assets-'), 2)
+        self.assertIn('id="production-assets-journey-the-journey-begins"', html)
+        self.assertIn('id="production-assets-core"', html)
+        self.assertIn('data-en="PA-01" data-id="PA-01">PA-01</span>', html)
+        self.assertIn('data-en="PA-02" data-id="PA-02">PA-02</span>', html)
         self.assertNotIn('class="production-assets-category"', html)
         self.assertIn('data-en="Introduction" data-id="Introduction">Introduction</span>', html)
         self.assertIn('data-en="Fixture Package" data-id="Fixture Package">Fixture Package</span>', html)
@@ -119,6 +123,10 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         html = output.read_text(encoding="utf-8")
 
         self.assertEqual(html.count('data-target="production-assets-'), 3)
+        self.assertIn('id="production-assets-global-shared"', html)
+        self.assertIn('id="production-assets-journey-the-journey-begins"', html)
+        self.assertIn('id="production-assets-core"', html)
+        self.assertIn('data-en="PA-03" data-id="PA-03">PA-03</span>', html)
         self.assertIn("Global / Shared Assets", html)
         self.assertIn("Trial Console", html)
         self.assertIn("Trial Hologram", html)
@@ -182,6 +190,26 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertNotIn('class="production-assets-nav"', html)
         self.assertIn('data-section-code="04"', html)
         self.assertIn('data-en="04A" data-id="04A">04A</span>', html)
+
+    def test_objective_page_id_is_stable_when_shared_assets_are_added(self) -> None:
+        core_only = ASSETS.split("## Global / Shared Assets", 1)[0] + "# Production Asset Requirements\n\n" if False else None
+        core_section = "# Production Asset Requirements\n\n" + ASSETS.split("## 02. Core Trial", 1)[1]
+        core_section = "# Production Asset Requirements\n\n## 02. Core Trial" + core_section.split("# Production Asset Requirements", 1)[1]
+        without_shared, output_without = self.render(
+            self.make_project(include_voice=False, include_assets=True, asset_text=core_section)
+        )
+        self.assertEqual(without_shared.returncode, 0, without_shared.stderr or without_shared.stdout)
+        html_without = output_without.read_text(encoding="utf-8")
+        self.assertIn('id="production-assets-core"', html_without)
+
+        with_shared, output_with = self.render(
+            self.make_project(include_voice=False, include_assets=True)
+        )
+        self.assertEqual(with_shared.returncode, 0, with_shared.stderr or with_shared.stdout)
+        html_with = output_with.read_text(encoding="utf-8")
+        self.assertIn('id="production-assets-global-shared"', html_with)
+        self.assertIn('id="production-assets-core"', html_with)
+
 
 
 if __name__ == "__main__":

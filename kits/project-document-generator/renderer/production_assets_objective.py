@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from core import bi, esc, i18n, page, txt
+from core import bi, esc, i18n, page, slug, txt
 import production_assets as voice
 
 ASSET_CATEGORIES = ("3D Models", "UI & Information", "Audio", "Visual Effects & Presentation")
@@ -39,6 +39,7 @@ class SectionPresentation:
     title: str
     package_label: Any
     context: Any
+    page_id: str
 
 
 def parse_asset_requirements(path: Path) -> AssetRequirements:
@@ -157,21 +158,29 @@ def _presentation(render_data: dict[str, Any], section_title: str) -> SectionPre
                 "Assets reused across multiple gameplay sections.",
                 "Asset yang digunakan ulang di beberapa bagian gameplay.",
             ),
+            "production-assets-global-shared",
         )
 
     for index, package in enumerate(render_data.get("packages", [])):
         if voice._title_key(txt(package.get("title", ""))["en"]) == key:
+            package_id = str(package.get("id") or slug(title))
             return SectionPresentation(
                 title,
                 package.get("package_label", f"Gameplay {index + 1}"),
                 package.get("gameplay", {}).get("context", ""),
+                f"production-assets-{slug(package_id)}",
             )
 
     journey = render_data.get("overview", {}).get("journey", [])
     for index, item in enumerate(journey):
         if voice._title_key(txt(item.get("title", ""))["en"]) == key:
             label = "Introduction" if index == 0 else "Ending" if index == len(journey) - 1 else "Journey"
-            return SectionPresentation(title, bi(label, label), item.get("description", ""))
+            return SectionPresentation(
+                title,
+                bi(label, label),
+                item.get("description", ""),
+                f"production-assets-journey-{slug(title)}",
+            )
 
     raise ValueError(
         f"Production Asset section does not match an accepted PRD gameplay/journey section: {section_title}"
@@ -349,11 +358,11 @@ def _pages_and_nav(
             body += "</section>"
 
         index = len(pages)
-        pid = f"production-assets-{index + 1}"
+        pid = meta.page_id
         pages.append(
             page(
                 pid,
-                f"04{chr(65 + index)}",
+                f"PA-{index + 1:02d}",
                 bi("Production Assets", "Aset Produksi"),
                 body,
                 context=meta.title,

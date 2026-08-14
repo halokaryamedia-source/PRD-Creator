@@ -8,11 +8,10 @@ This file contains **future/non-active work only**. It never overrides `../next-
 
 The complete evidence and rationale are preserved in `../reviews/repository-quality-audit-2026-08-14.md`. Do not execute this as a bulk refactor; promote only one next concrete remediation boundary into `next-action.md`.
 
-1. **RQ-05 + RQ-13 — Production Assets identity (P1):** remove visible `04A`/`04B` ambiguity and use stable semantic Production Assets DOM IDs while preserving accepted PRD Development page identities. Visual proof is required because visible page codes/navigation change.
-2. **RQ-07 — retire old Voice-only compositor path (P1/P2):** keep only Voice primitives used by the objective-first compositor; remove unused legacy compositor/navigation functions after focused contract proof.
-3. **RQ-08 — validator layering simplification (P2):** after current behavior above is stable, remove monkey-patch ownership incrementally so one current validator owns behavior. Do not rewrite the validator wholesale.
-4. **RQ-09 + RQ-11 — renderer global mutation and duplicated manual parsers (P2):** address only with a concrete maintenance need or while the same owner is already changing; prefer one tiny shared reader over schemas/frameworks.
-5. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.
-6. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.
+1. **RQ-07 — retire old Voice-only compositor path (P1/P2):** keep only Voice primitives used by the objective-first compositor; remove unused legacy compositor/navigation functions after focused contract proof.
+2. **RQ-08 — validator layering simplification (P2):** after current behavior above is stable, remove monkey-patch ownership incrementally so one current validator owns behavior. Do not rewrite the validator wholesale.
+3. **RQ-09 + RQ-11 — renderer global mutation and duplicated manual parsers (P2):** address only with a concrete maintenance need or while the same owner is already changing; prefer one tiny shared reader over schemas/frameworks.
+4. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.
+5. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.
 
-Closed items RQ-01, RQ-02, RQ-03, RQ-04, RQ-06, RQ-12, RQ-15, and RQ-16 remain documented in the audit and Git history rather than staying in this backlog.
+Closed items RQ-01, RQ-02, RQ-03, RQ-04, RQ-05, RQ-06, RQ-12, RQ-13, RQ-15, and RQ-16 remain documented in the audit and Git history rather than staying in this backlog.

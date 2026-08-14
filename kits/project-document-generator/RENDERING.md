@@ -239,7 +239,7 @@ Rules:
 
 - gameplay/objective navigation remains under Development;
 - PRD page identities remain unchanged;
-- Production Assets pages use their own identities (`04A`, `04B`, ...);
+- Production Assets keep top-level navigation number `04`, but their page footer codes use the distinct `PA-01`, `PA-02`, ... namespace so they cannot be confused with accepted PRD Development page codes; DOM page IDs are stable semantic identities derived from the owning shared/journey/package section rather than current list position;
 - page order follows accepted project journey, with `Global / Shared Assets` first only when present;
 - zero-count categories are absent rather than shown as `0`, `None`, or empty headings;
 - Voice appears inside `Audio` on the matching page and retains its detailed Voice Production card, exact Trigger context, Speaker, Estimated Duration, canonical Eleven v3 payload, and Copy Prompt;

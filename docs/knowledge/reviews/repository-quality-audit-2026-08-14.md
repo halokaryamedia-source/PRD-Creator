@@ -20,7 +20,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-02 | P1 | Active semantic/procedure owners still taught retired unversioned HTML naming and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer could follow stale authority despite routing cleanup. | FIXED — current owners synchronized and guarded |
 | RQ-03 | P1 | Decision memory mixed current and historical language, including retired graph/map routing and old Voice navigation wording. | Wrong-context contamination from files that look authoritative. | FIXED — history-aware register + current routing correction |
 | RQ-04 | P1 | Flow 2 could choose material Proposal defaults while `Saran AI` remained optional. | A polished AI guess could become approved project truth without the user noticing which material facts were AI-chosen. | FIXED — every material AI-chosen Proposal is disclosed once before approval |
-| RQ-05 | P1 | Development package page codes and Production Assets page codes can both produce `04A`, `04B`, etc. | Human/developer page references become ambiguous. | OPEN |
+| RQ-05 | P1 | Development and Production Assets page codes could both produce `04A`, `04B`, etc. | Human/developer page references became ambiguous. | FIXED — Production Assets footer codes use `PA-01`, `PA-02`, ... |
 | RQ-06 | P1 | Base PRD HTML was bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness was not equivalently proven. | Asset requirements could change while a stale consolidated `prd.html` still appeared coherent. | FIXED — one current-source hash binding validated by Flow 4 |
 | RQ-07 | P1/P2 | `production_assets.py` still contains the retired Voice-only compositor/navigation in addition to Voice primitives now reused by `production_assets_objective.py`. | Dead architecture can attract future AI edits to the wrong owner/path. | OPEN |
 | RQ-08 | P2 | Current validator behavior is layered by monkey-patching functions in `validator/_engine.py` from `validator/validate.py`; the old engine still carries stale assumptions. | Patch accumulation makes legacy assumptions easy to miss and hard to retire. | OPEN |
@@ -28,7 +28,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-10 | P2 | Golden semantic contract requires exact 4/5/4 flow/note counts in several surfaces. | AI may create filler/paraphrase content only to fill fixed slots, increasing AI-SLOP. | OPEN — design decision required before change |
 | RQ-11 | P2 | YAML/state and production Markdown are parsed manually in several owners. | Format variation can be misread; duplicated parsing logic can drift. | OPEN — no schema/framework requested |
 | RQ-12 | P2 | `tests/test_prd_content_purity.py` existed but was not executed by `PRD Verify`. | Anti-AI-SLOP regression test could silently rot. | FIXED — included in compile + unittest PRD gate |
-| RQ-13 | P3 | Production Assets page IDs are position-based (`production-assets-1`, `-2`, ...). Adding a new earlier section can move deep-link identities inside the same PRD version. | Unstable links and harder continuation. | OPEN |
+| RQ-13 | P3 | Production Assets page IDs were position-based (`production-assets-1`, `-2`, ...). | Adding an earlier section could move deep-link identities inside the same PRD version. | FIXED — semantic shared/journey/package DOM identities |
 | RQ-14 | P3 | Several page codes use `chr(65 + index)` with no explicit >26 guard. | Hidden edge-case produces invalid/non-letter page codes for unusually large projects. | OPEN — do not overfix without need |
 | RQ-15 | P0 | Clockwork semantic-version migration changed canonical content metadata without refreshing `canonical_content_sha256`. | Current real project fails projection-freshness validation despite unchanged gameplay meaning. | FIXED — canonical binding refreshed from current content bytes |
 | RQ-16 | P0 | Flow 4 page-set validation treated the PRD-core page set as the complete HTML page set and rejected valid additive Production Assets pages. | Real downstream projects could fail Flow 4 despite valid core/compositor output. | FIXED — exact PRD-core prefix + Production Assets-only downstream pages |
@@ -110,6 +110,10 @@ The solve-first Flow 2 model is preserved. The change is only the approval bound
 ## Remediation update — RQ-06 non-Voice asset freshness
 
 The objective-first compositor now embeds one exact binding for `work/asset-requirements.md` only when that source exists. Flow 4 compares it to the current source and also rejects a stale binding after source removal. This is intentionally one freshness proof, not a checksum registry, manifest, or asset framework.
+
+## Remediation update — RQ-05/RQ-13 Production Assets identity
+
+Production Assets still owns top-level section `04`, but its page footer codes now use a separate `PA-##` namespace and its DOM IDs derive from semantic shared/journey/package identity. Accepted PRD Development page codes/IDs are unchanged. This removes human code ambiguity and position-based deep-link drift without a registry.
 
 ## Ordered remediation
 
