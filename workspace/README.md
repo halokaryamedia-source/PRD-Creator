@@ -22,15 +22,37 @@ state/intake-state.yaml
 Flow 3
 work/content.md              canonical PRD meaning
 work/render-data.json        deterministic PRD projection
-output/final.html            PRD core at this stage
 
 Flow 4
 work/acceptance.md
 state/handoff-state.yaml
-output/team-handoff.md
+
+Versioned delivery
+output/README.md                         stable handoff / resume navigator
+output/v<document.version>/prd.html      human-facing PRD
+output/v<document.version>/context.md    AI development context
+output/v<document.version>/index.json    compact AI navigation + context line ranges
 ```
 
-`source/originals/`, project `README.md`, and `work/review.md` are conditional. Keep them only when they provide real continuity/production value.
+The normal delivery entry point is:
+
+```bash
+python kits/project-document-generator/renderer/delivery.py \
+  workspace/active/<project>/
+```
+
+`source/originals/`, project-level notes, and other supporting files are conditional. Keep them only when they provide real continuity or production value.
+
+## Version rule
+
+`document.version` is project/PRD release metadata, not an edit counter. The delivery folder adds the `v` prefix:
+
+```text
+document.version: 1.0.0
+→ output/v1.0.0/
+```
+
+A downstream-only Production Assets refresh may regenerate the current version folder when accepted PRD meaning did not change.
 
 ## Downstream Production Assets
 
@@ -58,25 +80,12 @@ Usage           optional
 Content         optional exact player-facing content
 ```
 
-Do not create component inventories, empty categories, duplicate shared assets, or a second HTML output.
+Do not create component inventories, empty categories, duplicate shared assets, or a second human-facing HTML output.
 
-## Downstream Voice
-
-Create only after entering Voice Flow 5–7:
+When downstream Production Assets exist, the normal delivery pass regenerates the current versioned project document:
 
 ```text
-state/voice-state.yaml
-work/voice-requirements.md
-work/voice-production.md
-work/voice-acceptance.md
-```
-
-Voice remains canonical in those files and is not duplicated into `asset-requirements.md`.
-
-When any downstream Production Assets exist, the normal PRD renderer rerenders the same project document:
-
-```text
-output/final.html
+output/v<document.version>/prd.html
 = accepted PRD core
 + 04 Production Assets
 ```
@@ -90,9 +99,20 @@ Production Assets navigation is objective-first:
       <accepted PRD label>
 ```
 
-Categories appear inside each page only when non-zero. Voice appears inside the matching gameplay page's `Audio → Voice Production` block.
+Categories appear inside each page only when non-zero. Gameplay/objective PRD sections remain under `03 Development`; downstream composition does not renumber accepted PRD page identities.
 
-Gameplay/objective PRD sections remain under `03 Development`; downstream composition does not renumber accepted PRD page identities.
+## Downstream Voice
+
+Create only after entering Voice Flow 5–7:
+
+```text
+state/voice-state.yaml
+work/voice-requirements.md
+work/voice-production.md
+work/voice-acceptance.md
+```
+
+Voice remains canonical in those files and is not duplicated into `asset-requirements.md`. Its derived presentation appears inside the matching gameplay page's `Audio → Voice Production` block in the current versioned `prd.html`.
 
 ## Optional derived exports
 
@@ -100,7 +120,7 @@ Gameplay/objective PRD sections remain under `03 Development`; downstream compos
 output/Voice Production.docx
 ```
 
-DOCX is produced only when a portable Voice export is requested or useful. It does not replace canonical Voice Production.
+DOCX is produced only when a portable Voice export is requested or useful. It does not replace canonical Voice Production or the versioned PRD delivery bundle.
 
 ## Typical package
 
@@ -124,8 +144,11 @@ workspace/active/<project>/
 │   ├── voice-production.md       # only when Voice is used
 │   └── voice-acceptance.md       # only when Voice is used
 └── output/
-    ├── final.html
-    ├── team-handoff.md
+    ├── README.md
+    ├── v<document.version>/
+    │   ├── prd.html
+    │   ├── context.md
+    │   └── index.json
     └── Voice Production.docx     # optional
 ```
 
@@ -140,8 +163,8 @@ source evidence + current user instruction + approved decisions
 → PRD acceptance
 → optional non-Voice asset requirements
 → optional Voice requirements + canonical Voice Production
-→ consolidated final.html presentation
+→ versioned derived delivery surfaces
 → downstream acceptance/state where applicable
 ```
 
-Derived artifacts may be regenerated. Never patch `final.html` or DOCX as source of truth.
+Derived delivery artifacts may be regenerated. Never patch `prd.html`, `context.md`, `index.json`, or DOCX as a source of truth; fix the canonical owner and regenerate the affected projection.
