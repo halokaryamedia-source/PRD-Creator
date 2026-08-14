@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
+DELIVERY = ROOT / "kits" / "project-document-generator" / "renderer" / "delivery.py"
 VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
 RUNTIME_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "runtime-template.html"
 GOLDEN_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "golden-reference.html"
@@ -66,7 +67,7 @@ def render_data() -> dict:
             "title": "Contract Fixture",
             "subtitle": "Gameplay & Development Specification",
             "document_type": "Adventure Map",
-            "version": "1.0",
+            "version": "1.0.0",
         },
         "overview": {
             "project_context": "A controlled gameplay fixture proving the locked Golden PRD prototypes.",
@@ -248,7 +249,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         (project / "work" / "render-data.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     def render(self, project: Path, template: Path | None = None) -> subprocess.CompletedProcess[str]:
-        args: list[Path | str] = [RENDERER, project / "work" / "render-data.json", project / "output" / "final.html"]
+        args: list[Path | str] = [RENDERER, project / "work" / "render-data.json", project / "output" / "v1.0.0" / "prd.html"]
         if template is not None:
             args.extend(["--template", template])
         return run_cli(*args)
@@ -260,7 +261,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(render_data())
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
 
         required = (
             "Global Gameplay Direction", "Game System", "Data and Reset", "Gameplay Development",
@@ -351,7 +352,7 @@ class ProjectDocumentContracts(unittest.TestCase):
                 project = self.make_project(data)
                 rendered = self.render(project)
                 self.assertEqual(rendered.returncode, 2)
-                self.assertFalse((project / "output" / "final.html").exists())
+                self.assertFalse((project / "output" / "v1.0.0" / "prd.html").exists())
 
     def test_non_scored_package_is_explicit_not_omitted(self) -> None:
         data = render_data()
@@ -372,7 +373,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(data)
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
         self.assertIn("No Objective Score", html)
         self.assertIn("quarry-score-summary phase-score-summary", html)
         self.assertIn("score-table-wrap quarry-inline-score-table phase-inline-score-table", html)
@@ -383,7 +384,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(data)
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
         self.assertIn("100% Completion", html)
         self.assertNotIn("100%%", html)
 
@@ -400,7 +401,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         updated = render_data()
-        updated["document"]["version"] = "1.1"
+        updated["overview"]["project_context"] = "Updated controlled fixture context."
         self.write_data(project, updated)
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
@@ -413,7 +414,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(data)
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
         self.assertNotIn(payload, html)
         self.assertIn(r"\u003c/script\u003e", html)
 
@@ -421,7 +422,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(render_data())
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = (project / "output" / "final.html").read_text(encoding="utf-8")
+        html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
         self.assertNotIn('name="golden-sample-id"', html)
         self.assertNotIn('name="source-document"', html)
         self.assertIn("prd-contract-fixture-document-theme", html)
@@ -437,6 +438,43 @@ class ProjectDocumentContracts(unittest.TestCase):
         rendered = self.render(project, broken)
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("sidebar navigation marker", rendered.stderr)
+
+    def test_versioned_delivery_and_flow4_validator_share_prd_path(self) -> None:
+        project = self.make_project(render_data())
+        delivered = run_cli(DELIVERY, project)
+        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
+        current_prd = project / "output" / "v1.0.0" / "prd.html"
+        self.assertTrue(current_prd.is_file(), current_prd)
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+        payload = json.loads(validated.stdout)
+        rendered_check = next(
+            item for item in payload["checks"] if item["check"] == "rendered_html_exists"
+        )
+        self.assertIn("v1.0.0/prd.html", rendered_check["detail"].replace("\\", "/"))
+
+    def test_flow4_accepts_only_valid_additive_production_assets_pages(self) -> None:
+        project = self.make_project(render_data())
+        (project / "work" / "asset-requirements.md").write_text(
+            "# Production Asset Requirements\n\n"
+            "## Core Trial\n\n"
+            "### 3D Models\n\n"
+            "#### Trial Console\n"
+            "Requirement: Create one readable trial console for the accepted Core Trial interaction.\n",
+            encoding="utf-8",
+        )
+        delivered = run_cli(DELIVERY, project)
+        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+        payload = json.loads(validated.stdout)
+        page_check = next(
+            item for item in payload["checks"]
+            if item["check"] == "generated_page_set_matches_current_render_data"
+        )
+        self.assertIn("valid additive Production Assets pages: 1", page_check["detail"])
+
 
 
 if __name__ == "__main__":

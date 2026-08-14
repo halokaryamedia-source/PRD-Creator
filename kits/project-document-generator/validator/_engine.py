@@ -302,7 +302,7 @@ def validate(project: Path) -> dict[str, Any]:
     intake_path = project / "state" / "intake-state.yaml"
     content_path = project / "work" / "content.md"
     data_path = project / "work" / "render-data.json"
-    html_path = project / "output" / "final.html"
+    html_path: Path | None = None
     errors: list[str] = []
     warnings: list[str] = []
     checks: list[dict[str, str]] = []
@@ -319,7 +319,6 @@ def validate(project: Path) -> dict[str, Any]:
         check("flow2_persisted_state_consistent", consistent, consistency_detail)
     check("canonical_content_exists", content_path.is_file(), str(content_path))
     check("render_data_exists", data_path.is_file(), str(data_path))
-    check("rendered_html_exists", html_path.is_file(), str(html_path))
     if errors:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
@@ -337,6 +336,25 @@ def validate(project: Path) -> dict[str, Any]:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
     if not isinstance(data, dict):
         errors.append("render_data_root: render-data must be an object")
+        return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
+
+    document_meta = data.get("document")
+    current_version = (
+        text_en(document_meta.get("version")).strip()
+        if isinstance(document_meta, dict)
+        else ""
+    )
+    html_path = (
+        project / "output" / f"v{current_version}" / "prd.html"
+        if current_version
+        else project / "output" / "v<missing-version>" / "prd.html"
+    )
+    check(
+        "rendered_html_exists",
+        bool(current_version) and html_path.is_file(),
+        str(html_path) if current_version else "render-data.document.version is required to resolve the versioned prd.html",
+    )
+    if errors:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
     actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
@@ -431,6 +449,7 @@ def validate(project: Path) -> dict[str, Any]:
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
+    assert html_path is not None
     html_text = html_path.read_text(encoding="utf-8")
     facts = HtmlFacts()
     try:
@@ -452,7 +471,7 @@ def validate(project: Path) -> dict[str, Any]:
     elif SHA256_RE.fullmatch(bindings[0]) is None:
         html_binding_detail = "rendered HTML render-data-sha256 binding is invalid"
     elif bindings[0] != actual_render_data_sha:
-        html_binding_detail = "rendered HTML is stale relative to work/render-data.json; rerender final.html"
+        html_binding_detail = "rendered HTML is stale relative to work/render-data.json; rerender the current versioned prd.html"
     else:
         html_binding_detail = "rendered HTML is bound to the current render-data revision"
     check("html_matches_current_render_data", binding_ok, html_binding_detail)
@@ -462,13 +481,31 @@ def validate(project: Path) -> dict[str, Any]:
 
     expected = expected_page_ids(data)
     actual_pages = facts.document_section_ids
-    exact_pages = actual_pages == expected
+    core_pages = actual_pages[: len(expected)]
+    downstream_pages = actual_pages[len(expected) :]
+    core_exact = core_pages == expected
+    invalid_downstream = [
+        section_id
+        for section_id in downstream_pages
+        if "production-assets-page" not in facts.section_classes.get(section_id, set())
+    ]
+    page_set_ok = core_exact and not invalid_downstream
+    if page_set_ok and downstream_pages:
+        page_detail = (
+            f"PRD core matches expected order/set: {len(expected)} pages; "
+            f"valid additive Production Assets pages: {len(downstream_pages)}"
+        )
+    elif page_set_ok:
+        page_detail = f"PRD core matches expected order/set: {len(expected)} pages; no downstream pages"
+    else:
+        page_detail = (
+            f"expected PRD core {expected}; actual prefix {core_pages}; "
+            f"invalid downstream pages {invalid_downstream}; actual pages {actual_pages}"
+        )
     check(
         "generated_page_set_matches_current_render_data",
-        exact_pages,
-        f"generated pages match expected order/set: {len(expected)} pages"
-        if exact_pages
-        else f"expected {expected}; actual {actual_pages}",
+        page_set_ok,
+        page_detail,
     )
 
     composition = document_composition_errors(data, facts)

@@ -16,7 +16,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 
 | ID | Priority | Finding | Risk | State at capture |
 |---|---|---|---|---|
-| RQ-01 | P0 | Flow 4 mechanical validator still resolves `output/final.html` while current delivery is `output/v<document.version>/prd.html`. Existing tests also render `final.html`, so validator and tests can agree on the wrong contract. | False FAIL/PASS and broken real handoff validation. | OPEN — first fix |
+| RQ-01 | P0 | Flow 4 mechanical validator previously resolved the retired unversioned output while current delivery is `output/v<document.version>/prd.html`. | False FAIL/PASS and broken real handoff validation. | FIXED — versioned path resolution + integration proof |
 | RQ-02 | P1 | Several active semantic/procedure owners still teach retired `final.html` and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer can follow stale authority despite routing cleanup. | OPEN |
 | RQ-03 | P1 | Decision memory contains stale/current-mixed language, including retired review-graph/map concepts and a Voice navigation decision that no longer matches the current objective-first compositor. `recording-policy.md` also points to retired implementation-map/modules paths. | Wrong-context contamination from files that look authoritative. | OPEN |
 | RQ-04 | P1 | Flow 2 can choose material Proposal defaults (timing, quantities, scoring, recovery, runtime behavior, etc.) while `Saran AI` is optional in the preview. | A polished AI guess can become approved project truth without the user noticing which material facts were AI-chosen. | OPEN |
@@ -30,8 +30,8 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-12 | P2 | `tests/test_prd_content_purity.py` exists but is not executed by `PRD Verify`. | Anti-AI-SLOP regression test can silently rot. | OPEN |
 | RQ-13 | P3 | Production Assets page IDs are position-based (`production-assets-1`, `-2`, ...). Adding a new earlier section can move deep-link identities inside the same PRD version. | Unstable links and harder continuation. | OPEN |
 | RQ-14 | P3 | Several page codes use `chr(65 + index)` with no explicit >26 guard. | Hidden edge-case produces invalid/non-letter page codes for unusually large projects. | OPEN — do not overfix without need |
-| RQ-15 | P0 | Clockwork `work/content.md` was changed during the semantic-version migration but `work/render-data.json.canonical_content_sha256` was not refreshed. Commit history shows both files changed in the migration, while the migration script changed the content version string without updating the canonical-content binding. | Current real project fails material projection-freshness validation even though the semantic projection itself was not intentionally revised. | OPEN — migration consistency fix |
-| RQ-16 | P0 | Flow 4 `generated_page_set_matches_current_render_data` treats the PRD-core page set as the complete HTML page set and rejects valid additive `Production Assets` pages. | Any real project with downstream Production Assets can fail Flow 4 even when its PRD core and compositor output are valid. | OPEN — validator contract fix |
+| RQ-15 | P0 | Clockwork semantic-version migration changed canonical content metadata without refreshing `canonical_content_sha256`. | Current real project fails projection-freshness validation despite unchanged gameplay meaning. | FIXED — canonical binding refreshed from current content bytes |
+| RQ-16 | P0 | Flow 4 page-set validation treated the PRD-core page set as the complete HTML page set and rejected valid additive Production Assets pages. | Real downstream projects could fail Flow 4 despite valid core/compositor output. | FIXED — exact PRD-core prefix + Production Assets-only downstream pages |
 
 ## Evidence anchors
 
@@ -90,6 +90,13 @@ The fix must update only current routing/procedure meaning; historical audits/ch
 ### RQ-10 — fixed-count pressure
 
 `CONTENT-CONTRACT.md` and `renderer/pages.py` require exact four-card/four-note and five-beat shapes for multiple surfaces. The visual prototype may remain fixed, but semantic cardinality should be reconsidered only with explicit Golden-design approval; do not silently loosen it during maintenance.
+
+
+## Remediation update — P0 validator/delivery tranche
+
+RQ-01, RQ-15, and RQ-16 are staged for closure together because the real Clockwork proof showed they are one current validation boundary: resolve the versioned PRD, keep canonical content/projection binding current, and distinguish exact PRD core from valid additive Production Assets pages.
+
+The proof for this tranche must include the normal PRD unit contracts plus real Clockwork Flow 4/handoff validation after deterministic delivery regeneration.
 
 ## Ordered remediation
 

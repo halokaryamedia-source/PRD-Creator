@@ -62,7 +62,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         rendered = run_cli(
             RENDERER,
             project / "work" / "render-data.json",
-            project / "output" / "final.html",
+            project / "output" / "v1.0.0" / "prd.html",
         )
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         return project

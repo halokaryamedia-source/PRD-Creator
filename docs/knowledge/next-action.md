@@ -2,31 +2,12 @@
 
 ## Current Status
 
-`VERSIONED_DELIVERY_HOUSEKEEPING_COMPLETE`
+`REPOSITORY_QUALITY_P0_VALIDATOR_DELIVERY_FIXED`
 
-Project Document Generator v1.14.0 now has the current versioned delivery contract synchronized across repository routing, workspace guidance, current validation evidence, and static repository verification.
+The full repository quality audit remains at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. RQ-01, RQ-15, and RQ-16 are resolved as one bounded current-validation tranche: Flow 4 resolves the versioned PRD, the Clockwork migration binding is refreshed without changing gameplay meaning, and valid Production Assets pages are accepted only after the exact PRD core.
 
-```text
-output/README.md
-output/v<document.version>/prd.html
-output/v<document.version>/context.md
-output/v<document.version>/index.json
-```
-
-Current owners agree on the same responsibilities:
-
-- `renderer/delivery.py` is the normal versioned delivery orchestrator;
-- `prd.html` is the human-facing project document;
-- `context.md` is the AI development-context surface;
-- `index.json` is the compact AI navigation / context-range index;
-- `output/README.md` is the stable resume entry point;
-- `workspace/README.md` describes the same package lifecycle;
-- `docs/knowledge/reviews/current-validation.md` tracks the current v1.14.0 evidence state.
-
-`tools/verify_repository.py` now guards those two current owners as well as the existing routing owners, including Project Document Generator version parity for current validation. Historical review bodies and source inventory remain capture-time evidence and are not rewritten.
-
-No Obsidian/Graphify dependency, knowledge database, second ownership map, compatibility layer, or additional workflow framework was added.
+All remaining findings remain recorded and must not be executed as one broad refactor.
 
 ## Next Step
 
-Proceed to the next real PRD/PRD-Creator work and change this navigation/delivery structure again only if real usage exposes a concrete defect.
+Complete **RQ-02 + RQ-03 + RQ-12 — current-context synchronization**: remove stale current semantic/procedure routing, make decision history explicitly safe to read, and activate the existing content-purity test in PRD CI.
