@@ -1,4 +1,4 @@
-name: Temp Repository Quality Cleanup V2
+name: Temp Repository Quality P0 Cleanup
 
 on:
   push:
@@ -25,11 +25,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Apply bounded P0/P1 context cleanup
+      - name: Apply P0 validator and migration fixes
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+          import hashlib
+          import json
 
           ROOT = Path.cwd()
 
@@ -39,16 +41,7 @@ jobs:
           def write(rel: str, text: str) -> None:
               (ROOT / rel).write_text(text, encoding="utf-8")
 
-          def eliminate_final_html(rel: str) -> None:
-              text = read(rel)
-              text = text.replace("output/final.html", "output/v<document.version>/prd.html")
-              text = text.replace("`final.html`", "`output/v<document.version>/prd.html`")
-              text = text.replace("final.html", "versioned prd.html")
-              write(rel, text)
-              if "final.html" in text:
-                  raise SystemExit(f"{rel}: retired final.html wording remains")
-
-          # RQ-01: Flow 4 validator resolves the same versioned PRD as delivery.py.
+          # RQ-01: resolve the current versioned human PRD from document.version.
           rel = "kits/project-document-generator/validator/_engine.py"
           text = read(rel)
           old = '    html_path = project / "output" / "final.html"\n'
@@ -59,6 +52,7 @@ jobs:
           if text.count(old) != 1:
               raise SystemExit("validator early rendered_html_exists check not found exactly once")
           text = text.replace(old, "", 1)
+
           marker = (
               '    if not isinstance(data, dict):\n'
               '        errors.append("render_data_root: render-data must be an object")\n'
@@ -87,6 +81,7 @@ jobs:
               '        return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}\n\n'
           )
           text = text.replace(marker, insert, 1)
+
           old = '    html_text = html_path.read_text(encoding="utf-8")\n'
           if text.count(old) != 1:
               raise SystemExit("validator html read marker not found exactly once")
@@ -95,9 +90,16 @@ jobs:
               "rendered HTML is stale relative to work/render-data.json; rerender final.html",
               "rendered HTML is stale relative to work/render-data.json; rerender the current versioned prd.html",
           )
+
+          # RQ-16: PRD core must stay exact and first; only valid Production Assets pages may follow.
+          old = '''    expected = expected_page_ids(data)\n    actual_pages = facts.document_section_ids\n    exact_pages = actual_pages == expected\n    check(\n        "generated_page_set_matches_current_render_data",\n        exact_pages,\n        f"generated pages match expected order/set: {len(expected)} pages"\n        if exact_pages\n        else f"expected {expected}; actual {actual_pages}",\n    )\n'''
+          new = '''    expected = expected_page_ids(data)\n    actual_pages = facts.document_section_ids\n    core_pages = actual_pages[: len(expected)]\n    downstream_pages = actual_pages[len(expected) :]\n    core_exact = core_pages == expected\n    invalid_downstream = [\n        section_id\n        for section_id in downstream_pages\n        if "production-assets-page" not in facts.section_classes.get(section_id, set())\n    ]\n    page_set_ok = core_exact and not invalid_downstream\n    if page_set_ok and downstream_pages:\n        page_detail = (\n            f"PRD core matches expected order/set: {len(expected)} pages; "\n            f"valid additive Production Assets pages: {len(downstream_pages)}"\n        )\n    elif page_set_ok:\n        page_detail = f"PRD core matches expected order/set: {len(expected)} pages; no downstream pages"\n    else:\n        page_detail = (\n            f"expected PRD core {expected}; actual prefix {core_pages}; "\n            f"invalid downstream pages {invalid_downstream}; actual pages {actual_pages}"\n        )\n    check(\n        "generated_page_set_matches_current_render_data",\n        page_set_ok,\n        page_detail,\n    )\n'''
+          if text.count(old) != 1:
+              raise SystemExit("validator exact page-set block not found exactly once")
+          text = text.replace(old, new, 1)
           write(rel, text)
 
-          # Main PRD contract fixtures now use the current versioned output contract.
+          # Current contract fixtures use semantic version + versioned output.
           rel = "tests/test_prd_contracts.py"
           text = read(rel)
           renderer_marker = 'RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"\n'
@@ -119,7 +121,8 @@ jobs:
               'updated["document"]["version"] = "1.1"',
               'updated["overview"]["project_context"] = "Updated controlled fixture context."',
           )
-          integration = '''\n    def test_versioned_delivery_and_flow4_validator_share_prd_path(self) -> None:\n        project = self.make_project(render_data())\n        delivered = run_cli(DELIVERY, project)\n        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)\n        current_prd = project / "output" / "v1.0.0" / "prd.html"\n        self.assertTrue(current_prd.is_file(), current_prd)\n\n        validated = self.validate(project)\n        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)\n        payload = json.loads(validated.stdout)\n        rendered_check = next(\n            item for item in payload["checks"] if item["check"] == "rendered_html_exists"\n        )\n        self.assertIn("v1.0.0/prd.html", rendered_check["detail"].replace("\\\\", "/"))\n\n'''
+
+          integration = '''\n    def test_versioned_delivery_and_flow4_validator_share_prd_path(self) -> None:\n        project = self.make_project(render_data())\n        delivered = run_cli(DELIVERY, project)\n        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)\n        current_prd = project / "output" / "v1.0.0" / "prd.html"\n        self.assertTrue(current_prd.is_file(), current_prd)\n\n        validated = self.validate(project)\n        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)\n        payload = json.loads(validated.stdout)\n        rendered_check = next(\n            item for item in payload["checks"] if item["check"] == "rendered_html_exists"\n        )\n        self.assertIn("v1.0.0/prd.html", rendered_check["detail"].replace("\\\\", "/"))\n\n    def test_flow4_accepts_only_valid_additive_production_assets_pages(self) -> None:\n        project = self.make_project(render_data())\n        (project / "work" / "asset-requirements.md").write_text(\n            "# Production Asset Requirements\\n\\n"\n            "## Core Trial\\n\\n"\n            "### 3D Models\\n\\n"\n            "#### Trial Console\\n"\n            "Requirement: Create one readable trial console for the accepted Core Trial interaction.\\n",\n            encoding="utf-8",\n        )\n        delivered = run_cli(DELIVERY, project)\n        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)\n        validated = self.validate(project)\n        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)\n        payload = json.loads(validated.stdout)\n        page_check = next(\n            item for item in payload["checks"]\n            if item["check"] == "generated_page_set_matches_current_render_data"\n        )\n        self.assertIn("valid additive Production Assets pages: 1", page_check["detail"])\n\n'''
           if "test_versioned_delivery_and_flow4_validator_share_prd_path" not in text:
               final_marker = '\n\nif __name__ == "__main__":\n'
               if text.count(final_marker) != 1:
@@ -127,187 +130,61 @@ jobs:
               text = text.replace(final_marker, integration + final_marker, 1)
           write(rel, text)
 
-          # Flow 2 validator fixtures also write to the versioned PRD path.
           rel = "tests/test_prd_flow2_state_contracts.py"
-          text = read(rel)
-          text = text.replace(
+          text = read(rel).replace(
               'project / "output" / "final.html"',
               'project / "output" / "v1.0.0" / "prd.html"',
           )
           write(rel, text)
 
-          # RQ-02: synchronize active semantic/procedure owners with current versioned delivery.
-          active_docs = [
-              ".agents/skills/project-document-production/SKILL.md",
-              ".agents/skills/voice-production/SKILL.md",
-              "kits/project-document-generator/SKILL.md",
-              "kits/project-document-generator/WORKFLOW.md",
-              "kits/project-document-generator/RULES.md",
-              "kits/project-document-generator/CONTENT-CONTRACT.md",
-              "kits/voice-production-kit/SKILL.md",
-          ]
-          for path in active_docs:
-              eliminate_final_html(path)
+          # RQ-15: migration changed canonical content version text but missed the content binding.
+          content_path = ROOT / "workspace/active/the-clockwork-vault/work/content.md"
+          data_path = ROOT / "workspace/active/the-clockwork-vault/work/render-data.json"
+          data = json.loads(data_path.read_text(encoding="utf-8"))
+          actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
+          previous = str(data.get("canonical_content_sha256") or "")
+          if previous == actual_content_sha:
+              pass
+          else:
+              data["canonical_content_sha256"] = actual_content_sha
+              data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-          voice_skill = "kits/voice-production-kit/SKILL.md"
-          text = read(voice_skill)
-          old = '''04 Production Assets\n   VOICE\n   <gameplay section title>\n   <accepted PRD package label>'''
-          new = '''04 Production Assets\n   <gameplay section title>\n      <accepted PRD package label>\n\npage content\n→ Audio\n   → Voice Production'''
-          if old not in text:
-              raise SystemExit("Voice kit retired VOICE sidebar block not found")
-          text = text.replace(old, new, 1)
-          text = text.replace(
-              "`VOICE` appears once; every linked Voice section shows section title + accepted PRD label, with natural wrapping for long sidebar text.",
-              "Voice does not own a separate sidebar category; every linked gameplay section shows section title + accepted PRD label, with natural wrapping for long sidebar text.",
-          )
-          write(voice_skill, text)
-
-          # RQ-03: make decision memory explicitly historical-aware and current routing explicit.
-          rel = "docs/knowledge/decisions/README.md"
-          text = read(rel)
-          if "## Current Decisions" in text:
-              text = text.replace(
-                  "## Current Decisions",
-                  "## Decision Register\n\nEntries below preserve durable decision history. An entry explicitly marked superseded/refined is historical, not current routing authority. For current execution, use `docs/knowledge/next-action.md`, `docs/knowledge/ownership.md`, `docs/knowledge/source-authority.md`, and the current foundation/kit owner. Do not resurrect retired paths or behavior merely because an older decision records why they once existed.",
-                  1,
-              )
-          text = text.replace(
-              "Current Voice navigation uses one `VOICE` category and one link per gameplay Voice section, with section title + exact accepted PRD package label.",
-              "Current Voice navigation is objective-first under `04 Production Assets`; each gameplay section keeps its accepted PRD label and Voice appears inside that page under `Audio → Voice Production`, without a separate `VOICE` sidebar category.",
-          )
-          text = text.replace(
-              "### Review bodies preserve captured evidence; review graph owns current interpretation",
-              "### Review bodies preserve captured evidence; review register owns current interpretation",
-          )
-          heading = "### Module map, source map, and implementation map have separate jobs\n"
-          if heading in text and "superseded by the 2026-08-13 explicit-domain navigation decision" not in text:
-              text = text.replace(
-                  heading,
-                  heading + "\n- **Status:** superseded by the 2026-08-13 explicit-domain navigation decision above. Current routing uses `ownership.md` and `source-authority.md`; the retired map/module paths must not be restored.\n",
-                  1,
-              )
-          write(rel, text)
-
-          rel = "docs/knowledge/decisions/recording-policy.md"
-          text = read(rel)
-          text = text.replace(
-              "- current implementation ownership → `implementation-map.md` / `modules/`;",
-              "- current implementation ownership → `docs/knowledge/ownership.md`;",
-          )
-          text = text.replace(
-              "- project-specific state → the active `workspace/<project>/` owner.",
-              "- project-specific state → the active `workspace/active/<project>/` owner.",
-          )
-          write(rel, text)
-
-          # RQ-12: execute the existing content-purity regression in the normal PRD CI gate.
-          rel = ".github/workflows/prd-verify.yml"
-          text = read(rel)
-          if "tests/test_prd_content_purity.py" not in text:
-              text = text.replace(
-                  "            tests/test_prd_contracts.py \\\n",
-                  "            tests/test_prd_contracts.py \\\n            tests/test_prd_content_purity.py \\\n",
-                  1,
-              )
-              text = text.replace(
-                  "            tests.test_prd_contracts \\\n",
-                  "            tests.test_prd_contracts \\\n            tests.test_prd_content_purity \\\n",
-                  1,
-              )
-          write(rel, text)
-
-          # Extend only the existing static guard to the proven current owners.
-          rel = "tools/verify_repository.py"
-          text = read(rel)
-          if '"tests/test_prd_content_purity.py",' not in text:
-              text = text.replace(
-                  '    "tests/test_prd_contracts.py",\n',
-                  '    "tests/test_prd_contracts.py",\n    "tests/test_prd_content_purity.py",\n',
-                  1,
-              )
-          current_block = text.split("CURRENT_DELIVERY_OWNER_PATHS = [", 1)[1].split("]", 1)[0]
-          if '"kits/project-document-generator/CONTENT-CONTRACT.md"' not in current_block:
-              owner_mark = '    "docs/knowledge/ownership.md",\n'
-              owner_add = (
-                  owner_mark
-                  + '    "docs/knowledge/decisions/recording-policy.md",\n'
-                  + '    ".agents/skills/project-document-production/SKILL.md",\n'
-                  + '    ".agents/skills/voice-production/SKILL.md",\n'
-                  + '    "kits/project-document-generator/SKILL.md",\n'
-                  + '    "kits/project-document-generator/WORKFLOW.md",\n'
-                  + '    "kits/project-document-generator/RULES.md",\n'
-                  + '    "kits/project-document-generator/CONTENT-CONTRACT.md",\n'
-                  + '    "kits/voice-production-kit/SKILL.md",\n'
-              )
-              before, rest = text.split("CURRENT_DELIVERY_OWNER_PATHS = [", 1)
-              if owner_mark not in rest:
-                  raise SystemExit("verify_repository current owner marker missing")
-              rest = rest.replace(owner_mark, owner_add, 1)
-              text = before + "CURRENT_DELIVERY_OWNER_PATHS = [" + rest
-          routing_guard = '''\n    decision_policy = ROOT / "docs" / "knowledge" / "decisions" / "recording-policy.md"\n    if decision_policy.is_file():\n        policy_text = decision_policy.read_text(encoding="utf-8")\n        for retired in ("implementation-map.md", "`modules/`"):\n            if retired in policy_text:\n                fail(errors, f"stale current decision-routing reference in recording-policy.md: {retired}")\n\n'''
-          if "stale current decision-routing reference" not in text:
-              marker = "\ndef check_next_action(errors: list[str]) -> None:\n"
-              if text.count(marker) != 1:
-                  raise SystemExit("verify_repository check_next_action marker missing")
-              text = text.replace(marker, routing_guard + marker, 1)
-          write(rel, text)
-
-          # Register audit + ordered future work so chat memory is not required.
-          rel = "docs/knowledge/reviews/README.md"
-          text = read(rel)
-          row = "| [Repository Quality / AI-Slop Audit — 2026-08-14](repository-quality-audit-2026-08-14.md) | **Active remediation evidence.** Full RQ-01…RQ-14 finding set; active step remains in `next-action.md` and later work in `operations/backlog.md`. |"
-          if row not in text:
-              marker = "| [Current Validation Status](current-validation.md) | **Current evidence/status owner.** |"
-              if text.count(marker) != 1:
-                  raise SystemExit("reviews README Current Validation row missing")
-              text = text.replace(marker, marker + "\n" + row, 1)
-          write(rel, text)
-
-          write("docs/knowledge/operations/backlog.md", '''# Backlog\n\nUpdated: 2026-08-14\n\nThis file contains **future/non-active work only**. It never overrides `../next-action.md`.\n\n## Current Backlog\n\nThe full evidence and rationale are preserved in `../reviews/repository-quality-audit-2026-08-14.md`. Do not execute this as a bulk refactor; promote only the next concrete item into `next-action.md`.\n\n1. **RQ-04 — material AI Proposal visibility (P1):** every AI-chosen material default that changes timing, quantity, scoring, fail/recovery, progression, reward, build scope, or runtime behavior must appear once in the Simple Chat Preview `Saran AI` summary before approval. Keep one complete preview, not a questionnaire.\n2. **RQ-06 — non-Voice Production Assets freshness (P1):** prove current `asset-requirements.md` is represented by the consolidated versioned `prd.html` using one bounded parity mechanism; do not add a checksum registry/framework.\n3. **RQ-05 + RQ-13 — Production Assets identity (P1):** remove visible `04A`/`04B` ambiguity and use stable semantic Production Assets DOM IDs while preserving accepted PRD Development page identities. Visual proof is required because visible page codes/navigation change.\n4. **RQ-07 — retire old Voice-only compositor path (P1/P2):** keep only Voice primitives used by the objective-first compositor; remove unused legacy compositor/navigation functions after focused contract proof.\n5. **RQ-08 — validator layering simplification (P2):** once current behavior above is stable, remove monkey-patch ownership incrementally so one current validator owns the behavior. No rewrite.\n6. **RQ-09 / RQ-11 — renderer global mutation and duplicated manual parsers (P2):** fix only with a concrete maintenance need or while the same owner is already changing; prefer one small shared reader over schemas/frameworks.\n7. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.\n8. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.\n\nCompleted audit items remain in the audit/review and Git history rather than staying in this backlog.\n''')
-
-          write("docs/knowledge/next-action.md", '''# Next Action\n\n## Current Status\n\n`REPOSITORY_QUALITY_P0_CURRENT_CONTEXT_REMEDIATION`\n\nThe 2026-08-14 repository quality audit is durable repository memory at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. The first remediation tranche fixes only the highest-risk split-brain/current-context defects: versioned Flow 4 validation, stale current semantic/procedure routing, decision-routing contamination, and the existing content-purity CI coverage hole.\n\nAll remaining findings are ordered in `docs/knowledge/operations/backlog.md`; they must not be executed as one broad refactor.\n\n## Next Step\n\nComplete **RQ-04 — material AI Proposal visibility**: ensure every AI-chosen material default is surfaced once in the Simple Chat Preview before approval, without turning Flow 2 into a multi-question approval ceremony.\n''')
-
-          rel = "docs/knowledge/reviews/current-validation.md"
-          text = read(rel)
-          section = '''## Repository quality remediation\n\nThe 2026-08-14 quality audit is preserved in `repository-quality-audit-2026-08-14.md`. The first bounded remediation aligns Flow 4 mechanical validation with the versioned `prd.html`, synchronizes active semantic/procedure owners away from retired unversioned HTML/separate-Voice-sidebar context, corrects current decision routing, and includes the existing content-purity regression in `PRD Verify`. Later RQ items remain in `../operations/backlog.md`.\n\n'''
-          if "## Repository quality remediation" not in text:
-              marker = "## Versioned delivery proof\n"
-              if text.count(marker) != 1:
-                  raise SystemExit("current-validation Versioned delivery proof marker missing")
-              text = text.replace(marker, section + marker, 1)
-          write(rel, text)
-
+          # Update durable audit state only after the concrete source fixes are staged.
           rel = "docs/knowledge/reviews/repository-quality-audit-2026-08-14.md"
           text = read(rel)
-          replacements = {
+          rows = {
               "| RQ-01 | P0 | Flow 4 mechanical validator still resolves `output/final.html` while current delivery is `output/v<document.version>/prd.html`. Existing tests also render `final.html`, so validator and tests can agree on the wrong contract. | False FAIL/PASS and broken real handoff validation. | OPEN — first fix |":
-              "| RQ-01 | P0 | Flow 4 mechanical validator still resolved the retired unversioned PRD path while current delivery is `output/v<document.version>/prd.html`. Existing tests had mirrored the old path. | False FAIL/PASS and broken real handoff validation. | FIXED — versioned resolver + real delivery/validator integration test |",
-              "| RQ-02 | P1 | Several active semantic/procedure owners still teach retired `final.html` and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer can follow stale authority despite routing cleanup. | OPEN |":
-              "| RQ-02 | P1 | Several active semantic/procedure owners taught retired unversioned HTML naming and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer can follow stale authority despite routing cleanup. | FIXED — current semantic/procedure owners synchronized and guarded |",
-              "| RQ-03 | P1 | Decision memory contains stale/current-mixed language, including retired review-graph/map concepts and a Voice navigation decision that no longer matches the current objective-first compositor. `recording-policy.md` also points to retired implementation-map/modules paths. | Wrong-context contamination from files that look authoritative. | OPEN |":
-              "| RQ-03 | P1 | Decision memory mixed current and historical language, including retired review-graph/map concepts and old Voice navigation/routing wording. | Wrong-context contamination from files that look authoritative. | FIXED — register made historical-aware; current routing corrected |",
-              "| RQ-12 | P2 | `tests/test_prd_content_purity.py` exists but is not executed by `PRD Verify`. | Anti-AI-SLOP regression test can silently rot. | OPEN |":
-              "| RQ-12 | P2 | `tests/test_prd_content_purity.py` existed but was not executed by `PRD Verify`. | Anti-AI-SLOP regression test can silently rot. | FIXED — added to compile + unittest gate |",
+              "| RQ-01 | P0 | Flow 4 mechanical validator previously resolved the retired unversioned output while current delivery is `output/v<document.version>/prd.html`. | False FAIL/PASS and broken real handoff validation. | FIXED — versioned path resolution + integration proof |",
+              "| RQ-15 | P0 | Clockwork `work/content.md` was changed during the semantic-version migration but `work/render-data.json.canonical_content_sha256` was not refreshed. Commit history shows both files changed in the migration, while the migration script changed the content version string without updating the canonical-content binding. | Current real project fails material projection-freshness validation even though the semantic projection itself was not intentionally revised. | OPEN — migration consistency fix |":
+              "| RQ-15 | P0 | Clockwork semantic-version migration changed canonical content metadata without refreshing `canonical_content_sha256`. | Current real project fails projection-freshness validation despite unchanged gameplay meaning. | FIXED — canonical binding refreshed from current content bytes |",
+              "| RQ-16 | P0 | Flow 4 `generated_page_set_matches_current_render_data` treats the PRD-core page set as the complete HTML page set and rejects valid additive `Production Assets` pages. | Any real project with downstream Production Assets can fail Flow 4 even when its PRD core and compositor output are valid. | OPEN — validator contract fix |":
+              "| RQ-16 | P0 | Flow 4 page-set validation treated the PRD-core page set as the complete HTML page set and rejected valid additive Production Assets pages. | Real downstream projects could fail Flow 4 despite valid core/compositor output. | FIXED — exact PRD-core prefix + Production Assets-only downstream pages |",
           }
-          for old, new in replacements.items():
+          for old, new in rows.items():
               if old not in text:
-                  raise SystemExit(f"audit status row not found: {old[:80]}")
+                  raise SystemExit(f"audit row missing: {old[:80]}")
               text = text.replace(old, new, 1)
-          update = '''\n## Remediation update — P0/current-context tranche\n\nImplemented in this pass:\n\n- RQ-01 current versioned Flow 4 validation + real delivery/validator integration proof;\n- RQ-02 active current owner synchronization;\n- RQ-03 decision-memory/current-routing cleanup;\n- RQ-12 content-purity CI activation.\n\nThe remaining RQ items stay open and are ordered in `../operations/backlog.md`.\n\n'''
-          if "## Remediation update — P0/current-context tranche" not in text:
+          update = '''\n## Remediation update — P0 validator/delivery tranche\n\nRQ-01, RQ-15, and RQ-16 are staged for closure together because the real Clockwork proof showed they are one current validation boundary: resolve the versioned PRD, keep canonical content/projection binding current, and distinguish exact PRD core from valid additive Production Assets pages.\n\nThe proof for this tranche must include the normal PRD unit contracts plus real Clockwork Flow 4/handoff validation after deterministic delivery regeneration.\n\n'''
+          if "## Remediation update — P0 validator/delivery tranche" not in text:
               marker = "## Ordered remediation\n"
               if text.count(marker) != 1:
                   raise SystemExit("audit Ordered remediation marker missing")
               text = text.replace(marker, update + marker, 1)
           write(rel, text)
+
+          write("docs/knowledge/next-action.md", '''# Next Action\n\n## Current Status\n\n`REPOSITORY_QUALITY_P0_VALIDATOR_DELIVERY_FIXED`\n\nThe full repository quality audit remains at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. RQ-01, RQ-15, and RQ-16 are resolved as one bounded current-validation tranche: Flow 4 resolves the versioned PRD, the Clockwork migration binding is refreshed without changing gameplay meaning, and valid Production Assets pages are accepted only after the exact PRD core.\n\nAll remaining findings remain recorded and must not be executed as one broad refactor.\n\n## Next Step\n\nComplete **RQ-02 + RQ-03 + RQ-12 — current-context synchronization**: remove stale current semantic/procedure routing, make decision history explicitly safe to read, and activate the existing content-purity test in PRD CI.\n''')
           PY
+
+      - name: Regenerate real Clockwork delivery
+        run: |
+          python kits/project-document-generator/renderer/delivery.py workspace/active/the-clockwork-vault
 
       - name: Install locked dependencies
         run: |
           python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
           python -m pip check
 
-      - name: Run bounded proof
+      - name: Run P0 proof
         run: |
           python -m unittest \
             tests.test_prd_contracts \
@@ -320,13 +197,14 @@ jobs:
             tests.test_prd_golden_reference -v
           python kits/project-document-generator/validator/validate.py workspace/active/the-clockwork-vault
           python kits/project-document-generator/validator/validate_handoff.py workspace/active/the-clockwork-vault
+          python kits/voice-production-kit/validator/validate.py workspace/active/the-clockwork-vault
           python tools/verify_repository.py
 
-      - name: Commit cleanup and self-delete workflow
+      - name: Commit P0 cleanup and self-delete workflow
         run: |
           git config user.name "halokaryamedia-source"
           git config user.email "halokaryamedia@gmail.com"
           git rm .github/workflows/temp-repository-quality-cleanup-v2.yml
           git add -A
-          git commit -m "fix: align current PRD validation and context"
+          git commit -m "fix: align Flow 4 with versioned delivery"
           git push origin HEAD:Local
