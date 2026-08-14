@@ -28,7 +28,24 @@ accepted PRD
 
 ## Repository quality remediation
 
-The full 2026-08-14 audit is preserved in `repository-quality-audit-2026-08-14.md`. RQ-01/RQ-15/RQ-16 are closed with real Clockwork validation; RQ-02/RQ-03/RQ-12 are closed by current-context synchronization and PRD CI coverage. Remaining findings are ordered in `../operations/backlog.md` and are not a bulk-refactor mandate.
+The full 2026-08-14 repository-quality / AI-Slop audit is preserved in `repository-quality-audit-2026-08-14.md`, so continuation does not depend on chat history.
+
+Closed with current code/docs/proof:
+
+- RQ-01 — Flow 4 resolves the versioned `prd.html`;
+- RQ-02 — current semantic/procedure owners no longer teach retired unversioned HTML or separate Voice-sidebar routing;
+- RQ-03 — decision history is explicitly separated from current routing;
+- RQ-04 — every material AI-chosen Proposal is disclosed once before preview approval;
+- RQ-05 — Production Assets uses distinct `PA-##` footer codes;
+- RQ-06 — non-Voice Production Asset requirements have a bounded current-source freshness binding;
+- RQ-07 — the retired Voice-only compositor path is removed;
+- RQ-08 — validator monkey-patch ownership is removed without a wholesale rewrite;
+- RQ-12 — the existing content-purity regression runs in `PRD Verify`;
+- RQ-13 — Production Assets DOM IDs use stable semantic section identity;
+- RQ-15 — Clockwork migration canonical-content binding is current;
+- RQ-16 — Flow 4 preserves exact PRD-core order while accepting only valid additive Production Assets pages.
+
+Remaining audit items are intentionally conditional/design-sensitive and stay in `../operations/backlog.md`: RQ-09/RQ-11 only with a concrete same-owner maintenance need, RQ-10 only after explicit Golden-design approval, and RQ-14 only when a real project can exceed the current page-letter range. They are **not** a bulk-refactor mandate.
 
 ## Versioned delivery proof
 
@@ -47,8 +64,10 @@ Current mechanical evidence:
 - semantic `X.Y.Z` document version is required for handoff delivery;
 - the delivery index is smaller than the full development context and points to exact context line ranges;
 - handoff validation requires the current versioned PRD/context/index bundle to agree with `document.version`;
-- repository routing now names `renderer/delivery.py` as the delivery orchestrator;
-- current routing owners are guarded against returning to the retired unversioned delivery paths/taxonomy.
+- repository routing names `renderer/delivery.py` as the delivery orchestrator;
+- current routing owners are guarded against returning to retired unversioned delivery paths/taxonomy;
+- real Clockwork Flow 4 validates the exact 30-page PRD core plus valid additive Production Assets pages;
+- real Clockwork handoff and Voice validation remain current after the remediation.
 
 Clockwork is the first real migrated package at PRD version `1.0.0`:
 
@@ -85,16 +104,7 @@ Visual Effects & Presentation
 
 Only non-zero categories are rendered. The semantic contract also requires explicit asset discovery: necessary custom assets implied by accepted gameplay are not omitted merely because source material did not name them. Material choices that change project meaning use the existing Completion/Proposal process; production-only choices may use one practical recommendation without adding a new approval layer.
 
-Current contract/mechanical evidence:
-
-- Production Assets focused contracts: 7/7 PASS;
-- Voice focused contracts: 8/8 PASS;
-- a non-zero `Visual Effects & Presentation` fixture renders successfully;
-- no-downstream PRD path remains a no-op;
-- generic asset-only rendering works without Voice sources;
-- generic + Voice content can share one objective-first page;
-- unsupported/empty asset categories fail closed;
-- Voice exact prompt/context parity remains enforced.
+Current contract/mechanical evidence includes generic asset-only, Voice-only, mixed asset + Voice, no-downstream no-op behavior, unsupported/empty category rejection, exact Voice prompt/context parity, stable Production Assets semantic IDs, and non-Voice source-freshness rejection when stale.
 
 ## Refreshed Production Assets browser proof
 
@@ -106,9 +116,9 @@ Result: `Production Assets visual sanity: PASS` for the RQ-05/RQ-13 identity cha
 
 Existing objective-first browser proof remains PASS at 1500px and 1000px desktop widths for Clockwork and the earlier generic fixture, with no sidebar/card/page overflow and no zero-count category.
 
-That earlier generic browser fixture did not contain a non-zero fourth category. Therefore no separate browser PASS is claimed for the exact longer `Visual Effects & Presentation` label; it is mechanically covered and should receive fresh visual proof only when a real project renders it or a visual defect is observed.
+The earlier generic browser fixture did not contain a non-zero fourth category. Therefore no separate browser PASS is claimed for the exact longer `Visual Effects & Presentation` label; it is mechanically covered and should receive fresh visual proof only when a real project renders it or a visual defect is observed.
 
-The versioned delivery/routing cleanup changed documentation, navigation ownership, and derived file locations only. It did not change the human PRD page composition, so no new browser PASS is claimed from that cleanup.
+The versioned delivery/routing cleanup changed documentation, navigation ownership, and derived file locations only. It did not change the human PRD page composition, so no visual claim is inferred from that cleanup alone.
 
 ## The Circuit benchmark
 
@@ -119,7 +129,6 @@ The supplied completed Minecraft Bedrock `The Circuit v1.0.1.mcworld` was used o
 Clockwork PRD remains `handoff_ready` and Voice remains `voice_delivery_ready` for the non-audio scope.
 
 ```text
-PRD Version: 1.0.0
 Mechanical: PASS
 Voice Script Readiness: PASS
 Communication Conservation: PASS
@@ -127,27 +136,6 @@ Project HTML Visual: PASS
 Audio Evidence: not_provided
 Critical: 0
 Major: 0
-```
-
-Clockwork currently has no generic `work/asset-requirements.md`; no non-Voice Clockwork assets were invented merely to exercise the final taxonomy.
-
-## Current project owners
-
-```text
-kits/project-document-generator/SOURCE-INTAKE.md
-    production-completeness + implied-asset meaning check
-
-kits/project-document-generator/PRODUCTION-ASSETS.md
-    non-Voice objective-first asset discovery/category/requirement contract
-
-kits/project-document-generator/renderer/delivery.py
-    deterministic versioned human + AI handoff bundle
-
-kits/project-document-generator/renderer/production_assets_objective.py
-    deterministic objective-first Production Assets presentation mechanics
-
-kits/voice-production-kit/
-    Voice Flow 5–7 semantic/canonical ownership
 ```
 
 No generated-audio review has been performed.
