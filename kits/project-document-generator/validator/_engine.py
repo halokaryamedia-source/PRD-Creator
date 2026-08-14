@@ -34,6 +34,7 @@ class HtmlFacts(HTMLParser):
         self.document_section_ids: list[str] = []
         self.section_classes: dict[str, set[str]] = {}
         self.render_data_sha256: list[str] = []
+        self.asset_requirements_sha256: list[str] = []
         self._in_title = False
         self._in_document_main = False
         self._current_document_section: str | None = None
@@ -55,6 +56,8 @@ class HtmlFacts(HTMLParser):
             self.section_classes.setdefault(self._current_document_section, set()).update(classes)
         if tag_name == "meta" and str(data.get("name") or "").casefold() == "render-data-sha256":
             self.render_data_sha256.append(str(data.get("content") or ""))
+        if tag_name == "meta" and str(data.get("name") or "").casefold() == "asset-requirements-sha256":
+            self.asset_requirements_sha256.append(str(data.get("content") or ""))
         href = data.get("href")
         if isinstance(href, str) and href.startswith("#") and len(href) > 1:
             self.fragment_hrefs.append(href[1:])
@@ -475,6 +478,44 @@ def validate(project: Path) -> dict[str, Any]:
     else:
         html_binding_detail = "rendered HTML is bound to the current render-data revision"
     check("html_matches_current_render_data", binding_ok, html_binding_detail)
+
+    asset_path = project / "work" / "asset-requirements.md"
+    asset_bindings = facts.asset_requirements_sha256
+    if asset_path.is_file():
+        actual_asset_sha = hashlib.sha256(asset_path.read_bytes()).hexdigest()
+        asset_binding_ok = (
+            len(asset_bindings) == 1
+            and SHA256_RE.fullmatch(asset_bindings[0]) is not None
+            and asset_bindings[0] == actual_asset_sha
+        )
+        if not asset_bindings:
+            asset_binding_detail = "rendered HTML is missing asset-requirements-sha256 binding"
+        elif len(asset_bindings) != 1:
+            asset_binding_detail = (
+                "rendered HTML must contain exactly one asset-requirements-sha256 binding; "
+                f"found {len(asset_bindings)}"
+            )
+        elif SHA256_RE.fullmatch(asset_bindings[0]) is None:
+            asset_binding_detail = "rendered HTML asset-requirements-sha256 binding is invalid"
+        elif asset_bindings[0] != actual_asset_sha:
+            asset_binding_detail = (
+                "rendered HTML is stale relative to work/asset-requirements.md; "
+                "rerender the current versioned prd.html"
+            )
+        else:
+            asset_binding_detail = "rendered HTML is bound to the current non-Voice Production Asset requirements"
+    else:
+        asset_binding_ok = not asset_bindings
+        asset_binding_detail = (
+            "no non-Voice Production Asset requirement source or stale binding is present"
+            if asset_binding_ok
+            else "rendered HTML still carries an asset-requirements binding but work/asset-requirements.md is absent; rerender"
+        )
+    check(
+        "html_matches_current_asset_requirements",
+        asset_binding_ok,
+        asset_binding_detail,
+    )
 
     duplicates = sorted(key for key, count in Counter(facts.ids).items() if count > 1)
     check("html_ids_unique", not duplicates, f"duplicate ids: {duplicates}" if duplicates else "no duplicate HTML ids")

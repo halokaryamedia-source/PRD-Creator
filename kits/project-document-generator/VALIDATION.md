@@ -24,7 +24,7 @@ python kits/project-document-generator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical validation owns deterministic facts: Flow 2 readiness, required current artifacts, canonical/projection/render bindings, page order/IDs/navigation, scoring arithmetic, required Golden markers, and the narrow observed content-purity regression set.
+Mechanical validation owns deterministic facts: Flow 2 readiness, required current artifacts, canonical/projection/render bindings, non-Voice Production Asset source freshness when that source exists, page order/IDs/navigation, scoring arithmetic, required Golden markers, and the narrow observed content-purity regression set.
 
 Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, or visual readability.
 

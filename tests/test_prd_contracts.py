@@ -476,6 +476,65 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertIn("valid additive Production Assets pages: 1", page_check["detail"])
 
 
+    def test_flow4_rejects_stale_non_voice_asset_requirements(self) -> None:
+        project = self.make_project(render_data())
+        asset_path = project / "work" / "asset-requirements.md"
+        asset_path.write_text(
+            "# Production Asset Requirements\n\n"
+            "## Core Trial\n\n"
+            "### 3D Models\n\n"
+            "#### Trial Console\n"
+            "Requirement: Create one readable trial console for the accepted Core Trial interaction.\n",
+            encoding="utf-8",
+        )
+        delivered = run_cli(DELIVERY, project)
+        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+
+        asset_path.write_text(
+            asset_path.read_text(encoding="utf-8").replace(
+                "one readable trial console",
+                "one revised readable trial console",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        stale = self.validate(project)
+        self.assertEqual(stale.returncode, 1, stale.stderr or stale.stdout)
+        payload = json.loads(stale.stdout)
+        check = next(
+            item for item in payload["checks"]
+            if item["check"] == "html_matches_current_asset_requirements"
+        )
+        self.assertEqual(check["status"], "fail")
+        self.assertIn("stale relative to work/asset-requirements.md", check["detail"])
+
+    def test_flow4_rejects_stale_asset_binding_after_source_removal(self) -> None:
+        project = self.make_project(render_data())
+        asset_path = project / "work" / "asset-requirements.md"
+        asset_path.write_text(
+            "# Production Asset Requirements\n\n"
+            "## Core Trial\n\n"
+            "### UI & Information\n\n"
+            "#### Trial Prompt\n"
+            "Requirement: Show the current Core Trial instruction.\n",
+            encoding="utf-8",
+        )
+        delivered = run_cli(DELIVERY, project)
+        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
+        asset_path.unlink()
+        stale = self.validate(project)
+        self.assertEqual(stale.returncode, 1, stale.stderr or stale.stdout)
+        payload = json.loads(stale.stdout)
+        check = next(
+            item for item in payload["checks"]
+            if item["check"] == "html_matches_current_asset_requirements"
+        )
+        self.assertEqual(check["status"], "fail")
+        self.assertIn("binding", check["detail"])
+
+
 
 if __name__ == "__main__":
     unittest.main()

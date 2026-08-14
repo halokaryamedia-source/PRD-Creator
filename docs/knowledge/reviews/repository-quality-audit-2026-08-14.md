@@ -21,7 +21,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-03 | P1 | Decision memory mixed current and historical language, including retired graph/map routing and old Voice navigation wording. | Wrong-context contamination from files that look authoritative. | FIXED — history-aware register + current routing correction |
 | RQ-04 | P1 | Flow 2 could choose material Proposal defaults while `Saran AI` remained optional. | A polished AI guess could become approved project truth without the user noticing which material facts were AI-chosen. | FIXED — every material AI-chosen Proposal is disclosed once before approval |
 | RQ-05 | P1 | Development package page codes and Production Assets page codes can both produce `04A`, `04B`, etc. | Human/developer page references become ambiguous. | OPEN |
-| RQ-06 | P1 | Base PRD HTML is bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness is not equivalently proven at handoff. | Asset requirements can change while a stale consolidated `prd.html` still appears coherent. | OPEN |
+| RQ-06 | P1 | Base PRD HTML was bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness was not equivalently proven. | Asset requirements could change while a stale consolidated `prd.html` still appeared coherent. | FIXED — one current-source hash binding validated by Flow 4 |
 | RQ-07 | P1/P2 | `production_assets.py` still contains the retired Voice-only compositor/navigation in addition to Voice primitives now reused by `production_assets_objective.py`. | Dead architecture can attract future AI edits to the wrong owner/path. | OPEN |
 | RQ-08 | P2 | Current validator behavior is layered by monkey-patching functions in `validator/_engine.py` from `validator/validate.py`; the old engine still carries stale assumptions. | Patch accumulation makes legacy assumptions easy to miss and hard to retire. | OPEN |
 | RQ-09 | P2 | Renderer adapts the exact Golden path by temporarily mutating `_engine.STORAGE_PREFIX_TOKEN`. | Global mutable compatibility-style behavior is non-reentrant and obscures the real current renderer contract. | OPEN |
@@ -106,6 +106,10 @@ RQ-02, RQ-03, and RQ-12 are closed without introducing another navigation or qua
 ## Remediation update — RQ-04 material Proposal visibility
 
 The solve-first Flow 2 model is preserved. The change is only the approval boundary: when AI chooses a material default that changes gameplay or production scope, that chosen value must appear once in the compact `Saran AI` disclosure before blanket preview approval can promote it. This adds no artifact, stage, or option-by-option questionnaire.
+
+## Remediation update — RQ-06 non-Voice asset freshness
+
+The objective-first compositor now embeds one exact binding for `work/asset-requirements.md` only when that source exists. Flow 4 compares it to the current source and also rejects a stale binding after source removal. This is intentionally one freshness proof, not a checksum registry, manifest, or asset framework.
 
 ## Ordered remediation
 

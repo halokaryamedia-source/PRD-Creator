@@ -64,6 +64,7 @@ Responsibilities stay narrow:
 - `context.md` is a reasoning-friendly development projection of accepted PRD meaning plus only existing downstream non-Voice/Voice requirements that are relevant to implementation;
 - `index.json` is a compact navigation tree with `context.md` line ranges, not a prose copy, schema registry, dependency engine, or second PRD;
 - `output/README.md` is the stable resume entry point that identifies the current version and reading route.
+- when `work/asset-requirements.md` exists, the consolidated `prd.html` carries one `asset-requirements-sha256` source binding so Flow 4 can reject a stale non-Voice Production Assets view; this is a single freshness binding, not an asset manifest/checksum registry.
 
 `document.version` must use semantic `X.Y.Z` for a handoff package. Version folders track PRD/project meaning; a downstream-only Production Assets refresh may regenerate files inside the same version when accepted PRD meaning did not change.
 

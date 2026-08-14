@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from dataclasses import dataclass, field
@@ -459,7 +460,13 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
         source,
         count=1,
     )
-    source = _insert(source, "</head>", voice.VOICE_STYLE + OBJECTIVE_STYLE, "head")
+    head_additions = voice.VOICE_STYLE + OBJECTIVE_STYLE
+    if has_assets:
+        asset_sha = hashlib.sha256(asset_path.read_bytes()).hexdigest()
+        head_additions += (
+            f'\n<meta content="{asset_sha}" name="asset-requirements-sha256"/>'
+        )
+    source = _insert(source, "</head>", head_additions, "head")
     if has_voice:
         source = _insert(source, "</body>", voice.VOICE_COPY_SCRIPT, "body")
 
