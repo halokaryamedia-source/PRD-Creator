@@ -59,7 +59,7 @@ Flow 3 completes when:
 - `content.md` satisfies `CONTENT-CONTRACT.md`;
 - no material product decision was silently made during authoring;
 - render data satisfies the deterministic Golden shell;
-- `final.html` is generated from the current projection;
+- `output/v<document.version>/prd.html` is generated from the current projection;
 - no unresolved placeholder remains.
 
 Flow 4—not renderer success—decides production readiness.
