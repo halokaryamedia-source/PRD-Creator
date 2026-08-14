@@ -168,7 +168,7 @@ Current navigation is objective-first:
 
 Categories appear inside the matching page only. They are not nested in the sidebar and empty categories are not rendered.
 
-Therefore downstream-only production updates may rerender `final.html` without reopening PRD acceptance when `work/content.md` and `work/render-data.json` are unchanged.
+Therefore downstream-only production updates may rerender the current versioned `prd.html` without reopening PRD acceptance when `work/content.md` and `work/render-data.json` are unchanged.
 
 PRD core and downstream asset production retain separate canonical owners and acceptance evidence even though humans see one consolidated HTML.
 
