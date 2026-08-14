@@ -49,11 +49,12 @@ When the consolidated project HTML is claimed current, verify:
 
 - the accepted PRD sidebar hierarchy/page identities remain unchanged;
 - gameplay/objective sections remain under `03 Development`;
-- `04 Production Assets` is additive and contains one `VOICE` category;
-- every Voice navigation link shows gameplay section title + accepted PRD package label;
+- `04 Production Assets` is additive and links the matching gameplay/shared pages rather than a separate Voice category;
+- a gameplay page containing Voice shows `Audio → Voice Production`;
+- every matching Production Assets navigation link shows gameplay section title + accepted PRD package label;
 - sidebar labels wrap naturally and are not clipped at the desktop widths being claimed;
 - section order matches canonical Voice order;
-- each section page shows title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup;
+- each gameplay page with Voice shows title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup;
 - each line shows title, `<PRD package label> · Voice Line X/Y`, exact Flow 5 Trigger as Context, Speaker, Estimated Duration, exact canonical prompt, and Copy Prompt;
 - the copied payload remains exact;
 - Flow 5 Purpose/requirements/source refs/reasoning/QA stay out of the visible page;
