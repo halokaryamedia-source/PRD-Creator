@@ -123,6 +123,10 @@ The current objective-first compositor remains the sole Production Assets compos
 
 The validator was not rewritten. The three current overrides were moved into the existing mechanical engine and runtime monkey-patch assignments were removed. `validate.py` remains a narrow content-purity/CLI wrapper. This closes the patch-on-patch ownership defect without introducing hooks, profiles, or another validator layer.
 
+## Visual proof update — RQ-05/RQ-13
+
+The visible `PA-##` footer-code change received actual Chromium layout proof at 1500×1000 and 1000×1000 on the current Clockwork delivery. Production Assets navigation/page activation, footer-code placement, and horizontal overflow checks passed at both widths. RQ-05/RQ-13 are mechanically and visually closed for the claimed desktop scope.
+
 ## Ordered remediation
 
 1. **RQ-01 + RQ-15 + RQ-16** — align Flow 4 with versioned delivery, repair the Clockwork migration binding without changing gameplay meaning, and validate exact PRD-core pages plus only valid additive Production Assets pages. Prove against the real Clockwork package, not fixture tests alone.

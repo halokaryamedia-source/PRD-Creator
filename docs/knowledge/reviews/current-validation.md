@@ -96,6 +96,12 @@ Current contract/mechanical evidence:
 - unsupported/empty asset categories fail closed;
 - Voice exact prompt/context parity remains enforced.
 
+## Refreshed Production Assets browser proof
+
+After RQ-05/RQ-13 changed Production Assets page identity/footer codes, the current Clockwork `v1.0.0/prd.html` was regenerated and inspected in actual headless Chromium layout at **1500×1000** and **1000×1000**. Every Production Assets navigation target became visible, every page exposed the expected `PA-##` footer code inside page bounds, Production Assets navigation had no horizontal overflow, the document had no horizontal viewport overflow, and the scanned Production Assets summary/card/Voice surfaces had no horizontal content overflow.
+
+Result: `Production Assets visual sanity: PASS` for the RQ-05/RQ-13 identity change at the two claimed desktop widths. This proof does not broaden the claim to unrelated mobile widths or later visual changes.
+
 ## Browser proof
 
 Existing objective-first browser proof remains PASS at 1500px and 1000px desktop widths for Clockwork and the earlier generic fixture, with no sidebar/card/page overflow and no zero-count category.
