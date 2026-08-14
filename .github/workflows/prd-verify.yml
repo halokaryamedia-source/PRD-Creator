@@ -5,8 +5,12 @@ on:
     branches:
       - Local
     paths:
-      - "kits/project-document-generator/**"
-      - ".agents/skills/project-document-production/**"
+      - "kits/project-document-generator/renderer/**"
+      - "kits/project-document-generator/validator/**"
+      - "kits/project-document-generator/template/**"
+      - "kits/project-document-generator/SOURCE-INTAKE.md"
+      - "kits/project-document-generator/SKILL.md"
+      - "docs/foundation/02-source-intake-recovery.md"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
@@ -15,12 +19,20 @@ on:
       - Local
       - main
     paths:
-      - "kits/project-document-generator/**"
-      - ".agents/skills/project-document-production/**"
+      - "kits/project-document-generator/renderer/**"
+      - "kits/project-document-generator/validator/**"
+      - "kits/project-document-generator/template/**"
+      - "kits/project-document-generator/SOURCE-INTAKE.md"
+      - "kits/project-document-generator/SKILL.md"
+      - "docs/foundation/02-source-intake-recovery.md"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read

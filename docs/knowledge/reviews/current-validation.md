@@ -47,6 +47,20 @@ Closed with current code/docs/proof:
 
 Remaining audit items are intentionally conditional/design-sensitive and stay in `../operations/backlog.md`: RQ-09/RQ-11 only with a concrete same-owner maintenance need, RQ-10 only after explicit Golden-design approval, and RQ-14 only when a real project can exceed the current page-letter range. They are **not** a bulk-refactor mandate.
 
+## Verification economy audit
+
+Observed CI history showed the repository-wide gate was the main avoidable cost: `Repository Verify` had run about **549** times on `Local`, while `PRD Verify` had about **51** runs and `Voice Verify` about **103** at the audit point. The root cause was structural: `Repository Verify` ran on every push, and both domain workflows watched whole kit directories even when the changed file could not affect the tested executable contract.
+
+Current CI boundary:
+
+- `Repository Verify` runs only for repository/routing/shared-engineering owners, not normal `workspace/active/**` project production or PRD/Voice Python already owned by domain gates;
+- `PRD Verify` watches renderer, validator, Golden template, PRD test files, locked dependencies, and only the Flow 2 markdown owners that its tests explicitly assert;
+- `Voice Verify` watches builder, validator, Voice test files, and dependency owners rather than every Voice documentation/reference file;
+- all three workflows use `cancel-in-progress` concurrency, so rapid superseding commits do not need multiple complete runs;
+- compile/unit suites themselves remain unchanged where relevant; no semantic, handoff, visual, DOCX, or audio proof requirement was removed.
+
+This is a routing/usage optimization, not a reduction of correctness criteria. Browser/audio/runtime proof still runs only when the claim being made requires it.
+
 ## Versioned delivery proof
 
 Current delivery contract:

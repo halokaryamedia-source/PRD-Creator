@@ -4,11 +4,45 @@ on:
   push:
     branches:
       - Local
+    paths:
+      - "AGENTS.md"
+      - "CONTEXT.md"
+      - "README.md"
+      - ".agents/skills/**"
+      - "docs/foundation/**"
+      - "docs/knowledge/**"
+      - "kits/project-document-generator/**/*.md"
+      - "kits/voice-production-kit/**/*.md"
+      - "kits/voice-production-kit/requirements.txt"
+      - "workspace/README.md"
+      - "workspace/archive/README.md"
+      - "requirements.lock.txt"
+      - "tools/**"
+      - ".github/workflows/**"
   pull_request:
     branches:
       - Local
       - main
+    paths:
+      - "AGENTS.md"
+      - "CONTEXT.md"
+      - "README.md"
+      - ".agents/skills/**"
+      - "docs/foundation/**"
+      - "docs/knowledge/**"
+      - "kits/project-document-generator/**/*.md"
+      - "kits/voice-production-kit/**/*.md"
+      - "kits/voice-production-kit/requirements.txt"
+      - "workspace/README.md"
+      - "workspace/archive/README.md"
+      - "requirements.lock.txt"
+      - "tools/**"
+      - ".github/workflows/**"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read

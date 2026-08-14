@@ -124,6 +124,12 @@ Validation is evidence, not ceremony. Use the cheapest check that can disprove t
 
 Do not rerun unchanged checks after they already established the required evidence.
 
+GitHub Actions must follow the same economy:
+
+- `Repository Verify` is for repository/routing/shared-engineering changes, not normal `workspace/active/**` project production or domain Python already owned by PRD/Voice gates;
+- PRD/Voice workflows must be path-scoped to files their tests can actually falsify; a markdown-only change does not justify a full domain test unless an explicit test contracts that markdown;
+- prefer the final relevant automatic gate on the final SHA; do not create a temporary workflow merely to repeat an existing gate, and do not wait for superseded runs when workflow concurrency cancels them.
+
 Use evidence labels only when material uncertainty exists:
 
 - `CURRENT-PROJECT VERIFIED` — current project/environment proof exists;
