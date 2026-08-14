@@ -56,7 +56,7 @@ jobs:
 
       - name: Commit migration
         run: |
-          git rm .github/workflows/versioned-delivery-migration.yml
+          git checkout -- .github/workflows/prd-verify.yml
           git rm .github/versioned-delivery-sources.tgz.b64
           git rm .github/versioned-delivery-migrate.py
           git rm .github/versioned-delivery-context-fix.py
