@@ -28,6 +28,7 @@ REQUIRED_PATHS = [
     "CONTEXT.md",
     "requirements.lock.txt",
     "tests/test_prd_contracts.py",
+    "tests/test_prd_delivery.py",
     "tests/test_voice_contracts.py",
     "docs/knowledge/README.md",
     "docs/knowledge/next-action.md",
@@ -47,6 +48,7 @@ REQUIRED_PATHS = [
     "docs/knowledge/operations/backlog.md",
     "kits/project-document-generator/AGENTS.md",
     "kits/project-document-generator/SKILL.md",
+    "kits/project-document-generator/renderer/delivery.py",
     "kits/voice-production-kit/AGENTS.md",
     "kits/voice-production-kit/SKILL.md",
     "kits/voice-production-kit/requirements.txt",
@@ -63,6 +65,26 @@ MARKDOWN_ROOTS = [
     ROOT / "kits" / "project-document-generator",
     ROOT / "kits" / "voice-production-kit",
 ]
+
+CURRENT_DELIVERY_OWNER_PATHS = [
+    "CONTEXT.md",
+    "docs/foundation/03-prd-generation.md",
+    "docs/foundation/04-prd-validation-handoff.md",
+    "docs/foundation/06-elevenlabs-script-production.md",
+    "docs/foundation/07-voice-validation-delivery.md",
+    "docs/knowledge/ownership.md",
+    "kits/project-document-generator/AGENTS.md",
+    "kits/project-document-generator/RENDERING.md",
+    "kits/voice-production-kit/AGENTS.md",
+    "kits/voice-production-kit/VOICE-VALIDATION.md",
+]
+
+RETIRED_CURRENT_DELIVERY_TERMS = (
+    "output/final.html",
+    "final.html",
+    "output/team-handoff.md",
+    "Cinematic & Presentation",
+)
 
 AGENT_REQUIRED_HEADINGS = {
     "## Execution channel",
@@ -154,6 +176,47 @@ def check_retired_boundaries(errors: list[str]) -> None:
     for rel in retired:
         if (ROOT / rel).exists():
             fail(errors, f"retired repository path must not return: {rel}")
+
+
+def check_current_delivery_routing(errors: list[str]) -> None:
+    for rel in CURRENT_DELIVERY_OWNER_PATHS:
+        path = ROOT / rel
+        if not path.is_file():
+            fail(errors, f"missing current delivery owner: {rel}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for retired in RETIRED_CURRENT_DELIVERY_TERMS:
+            if retired in text:
+                fail(errors, f"stale current delivery reference in {rel}: {retired}")
+
+    ownership = ROOT / "docs" / "knowledge" / "ownership.md"
+    if ownership.is_file():
+        text = ownership.read_text(encoding="utf-8")
+        required_markers = (
+            "renderer/delivery.py",
+            "output/README.md",
+            "output/v<document.version>/prd.html",
+            "output/v<document.version>/context.md",
+            "output/v<document.version>/index.json",
+            "Visual Effects & Presentation",
+        )
+        for marker in required_markers:
+            if marker not in text:
+                fail(errors, f"ownership.md missing current delivery routing marker: {marker}")
+
+    voice_docs = [
+        ROOT / "docs" / "foundation" / "06-elevenlabs-script-production.md",
+        ROOT / "docs" / "foundation" / "07-voice-validation-delivery.md",
+        ROOT / "kits" / "voice-production-kit" / "AGENTS.md",
+        ROOT / "kits" / "voice-production-kit" / "VOICE-VALIDATION.md",
+    ]
+    retired_voice_nav = "04 Production Assets\n   VOICE"
+    for path in voice_docs:
+        if path.is_file() and retired_voice_nav in path.read_text(encoding="utf-8"):
+            fail(
+                errors,
+                f"stale Voice sidebar category routing in {path.relative_to(ROOT)}",
+            )
 
 
 def check_next_action(errors: list[str]) -> None:
@@ -297,6 +360,7 @@ def main() -> int:
     check_required_paths(errors)
     check_skill_root(errors)
     check_retired_boundaries(errors)
+    check_current_delivery_routing(errors)
     check_next_action(errors)
     check_agent_contract(errors)
     check_project_document_version(errors)
@@ -315,6 +379,7 @@ def main() -> int:
     print(f"- markdown files checked: {len(iter_markdown_files())}")
     print("- root AGENTS contract sections: present")
     print("- Project Document skill/README version: aligned")
+    print("- current versioned delivery routing: aligned")
     print("- relative navigation: valid")
     print("- dependency lock/direct pins: exact and aligned")
     print("- Python kits/tools/tests: syntax valid")
