@@ -26,6 +26,10 @@ accepted PRD
 
 `prd.html` remains the single human-facing project document. `context.md` and `index.json` are derived AI reading/navigation surfaces from the same accepted project truth; neither is another product authority. The Golden Sample remains the canonical PRD-core prototype. Production Assets is additive downstream presentation and does not change accepted PRD meaning, Golden bytes, or PRD page identity.
 
+## Repository quality remediation
+
+The full 2026-08-14 audit is preserved in `repository-quality-audit-2026-08-14.md`. RQ-01/RQ-15/RQ-16 are closed with real Clockwork validation; RQ-02/RQ-03/RQ-12 are closed by current-context synchronization and PRD CI coverage. Remaining findings are ordered in `../operations/backlog.md` and are not a bulk-refactor mandate.
+
 ## Versioned delivery proof
 
 Current delivery contract:

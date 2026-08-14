@@ -9,10 +9,10 @@ Use this guide to decide **where a change decision belongs** and when ordinary b
 - current active task/status → `docs/knowledge/next-action.md`;
 - durable decision/reason → `docs/knowledge/decisions/README.md` or a dedicated note in `decisions/`;
 - stable production policy → `docs/foundation/`;
-- current implementation ownership → `implementation-map.md` / `modules/`;
+- current implementation ownership → `docs/knowledge/ownership.md`;
 - evidence/findings → `reviews/` or a focused operations proof note;
 - future/non-active work → `operations/backlog.md`;
-- project-specific state → the active `workspace/<project>/` owner.
+- project-specific state → the active `workspace/active/<project>/` owner.
 
 Do not create a second planning/state hierarchy.
 

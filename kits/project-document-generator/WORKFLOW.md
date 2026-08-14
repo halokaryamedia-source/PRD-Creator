@@ -44,7 +44,7 @@ preview-approved requirement state
 → work/content.md
 → direct work/render-data.json projection from the same approved model
 → exact approved Golden template + deterministic renderer
-→ output/final.html
+→ output/v<document.version>/prd.html
 ```
 
 `content.md` owns meaning. Projection and HTML are derived.

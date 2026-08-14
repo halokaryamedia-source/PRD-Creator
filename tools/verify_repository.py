@@ -28,6 +28,7 @@ REQUIRED_PATHS = [
     "CONTEXT.md",
     "requirements.lock.txt",
     "tests/test_prd_contracts.py",
+    "tests/test_prd_content_purity.py",
     "tests/test_prd_delivery.py",
     "tests/test_voice_contracts.py",
     "docs/knowledge/README.md",
@@ -80,6 +81,14 @@ CURRENT_DELIVERY_OWNER_PATHS = [
     "kits/voice-production-kit/AGENTS.md",
     "kits/voice-production-kit/VOICE-VALIDATION.md",
     "workspace/README.md",
+    "docs/knowledge/decisions/recording-policy.md",
+    ".agents/skills/project-document-production/SKILL.md",
+    ".agents/skills/voice-production/SKILL.md",
+    "kits/project-document-generator/SKILL.md",
+    "kits/project-document-generator/WORKFLOW.md",
+    "kits/project-document-generator/RULES.md",
+    "kits/project-document-generator/CONTENT-CONTRACT.md",
+    "kits/voice-production-kit/SKILL.md",
 ]
 
 RETIRED_CURRENT_DELIVERY_TERMS = (
@@ -258,6 +267,14 @@ def check_current_delivery_routing(errors: list[str]) -> None:
                 errors,
                 f"stale Voice sidebar category routing in {path.relative_to(ROOT)}",
             )
+
+
+    decision_policy = ROOT / "docs" / "knowledge" / "decisions" / "recording-policy.md"
+    if decision_policy.is_file():
+        policy_text = decision_policy.read_text(encoding="utf-8")
+        for retired in ("implementation-map.md", "`modules/`"):
+            if retired in policy_text:
+                fail(errors, f"stale current decision-routing reference in recording-policy.md: {retired}")
 
 
 def check_next_action(errors: list[str]) -> None:

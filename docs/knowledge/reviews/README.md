@@ -16,6 +16,7 @@ Review bodies preserve what was observed at capture time. This register owns the
 | [System Integration Proof](system-integration-proof.md) | Historical Flow 2→7 integration evidence. It does not substitute for the current Clockwork project package. |
 | [Archived Retirement Audit](archived-retirement-audit.md) | Historical implemented evidence supporting retired-builder removal. |
 | [Current Validation Status](current-validation.md) | **Current evidence/status owner.** |
+| [Repository Quality / AI-Slop Audit — 2026-08-14](repository-quality-audit-2026-08-14.md) | **Active remediation evidence.** Full RQ-01…RQ-16 finding set; active work is in `next-action.md`, later work in `operations/backlog.md`. |
 
 ## Current durable correction
 

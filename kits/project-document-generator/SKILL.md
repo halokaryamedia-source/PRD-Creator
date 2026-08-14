@@ -157,7 +157,7 @@ approved project model
 → direct compact work/render-data.json projection from the same approved model
 → deterministic renderer
 → Golden Sample
-→ output/final.html
+→ output/v<document.version>/prd.html
 ```
 
 Rules:
@@ -165,7 +165,7 @@ Rules:
 - canonical meaning is written once in `content.md`;
 - Golden hierarchy/page composition is fixed; project facts are variable;
 - approved preview proposals are project meaning at this boundary; unapproved proposals are not;
-- renderer is a black box in normal production—do not hand-author `final.html`;
+- renderer is a black box in normal production—do not hand-author `output/v<document.version>/prd.html`;
 - do not load the full Golden template/generated HTML into model context;
 - do not perform a second AI summarization when creating `render-data.json`; project the same purified/humanized approved model directly;
 - derive the main projection after canonical meaning is stable enough to render;
@@ -221,7 +221,7 @@ Do not remove a material rule merely to shorten copy.
 
 ### Execution economy
 
-Optimize **AI reasoning and review scope**, not HTML file-writing. The deterministic renderer may rewrite the complete `final.html`; that is intentionally cheaper and safer than inventing partial-render/cache machinery.
+Optimize **AI reasoning and review scope**, not HTML file-writing. The deterministic renderer may rewrite the complete `output/v<document.version>/prd.html`; that is intentionally cheaper and safer than inventing partial-render/cache machinery.
 
 Use three modes:
 
@@ -267,7 +267,7 @@ mechanical validator
 → re-review only invalidated scope
 ```
 
-Review the relevant document/package slice once and evaluate New Reader, Level Designer, Developer, Content Purity, and Consistency together. Do not load full `final.html` for semantic review; validator handles full-file mechanics.
+Review the relevant document/package slice once and evaluate New Reader, Level Designer, Developer, Content Purity, and Consistency together. Do not load full `output/v<document.version>/prd.html` for semantic review; validator handles full-file mechanics.
 
 For normal content-only production, use representative desktop visual sanity rather than every-page browser inspection. Escalate to a full visual sweep only when template/CSS/runtime/page-composition behavior changed, a finding suggests a global layout defect, or the user explicitly asks for full visual proof.
 
@@ -305,7 +305,7 @@ CONDITIONAL
 review.md / project README only when useful
 
 DERIVED
-render-data.json / final.html
+render-data.json / current versioned prd.html
 
 DOWNSTREAM
 Voice artifacts only after entering Voice Flow
@@ -318,7 +318,7 @@ Use sparse state where defaults are defined; persist every non-default conflict,
 ## Default delivery
 
 ```text
-Final PRD: <final.html>
+Final PRD: <output/v<document.version>/prd.html>
 
 Main adjustments / recovered decisions:
 - material items only

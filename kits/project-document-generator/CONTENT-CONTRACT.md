@@ -1,6 +1,6 @@
 # Golden Prototype PRD Contract
 
-`work/content.md` owns PRD meaning. `render-data.json` and `final.html` are derived.
+`work/content.md` owns PRD meaning. `render-data.json` and `output/v<document.version>/prd.html` are derived.
 
 This file is the **single semantic and visible-composition owner** for the gameplay PRD family.
 
@@ -47,7 +47,7 @@ The conservation rule is:
 ```text
 resolved material rule in authority
 → one owned canonical representation
-→ one matching Golden surface in render-data/final.html
+→ one matching Golden surface in render-data/current versioned prd.html
 ```
 
 Two rules may be merged only when they are genuinely the same production instruction. A shorter sentence is acceptable; deleting one of two independent requirements is not.

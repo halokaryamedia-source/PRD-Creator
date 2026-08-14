@@ -17,7 +17,7 @@ originals + current user instruction + approved decisions
 → approved requirement state
 → content.md                 canonical meaning
 → render-data.json           derived projection
-→ final.html                 derived presentation
+→ current versioned prd.html                 derived presentation
 → acceptance / handoff
 ```
 
@@ -111,4 +111,4 @@ Mechanical validation proves deterministic structure only; browser/visual claims
 
 ## Boundary
 
-This skill owns PRD Flow 2–4 semantics only. Renderer/validator mechanics stay in the kit, Voice stays downstream, and `final.html` is never edited as source of truth.
+This skill owns PRD Flow 2–4 semantics only. Renderer/validator mechanics stay in the kit, Voice stays downstream, and `output/v<document.version>/prd.html` is never edited as source of truth.

@@ -17,8 +17,8 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | ID | Priority | Finding | Risk | State at capture |
 |---|---|---|---|---|
 | RQ-01 | P0 | Flow 4 mechanical validator previously resolved the retired unversioned output while current delivery is `output/v<document.version>/prd.html`. | False FAIL/PASS and broken real handoff validation. | FIXED — versioned path resolution + integration proof |
-| RQ-02 | P1 | Several active semantic/procedure owners still teach retired `final.html` and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer can follow stale authority despite routing cleanup. | OPEN |
-| RQ-03 | P1 | Decision memory contains stale/current-mixed language, including retired review-graph/map concepts and a Voice navigation decision that no longer matches the current objective-first compositor. `recording-policy.md` also points to retired implementation-map/modules paths. | Wrong-context contamination from files that look authoritative. | OPEN |
+| RQ-02 | P1 | Active semantic/procedure owners still taught retired unversioned HTML naming and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer could follow stale authority despite routing cleanup. | FIXED — current owners synchronized and guarded |
+| RQ-03 | P1 | Decision memory mixed current and historical language, including retired graph/map routing and old Voice navigation wording. | Wrong-context contamination from files that look authoritative. | FIXED — history-aware register + current routing correction |
 | RQ-04 | P1 | Flow 2 can choose material Proposal defaults (timing, quantities, scoring, recovery, runtime behavior, etc.) while `Saran AI` is optional in the preview. | A polished AI guess can become approved project truth without the user noticing which material facts were AI-chosen. | OPEN |
 | RQ-05 | P1 | Development package page codes and Production Assets page codes can both produce `04A`, `04B`, etc. | Human/developer page references become ambiguous. | OPEN |
 | RQ-06 | P1 | Base PRD HTML is bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness is not equivalently proven at handoff. | Asset requirements can change while a stale consolidated `prd.html` still appears coherent. | OPEN |
@@ -27,7 +27,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-09 | P2 | Renderer adapts the exact Golden path by temporarily mutating `_engine.STORAGE_PREFIX_TOKEN`. | Global mutable compatibility-style behavior is non-reentrant and obscures the real current renderer contract. | OPEN |
 | RQ-10 | P2 | Golden semantic contract requires exact 4/5/4 flow/note counts in several surfaces. | AI may create filler/paraphrase content only to fill fixed slots, increasing AI-SLOP. | OPEN — design decision required before change |
 | RQ-11 | P2 | YAML/state and production Markdown are parsed manually in several owners. | Format variation can be misread; duplicated parsing logic can drift. | OPEN — no schema/framework requested |
-| RQ-12 | P2 | `tests/test_prd_content_purity.py` exists but is not executed by `PRD Verify`. | Anti-AI-SLOP regression test can silently rot. | OPEN |
+| RQ-12 | P2 | `tests/test_prd_content_purity.py` existed but was not executed by `PRD Verify`. | Anti-AI-SLOP regression test could silently rot. | FIXED — included in compile + unittest PRD gate |
 | RQ-13 | P3 | Production Assets page IDs are position-based (`production-assets-1`, `-2`, ...). Adding a new earlier section can move deep-link identities inside the same PRD version. | Unstable links and harder continuation. | OPEN |
 | RQ-14 | P3 | Several page codes use `chr(65 + index)` with no explicit >26 guard. | Hidden edge-case produces invalid/non-letter page codes for unusually large projects. | OPEN — do not overfix without need |
 | RQ-15 | P0 | Clockwork semantic-version migration changed canonical content metadata without refreshing `canonical_content_sha256`. | Current real project fails projection-freshness validation despite unchanged gameplay meaning. | FIXED — canonical binding refreshed from current content bytes |
@@ -97,6 +97,11 @@ The fix must update only current routing/procedure meaning; historical audits/ch
 RQ-01, RQ-15, and RQ-16 are staged for closure together because the real Clockwork proof showed they are one current validation boundary: resolve the versioned PRD, keep canonical content/projection binding current, and distinguish exact PRD core from valid additive Production Assets pages.
 
 The proof for this tranche must include the normal PRD unit contracts plus real Clockwork Flow 4/handoff validation after deterministic delivery regeneration.
+
+
+## Remediation update — current-context tranche
+
+RQ-02, RQ-03, and RQ-12 are closed without introducing another navigation or quality framework. Current semantic/procedure owners now point to the versioned PRD delivery, the decision register explicitly distinguishes history from current routing, retired map paths no longer own current changes, and the already-existing content-purity regression executes in `PRD Verify`.
 
 ## Ordered remediation
 

@@ -27,7 +27,7 @@ source evidence + current user instruction + approved decisions
 → requirement state
 → work/content.md
 → work/render-data.json
-→ output/final.html
+→ output/v<document.version>/prd.html
 → acceptance / handoff
 ```
 
@@ -55,7 +55,7 @@ Both must remain byte-identical unless the user explicitly approves a Golden rev
 - Project rendering may bind project-owned metadata, pages, navigation, glossary data, package scope, and project storage namespace.
 - Stable presentation components are changed only at the template/renderer owner when the Golden contract itself is intentionally revised or a real implementation defect exists.
 - Do not add reference-project facts to another project.
-- Do not manually patch `final.html`.
+- Do not manually patch `output/v<document.version>/prd.html`.
 
 ## 6. Preserve package role ownership
 

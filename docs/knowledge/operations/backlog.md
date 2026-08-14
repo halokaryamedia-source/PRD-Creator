@@ -1,17 +1,20 @@
 # Backlog
 
-Updated: 2026-08-13
+Updated: 2026-08-14
 
 This file contains **future/non-active work only**. It never overrides `../next-action.md`.
 
 ## Current Backlog
 
-There is no standing parity, hardening, or cleanup backlog.
+The complete evidence and rationale are preserved in `../reviews/repository-quality-audit-2026-08-14.md`. Do not execute this as a bulk refactor; promote only one next concrete remediation boundary into `next-action.md`.
 
-Future work begins only from:
+1. **RQ-04 — material AI Proposal visibility (P1):** every AI-chosen material default that changes timing, quantity, scoring, fail/recovery, progression, reward, build scope, or runtime behavior must appear once in the Simple Chat Preview `Saran AI` summary before approval. Keep one complete preview, not a questionnaire.
+2. **RQ-06 — non-Voice Production Assets freshness (P1):** prove current `asset-requirements.md` is represented by the consolidated versioned `prd.html` using one bounded parity mechanism; do not add a checksum registry/framework.
+3. **RQ-05 + RQ-13 — Production Assets identity (P1):** remove visible `04A`/`04B` ambiguity and use stable semantic Production Assets DOM IDs while preserving accepted PRD Development page identities. Visual proof is required because visible page codes/navigation change.
+4. **RQ-07 — retire old Voice-only compositor path (P1/P2):** keep only Voice primitives used by the objective-first compositor; remove unused legacy compositor/navigation functions after focused contract proof.
+5. **RQ-08 — validator layering simplification (P2):** after current behavior above is stable, remove monkey-patch ownership incrementally so one current validator owns behavior. Do not rewrite the validator wholesale.
+6. **RQ-09 + RQ-11 — renderer global mutation and duplicated manual parsers (P2):** address only with a concrete maintenance need or while the same owner is already changing; prefer one tiny shared reader over schemas/frameworks.
+7. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.
+8. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.
 
-- a real new project through the existing production flow;
-- an explicit user-requested product/system change;
-- Maintenance for a concrete observed defect.
-
-Completed remediation checklists, CI run IDs, and one-off proof cycles stay in decisions/reviews/Git history instead of being duplicated here.
+Closed items RQ-01, RQ-02, RQ-03, RQ-12, RQ-15, and RQ-16 remain documented in the audit and Git history rather than staying in this backlog.

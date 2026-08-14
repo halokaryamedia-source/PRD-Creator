@@ -9,7 +9,7 @@ version: 1.11.2
 ## Flow ownership
 
 1. **Flow 5 — Voice Requirement Extraction**: accepted PRD → `work/voice-requirements.md`.
-2. **Flow 6 — Voice Production**: Voice Requirements → canonical `work/voice-production.md` → same project `output/final.html`.
+2. **Flow 6 — Voice Production**: Voice Requirements → canonical `work/voice-production.md` → same project `output/v<document.version>/prd.html`.
 3. **Flow 7 — Voice Validation & Delivery**: current revision → compact acceptance + delivery state.
 
 DOCX and audio remain optional downstream scopes.
@@ -30,7 +30,7 @@ The former duplicate `SCRIPT-PRODUCTION.md` lifecycle owner is retired in v1.11.
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/final.html → Production Assets → Voice
+→ output/v<document.version>/prd.html → Production Assets → Voice
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
@@ -38,7 +38,7 @@ accepted PRD
 - PRD owns project/gameplay truth and the need for a Voice asset.
 - Flow 5 owns which Voice assets exist and their communication intent/context.
 - Flow 6 owns canonical production content.
-- `final.html` is derived developer/operator presentation only.
+- `output/v<document.version>/prd.html` is derived developer/operator presentation only.
 - DOCX is optional export only.
 
 # Flow 5 → Flow 6 interface
@@ -63,7 +63,7 @@ canonical performance payload
 
 # Project HTML production surface
 
-The same `output/final.html` is the default human-facing project document.
+The same `output/v<document.version>/prd.html` is the default human-facing project document.
 
 Production Assets extends the accepted PRD navigation rather than rebuilding it:
 
@@ -73,12 +73,15 @@ Production Assets extends the accepted PRD navigation rather than rebuilding it:
    gameplay/objective sections
 
 04 Production Assets
-   VOICE
    <gameplay section title>
-   <accepted PRD package label>
+      <accepted PRD package label>
+
+page content
+→ Audio
+   → Voice Production
 ```
 
-Gameplay/objective sections remain under Development and accepted PRD page codes stay unchanged. `VOICE` appears once; every linked Voice section shows section title + accepted PRD label, with natural wrapping for long sidebar text.
+Gameplay/objective sections remain under Development and accepted PRD page codes stay unchanged. Voice does not own a separate sidebar category; every linked gameplay section shows section title + accepted PRD label, with natural wrapping for long sidebar text.
 
 Each Voice section page shows gameplay title, accepted PRD package label/context, Voice line count, Primary Speaker, and compact Voice Setup.
 

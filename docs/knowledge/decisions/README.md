@@ -2,11 +2,13 @@
 
 Use this note only for durable decisions whose reasons must survive future sessions. Active task status belongs in `next-action.md`.
 
-## Current Decisions
+## Decision Register
+
+This register preserves durable decision history, including entries later refined or superseded. Historical entries explain why a rule existed; they are **not** current routing authority. For current execution use `docs/knowledge/next-action.md`, `docs/knowledge/ownership.md`, `docs/knowledge/source-authority.md`, and the nearest current foundation/kit owner. Never restore a retired path or behavior only because an older decision mentions it.
 
 ### Consolidated Production Assets preserves accepted PRD navigation identity
 
-- **Decision:** downstream Production Assets extends the existing accepted PRD sidebar instead of rebuilding it. Gameplay/objective sections remain nested under `03 Development`; `04 Production Assets` is additive; existing PRD package/page codes are not shifted. Current Voice navigation uses one `VOICE` category and one link per gameplay Voice section, with section title + exact accepted PRD package label. The existing Flow 5 Trigger may be projected as developer-facing Context without becoming a new Flow 6 field.
+- **Decision:** downstream Production Assets extends the existing accepted PRD sidebar instead of rebuilding it. Gameplay/objective sections remain nested under `03 Development`; `04 Production Assets` is additive; existing PRD package/page codes are not shifted. Current Voice navigation is objective-first under `04 Production Assets`; each gameplay section keeps its accepted PRD label and Voice appears inside that page under `Audio → Voice Production`, without a separate `VOICE` sidebar category. The existing Flow 5 Trigger may be projected as developer-facing Context without becoming a new Flow 6 field.
 - **Reason:** developers need to identify the owning Objective immediately without memorizing order, while a second navigation implementation created hierarchy drift and made downstream Voice presentation alter accepted PRD identity.
 - **Boundary:** this changes presentation/composition only. PRD gameplay meaning, canonical Voice wording, Voice scope, Golden template bytes, and audio evidence are unchanged. DOCX remains optional export; consolidated project HTML is the default Voice operator/developer surface.
 - **Supersedes/refines:** supersedes the 2026-08-10 decision that Flow 7 default delivery is script/DOCX scope and refines the earlier DOCX-centric acceptance wording below.
@@ -38,7 +40,7 @@ Use this note only for durable decisions whose reasons must survive future sessi
 - **Owner:** `docs/knowledge/decisions/technical-ownership-boundary.md`.
 - **Date:** 2026-08-10
 
-### Review bodies preserve captured evidence; review graph owns current interpretation
+### Review bodies preserve captured evidence; review register owns current interpretation
 
 - **Decision:** dedicated review/audit bodies are time-captured evidence and are not rewritten merely because later implementation changes their status. `docs/knowledge/reviews/README.md` owns the current interpretation (`active evidence`, `implemented`, `historical`, `superseded`, etc.).
 - **Reason:** rewriting old reviews destroys reasoning provenance and can make historical findings appear to describe current source.
@@ -53,6 +55,8 @@ Use this note only for durable decisions whose reasons must survive future sessi
 - **Date:** 2026-08-10
 
 ### Module map, source map, and implementation map have separate jobs
+
+- **Status:** superseded by the 2026-08-13 explicit-domain navigation decision above. Current routing uses `ownership.md` and `source-authority.md`; retired map/module paths must not be restored.
 
 - **Decision:** `module-map.md` routes repository-area ownership, `source-map.md` routes claim/source authority, and `implementation-map.md` points to exact current code/procedure locations.
 - **Reason:** one giant ownership/source document would become another broad state system and duplicate current owners.

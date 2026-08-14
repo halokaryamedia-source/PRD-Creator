@@ -13,7 +13,7 @@ This skill owns semantic judgment around Voice Production Flow 5–7. Detailed p
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/final.html
+→ output/v<document.version>/prd.html
    → Production Assets
       → matching gameplay section
          → Audio
