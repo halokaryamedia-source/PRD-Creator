@@ -535,6 +535,25 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertIn("binding", check["detail"])
 
 
+    def test_current_validator_does_not_monkey_patch_engine(self) -> None:
+        wrapper = (
+            ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
+        ).read_text(encoding="utf-8")
+        engine = (
+            ROOT / "kits" / "project-document-generator" / "validator" / "_engine.py"
+        ).read_text(encoding="utf-8")
+        for marker in (
+            "_engine.flow2_readiness =",
+            "_engine.expected_page_ids =",
+            "_engine.document_composition_errors =",
+            "_BASE_FLOW2_READINESS",
+        ):
+            self.assertNotIn(marker, wrapper)
+        self.assertIn("PREVIEW_APPROVED_RE", engine)
+        self.assertIn("def _global_page_id(", engine)
+        self.assertIn("quarry-overview-table", engine)
+
+
 
 if __name__ == "__main__":
     unittest.main()

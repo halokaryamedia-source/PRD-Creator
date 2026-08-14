@@ -55,7 +55,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | AI navigation / context line-range index | project `output/v<document.version>/index.json` |
 | Flow 4 policy | `docs/foundation/04-prd-validation-handoff.md` |
 | Flow 4 detailed validation/handoff | `kits/project-document-generator/VALIDATION.md` |
-| PRD mechanical validator | `kits/project-document-generator/validator/validate.py` |
+| PRD mechanical validator | `kits/project-document-generator/validator/_engine.py` core mechanics + `validator/validate.py` narrow content-purity/CLI wrapper |
 | PRD handoff consistency | `kits/project-document-generator/validator/validate_handoff.py` |
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
 | Current system/project evidence | `docs/knowledge/reviews/current-validation.md` |

@@ -23,7 +23,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-05 | P1 | Development and Production Assets page codes could both produce `04A`, `04B`, etc. | Human/developer page references became ambiguous. | FIXED — Production Assets footer codes use `PA-01`, `PA-02`, ... |
 | RQ-06 | P1 | Base PRD HTML was bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness was not equivalently proven. | Asset requirements could change while a stale consolidated `prd.html` still appeared coherent. | FIXED — one current-source hash binding validated by Flow 4 |
 | RQ-07 | P1/P2 | `production_assets.py` retained the retired Voice-only compositor/navigation in addition to primitives used by `production_assets_objective.py`. | Dead architecture could attract future AI edits to the wrong owner/path. | FIXED — retired compositor removed; only consumed Voice primitives remain |
-| RQ-08 | P2 | Current validator behavior is layered by monkey-patching functions in `validator/_engine.py` from `validator/validate.py`; the old engine still carries stale assumptions. | Patch accumulation makes legacy assumptions easy to miss and hard to retire. | OPEN |
+| RQ-08 | P2 | Current validator behavior was layered by monkey-patching `_engine.py` from `validate.py`. | Patch accumulation made current ownership easy to miss. | FIXED — current Golden/readiness mechanics live directly in `_engine.py`; wrapper only adds purity/CLI |
 | RQ-09 | P2 | Renderer adapts the exact Golden path by temporarily mutating `_engine.STORAGE_PREFIX_TOKEN`. | Global mutable compatibility-style behavior is non-reentrant and obscures the real current renderer contract. | OPEN |
 | RQ-10 | P2 | Golden semantic contract requires exact 4/5/4 flow/note counts in several surfaces. | AI may create filler/paraphrase content only to fill fixed slots, increasing AI-SLOP. | OPEN — design decision required before change |
 | RQ-11 | P2 | YAML/state and production Markdown are parsed manually in several owners. | Format variation can be misread; duplicated parsing logic can drift. | OPEN — no schema/framework requested |
@@ -118,6 +118,10 @@ Production Assets still owns top-level section `04`, but its page footer codes n
 ## Remediation update — RQ-07 retired Voice compositor
 
 The current objective-first compositor remains the sole Production Assets compositor. `production_assets.py` now contains only Voice parsing/presentation primitives actually consumed by that owner; the old Voice-only page/navigation/augmentation entrypoints were deleted instead of preserved as a fallback.
+
+## Remediation update — RQ-08 validator layering
+
+The validator was not rewritten. The three current overrides were moved into the existing mechanical engine and runtime monkey-patch assignments were removed. `validate.py` remains a narrow content-purity/CLI wrapper. This closes the patch-on-patch ownership defect without introducing hooks, profiles, or another validator layer.
 
 ## Ordered remediation
 

@@ -18,10 +18,19 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 WEIGHT_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%?\s*$")
 INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
 INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
+PREVIEW_APPROVED_RE = re.compile(r"(?mi)^\s*preview_approved:\s*(true|false)\s*(?:#.*)?$")
 FLOW2_REQUIRED_STATE = {"source-inventory.yaml": "SRC", "requirement-register.yaml": "REQ"}
 FLOW2_EXPLICIT_BLOCKERS = {
     "requirement-register.yaml": {"approval_status": {"pending"}, "recovery_class": {"blocked"}},
     "source-inventory.yaml": {"inspection": {"blocked"}},
+}
+
+
+GOLDEN_GLOBAL_PAGE_IDS = {
+    "development-overview": "development-overview",
+    "game-system": "shared-systems",
+    "data-reset": "shared-data-reset",
+    "gameplay-development": "phase-development",
 }
 
 
@@ -108,7 +117,16 @@ def flow2_readiness(path: Path) -> tuple[bool, str]:
     ready = readiness[0].lower() == "true"
     if status != "ready_for_prd" or not ready:
         return False, f"Flow 2 is not ready: status={status!r}, ready_for_prd={ready}"
-    return True, "Flow 2 intake state explicitly reports ready_for_prd"
+    detail = "Flow 2 intake state explicitly reports ready_for_prd"
+
+    preview_flags = PREVIEW_APPROVED_RE.findall(text)
+    if len(preview_flags) > 1:
+        return False, "intake-state.yaml must define preview_approved at most once"
+    if preview_flags and preview_flags[0].lower() != "true":
+        return False, "Flow 2 Simple Chat Preview is not approved: preview_approved=false"
+    if preview_flags:
+        return True, detail + "; Simple Chat Preview is approved"
+    return True, detail
 
 
 def _clean_state_scalar(value: str) -> str:
@@ -250,10 +268,14 @@ def required_content_errors(data: dict[str, Any]) -> list[str]:
     return failures
 
 
+def _global_page_id(item: dict[str, Any]) -> str:
+    return GOLDEN_GLOBAL_PAGE_IDS.get(item.get("id"), f'global-{item.get("id", "section")}')
+
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
     ids = ["summary"]
-    ids += [f'flow-{item["id"]}' for item in data.get("gameplay_flow", [])]
-    ids += [f'global-{item["id"]}' for item in data.get("global_development", [])]
+    for index, item in enumerate(data.get("gameplay_flow", [])):
+        ids.append("flow-start" if index == 0 else f'flow-{item["id"]}')
+    ids += [_global_page_id(item) for item in data.get("global_development", [])]
     for pkg in data.get("packages", []):
         package_id = pkg["id"]
         ids += [
@@ -264,9 +286,9 @@ def expected_page_ids(data: dict[str, Any]) -> list[str]:
     return ids
 
 
-def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[str]:
-    """Check only the deterministic Golden prototype markers rendered on each page."""
+def document_composition_errors(data: dict[str, Any], facts: Any) -> list[str]:
     failures: list[str] = []
+    packages = {pkg["id"]: pkg for pkg in data.get("packages", [])}
 
     def require(section_id: str, required: set[str]) -> None:
         available = facts.section_classes.get(section_id, set())
@@ -274,28 +296,71 @@ def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[
         if missing:
             failures.append(f"{section_id} missing {missing}")
 
-    for item in data.get("gameplay_flow", []):
-        require(f'flow-{item["id"]}', {"story-page", "story-flow"})
+    for index, item in enumerate(data.get("gameplay_flow", [])):
+        section_id = "flow-start" if index == 0 else f'flow-{item["id"]}'
+        required = {"clean-visible", "story-page", "story-flow"}
+        source_terms = item.get("terms", []) if index == 0 else packages.get(item["id"], {}).get("terms", [])
+        if source_terms:
+            required.add("quarry-definition-list")
+        require(section_id, required)
 
     for item in data.get("global_development", []):
         require(
-            f'global-{item["id"]}',
-            {"package-tabs", "section-context", "development-flow-grid", "development-requirements-table", "note-grid"},
+            _global_page_id(item),
+            {
+                "professional-only",
+                "quarry-package-page",
+                "phase-package-page",
+                "global-development-page",
+                "package-tabs",
+                "section-context",
+                "quarry-development-flow",
+                "quarry-dev-table",
+                "quarry-note-grid",
+            },
         )
 
     for pkg in data.get("packages", []):
         package_id = pkg["id"]
         require(
             f"dev-{package_id}-requirement",
-            {"package-tabs", "package-context-grid", "gameplay-info-table", "objective-sequence"},
+            {
+                "professional-only",
+                "quarry-package-page",
+                "phase-package-page",
+                "role-gameplay-overview",
+                "package-tabs",
+                "phase-context-grid",
+                "quarry-overview-table",
+                "quarry-sequence",
+            },
         )
         require(
             f"dev-{package_id}-level",
-            {"package-tabs", "section-context", "design-flow-grid", "build-requirements-table", "note-grid"},
+            {
+                "professional-only",
+                "quarry-package-page",
+                "phase-package-page",
+                "package-tabs",
+                "section-context",
+                "quarry-design-flow",
+                "quarry-build-table",
+                "quarry-note-grid",
+            },
         )
         require(
             f"dev-{package_id}-developer",
-            {"package-tabs", "section-context", "development-flow-grid", "development-requirements-table", "result-summary", "note-grid"},
+            {
+                "professional-only",
+                "quarry-package-page",
+                "phase-package-page",
+                "package-tabs",
+                "section-context",
+                "quarry-development-flow",
+                "quarry-development-table",
+                "quarry-score-summary",
+                "quarry-note-grid",
+            },
         )
 
     return failures

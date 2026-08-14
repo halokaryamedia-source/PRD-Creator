@@ -2,10 +2,12 @@
 
 ## Current Status
 
-`REPOSITORY_QUALITY_RETIRED_VOICE_COMPOSITOR_REMOVED`
+`REPOSITORY_QUALITY_ACTIVE_REMEDIATION_COMPLETE`
 
-The full audit remains durable at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. RQ-07 is closed: the objective-first compositor is the only Production Assets compositor and the Voice helper module no longer carries an alternate legacy page/navigation path. All still-open findings remain ordered in `docs/knowledge/operations/backlog.md`.
+The full audit remains durable at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. All proven active/current-context defects selected for this remediation are closed through RQ-08. Remaining findings are conditional or design-sensitive and stay in `docs/knowledge/operations/backlog.md`; they are not a mandate for speculative refactoring.
+
+The visible Production Assets footer-code change from RQ-05/RQ-13 still needs actual browser inspection before refreshed visual PASS is claimed.
 
 ## Next Step
 
-Complete **RQ-08 — validator layering simplification** incrementally: remove monkey-patch ownership between `validator/validate.py` and `_engine.py` without rewriting the validator or changing current validation semantics.
+Perform one targeted browser visual check of the current Clockwork Production Assets pages for the new `PA-##` footer codes; if readable with no layout regression, record the proof and return to normal next project work.
