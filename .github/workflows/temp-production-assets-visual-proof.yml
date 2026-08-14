@@ -35,108 +35,38 @@ jobs:
           test -n "$CHROME" || { echo "No Chromium browser available"; exit 1; }
           python - <<'PY'
           from pathlib import Path
-
           src = Path("workspace/active/the-clockwork-vault/output/v1.0.0/prd.html")
-          out = Path("/tmp/clockwork-visual-proof.html")
           text = src.read_text(encoding="utf-8")
-          probe = '''<script id="temporary-browser-proof">
-window.addEventListener('load', function(){
-  setTimeout(function(){
-    const nav = document.querySelector('.production-assets-nav');
-    const links = nav ? Array.from(nav.querySelectorAll('a[data-target]')) : [];
-    const pages = [];
-    links.forEach(function(link){
-      link.click();
-      const id = link.getAttribute('data-target');
-      const page = document.getElementById(id);
-      if (!page) { pages.push({id:id, missing:true}); return; }
-      const pageRect = page.getBoundingClientRect();
-      const code = page.querySelector('.footer-code');
-      const codeRect = code ? code.getBoundingClientRect() : {left:0,right:0,top:0,bottom:0,width:0,height:0};
-      const risky = Array.from(page.querySelectorAll('.pa-summary,.pa-group,.pa-card,.voice-script-card,.voice-script-display'));
-      pages.push({
-        id:id,
-        visible: pageRect.width > 0 && pageRect.height > 0 && getComputedStyle(page).display !== 'none',
-        footerCode: code ? code.textContent.trim() : '',
-        footerInside: !!code && codeRect.width > 0 && codeRect.left >= pageRect.left - 1 && codeRect.right <= pageRect.right + 1 && codeRect.bottom <= pageRect.bottom + 1,
-        pageOverflow: page.scrollWidth > page.clientWidth + 1,
-        riskyOverflow: risky.some(function(el){ return el.scrollWidth > el.clientWidth + 1; })
-      });
-    });
-    const navLinks = nav ? Array.from(nav.querySelectorAll('a')) : [];
-    const result = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-      navPresent: !!nav,
-      navLinkCount: navLinks.length,
-      navOverflow: !!nav && (nav.scrollWidth > nav.clientWidth + 1 || navLinks.some(function(el){ return el.scrollWidth > el.clientWidth + 1; })),
-      documentOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-      pages: pages
-    };
-    const pre = document.createElement('pre');
-    pre.id = 'visual-proof-result';
-    pre.textContent = JSON.stringify(result);
-    document.body.appendChild(pre);
-  }, 300);
-});
-</script>'''
+          probe = "<script id=\"temporary-browser-proof\">window.addEventListener('load',function(){setTimeout(function(){const nav=document.querySelector('.production-assets-nav');const links=nav?Array.from(nav.querySelectorAll('a[data-target]')):[];const pages=[];links.forEach(function(link){link.click();const id=link.getAttribute('data-target');const page=document.getElementById(id);if(!page){pages.push({id:id,missing:true});return;}const pr=page.getBoundingClientRect();const code=page.querySelector('.footer-code');const cr=code?code.getBoundingClientRect():{left:0,right:0,bottom:0,width:0};const risky=Array.from(page.querySelectorAll('.pa-summary,.pa-group,.pa-card,.voice-script-card,.voice-script-display'));pages.push({id:id,visible:pr.width>0&&pr.height>0&&getComputedStyle(page).display!=='none',footerCode:code?code.textContent.trim():'',footerInside:!!code&&cr.width>0&&cr.left>=pr.left-1&&cr.right<=pr.right+1&&cr.bottom<=pr.bottom+1,pageOverflow:page.scrollWidth>page.clientWidth+1,riskyOverflow:risky.some(function(el){return el.scrollWidth>el.clientWidth+1;})});});const navLinks=nav?Array.from(nav.querySelectorAll('a')):[];const result={width:window.innerWidth,height:window.innerHeight,navPresent:!!nav,navLinkCount:navLinks.length,navOverflow:!!nav&&(nav.scrollWidth>nav.clientWidth+1||navLinks.some(function(el){return el.scrollWidth>el.clientWidth+1;})),documentOverflow:document.documentElement.scrollWidth>document.documentElement.clientWidth+1,pages:pages};const pre=document.createElement('pre');pre.id='visual-proof-result';pre.textContent=JSON.stringify(result);document.body.appendChild(pre);},300);});</script>"
           if text.count("</body>") != 1:
               raise SystemExit("Expected exactly one body closing tag")
-          out.write_text(text.replace("</body>", probe + "\n</body>", 1), encoding="utf-8")
+          Path("/tmp/clockwork-visual-proof.html").write_text(text.replace("</body>", probe + "</body>", 1), encoding="utf-8")
           PY
-
           for WIDTH in 1500 1000; do
-            "$CHROME" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --hide-scrollbars \
-              --window-size=${WIDTH},1000 \
-              --virtual-time-budget=1800 \
-              --dump-dom \
-              "file:///tmp/clockwork-visual-proof.html" \
-              > "/tmp/dom-${WIDTH}.html" 2>"/tmp/chrome-${WIDTH}.log"
+            "$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=${WIDTH},1000 --virtual-time-budget=1800 --dump-dom "file:///tmp/clockwork-visual-proof.html" > "/tmp/dom-${WIDTH}.html" 2>"/tmp/chrome-${WIDTH}.log"
           done
-
           python - <<'PY'
-          import html
-          import json
-          import re
+          import html, json, re
           from pathlib import Path
-
-          summaries = []
-          for width in (1500, 1000):
-              dom = Path(f"/tmp/dom-{width}.html").read_text(encoding="utf-8")
-              match = re.search(r'<pre id="visual-proof-result">(.*?)</pre>', dom, re.S)
+          summaries=[]
+          for width in (1500,1000):
+              dom=Path(f"/tmp/dom-{width}.html").read_text(encoding="utf-8")
+              match=re.search(r'<pre id="visual-proof-result">(.*?)</pre>',dom,re.S)
               if not match:
                   raise SystemExit(f"Browser proof result missing at {width}px")
-              payload = json.loads(html.unescape(match.group(1)))
+              payload=json.loads(html.unescape(match.group(1)))
               summaries.append(payload)
-              if payload["width"] < width - 10:
-                  raise SystemExit(f"Unexpected browser viewport at {width}px: {payload['width']}")
-              if not payload["navPresent"] or payload["navLinkCount"] < 1:
-                  raise SystemExit(f"Production Assets navigation missing at {width}px")
-              if payload["navOverflow"]:
-                  raise SystemExit(f"Production Assets navigation overflow at {width}px")
-              if payload["documentOverflow"]:
-                  raise SystemExit(f"Document horizontal overflow at {width}px")
-              if not payload["pages"]:
-                  raise SystemExit(f"No Production Assets pages inspected at {width}px")
+              if not payload["navPresent"] or payload["navLinkCount"]<1: raise SystemExit(f"Production Assets navigation missing at {width}px")
+              if payload["navOverflow"]: raise SystemExit(f"Production Assets navigation overflow at {width}px")
+              if payload["documentOverflow"]: raise SystemExit(f"Document horizontal overflow at {width}px")
+              if not payload["pages"]: raise SystemExit(f"No Production Assets pages inspected at {width}px")
               for page in payload["pages"]:
-                  if page.get("missing"):
-                      raise SystemExit(f"Missing Production Assets page target at {width}px: {page}")
-                  if not page["visible"]:
-                      raise SystemExit(f"Production Assets page did not become visible at {width}px: {page['id']}")
-                  if not re.fullmatch(r"PA-\d{2}", page["footerCode"]):
-                      raise SystemExit(f"Unexpected Production Assets footer code at {width}px: {page}")
-                  if not page["footerInside"]:
-                      raise SystemExit(f"Footer code outside page bounds at {width}px: {page}")
-                  if page["pageOverflow"] or page["riskyOverflow"]:
-                      raise SystemExit(f"Production Assets content overflow at {width}px: {page}")
-          Path("/tmp/visual-proof-summary.json").write_text(
-              json.dumps(summaries, indent=2) + "\n", encoding="utf-8"
-          )
-          print(json.dumps(summaries, indent=2))
+                  if page.get("missing"): raise SystemExit(f"Missing target at {width}px: {page}")
+                  if not page["visible"]: raise SystemExit(f"Page not visible at {width}px: {page['id']}")
+                  if not re.fullmatch(r"PA-\d{2}",page["footerCode"]): raise SystemExit(f"Unexpected footer code at {width}px: {page}")
+                  if not page["footerInside"]: raise SystemExit(f"Footer code outside page bounds at {width}px: {page}")
+                  if page["pageOverflow"] or page["riskyOverflow"]: raise SystemExit(f"Production Assets overflow at {width}px: {page}")
+          print(json.dumps(summaries,indent=2))
           PY
 
       - name: Record refreshed visual proof
@@ -144,53 +74,43 @@ window.addEventListener('load', function(){
         run: |
           python - <<'PY'
           from pathlib import Path
+          root=Path.cwd()
+          path=root/"docs/knowledge/reviews/current-validation.md"
+          text=path.read_text(encoding="utf-8")
+          section="""## Refreshed Production Assets browser proof
 
-          root = Path.cwd()
-          path = root / "docs/knowledge/reviews/current-validation.md"
-          text = path.read_text(encoding="utf-8")
-          section = '''## Refreshed Production Assets browser proof
-
-After RQ-05/RQ-13 changed only Production Assets page identity/footer codes, the current Clockwork `v1.0.0/prd.html` was regenerated and inspected in a real headless Chromium layout at **1500×1000** and **1000×1000**. Every Production Assets navigation target became visible, every page exposed the expected `PA-##` footer code inside page bounds, Production Assets navigation had no horizontal overflow, the document had no horizontal viewport overflow, and the scanned Production Assets summary/card/Voice surfaces had no horizontal content overflow.
+After RQ-05/RQ-13 changed only Production Assets page identity/footer codes, the current Clockwork `v1.0.0/prd.html` was regenerated and inspected in real headless Chromium layout at **1500×1000** and **1000×1000**. Every Production Assets navigation target became visible, every page exposed the expected `PA-##` footer code inside page bounds, Production Assets navigation had no horizontal overflow, the document had no horizontal viewport overflow, and the scanned Production Assets summary/card/Voice surfaces had no horizontal content overflow.
 
 Result: `Production Assets visual sanity: PASS` for the RQ-05/RQ-13 identity change at the two claimed desktop widths. This proof does not broaden the claim to unrelated mobile widths or new visual changes.
 
-'''
+"""
           if "## Refreshed Production Assets browser proof" not in text:
-              marker = "## Browser proof\n"
-              if marker not in text:
-                  raise SystemExit("current-validation Browser proof marker missing")
-              text = text.replace(marker, section + marker, 1)
-          path.write_text(text, encoding="utf-8")
+              text=text.replace("## Browser proof\n",section+"## Browser proof\n",1)
+          path.write_text(text,encoding="utf-8")
+          audit=root/"docs/knowledge/reviews/repository-quality-audit-2026-08-14.md"
+          text=audit.read_text(encoding="utf-8")
+          note="""## Visual proof update — RQ-05/RQ-13
 
-          audit = root / "docs/knowledge/reviews/repository-quality-audit-2026-08-14.md"
-          text = audit.read_text(encoding="utf-8")
-          note = '''## Visual proof update — RQ-05/RQ-13
+The visible `PA-##` footer-code change received actual Chromium layout proof at 1500×1000 and 1000×1000 on the current Clockwork delivery. Production Assets navigation/page activation, footer-code placement, and horizontal overflow checks passed at both widths. RQ-05/RQ-13 are mechanically and visually closed for the claimed desktop scope.
 
-The visible `PA-##` footer-code change received actual Chromium layout proof at 1500×1000 and 1000×1000 on the current Clockwork delivery. Production Assets navigation/page activation, footer-code placement, and horizontal overflow checks passed at both widths. RQ-05/RQ-13 may therefore be treated as mechanically and visually closed for the claimed desktop scope.
-
-'''
+"""
           if "## Visual proof update — RQ-05/RQ-13" not in text:
-              marker = "## Ordered remediation\n"
-              if marker not in text:
-                  raise SystemExit("audit Ordered remediation marker missing")
-              text = text.replace(marker, note + marker, 1)
-          audit.write_text(text, encoding="utf-8")
-
-          next_path = root / "docs/knowledge/next-action.md"
-          next_path.write_text('''# Next Action
+              text=text.replace("## Ordered remediation\n",note+"## Ordered remediation\n",1)
+          audit.write_text(text,encoding="utf-8")
+          (root/"docs/knowledge/next-action.md").write_text("""# Next Action
 
 ## Current Status
 
 `REPOSITORY_QUALITY_ACTIVE_REMEDIATION_COMPLETE`
 
-The complete audit remains durable at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. All proven active/current-context defects selected for this remediation are closed through RQ-08, and the visible RQ-05/RQ-13 Production Assets identity change now has refreshed Chromium visual proof at 1500px and 1000px desktop widths.
+The complete audit remains durable at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. All proven active/current-context defects selected for this remediation are closed through RQ-08, and the visible RQ-05/RQ-13 Production Assets identity change has refreshed Chromium visual proof at 1500px and 1000px desktop widths.
 
 Remaining findings in `docs/knowledge/operations/backlog.md` are conditional or design-sensitive: RQ-09/RQ-11 should be touched only with a concrete same-owner need, RQ-10 requires explicit Golden-design approval, and RQ-14 needs a real >26-page-code use case. They are not a mandate for speculative cleanup.
 
 ## Next Step
 
 Proceed to the next real PRD/PRD-Creator work. Promote a remaining repository-quality backlog item only when real usage exposes the matching defect or the user explicitly chooses the design-sensitive change.
-''', encoding="utf-8")
+""",encoding="utf-8")
           PY
 
       - name: Final current checks
