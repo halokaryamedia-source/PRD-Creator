@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`VERSIONED_AI_HANDOFF_READY`
+`VERSIONED_DELIVERY_ROUTING_ALIGNED`
 
-Project Document Generator v1.14.0 now produces one versioned delivery package from the same accepted project truth:
+Project Document Generator v1.14.0 keeps the versioned delivery package introduced for human + AI handoff:
 
 ```text
 output/README.md
@@ -13,12 +13,12 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-`prd.html` remains the human-facing PRD. `context.md` is the AI reasoning surface. `index.json` is a compact heading graph with exact context line ranges, so an AI can locate scope before reading prose. `output/README.md` is the stable resume entry point for a project reopened later.
+Current repository routing/ownership docs are now synchronized with that contract. `docs/knowledge/ownership.md` maps `renderer/delivery.py`, the versioned human PRD, AI context/index projections, and the stable resume navigator. Current PRD/Voice owners no longer route through retired `final.html`, `team-handoff.md`, a separate `VOICE` sidebar category, or the retired `Cinematic & Presentation` taxonomy.
 
-The design intentionally has no Obsidian/Graphify dependency, knowledge database, second PRD authority, duplicate JSON prose, compatibility alias, or extra workflow layer.
+`tools/verify_repository.py` now guards only this current delivery/routing boundary: it requires the versioned delivery owner/test, checks the current ownership markers, and rejects those retired references in current delivery owners. Historical reviews/source inventory remain untouched as capture-time evidence.
 
-Clockwork is migrated as the first real package at PRD version `1.0.0`; Voice remains semantically unchanged and points to the versioned project HTML.
+No Obsidian/Graphify dependency, knowledge database, second ownership map, or compatibility layer was added.
 
 ## Next Step
 
-Use the versioned delivery bundle as the default handoff on the next new or revised real PRD, and adjust only if that real usage exposes a concrete navigation/context defect.
+Use this routing and versioned delivery package on the next new or revised real PRD; change it again only if real usage exposes a concrete navigation/context defect.
