@@ -8,20 +8,52 @@ This file records the **current evidence state only**. Historical debugging and 
 
 Working branch: `Local`.
 
-Project Document Generator remains **v1.13.0**. Voice Production Kit remains **v1.11.2**.
+Project Document Generator remains **v1.14.0**. Voice Production Kit remains **v1.11.2**.
 
-Current downstream path:
+Current delivery path:
 
 ```text
 accepted PRD
 → asset discovery / production-implication check
 → optional work/asset-requirements.md
 → optional Voice canonical sources
-→ rerender same output/final.html
-→ objective-first 04 Production Assets
+→ one deterministic versioned delivery pass
+→ output/README.md
+→ output/v<document.version>/prd.html
+→ output/v<document.version>/context.md
+→ output/v<document.version>/index.json
 ```
 
-The Golden Sample remains the canonical PRD-core prototype. Production Assets is additive downstream presentation and does not change accepted PRD meaning, Golden bytes, or PRD page identity.
+`prd.html` remains the single human-facing project document. `context.md` and `index.json` are derived AI reading/navigation surfaces from the same accepted project truth; neither is another product authority. The Golden Sample remains the canonical PRD-core prototype. Production Assets is additive downstream presentation and does not change accepted PRD meaning, Golden bytes, or PRD page identity.
+
+## Versioned delivery proof
+
+Current delivery contract:
+
+```text
+output/README.md                         stable resume entry point
+output/v<document.version>/prd.html      human review
+output/v<document.version>/context.md    AI semantic/development context
+output/v<document.version>/index.json    compact navigation + context line ranges
+```
+
+Current mechanical evidence:
+
+- versioned delivery contracts: 5/5 PASS;
+- semantic `X.Y.Z` document version is required for handoff delivery;
+- the delivery index is smaller than the full development context and points to exact context line ranges;
+- handoff validation requires the current versioned PRD/context/index bundle to agree with `document.version`;
+- repository routing now names `renderer/delivery.py` as the delivery orchestrator;
+- current routing owners are guarded against returning to the retired unversioned delivery paths/taxonomy.
+
+Clockwork is the first real migrated package at PRD version `1.0.0`:
+
+```text
+workspace/active/the-clockwork-vault/output/README.md
+workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+workspace/active/the-clockwork-vault/output/v1.0.0/context.md
+workspace/active/the-clockwork-vault/output/v1.0.0/index.json
+```
 
 ## Objective-first Production Assets proof
 
@@ -47,14 +79,13 @@ Audio
 Visual Effects & Presentation
 ```
 
-Only non-zero categories are rendered. The semantic contract now also requires explicit asset discovery: necessary custom assets implied by accepted gameplay are not omitted merely because source material did not name them. Material choices that change project meaning use the existing Completion/Proposal process; production-only choices may use one practical recommendation without adding a new approval layer.
+Only non-zero categories are rendered. The semantic contract also requires explicit asset discovery: necessary custom assets implied by accepted gameplay are not omitted merely because source material did not name them. Material choices that change project meaning use the existing Completion/Proposal process; production-only choices may use one practical recommendation without adding a new approval layer.
 
 Current contract/mechanical evidence:
 
 - Production Assets focused contracts: 7/7 PASS;
 - Voice focused contracts: 8/8 PASS;
 - a non-zero `Visual Effects & Presentation` fixture renders successfully;
-- retired `Cinematic & Presentation` is absent from the rendered fixture;
 - no-downstream PRD path remains a no-op;
 - generic asset-only rendering works without Voice sources;
 - generic + Voice content can share one objective-first page;
@@ -67,15 +98,18 @@ Existing objective-first browser proof remains PASS at 1500px and 1000px desktop
 
 That earlier generic browser fixture did not contain a non-zero fourth category. Therefore no separate browser PASS is claimed for the exact longer `Visual Effects & Presentation` label; it is mechanically covered and should receive fresh visual proof only when a real project renders it or a visual defect is observed.
 
+The versioned delivery/routing cleanup changed documentation, navigation ownership, and derived file locations only. It did not change the human PRD page composition, so no new browser PASS is claimed from that cleanup.
+
 ## The Circuit benchmark
 
-The supplied completed Minecraft Bedrock `The Circuit v1.0.1.mcworld` was used only as a reference audit. It supported objective-first grouping, shared assets, function-based classification, primary-owner bundling, and the final four-category boundary. No The Circuit `asset-requirements.md`, HTML, project package, or production output was generated.
+The supplied completed Minecraft Bedrock `The Circuit v1.0.1.mcworld` was used only as a reference audit. It supported objective-first grouping, shared assets, function-based classification, primary-owner bundling, and the final four-category boundary. No The Circuit asset requirement, project package, or production output was generated.
 
 ## Current Clockwork state
 
 Clockwork PRD remains `handoff_ready` and Voice remains `voice_delivery_ready` for the non-audio scope.
 
 ```text
+PRD Version: 1.0.0
 Mechanical: PASS
 Voice Script Readiness: PASS
 Communication Conservation: PASS
@@ -96,8 +130,11 @@ kits/project-document-generator/SOURCE-INTAKE.md
 kits/project-document-generator/PRODUCTION-ASSETS.md
     non-Voice objective-first asset discovery/category/requirement contract
 
+kits/project-document-generator/renderer/delivery.py
+    deterministic versioned human + AI handoff bundle
+
 kits/project-document-generator/renderer/production_assets_objective.py
-    deterministic objective-first presentation mechanics
+    deterministic objective-first Production Assets presentation mechanics
 
 kits/voice-production-kit/
     Voice Flow 5–7 semantic/canonical ownership
