@@ -1,8 +1,10 @@
 project: the-clockwork-vault
 status: handoff_ready
-accepted_prd_version: Final Review
+accepted_prd_version: 1.0.0
 content: work/content.md
 render_data: work/render-data.json
-html: output/final.html
+html: output/v1.0.0/prd.html
+context: output/v1.0.0/context.md
+index: output/v1.0.0/index.json
 acceptance: work/acceptance.md
-handoff: output/team-handoff.md
+handoff: output/README.md

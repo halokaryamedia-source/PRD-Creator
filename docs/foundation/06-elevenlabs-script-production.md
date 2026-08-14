@@ -13,7 +13,7 @@ accepted PRD
 → work/voice-requirements.md
 → Flow 6 / SoundMaker v3
 → work/voice-production.md
-→ output/final.html → Production Assets → Voice
+→ output/v<document.version>/prd.html → Production Assets → Voice
 ```
 
 - accepted PRD owns project/gameplay truth;
@@ -93,7 +93,7 @@ Do not duplicate Channel, Trigger, Purpose, Timing Constraint, requirement bulle
 
 # Consolidated project HTML
 
-After canonical Voice Production exists, the normal renderer publishes it into the same `output/final.html` as a professional-only downstream section while preserving the existing accepted PRD navigation/page identity.
+After canonical Voice Production exists, the normal renderer publishes it into the same `output/v<document.version>/prd.html` as a professional-only downstream section while preserving the existing accepted PRD navigation/page identity.
 
 ```text
 03 Development

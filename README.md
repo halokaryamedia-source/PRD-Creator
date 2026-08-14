@@ -2,20 +2,20 @@
 
 PRD-Creator produces a development-ready PRD plus optional objective-first Production Assets in the same project HTML.
 
-Current versions: Project Document Generator **v1.13.0**; Voice Production Kit **v1.11.2**; Voice scope **Eleven v3**. Development continues on `Local`.
+Current versions: Project Document Generator **v1.14.0**; Voice Production Kit **v1.11.2**; Voice scope **Eleven v3**. Development continues on `Local`.
 
 ## Output
 
 ```text
-output/final.html
-├── 01 Overview
-├── 02 Gameplay Flow
-├── 03 Development
-│   └── gameplay/objective sections
-└── 04 Production Assets      # only when downstream assets exist
-    ├── Global / Shared Assets   # only when needed
-    └── <gameplay section> → <accepted PRD label>
+output/
+├── README.md                  # navigator / resume entry point
+└── v<document.version>/
+    ├── prd.html               # human review
+    ├── context.md             # AI semantic/development context
+    └── index.json             # compact AI navigation + context line ranges
 ```
+
+`prd.html` keeps the approved human-facing PRD presentation. `context.md` and `index.json` are derived side documents from the same accepted project truth; they are not a second PRD authority.
 
 Production Assets pages show only non-zero categories: `3D Models`, `UI & Information`, `Audio`, and `Visual Effects & Presentation`.
 

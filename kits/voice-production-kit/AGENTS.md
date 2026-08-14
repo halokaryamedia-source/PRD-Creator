@@ -38,7 +38,7 @@ Do not broad-read every Voice/reference file by default. Recover current project
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/final.html → Production Assets → Voice
+→ output/v<document.version>/prd.html → Production Assets → Voice
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
@@ -46,7 +46,7 @@ accepted PRD
 - PRD owns project/gameplay truth and the fact that a Voice asset is required.
 - Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, required communication, exclusions, and source timing truth when present.
 - `work/voice-production.md` owns canonical production content.
-- `output/final.html` is the default derived operator presentation; it is not wording authority.
+- `output/v<document.version>/prd.html` is the default derived operator presentation; it is not wording authority.
 - DOCX is optional export only.
 
 ## Static output contract
@@ -94,10 +94,10 @@ Use the root `voice-production` specialist for semantic/product-contract defects
 ## Validator / builder rules
 
 - exact Voice ID, Type, and Speaker parity are fail-closed;
-- when consolidated `final.html` exists, validator checks section/page parity, developer Context, and canonical payload parity;
+- when the current versioned `prd.html` exists, validator checks section/page parity, developer Context, and canonical payload parity;
 - when optional DOCX exists, validator checks that export too;
 - builder/validator PASS does not establish semantic or visual quality;
-- never hand-edit `final.html` or DOCX as the source fix.
+- never hand-edit `prd.html` or DOCX as the source fix.
 
 ## Verification
 
@@ -113,9 +113,8 @@ python -m compileall -q kits/voice-production-kit tests/test_voice_contracts.py
 Consolidated project HTML is generated with the normal PRD command:
 
 ```text
-python kits/project-document-generator/renderer/render.py \
-  workspace/active/<project>/work/render-data.json \
-  workspace/active/<project>/output/final.html
+python kits/project-document-generator/renderer/delivery.py \
+  workspace/active/<project>/
 ```
 
 Direct Voice validator:

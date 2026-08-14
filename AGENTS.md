@@ -146,7 +146,7 @@ original source / approved decisions
 → acceptance evidence
 ```
 
-Never patch `final.html`, DOCX, or another derived artifact to hide an upstream defect. Regenerate only invalidated derived artifacts.
+Never patch `prd.html`, DOCX, or another derived artifact to hide an upstream defect. Regenerate only invalidated derived artifacts.
 
 ## Repository continuity
 

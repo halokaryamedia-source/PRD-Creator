@@ -25,7 +25,7 @@ class PrdHandoffContracts(unittest.TestCase):
     def make_project(
         self,
         *,
-        current_version: str = "1.0",
+        current_version: str = "1.0.0",
         accepted_version: str | None = None,
         status: str = "handoff_ready",
     ) -> Path:
@@ -34,7 +34,8 @@ class PrdHandoffContracts(unittest.TestCase):
         project = Path(temp.name)
         (project / "state").mkdir(parents=True)
         (project / "work").mkdir(parents=True)
-        (project / "output").mkdir(parents=True)
+        version_dir = project / "output" / f"v{current_version}"
+        version_dir.mkdir(parents=True)
 
         accepted = accepted_version if accepted_version is not None else current_version
         (project / "work" / "content.md").write_text("# Contract PRD\n", encoding="utf-8")
@@ -42,8 +43,18 @@ class PrdHandoffContracts(unittest.TestCase):
             json.dumps({"document": {"version": current_version}}, indent=2) + "\n",
             encoding="utf-8",
         )
-        (project / "output" / "final.html").write_text(
+        (version_dir / "prd.html").write_text(
             "<!doctype html><title>Contract</title>\n", encoding="utf-8"
+        )
+        (version_dir / "context.md").write_text(
+            f"# Contract — Development Context\n\nPRD Version: v{current_version}\n", encoding="utf-8"
+        )
+        (version_dir / "index.json").write_text(
+            json.dumps({"project": {"prd_version": current_version}}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (project / "output" / "README.md").write_text(
+            f"# Contract\n\nCurrent PRD Version: `v{accepted}`\n", encoding="utf-8"
         )
         (project / "work" / "acceptance.md").write_text(
             f"# PRD Acceptance\n"
@@ -56,17 +67,16 @@ class PrdHandoffContracts(unittest.TestCase):
             "Major: 0\n",
             encoding="utf-8",
         )
-        (project / "output" / "team-handoff.md").write_text(
-            f"# Team Handoff\nPRD Version: {accepted}\n", encoding="utf-8"
-        )
         (project / "state" / "handoff-state.yaml").write_text(
             f"status: {status}\n"
             f"accepted_prd_version: {accepted}\n"
             "content: work/content.md\n"
             "render_data: work/render-data.json\n"
-            "html: output/final.html\n"
+            f"html: output/v{current_version}/prd.html\n"
+            f"context: output/v{current_version}/context.md\n"
+            f"index: output/v{current_version}/index.json\n"
             "acceptance: work/acceptance.md\n"
-            "handoff: output/team-handoff.md\n",
+            "handoff: output/README.md\n",
             encoding="utf-8",
         )
         return project
@@ -84,17 +94,39 @@ class PrdHandoffContracts(unittest.TestCase):
         self.assertIn("handoff_status_ready", "\n".join(json.loads(validated.stdout)["errors"]))
 
     def test_stale_handoff_version_cannot_authorize_newer_prd(self) -> None:
-        project = self.make_project(current_version="1.1", accepted_version="1.0")
+        project = self.make_project(current_version="1.1.0", accepted_version="1.0.0")
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("handoff_revision_matches_current_prd", "\n".join(json.loads(validated.stdout)["errors"]))
 
     def test_handoff_requires_existing_current_artifact_references(self) -> None:
         project = self.make_project()
-        (project / "output" / "team-handoff.md").unlink()
+        (project / "output" / "v1.0.0" / "context.md").unlink()
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("handoff_artifact_references_current", "\n".join(json.loads(validated.stdout)["errors"]))
+
+
+    def test_stale_delivery_metadata_cannot_authorize_handoff(self) -> None:
+        project = self.make_project()
+        index_path = project / "output" / "v1.0.0" / "index.json"
+        index_path.write_text(
+            json.dumps({"project": {"prd_version": "0.9.0"}}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn(
+            "delivery_revision_matches_current_prd",
+            "\n".join(json.loads(validated.stdout)["errors"]),
+        )
+
+    def test_nonsemantic_version_cannot_authorize_handoff(self) -> None:
+        project = self.make_project(current_version="Final Review")
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        errors = "\n".join(json.loads(validated.stdout)["errors"])
+        self.assertIn("current_prd_version_semantic", errors)
 
     def test_required_acceptance_gates_block_handoff_when_failed(self) -> None:
         variants = {

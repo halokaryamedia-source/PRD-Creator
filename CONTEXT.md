@@ -12,7 +12,7 @@ Current downstream presentation supports:
 - compact PRD-derived non-Voice asset requirements through optional `work/asset-requirements.md`;
 - Voice Production through the existing Flow 5–7 canonical sources.
 
-Both are composed into the same objective-first `04 Production Assets` section of `output/final.html`.
+Both are composed into the same objective-first `04 Production Assets` section of `output/v<document.version>/prd.html`.
 
 ## Production sequence
 
@@ -145,7 +145,7 @@ Rules:
 
 ## One project HTML
 
-`output/final.html` is the single human-facing project document.
+`output/v<document.version>/prd.html` is the single human-facing project document.
 
 It contains:
 
@@ -170,7 +170,22 @@ Categories appear inside the matching page only. They are not nested in the side
 
 Therefore downstream-only production updates may rerender `final.html` without reopening PRD acceptance when `work/content.md` and `work/render-data.json` are unchanged.
 
-PRD core, non-Voice asset requirements, and Voice Production retain separate canonical owners even though humans see one consolidated HTML.
+PRD core and downstream asset production retain separate canonical owners and acceptance evidence even though humans see one consolidated HTML.
+
+The same deterministic delivery pass also creates AI side documents beside the HTML:
+
+```text
+output/README.md
+    navigator / resume entry point
+
+output/v<document.version>/context.md
+    reasoning-friendly accepted PRD + relevant Production Asset/Voice requirements
+
+output/v<document.version>/index.json
+    compact heading graph + exact context.md line ranges
+```
+
+These side documents are derived navigation/reading projections only. They do not create another product authority, and `index.json` must not duplicate the PRD prose as a second structured PRD.
 
 Production Assets extends the existing PRD navigation; it does not rebuild or renumber it. Gameplay/objective navigation remains under **03 Development** with the same accepted PRD page identities. Production Assets owns its separate professional top-level number **04**. A project without Production Assets keeps the same PRD-core navigation, and adding Production Assets does not shift PRD package/page codes.
 
@@ -184,7 +199,7 @@ Normal authority:
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/final.html
+→ output/v<document.version>/prd.html
    → Production Assets
       → matching gameplay section
          → Audio
@@ -277,7 +292,7 @@ Preparation Mode may finish with no audio evidence. Generated-audio quality can 
 
 # Version policy
 
-`document.version` is PRD project/release metadata, not an edit counter.
+`document.version` is PRD project/release metadata, not an edit counter. Accepted development handoff versions use semantic `X.Y.Z`; the folder adds the `v` prefix.
 
 Adding or revising downstream Production Assets does not change PRD `document.version` unless PRD/project meaning itself enters a new declared revision.
 

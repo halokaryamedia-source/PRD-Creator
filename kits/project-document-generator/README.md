@@ -1,6 +1,6 @@
 # Project Document Generator
 
-**Version:** 1.13.0
+**Version:** 1.14.0
 
 Project Document Generator produces the accepted Golden PRD core and can append bounded downstream Production Assets to the same project HTML.
 
@@ -10,8 +10,9 @@ Project Document Generator produces the accepted Golden PRD core and can append 
 source + approved decisions
 → content.md
 → render-data.json
-→ exact Golden render
-→ output/final.html
+→ one deterministic delivery pass
+→ output/README.md
+→ output/v<document.version>/{prd.html, context.md, index.json}
 ```
 
 The PRD core remains `6 + 4N` pages for `N` gameplay sections. Golden template bytes remain unchanged by downstream composition.
@@ -53,6 +54,7 @@ kits/project-document-generator/
 ├── SOURCE-INTAKE.md
 ├── VALIDATION.md
 ├── renderer/
+│   ├── delivery.py
 │   ├── render.py
 │   ├── production_assets_objective.py
 │   ├── production_assets.py
@@ -63,7 +65,7 @@ kits/project-document-generator/
     └── runtime-template.html
 ```
 
-`production_assets_objective.py` composes objective-first mixed Production Assets. `production_assets.py` supplies the existing Voice-specific parsing/presentation primitives.
+`delivery.py` is the normal handoff entry point and generates the human PRD plus compact AI side documents in one pass. `production_assets_objective.py` composes objective-first mixed Production Assets. `production_assets.py` supplies the existing Voice-specific parsing/presentation primitives.
 
 ## Artifact lifecycle
 
@@ -77,6 +79,6 @@ work/voice-acceptance.md       Voice only
 state/voice-state.yaml         Voice only
 ```
 
-All downstream content is rerendered into the same `output/final.html`.
+All current delivery surfaces are regenerated together from the same canonical project truth. The human PRD remains `prd.html`; `context.md` and `index.json` are derived AI reading aids only.
 
 The objective-first compositor has contract coverage for generic asset-only, Voice-only, mixed asset + Voice, zero-category omission, source mapping, and no-downstream no-op behavior.

@@ -1,0 +1,461 @@
+{
+  "project": {
+    "id": "the-clockwork-vault",
+    "title": "The Clockwork Vault",
+    "prd_version": "1.0.0",
+    "status": "handoff_ready"
+  },
+  "documents": {
+    "human_prd": "prd.html",
+    "development_context": "context.md",
+    "development_index": "index.json"
+  },
+  "reading": {
+    "primary": "index.json",
+    "instruction": "Locate the affected section here, then read only its line range from context.md. Read broader/global context only when the task actually depends on it."
+  },
+  "navigation": [
+    {
+      "id": "the-clockwork-vault-development-context",
+      "title": "The Clockwork Vault — Development Context",
+      "lines": [
+        1,
+        1582
+      ],
+      "children": [
+        {
+          "id": "the-clockwork-vault-development-context/reading-guidance",
+          "title": "Reading Guidance",
+          "lines": [
+            6,
+            15
+          ]
+        },
+        {
+          "id": "the-clockwork-vault-development-context/accepted-prd",
+          "title": "Accepted PRD",
+          "lines": [
+            16,
+            1310
+          ],
+          "children": [
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/gameplay-development-specification",
+              "title": "Gameplay & Development Specification",
+              "lines": [
+                18,
+                23
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/01-overview",
+              "title": "01. Overview",
+              "lines": [
+                24,
+                48
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/01-overview/complete-gameplay-journey",
+                  "title": "Complete Gameplay Journey",
+                  "lines": [
+                    32,
+                    40
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/01-overview/global-gameplay-direction",
+                  "title": "Global Gameplay Direction",
+                  "lines": [
+                    41,
+                    48
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow",
+              "title": "02. Gameplay Flow",
+              "lines": [
+                49,
+                143
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-journey-begins",
+                  "title": "The Journey Begins",
+                  "lines": [
+                    51,
+                    62
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-antechamber",
+                  "title": "The Antechamber",
+                  "lines": [
+                    63,
+                    74
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-resonance-engine",
+                  "title": "The Resonance Engine",
+                  "lines": [
+                    75,
+                    89
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-broken-gallery",
+                  "title": "The Broken Gallery",
+                  "lines": [
+                    90,
+                    103
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-warden-halls",
+                  "title": "The Warden Halls",
+                  "lines": [
+                    104,
+                    117
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-gremlin-s-workshop",
+                  "title": "The Gremlin’s Workshop",
+                  "lines": [
+                    118,
+                    131
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/02-gameplay-flow/the-vault-awakens",
+                  "title": "The Vault Awakens",
+                  "lines": [
+                    132,
+                    143
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/03-global-development",
+              "title": "03. Global Development",
+              "lines": [
+                144,
+                363
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/03-global-development/development-overview",
+                  "title": "Development Overview",
+                  "lines": [
+                    146,
+                    194
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/03-global-development/game-system",
+                  "title": "Game System",
+                  "lines": [
+                    195,
+                    255
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/03-global-development/data-and-reset",
+                  "title": "Data and Reset",
+                  "lines": [
+                    256,
+                    313
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/03-global-development/gameplay-development",
+                  "title": "Gameplay Development",
+                  "lines": [
+                    314,
+                    363
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/04-the-antechamber",
+              "title": "04. The Antechamber",
+              "lines": [
+                364,
+                511
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/04-the-antechamber/gameplay-overview",
+                  "title": "Gameplay Overview",
+                  "lines": [
+                    368,
+                    392
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/04-the-antechamber/level-design",
+                  "title": "Level Design",
+                  "lines": [
+                    393,
+                    439
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/04-the-antechamber/developer",
+                  "title": "Developer",
+                  "lines": [
+                    440,
+                    511
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/05-the-resonance-engine",
+              "title": "05. The Resonance Engine",
+              "lines": [
+                512,
+                676
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/05-the-resonance-engine/gameplay-overview",
+                  "title": "Gameplay Overview",
+                  "lines": [
+                    516,
+                    540
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/05-the-resonance-engine/level-design",
+                  "title": "Level Design",
+                  "lines": [
+                    541,
+                    593
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/05-the-resonance-engine/developer",
+                  "title": "Developer",
+                  "lines": [
+                    594,
+                    676
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/06-the-broken-gallery",
+              "title": "06. The Broken Gallery",
+              "lines": [
+                677,
+                839
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/06-the-broken-gallery/gameplay-overview",
+                  "title": "Gameplay Overview",
+                  "lines": [
+                    681,
+                    705
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/06-the-broken-gallery/level-design",
+                  "title": "Level Design",
+                  "lines": [
+                    706,
+                    759
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/06-the-broken-gallery/developer",
+                  "title": "Developer",
+                  "lines": [
+                    760,
+                    839
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/07-the-warden-halls",
+              "title": "07. The Warden Halls",
+              "lines": [
+                840,
+                1006
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/07-the-warden-halls/gameplay-overview",
+                  "title": "Gameplay Overview",
+                  "lines": [
+                    844,
+                    868
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/07-the-warden-halls/level-design",
+                  "title": "Level Design",
+                  "lines": [
+                    869,
+                    923
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/07-the-warden-halls/developer",
+                  "title": "Developer",
+                  "lines": [
+                    924,
+                    1006
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/08-the-gremlin-s-workshop",
+              "title": "08. The Gremlin’s Workshop",
+              "lines": [
+                1007,
+                1165
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/08-the-gremlin-s-workshop/gameplay-overview",
+                  "title": "Gameplay Overview",
+                  "lines": [
+                    1011,
+                    1035
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/08-the-gremlin-s-workshop/level-design",
+                  "title": "Level Design",
+                  "lines": [
+                    1036,
+                    1084
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/08-the-gremlin-s-workshop/developer",
+                  "title": "Developer",
+                  "lines": [
+                    1085,
+                    1165
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "the-clockwork-vault-development-context/accepted-prd/09-vault-restored",
+              "title": "09. Vault Restored",
+              "lines": [
+                1166,
+                1310
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/09-vault-restored/gameplay-overview",
+                  "title": "Gameplay Overview",
+                  "lines": [
+                    1170,
+                    1194
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/09-vault-restored/level-design",
+                  "title": "Level Design",
+                  "lines": [
+                    1195,
+                    1233
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/accepted-prd/09-vault-restored/developer",
+                  "title": "Developer",
+                  "lines": [
+                    1234,
+                    1310
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "the-clockwork-vault-development-context/production-assets",
+          "title": "Production Assets",
+          "lines": [
+            1311,
+            1582
+          ],
+          "children": [
+            {
+              "id": "the-clockwork-vault-development-context/production-assets/voice-requirements",
+              "title": "Voice Requirements",
+              "lines": [
+                1313,
+                1582
+              ],
+              "children": [
+                {
+                  "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/01-the-antechamber",
+                  "title": "01. The Antechamber",
+                  "lines": [
+                    1318,
+                    1360
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/02-the-resonance-engine",
+                  "title": "02. The Resonance Engine",
+                  "lines": [
+                    1361,
+                    1384
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/03-the-broken-gallery",
+                  "title": "03. The Broken Gallery",
+                  "lines": [
+                    1385,
+                    1428
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/04-the-warden-halls",
+                  "title": "04. The Warden Halls",
+                  "lines": [
+                    1429,
+                    1472
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/05-the-gremlin-s-workshop",
+                  "title": "05. The Gremlin’s Workshop",
+                  "lines": [
+                    1473,
+                    1539
+                  ]
+                },
+                {
+                  "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/06-vault-restored",
+                  "title": "06. Vault Restored",
+                  "lines": [
+                    1540,
+                    1582
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

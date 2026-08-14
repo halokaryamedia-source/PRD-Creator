@@ -1,10 +1,10 @@
 flow: 7
 status: voice_delivery_ready
 source_handoff: state/handoff-state.yaml
-source_prd_revision: Final Review
+source_prd_revision: 1.0.0
 requirements: work/voice-requirements.md
 script: work/voice-production.md
-project_html: output/final.html
+project_html: output/v1.0.0/prd.html
 acceptance: work/voice-acceptance.md
 unresolved_upstream: 0
 mechanical: passed

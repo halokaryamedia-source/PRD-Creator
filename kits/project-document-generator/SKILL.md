@@ -1,7 +1,7 @@
 ---
 name: project-document-generator
 description: Recover project requirements, complete missing production detail with explicit AI proposals guided by the Golden fill map, preview the complete gameplay model in simple chat form for user approval, produce content-pure and humanized canonical PRD meaning, project it through the approved Golden hierarchy/page composition, and validate development readiness with bounded AI/render/review cost.
-version: 1.13.0
+version: 1.14.0
 ---
 
 # Project Document Generator

@@ -144,6 +144,7 @@ class VoiceProductionContracts(unittest.TestCase):
         project = Path(temp.name)
         (project / "work").mkdir(parents=True)
         (project / "output").mkdir(parents=True)
+        (project / "output" / "v1.0.0").mkdir(parents=True)
         (project / "state").mkdir(parents=True)
         (project / "work" / "voice-requirements.md").write_text(
             requirements_text if requirements_text is not None else requirements(),
@@ -151,7 +152,7 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         (project / "work" / "voice-production.md").write_text(script_text, encoding="utf-8")
         (project / "state" / "voice-state.yaml").write_text(
-            "status: voice_script_ready\nrevision: contract-1\n",
+            "status: voice_script_ready\nrevision: contract-1\nproject_html: output/v1.0.0/prd.html\n",
             encoding="utf-8",
         )
         return project
@@ -191,7 +192,7 @@ class VoiceProductionContracts(unittest.TestCase):
 
     def test_validator_accepts_current_project_html_objective_contract(self) -> None:
         project = self.make_project()
-        (project / "output/final.html").write_text(project_html(), encoding="utf-8")
+        (project / "output/v1.0.0/prd.html").write_text(project_html(), encoding="utf-8")
 
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
@@ -199,7 +200,7 @@ class VoiceProductionContracts(unittest.TestCase):
 
     def test_validator_rejects_missing_flow5_trigger_context_in_project_html(self) -> None:
         project = self.make_project()
-        (project / "output/final.html").write_text(
+        (project / "output/v1.0.0/prd.html").write_text(
             project_html(omit_intro_context=True),
             encoding="utf-8",
         )

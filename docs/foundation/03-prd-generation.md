@@ -24,7 +24,7 @@ Original Source + Current Instruction + Approved Decisions
 → work/content.md                 canonical meaning
 → work/render-data.json           derived projection
 → Golden renderer/template
-→ output/final.html               derived presentation
+→ output/v<document.version>/prd.html               derived presentation
 ```
 
 Authority decreases downstream. Rendering cannot introduce project meaning.

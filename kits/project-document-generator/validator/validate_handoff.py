@@ -8,13 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-EXPECTED_REFS = {
-    "content": "work/content.md",
-    "render_data": "work/render-data.json",
-    "html": "output/final.html",
-    "acceptance": "work/acceptance.md",
-    "handoff": "output/team-handoff.md",
-}
+SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 ACCEPTANCE_REQUIRED = {
     "Status": {"handoff_ready"},
     "Mechanical": {"PASS"},
@@ -69,6 +63,19 @@ def validate_acceptance(path: Path) -> tuple[bool, str]:
     return True, "acceptance.md authorizes handoff_ready with Mechanical, Semantic Readiness, Material Conservation, and no Critical/Major blocker"
 
 
+def expected_refs(version: str) -> dict[str, str]:
+    base = f"output/v{version}"
+    return {
+        "content": "work/content.md",
+        "render_data": "work/render-data.json",
+        "html": f"{base}/prd.html",
+        "context": f"{base}/context.md",
+        "index": f"{base}/index.json",
+        "acceptance": "work/acceptance.md",
+        "handoff": "output/README.md",
+    }
+
+
 def validate(project: Path) -> dict[str, Any]:
     state_path = project / "state" / "handoff-state.yaml"
     data_path = project / "work" / "render-data.json"
@@ -114,6 +121,11 @@ def validate(project: Path) -> dict[str, Any]:
         f"current document.version is {current_version!r}" if current_version else "render-data.document.version is required for handoff",
     )
     check(
+        "current_prd_version_semantic",
+        bool(SEMVER_RE.fullmatch(current_version)),
+        f"current document.version is {current_version!r}; expected X.Y.Z",
+    )
+    check(
         "handoff_revision_matches_current_prd",
         bool(current_version) and accepted_version == current_version,
         f"accepted_prd_version={accepted_version!r}, current document.version={current_version!r}",
@@ -121,28 +133,68 @@ def validate(project: Path) -> dict[str, Any]:
 
     refs_ok = True
     ref_details: list[str] = []
-    for field, expected in EXPECTED_REFS.items():
-        try:
-            actual = one_scalar(state_text, field)
-        except ValueError as exc:
-            refs_ok = False
-            ref_details.append(str(exc))
-            continue
-        if actual != expected:
-            refs_ok = False
-            ref_details.append(f"{field}={actual!r}, expected {expected!r}")
-            continue
-        target = project / expected
-        if not target.is_file():
-            refs_ok = False
-            ref_details.append(f"missing referenced artifact: {expected}")
+    refs = expected_refs(current_version) if SEMVER_RE.fullmatch(current_version) else {}
+    if not refs:
+        refs_ok = False
+        ref_details.append("cannot resolve versioned handoff paths until document.version uses X.Y.Z")
+    else:
+        for field, expected in refs.items():
+            try:
+                actual = one_scalar(state_text, field)
+            except ValueError as exc:
+                refs_ok = False
+                ref_details.append(str(exc))
+                continue
+            if actual != expected:
+                refs_ok = False
+                ref_details.append(f"{field}={actual!r}, expected {expected!r}")
+                continue
+            target = project / expected
+            if not target.is_file():
+                refs_ok = False
+                ref_details.append(f"missing referenced artifact: {expected}")
 
     check(
         "handoff_artifact_references_current",
         refs_ok,
-        "handoff-state points to the current canonical PRD/acceptance/handoff paths"
+        "handoff-state points to canonical PRD inputs plus the current versioned prd/context/index bundle"
         if refs_ok
         else "; ".join(ref_details),
+    )
+
+    delivery_ok = bool(refs)
+    delivery_details: list[str] = []
+    if refs:
+        try:
+            context_text = (project / refs["context"]).read_text(encoding="utf-8")
+            readme_text = (project / refs["handoff"]).read_text(encoding="utf-8")
+            index_data = json.loads((project / refs["index"]).read_text(encoding="utf-8"))
+            index_project = index_data.get("project") if isinstance(index_data, dict) else None
+            index_version = (
+                str(index_project.get("prd_version") or "").strip()
+                if isinstance(index_project, dict)
+                else ""
+            )
+            if f"PRD Version: v{current_version}" not in context_text:
+                delivery_ok = False
+                delivery_details.append("context.md PRD version does not match current document.version")
+            if f"Current PRD Version: `v{current_version}`" not in readme_text:
+                delivery_ok = False
+                delivery_details.append("output/README.md current version does not match document.version")
+            if index_version != current_version:
+                delivery_ok = False
+                delivery_details.append(
+                    f"index.json project.prd_version={index_version!r}, expected {current_version!r}"
+                )
+        except (OSError, json.JSONDecodeError) as exc:
+            delivery_ok = False
+            delivery_details.append(f"delivery metadata unreadable: {exc}")
+    check(
+        "delivery_revision_matches_current_prd",
+        delivery_ok,
+        "context.md, index.json, and output/README.md identify the current PRD revision"
+        if delivery_ok
+        else "; ".join(delivery_details) or "delivery metadata could not be verified",
     )
 
     acceptance_ok, acceptance_detail = validate_acceptance(acceptance_path)

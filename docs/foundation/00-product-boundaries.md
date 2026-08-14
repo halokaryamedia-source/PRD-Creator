@@ -45,7 +45,7 @@ It does not own downstream Voice wording.
 
 ## Default Delivery Scope
 
-The normal non-audio Voice deliverable is the accepted **canonical Voice Production script + current consolidated project HTML (`output/final.html`)**.
+The normal non-audio Voice deliverable is the accepted **canonical Voice Production script + current consolidated project HTML (`output/v<document.version>/prd.html`)**.
 
 `Voice Production.docx` is an optional portable export, not a default readiness requirement. Audio remains a separate evidence/delivery scope when explicitly in scope.
 

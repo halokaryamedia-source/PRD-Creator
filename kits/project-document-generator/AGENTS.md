@@ -18,7 +18,7 @@ Do not broad-read the whole kit by default.
 
 ## HTML context budget
 
-Normal production must not load `template/runtime-template.html`, `template/golden-reference.html`, or generated `final.html` in full into model context.
+Normal production must not load `template/runtime-template.html`, `template/golden-reference.html`, or generated `prd.html` in full into model context.
 
 - renderer/validator may read large files directly at runtime;
 - canonical PRD meaning review uses `content.md`;
@@ -53,14 +53,15 @@ accepted PRD
 
 `work/asset-requirements.md` owns actionable non-Voice Production Asset requirements only. Voice continues to use `work/voice-requirements.md` / `work/voice-production.md`; the compositor does **not** own Voice requirements, actor decisions, or wording.
 
-Never patch `final.html` manually to hide an upstream PRD, asset-requirement, or Voice defect.
+Never patch `prd.html` manually to hide an upstream PRD, asset-requirement, or Voice defect.
 
 ## Implementation ownership
 
 - `PRODUCTION-ASSETS.md` → compact objective-first non-Voice Production Asset requirement contract
 - `renderer/core.py` → reusable PRD rendering helpers/primitives
 - `renderer/pages.py` → PRD render data → approved Golden PRD-core page composition
-- `renderer/render.py` → deterministic base render + optional downstream composition orchestration
+- `renderer/render.py` → deterministic lower-level human HTML render + optional downstream composition orchestration
+- `renderer/delivery.py` → deterministic versioned handoff bundle and compact AI reading projections
 - `renderer/production_assets_objective.py` → objective-first Production Assets composition, category omission, shared/non-shared page mapping, and Voice/non-Voice merge
 - `renderer/production_assets.py` → Voice-specific parsing and presentation primitives reused by the objective-first compositor
 - `template/golden-reference.html` → canonical approved Golden reference bytes

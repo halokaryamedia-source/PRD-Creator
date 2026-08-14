@@ -112,9 +112,9 @@ python kits/project-document-generator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-Handoff must point to the current canonical content, projection, rendered HTML, acceptance record, and handoff note; its accepted PRD version must match `render-data.document.version`.
+Handoff must point to the current canonical content/projection, acceptance record, `output/README.md`, and the matching versioned `prd.html` / `context.md` / `index.json` bundle. The accepted PRD version must use semantic `X.Y.Z` and match `render-data.document.version` plus the version declared by the side documents.
 
-Human-facing handoff notes should identify the current artifacts and material status. Do not duplicate checksum tables or internal validation transcripts when Git state and the validators already own those checks.
+`output/README.md` is the human/AI resume navigator, not a second project-status database. It identifies the current artifact set and reading route; implementation progress remains owned by the implementation repository. Do not duplicate checksum tables or internal validation transcripts when Git state and the validators already own those checks.
 
 ## Bounded revision
 

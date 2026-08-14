@@ -1,6 +1,6 @@
 # The Clockwork Vault Voice Requirements
 
-Source PRD revision: Final Review
+Source PRD revision: 1.0.0
 Voice system: Custodian Vex · direct in-world guide across the vault; no radio/communicator layer
 
 ## 01. The Antechamber

@@ -8,7 +8,7 @@ Voice Production Kit owns accepted PRD → Voice requirements → canonical Elev
 accepted PRD
 → work/voice-requirements.md
 → work/voice-production.md
-→ same output/final.html
+→ same output/v<document.version>/prd.html
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```

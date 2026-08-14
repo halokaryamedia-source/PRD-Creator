@@ -8,7 +8,7 @@
 work/content.md
 → work/render-data.json
 → exact Golden template + deterministic projection
-→ PRD core in output/final.html
+→ PRD core in output/v<document.version>/prd.html
 ```
 
 Optional downstream extension:
@@ -18,14 +18,14 @@ accepted PRD core
 → optional work/asset-requirements.md
 → optional Voice canonical production source
 → deterministic objective-first Production Assets projection
-→ same output/final.html
+→ same output/v<document.version>/prd.html
 ```
 
 The renderer may represent owned data. It does not invent project meaning, asset requirements, or Voice content.
 
 ## One project HTML
 
-`output/final.html` is the single human-facing project document.
+`output/v<document.version>/prd.html` is the single human-facing project document.
 
 ```text
 PRD core pages
@@ -39,6 +39,44 @@ Production Assets pages
 ```
 
 Adding or revising downstream Production Assets does not reopen PRD acceptance while `content.md` and `render-data.json` remain unchanged.
+
+## Versioned delivery package
+
+Normal handoff generation uses one deterministic command:
+
+```bash
+python kits/project-document-generator/renderer/delivery.py \
+  workspace/active/<project>/
+```
+
+It reads the current canonical project sources once and writes:
+
+```text
+output/README.md
+output/v<document.version>/prd.html
+output/v<document.version>/context.md
+output/v<document.version>/index.json
+```
+
+Responsibilities stay narrow:
+
+- `prd.html` is the only human-facing project document and keeps the approved Golden presentation;
+- `context.md` is a reasoning-friendly development projection of accepted PRD meaning plus only existing downstream non-Voice/Voice requirements that are relevant to implementation;
+- `index.json` is a compact navigation tree with `context.md` line ranges, not a prose copy, schema registry, dependency engine, or second PRD;
+- `output/README.md` is the stable resume entry point that identifies the current version and reading route.
+
+`document.version` must use semantic `X.Y.Z` for a handoff package. Version folders track PRD/project meaning; a downstream-only Production Assets refresh may regenerate files inside the same version when accepted PRD meaning did not change.
+
+The AI reading path is intentionally bounded:
+
+```text
+output/README.md
+→ current index.json
+→ affected context.md range (+ directly relevant shared/global range)
+→ current implementation
+```
+
+The side documents may reorganize already-owned canonical information for reading efficiency. They may not invent project facts, implementation architecture, dependencies, approval state, or compatibility requirements.
 
 ## Exact Golden template identity
 

@@ -2,11 +2,11 @@
 
 Flow 7 validates the exact current Voice revision and decides whether the requested production scope is ready.
 
-The default human-facing presentation is the same `output/final.html` project document used by the PRD. DOCX is optional export only.
+The default human-facing presentation is the same `output/v<document.version>/prd.html` project document used by the PRD. DOCX is optional export only.
 
 ## Entry
 
-Start from the current Voice state and read only the canonical requirements/script plus `output/final.html` when consolidated HTML is in scope. Reopen accepted PRD only when a project fact needs verification.
+Start from the current Voice state and read only the canonical requirements/script plus `output/v<document.version>/prd.html` when consolidated HTML is in scope. Reopen accepted PRD only when a project fact needs verification.
 
 ## Mechanical validation
 
@@ -19,7 +19,7 @@ python kits/voice-production-kit/validator/validate.py \
 
 Mechanical validation always checks current Voice ID/Type/Speaker parity and canonical script structure.
 
-When `output/final.html` exists, it also checks section/page parity, per-line position/context presentation, exact Flow 5 Trigger Context, and exact canonical prompt payload. DOCX is checked only when that optional export exists.
+When `output/v<document.version>/prd.html` exists, it also checks section/page parity, per-line position/context presentation, exact Flow 5 Trigger Context, and exact canonical prompt payload. DOCX is checked only when that optional export exists.
 
 Mechanical PASS does not prove semantic or visual quality.
 

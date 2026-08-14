@@ -236,7 +236,11 @@ def main() -> int:
     ap.add_argument("project",type=Path, help="workspace/active/<project> directory")
     args=ap.parse_args(); p=args.project
     req=p/"work/voice-requirements.md"; scr=p/"work/voice-production.md"; state=p/"state/voice-state.yaml"
-    html_path=p/"output/final.html"; docx=p/"output/Voice Production.docx"
+    state_text=state.read_text(encoding="utf-8")
+    html_match=re.search(r"(?m)^\s*project_html:\s*(.*?)\s*$", state_text)
+    html_ref=html_match.group(1).strip() if html_match else ""
+    html_path=(p/html_ref) if html_ref else None
+    docx=p/"output/Voice Production.docx"
     missing=[str(x.relative_to(p)) for x in (req,scr,state) if not x.is_file()]
     if missing:
         print("VOICE VALIDATION FAILED: missing files: "+", ".join(missing),file=sys.stderr); return 2
@@ -254,7 +258,7 @@ def main() -> int:
                 issues.append(f"Type mismatch for {vid}")
             if requirements[vid].speaker.casefold()!=script[vid].speaker.casefold():
                 issues.append(f"Speaker mismatch for {vid}")
-        if html_path.is_file():
+        if html_path is not None and html_path.is_file():
             issues.extend(validate_project_html(html_path,sections,script,requirements))
         if docx.is_file():
             issues.extend(validate_docx(docx,sections,script))
@@ -264,7 +268,7 @@ def main() -> int:
             return 1
         print("VOICE VALIDATION PASS")
         print(f"requirements={len(requirements)} script_entries={len(script)} sections={len(sections)}")
-        print("project_html="+("passed" if html_path.is_file() else "not_provided"))
+        print("project_html="+("passed" if html_path is not None and html_path.is_file() else "not_provided"))
         print("docx="+("passed" if docx.is_file() else "optional_not_provided"))
         print("semantic_and_visual_review=required")
         return 0

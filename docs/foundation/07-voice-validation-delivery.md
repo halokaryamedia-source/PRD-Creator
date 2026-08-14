@@ -37,7 +37,7 @@ python kits/voice-production-kit/validator/validate.py \
 
 Mechanical validation always checks canonical requirements/script parity.
 
-When consolidated `output/final.html` exists, it also checks current Production Assets Voice section/page parity, exact Flow 5 Trigger context presentation, and exact canonical performance text.
+When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/page parity, exact Flow 5 Trigger context presentation, and exact canonical performance text.
 
 When optional DOCX exists, it validates that export too.
 
@@ -141,7 +141,7 @@ Critical and Major findings block delivery.
 New/current default state may point to:
 
 ```yaml
-project_html: output/final.html
+project_html: output/v<document.version>/prd.html
 delivery_scope: project_html
 ```
 
