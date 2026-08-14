@@ -6,7 +6,7 @@ Status: active Flow 7 policy
 
 Flow 7 decides whether the current `voice_script_ready` revision is safe to deliver for the requested Voice Production scope.
 
-Default non-audio delivery is the **same project HTML** containing PRD core + `Production Assets → Voice`. DOCX and audio are optional scopes.
+Default non-audio delivery is the **same project HTML** containing PRD core + `Production Assets → matching gameplay section → Audio → Voice Production`. DOCX and audio are optional scopes.
 
 ## Canonical sequence
 
@@ -69,15 +69,16 @@ Voice Script Readiness: PASS | FAIL
 
 ## Production Assets HTML
 
-When project HTML readiness is claimed, inspect the Voice section for:
+When project HTML readiness is claimed, inspect the Voice presentation for:
 
 - accepted PRD sidebar hierarchy/page identity remains intact;
 - gameplay/objective sections stay under `03 Development`;
-- `04 Production Assets` is additive and contains one visible `VOICE` category;
-- every Voice navigation link shows the gameplay/section title plus the accepted PRD package label;
-- Voice navigation text wraps naturally and is not clipped at the desktop widths being claimed;
-- sections and scripts follow canonical gameplay/Trigger order;
-- each section page shows gameplay title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup;
+- `04 Production Assets` is additive and links the matching gameplay/shared pages rather than a separate Voice category;
+- a gameplay page with Voice contains `Audio → Voice Production`;
+- every matching Production Assets navigation link shows the gameplay/section title plus the accepted PRD package label;
+- Production Assets navigation text wraps naturally and is not clipped at the desktop widths being claimed;
+- Voice sections and scripts follow canonical gameplay/Trigger order;
+- each gameplay page with Voice shows gameplay title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup;
 - each line shows title, `<PRD package label> · Voice Line X/Y`, exact Flow 5 Trigger as Context, Speaker, Estimated Duration, exact script, and Copy Prompt;
 - performance-direction tags remain visually distinct without changing the copied canonical payload;
 - Flow 5 Purpose, `Must communicate`, `Must not add/repeat`, source refs, reasoning, WPM math, QA, and other internal fields stay out of the visible Voice page;
@@ -155,7 +156,7 @@ change
 → affected Voice/Speaker scope only
 → Communication Conservation
 → integrated readiness on affected scope
-→ rerender same final.html
+→ rerender current versioned prd.html
 → recheck affected Production Assets view
 → stop
 ```
