@@ -113,21 +113,10 @@ jobs:
           )
           write(rel, text)
 
-          # RQ-12: existing anti-AI-SLOP regression belongs in the existing PRD gate.
-          rel = ".github/workflows/prd-verify.yml"
-          text = read(rel)
-          if "tests/test_prd_content_purity.py" not in text:
-              text = text.replace(
-                  "            tests/test_prd_contracts.py \\\n",
-                  "            tests/test_prd_contracts.py \\\n            tests/test_prd_content_purity.py \\\n",
-                  1,
-              )
-              text = text.replace(
-                  "            tests.test_prd_contracts \\\n",
-                  "            tests.test_prd_contracts \\\n            tests.test_prd_content_purity \\\n",
-                  1,
-              )
-          write(rel, text)
+          # RQ-12 was updated through the repository API because Actions cannot rewrite another workflow.
+          prd_verify = read(".github/workflows/prd-verify.yml")
+          if "tests.test_prd_content_purity" not in prd_verify or "tests/test_prd_content_purity.py" not in prd_verify:
+              raise SystemExit("PRD Verify does not execute the existing content-purity contract")
 
           # Extend the existing verifier; do not create another routing checker.
           rel = "tools/verify_repository.py"
@@ -166,7 +155,7 @@ jobs:
               text = text.replace(marker, routing_guard + marker, 1)
           write(rel, text)
 
-          # Register the audit in the current review index.
+          # Register audit and persist all still-open work outside chat memory.
           rel = "docs/knowledge/reviews/README.md"
           text = read(rel)
           row = "| [Repository Quality / AI-Slop Audit — 2026-08-14](repository-quality-audit-2026-08-14.md) | **Active remediation evidence.** Full RQ-01…RQ-16 finding set; active work is in `next-action.md`, later work in `operations/backlog.md`. |"
@@ -177,10 +166,8 @@ jobs:
               text = text.replace(marker, marker + "\n" + row, 1)
           write(rel, text)
 
-          # The backlog now contains all still-open audit items in execution order.
           write("docs/knowledge/operations/backlog.md", '''# Backlog\n\nUpdated: 2026-08-14\n\nThis file contains **future/non-active work only**. It never overrides `../next-action.md`.\n\n## Current Backlog\n\nThe complete evidence and rationale are preserved in `../reviews/repository-quality-audit-2026-08-14.md`. Do not execute this as a bulk refactor; promote only one next concrete remediation boundary into `next-action.md`.\n\n1. **RQ-04 — material AI Proposal visibility (P1):** every AI-chosen material default that changes timing, quantity, scoring, fail/recovery, progression, reward, build scope, or runtime behavior must appear once in the Simple Chat Preview `Saran AI` summary before approval. Keep one complete preview, not a questionnaire.\n2. **RQ-06 — non-Voice Production Assets freshness (P1):** prove current `asset-requirements.md` is represented by the consolidated versioned `prd.html` using one bounded parity mechanism; do not add a checksum registry/framework.\n3. **RQ-05 + RQ-13 — Production Assets identity (P1):** remove visible `04A`/`04B` ambiguity and use stable semantic Production Assets DOM IDs while preserving accepted PRD Development page identities. Visual proof is required because visible page codes/navigation change.\n4. **RQ-07 — retire old Voice-only compositor path (P1/P2):** keep only Voice primitives used by the objective-first compositor; remove unused legacy compositor/navigation functions after focused contract proof.\n5. **RQ-08 — validator layering simplification (P2):** after current behavior above is stable, remove monkey-patch ownership incrementally so one current validator owns behavior. Do not rewrite the validator wholesale.\n6. **RQ-09 + RQ-11 — renderer global mutation and duplicated manual parsers (P2):** address only with a concrete maintenance need or while the same owner is already changing; prefer one tiny shared reader over schemas/frameworks.\n7. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.\n8. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.\n\nClosed items RQ-01, RQ-02, RQ-03, RQ-12, RQ-15, and RQ-16 remain documented in the audit and Git history rather than staying in this backlog.\n''')
 
-          # Mark this tranche fixed in the durable audit.
           rel = "docs/knowledge/reviews/repository-quality-audit-2026-08-14.md"
           text = read(rel)
           rows = {
@@ -203,7 +190,6 @@ jobs:
               text = text.replace(marker, update + marker, 1)
           write(rel, text)
 
-          # Current evidence/status records the completed tranche and the one next item.
           rel = "docs/knowledge/reviews/current-validation.md"
           text = read(rel)
           section = '''## Repository quality remediation\n\nThe full 2026-08-14 audit is preserved in `repository-quality-audit-2026-08-14.md`. RQ-01/RQ-15/RQ-16 are closed with real Clockwork validation; RQ-02/RQ-03/RQ-12 are closed by current-context synchronization and PRD CI coverage. Remaining findings are ordered in `../operations/backlog.md` and are not a bulk-refactor mandate.\n\n'''
