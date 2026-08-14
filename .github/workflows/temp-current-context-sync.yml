@@ -1,0 +1,255 @@
+name: Temp Current Context Synchronization
+
+on:
+  push:
+    branches:
+      - Local
+    paths:
+      - ".github/workflows/temp-current-context-sync.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Local
+        uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Synchronize current semantic and decision context
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          ROOT = Path.cwd()
+
+          def read(rel: str) -> str:
+              return (ROOT / rel).read_text(encoding="utf-8")
+
+          def write(rel: str, text: str) -> None:
+              (ROOT / rel).write_text(text, encoding="utf-8")
+
+          def sync_current_prd_path(rel: str) -> None:
+              text = read(rel)
+              text = text.replace("Final PRD: <final.html>", "Final PRD: <output/v<document.version>/prd.html>")
+              text = text.replace("output/final.html", "output/v<document.version>/prd.html")
+              text = text.replace("`final.html`", "`output/v<document.version>/prd.html`")
+              text = text.replace("final.html", "current versioned prd.html")
+              if "final.html" in text:
+                  raise SystemExit(f"{rel}: retired final.html wording remains")
+              write(rel, text)
+
+          # RQ-02: current semantic/procedure owners must teach only the current delivery contract.
+          current_owners = [
+              ".agents/skills/project-document-production/SKILL.md",
+              ".agents/skills/voice-production/SKILL.md",
+              "kits/project-document-generator/SKILL.md",
+              "kits/project-document-generator/WORKFLOW.md",
+              "kits/project-document-generator/RULES.md",
+              "kits/project-document-generator/CONTENT-CONTRACT.md",
+              "kits/voice-production-kit/SKILL.md",
+          ]
+          for rel in current_owners:
+              sync_current_prd_path(rel)
+
+          rel = "kits/voice-production-kit/SKILL.md"
+          text = read(rel)
+          old = '''04 Production Assets\n   VOICE\n   <gameplay section title>\n   <accepted PRD package label>'''
+          new = '''04 Production Assets\n   <gameplay section title>\n      <accepted PRD package label>\n\npage content\n→ Audio\n   → Voice Production'''
+          if old not in text:
+              raise SystemExit("Voice kit retired VOICE sidebar block not found")
+          text = text.replace(old, new, 1)
+          text = text.replace(
+              "`VOICE` appears once; every linked Voice section shows section title + accepted PRD label, with natural wrapping for long sidebar text.",
+              "Voice does not own a separate sidebar category; every linked gameplay section shows section title + accepted PRD label, with natural wrapping for long sidebar text.",
+          )
+          write(rel, text)
+
+          # RQ-03: decision register is history-aware; current routing must not point to retired maps.
+          rel = "docs/knowledge/decisions/README.md"
+          text = read(rel)
+          if "## Current Decisions" in text:
+              text = text.replace(
+                  "## Current Decisions",
+                  "## Decision Register\n\nThis register preserves durable decision history, including entries later refined or superseded. Historical entries explain why a rule existed; they are **not** current routing authority. For current execution use `docs/knowledge/next-action.md`, `docs/knowledge/ownership.md`, `docs/knowledge/source-authority.md`, and the nearest current foundation/kit owner. Never restore a retired path or behavior only because an older decision mentions it.",
+                  1,
+              )
+          text = text.replace(
+              "Current Voice navigation uses one `VOICE` category and one link per gameplay Voice section, with section title + exact accepted PRD package label.",
+              "Current Voice navigation is objective-first under `04 Production Assets`; each gameplay section keeps its accepted PRD label and Voice appears inside that page under `Audio → Voice Production`, without a separate `VOICE` sidebar category.",
+          )
+          text = text.replace(
+              "### Review bodies preserve captured evidence; review graph owns current interpretation",
+              "### Review bodies preserve captured evidence; review register owns current interpretation",
+          )
+          heading = "### Module map, source map, and implementation map have separate jobs\n"
+          if heading in text and "**Status:** superseded by the 2026-08-13 explicit-domain navigation decision" not in text:
+              text = text.replace(
+                  heading,
+                  heading + "\n- **Status:** superseded by the 2026-08-13 explicit-domain navigation decision above. Current routing uses `ownership.md` and `source-authority.md`; retired map/module paths must not be restored.\n",
+                  1,
+              )
+          write(rel, text)
+
+          rel = "docs/knowledge/decisions/recording-policy.md"
+          text = read(rel)
+          old = "- current implementation ownership → `implementation-map.md` / `modules/`;"
+          if old not in text:
+              raise SystemExit("recording-policy retired implementation routing not found")
+          text = text.replace(old, "- current implementation ownership → `docs/knowledge/ownership.md`;", 1)
+          text = text.replace(
+              "- project-specific state → the active `workspace/<project>/` owner.",
+              "- project-specific state → the active `workspace/active/<project>/` owner.",
+          )
+          write(rel, text)
+
+          # RQ-12: existing anti-AI-SLOP regression belongs in the existing PRD gate.
+          rel = ".github/workflows/prd-verify.yml"
+          text = read(rel)
+          if "tests/test_prd_content_purity.py" not in text:
+              text = text.replace(
+                  "            tests/test_prd_contracts.py \\\n",
+                  "            tests/test_prd_contracts.py \\\n            tests/test_prd_content_purity.py \\\n",
+                  1,
+              )
+              text = text.replace(
+                  "            tests.test_prd_contracts \\\n",
+                  "            tests.test_prd_contracts \\\n            tests.test_prd_content_purity \\\n",
+                  1,
+              )
+          write(rel, text)
+
+          # Extend the existing verifier; do not create another routing checker.
+          rel = "tools/verify_repository.py"
+          text = read(rel)
+          if '"tests/test_prd_content_purity.py",' not in text:
+              text = text.replace(
+                  '    "tests/test_prd_contracts.py",\n',
+                  '    "tests/test_prd_contracts.py",\n    "tests/test_prd_content_purity.py",\n',
+                  1,
+              )
+
+          before, rest = text.split("CURRENT_DELIVERY_OWNER_PATHS = [", 1)
+          current_block, after = rest.split("]", 1)
+          additions = [
+              "docs/knowledge/decisions/recording-policy.md",
+              ".agents/skills/project-document-production/SKILL.md",
+              ".agents/skills/voice-production/SKILL.md",
+              "kits/project-document-generator/SKILL.md",
+              "kits/project-document-generator/WORKFLOW.md",
+              "kits/project-document-generator/RULES.md",
+              "kits/project-document-generator/CONTENT-CONTRACT.md",
+              "kits/voice-production-kit/SKILL.md",
+          ]
+          lines = current_block
+          for path in additions:
+              marker = f'    "{path}",\n'
+              if marker not in lines:
+                  lines += marker
+          text = before + "CURRENT_DELIVERY_OWNER_PATHS = [" + lines + "]" + after
+
+          routing_guard = '''\n    decision_policy = ROOT / "docs" / "knowledge" / "decisions" / "recording-policy.md"\n    if decision_policy.is_file():\n        policy_text = decision_policy.read_text(encoding="utf-8")\n        for retired in ("implementation-map.md", "`modules/`"):\n            if retired in policy_text:\n                fail(errors, f"stale current decision-routing reference in recording-policy.md: {retired}")\n\n'''
+          if "stale current decision-routing reference" not in text:
+              marker = "\ndef check_next_action(errors: list[str]) -> None:\n"
+              if text.count(marker) != 1:
+                  raise SystemExit("verify_repository check_next_action marker missing")
+              text = text.replace(marker, routing_guard + marker, 1)
+          write(rel, text)
+
+          # Register the audit in the current review index.
+          rel = "docs/knowledge/reviews/README.md"
+          text = read(rel)
+          row = "| [Repository Quality / AI-Slop Audit — 2026-08-14](repository-quality-audit-2026-08-14.md) | **Active remediation evidence.** Full RQ-01…RQ-16 finding set; active work is in `next-action.md`, later work in `operations/backlog.md`. |"
+          if row not in text:
+              marker = "| [Current Validation Status](current-validation.md) | **Current evidence/status owner.** |"
+              if text.count(marker) != 1:
+                  raise SystemExit("reviews README Current Validation row missing")
+              text = text.replace(marker, marker + "\n" + row, 1)
+          write(rel, text)
+
+          # The backlog now contains all still-open audit items in execution order.
+          write("docs/knowledge/operations/backlog.md", '''# Backlog\n\nUpdated: 2026-08-14\n\nThis file contains **future/non-active work only**. It never overrides `../next-action.md`.\n\n## Current Backlog\n\nThe complete evidence and rationale are preserved in `../reviews/repository-quality-audit-2026-08-14.md`. Do not execute this as a bulk refactor; promote only one next concrete remediation boundary into `next-action.md`.\n\n1. **RQ-04 — material AI Proposal visibility (P1):** every AI-chosen material default that changes timing, quantity, scoring, fail/recovery, progression, reward, build scope, or runtime behavior must appear once in the Simple Chat Preview `Saran AI` summary before approval. Keep one complete preview, not a questionnaire.\n2. **RQ-06 — non-Voice Production Assets freshness (P1):** prove current `asset-requirements.md` is represented by the consolidated versioned `prd.html` using one bounded parity mechanism; do not add a checksum registry/framework.\n3. **RQ-05 + RQ-13 — Production Assets identity (P1):** remove visible `04A`/`04B` ambiguity and use stable semantic Production Assets DOM IDs while preserving accepted PRD Development page identities. Visual proof is required because visible page codes/navigation change.\n4. **RQ-07 — retire old Voice-only compositor path (P1/P2):** keep only Voice primitives used by the objective-first compositor; remove unused legacy compositor/navigation functions after focused contract proof.\n5. **RQ-08 — validator layering simplification (P2):** after current behavior above is stable, remove monkey-patch ownership incrementally so one current validator owns behavior. Do not rewrite the validator wholesale.\n6. **RQ-09 + RQ-11 — renderer global mutation and duplicated manual parsers (P2):** address only with a concrete maintenance need or while the same owner is already changing; prefer one tiny shared reader over schemas/frameworks.\n7. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.\n8. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.\n\nClosed items RQ-01, RQ-02, RQ-03, RQ-12, RQ-15, and RQ-16 remain documented in the audit and Git history rather than staying in this backlog.\n''')
+
+          # Mark this tranche fixed in the durable audit.
+          rel = "docs/knowledge/reviews/repository-quality-audit-2026-08-14.md"
+          text = read(rel)
+          rows = {
+              "| RQ-02 | P1 | Several active semantic/procedure owners still teach retired `final.html` and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer can follow stale authority despite routing cleanup. | OPEN |":
+              "| RQ-02 | P1 | Active semantic/procedure owners still taught retired unversioned HTML naming and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer could follow stale authority despite routing cleanup. | FIXED — current owners synchronized and guarded |",
+              "| RQ-03 | P1 | Decision memory contains stale/current-mixed language, including retired review-graph/map concepts and a Voice navigation decision that no longer matches the current objective-first compositor. `recording-policy.md` also points to retired implementation-map/modules paths. | Wrong-context contamination from files that look authoritative. | OPEN |":
+              "| RQ-03 | P1 | Decision memory mixed current and historical language, including retired graph/map routing and old Voice navigation wording. | Wrong-context contamination from files that look authoritative. | FIXED — history-aware register + current routing correction |",
+              "| RQ-12 | P2 | `tests/test_prd_content_purity.py` exists but is not executed by `PRD Verify`. | Anti-AI-SLOP regression test can silently rot. | OPEN |":
+              "| RQ-12 | P2 | `tests/test_prd_content_purity.py` existed but was not executed by `PRD Verify`. | Anti-AI-SLOP regression test could silently rot. | FIXED — included in compile + unittest PRD gate |",
+          }
+          for old, new in rows.items():
+              if old not in text:
+                  raise SystemExit(f"audit row missing: {old[:80]}")
+              text = text.replace(old, new, 1)
+          update = '''\n## Remediation update — current-context tranche\n\nRQ-02, RQ-03, and RQ-12 are closed without introducing another navigation or quality framework. Current semantic/procedure owners now point to the versioned PRD delivery, the decision register explicitly distinguishes history from current routing, retired map paths no longer own current changes, and the already-existing content-purity regression executes in `PRD Verify`.\n\n'''
+          if "## Remediation update — current-context tranche" not in text:
+              marker = "## Ordered remediation\n"
+              if text.count(marker) != 1:
+                  raise SystemExit("audit Ordered remediation marker missing")
+              text = text.replace(marker, update + marker, 1)
+          write(rel, text)
+
+          # Current evidence/status records the completed tranche and the one next item.
+          rel = "docs/knowledge/reviews/current-validation.md"
+          text = read(rel)
+          section = '''## Repository quality remediation\n\nThe full 2026-08-14 audit is preserved in `repository-quality-audit-2026-08-14.md`. RQ-01/RQ-15/RQ-16 are closed with real Clockwork validation; RQ-02/RQ-03/RQ-12 are closed by current-context synchronization and PRD CI coverage. Remaining findings are ordered in `../operations/backlog.md` and are not a bulk-refactor mandate.\n\n'''
+          if "## Repository quality remediation" in text:
+              start = text.index("## Repository quality remediation")
+              next_heading = text.find("\n## ", start + 3)
+              if next_heading == -1:
+                  text = text[:start] + section
+              else:
+                  text = text[:start] + section + text[next_heading + 1:]
+          else:
+              marker = "## Versioned delivery proof\n"
+              if text.count(marker) != 1:
+                  raise SystemExit("current-validation Versioned delivery proof marker missing")
+              text = text.replace(marker, section + marker, 1)
+          write(rel, text)
+
+          write("docs/knowledge/next-action.md", '''# Next Action\n\n## Current Status\n\n`REPOSITORY_QUALITY_CURRENT_CONTEXT_ALIGNED`\n\nThe complete audit is durable at `docs/knowledge/reviews/repository-quality-audit-2026-08-14.md`. Closed findings: RQ-01, RQ-02, RQ-03, RQ-12, RQ-15, and RQ-16. All still-open findings are ordered in `docs/knowledge/operations/backlog.md`; they must not be executed as one broad refactor.\n\n## Next Step\n\nComplete **RQ-04 — material AI Proposal visibility**: every AI-chosen material default must be surfaced once in the Simple Chat Preview before approval, while preserving the current solve-first workflow and avoiding a multi-question approval ceremony.\n''')
+          PY
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Verify current-context synchronization
+        run: |
+          python -m unittest \
+            tests.test_prd_contracts \
+            tests.test_prd_delivery \
+            tests.test_prd_content_purity \
+            tests.test_prd_voice_assets \
+            tests.test_prd_handoff_contracts \
+            tests.test_prd_flow2_state_contracts \
+            tests.test_prd_hierarchy_contracts \
+            tests.test_prd_golden_reference -v
+          python kits/project-document-generator/validator/validate.py workspace/active/the-clockwork-vault
+          python kits/project-document-generator/validator/validate_handoff.py workspace/active/the-clockwork-vault
+          python kits/voice-production-kit/validator/validate.py workspace/active/the-clockwork-vault
+          python tools/verify_repository.py
+
+      - name: Commit synchronization and self-delete workflow
+        run: |
+          git config user.name "halokaryamedia-source"
+          git config user.email "halokaryamedia@gmail.com"
+          git rm .github/workflows/temp-current-context-sync.yml
+          git add -A
+          git commit -m "docs: align current semantic and decision context"
+          git push origin HEAD:Local
