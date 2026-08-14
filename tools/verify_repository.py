@@ -53,6 +53,7 @@ REQUIRED_PATHS = [
     "kits/voice-production-kit/SKILL.md",
     "kits/voice-production-kit/requirements.txt",
     "kits/voice-production-kit/references/aftershock/README.md",
+    "workspace/README.md",
     "workspace/archive/README.md",
 ]
 
@@ -73,10 +74,12 @@ CURRENT_DELIVERY_OWNER_PATHS = [
     "docs/foundation/06-elevenlabs-script-production.md",
     "docs/foundation/07-voice-validation-delivery.md",
     "docs/knowledge/ownership.md",
+    "docs/knowledge/reviews/current-validation.md",
     "kits/project-document-generator/AGENTS.md",
     "kits/project-document-generator/RENDERING.md",
     "kits/voice-production-kit/AGENTS.md",
     "kits/voice-production-kit/VOICE-VALIDATION.md",
+    "workspace/README.md",
 ]
 
 RETIRED_CURRENT_DELIVERY_TERMS = (
@@ -203,6 +206,44 @@ def check_current_delivery_routing(errors: list[str]) -> None:
         for marker in required_markers:
             if marker not in text:
                 fail(errors, f"ownership.md missing current delivery routing marker: {marker}")
+
+    workspace = ROOT / "workspace" / "README.md"
+    if workspace.is_file():
+        text = workspace.read_text(encoding="utf-8")
+        required_markers = (
+            "renderer/delivery.py",
+            "output/README.md",
+            "output/v<document.version>/prd.html",
+            "output/v<document.version>/context.md",
+            "output/v<document.version>/index.json",
+        )
+        for marker in required_markers:
+            if marker not in text:
+                fail(errors, f"workspace/README.md missing current delivery marker: {marker}")
+
+    current_validation = ROOT / "docs" / "knowledge" / "reviews" / "current-validation.md"
+    skill_path = ROOT / "kits" / "project-document-generator" / "SKILL.md"
+    if current_validation.is_file():
+        text = current_validation.read_text(encoding="utf-8")
+        required_markers = (
+            "output/README.md",
+            "output/v<document.version>/prd.html",
+            "output/v<document.version>/context.md",
+            "output/v<document.version>/index.json",
+        )
+        for marker in required_markers:
+            if marker not in text:
+                fail(errors, f"current-validation.md missing current delivery marker: {marker}")
+
+        if skill_path.is_file():
+            version_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
+            if version_match:
+                expected = f"Project Document Generator remains **v{version_match.group(1)}**"
+                if expected not in text:
+                    fail(
+                        errors,
+                        "current-validation.md Project Document Generator version does not match current SKILL version",
+                    )
 
     voice_docs = [
         ROOT / "docs" / "foundation" / "06-elevenlabs-script-production.md",
@@ -380,6 +421,7 @@ def main() -> int:
     print("- root AGENTS contract sections: present")
     print("- Project Document skill/README version: aligned")
     print("- current versioned delivery routing: aligned")
+    print("- workspace/current-validation delivery routing: aligned")
     print("- relative navigation: valid")
     print("- dependency lock/direct pins: exact and aligned")
     print("- Python kits/tools/tests: syntax valid")
