@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`VERSIONED_DELIVERY_ROUTING_ALIGNED`
+`VERSIONED_DELIVERY_HOUSEKEEPING_COMPLETE`
 
-Project Document Generator v1.14.0 keeps the versioned delivery package introduced for human + AI handoff:
+Project Document Generator v1.14.0 now has the current versioned delivery contract synchronized across repository routing, workspace guidance, current validation evidence, and static repository verification.
 
 ```text
 output/README.md
@@ -13,12 +13,20 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-Current repository routing/ownership docs are now synchronized with that contract. `docs/knowledge/ownership.md` maps `renderer/delivery.py`, the versioned human PRD, AI context/index projections, and the stable resume navigator. Current PRD/Voice owners no longer route through retired `final.html`, `team-handoff.md`, a separate `VOICE` sidebar category, or the retired `Cinematic & Presentation` taxonomy.
+Current owners agree on the same responsibilities:
 
-`tools/verify_repository.py` now guards only this current delivery/routing boundary: it requires the versioned delivery owner/test, checks the current ownership markers, and rejects those retired references in current delivery owners. Historical reviews/source inventory remain untouched as capture-time evidence.
+- `renderer/delivery.py` is the normal versioned delivery orchestrator;
+- `prd.html` is the human-facing project document;
+- `context.md` is the AI development-context surface;
+- `index.json` is the compact AI navigation / context-range index;
+- `output/README.md` is the stable resume entry point;
+- `workspace/README.md` describes the same package lifecycle;
+- `docs/knowledge/reviews/current-validation.md` tracks the current v1.14.0 evidence state.
 
-No Obsidian/Graphify dependency, knowledge database, second ownership map, or compatibility layer was added.
+`tools/verify_repository.py` now guards those two current owners as well as the existing routing owners, including Project Document Generator version parity for current validation. Historical review bodies and source inventory remain capture-time evidence and are not rewritten.
+
+No Obsidian/Graphify dependency, knowledge database, second ownership map, compatibility layer, or additional workflow framework was added.
 
 ## Next Step
 
-Use this routing and versioned delivery package on the next new or revised real PRD; change it again only if real usage exposes a concrete navigation/context defect.
+Proceed to the next real PRD/PRD-Creator work and change this navigation/delivery structure again only if real usage exposes a concrete defect.
