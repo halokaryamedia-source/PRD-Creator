@@ -30,6 +30,8 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-12 | P2 | `tests/test_prd_content_purity.py` exists but is not executed by `PRD Verify`. | Anti-AI-SLOP regression test can silently rot. | OPEN |
 | RQ-13 | P3 | Production Assets page IDs are position-based (`production-assets-1`, `-2`, ...). Adding a new earlier section can move deep-link identities inside the same PRD version. | Unstable links and harder continuation. | OPEN |
 | RQ-14 | P3 | Several page codes use `chr(65 + index)` with no explicit >26 guard. | Hidden edge-case produces invalid/non-letter page codes for unusually large projects. | OPEN — do not overfix without need |
+| RQ-15 | P0 | Clockwork `work/content.md` was changed during the semantic-version migration but `work/render-data.json.canonical_content_sha256` was not refreshed. Commit history shows both files changed in the migration, while the migration script changed the content version string without updating the canonical-content binding. | Current real project fails material projection-freshness validation even though the semantic projection itself was not intentionally revised. | OPEN — migration consistency fix |
+| RQ-16 | P0 | Flow 4 `generated_page_set_matches_current_render_data` treats the PRD-core page set as the complete HTML page set and rejects valid additive `Production Assets` pages. | Any real project with downstream Production Assets can fail Flow 4 even when its PRD core and compositor output are valid. | OPEN — validator contract fix |
 
 ## Evidence anchors
 
@@ -38,6 +40,17 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 - Current delivery owner: `kits/project-document-generator/renderer/delivery.py` → `output/v<document.version>/prd.html`.
 - Current mechanical engine: `kits/project-document-generator/validator/_engine.py` still binds `html_path = project / "output" / "final.html"`.
 - `tests/test_prd_contracts.py` still renders/reads `output/final.html`, so the test fixture does not exercise the current package path.
+
+### RQ-15 / RQ-16 — real Clockwork proof exposed additional current defects
+
+The first bounded remediation was tested against the real `workspace/active/the-clockwork-vault` package instead of trusting fixture tests alone. The unit suite passed after the provisional versioned-path fix, but real Flow 4 validation still failed for two independent reasons:
+
+1. `render_data_matches_canonical_content` reported that `render-data.json` is stale relative to `content.md`.
+2. `generated_page_set_matches_current_render_data` expected only the PRD core but the real consolidated HTML correctly contained six appended `production-assets-*` pages.
+
+Commit history identifies the RQ-15 cause: `feat: add versioned AI-ready PRD delivery` changed Clockwork `content.md` from `Version: Final Review` to `Version: 1.0.0` and changed render-data document version in the same migration, but did not refresh `canonical_content_sha256`. This is a migration binding defect, not evidence that Clockwork gameplay meaning should be regenerated.
+
+RQ-16 must not be "fixed" by accepting arbitrary extra HTML sections. The validator should require the exact PRD-core prefix/order and permit only downstream sections that satisfy the current Production Assets page contract.
 
 ### RQ-02 — stale active owners
 
@@ -80,7 +93,7 @@ The fix must update only current routing/procedure meaning; historical audits/ch
 
 ## Ordered remediation
 
-1. **RQ-01** — make Flow 4 mechanical validation resolve the versioned `prd.html` and add one real delivery → validator integration proof.
+1. **RQ-01 + RQ-15 + RQ-16** — align Flow 4 with versioned delivery, repair the Clockwork migration binding without changing gameplay meaning, and validate exact PRD-core pages plus only valid additive Production Assets pages. Prove against the real Clockwork package, not fixture tests alone.
 2. **RQ-02 + RQ-03 + RQ-12** — synchronize current-facing owners/decision routing and ensure the existing content-purity test actually runs in PRD CI.
 3. **RQ-04** — make every material AI-chosen Proposal visible once in the Simple Chat Preview without turning preview into a decision questionnaire.
 4. **RQ-06** — prove consolidated non-Voice Production Assets are current with their canonical requirements using one bounded mechanism, not a checksum registry/framework.
