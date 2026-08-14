@@ -13,7 +13,7 @@ accepted PRD
 → work/voice-requirements.md
 → Flow 6 / SoundMaker v3
 → work/voice-production.md
-→ output/v<document.version>/prd.html → Production Assets → Voice
+→ output/v<document.version>/prd.html → Production Assets → matching gameplay section → Audio → Voice Production
 ```
 
 - accepted PRD owns project/gameplay truth;
@@ -55,7 +55,7 @@ Voice Requirements
 → Communication Conservation
 → integrated Voice Script Readiness
 → canonical voice-production.md
-→ consolidated final.html
+→ consolidated versioned prd.html
 ```
 
 Preparation Mode may process the full current Voice scope, may use a Target Voice Profile before actual actor selection, and requires no audio test or per-line approval loop.
@@ -101,21 +101,26 @@ After canonical Voice Production exists, the normal renderer publishes it into t
    gameplay/objective sections
 
 04 Production Assets
-   VOICE
    <gameplay section title>
-   <accepted PRD package label>
+      <accepted PRD package label>
+
+page content
+→ Audio
+   → Voice Production
 ```
 
-Production Assets is additive. It does not promote gameplay packages out of Development and does not renumber PRD package/page codes.
+Production Assets is additive. It does not promote gameplay packages out of Development and does not renumber PRD package/page codes. Voice does not own a separate sidebar category.
 
-Each Voice section page uses:
+Each gameplay page containing Voice uses:
 
 ```text
-Voice Production
-→ gameplay section title
-→ accepted PRD package label + gameplay context
-→ Voice line count + Primary Speaker
-→ compact Voice Setup for that gameplay section
+common Production Assets page header
+→ gameplay section title + accepted PRD package label/context
+→ asset counts
+→ Audio
+   → Voice Production
+      → Voice line count + Primary Speaker
+      → compact Voice Setup for that gameplay section
 ```
 
 Each Voice line shows:
@@ -131,7 +136,7 @@ title
 
 The visible `Context` is a direct projection of the existing Flow 5 Trigger, not a duplicate Flow 6 field. Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the HTML.
 
-Voice navigation labels may wrap naturally and must remain readable without clipping. `Copy Prompt` copies only the exact canonical performance block.
+Production Assets navigation labels may wrap naturally and must remain readable without clipping. `Copy Prompt` copies only the exact canonical performance block.
 
 No separate Voice HTML is created by default.
 
@@ -149,7 +154,7 @@ one active Voice ID
 → exact reviewed prompt
 → generate / feedback / approve
 → canonical sync
-→ rerender same final.html when actor/prompt changed
+→ rerender current versioned prd.html when actor/prompt changed
 ```
 
 # Scope guard
