@@ -130,10 +130,12 @@ Objective N
   Hasil
   Level Design
   Developer
-  Saran AI       # only when useful
+  Saran AI       # required when material AI-chosen Proposals exist
 ```
 
 Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker.
+
+Every **material AI-chosen Proposal** must appear once in the preview's `Saran AI` block before approval. Material means a chosen default that changes gameplay behavior or scope, including timing, quantity, progression, scoring, fail/recovery, reward, build scope, or runtime behavior. State the chosen default concisely; do not turn this into a question-by-question approval flow. Omit `Saran AI` only when the reviewed slice contains no material AI-chosen Proposal.
 
 Approval of the complete preview promotes the represented pending Proposals unless the user corrects/rejects them. A bounded revision previews only the affected slice when interpretation changed; an unambiguous current user instruction may itself approve that slice.
 

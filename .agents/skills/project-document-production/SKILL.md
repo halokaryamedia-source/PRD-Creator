@@ -69,9 +69,9 @@ When several options are genuinely balanced, still choose one reasonable preview
 
 AI proposals may include mechanics, timings, quantities, recovery, scoring behavior, names, build expectations, runtime behavior and other material decisions at the abstraction needed by the PRD. Their protection is explicit pending approval, not vagueness.
 
-The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Surface `Saran AI` only for material choices whose uncertainty/conflict is useful to the user.
+The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Every material AI-chosen Proposal must appear once in `Saran AI` before approval, while source-backed recovery and non-material production choices stay unlabeled. Keep the disclosure compact instead of turning it into a question-by-question approval flow.
 
-Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. Persist those approvals before entering Flow 3.
+Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. A material Proposal is represented only when its chosen default is visible once in `Saran AI`; hidden material AI choices cannot be promoted by blanket approval. Persist those approvals before entering Flow 3.
 
 Do not create a second checklist/state framework around this process.
 

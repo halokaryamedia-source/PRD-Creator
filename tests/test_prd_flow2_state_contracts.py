@@ -11,6 +11,7 @@ from tests.test_prd_contracts import RENDERER, VALIDATOR, render_data, run_cli
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_INTAKE = ROOT / "kits" / "project-document-generator" / "SOURCE-INTAKE.md"
+FOUNDATION_FLOW2 = ROOT / "docs" / "foundation" / "02-source-intake-recovery.md"
 KIT_SKILL = ROOT / "kits" / "project-document-generator" / "SKILL.md"
 
 
@@ -72,6 +73,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
 
     def test_flow2_contract_requires_simple_preview_before_build(self) -> None:
         source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")
+        foundation = FOUNDATION_FLOW2.read_text(encoding="utf-8")
         skill = KIT_SKILL.read_text(encoding="utf-8")
 
         for marker in (
@@ -86,6 +88,10 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         self.assertIn("→ SIMPLE PREVIEW\n→ BUILD PRD", skill)
         self.assertIn("the Simple Chat Preview has been approved", skill)
         self.assertIn("The Simple Chat Preview is not a new artifact", skill)
+        self.assertIn("material AI-chosen Proposal", source_intake)
+        self.assertIn("required when material AI-chosen Proposals exist", source_intake)
+        self.assertIn("material AI-chosen Proposal", foundation)
+        self.assertIn("material AI-chosen Proposals exist", skill)
 
     def test_ready_rejects_explicit_preview_not_approved(self) -> None:
         project = self.make_project()

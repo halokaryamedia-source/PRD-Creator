@@ -253,13 +253,15 @@ Level Design
 Developer
 - material runtime/data/reset meaning
 
-Saran AI                 # optional
-- only material choices worth calling out
+Saran AI                 # required when material AI-chosen Proposals exist
+- each material AI-chosen default once; omit only when none exist
 ```
 
 Use one short Global Rules block only when shared rules materially affect all objectives.
 
 Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, or validator detail by default. **do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
+
+Do not label every recovered sentence as source-derived versus AI-added. However, every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval. This includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, or runtime-behavior defaults. Source-backed recovery and non-material production choices do not need individual labels. Keep one compact disclosure list rather than a multi-question decision dialog.
 
 `Perlu Konfirmasi` is the exception for a genuinely user/external-only blocker, not the normal response to incomplete design.
 
@@ -284,7 +286,7 @@ preview_approved: true
 
 A Flow-2-specific `next_step` may be omitted once another persisted owner (`content.md`, handoff state, or repository `next-action.md`) clearly owns later continuation; do not preserve stale instructions such as “Build canonical PRD content” after handoff is already complete.
 
-Natural-language user approval is sufficient. If the user corrects the preview, persist the correction as higher authority, update only affected proposal/requirements, rerun only invalidated reasoning, and re-preview only the affected slice when needed.
+Natural-language user approval is sufficient. A material Proposal counts as represented by the preview only when its chosen default appears once in `Saran AI`; do not promote a hidden material AI choice through blanket approval. If the user corrects the preview, persist the correction as higher authority, update only affected proposal/requirements, rerun only invalidated reasoning, and re-preview only the affected slice when needed.
 
 ## 7. Readiness
 

@@ -107,15 +107,15 @@ Level Design
 Developer
 - material runtime/data/reset meaning
 
-Saran AI                     # optional
-- only material choices the AI filled and that are useful to call out
+Saran AI                     # required when material AI-chosen Proposals exist
+- each material AI-chosen default once; omit only when none exist
 ```
 
 Every objective should read as complete. Do not leave blank sections merely because the source omitted the answer. The underlying detailed model may contain more information than the chat preview; the preview summarizes it for fast review.
 
 Use `CONTENT-CONTRACT.md` when deciding what detail the underlying model needs. For example, the Golden Gameplay Overview requires purpose, timing, start, end, fail/recovery, scoring meaning and five high-level beats; Level Design requires spatial/build meaning; Developer requires mechanic lifecycle, data/result, interruption and reset. The preview may summarize those details under the simpler headings above.
 
-Do not label every recovered sentence as source-derived versus AI-added. Surface `Saran AI` only when a material proposal is uncertain/conflict-resolving enough that the user benefits from seeing it. A normal preview can simply present the proposed complete model.
+Do not label every recovered sentence as source-derived versus AI-added. Every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval; this includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build scope, and runtime behavior. Keep it one compact disclosure list, not a multi-option questionnaire. Omit the block only when the reviewed slice contains no material AI-chosen Proposal.
 
 If a genuinely unresolvable external fact remains, use a short `Perlu Konfirmasi` block only for that item; this is the exception, not the normal completion path.
 

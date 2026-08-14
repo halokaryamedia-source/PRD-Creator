@@ -19,6 +19,7 @@ This file keeps only kit-wide invariants. Detailed Flow 2–4 procedure belongs 
 - A Proposal may include gameplay, scoring, progression, quantities, timing, build expectations, runtime behavior, or implementation rules at PRD abstraction level; it must never be mislabeled as source fact.
 - Use `Blocked` only when no responsible proposal can be formed from current authority and known constraints.
 - After preview approval, promote represented pending proposals into approved requirement/project state before Flow 3.
+- A material AI-chosen Proposal is represented only when its chosen default appears once in the Simple Chat Preview `Saran AI` block. Do not hide timing, quantity, scoring, fail/recovery, progression, reward, build-scope, or runtime-behavior choices inside otherwise natural preview prose.
 
 ## 3. Canonical meaning stays upstream
 

@@ -19,7 +19,7 @@ The cleanup rule is: fix proven current-context/correctness defects first, recor
 | RQ-01 | P0 | Flow 4 mechanical validator previously resolved the retired unversioned output while current delivery is `output/v<document.version>/prd.html`. | False FAIL/PASS and broken real handoff validation. | FIXED — versioned path resolution + integration proof |
 | RQ-02 | P1 | Active semantic/procedure owners still taught retired unversioned HTML naming and, in Voice kit material, retired separate `VOICE` sidebar behavior. | New AI/developer could follow stale authority despite routing cleanup. | FIXED — current owners synchronized and guarded |
 | RQ-03 | P1 | Decision memory mixed current and historical language, including retired graph/map routing and old Voice navigation wording. | Wrong-context contamination from files that look authoritative. | FIXED — history-aware register + current routing correction |
-| RQ-04 | P1 | Flow 2 can choose material Proposal defaults (timing, quantities, scoring, recovery, runtime behavior, etc.) while `Saran AI` is optional in the preview. | A polished AI guess can become approved project truth without the user noticing which material facts were AI-chosen. | OPEN |
+| RQ-04 | P1 | Flow 2 could choose material Proposal defaults while `Saran AI` remained optional. | A polished AI guess could become approved project truth without the user noticing which material facts were AI-chosen. | FIXED — every material AI-chosen Proposal is disclosed once before approval |
 | RQ-05 | P1 | Development package page codes and Production Assets page codes can both produce `04A`, `04B`, etc. | Human/developer page references become ambiguous. | OPEN |
 | RQ-06 | P1 | Base PRD HTML is bound to `render-data.json`, but non-Voice `asset-requirements.md` freshness is not equivalently proven at handoff. | Asset requirements can change while a stale consolidated `prd.html` still appears coherent. | OPEN |
 | RQ-07 | P1/P2 | `production_assets.py` still contains the retired Voice-only compositor/navigation in addition to Voice primitives now reused by `production_assets_objective.py`. | Dead architecture can attract future AI edits to the wrong owner/path. | OPEN |
@@ -102,6 +102,10 @@ The proof for this tranche must include the normal PRD unit contracts plus real 
 ## Remediation update — current-context tranche
 
 RQ-02, RQ-03, and RQ-12 are closed without introducing another navigation or quality framework. Current semantic/procedure owners now point to the versioned PRD delivery, the decision register explicitly distinguishes history from current routing, retired map paths no longer own current changes, and the already-existing content-purity regression executes in `PRD Verify`.
+
+## Remediation update — RQ-04 material Proposal visibility
+
+The solve-first Flow 2 model is preserved. The change is only the approval boundary: when AI chooses a material default that changes gameplay or production scope, that chosen value must appear once in the compact `Saran AI` disclosure before blanket preview approval can promote it. This adds no artifact, stage, or option-by-option questionnaire.
 
 ## Ordered remediation
 
