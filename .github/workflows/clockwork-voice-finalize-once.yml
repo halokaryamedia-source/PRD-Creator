@@ -1,0 +1,130 @@
+name: Clockwork Voice Finalize Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-voice/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Validate upstream handoff
+        run: |
+          PROJECT=workspace/active/the-clockwork-vault
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT"
+
+      - name: Prepare Voice validation state
+        run: |
+          PROJECT=workspace/active/the-clockwork-vault
+          cat > "$PROJECT/state/voice-state.yaml" <<'EOF'
+          flow: 7
+          status: voice_script_ready
+          source_handoff: state/handoff-state.yaml
+          source_prd_revision: 1.0.0
+          canonical_prd: work/content.md
+          requirements: work/voice-requirements.md
+          requirements_status: current
+          script: work/voice-production.md
+          script_status: current
+          project_html: output/v1.0.0/prd.html
+          project_html_status: pending_voice_rerender
+          acceptance: work/voice-acceptance.md
+          unresolved_upstream: 0
+          next_step: validate_voice_and_consolidated_project_html
+          EOF
+
+      - name: Rerender consolidated project HTML
+        run: |
+          PROJECT=workspace/active/the-clockwork-vault
+          python kits/project-document-generator/renderer/delivery.py "$PROJECT"
+
+      - name: Validate PRD and Voice
+        run: |
+          PROJECT=workspace/active/the-clockwork-vault
+          python kits/project-document-generator/validator/validate.py "$PROJECT"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT"
+
+      - name: Mark Voice delivery ready
+        run: |
+          PROJECT=workspace/active/the-clockwork-vault
+          cat > "$PROJECT/work/voice-acceptance.md" <<'EOF'
+          # Voice Acceptance
+          Status: voice_delivery_ready
+          Mechanical: PASS
+          Voice Script Readiness: PASS
+          Communication Conservation: PASS
+          Project HTML Visual: NOT PROVEN
+          Audio Evidence: not_provided
+          Critical: 0
+          Major: 0
+          EOF
+          cat > "$PROJECT/state/voice-state.yaml" <<'EOF'
+          flow: 7
+          status: voice_delivery_ready
+          source_handoff: state/handoff-state.yaml
+          source_prd_revision: 1.0.0
+          canonical_prd: work/content.md
+          requirements: work/voice-requirements.md
+          requirements_status: current
+          script: work/voice-production.md
+          script_status: current
+          project_html: output/v1.0.0/prd.html
+          project_html_status: current_with_voice
+          acceptance: work/voice-acceptance.md
+          unresolved_upstream: 0
+          mechanical: PASS
+          voice_script_readiness: PASS
+          communication_conservation: PASS
+          project_html_visual: NOT_PROVEN
+          audio_evidence: not_provided
+          next_step: optional_generation_mode_or_audio_review
+          EOF
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_VOICE_DELIVERY_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Voice Requirements and Voice Production are now current for the approved gameplay revision, and the consolidated project HTML has been rerendered with the revised Voice Production Assets.
+
+          Objective 1 Voice now supports the partial-display / scattered-book deduction model without revealing Orange, Purple, Left-pulse, or lever solutions. Broken Gallery Voice uses checkpoint barrels, marked block/ladder placement, and the Level 3 50% threshold. Warden Voice uses the 3-second Echo Pebble cooldown, 4-second wall-laser disable, hanging-stone laser solution, and no Pebble disable for floor traps or swinging axes. Workshop Voice uses the continuous L-rotator network, route-swap sabotage, and separate 50% / 80% rollback reactions.
+
+          ## Next Step
+
+          Enter Generation Mode only when actual ElevenLabs audio generation or heard-take review is requested. Until then, keep audio evidence as not provided and do not claim measured Voice quality or duration.
+          EOF
+
+      - name: Remove one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-voice
+          rm -f .github/workflows/clockwork-voice-finalize-once.yml
+
+      - name: Commit finalized Voice delivery
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "finalize Clockwork Voice revision"
+          git push origin HEAD:Local
