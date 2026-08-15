@@ -177,3 +177,13 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+
+
+  - id: REQ-022
+    area: production-assets
+    statement: Section 04 uses exactly one universal production-handoff template for every gameplay objective: WHAT TO BUILD followed by WHERE IT IS USED. WHAT TO BUILD lists concrete Minecraft production deliverables only, using Type, Name, Create, Used, optional Includes, and exact copy-ready UI/Text or Voice. Do not list pure gameplay behavior as an asset. Animation, sound, particle, state, or visual behavior that is part of a single entity/model setup remains included under that parent setup unless it is genuinely a standalone production resource. WHERE IT IS USED presents a visible ordered map of gameplay moments and the concrete deliverables required at each moment. The renderer may not use objective-specific presentation logic; only source data and moment names vary between objectives.
+    provenance: [SRC-016]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high

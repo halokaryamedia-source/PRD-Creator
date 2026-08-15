@@ -20,7 +20,7 @@
       "title": "The Clockwork Vault — Development Context",
       "lines": [
         1,
-        2522
+        2662
       ],
       "children": [
         {
@@ -392,7 +392,7 @@
           "title": "Production Assets",
           "lines": [
             1352,
-            2522
+            2662
           ],
           "children": [
             {
@@ -400,7 +400,7 @@
               "title": "Non-Voice Requirements",
               "lines": [
                 1354,
-                2129
+                2235
               ],
               "children": [
                 {
@@ -408,55 +408,55 @@
                   "title": "Global / Shared Assets",
                   "lines": [
                     1356,
-                    1386
+                    1394
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/non-voice-requirements/the-antechamber",
                   "title": "The Antechamber",
                   "lines": [
-                    1387,
-                    1443
+                    1395,
+                    1461
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/non-voice-requirements/the-resonance-engine",
                   "title": "The Resonance Engine",
                   "lines": [
-                    1444,
-                    1582
+                    1462,
+                    1604
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/non-voice-requirements/the-broken-gallery",
                   "title": "The Broken Gallery",
                   "lines": [
-                    1583,
-                    1739
+                    1605,
+                    1786
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/non-voice-requirements/the-warden-halls",
                   "title": "The Warden Halls",
                   "lines": [
-                    1740,
-                    1873
+                    1787,
+                    1930
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/non-voice-requirements/the-gremlin-s-workshop",
                   "title": "The Gremlin's Workshop",
                   "lines": [
-                    1874,
-                    2070
+                    1931,
+                    2166
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/non-voice-requirements/vault-restored",
                   "title": "Vault Restored",
                   "lines": [
-                    2071,
-                    2129
+                    2167,
+                    2235
                   ]
                 }
               ]
@@ -465,56 +465,56 @@
               "id": "the-clockwork-vault-development-context/production-assets/voice-requirements",
               "title": "Voice Requirements",
               "lines": [
-                2130,
-                2522
+                2236,
+                2662
               ],
               "children": [
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/01-the-antechamber",
                   "title": "01. The Antechamber",
                   "lines": [
-                    2137,
-                    2183
+                    2243,
+                    2293
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/02-the-resonance-engine",
                   "title": "02. The Resonance Engine",
                   "lines": [
-                    2184,
-                    2210
+                    2294,
+                    2322
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/03-the-broken-gallery",
                   "title": "03. The Broken Gallery",
                   "lines": [
-                    2211,
-                    2257
+                    2323,
+                    2373
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/04-the-warden-halls",
                   "title": "04. The Warden Halls",
                   "lines": [
-                    2258,
-                    2305
+                    2374,
+                    2425
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/05-the-gremlin-s-workshop",
                   "title": "05. The Gremlin’s Workshop",
                   "lines": [
-                    2306,
-                    2477
+                    2426,
+                    2613
                   ]
                 },
                 {
                   "id": "the-clockwork-vault-development-context/production-assets/voice-requirements/06-vault-restored",
                   "title": "06. Vault Restored",
                   "lines": [
-                    2478,
-                    2522
+                    2614,
+                    2662
                   ]
                 }
               ]

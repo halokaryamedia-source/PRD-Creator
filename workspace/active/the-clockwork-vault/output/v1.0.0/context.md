@@ -1370,16 +1370,24 @@ Done When:
 
 ###### Custodian Vex
 Flow: 01 — Shared Characters
+Type: ENTITY / MODEL
+Create: Create one reusable Custodian Vex NPC/model setup.
+Used: Across the story wherever Custodian Vex appears.
+Moment: Throughout Project
+Includes: NPC model/texture; idle and speaking states; required authored character animations.
 Group: 01 — Shared Characters
-Used: Throughout the full adventure.
 For: Vex’s reusable in-world character asset.
 Requirement: Create or reuse one Clockwork-compatible Custodian Vex NPC presentation for all required story, briefing, warning, reminder, and ending moments. Vex must remain visually recognizable across the complete journey and support readable idle, speaking, pointing/highlight, alert, and completion-reaction states without changing gameplay rules.
 Usage: Shared across the Antechamber, Objectives 1-4, and the ending wherever canonical Voice Production is triggered.
 
 ###### Gremlin
 Flow: 01 — Shared Characters
+Type: ENTITY / MODEL
+Create: Create one reusable Gremlin NPC/model setup.
+Used: During the Broken Gallery challenge and Workshop sabotage moments.
+Moment: Throughout Project
+Includes: Character model/texture; appearance/movement states; sabotage and reaction animations.
 Group: 01 — Shared Characters
-Used: Broken Gallery final crossing and Objective 4 sabotage moments.
 For: Gremlin’s reusable in-world sabotage character.
 Requirement: Create one small Clockwork Gremlin character used for authored sabotage moments. It needs a readable mischievous traversal/arrival state and a clear sabotage action that can be synchronized with route blocking, rotator changes, and the relevant warning presentation. It does not require navigation AI; authored movement is sufficient.
 Usage: Used for the Objective 2 final time-challenge framing and the Objective 4 sabotage sequences.
@@ -1411,8 +1419,12 @@ Done When:
 
 ###### Custodian Key
 Flow: 01 — Arrival & Briefing
+Type: ITEM
+Create: Create one reusable Custodian Key item setup.
+Used: At the opening pedestal and first seal.
+Moment: Objective Start
+Includes: Item appearance; readable pickup/pedestal state; accepted state at the first seal.
 Group: 01 — Opening Story
-Used: Antechamber opening and the first seal.
 For: The story key used to open the first seal.
 Requirement: Create one clearly readable key item for the opening progression. It needs available/picked-up/accepted states and must visually belong to the Clockwork Vault rather than resemble an ordinary reward item.
 Usage: Presented on the Antechamber pedestal and accepted by the Resonance Engine seal.
@@ -1421,8 +1433,11 @@ Usage: Presented on the Antechamber pedestal and accepted by the Resonance Engin
 
 ###### Custodian Key Prompt
 Flow: 02 — Take Key & Open Seal
+Type: UI / TEXT
+Create: Create the exact player-facing Custodian Key Prompt.
+Used: When the player must take the Custodian Key.
+Moment: Take Key & Open Seal
 Group: 02 — Open First Seal
-Used: After the opening briefing, until the first seal opens.
 For: Point the player toward the first seal.
 Requirement: Keep the prompt short and fully in-world.
 Content:
@@ -1435,8 +1450,11 @@ The first seal is waiting.
 
 ###### Resonance Engine Seal Opening
 Flow: 02 — Take Key & Open Seal
-Group: 02 — Open First Seal
+Type: SEQUENCE
+Create: Create one authored Resonance Engine Seal Opening sequence.
 Used: When the Custodian Key is accepted by the first seal.
+Moment: Take Key & Open Seal
+Group: 02 — Open First Seal
 For: Show the first seal accepting the key and opening the Resonance Engine entrance.
 Requirement: Use one short presentation sequence: the seal responds, the door unlocks, and the route ahead becomes obvious. Any sound is a separate SFX asset if produced.
 Usage: Plays once when the Custodian Key is accepted.
@@ -1488,8 +1506,11 @@ Done When:
 
 ###### Objective 1 Instruction Panel
 Flow: 01 — The Door Remembers
+Type: UI / TEXT
+Create: Create the exact player-facing Objective 1 Instruction Panel.
+Used: When the Resonance Engine objective begins.
+Moment: Objective Start
 Group: 01 — Chamber Guidance
-Used: When the player enters the Resonance Engine.
 For: Hint that the missing answer is still somewhere in the chamber.
 Requirement: Keep the opening prompt short, mysterious, and non-technical.
 Content:
@@ -1504,8 +1525,11 @@ Look carefully, then bring the Engine back to life.
 
 ###### Partial Door Target Display
 Flow: 01 — The Door Remembers
+Type: UI / TEXT
+Create: Create the exact player-facing Partial Door Target Display.
+Used: Throughout Resonance Engine solving.
+Moment: Throughout Objective
 Group: 01 — Chamber Guidance
-Used: Throughout Objective 1.
 For: Show the one answer the door still remembers.
 Requirement: Create one player-readable target display near the exit that intentionally reveals only the middle pillar color. It must not reveal the left color, right color, pulse location, or any lever combination. The unknown values remain visible as missing information until the player solves the puzzle through the books and machine experimentation.
 Content:
@@ -1519,8 +1543,11 @@ Usage: Visible throughout active Objective 1 solving. It may switch to a solved/
 
 ###### Scattered Clue Book Set
 Flow: 02 — Search the Chamber
+Type: UI / TEXT
+Create: Create the exact player-facing Scattered Clue Book Set.
+Used: While the player searches the Resonance Engine chamber for clues.
+Moment: Search the Chamber
 Group: 02 — Clue Set
-Used: Throughout the chamber search.
 For: Provide the scattered notes that reveal the missing answer.
 Requirement: Keep all twelve books short, natural, and readable as old vault notes. Two teach machine behavior, eight provide useful clues, and two are harmless maintenance notes. No reading order is required.
 Content:
@@ -1564,18 +1591,13 @@ Spare tools were moved to the eastern storage cabinet after the last maintenance
 
 ##### Visual Effects & Presentation
 
-###### Pillar Lamp Feedback
-Flow: 03 — Tune the Pillars
-Group: 03 — Pillar Interaction
-Used: Whenever the player tests a pillar control.
-For: Show each control change through the pillar lamp.
-Requirement: Every valid lever change must produce immediate readable lamp feedback on its own pillar so the player can discover the lever-to-color behavior through experimentation. Every pressure-plate interaction must visibly switch only that pillar between steady and pulsing without changing its selected color. When the hidden final target is matched—Left Orange pulsing, Middle Brown steady, Right Purple steady—run one concise confirmation response before opening the next route.
-Usage: Active throughout Objective 1 and reset completely for the next run.
-
 ###### Resonance Engine Restoration
 Flow: 04 — Engine Restored
+Type: SEQUENCE
+Create: Create one authored Resonance Engine Restoration sequence.
+Used: When all three pillar states are correct.
+Moment: Objective Complete
 Group: 04 — Completion
-Used: When the complete pillar state is solved.
 For: Show the Resonance Engine returning to life.
 Requirement: Create one short completion presentation that visually confirms all three pillars have synchronized and the Engine has returned to operation, then directs attention toward the newly opened Broken Gallery route.
 Usage: Runs once after valid Objective 1 completion.
@@ -1637,8 +1659,11 @@ Done When:
 
 ###### Broken Gallery Entrance Message
 Flow: 01 — Enter the Gallery
+Type: UI / TEXT
+Create: Create the exact player-facing Broken Gallery Entrance Message.
+Used: When the player enters the Broken Gallery.
+Moment: Objective Start
 Group: 01 — Shared Gallery Assets
-Used: When the player first enters the Broken Gallery.
 For: Point the player toward the old supplies and the damaged crossings.
 Requirement: Keep the Gallery instruction short and in-world.
 Content:
@@ -1651,8 +1676,11 @@ Repair only the marked breaks and find a way across.
 
 ###### First Crossing Message
 Flow: 02 — First Crossing
+Type: UI / TEXT
+Create: Create the exact player-facing First Crossing Message.
+Used: When the first Gallery crossing becomes active.
+Moment: First Crossing
 Group: 02 — First Crossing
-Used: At the first Gallery crossing.
 For: Frame the first crossing without giving away the route.
 Requirement: Keep the message short and avoid system-style difficulty labels.
 Content:
@@ -1665,8 +1693,11 @@ Choose carefully before you spend your supplies.
 
 ###### Second Crossing Message
 Flow: 03 — Second Crossing
+Type: UI / TEXT
+Create: Create the exact player-facing Second Crossing Message.
+Used: When the second Gallery crossing becomes active.
+Moment: Second Crossing
 Group: 03 — Second Crossing
-Used: At the second Gallery crossing.
 For: Frame the tighter second crossing without naming the answer.
 Requirement: Keep the message short and in-world.
 Content:
@@ -1679,8 +1710,11 @@ Count what you have before you commit.
 
 ###### Gremlin's Wager Message
 Flow: 04 — Gremlin’s Wager
+Type: UI / TEXT
+Create: Create the exact player-facing Gremlin's Wager Message.
+Used: When the final Gallery crossing begins.
+Moment: Gremlin's Wager — final crossing
 Group: 04 — Gremlin’s Wager
-Used: Before the final Gallery crossing begins.
 For: Make Gremlin's final crossing feel dangerous without exposing internal timing language.
 Requirement: Use player-facing language; “halfway” is allowed, internal percentages/threshold terminology are not.
 Content:
@@ -1694,8 +1728,11 @@ or Gremlin will take that route away.
 
 ###### Crossing Failure Messages
 Flow: 05 — When a Path Fails
+Type: UI / TEXT
+Create: Create the exact player-facing Crossing Failure Messages.
+Used: When a Gallery crossing attempt fails or a final route is lost.
+Moment: Crossing Failure / Route Lost
 Group: 05 — Path Failure
-Used: After a Gallery crossing fails.
 For: Give simple in-world feedback when a crossing fails.
 Requirement: Do not mention checkpoints, local resets, resource state, or run-state terminology.
 Content:
@@ -1711,8 +1748,12 @@ Find another way across.
 
 ###### Repair Gap Markers
 Flow: 01 — Enter the Gallery
+Type: BLOCK / PROP
+Create: Create one reusable marker treatment for repairable Gallery gaps.
+Used: Throughout all Broken Gallery crossings.
+Moment: Throughout Objective
+Includes: Visible environment marker treatment for valid repair positions.
 Group: 01 — Shared Gallery Assets
-Used: Across all three Gallery crossings.
 For: Make repairable gaps visually distinct without putting debug text into the world.
 Requirement: Use an environmental marker treatment for valid repair positions. Do not display debug-style placement text.
 Usage: Visible only at authored repair positions.
@@ -1721,8 +1762,11 @@ Usage: Visible only at authored repair positions.
 
 ###### Gremlin Wager Cue
 Flow: 04 — Gremlin’s Wager
+Type: SOUND
+Create: Create one standalone Gremlin Wager Cue sound.
+Used: When the final Gallery crossing begins.
+Moment: Gremlin's Wager — final crossing
 Group: 04 — Gremlin’s Wager
-Used: When the final crossing becomes timed.
 For: Gremlin-flavored warning sound as the final crossing turns dangerous.
 Requirement: Create one independent short warning cue that clearly marks the start of the Level 3 progress deadline. It should read as Gremlin-triggered urgency and remain distinct from normal checkpoint, placement, or route-reset sounds.
 Usage: Plays when the Level 3 authored timer begins; Voice Production may play alongside it but is owned separately.
@@ -1731,8 +1775,11 @@ Usage: Plays when the Level 3 authored timer begins; Voice Production may play a
 
 ###### Gremlin Path Collapse
 Flow: 05 — When a Path Fails
+Type: SEQUENCE
+Create: Create one authored Gremlin Path Collapse sequence.
+Used: When Gremlin removes a failed route in the final Gallery crossing.
+Moment: Crossing Failure / Route Lost
 Group: 05 — Path Failure
-Used: When Gremlin takes a failed final path away.
 For: Show Gremlin taking the failed path away.
 Requirement: Create one Level 3 failure presentation in which the selected failed route changes to a clearly unavailable state, the player returns to Checkpoint 3, and the remaining active routes stay readable. The Gremlin framing and warning cue may be synchronized inside this authored sequence.
 Usage: Runs after a Level 3 route misses its required progress threshold while another active route remains.
@@ -1784,40 +1831,60 @@ Done When:
 
 ###### Echo Pebble
 Flow: 01 — Enter the Warden Halls
-Group: 01 — Core Trap Kit
+Type: ITEM / PROJECTILE
+Create: Create one reusable throwable Echo Pebble item/projectile setup.
 Used: Throughout the Warden Halls.
+Moment: Throughout Objective
+Includes: Inventory/held appearance; projectile appearance; readable valid-hit response.
+Group: 01 — Core Trap Kit
 For: The throwable tool used against Warden sensors and loose stones.
 Requirement: Create one small throwable pebble item, visually derived from a stone/snowball-scale projectile but clearly authored for the Clockwork Vault. It needs held/throw/projectile/valid-hit feedback and must support an unlimited-use loop with a visible 3-second cooldown. Its impact feedback must distinguish a valid wall-laser sensor or hanging-stone target from an invalid floor/axe target.
 Usage: Granted for Objective 3 and removed/reset at objective exit.
 
 ###### Wall Laser Sensor
 Flow: 02 — Echo Pebble
+Type: ENTITY / MODEL
+Create: Create one reusable wall-mounted laser sensor setup.
+Used: At laser encounters throughout the Warden Halls.
+Moment: Throughout Objective
+Includes: Sensor model/texture; visible laser beam; active and disabled states; attached animation/sound only when part of this same setup.
 Group: 01 — Core Trap Kit
-Used: Across all Warden levels.
 For: The wall-mounted Warden target the Echo Pebble can disturb.
 Requirement: Create one readable wall-mounted laser sensor/beam assembly with Active and Temporarily Disabled states. The sensor must be an obvious Echo Pebble target; a valid hit disables the beam for the approved 4-second game-time window before normal behavior resumes. Attached activation/deactivation VFX and SFX remain part of this asset.
 Usage: Distributed across the three Warden levels.
 
 ###### Laser Blocker Stone
 Flow: 02 — Echo Pebble
+Type: ENTITY / MODEL
+Create: Create one reusable hanging blocker-stone setup.
+Used: At selected laser encounters that use the blocker-stone solution.
+Moment: Throughout Objective
+Includes: Stone model/texture; hanging state; drop/block animation.
 Group: 01 — Core Trap Kit
-Used: Selected laser encounters.
 For: A loose stone that can fall into a laser beam.
 Requirement: Create one authored hanging-stone target for selected laser encounters. A valid Echo Pebble hit must cause the stone to move/drop into the beam path and visibly block the laser, creating a readable alternate solution without changing unrelated traps.
 Usage: Used only at authored laser encounters that support the blocker-stone solution.
 
 ###### Swinging Axe Trap
 Flow: 01 — Enter the Warden Halls
+Type: ENTITY / MODEL
+Create: Create one reusable ceiling-mounted swinging axe trap setup.
+Used: At axe encounters throughout the Warden Halls.
+Moment: Throughout Objective
+Includes: Axe model/texture; ceiling mount; swing animation; reset state.
 Group: 01 — Core Trap Kit
-Used: Across the Warden Halls.
 For: The ceiling hazard the player must time past.
 Requirement: Create one large double-sided swinging axe trap mounted from the ceiling. It needs a clearly readable left-right swing cycle, safe timing windows, contact/knockback feedback, and a reset state. It must never appear to accept Echo Pebble disable input.
 Usage: Distributed across the Warden levels as a timing hazard.
 
 ###### Floor Trap
 Flow: 01 — Enter the Warden Halls
+Type: ENTITY / MODEL
+Create: Create one reusable floor-trap setup.
+Used: At floor-trap encounters throughout the Warden Halls.
+Moment: Throughout Objective
+Includes: Trap model/visual; armed, triggered, and reset states.
 Group: 01 — Core Trap Kit
-Used: Across the Warden Halls.
 For: The ground hazard the player must avoid.
 Requirement: Create one readable floor-trap treatment with Armed, Triggered, and Reset states. It must stay visually distinct from wall sensors and must never suggest that Echo Pebble can disable it. Exact damage and status effects remain in 03 Development.
 Usage: Distributed across the Warden levels as an avoid-only ground hazard.
@@ -1826,8 +1893,11 @@ Usage: Distributed across the Warden levels as an avoid-only ground hazard.
 
 ###### Warden Halls Entrance Message
 Flow: 01 — Enter the Warden Halls
-Group: 02 — Player Communication
+Type: UI / TEXT
+Create: Create the exact player-facing Warden Halls Entrance Message.
 Used: When the player enters the Warden Halls.
+Moment: Objective Start
+Group: 02 — Player Communication
 For: Give one in-world hint about the Echo Pebble and the Warden hazards.
 Requirement: Keep exact cooldown/damage math in Development; player text should read like part of the vault.
 Content:
@@ -1843,8 +1913,11 @@ The floor and the axes will not be fooled.
 
 ###### Echo Pebble HUD
 Flow: 02 — Echo Pebble
-Group: 02 — Player Communication
+Type: UI / TEXT
+Create: Create the exact player-facing Echo Pebble HUD.
 Used: While the Echo Pebble is available.
+Moment: Throughout Objective
+Group: 02 — Player Communication
 For: Show when the Echo Pebble can be thrown again.
 Requirement: Keep the HUD state compact; the exact recharge duration stays in Development.
 Content:
@@ -1854,22 +1927,6 @@ ECHO PEBBLE · RECHARGING
 ```
 
 ##### Visual Effects & Presentation
-
-###### Warden Hit Effects
-Flow: 03 — Warden Hazards
-Group: 04 — Gameplay Feedback
-Used: Whenever a laser, floor trap, or axe hits the player.
-For: Make laser, floor, and axe hits feel distinct.
-Requirement: Create clear but compact feedback for each approved hazard consequence so the player can identify which trap hit them and understand the resulting temporary impairment. Laser, floor, and axe hits must remain distinguishable while avoiding screen obstruction during active traversal.
-Usage: Triggered on valid hazard contact together with the approved damage/status effects.
-
-###### Warden Recovery
-Flow: 03 — Warden Hazards
-Group: 04 — Gameplay Feedback
-Used: When Warden hazards defeat the player.
-For: Bring the player back safely after the Warden Halls defeat them.
-Requirement: When trap damage reduces gameplay health to zero, present one quick checkpoint recovery that returns the player to the active Warden level without replaying earlier completed levels. Restore player control only after the checkpoint position is safe.
-Usage: Runs on Objective 3 hazard defeat only.
 
 #### The Gremlin's Workshop
 
@@ -1939,24 +1996,36 @@ Done When:
 
 ###### Power Generator
 Flow: 01 — Wake Ring One
+Type: ENTITY / MODEL
+Create: Create one reusable power-generator setup for the Orrery network.
+Used: Throughout the Gremlin Workshop objective.
+Moment: Throughout Objective
+Includes: Model/texture; offline, live, and interrupted states; attached energy/sound only when part of this same setup.
 Group: 01 — Core Network Kit
-Used: Throughout Objective 4.
 For: The visible source feeding power into the Orrery network.
 Requirement: Create one central power-source machine with clearly different Offline, Live, and Power-Interrupted feedback. The output direction into the routing network must remain visually readable from the puzzle area. Attached startup/interruption SFX and energy VFX remain part of this asset.
 Usage: Source of the Objective 4 continuous power network.
 
 ###### 90-Degree Rotator Junction
 Flow: 01 — Wake Ring One
+Type: ENTITY / MODEL
+Create: Create one reusable rotator-junction setup.
+Used: Throughout the Gremlin Workshop objective.
+Moment: Throughout Objective
+Includes: Junction model/texture; four orientations; powered/unpowered states; rotation animation.
 Group: 01 — Core Network Kit
-Used: Throughout Objective 4.
 For: The reusable junction the player turns to redirect power.
 Requirement: Create one reusable L-shaped power junction that rotates in 90-degree steps and connects exactly two orthogonal directions. It needs four readable orientations plus Powered and Unpowered visual states. Interaction must make the route direction legible without exposing the route solution.
 Usage: Repeated at authored Objective 4 junction locations.
 
 ###### Orrery Ring
 Flow: 02 — Wake Ring Two
+Type: ENTITY / MODEL
+Create: Create one reusable Orrery Ring setup used for all three rings.
+Used: Throughout the Gremlin Workshop objective.
+Moment: Throughout Objective
+Includes: Ring model/texture; inactive/powered states; motion used during final restoration.
 Group: 01 — Core Network Kit
-Used: Throughout Objective 4.
 For: The three visible milestones the player brings back to life.
 Requirement: Create one reusable ring mechanism used as Ring 1, Ring 2, and Ring 3 with clearly readable Inactive and Powered states. The three instances must remain distinguishable by position/label while sharing one visual grammar. The final state must support all three rings operating together as the Great Orrery restoration payoff.
 Usage: Sequential milestones in Objective 4 and the ending transition.
@@ -1965,8 +2034,11 @@ Usage: Sequential milestones in Objective 4 and the ending transition.
 
 ###### Workshop Entrance Message
 Flow: 01 — Wake Ring One
+Type: UI / TEXT
+Create: Create the exact player-facing Workshop Entrance Message.
+Used: When the player enters the Gremlin Workshop.
+Moment: Objective Start
 Group: 02 — Workshop Intro
-Used: When the player enters the Workshop.
 For: Frame the final objective as bringing power back through all three rings.
 Requirement: Keep connector geometry and route logic in Development.
 Content:
@@ -1979,8 +2051,11 @@ Keep every earlier ring alive as you move forward.
 
 ###### Orrery Ring Status
 Flow: 02 — Wake Ring Two
+Type: UI / TEXT
+Create: Create the exact player-facing Orrery Ring Status.
+Used: Throughout the Gremlin Workshop objective.
+Moment: Throughout Objective
 Group: 01 — Core Network Kit
-Used: Throughout Objective 4.
 For: Show which Orrery rings currently have power.
 Requirement: Use simple in-world state words and update from actual connectivity.
 Content:
@@ -1992,8 +2067,11 @@ RING 3 · LIVE / DARK
 
 ###### Route Swap Message
 Flow: 03 — Gremlin Changes the Path
+Type: UI / TEXT
+Create: Create the exact player-facing Route Swap Message.
+Used: Immediately after Gremlin changes the route.
+Moment: Route Swap — after Ring Two restoration
 Group: 03 — Gremlin Route Swap
-Used: When Gremlin blocks the old route after Ring Two.
 For: Tell the player Gremlin blocked the old path and opened another.
 Requirement: Do not explain the route solution or implementation state.
 Content:
@@ -2008,8 +2086,11 @@ Find it and bring Ring Two back to life.
 
 ###### First Rollback Message
 Flow: 04 — First Rollback
+Type: UI / TEXT
+Create: Create the exact player-facing First Rollback Message.
+Used: When the first sabotage makes Ring One lose power.
+Moment: First Sabotage — final route
 Group: 04 — First Sabotage
-Used: When Ring One loses power from Gremlin’s first rollback.
 For: Tell the player Ring One has gone dark after Gremlin's sabotage.
 Requirement: Do not expose percentages, rotator counts, positions, or internal connection names.
 Content:
@@ -2022,8 +2103,11 @@ Bring the power back.
 
 ###### Second Rollback Message
 Flow: 05 — Second Rollback
+Type: UI / TEXT
+Create: Create the exact player-facing Second Rollback Message.
+Used: When the second sabotage makes Ring Two lose power.
+Moment: Second Sabotage — final route
 Group: 05 — Second Sabotage
-Used: When Ring Two loses power from Gremlin’s second rollback.
 For: Tell the player Ring Two has gone dark after Gremlin strikes again.
 Requirement: Do not expose percentages, rotator counts, positions, or internal connection names.
 Content:
@@ -2038,32 +2122,44 @@ Restore the earlier line.
 
 ###### Gremlin Route Swap
 Flow: 03 — Gremlin Changes the Path
+Type: SEQUENCE
+Create: Create one authored Gremlin Route Swap sequence.
+Used: When Gremlin blocks the old route after Ring Two restoration.
+Moment: Route Swap — after Ring Two restoration
 Group: 03 — Gremlin Route Swap
-Used: When the route-swap sabotage occurs.
 For: Show Gremlin blocking the old route and opening another.
 Requirement: About 20 seconds after Ring 1 and Ring 2 are connected, run one authored Gremlin sequence that makes the previously active route become visibly blocked, makes the previously blocked alternate path visibly available, removes power where connectivity is broken, and then returns control for rerouting. The change must be understandable without exposing route coordinates or implementation labels.
 Usage: Runs once per Objective 4 session after the approved Ring 2 condition.
 
 ###### First Rollback Sabotage
 Flow: 04 — First Rollback
+Type: SEQUENCE
+Create: Create one authored First Rollback Sabotage sequence.
+Used: During the first sabotage on the final route.
+Moment: First Sabotage — final route
 Group: 04 — First Sabotage
-Used: At the first authored rollback event.
 For: Show Gremlin disturbing the earlier line to Ring One.
 Requirement: At the approved 50% Ring 2-to-Ring 3 progress trigger, run one short Gremlin disruption in which exactly two already-correct rotators on the Generator-to-Ring-1 connection visibly turn out of alignment. Power loss must propagate to the affected ring states before normal input resumes.
 Usage: Runs once per Objective 4 session.
 
 ###### Second Rollback Sabotage
 Flow: 05 — Second Rollback
+Type: SEQUENCE
+Create: Create one authored Second Rollback Sabotage sequence.
+Used: During the second sabotage on the final route.
+Moment: Second Sabotage — final route
 Group: 05 — Second Sabotage
-Used: At the second authored rollback event.
 For: Show Gremlin disturbing the earlier line to Ring Two.
 Requirement: At the approved 80% Ring 2-to-Ring 3 progress trigger, run one short Gremlin disruption in which exactly three already-correct rotators on the Ring-1-to-Ring-2 connection visibly turn out of alignment. The player must see that an earlier completed section has broken before normal input resumes.
 Usage: Runs once per Objective 4 session.
 
 ###### Great Orrery Restoration
 Flow: 06 — Wake the Great Orrery
+Type: SEQUENCE
+Create: Create one authored Great Orrery Restoration sequence.
+Used: When the full Orrery network is restored.
+Moment: Objective Complete
 Group: 06 — Final Restoration
-Used: When the full power network is restored.
 For: Show all three rings waking the Great Orrery.
 Requirement: When Generator, Ring 1, Ring 2, and Ring 3 are continuously connected, create one strong final restoration presentation: all three rings synchronize, power visibly reaches the Great Orrery, puzzle input closes, and the Clockwork exit begins opening. Keep the transition compatible with the existing ending sequence rather than creating a fifth objective.
 Usage: Runs once on valid Objective 4 completion.
@@ -2095,8 +2191,12 @@ Done When:
 
 ###### Clockwork Wayfinder
 Flow: 01 — The Vault Awakens
-Group: 01 — Finale
+Type: ITEM
+Create: Create one Clockwork Wayfinder reward item/model.
 Used: During the final reward reveal.
+Moment: Restoration Payoff
+Includes: Reward item/model appearance; readable reward reveal state.
+Group: 01 — Finale
 For: The cosmetic reward presented at the end of the story.
 Requirement: Create one cosmetic completion reward object with a distinct Clockwork-Vault silhouette and a clear reward-reveal presentation. It does not provide new gameplay power and must support one-time grant/readability in the ending scene.
 Usage: Presented after the Great Orrery restoration and granted exactly once through the existing ending flow.
@@ -2105,8 +2205,11 @@ Usage: Presented after the Great Orrery restoration and granted exactly once thr
 
 ###### Vault Restored Message
 Flow: 02 — The Way Home
+Type: UI / TEXT
+Create: Create the exact player-facing Vault Restored Message.
+Used: When the return gateway is open.
+Moment: Way Home
 Group: 01 — Finale
-Used: When the restored gateway opens.
 For: Confirm the restored vault and point the player toward the open gateway.
 Requirement: Keep the ending message fully in-world.
 Content:
@@ -2121,8 +2224,11 @@ Follow the light home.
 
 ###### Vault Awakening Sequence
 Flow: 01 — The Vault Awakens
+Type: SEQUENCE
+Create: Create one authored Vault Awakening Sequence sequence.
+Used: After the Great Orrery is restored.
+Moment: Restoration Payoff
 Group: 01 — Finale
-Used: Immediately after the Great Orrery is restored.
 For: Deliver the final vault-awakening and gateway-opening payoff.
 Requirement: Create one coordinated closing presentation that carries restored power from the Great Orrery into the surrounding vault, reveals the reopened exit, frames Vex's closing moment and Clockwork Wayfinder reward, then hands control to the safe return route. This sequence must remain reset-owned and must not introduce another challenge.
 Usage: Runs after Objective 4 completion and before the player returns to the holding area.
@@ -2144,8 +2250,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The assigned player enters the protected Antechamber and Vex activates for the first time.
 - Flow: 01 — Arrival & Briefing
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: When the story begins in the Antechamber.
+- Moment: Objective Start
 - Group: 01 — Opening Story
-- Used: When the player first enters the Antechamber.
 - For: Establish the vault, Great Orrery, and the player's reason to continue.
 - Purpose: Open the story and establish that restoring the vault is the only way home.
 - Must communicate:
@@ -2169,8 +2277,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: After the opening briefing, the player has not yet used the Custodian Key on the first seal.
 - Flow: 02 — Take Key & Open Seal
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: While the player still needs to use the Custodian Key.
+- Moment: Take Key & Open Seal
 - Group: 02 — Open First Seal
-- Used: If the first seal is still closed after the opening briefing.
 - For: Give one in-world reminder that the Custodian Key belongs to the first seal.
 - Purpose: Nudge the player forward without replaying the opening story.
 - Must communicate:
@@ -2191,8 +2301,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The Resonance Engine seal opens and the player enters the chamber with the partial door display visible.
 - Flow: 01 — The Door Remembers
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: When the Resonance Engine objective begins.
+- Moment: Objective Start
 - Group: 01 — Chamber Guidance
-- Used: When the player enters the Resonance Engine.
 - For: Give the Resonance Engine mystery a story voice and hint that the missing answer remains in the chamber.
 - Purpose: Frame Objective 1 as restoring an old machine whose missing knowledge is still present in the room.
 - Must communicate:
@@ -2218,8 +2330,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The player first enters the Broken Gallery.
 - Flow: 01 — Enter the Gallery
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: When the player enters the Broken Gallery.
+- Moment: Objective Start
 - Group: 01 — Shared Gallery Assets
-- Used: When the player first enters the Broken Gallery.
 - For: Establish the Gallery's collapse and hint that Gremlin has already been through it.
 - Purpose: Give the traversal challenge story context without reading its route/resource rules aloud.
 - Must communicate:
@@ -2240,8 +2354,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The final Gallery crossing begins and the player is about to choose a route.
 - Flow: 04 — Gremlin’s Wager
+- Create: Create one Gremlin dialogue line for this gameplay moment.
+- Used: When the final Gallery crossing begins.
+- Moment: Gremlin's Wager — final crossing
 - Group: 04 — Gremlin’s Wager
-- Used: Before the final Gallery crossing begins.
 - For: Let Gremlin personally challenge the player before the final crossing.
 - Purpose: Create urgency and character without stating the internal threshold or retry rules.
 - Must communicate:
@@ -2265,8 +2381,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The Warden Halls activate and the player receives the Echo Pebble.
 - Flow: 01 — Enter the Warden Halls
-- Group: 03 — Voice
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
 - Used: When the player enters the Warden Halls.
+- Moment: Objective Start
+- Group: 03 — Voice
 - For: Establish the Wardens as active guardians and give one light in-world hint about the Echo Pebble.
 - Purpose: Support the fiction of the Warden Halls without narrating cooldowns and exact hazard rules.
 - Must communicate:
@@ -2289,8 +2407,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The player clears the third Warden level and the route toward Gremlin's Workshop opens.
 - Flow: 04 — Enter the Workshop
-- Group: 05 — Transition
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
 - Used: After the final Warden section is cleared.
+- Moment: Objective Complete
+- Group: 05 — Transition
 - For: Close the Warden Halls story beat and point the journey toward the Workshop.
 - Purpose: Connect the active security system to the Great Orrery story.
 - Must communicate:
@@ -2313,8 +2433,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The player enters the Workshop and sees the Generator and Orrery rings.
 - Flow: 01 — Wake Ring One
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: When the player enters the Gremlin Workshop.
+- Moment: Objective Start
 - Group: 02 — Workshop Intro
-- Used: When the player first sees the Orrery power system.
 - For: Reveal the Workshop as the heart of the Great Orrery and frame the restoration goal.
 - Purpose: Give the final objective narrative weight without explaining L-junction geometry.
 - Must communicate:
@@ -2336,8 +2458,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The route-swap sabotage blocks the player's old path and opens the alternate path.
 - Flow: 03 — Gremlin Changes the Path
+- Create: Create one Gremlin dialogue line for this gameplay moment.
+- Used: During the route-swap sabotage.
+- Moment: Route Swap — after Ring Two restoration
 - Group: 03 — Gremlin Route Swap
-- Used: When Gremlin blocks the old route.
 - For: Let Gremlin gloat when he takes the player's route away.
 - Purpose: Make the sabotage feel intentional and character-driven.
 - Must communicate:
@@ -2357,8 +2481,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: Immediately after the route-swap sabotage visibly cuts power to Ring 2.
 - Flow: 03 — Gremlin Changes the Path
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: Immediately after the route-swap sabotage.
+- Moment: Route Swap — after Ring Two restoration
 - Group: 03 — Gremlin Route Swap
-- Used: Immediately after Ring Two loses power.
 - For: Have Vex react naturally when Ring Two loses power and a new path opens.
 - Purpose: Keep the player oriented without restating routing rules.
 - Must communicate:
@@ -2379,8 +2505,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The first rollback sabotage breaks the earlier line to Ring 1.
 - Flow: 04 — First Rollback
+- Create: Create one Gremlin dialogue line for this gameplay moment.
+- Used: During the first sabotage on the final route.
+- Moment: First Sabotage — final route
 - Group: 04 — First Sabotage
-- Used: When Gremlin breaks the earlier line to Ring One.
 - For: Let Gremlin enjoy undoing an earlier part of the player's work.
 - Purpose: Escalate Gremlin's nuisance personality without exposing implementation details.
 - Must communicate:
@@ -2400,8 +2528,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: Immediately after the first rollback makes Ring 1 lose power.
 - Flow: 04 — First Rollback
-- Group: 04 — First Sabotage
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
 - Used: Immediately after the first sabotage.
+- Moment: First Sabotage — final route
+- Group: 04 — First Sabotage
 - For: Have Vex react to Gremlin attacking the earlier line.
 - Purpose: Point attention backward without reading the repair specification aloud.
 - Must communicate:
@@ -2420,8 +2550,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The second rollback sabotage breaks the earlier line to Ring 2.
 - Flow: 05 — Second Rollback
+- Create: Create one Gremlin dialogue line for this gameplay moment.
+- Used: During the second sabotage on the final route.
+- Moment: Second Sabotage — final route
 - Group: 05 — Second Sabotage
-- Used: When Gremlin breaks the earlier line to Ring Two.
 - For: Let Gremlin taunt the player one last time before the final repair.
 - Purpose: Escalate the final nuisance beat without becoming gameplay instruction.
 - Must communicate:
@@ -2441,8 +2573,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: Immediately after the second rollback makes Ring 2 lose power.
 - Flow: 05 — Second Rollback
-- Group: 05 — Second Sabotage
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
 - Used: Immediately after the second sabotage.
+- Moment: Second Sabotage — final route
+- Group: 05 — Second Sabotage
 - For: Have Vex react to the final setback and keep the story momentum moving.
 - Purpose: Keep the affected ring readable without restating the routing specification.
 - Must communicate:
@@ -2462,8 +2596,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The full Orrery network is restored after all sabotage events and the Great Orrery begins to wake.
 - Flow: 06 — Wake the Great Orrery
+- Create: Create one Gremlin dialogue line for this gameplay moment.
+- Used: When the full Orrery network is restored.
+- Moment: Objective Complete
 - Group: 06 — Final Restoration
-- Used: When the Great Orrery begins to wake.
 - For: Give Gremlin one short defeated reaction when the player finally outsmarts him.
 - Purpose: Close Gremlin's character beat before Vex owns the ending.
 - Must communicate:
@@ -2485,8 +2621,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The Great Orrery restoration completes and the closing scene reaches Vex.
 - Flow: 01 — The Vault Awakens
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
+- Used: During the final restoration payoff.
+- Moment: Restoration Payoff
 - Group: 01 — Finale
-- Used: After the Great Orrery and vault systems are restored.
 - For: Resolve Vex's story and reward the player after the Great Orrery wakes.
 - Purpose: Confirm that the player restored the vault rather than merely escaping it.
 - Must communicate:
@@ -2508,8 +2646,10 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The gateway is open and the player can leave the restored vault.
 - Flow: 02 — The Way Home
-- Group: 01 — Finale
+- Create: Create one Custodian Vex dialogue line for this gameplay moment.
 - Used: When the gateway home is open.
+- Moment: Way Home
+- Group: 01 — Finale
 - For: Give one final in-world farewell as the gateway home opens.
 - Purpose: Close Vex's guide role without using session-management terminology.
 - Must communicate:
