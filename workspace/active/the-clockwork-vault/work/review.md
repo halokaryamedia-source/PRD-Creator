@@ -9,35 +9,59 @@ This revision updates gameplay meaning for Objectives 1-4 and the Production Ass
 ## Objective 1 — Resonance Engine
 
 ### Tujuan
-Match the required output state across three puzzle pillars within the approximately 9-minute objective.
+Open the Resonance Engine door by discovering the hidden three-pillar target and then using the machine controls to reproduce that state within the approximately 9-minute objective.
+
+### Approved Door Solution
+- Left pillar: Orange + pulsing/blinking.
+- Middle pillar: Brown + steady.
+- Right pillar: Purple + steady.
+- Only the Left pressure plate must be active.
+
+### Display Information
+- The exit display reveals only the middle target color: Brown.
+- Left color, right color, and the pulsing pillar remain unknown.
+- The display does not reveal lever combinations.
 
 ### Apa yang Player Lakukan
-- Read short clue books distributed around the chamber.
-- Operate three pillars; each pillar has an upper lever, lower lever, and pressure plate.
-- Read lever state in upper-then-lower order: ON/ON, OFF/OFF, ON/OFF, or OFF/ON.
-- Use lever combinations to produce the required color on each pillar.
-- Use the pressure plate to switch that pillar indicator between steady and blinking.
-- Compare the live pillar outputs with the required target displayed near the exit and correct the machine until all three pillars match.
+- Search twelve books scattered around the chamber; there is no required reading order.
+- Use two rule books to understand the machine: lever pairs are read TOP → BOTTOM, and a pressure plate changes pulse/steady behavior without changing color.
+- Use useful clue books to infer that the missing left target is Orange, the missing right target is Purple, and only the Left pillar should pulse.
+- Ignore or simply read two harmless decoy books that contain no false puzzle information.
+- Operate three pillars; each pillar has an upper lever, lower lever, pressure plate, and indicator lamp.
+- Experiment with lever combinations and watch immediate lamp feedback to discover how that pillar produces its available colors.
+- Set the final state to Orange / Brown / Purple with Left pulsing and Middle/Right steady.
 
 ### Approved Lever-to-Color Mapping
 - Right pillar: ON/ON → Red; OFF/OFF → Yellow; ON/OFF → Green; OFF/ON → Purple.
 - Middle pillar: ON/ON → Blue; OFF/OFF → Dark Blue; ON/OFF → Brown; OFF/ON → Dark Green.
 - Left pillar: ON/ON → Pink; OFF/OFF → Orange; ON/OFF → White; OFF/ON → Black.
 
+The mapping above is machine behavior discovered through player experimentation. The books do not teach all twelve lever-to-color entries.
+
+### Twelve-Book Structure
+- 2 mechanic-rule books: lever reading and pressure-plate behavior.
+- 8 useful clue books: simple independent hints that narrow Left → Orange, Right → Purple, and Pulse → Left.
+- 2 decoy books: ordinary maintenance/lore notes with no misleading puzzle information.
+- Books are scattered without sequence. A player who happens to find useful books first may solve faster; reading all twelve is not mandatory.
+- Clue wording should be easy to understand, not cryptic, but should avoid stating the answer directly.
+
 ### Hasil
-The three required pillar states are correct, the Resonance Engine is restored, and the Broken Gallery opens.
+The three required pillar states are correct together, the Resonance Engine is restored, and the Broken Gallery opens.
 
 ### Level Design
 - Keep all three pillars and their indicator lamps readable from the puzzle space.
-- Keep clue-book searching short enough that the challenge remains deduction rather than navigation.
-- Place the target display near the exit so the player repeatedly compares target and live pillar states.
+- Distribute the twelve books broadly enough to create light searching but do not establish a numbered or spatial reading sequence.
+- Place the target display near the exit and show only Middle = Brown plus unknown Left/Right/pulse information.
 - Keep the pressure-plate steady/blinking state visually distinct from the selected color.
+- Ensure player experimentation with the lever pairs produces immediate readable color changes.
 
 ### Developer
 - Resolve each pillar from upper-lever + lower-lever combination and independent steady/blinking state.
+- Use the fixed final target Left Orange + pulse, Middle Brown + steady, Right Purple + steady.
 - Provide immediate visible feedback after every valid lever or plate interaction.
-- Track clue reads, pillar changes, target matches, completion, timeout, interruption, and reset.
-- Retain the existing 0-100 Objective Score boundary while replacing old Target 1/Target 2 evidence with pillar completion, clue coverage, and rule-application evidence.
+- Track unique book reads, lever/plate changes, target progress, completion, timeout, interruption, and reset.
+- Do not require all twelve books for completion; books are evidence/help, while valid machine state owns completion.
+- Retain the existing 0-100 Objective Score boundary while using pillar completion, clue coverage, and rule-application evidence.
 
 ## Objective 2 — Broken Gallery
 
@@ -136,4 +160,4 @@ Power Generator, Ring 1, Ring 2, and Ring 3 are continuously connected, the Grea
 
 ## Production Asset Scope
 
-Prepare only gameplay-required custom assets and player-facing information. Keep normal terrain/build geometry in Level Design. The approved Objective 1 mapping is final and may be used by the twelve clue-book texts.
+Prepare only gameplay-required custom assets and player-facing information. Keep normal terrain/build geometry in Level Design. Objective 1 books use the approved 2 rule + 8 useful clue + 2 harmless decoy structure; the lever-to-color mapping remains machine behavior rather than book content.
