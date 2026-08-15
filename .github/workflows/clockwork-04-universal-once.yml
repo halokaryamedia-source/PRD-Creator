@@ -1,0 +1,162 @@
+name: Clockwork 04 Universal Handoff Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-04-universal/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Apply universal Production Assets template
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('.tmp-clockwork-04-universal/renderer.py')
+          t = p.read_text(encoding='utf-8')
+          t = t.replace(
+              'classes = "pa-build-row pa-row pa-row-voice" if item.is_voice else "pa-build-row pa-row"',
+              'classes = "pa-row pa-row-voice" if item.is_voice else "pa-build-row pa-row"'
+          )
+          t = t.replace('.pa-build-row{padding:', '.pa-build-row,.pa-row-voice{padding:')
+          t = t.replace('.pa-content,.pa-build-row .voice-script-text', '.pa-content,.pa-row-voice .voice-script-text')
+          t = t.replace('.pa-build-row .voice-script-text{border-left-color:', '.pa-row-voice .voice-script-text{border-left-color:')
+          t = t.replace('.pa-build-row,.pa-moment{break-inside:avoid}', '.pa-build-row,.pa-row-voice,.pa-moment{break-inside:avoid}')
+          p.write_text(t, encoding='utf-8')
+          PY
+          cp .tmp-clockwork-04-universal/renderer.py kits/project-document-generator/renderer/production_assets_objective.py
+          python .tmp-clockwork-04-universal/patch_sources.py
+
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit tests
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+
+      - name: Verify universal production handoff
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          project = Path('workspace/active/the-clockwork-vault')
+          html = (project / 'output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          assets = (project / 'work/asset-requirements.md').read_text(encoding='utf-8')
+          voices = (project / 'work/voice-requirements.md').read_text(encoding='utf-8')
+          renderer = Path('kits/project-document-generator/renderer/production_assets_objective.py').read_text(encoding='utf-8')
+
+          assert html.count('class="pa-part"') >= 7
+          assert html.count('class="pa-part pa-where"') >= 7
+          assert html.count('class="pa-row pa-row-voice"') == 17
+          assert 'What to Build' in html
+          assert 'Where It Is Used' in html
+          assert 'ENTITY / MODEL' in html
+          assert 'ITEM / PROJECTILE' in html
+          assert 'BLOCK / PROP' in html
+          assert 'UI / TEXT' in html
+          assert '>VOICE<' in html
+          assert '>SOUND<' in html
+          assert '>SEQUENCE<' in html
+          assert 'Create</b>' in html
+          assert 'Used</b>' in html
+          assert 'Includes</b>' in html
+          assert 'Route Swap — after Ring Two restoration' in html
+          assert 'Gremlin\'s Wager — final crossing' in html
+          assert 'Throughout Objective' in html
+          assert 'Objective Complete' in html
+
+          # No hidden/tabbed information architecture remains.
+          for token in ['data-pa-tab', 'pa-tab-list', 'pa-panel[hidden]', 'View Prompt']:
+              assert token not in renderer, token
+
+          # Pure behavior / abstract feedback entries are no longer production assets.
+          for token in ['#### Pillar Lamp Feedback', '#### Warden Hit Effects', '#### Warden Recovery']:
+              assert token not in assets, token
+
+          # Generic schema is present on every current concrete asset block.
+          blocks = re.findall(r'(?ms)^#### (.+?)\n(.*?)(?=^#### |^### |^## |\Z)', assets)
+          assert blocks
+          for title, body in blocks:
+              for field in ['Type:', 'Create:', 'Used:', 'Moment:']:
+                  assert field in body, f'{title}: {field}'
+
+          voice_blocks = re.findall(r'(?ms)^### (VO-[A-Z0-9-]+)\s+[—-].*?\n(.*?)(?=^### |^## |\Z)', voices)
+          assert len(voice_blocks) == 17
+          for vid, body in voice_blocks:
+              for field in ['- Create:', '- Used:', '- Moment:']:
+                  assert field in body, f'{vid}: {field}'
+
+          # Renderer must stay objective-agnostic.
+          for token in ['Warden Halls', 'Broken Gallery', 'Resonance Engine', "Gremlin's Workshop"]:
+              assert token not in renderer, token
+
+          print('04 universal production handoff PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_04_UNIVERSAL_HANDOFF_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 now uses one universal presentation for every objective: WHAT TO BUILD followed by WHERE IT IS USED. WHAT TO BUILD contains only concrete Minecraft production deliverables and uses the same Type / Create / Used / optional Includes structure everywhere. Exact UI/Text and Voice content remains visible and copy-ready. WHERE IT IS USED maps those same deliverables to visible ordered gameplay moments without tabs or hidden content. Pure gameplay behavior remains in 03 Development. Animation, sound, particle, and state work that belongs to an entity/model is kept inside that parent setup instead of being split into artificial standalone assets. The renderer contains no objective-specific presentation rules.
+
+          PRD, handoff, Voice, unit-contract, and universal Production Assets validation pass. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review Section 04 visually against Sections 01-03, focusing on whether a developer can identify what to build and when each deliverable is used without already knowing the gameplay.
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-04-Universal-Handoff
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-04-universal
+          rm -f .github/workflows/clockwork-04-universal-once.yml
+
+      - name: Commit universal Production Assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "make Production Assets universal and actionable"
+          git push origin HEAD:Local
