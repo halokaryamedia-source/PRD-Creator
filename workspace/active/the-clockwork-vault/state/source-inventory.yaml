@@ -59,3 +59,10 @@ sources:
     origin: user
     inspection: full
     summary: User corrected and approved Objective 1 clue design. The door solution is Left Orange, Middle Brown, Right Purple, with only the Left pressure plate active so the left lamp pulses while middle/right remain steady. The exit display reveals only Middle = Brown. Twelve books are scattered without reading order and consist of two mechanic-rule books, eight useful clue books, and two harmless decoys. Useful clues reveal the missing left/right colors and which pillar must pulse; they do not teach the full twelve-color lever mapping. Lever-to-color discovery remains player experimentation with immediate lamp feedback. Clue language must be simple and understandable, neither cryptic nor overly obvious.
+  - id: SRC-008
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User approved adding Gremlin as a speaking Voice character in Objective 4. Gremlin should have short mischievous taunts tied to the route swap, 50-percent rollback, 80-percent rollback, and a final defeat/flee reaction. Custodian Vex remains the primary guide and owns gameplay instructions; Gremlin lines add character and acknowledge sabotage without introducing new rules or replacing Vex guidance.
