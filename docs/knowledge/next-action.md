@@ -2,14 +2,14 @@
 
 ## Current Status
 
-`CLOCKWORK_GAMEPLAY_REVISION_PREPARED`
+`CLOCKWORK_CANONICAL_REVISION_READY_FOR_PROJECTION`
 
-The Clockwork Vault bounded gameplay revision for Objectives 1-4 has been recovered into current requirement state and a readable revision review. The supplied Objective 4 HTML is retained only as a supporting technical-layout reference and is explicitly excluded from PRD content. A complete draft non-Voice Production Asset requirement set has also been prepared from the revised gameplay.
+The Clockwork Vault bounded gameplay revision for Objectives 1-4 is approved and persisted in current requirement state and canonical `workspace/active/the-clockwork-vault/work/content.md`. The approved Objective 1 lever-to-color mapping is fixed, and the non-Voice `work/asset-requirements.md` has been prepared from the revised gameplay, including twelve indirect clue-book texts, player-facing UI/information, required custom gameplay objects, and authored presentation events.
 
-The previously accepted PRD/Voice handoff and rendered HTML are intentionally marked stale for the current revision so old Target 1/Target 2, old Broken Gallery collapse, old Echo Pebble floor-trap rule, and old single-fault Workshop behavior cannot be mistaken for current truth.
+The supplied Objective 4 HTML remains a supporting technical-layout source only. Its coordinates and preview implementation are not copied into player-facing PRD content.
 
-One material decision remains: the source lists four lever combinations and four colors per Objective 1 pillar but does not explicitly pair them. The current review proposes list-order pairing solely so the twelve clue-book texts can be prepared coherently.
+The previous `work/render-data.json`, versioned `prd.html`, AI context/index, and Voice canonical sources intentionally remain stale because they still reflect the previously accepted Target 1/Target 2, Gallery collapse/tool, floor-trap Pebble, and single-fault Workshop model. Handoff is therefore correctly kept at `revision_in_progress` rather than falsely restored to ready.
 
 ## Next Step
 
-Confirm or correct the Objective 1 lever-combination → color pairing, then regenerate the canonical PRD, Production Assets/Voice scope, derived project HTML, and relevant validation from that accepted mapping.
+Regenerate `work/render-data.json` and the versioned delivery bundle from the current canonical Clockwork revision, then run the relevant PRD validation before restoring `handoff_ready`.
