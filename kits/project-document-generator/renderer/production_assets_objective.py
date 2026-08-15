@@ -18,6 +18,8 @@ OBJECTIVE_STYLE_MARKER = 'id="production-assets-objective-style"'
 @dataclass
 class AssetEntry:
     title: str
+    category: str = ""
+    flow: str = ""
     requirement: str = ""
     usage: str = ""
     content: str = ""
@@ -87,7 +89,7 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
         if line.startswith("#### "):
             if current_section is None or current_category is None:
                 raise ValueError("Production Asset entry appears before its section/category.")
-            entry = AssetEntry(title=line[5:].strip())
+            entry = AssetEntry(title=line[5:].strip(), category=current_category)
             if not entry.title:
                 raise ValueError("Production Asset name cannot be empty.")
 
@@ -96,7 +98,9 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                 meta = lines[i].rstrip()
                 if meta.startswith(("## ", "### ", "#### ")):
                     break
-                if meta.startswith("Requirement:"):
+                if meta.startswith("Flow:"):
+                    entry.flow = meta.split(":", 1)[1].strip()
+                elif meta.startswith("Requirement:"):
                     entry.requirement = meta.split(":", 1)[1].strip()
                 elif meta.startswith("Usage:"):
                     entry.usage = meta.split(":", 1)[1].strip()
@@ -231,64 +235,70 @@ def _ordered_titles(
     return ordered
 
 
-def _asset_html(entry: AssetEntry, number: int) -> str:
-    usage = (
-        f'<p class="pa-usage"><span>{i18n(bi("Usage", "Penggunaan"))}</span>{esc(entry.usage)}</p>'
+def _asset_entries(section: AssetSection | None) -> list[AssetEntry]:
+    if section is None:
+        return []
+    return [
+        entry
+        for category in ASSET_CATEGORIES
+        for entry in section.categories.get(category, [])
+    ]
+
+
+def _flow_sort_key(label: str) -> tuple[int, str]:
+    match = re.match(r"^\s*(\d+)", label)
+    return (int(match.group(1)) if match else 9999, label.casefold())
+
+
+def _copy_button(target_id: str, label: str) -> str:
+    return (
+        f'<button class="pa-copy-button" data-pa-copy="{esc(target_id)}" type="button">'
+        f'<span class="pa-copy-label">{esc(label)}</span></button>'
+    )
+
+
+def _asset_html(entry: AssetEntry, number: int, page_id: str) -> str:
+    copy_id = f"{page_id}-asset-copy-{number}"
+    context = (
+        f'<p class="pa-usage"><span>{i18n(bi("Trigger / Placement", "Trigger / Penempatan"))}</span>'
+        f'{esc(entry.usage)}</p>'
         if entry.usage
         else ""
     )
-    content = (
-        f'<div class="pa-content"><span>{i18n(bi("Content", "Konten"))}</span>'
-        f"<pre>{esc(entry.content)}</pre></div>"
-        if entry.content
-        else ""
-    )
+    content = ""
+    if entry.content:
+        content = (
+            '<div class="pa-content-head">'
+            f'<span>{i18n(bi("Developer Copy", "Developer Copy"))}</span>'
+            f'{_copy_button(copy_id, "Copy Text")}</div>'
+            f'<pre class="pa-content" id="{copy_id}">{esc(entry.content)}</pre>'
+        )
     return (
         '<article class="pa-card">'
-        f'<div class="pa-card-head"><span>{number:02d}</span><h4>{esc(entry.title)}</h4></div>'
-        f'<p class="pa-requirement">{esc(entry.requirement)}</p>'
-        f"{usage}{content}</article>"
+        '<div class="pa-card-head">'
+        f'<div class="pa-card-number">{number:02d}</div>'
+        '<div class="pa-card-title">'
+        f'<span class="pa-type-badge">{esc(entry.category)}</span>'
+        f'<h4>{esc(entry.title)}</h4></div></div>'
+        '<div class="pa-card-body">'
+        f'<p class="pa-requirement"><span>{i18n(bi("Implementation", "Implementasi"))}</span>'
+        f'{esc(entry.requirement)}</p>'
+        f'{context}{content}</div></article>'
     )
 
 
-def _voice_html(
-    voice_doc: voice.VoiceProduction,
-    section: voice.VoiceSection,
-    label: Any,
-    triggers: dict[str, str],
-    number: int,
-) -> tuple[str, int]:
-    speakers = voice._section_speakers(section)
-    primary = speakers[0] if len(speakers) == 1 else "Multiple speakers"
-    body = (
-        f'<div class="voice-production-block" data-voice-section="{esc(voice._title_key(section.title))}">'
-        '<div class="pa-voice-head">'
-        f'<strong>{i18n(bi("Voice Production", "Voice Production"))}</strong>'
-        f'<span>{len(section.entries)} Voice Lines · {esc(primary)}</span></div>'
-        + voice._section_setup_html(voice_doc, section)
-        + '<div class="voice-script-list">'
-    )
-    for line_index, entry in enumerate(section.entries, 1):
-        trigger = triggers.get(entry.voice_id)
-        if not trigger:
-            raise ValueError(f"Voice requirement Trigger missing for canonical production entry: {entry.voice_id}")
-        body += voice._entry_html(entry, number, line_index, len(section.entries), label, trigger)
-        number += 1
-    return body + "</div></div>", number
-
-
-def _counts(
-    asset_section: AssetSection | None,
-    voice_section: voice.VoiceSection | None,
-) -> dict[str, int]:
-    counts: dict[str, int] = {}
-    for category in ASSET_CATEGORIES:
-        count = len(asset_section.categories.get(category, [])) if asset_section else 0
-        if category == "Audio" and voice_section:
-            count += len(voice_section.entries)
-        if count:
-            counts[category] = count
-    return counts
+def _flow_copy_text(
+    flow_title: str,
+    assets: list[AssetEntry],
+    voices: list[voice.VoiceEntry],
+) -> str:
+    blocks = [flow_title]
+    for entry in assets:
+        if entry.content:
+            blocks.append(f"[{entry.category}] {entry.title}\n{entry.content}")
+    for entry in voices:
+        blocks.append(f"[VOICE · {entry.speaker}] {entry.title}\n{entry.performance}")
+    return "\n\n".join(blocks).strip()
 
 
 def _pages_and_nav(
@@ -296,6 +306,7 @@ def _pages_and_nav(
     assets: AssetRequirements | None,
     voice_doc: voice.VoiceProduction | None,
     triggers: dict[str, str],
+    voice_flows: dict[str, str],
 ) -> tuple[str, str]:
     asset_map = {
         voice._title_key(section.title): section
@@ -314,48 +325,118 @@ def _pages_and_nav(
         key = voice._title_key(title)
         asset_section = asset_map.get(key)
         voice_section = voice_map.get(key)
-        counts = _counts(asset_section, voice_section)
-        if not counts:
+        asset_entries = _asset_entries(asset_section)
+        voice_entries = list(voice_section.entries) if voice_section else []
+        total = len(asset_entries) + len(voice_entries)
+        if total == 0:
             continue
 
         meta = _presentation(render_data, title)
-        total = sum(counts.values())
         context = meta.context or bi(
             "Production requirements follow the accepted PRD.",
             "Requirement produksi mengikuti PRD yang diterima.",
         )
+
+        grouped_assets: dict[str, list[AssetEntry]] = {}
+        for entry in asset_entries:
+            flow = entry.flow or "01 — General Implementation"
+            grouped_assets.setdefault(flow, []).append(entry)
+
+        grouped_voices: dict[str, list[voice.VoiceEntry]] = {}
+        for entry in voice_entries:
+            flow = voice_flows.get(entry.voice_id) or "90 — Voice & Guidance"
+            grouped_voices.setdefault(flow, []).append(entry)
+
+        flow_titles = sorted(set(grouped_assets) | set(grouped_voices), key=_flow_sort_key)
+        copyable = sum(1 for entry in asset_entries if entry.content) + len(voice_entries)
         summary = (
-            f'<div class="pa-summary"><strong>{total} Assets</strong>'
-            + "".join(f"<span>{esc(category)} <b>{count}</b></span>" for category, count in counts.items())
-            + "</div>"
+            '<div class="pa-summary">'
+            f'<strong>{total} implementation items</strong>'
+            f'<span><b>{len(flow_titles)}</b> gameplay flows</span>'
+            f'<span><b>{copyable}</b> copy-ready texts</span>'
+            f'<span><b>{len(voice_entries)}</b> voice lines</span>'
+            '</div>'
         )
         shell_class = "pa-shell voice-objective-shell" if voice_section else "pa-shell"
         body = (
             f'<header class="{shell_class}"><small>Production Assets</small>'
-            f"<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong>"
-            f'<p class="pa-context">{i18n(context)}</p>{summary}</header>'
+            f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong>'
+            '<div class="pa-context-box">'
+            f'<span>{i18n(bi("Gameplay Context", "Konteks Gameplay"))}</span>'
+            f'<p class="pa-context">{i18n(context)}</p></div>'
+            '<p class="pa-use-note">Follow the gameplay flows below. Each flow combines every implementation need '
+            'for that beat—player text, Voice, audio, visual presentation, and models. Use the Copy buttons for '
+            'exact production text.</p>'
+            f'{summary}</header>'
         )
 
-        asset_number = 1
-        for category, count in counts.items():
+        if voice_section and voice_doc:
             body += (
-                '<section class="pa-group"><div class="pa-group-head">'
-                f"<h3>{esc(category)}</h3><span>{count} Assets</span></div>"
+                f'<div class="voice-production-block pa-voice-setup-block" '
+                f'data-voice-section="{esc(voice._title_key(voice_section.title))}">'
+                + voice._section_setup_html(voice_doc, voice_section)
+                + '</div>'
             )
-            if asset_section:
-                for entry in asset_section.categories.get(category, []):
-                    body += _asset_html(entry, asset_number)
-                    asset_number += 1
-            if category == "Audio" and voice_section and voice_doc:
-                block, voice_number = _voice_html(
-                    voice_doc,
-                    voice_section,
-                    meta.package_label,
-                    triggers,
-                    voice_number,
+
+        if len(flow_titles) > 1:
+            body += '<nav class="pa-flow-nav" aria-label="Gameplay flow quick jump">'
+            for flow_title in flow_titles:
+                flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
+                body += f'<a href="#{flow_id}">{esc(flow_title)}</a>'
+            body += '</nav>'
+
+        voice_positions = {
+            entry.voice_id: (index, len(voice_entries))
+            for index, entry in enumerate(voice_entries, 1)
+        }
+        asset_number = 1
+
+        for flow_title in flow_titles:
+            flow_assets = grouped_assets.get(flow_title, [])
+            flow_voices = grouped_voices.get(flow_title, [])
+            flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
+            flow_copy = _flow_copy_text(flow_title, flow_assets, flow_voices)
+            body += (
+                f'<section class="pa-flow" id="{flow_id}">'
+                '<div class="pa-flow-head"><div>'
+                f'<span>{i18n(bi("Gameplay Flow", "Flow Gameplay"))}</span>'
+                f'<h3>{esc(flow_title)}</h3></div>'
+            )
+            if flow_copy:
+                flow_copy_id = f"{flow_id}-copy"
+                body += _copy_button(flow_copy_id, "Copy Flow Text")
+            body += '</div>'
+            if flow_copy:
+                body += f'<pre class="pa-flow-copy-source" id="{flow_copy_id}">{esc(flow_copy)}</pre>'
+            body += '<div class="pa-flow-items">'
+
+            for entry in flow_assets:
+                body += _asset_html(entry, asset_number, meta.page_id)
+                asset_number += 1
+
+            for entry in flow_voices:
+                trigger = triggers.get(entry.voice_id)
+                if not trigger:
+                    raise ValueError(
+                        f"Voice requirement Trigger missing for canonical production entry: {entry.voice_id}"
+                    )
+                line_index, line_total = voice_positions[entry.voice_id]
+                body += (
+                    '<div class="pa-voice-inline">'
+                    '<span class="pa-type-badge">Voice</span>'
+                    + voice._entry_html(
+                        entry,
+                        voice_number,
+                        line_index,
+                        line_total,
+                        meta.package_label,
+                        trigger,
+                    )
+                    + '</div>'
                 )
-                body += block
-            body += "</section>"
+                voice_number += 1
+
+            body += '</div></section>'
 
         index = len(pages)
         pid = meta.page_id
@@ -376,7 +457,7 @@ def _pages_and_nav(
         links.append(
             f'<a data-target="{pid}" href="#{pid}">'
             f'<span class="production-assets-objective-name">{esc(meta.title)}</span>'
-            f"<small>{i18n(meta.package_label)}</small></a>"
+            f'<small>{i18n(meta.package_label)}</small></a>'
         )
 
     if not pages:
@@ -394,35 +475,82 @@ def _pages_and_nav(
 
 
 OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
-.pa-shell{margin:0 0 24px}
+.pa-shell{margin:0 0 18px}
 .pa-shell>small{display:block;margin-bottom:7px;color:var(--blue);font-size:.63rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
 .pa-shell h2{margin:0;color:var(--navy);font-size:1.9rem;line-height:1.12;letter-spacing:-.025em}
-.pa-shell>strong{display:block;margin:6px 0 10px;color:var(--amber);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
-.pa-context{max-width:78ch;margin:0 0 16px;color:#52616a;font-size:.79rem;line-height:1.5}
-.pa-summary{display:flex;align-items:center;gap:10px 20px;flex-wrap:wrap;padding:11px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--muted);font-size:.68rem}
+.pa-shell>strong{display:block;margin:6px 0 12px;color:var(--amber);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+.pa-context-box{padding:12px 14px;border-left:3px solid var(--blue);background:var(--soft)}
+.pa-context-box>span{display:block;margin-bottom:5px;color:var(--blue);font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.pa-context{max-width:82ch;margin:0;color:#52616a;font-size:.8rem;line-height:1.52}
+.pa-use-note{max-width:84ch;margin:11px 0 0;color:var(--muted);font-size:.75rem;line-height:1.48}
+.pa-summary{display:flex;align-items:center;gap:9px 18px;flex-wrap:wrap;margin-top:13px;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--muted);font-size:.67rem}
 .pa-summary>strong,.pa-summary b{color:var(--navy)}
-.pa-group{margin-top:22px}
-.pa-group-head{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid var(--line)}
-.pa-group-head h3{margin:0;color:var(--navy);font-size:.82rem;letter-spacing:.065em;text-transform:uppercase}
-.pa-group-head span{color:var(--muted);font-size:.65rem}
-.pa-card{padding:14px 0 15px;border-bottom:1px solid #d8e1e5;break-inside:avoid}
+.pa-flow-nav{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0 3px}
+.pa-flow-nav a{display:inline-flex;align-items:center;min-height:30px;padding:6px 9px;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:var(--navy);font-size:.67rem;font-weight:750;text-decoration:none}
+.pa-flow-nav a:hover,.pa-flow-nav a:focus-visible{border-color:var(--blue);color:var(--blue);outline:0}
+.pa-flow{scroll-margin-top:74px;margin-top:22px;padding-top:3px}
+.pa-flow+.pa-flow{padding-top:22px;border-top:2px solid var(--line)}
+.pa-flow-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px}
+.pa-flow-head span{display:block;margin-bottom:3px;color:var(--amber);font-size:.6rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.pa-flow-head h3{margin:0;color:var(--navy);font-size:1.08rem;line-height:1.25;letter-spacing:0;text-transform:none}
+.pa-flow-items{display:grid;gap:10px}
+.pa-card{padding:13px 14px;border:1px solid #d8e1e5;border-radius:4px;background:var(--paper);break-inside:avoid}
 .pa-card-head{display:flex;gap:10px;align-items:flex-start}
-.pa-card-head>span{min-width:24px;padding-top:2px;color:var(--amber);font-size:.69rem;font-weight:900;letter-spacing:.08em}
-.pa-card h4{margin:0;color:var(--navy);font-size:.98rem;line-height:1.32;text-transform:none}
-.pa-requirement,.pa-usage,.pa-content{max-width:82ch;margin-left:34px}
-.pa-requirement{margin-top:7px;color:var(--ink);font-size:.82rem;line-height:1.58}
-.pa-usage{margin-top:7px;color:#52616a;font-size:.75rem;line-height:1.5}
-.pa-usage span,.pa-content>span{margin-right:7px;color:var(--muted);font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.pa-content{margin-top:9px}
-.pa-content>span{display:block;margin-bottom:5px}
-.pa-content pre{margin:0;padding:10px 12px;border-left:3px solid var(--blue);background:#f8fafb;color:var(--navy);font:700 .78rem/1.5 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
-.pa-voice-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:9px}
-.pa-voice-head strong{color:var(--navy);font-size:.79rem}
-.pa-voice-head span{color:var(--muted);font-size:.65rem}
+.pa-card-number{min-width:25px;padding-top:3px;color:var(--amber);font-size:.67rem;font-weight:900;letter-spacing:.08em}
+.pa-card-title{min-width:0}
+.pa-type-badge{display:inline-block;margin:0 0 5px;padding:2px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-card h4{margin:0;color:var(--navy);font-size:.95rem;line-height:1.3;text-transform:none}
+.pa-card-body{margin:8px 0 0 35px}
+.pa-requirement,.pa-usage{max-width:84ch;margin:0;color:var(--ink);font-size:.79rem;line-height:1.55}
+.pa-usage{margin-top:7px;color:#52616a;font-size:.74rem}
+.pa-requirement>span,.pa-usage>span{display:block;margin-bottom:2px;color:var(--muted);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-content-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+.pa-content-head>span{color:var(--muted);font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-content{margin:5px 0 0;padding:11px 12px;border-left:3px solid var(--blue);background:#f8fafb;color:var(--navy);font:700 .78rem/1.52 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
+.pa-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:7px 9px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .6rem/1 var(--font);letter-spacing:.045em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.pa-copy-button:hover,.pa-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
+.pa-copy-button.is-copied{border-color:var(--green);background:var(--green)}
+.pa-flow-copy-source{display:none}
+.pa-voice-setup-block{margin:12px 0 0}
+.pa-voice-inline>.pa-type-badge{margin:0 0 5px 1px}
+.pa-voice-inline .voice-script-card{margin:0}
 body.theme-dark .pa-context,body.theme-dark .pa-usage{color:#c8d7dc}
-body.theme-dark .pa-content pre{background:#1d2f37;color:#e8eff3}
-@media(max-width:760px){.pa-requirement,.pa-usage,.pa-content{margin-left:0}}
+body.theme-dark .pa-context-box,body.theme-dark .pa-type-badge{background:#1d2f37}
+body.theme-dark .pa-card{border-color:#405761;background:#17262d}
+body.theme-dark .pa-content{background:#1d2f37;color:#e8eff3}
+@media(max-width:760px){
+.pa-flow-head{align-items:stretch;flex-direction:column}
+.pa-card-body{margin-left:0}
+.pa-content-head{align-items:flex-start}
+}
+@media print{
+.pa-flow-nav,.pa-copy-button{display:none!important}
+.pa-card,.pa-flow{break-inside:avoid}
+}
 </style>'''
+
+OBJECTIVE_COPY_SCRIPT = r'''<script id="production-assets-flow-copy-script">(function(){
+  function fallbackCopy(text){
+    var area=document.createElement('textarea');
+    area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';
+    document.body.appendChild(area);area.select();
+    try{document.execCommand('copy');}finally{document.body.removeChild(area);}
+  }
+  document.addEventListener('click',function(event){
+    var button=event.target.closest('[data-pa-copy]');if(!button)return;
+    var source=document.getElementById(button.getAttribute('data-pa-copy'));if(!source)return;
+    var text=source.textContent||'';
+    var label=button.querySelector('.pa-copy-label');
+    var original=label?label.textContent:'Copy';
+    var done=function(){
+      button.classList.add('is-copied');
+      if(label)label.textContent='Copied ✓';else button.textContent='Copied ✓';
+      setTimeout(function(){button.classList.remove('is-copied');if(label)label.textContent=original;else button.textContent=original;},1400);
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallbackCopy(text);done();});}
+    else{fallbackCopy(text);done();}
+  });
+})();</script>'''
 
 
 def _insert(source: str, closing: str, addition: str, label: str) -> str:
@@ -441,17 +569,15 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
     render_data = json.loads(render_data_path.read_text(encoding="utf-8"))
     assets = parse_asset_requirements(asset_path) if has_assets else None
     voice_doc = voice.parse_voice_production(voice_production_path) if has_voice else None
-    triggers = (
-        voice.parse_voice_requirement_triggers(voice_production_path.parent / "voice-requirements.md")
-        if has_voice
-        else {}
-    )
+    requirements_path = voice_production_path.parent / "voice-requirements.md"
+    triggers = voice.parse_voice_requirement_triggers(requirements_path) if has_voice else {}
+    voice_flows = voice.parse_voice_requirement_flows(requirements_path) if has_voice else {}
     source = output.read_text(encoding="utf-8")
 
     if voice.STYLE_MARKER in source or OBJECTIVE_STYLE_MARKER in source:
         raise ValueError("Production Assets extension already exists in rendered HTML.")
 
-    pages, nav = _pages_and_nav(render_data, assets, voice_doc, triggers)
+    pages, nav = _pages_and_nav(render_data, assets, voice_doc, triggers, voice_flows)
     nav_pattern = re.compile(r'(<nav class="sidebar-nav">)(.*?)(</nav>)', re.S)
     main_pattern = re.compile(r'(<main class="document-main">.*?)(</main>)', re.S)
     if len(nav_pattern.findall(source)) != 1:
@@ -472,12 +598,13 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
     head_additions = voice.VOICE_STYLE + OBJECTIVE_STYLE
     if has_assets:
         asset_sha = hashlib.sha256(asset_path.read_bytes()).hexdigest()
-        head_additions += (
-            f'\n<meta content="{asset_sha}" name="asset-requirements-sha256"/>'
-        )
+        head_additions += f'\n<meta content="{asset_sha}" name="asset-requirements-sha256"/>'
     source = _insert(source, "</head>", head_additions, "head")
+
+    body_additions = OBJECTIVE_COPY_SCRIPT
     if has_voice:
-        source = _insert(source, "</body>", voice.VOICE_COPY_SCRIPT, "body")
+        body_additions += "\n" + voice.VOICE_COPY_SCRIPT
+    source = _insert(source, "</body>", body_additions, "body")
 
     section_ids = set(re.findall(r'<section\b[^>]*\bid="([^"]+)"', source))
     targets = set(re.findall(r'data-target="([^"]+)"', nav))
