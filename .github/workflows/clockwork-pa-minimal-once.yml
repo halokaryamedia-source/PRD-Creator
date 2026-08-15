@@ -32,7 +32,9 @@ jobs:
           python -m pip check
 
       - name: Apply concise Production Assets patch
-        run: python .tmp-pa-minimal/patch.py
+        run: |
+          python .tmp-pa-minimal/fix.py
+          python .tmp-pa-minimal/patch.py
 
       - name: Compile and contract-test
         run: |
