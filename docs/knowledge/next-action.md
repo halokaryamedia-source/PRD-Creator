@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_PRD_HANDOFF_READY`
+`CLOCKWORK_VOICE_DELIVERY_READY`
 
-The approved Clockwork gameplay revision for Objectives 1-4 is projected into the current v1.0.0 delivery bundle and mechanically validated. Objective 1 uses the approved partial display, 2 rule + 8 useful clue + 2 harmless decoy book structure, and hidden Orange / Brown / Purple + Left-pulse solution.
+The Clockwork v1.0.0 PRD remains handoff-ready. Voice Requirements and Voice Production are now current for the approved gameplay revision, and the consolidated project HTML has been rerendered with the revised Voice Production Assets.
 
-Existing Voice canonical files remain stale for the previous gameplay revision and were intentionally excluded from the current PRD render.
+Objective 1 Voice now supports the partial-display / scattered-book deduction model without revealing Orange, Purple, Left-pulse, or lever solutions. Broken Gallery Voice uses checkpoint barrels, marked block/ladder placement, and the Level 3 50% threshold. Warden Voice uses the 3-second Echo Pebble cooldown, 4-second wall-laser disable, hanging-stone laser solution, and no Pebble disable for floor traps or swinging axes. Workshop Voice uses the continuous L-rotator network, route-swap sabotage, and separate 50% / 80% rollback reactions.
 
 ## Next Step
 
-Revise the affected Voice requirements and Voice Production from the current handoff-ready PRD, validate Voice, then rerender the same v1.0.0 project HTML with revised Voice included.
+Enter Generation Mode only when actual ElevenLabs audio generation or heard-take review is requested. Until then, keep audio evidence as not provided and do not claim measured Voice quality or duration.
