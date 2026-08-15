@@ -110,7 +110,7 @@ Done When:
 - Every lever change produces immediate deterministic lamp-color feedback for that pillar.
 - Pressure plates change only steady/pulse state and never change the selected color.
 
-### Gameplay Flow 04 — Enter the Workshop
+### Gameplay Flow 04 — Engine Restored
 For: Resonance Engine restoration and the route opening.
 Trigger: Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are all valid at the same time.
 Player Experience: The three pillars visibly synchronize, the Resonance Engine returns to operation, and attention moves to the newly opened Broken Gallery route.
@@ -208,7 +208,7 @@ Requirement: Every valid lever change must produce immediate readable lamp feedb
 Usage: Active throughout Objective 1 and reset completely for the next run.
 
 #### Resonance Engine Restoration
-Flow: 04 — Enter the Workshop
+Flow: 04 — Engine Restored
 For: Show the Resonance Engine returning to life.
 Requirement: Create one short completion presentation that visually confirms all three pillars have synchronized and the Engine has returned to operation, then directs attention toward the newly opened Broken Gallery route.
 Usage: Runs once after valid Objective 1 completion.
@@ -219,7 +219,7 @@ Usage: Runs once after valid Objective 1 completion.
 For: Introduce the collapsed Gallery and the supplies left behind.
 Trigger: The player enters Broken Gallery Level 1 with checkpoint barrels and the three route choices available.
 Player Experience: The player learns the repeated loop: search barrels, repair only marked gaps, reach the checkpoint, and retry only the current level on failure.
-Uses: Custodian Vex; Objective 2 Instruction Panel; Valid Placement Markers
+Uses: Custodian Vex; Objective 2 Instruction Panel; Repair Markers
 Done When:
 - The route-loop instruction text is readable without revealing a viable route.
 - Legal placement markers are clearly different from ordinary environment blocks.
@@ -229,7 +229,7 @@ Done When:
 For: First crossing through the Broken Gallery.
 Trigger: Checkpoint 1 is active and Level 1 resources/routes are reset.
 Player Experience: The player reads three routes, uses the 12-block allocation, and must avoid wasting supplies on the non-viable route.
-Uses: Level 1 Brief; checkpoint barrels; Valid Placement Markers
+Uses: Level 1 Brief; checkpoint barrels; Repair Markers
 Done When:
 - The Level 1 brief uses the exact approved text and does not reveal which two routes work.
 - The authored allocation is 12 blocks and only marked placements are accepted.
@@ -239,7 +239,7 @@ Done When:
 For: Second, tighter crossing through the Broken Gallery.
 Trigger: Checkpoint 2 is active and Level 2 resources/routes are reset.
 Player Experience: The player solves a tighter route/resource problem using 20 blocks and 3 ladders while only one route can be completed.
-Uses: Level 2 Brief; checkpoint barrels; blocks; ladders; Valid Placement Markers
+Uses: Level 2 Brief; checkpoint barrels; blocks; ladders; Repair Markers
 Done When:
 - The Level 2 brief uses the exact approved text without naming the viable route.
 - The authored allocation is 20 blocks + 3 ladders and placement remains marker-owned.
