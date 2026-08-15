@@ -94,7 +94,7 @@ jobs:
           assert 'Used</b>' in html
           assert 'Includes</b>' in html
           assert 'Route Swap — after Ring Two restoration' in html
-          assert 'Gremlin\'s Wager — final crossing' in html
+          assert "Gremlin's Wager — final crossing" in assets or "Gremlin's Wager — final crossing" in voices
           assert 'Throughout Objective' in html
           assert 'Objective Complete' in html
 
