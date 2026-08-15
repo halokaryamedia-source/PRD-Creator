@@ -48,91 +48,97 @@ Voice system: Custodian Vex · direct in-world guide across the vault; no radio/
 
 ## 02. The Resonance Engine
 
-### VO-RES-01 — Experiment Before the Target
+### VO-RES-01 — Find the Missing Combination
 - Type: Main Story
 - Function: briefing
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The Resonance Engine seal opens and the player gains control inside the reset Engine chamber while the target display is still blank.
-- Purpose: Invite safe experimentation and clue reading before directed solving without revealing the authored hidden mapping.
+- Trigger: The Resonance Engine seal opens and the player gains control inside the reset chamber while the partial door display shows Middle = Brown and the other target fields remain unknown.
+- Purpose: Explain how to approach the deduction puzzle without revealing the hidden Left/Right colors, pulse answer, or lever solution.
 - Must communicate:
-  - The player should read the clue books and test the available machine inputs.
-  - Lever/plate experimentation is safe and produces readable feedback.
-  - The player should learn the machine rule before chasing a target.
-  - The target display will activate after the free-experimentation phase.
+  - The door display already reveals Middle = Brown.
+  - The scattered books provide clues for the missing Left and Right colors and which pillar must pulse.
+  - The books have no required reading order and the player does not need every book to solve the puzzle.
+  - The player should test each pillar’s upper/lower lever combinations and read the immediate lamp feedback to learn how to produce the needed colors.
+  - Completion requires all three live pillar states to match the hidden combination together.
 - Must not add/repeat:
-  - Do not reveal a specific rule template or solution.
-  - Do not claim the target is already active.
-  - Do not introduce vanilla redstone knowledge.
+  - Do not reveal Left = Orange, Right = Purple, or Pulse = Left.
+  - Do not reveal the final lever ON/OFF combinations.
+  - Do not explain all twelve lever-to-color mappings.
+  - Do not imply all twelve books must be found or read.
 - Source refs:
-  - content.md → 02 Gameplay Flow → The Resonance Engine → Free Experimentation
-  - content.md → 05 The Resonance Engine → Level Design → Design Flow → Observation Point
-  - content.md → 05 The Resonance Engine → Developer → Free-Play and Targets
+  - content.md → 02 Gameplay Flow → The Resonance Engine
+  - content.md → 05 The Resonance Engine → Gameplay Overview
+  - content.md → 05 The Resonance Engine → Developer → Books and Experimentation
 
 ## 03. The Broken Gallery
 
-### VO-GAL-01 — Carry the Key Across
+### VO-GAL-01 — Read the Routes and Supplies
 - Type: Main Story
 - Function: briefing
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The player enters the Broken Gallery after Resonance Engine completion and receives the fixed crossing kit plus Custodian Key.
-- Purpose: Establish the immediate crossing goal and limited-resource mindset without spoiling the authored Checkpoint 3 collapse.
+- Trigger: The player enters Broken Gallery Level 1 with the checkpoint barrels available and the three route choices visible.
+- Purpose: Establish the repeated route-reading/resource loop without revealing which authored routes are viable.
 - Must communicate:
-  - Carry the Custodian Key to the far pedestal.
-  - Use the fixed construction supplies carefully.
-  - Choose repairs/routes that can actually be completed with the available kit.
+  - Search the checkpoint barrels for the current level’s construction resources.
+  - Use blocks and ladders only at marked placement positions.
+  - Inspect the three routes and spend the limited resources carefully.
+  - If the active attempt fails from resource exhaustion or level-time expiry, only the current level resets while earlier completed levels remain complete.
 - Must not add/repeat:
-  - Do not reveal the exact future collapse timing or segment before its warning begins.
-  - Do not describe upper/lower/side as three separate progression tracks.
-  - Do not introduce lethal failure wording.
+  - Do not reveal that Level 1 middle/right or Level 2 right are the viable answers.
+  - Do not describe free-form building as valid.
+  - Do not introduce the old Custodian Key, Spring Column, or Anchor Ring mechanics.
+  - Do not imply a full-objective restart after a local retry.
 - Source refs:
+  - content.md → 02 Gameplay Flow → The Broken Gallery
   - content.md → 06 The Broken Gallery → Gameplay Overview
-  - content.md → 06 The Broken Gallery → Gameplay Flow → Survey the Crossing
-  - content.md → 06 The Broken Gallery → Developer → Fixed Supply Kit
+  - content.md → 06 The Broken Gallery → Developer → Level 1 / Level 2 Runtime
 
-### VO-GAL-02 — Checkpoint 3 Collapse Warning
+### VO-GAL-02 — Level 3 Gremlin Threshold
 - Type: Direct NPC Dialogue
 - Function: warning
 - Necessity: supporting
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: Checkpoint 3 is active and the authored short collapse-warning sequence begins while the player is crossing the final section.
-- Purpose: Reinforce the live danger state and make immediate forward movement clear while visual warning remains the primary readable cue.
-- Timing Constraint: Must complete within the short Checkpoint 3 warning sequence before the authored collapse resolves.
+- Trigger: Broken Gallery Level 3 becomes active, all three routes are initially viable, and the authored progress threshold begins for the player’s chosen route.
+- Purpose: Make the Level 3 timing rule and route-loss consequence understandable without choosing a route for the player.
 - Must communicate:
-  - The current section is about to collapse.
-  - Keep moving through the active crossing.
+  - All three Level 3 routes are initially viable.
+  - Choose one route and reach at least 50% progress before the authored threshold.
+  - Missing the threshold closes the failed route for that run while an alternative remains and returns the player to Checkpoint 3 for another attempt.
 - Must not add/repeat:
-  - Do not give a camera-direction instruction or name a hidden route.
-  - Do not imply death or full-objective restart.
-  - Do not announce collapse before Checkpoint 3 warning begins.
+  - Do not identify which route the player should choose.
+  - Do not invent a numeric threshold duration that the PRD does not define.
+  - Do not imply death or a restart of Levels 1–2.
 - Source refs:
-  - content.md → 02 Gameplay Flow → The Broken Gallery → Checkpoint 3
-  - content.md → 06 The Broken Gallery → Gameplay Flow → Checkpoint 3 — Collapse and Adapt
-  - content.md → 06 The Broken Gallery → Developer → Checkpoint 3 Collapse
+  - content.md → 02 Gameplay Flow → The Broken Gallery → Level 3 — Gremlin Time Challenge
+  - content.md → 06 The Broken Gallery → Gameplay Flow → Level 3 — Beat the Gremlin Threshold
+  - content.md → 06 The Broken Gallery → Developer → Timed Route State / Route Failure and Recovery
 
 ## 04. The Warden Halls
 
-### VO-WARD-01 — Echo Pebble Rule Briefing
+### VO-WARD-01 — Echo Pebble and Trap Rules
 - Type: Main Story
 - Function: briefing
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The Warden Halls layout activates and the player receives the unlimited Echo Pebble before the first trap-family sequence.
-- Purpose: Explain the invented Echo Pebble rule and the critical difference between wall/floor traps and ceiling traps before combinations become complex.
+- Trigger: Warden Level 1 activates and the player receives the unlimited Echo Pebble before the first trap sequence.
+- Purpose: Explain the approved Pebble scope, cooldown, laser-disable window, and the distinction between laser solutions and hazards that must be avoided or timed.
 - Must communicate:
-  - Echo Pebble can disable wall and floor traps.
-  - A valid disable lasts 4 seconds of game-time.
-  - Ceiling traps cannot be disabled.
-  - Ceiling hazards must be crossed by observing their cycle and timing movement.
+  - Echo Pebble supply is unlimited, but every throw starts a 3-second cooldown before the next throw.
+  - Hitting an authored wall-laser sensor disables that laser for 4 seconds of game-time.
+  - At selected laser encounters, an authored hanging stone can be hit so it blocks the beam.
+  - Floor traps cannot be disabled by the Pebble and must be avoided.
+  - Swinging ceiling axes cannot be disabled by the Pebble and must be crossed by timing their movement.
 - Must not add/repeat:
-  - Do not imply the Pebble is consumed permanently.
-  - Do not imply ceiling traps can be disabled or bypassed by the Pebble.
-  - Do not prescribe one mandatory cautious/rush strategy.
+  - Do not claim floor traps can be disabled by Echo Pebble.
+  - Do not claim swinging axes can be disabled by Echo Pebble.
+  - Do not imply Pebble ammunition is limited.
+  - Do not change the 3-second cooldown or 4-second laser-disable duration.
 - Source refs:
   - content.md → 02 Gameplay Flow → The Warden Halls
   - content.md → 07 The Warden Halls → Gameplay Overview
@@ -144,7 +150,7 @@ Voice system: Custodian Vex · direct in-world guide across the vault; no radio/
 - Necessity: supporting
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The player clears the final security sequence, enters the inner gate, and the route toward Gremlin’s Workshop opens.
+- Trigger: The player clears the third Warden level, reaches the inner gate, and the route toward Gremlin’s Workshop opens.
 - Purpose: Connect the still-active security system to the vault’s story and frame the Workshop as the next destination without rebriefing trap mechanics.
 - Must communicate:
   - The Wardens never stopped protecting the Great Orrery.
@@ -160,70 +166,88 @@ Voice system: Custodian Vex · direct in-world guide across the vault; no radio/
 
 ## 05. The Gremlin’s Workshop
 
-### VO-WORK-01 — Build One Live Network
+### VO-WORK-01 — Build One Continuous Network
 - Type: Main Story
 - Function: briefing
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The player enters the Workshop and conduit interaction becomes active on the unsabotaged 3×3 grid.
-- Purpose: Establish the invented conduit grammar at the level needed to begin Ring 1 and understand cumulative Ring 1→2→3 progression.
+- Trigger: The player enters the Workshop and the authored L-rotator network becomes interactive with the Generator and Ring 1–3 visible.
+- Purpose: Establish the 90-degree L-rotator grammar and cumulative Generator → Ring 1 → Ring 2 → Ring 3 objective without revealing the authored route.
 - Must communicate:
-  - Rotate conduits so connected sides carry power from the Source Crystal.
-  - Power Ring 1 first.
-  - Extend the same live network to Ring 2 and Ring 3.
-  - Previously powered rings must remain connected as the network grows.
+  - Power starts at the Generator.
+  - Every rotator is an L-shaped junction connecting exactly two orthogonal directions.
+  - Rotate junctions to build one continuous powered network to Ring 1, then extend that same live network to Ring 2 and Ring 3.
+  - Earlier links must remain connected; losing an upstream link removes downstream power.
 - Must not add/repeat:
-  - Do not describe vanilla redstone behavior.
-  - Do not reveal the exact authored route or future sabotaged edge.
-  - Do not imply each ring resets the previous solution.
+  - Do not describe the obsolete 3×3 Straight/Elbow/Split board.
+  - Do not reveal exact route coordinates, blocker positions, or rotator orientations.
+  - Do not imply each ring is a separate reset puzzle.
 - Source refs:
   - content.md → 02 Gameplay Flow → The Gremlin’s Workshop
-  - content.md → 08 The Gremlin’s Workshop → Gameplay Flow → Learn the Grid and Power Ring 1
-  - content.md → 08 The Gremlin’s Workshop → Developer → Conduit Solver / Ring Progression
+  - content.md → 08 The Gremlin’s Workshop → Gameplay Overview
+  - content.md → 08 The Gremlin’s Workshop → Developer → Rotator Solver / Ring Progression
 
-### VO-WORK-02 — Gremlin Sabotage Reaction
+### VO-WORK-02 — Route Swap Reaction
 - Type: Direct NPC Dialogue
 - Function: setback_recovery
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: About 20 seconds after Ring 2 stabilizes, the scripted Gremlin event visibly breaks one authored active connection and input is briefly locked.
-- Purpose: Make the external topology change unmistakable and immediately direct the player toward rerouting without changing the learned conduit rule.
-- Timing Constraint: Must fit within the authored sabotage reaction/input-lock beat before normal conduit interaction resumes.
+- Trigger: About 20 seconds after Ring 1 and Ring 2 are connected, the Gremlin route-swap event blocks the previous active route and opens the authored alternate route.
+- Purpose: Make the visible route swap unmistakable and direct the player to reroute without changing the learned L-rotator rule or revealing the solution.
 - Must communicate:
-  - The Gremlin severed an active connection.
-  - That broken connection is permanently unavailable for the rest of the run.
-  - The conduit connection rule itself has not changed.
-  - Reroute around the broken edge, restore lost power, and continue toward Ring 3.
+  - The route previously used to reach Ring 2 is now blocked.
+  - A previously blocked alternate route has opened.
+  - The L-rotator connection rule has not changed.
+  - Reroute through the newly available path and restore the Generator → Ring 1 → Ring 2 network.
 - Must not add/repeat:
-  - Do not imply the broken connection can be repaired.
-  - Do not introduce a reversed or new conduit rule.
-  - Do not identify a solution path that solves the reroute automatically.
+  - Do not claim the blocked route can still conduct power.
+  - Do not introduce a new or reversed rotator rule.
+  - Do not identify the exact solution sequence.
 - Source refs:
-  - content.md → 08 The Gremlin’s Workshop → Gameplay Flow → Gremlin Sabotage
-  - content.md → 08 The Gremlin’s Workshop → Developer → Scripted Connection Sabotage
-  - content.md → 08 The Gremlin’s Workshop → Important Build Notes → Fault Must Be Unmissable
+  - content.md → 02 Gameplay Flow → The Gremlin’s Workshop → First Gremlin Sabotage — Route Swap
+  - content.md → 08 The Gremlin’s Workshop → Developer → Post-Ring-2 Sabotage
 
-### VO-WORK-03 — Highlight-Only Assist
+### VO-WORK-03 — First Rollback Reaction
 - Type: Direct NPC Dialogue
-- Function: reminder
+- Function: setback_recovery
 - Necessity: supporting
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The configured Workshop assist threshold is reached and Vex highlights one useful node, connection, or region without changing the board.
-- Purpose: Direct attention to the authored highlight while preserving player ownership of the solution.
+- Trigger: Validated Ring 2 → Ring 3 progress reaches 50% and the Gremlin rotates exactly two previously correct rotators on the Generator → Ring 1 connection, interrupting the earlier powered network.
+- Purpose: Tell the player which earlier network section was disrupted and that it must be repaired before final completion.
 - Must communicate:
-  - Look at the highlighted area/connection.
-  - The highlight is a clue, not an automatic solution.
-  - The player still needs to complete the route.
+  - The Generator → Ring 1 connection has been knocked out of alignment.
+  - The player must return to that earlier section and repair the affected rotators.
+  - The routing grammar has not changed.
 - Must not add/repeat:
-  - Do not rotate a node or state an exact completed route.
-  - Do not claim the highlighted area is the entire solution.
-  - Do not change Ring 2/3 automatically.
+  - Do not reveal the exact required orientations.
+  - Do not identify the affected rotators by technical coordinates.
+  - Do not imply the sabotage is permanent or requires a new connection rule.
 - Source refs:
-  - content.md → 02 Gameplay Flow → The Gremlin’s Workshop → Transition / Vex assist
-  - content.md → 08 The Gremlin’s Workshop → Developer → Vex Assist
+  - content.md → 02 Gameplay Flow → The Gremlin’s Workshop → Level 3 — Ring 2 to Ring 3 with Rollback Events
+  - content.md → 08 The Gremlin’s Workshop → Developer → 50% Progress Sabotage
+
+### VO-WORK-04 — Second Rollback Reaction
+- Type: Direct NPC Dialogue
+- Function: setback_recovery
+- Necessity: supporting
+- Speaker: Custodian Vex
+- Channel: Direct
+- Trigger: Validated Ring 2 → Ring 3 progress reaches 80% and the Gremlin rotates exactly three previously correct rotators on the Ring 1 → Ring 2 connection, interrupting the earlier powered network.
+- Purpose: Tell the player that the second earlier network section has been disrupted and must be repaired before Ring 3 can complete.
+- Must communicate:
+  - The Ring 1 → Ring 2 connection has been knocked out of alignment.
+  - The player must repair that earlier section and restore continuous power before completing Ring 3.
+  - The routing grammar has not changed.
+- Must not add/repeat:
+  - Do not reveal the exact required orientations.
+  - Do not identify the affected rotators by technical coordinates.
+  - Do not imply the sabotage is permanent or introduce a different rule.
+- Source refs:
+  - content.md → 02 Gameplay Flow → The Gremlin’s Workshop → Level 3 — Ring 2 to Ring 3 with Rollback Events
+  - content.md → 08 The Gremlin’s Workshop → Developer → 80% Progress Sabotage
 
 ## 06. Vault Restored
 
