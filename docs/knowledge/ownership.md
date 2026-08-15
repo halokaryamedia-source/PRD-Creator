@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-08-15
+Updated: 2026-08-16
 
 Use this file to locate the current owner before creating, moving, or editing repository structure. It combines area-level ownership and exact implementation/procedure routing so there is only one ownership map.
 
@@ -109,9 +109,20 @@ AUDIO
 PARTICLE
 ```
 
-Internal markdown storage headings exist only for source/parser organization and are not the visible 04 taxonomy/dashboard.
+The current parser still recognizes these internal source-group headings for backward compatibility:
+
+```text
+3D Models
+UI & Information
+Audio
+Visual Effects & Presentation
+```
+
+Those headings are **internal markdown/parser organization only**. They must never be interpreted by verification, authoring guidance, or the renderer as the visible 04 taxonomy/dashboard.
 
 Visual resources use `Function` + literal `Visual Brief` + optional real approved `Size`. UI / TEXT uses `Function` + exact player copy. Non-dialogue AUDIO uses `Function` + `Audio Brief`. Canonical Voice is merged as AUDIO with Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt. Generic visible metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, or `Build Specs` is not part of new 04 authoring.
+
+The integrated Flow 4 semantic review applies the `PRODUCTION-ASSETS.md` readiness gate whenever 04 exists. This does not create a separate persisted PASS field; 04 readiness is one lens inside `Semantic Readiness`.
 
 A downstream-only change may rerender the current versioned `prd.html` without changing PRD-core semantic ownership/acceptance when PRD canonical sources remain unchanged.
 
