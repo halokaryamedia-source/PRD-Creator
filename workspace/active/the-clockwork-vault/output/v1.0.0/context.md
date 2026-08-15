@@ -32,17 +32,17 @@ The Clockwork Vault is a solo adventure set inside a sealed ancient machine comp
 #### Complete Gameplay Journey
 
 1. **The Antechamber** — Meet Custodian Vex, learn why the vault is sealed, obtain the Custodian Key, and open the first objective chamber.
-2. **The Resonance Engine** — Use six levers and a pressure plate to match three crystal states, using books around the chamber as puzzle clues.
-3. **The Broken Gallery** — Cross three checkpoints using upper, lower, and side route variations while managing limited construction materials and adapting to the final collapse.
-4. **The Warden Halls** — Cross three increasingly complex trap checkpoints using the Echo Pebble to temporarily disable selected wall and floor traps while timing ceiling hazards.
-5. **The Gremlin’s Workshop** — Connect all three Great Orrery rings, then recover when a Gremlin destroys one active power connection after Ring 2.
+2. **The Resonance Engine** — Search scattered books to discover the hidden Left and Right target colors and which pillar must pulse, then experiment with the three pillar controls until the Engine matches the final state.
+3. **The Broken Gallery** — Cross three route-selection levels by searching checkpoint barrels, repairing only marked gaps, managing limited blocks/ladders, and surviving the final Gremlin time challenge.
+4. **The Warden Halls** — Cross three trap checkpoints using the Echo Pebble against wall-laser systems while avoiding floor traps and timing swinging ceiling axes.
+5. **The Gremlin’s Workshop** — Route continuous power from the Generator through Ring 1, Ring 2, and Ring 3, repairing the network each time the Gremlin disrupts an earlier connection.
 6. **The Vault Awakens** — Awaken the Great Orrery, reopen the century-sealed gateway, complete the story, and return safely.
 
 #### Global Gameplay Direction
 
 - **Learn Inside the Vault** — Each mechanic teaches its own rule. Outside redstone or crafting knowledge is not required.
-- **Consistent Challenges** — Puzzle states, trap cycles, collapse events, and Gremlin sabotage behave predictably for every run.
-- **Always Recoverable** — Mistakes may cost time, resources, or position, but no objective creates an unwinnable state.
+- **Authored and Readable Challenges** — Pillar mappings, route viability, trap behavior, and Gremlin sabotage follow authored states rather than hidden runtime randomness.
+- **Checkpoint Recovery** — Mistakes cost time, resources, route availability, or position. Objective 3 may deplete gameplay health, but recovery returns the player to the active checkpoint rather than restarting the full journey.
 - **Visible Restoration** — Each completed objective visibly restores another part of the Clockwork Vault.
 - **Vex Guides the Journey** — Custodian Vex explains transitions, reacts to setbacks, and connects every chamber to the Great Orrery restoration.
 
@@ -57,7 +57,7 @@ The player discovers the Clockwork Vault beneath forgotten ruins and crosses its
 - **The Custodian’s Warning**
   - Custodian Vex explains that previous visitors attempted the same journey but never restored the full system. Every chamber controls a necessary part of the vault: power distribution, access through the collapsed inner gallery, the ancient security halls, and the final network feeding the Great Orrery. The player must proceed because no other exit exists.
 - **Beginning the Restoration**
-  - The journey then proceeds through four gameplay objectives—Resonance Engine, Broken Gallery, Warden Halls, and Gremlin’s Workshop—before the restored Orrery opens the ending sequence.
+  - The journey proceeds through four gameplay objectives—Resonance Engine, Broken Gallery, Warden Halls, and Gremlin’s Workshop—before the restored Orrery opens the ending sequence.
 - **Transition:** Vex directs the player to the central pedestal. Taking the Custodian Key activates the first seal and reveals the entrance to the Resonance Engine. From this point forward, every completed objective visibly awakens another section of the vault.
 
 #### The Antechamber
@@ -65,81 +65,80 @@ The player discovers the Clockwork Vault beneath forgotten ruins and crosses its
 The Antechamber is a protected lobby and narrative introduction where the player first meets Custodian Vex.
 
 - **Discovering the Clockwork Vault**
-  - The Antechamber is a protected lobby and narrative introduction where the player first meets Custodian Vex. The room establishes the vault’s history, the century-sealed entrance, the failure of the Great Orrery, and the only possible route to freedom. The player is not tested here; the purpose is to establish motivation and make the complete journey understandable before Objective 1 begins.
+  - The Antechamber establishes the vault’s history, the century-sealed entrance, the failure of the Great Orrery, and the only possible route to freedom. The player is not tested here; the purpose is to establish motivation and make the complete journey understandable before Objective 1 begins.
 - **Receiving the Custodian Key**
-  - A central pedestal holds the Custodian Key. Vex explains that the key is not the exit key; it grants access to the first mechanism that must be restored. The pedestal, the sealed entrance behind the player, and the Objective 1 gate must remain visible within the same composition so the player understands where they came from and where they must go.
+  - A central pedestal holds the Custodian Key. Vex explains that the key is not the exit key; it grants access to the first mechanism that must be restored. The pedestal, sealed entrance, and Objective 1 gate remain readable within the same onboarding route.
 - **Opening the First Objective**
-  - After the briefing, the player takes the Custodian Key from the central pedestal and uses it on the Resonance Engine seal. The keyed gate opens and hands control directly into Objective 1.
-- **Transition:** When the player takes the Custodian Key and uses it on the first vault seal, the Resonance Engine door opens. Vex gives a concise objective briefing and the story moves from mystery into action.
+  - After the briefing, the player takes the Custodian Key and uses it on the Resonance Engine seal. The keyed gate opens and hands control directly into Objective 1.
+- **Transition:** When the Custodian Key is accepted by the first seal, the Resonance Engine door opens. Vex gives a concise objective briefing and the story moves from mystery into action.
 
 #### The Resonance Engine
 
-The player enters a compact puzzle chamber with six levers, one pressure-plate submission, three crystal outputs, a physically visible but initially blank target display, and authored clue books.
+The player enters a puzzle chamber containing three pillars. Each pillar has an upper lever, lower lever, pressure plate, and colored indicator lamp. Twelve books are scattered around the chamber with no required reading order.
 
-- **Free Experimentation**
-  - The player enters with all machine elements visible. Vex demonstrates that the levers and pressure plate are safe to use without revealing the hidden mapping. The target display is present but remains blank/inactive.
-  - For approximately 90 seconds of game-time, the player can read clues and test inputs freely. Every valid interaction produces immediate crystal light/sound feedback and the complete panel state remains readable.
-- **Target 1 Appears**
-  - After the free-play phase, Target 1 appears with a clear chime. The player compares the required Dark, Glowing, and Pulsing states with the observed machine behavior, adjusts the six lever configuration, and submits using the pressure plate. Incorrect submissions stay visible and can be revised immediately.
-- **Target 2 Requires the Learned Rule**
-  - When Target 1 is confirmed, Target 2 appears. The second target must require the player to apply the distinguishing rule learned from clues/experimentation rather than repeat the first configuration. The objective remains recoverable until confirmation or the station deadline.
-- **Restoring the Resonance Engine**
-  - Target 2 confirmation locks the completed Engine state, records the raw input/state and target timing evidence, activates the vault response, and opens the Broken Gallery transition. The platform calculates the Objective Score; the map does not display or export it.
-- **Transition:** The Broken Gallery opens after Target 2 confirmation and the Resonance Engine boundary record is secured.
+- **Read the Partial Door Display**
+  - The display near the exit reveals only one part of the required combination: the Middle pillar must be Brown. The Left color, Right color, and the one pillar that must pulse remain unknown. The display never reveals any lever combination.
+- **Search Scattered Books for Missing Information**
+  - The twelve books are a mixed set rather than a sequence: two explain machine rules, eight provide useful clues, and two are harmless maintenance/lore decoys. The rule books explain TOP → BOTTOM lever reading and that pressure plates control steady/pulsing behavior rather than color. The useful books gradually narrow the hidden target to Left = Orange, Right = Purple, and Pulse = Left. A player who finds useful books first may solve faster; reading all twelve is not required.
+- **Experiment with the Pillars**
+  - The books do not teach all twelve lever-to-color mappings. The player tries the four TOP → BOTTOM lever combinations on each pillar and reads the immediate lamp feedback to discover how that pillar produces its available colors. The pressure plate independently switches that pillar between steady and pulsing without changing the selected color.
+- **Match the Hidden Final State**
+  - The valid door solution is Left Orange and pulsing, Middle Brown and steady, Right Purple and steady. The player combines the book deductions with lever experimentation until all three live pillar states match this complete target simultaneously.
+- **Transition:** When Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are confirmed together, the Resonance Engine restores, the completion boundary is secured, and the Broken Gallery opens.
 
 #### The Broken Gallery
 
-The player enters a vast collapsed gallery with three route families: upper, lower, and side.
+The Broken Gallery is a three-level route-selection challenge. Each level provides three possible routes, checkpoint-local resource barrels, and marked positions where construction blocks or ladders may be placed.
 
-- **Checkpoint 1 — Choosing a Viable Route**
-  - The player enters a vast collapsed gallery with three route families: upper, lower, and side. None is fully intact. Building materials are collected near the starting checkpoint and must be used to repair gaps, missing stairs, broken ladders, or disconnected platforms. During Phase 1, two routes are valid and can reach Checkpoint 1, allowing the player to compare route readability and material cost.
-- **Phase 2 — Finding the Single Correct Continuation**
-  - After Checkpoint 1, the gallery narrows into another three-route decision, but only one route can be completed with the available materials. The other routes provide visible warning signs and consume resources if chosen carelessly. The player must inspect the damage, estimate the required repairs, and commit before exhausting the limited kit. Checkpoint 2 secures progress and provides the final controlled material allocation.
-- **Checkpoint 3 — Crossing Before the Route Collapses**
-  - Beyond Checkpoint 2, the final crossing becomes unstable. A visible warning sequence starts, and the player must move efficiently through the authored repairs. Around 50% of Checkpoint 3 progress, the current segment resolves into its collapsed/sealed state from a safe event position. The player then uses the remaining recovery connector/route to continue. Failure or a fall returns the player to the nearest valid checkpoint/ledge with the final-phase state recoverable; the full objective does not restart.
-- **Placing the Custodian Key**
-  - After the recovery crossing, the player reaches the far pedestal and places the Custodian Key. The Gallery records checkpoint progress, resource state, collapse response, resupply use, and completion before opening the Warden Halls.
-- **Transition:** The Warden Halls open after the Custodian Key is accepted by the far pedestal and the Gallery completion record is secured.
+- **Level 1 — Two Viable Routes**
+  - The player searches the Level 1 barrels, reads the three broken route options, and repairs only marked placement positions. The middle and right routes are viable; the left route requires more material than the available allocation. A viable Level 1 crossing requires 12 blocks. Choosing poorly may consume the available resource before the route can be finished.
+- **Level 2 — One Viable Route**
+  - At the second checkpoint the same loop returns with a harder resource problem. The player receives an authored allocation for a crossing that requires 20 blocks and 3 ladders. Only the right route is viable. Ladders, like blocks, can be placed only at marked authored positions.
+- **Local Retry and Resource Recovery**
+  - If the player exhausts the current level’s resource on an incomplete route or the configured level time expires, the player returns to that level checkpoint. Temporary blocks/ladders placed during the failed attempt are removed, the checkpoint resource search becomes available again, and completed earlier levels remain complete.
+- **Level 3 — Gremlin Time Challenge**
+  - All three Level 3 routes are initially viable. The player chooses one, collects the checkpoint resource, and must reach at least 50% of that route before the authored time threshold. If the threshold is missed, the player returns to Checkpoint 3, the failed route becomes unavailable for that run while an alternative remains, and the player searches for resource again before choosing another active route.
+- **Transition:** Objective 2 completes when the player successfully clears Level 3 and reaches the exit into the Warden Halls. The full Gallery does not restart after a checkpoint-local failure.
 
 #### The Warden Halls
 
-The Warden Halls are a controlled security corridor containing wall sensors, floor traps, and ceiling traps.
+The Warden Halls are a three-level trap maze built around wall lasers, floor traps, and swinging ceiling axes. The Echo Pebble is an unlimited tool with a 3-second cooldown between throws.
 
-- **Phase 1 — Learning the Three Trap Families**
-  - The Warden Halls are a controlled security corridor containing wall sensors, floor traps, and ceiling traps. Each type has a distinct silhouette, warning cue, active state, and non-lethal consequence. The player receives an Echo Pebble that can disable wall and floor traps for a 4-second game-time window. Ceiling traps cannot be disabled and must be passed through observation and timing.
-- **Phase 2 — Combining Trap Types**
-  - After the first checkpoint, wall, floor, and ceiling hazards begin appearing in combinations. Echo Pebble use creates a 4-second safe window on valid wall/floor targets, so the player must disable the correct trap, read the remaining active hazard, and move before the disabled trap recovers. Failure costs time or returns the player to the nearest safe checkpoint.
-- **Phase 3 — Crossing the Final Security Sequence**
-  - The final phase uses denser combinations and shorter decision windows while preserving the same established rules. The player must choose when to use the Echo Pebble, when to wait, and when to move through an unavoidable ceiling cycle. The difficulty increases through composition, not by introducing unexplained trap behavior.
-- **Reaching the Inner Vault**
-  - After the final trap sequence, the player reaches the protected Records Room. The hall completion state is recorded and the route toward Gremlin’s Workshop opens.
-- **Transition:** After the final trap sequence, the player reaches the inner gate and the entrance to the Gremlin’s Workshop. Vex confirms that the Wardens never stopped protecting the Orrery; the still-active defence system proves that the vault has continued performing its purpose throughout the centuries.
+- **Learn the Three Trap Families**
+  - Wall lasers communicate a visible beam/sensor state and may be crossed by timing or temporarily disabled. Floor traps are ground hazards that must be avoided. Swinging axes move across the corridor from the ceiling and must be crossed by reading their timing.
+- **Use the Echo Pebble on Valid Laser Targets**
+  - Throwing the Echo Pebble at an authored wall-laser sensor temporarily disables that laser. At selected encounters, the Pebble can instead strike an authored hanging stone so it drops into the beam path and blocks the laser. Floor traps and swinging axes never accept the Pebble as a disable solution.
+- **Respect the Cooldown and Hazard Consequences**
+  - Pebble supply is unlimited, but each throw starts a 3-second cooldown before the next throw. Laser contact deals 10 gameplay damage, Weakness II for 5 seconds, and Slowness I for 3 seconds. Floor-trap contact deals 5 gameplay damage, Slowness II for 5 seconds, and Blindness for 3 seconds. Swinging-axe contact deals 10 gameplay damage, knocks the player backward, applies Weakness II for 5 seconds, and Slowness I for 3 seconds.
+- **Checkpoint Recovery**
+  - Each Warden level has its own checkpoint. If gameplay health reaches zero from trap damage, the player returns to the active level checkpoint in a safe recovered state. Earlier completed Warden levels remain complete.
+- **Transition:** After clearing the third trap level, the player reaches the inner gate and enters the Gremlin’s Workshop for the final restoration objective.
 
 #### The Gremlin’s Workshop
 
-The final chamber contains the Source Crystal, the Great Orrery, three target rings, and a 3×3 grid of rotatable conduit nodes.
+The Workshop contains the Power Generator, three Great Orrery rings, and an authored network of power paths controlled by 90-degree L-shaped rotator junctions.
 
-- **Connecting Ring 1**
-  - The final chamber contains the Source Crystal, the Great Orrery, three target rings, and a 3×3 grid of rotatable conduit nodes. Every conduit has visible connection sides and rotates in 90-degree steps. Power travels only through sides that physically connect. The player first creates one valid route from the Source Crystal to Ring 1.
-- **Connecting Ring 2 and Surviving the Sabotage**
-  - Ring 2 must be connected while Ring 1 remains powered, requiring the player to build a cumulative network rather than replace the first solution. After Ring 2 stabilizes, a Gremlin visibly crosses the board and destroys one active conduit connection between the Source Crystal and an already powered ring. The damaged connection is permanently marked and cannot conduct power again during the run.
-- **Rebuilding and Extending the Network**
-  - The sabotage interrupts the active network. The player must rotate the remaining conduits to establish a new valid route from the Source Crystal, restore the disconnected ring, preserve the other active ring, and then extend the network to Ring 3. The final challenge is therefore not a reversed pipe rule; it is a cumulative rerouting problem with one known connection permanently unavailable.
-- **Restoring the Great Orrery**
-  - When all three rings are powered at the same time, the Great Orrery enters its restored state. Puzzle input closes and the controlled Vault Restored ending begins.
-- **Transition:** The objective completes only when Ring 1, Ring 2, and Ring 3 are powered simultaneously. The Great Orrery begins rotating, energy returns throughout the vault, and the ending sequence starts. If the player reaches the configured assist threshold, Vex may highlight a valid connection without rotating the board automatically; the player still completes the route.
+- **Level 1 — Generator to Ring 1**
+  - The player learns the routing rule by rotating L-junctions until one continuous powered path reaches Ring 1. Each rotator connects exactly two orthogonal directions, so an incorrect orientation visibly interrupts the route.
+- **Level 2 — Ring 1 to Ring 2**
+  - The player extends the same live network from Ring 1 toward Ring 2. Earlier power must remain connected; the puzzle is cumulative rather than three unrelated ring solutions.
+- **First Gremlin Sabotage — Route Swap**
+  - About 20 seconds after Ring 1 and Ring 2 are successfully connected, the Gremlin disrupts the route used to reach Ring 2. The previous route receives an unmistakable blocked state, while a previously blocked alternate route opens. The player must reroute through the newly available path and restore the continuous Generator → Ring 1 → Ring 2 network.
+- **Level 3 — Ring 2 to Ring 3 with Rollback Events**
+  - The player continues toward Ring 3. When validated Ring 2 → Ring 3 route progress reaches 50%, the Gremlin rotates two previously correct rotators on the Generator → Ring 1 connection, forcing the player to return and repair that earlier link. At 80% progress, the Gremlin rotates three previously correct rotators on the Ring 1 → Ring 2 connection, again removing power until the player repairs the earlier network.
+- **Transition:** The objective completes only when the Power Generator, Ring 1, Ring 2, and Ring 3 are all continuously connected after the sabotage events. The Great Orrery awakens and the Clockwork exit begins opening.
 
 #### The Vault Awakens
 
 When all three rings remain powered, the Great Orrery begins turning for the first time in centuries.
 
 - **Awakening the Great Orrery**
-  - When all three rings remain powered, the Great Orrery begins turning for the first time in centuries. Energy travels backward through every completed chamber: the Resonance crystals synchronize, gallery guide lights return, the Warden systems enter standby, and the century-sealed entrance begins unlocking. The ending visually confirms that the player restored one connected machine rather than completing unrelated challenges.
+  - Energy travels backward through every completed chamber: the Resonance Engine synchronizes, gallery guide lights return, Warden systems settle, and the century-sealed entrance begins unlocking. The ending confirms that the player restored one connected machine rather than completing unrelated challenges.
 - **Resolving the Custodian’s Story**
-  - Custodian Vex thanks the player and acknowledges that the vault was never waiting for someone merely to escape; it was waiting for someone capable of restoring it. The player receives the Clockwork Wayfinder reward after the completion record has been saved.
+  - Custodian Vex thanks the player and acknowledges that the vault was waiting for someone capable of restoring it. The player receives the Clockwork Wayfinder reward after the completion record has been saved.
 - **Leaving the Clockwork Vault**
   - After the result and Clockwork Wayfinder reward state are secured, the player follows the safe return route to the Holding Area while the assigned lane begins cleanup and reset.
-- **Transition:** The player exits through the reopened gateway as the Great Orrery continues operating behind them. The entrance closes gradually, not as another trap, but as the vault returns to its century-long cycle with its purpose restored. Temporary gameplay state is then cleared and the assigned lane is prepared for reuse.
+- **Transition:** The player exits through the reopened gateway as the Great Orrery continues operating behind them. Temporary gameplay state is cleared and the assigned lane is prepared for reuse.
 
 ### 03. Global Development
 
@@ -168,13 +167,14 @@ Build one isolated Clockwork journey per active player lane. Shared runtime syst
   - Result: Maintains one coherent adventure and clean state boundaries.
 ###### Shared Contracts
 - **Deterministic Treatment**
-  - Requirement: Use authored template/layout selection and fixed event dose.
-  - Requirement: Do not randomize collapse, traps, fault timing, or rule effects at runtime.
-  - Result: Keeps player conditions comparable and verifiable.
+  - Requirement: Use authored pillar mappings, route viability, route-close behavior, trap cycles/effects, and Gremlin sabotage events.
+  - Requirement: Do not randomize a gameplay rule or fault effect at runtime unless an authored variant has been separately approved.
+  - Result: Keeps player conditions readable and verifiable.
 - **Input and Accessibility**
   - Requirement: Support keyboard, controller, and touch equally.
-  - Requirement: Use simple interactions, no combat, no death, no precision parkour, and no vanilla-knowledge dependency.
-  - Result: Preserves the target experience for students aged 9–14.
+  - Requirement: Use simple interactions, no combat, and no vanilla-knowledge dependency.
+  - Requirement: Avoid precision parkour. Objective 3 may use gameplay damage and checkpoint recovery as explicitly defined by its hazard rules.
+  - Result: Preserves the intended accessible puzzle/traversal experience while respecting the approved Warden exception.
 ###### Delivery and QA
 - **Data and Scoring Boundary**
   - Requirement: Emit raw timestamped events only.
@@ -182,15 +182,15 @@ Build one isolated Clockwork journey per active player lane. Shared runtime syst
   - Result: Separates gameplay implementation from platform interpretation.
 - **Reset and Readiness**
   - Requirement: Reset every lane in under 30 seconds.
-  - Requirement: Test pause, interruption, rejoin, timeout, completion, multi-lane load, and no-leakage behavior.
+  - Requirement: Test pause, interruption, rejoin, timeout, completion, multi-lane load, checkpoint retry, and no-leakage behavior.
   - Result: Makes the map ready for back-to-back use.
 
 ##### Important Development Notes
 
 - **Lane Isolation** — Every active player owns one isolated lane; visual, audio, entity, particle, and gameplay state must not leak between lanes.
-- **Deterministic Objectives** — Authored targets, trap cycles, collapse behavior, and Gremlin sabotage remain reproducible across equivalent lanes.
+- **Authored Objective Rules** — Pillar mapping, Gallery route viability, Warden trap effects, and Workshop sabotage remain reproducible for equivalent sessions.
 - **Score Boundary** — The map emits raw gameplay evidence; Objective Scores are calculated outside the Minecraft experience.
-- **Reusable Lane** — A lane returns to service only after objective, ending, inventory, entity, timing, and temporary-block state are verified clean.
+- **Reusable Lane** — A lane returns to service only after objective, ending, inventory, entity, timing, temporary-block, trap, route, and sabotage states are verified clean.
 
 #### Game System
 
@@ -217,23 +217,23 @@ The shared runtime controls lane ownership, objective order, Custodian Vex, game
   - Result: Prevents another player’s event from spoiling or changing the experience.
 ###### Guide and Interaction
 - **Custodian Vex**
-  - Requirement: Use one persistent guide per lane with short externalized dialogue.
-  - Requirement: Pair every instruction with demonstration or highlight.
-  - Requirement: Do not reveal hidden rules before experimentation.
-  - Result: Provides instruction, tone, and blameless setback reactions.
+  - Requirement: Use one persistent guide per lane with concise externalized dialogue.
+  - Requirement: Pair important instructions with readable UI, in-world state, or authored presentation.
+  - Requirement: Do not reveal hidden route solutions or clue answers before the player solves them.
+  - Result: Provides instruction, tone, and readable setback reactions without auto-solving.
 - **Inventory and Permissions**
   - Requirement: Clear and grant station-specific inventory at entry.
-  - Requirement: Apply scripted break/place/interact permissions only to current station targets.
+  - Requirement: Apply scripted break/place/interact permissions only to current station targets and marked Gallery placement positions.
   - Requirement: Remove permissions/items at exit, interruption, and reset.
   - Result: Prevents map damage and cross-station state leakage.
 ###### Timing and Events
 - **Game-Time and Pause**
-  - Requirement: Own all timers and scheduled events in script game-time.
-  - Requirement: Pause player/camera input, timers, trap cycles, collapse, and fault at exact state.
+  - Requirement: Own all timers, cooldowns, and scheduled events in script game-time.
+  - Requirement: Pause player/camera input, timers, Echo Pebble cooldown, trap cycles, Gallery thresholds, and Workshop sabotage at exact state.
   - Requirement: Keep absolute session hard caps according to the approved session rule.
   - Result: Makes pause deterministic without real-time drift.
 - **Setback Feedback**
-  - Requirement: Use telegraph → impact → Vex reaction for Gallery collapse, trap consequences, and Gremlin fault.
+  - Requirement: Use telegraph → impact → Vex/UI reaction for Gallery retries, Level 3 route closure, trap damage/checkpoint recovery, and Gremlin sabotage.
   - Requirement: Ensure visual treatment carries meaning when audio is muted.
   - Result: Makes external setbacks readable and memorable.
 ###### Station Lifecycle
@@ -243,13 +243,13 @@ The shared runtime controls lane ownership, objective order, Custodian Vex, game
   - Result: Creates reliable station boundaries.
 - **Rejoin Behavior**
   - Requirement: Save partial data immediately on disconnect.
-  - Requirement: Mark station interrupted and restart that station from initial state on rejoin while preserving completed objective results.
-  - Result: Protects data without resuming into an invalid temporary state.
+  - Requirement: Mark station interrupted and restart that station from a clean valid state on rejoin while preserving earlier completed objective results.
+  - Result: Protects data without resuming into invalid temporary geometry or hazard state.
 
 ##### Important Development Notes
 
 - **Script-Owned Timing** — Use Script API / scoreboard-owned timing rather than redstone clocks for objective lifecycle and scheduled events.
-- **Fixed Authored Rules** — Adaptive tiering does not rewrite Clockwork puzzle or hazard rules in this version.
+- **No Hidden Runtime Rule Changes** — Gremlin events change visible route availability or rotator orientation; they do not secretly change the learned connection grammar.
 - **Localization Ready** — Keep in-game strings externalized so localized copy can be added without changing gameplay logic.
 - **Concurrent Lane Test** — Shared systems must remain isolated and stable with all supported lanes active together.
 
@@ -259,9 +259,9 @@ Each objective records the raw gameplay events needed to reconstruct its result.
 
 ##### Development Flow
 
-- **Capture** — Record session, station, action, state, dose, pause, completion, timeout, and interruption events.
+- **Capture** — Record session, station, action, state, pause, completion, timeout, retry, and interruption events.
 - **Persist and Send** — Buffer safely, save at boundaries, and retry delivery without duplicate semantic events.
-- **Clear Runtime State** — Remove inventory, permissions, entities, particles, scheduled tasks, temporary blocks, and lane properties.
+- **Clear Runtime State** — Remove inventory, permissions, entities, particles, scheduled tasks, temporary blocks, effects, and lane properties.
 - **Restore and Verify** — Reload structures, restore defaults, run readiness checks, then release the lane.
 
 ##### Development Requirements
@@ -272,8 +272,8 @@ Each objective records the raw gameplay events needed to reconstruct its result.
   - Requirement: Do not send player name, gamertag, device identifier, platform interpretation, or final map-side score.
   - Result: Provides consistent anonymous event ownership.
 - **Objective Payloads**
-  - Requirement: Record the exact action and complete resulting state needed to reconstruct Resonance and Workshop behavior.
-  - Requirement: Record route/resource, trap/strategy, event dose, pause, completion, timeout, and interruption fields where required.
+  - Requirement: Record Resonance clue/pillar/target states, Gallery resource/route/checkpoint states, Warden Pebble/trap/damage/recovery states, and Workshop rotator/connectivity/sabotage states.
+  - Requirement: Record pause, completion, timeout, retry, and interruption fields where required.
   - Result: Provides platform scoring evidence without aggregation in-world.
 ###### Persistence and Delivery
 - **Boundary Save**
@@ -282,22 +282,22 @@ Each objective records the raw gameplay events needed to reconstruct its result.
   - Result: Prevents loss and duplication.
 - **Timing Rules**
   - Requirement: Use game-time timestamps; pause freezes gameplay timing.
-  - Requirement: Record scripted event dose exactly, including route collapsed, trap instance, and connection sabotaged.
+  - Requirement: Record authored event state exactly, including Gallery route closure, trap contact/effects, Pebble cooldown/disable windows, Workshop route swap, and 50%/80% rotator sabotage.
   - Result: Allows fair timing and treatment verification.
 ###### Reset Contract
 - **Script Cleanup**
   - Requirement: Cancel scheduled callbacks; clear station state, UI, effects, entities, items, permissions, scoreboards, and lane dynamic properties.
-  - Requirement: Remove any player-placed or temporary blocks before structure restore.
+  - Requirement: Remove player-placed Gallery blocks/ladders before structure restore.
   - Result: Prevents stale runtime logic.
 - **Structure Restore and Verification**
   - Requirement: Restore all station cells and ending states from approved structures.
-  - Requirement: Verify doors, targets, items, guide, timers, event flags, chosen variants, and player state.
+  - Requirement: Verify doors, targets, clue/pillar states, barrels/resources, route availability, trap cycles, health/effects, rotators, sabotage flags, items, guide, and timers.
   - Requirement: Release lane only after all readiness checks pass within 30 seconds.
   - Result: Guarantees pristine reuse.
 ###### Failure Recovery
 - **Interrupted Sessions**
   - Requirement: Preserve partial data and mark incomplete.
-  - Requirement: On rejoin, restart the interrupted station and retain earlier completed objective results.
+  - Requirement: On rejoin, restart the interrupted station from an authored clean state and retain earlier completed objective results.
   - Result: Protects evidence while avoiding corrupted temporary state.
 - **Delivery or Reset Failure**
   - Requirement: Queue failed data sends for retry and keep semantic IDs stable.
@@ -306,10 +306,10 @@ Each objective records the raw gameplay events needed to reconstruct its result.
 
 ##### Important Development Notes
 
-- **Objective-Owned Payloads** — Each objective emits only the raw fields needed to reconstruct its gameplay result and treatment state.
+- **Objective-Owned Payloads** — Each objective emits only the raw fields needed to reconstruct its gameplay result and authored treatment state.
 - **Raw Data Stays Raw** — Platform scoring or interpretation never changes the event payload produced by the map.
 - **Reset Is Runtime-Critical** — A lane is not reusable until cleanup and structure restoration complete within the approved reset target.
-- **No State Carryover** — Selected layouts, templates, fault state, inventory, temporary blocks, and objective flags must not survive reset.
+- **No State Carryover** — Clue/target states, route closures, trap effects, cooldowns, sabotage states, inventory, temporary blocks, and objective flags must not survive reset.
 
 #### Gameplay Development
 
@@ -327,7 +327,7 @@ Every playable area follows the same lifecycle: prepare a clean area, activate i
 ###### Objective Lifecycle
 - **Activation and Ownership**
   - Requirement: Activate a mechanic only after the assigned player reaches its safe entry state.
-  - Requirement: Keep timers, entities, effects, inventory, permissions, and temporary objects owned by the active lane/objective.
+  - Requirement: Keep timers, entities, effects, inventory, permissions, health/recovery logic, and temporary objects owned by the active lane/objective.
   - Requirement: Do not activate the next objective until the current handoff is complete.
   - Result: Only one objective controls the player at a time.
 - **Completion and Handoff**
@@ -349,7 +349,7 @@ Every playable area follows the same lifecycle: prepare a clean area, activate i
   - Result: Partial sessions remain recoverable without corrupting previous progress.
 ###### Reset and Reuse
 - **Objective Cleanup**
-  - Requirement: Clear temporary inventory, permissions, callbacks, effects, entities, player-placed blocks, and objective-local flags.
+  - Requirement: Clear temporary inventory, permissions, callbacks, effects, entities, player-placed blocks, health/recovery state, and objective-local flags.
   - Requirement: Restore authored structures and initial mechanic state.
   - Requirement: Release the lane only after readiness verification succeeds.
   - Result: Every objective can be replayed from the same authored starting state.
@@ -410,7 +410,7 @@ Build a compact protected entry lobby that frames Vex, the Great Orrery/vault co
   - Gameplay Function: Establishes the story and next objective without navigation ambiguity.
 - **Custodian Vex Position** — Area: Visible from spawn
   - Build/Visual: Give Vex a stable presentation point outside the player collision path.
-  - Build/Visual: Leave enough space for dialogue-facing camera/readability without locking movement.
+  - Build/Visual: Leave enough space for dialogue-facing readability without locking movement.
   - Gameplay Function: Provides the narrative guide and objective cue.
 ###### Key and Seal
 - **Custodian Key Pedestal** — Area: Central interaction point
@@ -515,164 +515,174 @@ Implement the Vex story briefing, Custodian Key pickup, keyed seal validation, f
 
 #### Gameplay Overview
 
-**Context:** A compact chamber contains six levers, one pressure-plate submission, three crystal outputs, clue books, and a target display. The display starts blank during free experimentation.
+**Context:** The Resonance Engine chamber contains three puzzle pillars with upper/lower levers, pressure plates, and colored indicator lamps. Twelve books are scattered through the chamber with no required reading order, while the door display reveals only Middle = Brown.
 
-**Main Objective:** Experiment with the Engine, infer the authored lever-to-crystal rule, then match Target 1 and Target 2.
+**Main Objective:** Use the scattered books to discover the missing Left and Right target colors and which pillar must pulse, then experiment with each pillar’s lever combinations until the machine reaches the complete hidden door solution.
 
-**Result:** Both targets are confirmed, the Resonance Engine activates, and the Broken Gallery route opens.
+**Result:** Left is Orange and pulsing, Middle is Brown and steady, and Right is Purple and steady; the Resonance Engine restores and the Broken Gallery route opens.
 
 ##### Gameplay Information
 
-- **Game Purpose:** Teach that the vault’s invented systems must be learned through observation and experimentation before directed solving.
-- **Gameplay Time:** Approximately 9 minutes; the first ~90 seconds are free experimentation before Target 1 appears.
-- **Starting Condition:** The player enters with the Engine reset to one authored rule template, all six levers/three panels initialized, clue books available, and the target display blank/inactive.
-- **End Condition:** Target 2 is held in the correct three-crystal state for the confirmation beat.
-- **Fail Condition:** Incorrect submissions show the resulting crystal state and can be retried. At the station deadline, partial progress is recorded and the journey continues.
-- **Scoring Criteria:** Objective Score 0–100 based on Target Completion, Free-Play Coverage, and Rule Application.
+- **Game Purpose:** Create a light deduction-and-experimentation puzzle where books reveal the missing target information and direct machine testing reveals how each lever pair produces color.
+- **Gameplay Time:** Approximately 9 minutes.
+- **Starting Condition:** All three pillars are reset, twelve books are scattered and readable, all pressure plates begin in their authored initial state, and the door display shows only Middle = Brown with the other target information unknown.
+- **End Condition:** Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are simultaneously active.
+- **Fail Condition:** There is no permanent fail state. Lever and pressure-plate states remain reversible; at the station deadline, partial book/pillar progress is recorded and the journey follows the session timeout rule.
+- **Scoring Criteria:** Objective Score 0–100 based on Pillar Completion, Clue Coverage, and Rule Application.
 
 ##### Gameplay Flow
 
-- **Enter and Read the Machine** — See all six levers, the pressure plate, three crystal panels, the blank target display, and the clue books in one compact chamber.
-- **Free Experimentation** — For about 90 seconds, test inputs freely and learn the mapping from immediate panel/light/sound feedback without a target being shown.
-- **Match Target 1** — Target 1 appears with a chime; adjust the lever configuration and submit until the three crystal states match.
-- **Match Target 2** — After Target 1 confirmation, show a second harder target that requires applying the learned rule rather than repeating the first solution.
-- **Activate and Transition** — Confirm Target 2, lock the completed Engine state, save raw evidence, play the activation payoff, and open the Broken Gallery corridor.
+- **Read the Partial Display** — See LEFT = ?, MIDDLE = BROWN, RIGHT = ?, and PULSE = ? near the exit.
+- **Search the Scattered Books** — Find any of twelve non-sequential books: two mechanic-rule books, eight useful clues, and two harmless decoys. Useful books gradually identify Left = Orange, Right = Purple, and Pulse = Left; reading all twelve is not required.
+- **Experiment with Lever Colors** — Use each upper/lower lever pair in TOP → BOTTOM order and watch immediate lamp feedback to discover which combination produces the color needed on that pillar.
+- **Set the Pulse State** — Use each pillar’s pressure plate only for steady/pulse behavior. Activate the Left plate and keep Middle/Right steady.
+- **Restore and Transition** — Confirm Orange pulse / Brown steady / Purple steady together, lock the solved response, save raw evidence, and open the Broken Gallery route.
 
 #### Level Design
 
-Build one compact observation chamber where the six lever inputs, pressure-plate submission, three crystal outputs, blank/active target display, and clue books can be read together. Walking must be negligible so difficulty comes from reasoning rather than navigation.
+Build one readable deduction room where the three pillars and partial door display remain easy to compare while the twelve books are spread broadly enough to create light exploration. The books must not form a numbered, directional, or location-based reading sequence; finding useful books earlier by chance is valid.
 
 ##### Design Flow
 
-- **Observation Point** — Enter with every machine element visible and hear Vex invite free experimentation.
-- **Input Cluster** — Test six levers, the plate, and the pressure-plate submission with immediate feedback.
-- **Target Wall** — Read Target 1 and Target 2 beside the live crystal states.
-- **Power Reveal** — Show the Great Hall receiving power and reveal the Custodian Key route.
+- **Partial Target Read** — Frame the exit-side display with only Middle = Brown and unknown Left/Right/pulse fields.
+- **Scattered Book Search** — Distribute twelve books across the chamber/exploration space without implying order: two rule books, eight useful clues, and two harmless decoys.
+- **Pillar Experimentation** — Keep upper lever, lower lever, pressure plate, and indicator lamp visually grouped for each pillar so color discovery through testing is immediate.
+- **Engine Restoration** — Synchronize Orange pulse / Brown steady / Purple steady and frame the newly opened Broken Gallery route.
 
 ##### Build Requirements
 
-###### Engine Chamber
-- **Observation Layout** — Area: Full station zone
-  - Build/Visual: Build one compact chamber with every interactable within a few blocks.
-  - Build/Visual: Place the three crystal panels on one continuous output wall opposite the player entry.
-  - Build/Visual: Keep the target display adjacent to the output wall without covering live states.
-  - Gameplay Function: Lets the player compare action and result without camera searching.
-- **Input Stations** — Area: Fixed authored positions
-  - Build/Visual: Place three clearly differentiated lever consoles in a consistent left-to-right order.
-  - Build/Visual: Place the floor plate and weight pedestal inside the same observation space.
-  - Build/Visual: Provide one marked valid area for the pressure-plate submission.
-  - Gameplay Function: Creates a stable physical grammar for all six rule templates.
-###### Feedback and State
-- **Crystal Panels** — Area: Fixed authored positions
-  - Build/Visual: Create Dark, Glow, and Pulse states with distinct shape/light treatment.
-  - Build/Visual: Each panel must be readable independently with sound muted.
-  - Build/Visual: Show state changes immediately, not through a delayed cinematic.
-  - Gameplay Function: Makes every experiment interpretable.
-- **Machine Feedback** — Area: Authored area
-  - Build/Visual: Provide distinct per-panel sound, light, and motion responses.
-  - Build/Visual: Use authored connection details that do not imply vanilla redstone logic.
-  - Build/Visual: Show powered-vault feedback only after Target 2.
-  - Gameplay Function: Supports hidden-rule discovery while preserving the fiction.
-###### Transition and Reset
-- **Target and Exit** — Area: Authored area
-  - Build/Visual: Create a clearly readable two-stage target display.
-  - Build/Visual: Frame the completion reveal toward the Great Hall and Broken Gallery route.
-  - Build/Visual: Keep transition movement one-way.
-  - Gameplay Function: Connects machine completion to the next story need.
-- **Lane Reset** — Area: As required by lane
-  - Build/Visual: Keep all lever, plate, weight, crystal, target, and FX anchors inside one reset volume.
-  - Build/Visual: Provide stable identifiers/marker locations for all script-owned states.
-  - Gameplay Function: Allows deterministic initialization and fast reuse.
+###### Pillar Puzzle
+- **Right Pillar** — Area: Fixed authored station
+  - Build/Visual: Provide one upper lever, one lower lever, one pressure plate, and one indicator lamp.
+  - Build/Visual: Support Red, Yellow, Green, and Purple outputs plus clearly readable steady/pulsing presentation.
+  - Gameplay Function: Provides the Right target, which must finish as Purple + steady.
+- **Middle Pillar** — Area: Fixed authored station
+  - Build/Visual: Provide one upper lever, one lower lever, one pressure plate, and one indicator lamp.
+  - Build/Visual: Support Blue, Dark Blue, Brown, and Dark Green outputs plus clearly readable steady/pulsing presentation.
+  - Gameplay Function: Provides the only target color revealed by the door display and must finish as Brown + steady.
+- **Left Pillar** — Area: Fixed authored station
+  - Build/Visual: Provide one upper lever, one lower lever, one pressure plate, and one indicator lamp.
+  - Build/Visual: Support Pink, Orange, White, and Black outputs plus clearly readable steady/pulsing presentation.
+  - Gameplay Function: Provides the hidden Left target and must finish as Orange + pulse.
+###### Clues and Partial Target
+- **Twelve Scattered Books** — Area: Chamber-wide exploration space
+  - Build/Visual: Provide two mechanic-rule books, eight useful clue books, and two harmless decoy books; every book is one short paragraph.
+  - Build/Visual: Scatter them without numbering/location sequence. Keep them readable/retrievable without hidden parkour; a lucky player may encounter useful books before decoys.
+  - Build/Visual: Decoys may contain ordinary maintenance/lore notes but cannot contradict or falsify puzzle information.
+  - Gameplay Function: Helps the player infer the missing target facts without requiring all twelve books or teaching the full lever-to-color table.
+- **Partial Door Display** — Area: Near the exit
+  - Build/Visual: Show LEFT = ?, MIDDLE = BROWN, RIGHT = ?, and PULSE = ? while the puzzle is unsolved.
+  - Build/Visual: Do not expose Orange, Purple, Left pulse, or any lever combination before valid completion.
+  - Gameplay Function: Gives one anchor fact and defines which missing information the player must discover.
+###### Feedback and Transition
+- **Immediate Pillar Feedback** — Area: Each pillar
+  - Build/Visual: Every lever change updates that pillar’s color immediately; every plate interaction switches only its steady/pulsing state.
+  - Build/Visual: Color and pulse must remain distinguishable with audio muted.
+  - Gameplay Function: Lets the player discover the fixed lever mapping through experimentation after the book clues identify the target.
+- **Engine Completion / Exit** — Area: Exit frame
+  - Build/Visual: Show all three pillars synchronizing only after Orange pulse / Brown steady / Purple steady is reached.
+  - Build/Visual: Keep all books, lever states, plates, lamps, FX, and door state inside reset ownership.
+  - Gameplay Function: Converts puzzle completion into visible vault restoration.
 
 ##### Important Build Notes
 
-- **Invented Logic Only** — Do not use real redstone layouts or familiar Minecraft logic as visual explanation.
-- **Single Observation Space** — All interactables must be visible from the central observation space.
-- **Recoverable Weight** — The weight must be easy to retrieve and impossible to lose outside its valid area.
-- **One Physical Layout** — Six templates change logic only; the physical chamber remains identical.
+- **Books Have No Reading Order** — Do not number, group, or place the books in a way that creates a mandatory sequence.
+- **Clues Reveal Target, Not Mapping** — Book content identifies the missing target colors/pulse through understandable hints; lever-to-color behavior is learned from live experimentation.
+- **Two Decoys Are Harmless** — Decoy notes contain no false puzzle information and may simply cost search/read time.
+- **Steady and Pulse Are Independent** — The pressure plate changes lamp behavior without changing its selected color.
 
 #### Developer
 
-Implement six equal-difficulty authored rule templates, immediate action-to-state feedback, a ~90-second free-play phase with a blank target display, sequential Target 1/Target 2 solving, platform-side scoring evidence, interruption handling, and full reset.
+Implement the fixed three-pillar lever mapping, fixed hidden final target, partial door display, non-sequential twelve-book set, independent steady/pulse state, immediate feedback, platform-side scoring evidence, interruption handling, and full reset.
 
 ##### Development Flow
 
-- **Mechanic Setup** — Select one authored rule template and initialize six lever states, three crystal outputs, clue sources, pressure-plate submission, and a blank target display.
-- **Free Play and Targets** — Record free experimentation, reveal Target 1 after ~90 seconds, then reveal Target 2 only after Target 1 confirmation.
-- **Completion and Data** — Validate target holds, store the complete input/state sequence, preserve timeout partial progress, and emit raw scoring evidence only.
-- **Reset and Reuse** — Restore levers, panels, display, timer, clue state, items, Vex/presentation state, and permissions before lane reuse.
+- **Mechanic Setup** — Initialize the three pillars, fixed final target, partial display, twelve book IDs, lever states, plate states, lamps, permissions, and timer.
+- **Books and Experimentation** — Record unique book reads, keep completion independent of reading all twelve, resolve lever combinations with immediate lamp feedback, and toggle pulse state from the matching pressure plate.
+- **Completion and Data** — Validate Orange pulse / Brown steady / Purple steady atomically, store book/action/state evidence, and emit raw scoring inputs only.
+- **Reset and Reuse** — Restore all lever/plate/lamp/book/display/door states and remove temporary session data before lane reuse.
 
 ##### Development Requirements
 
-###### Mechanic Setup
-- **Template Engine**
-  - Requirement: Store six pre-authored templates with equivalent tested difficulty.
-  - Requirement: Select one template once at station initialization and record its ID.
-  - Requirement: Keep the template fixed through pause and resume; reselect only after a full interrupted restart.
-  - Gameplay Function: Provides controlled variation without nondeterministic rules.
-- **Input and State Resolution**
-  - Requirement: Accept only the six authored levers and the central pressure plate as valid puzzle inputs.
-  - Requirement: Resolve the selected rule atomically and update the complete three-panel state before accepting the next input.
-  - Requirement: Trigger distinct panel feedback for every changed state.
-  - Gameplay Function: Guarantees clean action-to-result reconstruction.
-###### Gameplay Setup
-- **Free-Play and Targets**
-  - Requirement: Keep the target display physically present but blank/inactive during the opening free-play phase. Allow clue inspection and input testing immediately; reveal Target 1 at approximately 90 seconds of game-time.
-  - Requirement: Record the selected target-pattern ID and the moment the player first opens or reads each clue source.
-  - Requirement: Confirm a target only after the complete pattern is held for the configured validation beat.
-  - Requirement: Complete the objective after the authored final target is submitted and confirmed.
-  - Gameplay Function: Preserves discovery before directed solving.
-- **Weight and Invalid State**
-  - Requirement: Allow one weight to be picked up, placed only on the marked plate area, and retrieved.
-  - Requirement: Return invalid placements to the pedestal after a short clear response.
-  - Requirement: Prevent duplicate, dropped, stored, or cross-station weight states.
-  - Gameplay Function: Supports plate-dependent templates without item-loss dead ends.
-- **Completion and Timeout**
-  - Requirement: Complete after Target 2 confirmation; lock inputs, save data, and open the Gallery transition.
-  - Requirement: At timeout, preserve Target 1/2 progress and final panel/input state, then transition without failure wording.
-  - Requirement: On interruption, retain partial raw events and restart the station from initial state on rejoin.
-  - Gameplay Function: Creates a clear station boundary while preserving partial evidence.
+###### Pillar Mapping
+- **Right Pillar Mapping**
+  - Requirement: Read the lever pair upper then lower.
+  - Requirement: Resolve ON/ON → Red, OFF/OFF → Yellow, ON/OFF → Green, OFF/ON → Purple.
+  - Requirement: Update the live right-pillar lamp immediately after a valid lever change.
+  - Gameplay Function: Provides a fixed machine behavior the player can discover through testing; the final Right target is Purple.
+- **Middle Pillar Mapping**
+  - Requirement: Read the lever pair upper then lower.
+  - Requirement: Resolve ON/ON → Blue, OFF/OFF → Dark Blue, ON/OFF → Brown, OFF/ON → Dark Green.
+  - Requirement: Update the live middle-pillar lamp immediately after a valid lever change.
+  - Gameplay Function: Provides a fixed machine behavior the player can discover through testing; the displayed Middle target is Brown.
+- **Left Pillar Mapping**
+  - Requirement: Read the lever pair upper then lower.
+  - Requirement: Resolve ON/ON → Pink, OFF/OFF → Orange, ON/OFF → White, OFF/ON → Black.
+  - Requirement: Update the live left-pillar lamp immediately after a valid lever change.
+  - Gameplay Function: Provides a fixed machine behavior the player can discover through testing; the hidden Left target is Orange.
+###### Plate and Target State
+- **Steady / Pulse State**
+  - Requirement: Bind one pressure plate to each pillar.
+  - Requirement: A valid plate interaction switches only that pillar between steady and pulsing; it must not alter the selected color.
+  - Requirement: The final target requires Left pulsing and Middle/Right steady.
+  - Gameplay Function: Adds the independent pulse dimension that the player must infer from the clue books.
+- **Partial Door Display and Target Validation**
+  - Requirement: While unsolved, expose only Middle = Brown plus unknown Left, Right, and Pulse fields.
+  - Requirement: Store the fixed complete target as Left Orange + pulse, Middle Brown + steady, Right Purple + steady.
+  - Requirement: Re-evaluate the full target after every valid pillar state change and complete only when all three states match simultaneously; completion is idempotent.
+  - Gameplay Function: Preserves the deduction gap while keeping one deterministic completion boundary.
+###### Books, Timeout, and Recovery
+- **Book Set and Tracking**
+  - Requirement: Provide twelve scattered, order-independent book sources: two rule books, eight useful clue books, and two harmless decoys.
+  - Requirement: Rule books explain TOP → BOTTOM lever reading and pressure-plate pulse behavior. Useful clues narrow Left → Orange, Right → Purple, and Pulse → Left without explicitly stating the final answers. Decoys contain no false puzzle facts.
+  - Requirement: Record first read/open evidence per book source, but never require all twelve books—or any fixed reading sequence—for valid completion.
+  - Gameplay Function: Supports exploration/clue-coverage evidence while allowing luck and deduction to change solve speed.
+- **Timeout / Interruption**
+  - Requirement: At station timeout, preserve book coverage, final lever/plate/lamp states, target-match state, and action history for platform handling.
+  - Requirement: On interrupted restart, restore the objective to its authored initial state while retaining earlier completed objective results.
+  - Gameplay Function: Protects partial evidence without resuming an ambiguous machine state.
 
 ##### Scoring Setup
 
-- **Resonance Engine Score** — 0–100 — 64% Target Completion + 16% Free-Play Coverage + 20% Rule Application
-  - **Target Completion (64%)** — Target 1 contributes 28 points and Target 2 contributes 36 points. Partial completion is retained at timeout.
-  - **Free-Play Coverage (16%)** — Award proportionally from the five primary input types tried during the clue-reading and testing phase.
-  - **Rule Application (20%)** — Award from template-specific evidence that the player used the distinguishing rule, applied it to Target 2, and avoided an extended repeated-action loop after demonstrating it.
-  - **Timer Start:** Start the station game-time clock when the player gains Resonance Engine interaction control.
-  - **Timer Stop:** Stop on Target 2 confirmation or the approved station deadline; pause time is excluded.
-  - **No-Score Condition:** Do not create a completed Objective Score if the session ends before the station boundary record can be secured; preserve raw partial evidence for platform handling.
-  - **Duplicate Prevention:** One completed Resonance Engine result per session; target confirmations and completion export are idempotent.
+- **Resonance Engine Score** — 0–100 — 64% Pillar Completion + 16% Clue Coverage + 20% Rule Application
+  - **Pillar Completion (64%)** — Award proportionally from correct progress toward Orange pulse / Brown steady / Purple steady; full value requires all three final pillar states together.
+  - **Clue Coverage (16%)** — Award proportionally from unique authored books opened/read during the objective, capped at the twelve available books. Reading all twelve is not a completion requirement.
+  - **Rule Application (20%)** — Award from evidence that the player converts discovered target information into purposeful lever/plate experimentation and avoids an extended repeated-action loop after demonstrating the needed mapping.
+  - **Timer Start:** Start when Resonance Engine interaction becomes active.
+  - **Timer Stop:** Stop when the complete hidden target is confirmed or at the approved station deadline; pause time is excluded.
+  - **No-Score Condition:** Do not create a completed Objective Score if the station boundary record cannot be secured; preserve raw partial evidence for platform handling.
+  - **Duplicate Prevention:** Pillar completion and objective export are idempotent per session.
   - **Final Result:** One of four Objective Scores; the session result combines the four objective results after the Workshop.
-  - **Player-Facing Result:** Do not display the calculated score in-game; show only puzzle feedback, target confirmations, and completion.
-  - **Telemetry / Export:** Export template ID, target IDs, input/state sequence, free-play coverage evidence, target shown/matched timestamps, timeout/completion, and component inputs; no final score field from the map.
+  - **Player-Facing Result:** Do not display the calculated score in-game; show only book, pillar, partial-target, and completion feedback.
+  - **Telemetry / Export:** Export unique book reads, lever states, plate states, lamp color/pulse states, partial-display state, target-match transitions, timeout/completion, and component inputs; no final score field from the map.
 
 ##### Reset / Interruption
 
-- Restore all six lever states, pressure plate/weight state if used, three crystal panels, target display, free-play timer, selected template presentation, inventory/effects, and permissions.
-- Verify no target, panel, timer, or interaction state from the previous run remains before the lane becomes reusable.
-- **Reset Result:** The Resonance Engine returns to a neutral authored template-ready state.
+- Restore all six lever states, three pressure-plate states, three indicator lamps, partial target display, twelve book sources, timer, inventory/effects, and permissions.
+- Verify no solved/display/lamp state from the previous run remains before the lane becomes reusable.
+- **Reset Result:** The Resonance Engine returns to its authored three-pillar starting state with Middle = Brown as the only displayed target fact.
 
 ##### Important Development Notes
 
-- **Immediate Input Feedback** — Every input must produce feedback in the same tick or controlled update cycle as the state change.
-- **No Vanilla Knowledge** — No template may depend on real Minecraft knowledge.
-- **Target 2 Tests the Rule** — Target 2 must use the selected template’s distinguishing rule.
-- **Raw Evidence Only** — The map logs raw scoring evidence but does not send or display the final score.
+- **Fixed Machine Mapping** — Use the approved list-order lever-to-color mapping exactly; do not randomize it per run.
+- **Books Do Not Teach the Full Mapping** — Books reveal missing target information; color mapping remains discoverable through immediate machine feedback.
+- **No Mandatory Book Sequence** — Player luck may expose useful clues early, and completion is owned only by the valid final machine state.
+- **Plate Does Not Change Color** — Color mapping and steady/pulse state are independent.
 
 ##### Acceptance
 
-- The Resonance Engine reaches its defined end condition without creating an unrecoverable player state.
-- The Resonance Engine preserves the approved player-facing behavior, data/result boundary, and lane isolation rules.
+- The Resonance Engine reaches its defined end condition without requiring all twelve books or a fixed reading order.
+- The Resonance Engine preserves the partial display, hidden Orange/Purple/Left-pulse deduction, fixed lever mapping, data/result boundary, and lane isolation rules.
 - The Resonance Engine reset restores the authored starting state before the assigned lane is reused.
 
 ##### Terms
 
-- **Free-Play Phase** — The opening approximately 90-second period when the player can test inputs before Target 1 appears.
-- **Rule Template** — One authored mapping between lever inputs and the three crystal panel states.
-- **Target Pattern** — The three-state Dark, Glowing, and Pulsing crystal configuration the player must match.
-- **Crystal Panel** — One output surface showing the current state produced by the submitted lever configuration.
-- **Target Match** — A submitted crystal state that matches the currently active target and is accepted by the Engine.
+- **Pillar** — One of the three Resonance Engine puzzle stations containing an upper lever, lower lever, pressure plate, and indicator lamp.
+- **Lever Combination** — The fixed TOP → BOTTOM ON/OFF pair that selects a pillar color and is discovered through experimentation.
+- **Steady / Pulse State** — The independent lamp behavior controlled by that pillar’s pressure plate.
+- **Clue Book** — One of twelve scattered one-paragraph books; rule and useful clue books help recover missing target information while two harmless decoys add search uncertainty.
+- **Partial Door Display** — The exit display that reveals only Middle = Brown and leaves Left, Right, and Pulse unknown until the puzzle is solved.
+- **Final Target State** — Left Orange + pulse, Middle Brown + steady, Right Purple + steady.
 
 ### 06. The Broken Gallery
 
@@ -680,162 +690,176 @@ Implement six equal-difficulty authored rule templates, immediate action-to-stat
 
 #### Gameplay Overview
 
-**Context:** The player enters a ruined three-checkpoint crossing with upper, lower, and side route variations. A fixed construction kit is granted at the start.
+**Context:** The player enters a ruined crossing divided into three checkpoint levels. Each level presents three route choices, checkpoint-local resource barrels, and marked positions where blocks or ladders may be placed.
 
-**Main Objective:** Carry the Custodian Key across all three checkpoints. In Checkpoint 3, adapt to the scripted collapse and reach the far pedestal through the valid recovery path.
+**Main Objective:** Clear Level 1, Level 2, and the Level 3 Gremlin time challenge by choosing a viable route, using only the available resource, and reaching each next checkpoint.
 
-**Result:** The Custodian Key reaches the far pedestal and the Warden Halls route opens.
+**Result:** The player clears the third route level and reaches the Warden Halls entrance.
 
 ##### Gameplay Information
 
-- **Game Purpose:** Create a limited-resource traversal challenge where route choice, building, and recovery matter without precision movement or lethal failure.
+- **Game Purpose:** Create a route-reading and limited-resource traversal challenge where incorrect choices produce a local reset instead of permanent failure.
 - **Gameplay Time:** Approximately 9 minutes.
-- **Starting Condition:** The Gallery is reset, the Custodian Key is granted, and the fixed crossing kit is full.
-- **End Condition:** The Custodian Key is accepted by the far pedestal after the player clears Checkpoint 3.
-- **Fail Condition:** No permanent fail state. A fall returns the player to a safe checkpoint; resource waste may remove one route, but one resupply and a valid recovery path remain available.
-- **Scoring Criteria:** Objective Score 0–100 based on Objective Progress, Resource Planning, Post-Collapse Adaptation, and Recovery Independence.
+- **Starting Condition:** Level 1 is reset, its resource barrels are available, all temporary placement positions are empty, and the three route choices are readable.
+- **End Condition:** The player successfully reaches the exit beyond Level 3.
+- **Fail Condition:** Resource exhaustion or configured level-time expiry resets only the active level. In Level 3, missing the 50% progress threshold additionally closes the failed route while another alternative remains. Earlier completed levels stay complete.
+- **Scoring Criteria:** Objective Score 0–100 based on Objective Progress, Resource Planning, Timed-Route Adaptation, and Recovery Independence.
 
 ##### Gameplay Flow
 
-- **Survey the Crossing** — See the three checkpoint structure, route variations, far pedestal, and fixed resource kit before committing resources.
-- **Checkpoint 1 — Learn the Tools** — Cross the first broken section using basic blocks/ladder placement and one clearly authored route decision.
-- **Checkpoint 2 — Manage Resources** — Solve a more varied section using blocks, ladders, Spring Column, and/or Anchor Ring while preserving enough kit for the final crossing.
-- **Checkpoint 3 — Collapse and Adapt** — A short warning begins; once the player reaches about 50% of the final checkpoint the authored collapse resolves safely. The current segment becomes unusable and the player must use the remaining recovery connector/route.
-- **Place the Custodian Key** — Reach the far platform, place the key on the pedestal, save raw evidence, and open the Warden Halls transition.
+- **Level 1 — Choose Between Two Viable Routes** — Search the checkpoint barrels, inspect three routes, and use 12 blocks on a viable middle/right crossing without wasting the allocation on the non-viable left route.
+- **Reset and Relearn When Needed** — If the attempt exhausts its resource or level time, return to the current checkpoint, remove temporary placements, resupply, and try another route.
+- **Level 2 — Find the Single Viable Route** — Use the authored 20-block + 3-ladder allocation; only the right route can be completed and all placements remain restricted to marked positions.
+- **Level 3 — Beat the Gremlin Threshold** — Choose any initially viable route and reach at least 50% progress before the configured threshold. A failed route closes and the player returns to Checkpoint 3 to resupply and choose another active route.
+- **Reach the Warden Halls** — Clear the final route, save checkpoint/resource/retry evidence, and open the next chamber.
 
 #### Level Design
 
-Build one ruined crossing as three readable checkpoints. Upper, lower, and side route ideas are used as spatial variations inside the crossing rather than three separate progression tracks. Checkpoint 3 owns the only collapse event, and every collapse state must preserve a visible safe recovery route.
+Build the Gallery as three readable route-selection levels. Every level exposes three choices while keeping the viable answer hidden from the player. Barrels, placement markers, reset geometry, and checkpoints must be readable as one repeatable local loop.
 
 ##### Design Flow
 
-- **Checkpoint 1 — Tool Introduction** — Establish the destination and teach basic block/ladder placement on a forgiving broken path.
-- **Checkpoint 2 — Route Variation** — Combine upper/lower/side geometry with Spring Column or Anchor Ring options and tighter resource planning.
-- **Checkpoint 3 — Collapse** — Telegraph the final collapse, require meaningful forward progress, then seal the current segment and expose the recovery continuation.
-- **Far Pedestal** — Frame the Custodian Key placement and Warden Halls door as the completion handoff.
+- **Level 1 — Basic Route Reading** — Present three routes with middle/right viable and left deliberately over-budget.
+- **Level 2 — Block + Ladder Planning** — Present three routes with only the right route compatible with the 20-block + 3-ladder allocation.
+- **Level 3 — Timed Route Commitment** — Make all three routes initially viable, then visibly close a failed route after the 50% progress deadline is missed.
+- **Exit Handoff** — Frame the Warden Halls entrance as the clear destination after Level 3 success.
 
 ##### Build Requirements
 
-###### Checkpoint Geometry
-- **Start / Checkpoint 1** — Area: Forgiving authored section
-  - Build/Visual: Keep the far goal visible enough to establish direction.
-  - Build/Visual: Use basic broken spans, block placement, and ladder movement; avoid precision jumps.
-  - Gameplay Function: Introduces traversal tools and the resource budget.
-- **Checkpoint 2** — Area: Mid crossing
-  - Build/Visual: Use upper/lower/side route variations, intersections, and different broken-gap shapes rather than one long bridge.
-  - Build/Visual: Include one valid Spring Column surface and marked Anchor Ring opportunities with safe landing markers.
-  - Gameplay Function: Creates route/resource planning before the collapse phase.
-- **Checkpoint 3** — Area: Final crossing
-  - Build/Visual: Create one authored collapse segment with a short readable warning and a progress threshold around 50% of the checkpoint.
-  - Build/Visual: The collapse must happen from a safe event position and must never trap the player inside sealed geometry.
-  - Gameplay Function: Forces adaptation using the remaining route instead of repeating earlier building.
-###### Recovery and Resources
-- **Recovery Connector / Route** — Area: Reachable from collapse state
-  - Build/Visual: From every valid collapse position, preserve one clearly readable continuation that can be completed with the expected remaining kit.
-  - Build/Visual: Do not require camera-direction inference or hidden teleports.
-  - Gameplay Function: Guarantees recovery while preserving the cost of the failed route segment.
-- **Single Resupply Alcove** — Area: Central recovery point
-  - Build/Visual: Place one visible but non-dominant resupply point accessible after collapse or a validated low-kit state.
-  - Build/Visual: Do not allow repeated farming.
-  - Gameplay Function: Prevents resource waste from creating an unrecoverable run.
-- **Safe Fall Recovery** — Area: Below authored traversal
-  - Build/Visual: Provide safe lower surfaces/return geometry or scripted return markers at each checkpoint.
-  - Gameplay Function: Turns falling into time loss rather than death or full restart.
-###### Goal and Reset
-- **Far Custodian Key Pedestal** — Area: End platform
-  - Build/Visual: Place the destination pedestal and Warden Halls door in one completion frame.
-  - Build/Visual: Use a clear empty/accepted key state.
-  - Gameplay Function: Defines exact completion and next destination.
-- **Reset-Owned Crossing** — Area: Full Gallery
-  - Build/Visual: Keep placed blocks/ladders, route segments, collapse geometry, Spring Column, Anchor Rings, resupply, key, FX, and door states inside reset ownership.
-  - Gameplay Function: Restores a deterministic crossing for the next session.
+###### Level 1
+- **Three Route Options** — Area: First checkpoint zone
+  - Build/Visual: Provide left, middle, and right route choices with clearly different broken geometry.
+  - Build/Visual: Middle and right must be completable with the authored 12-block allocation; left must visibly remain unfinished if the same allocation is committed there.
+  - Gameplay Function: Teaches resource viability through route choice.
+- **Level 1 Barrels and Markers** — Area: Checkpoint start
+  - Build/Visual: Place the resource barrels before route commitment and mark only legal placement positions.
+  - Build/Visual: Do not use free-form placement surfaces outside the authored markers.
+  - Gameplay Function: Keeps the challenge controlled and resettable.
+###### Level 2
+- **Three Route Options** — Area: Second checkpoint zone
+  - Build/Visual: Provide three routes with only the right route completable from the authored allocation.
+  - Build/Visual: Author the viable crossing around 20 block placements plus 3 ladder placements.
+  - Gameplay Function: Increases planning difficulty while retaining the same rule.
+- **Level 2 Barrels and Markers** — Area: Checkpoint start
+  - Build/Visual: Provide the 20-block + 3-ladder resource loop and separate block/ladder legal placement markers where needed.
+  - Gameplay Function: Makes the resource budget and ladder requirement readable.
+###### Level 3
+- **Three Initially Viable Routes** — Area: Third checkpoint zone
+  - Build/Visual: Author three routes that can all reach the exit when completed within their intended resource/time structure.
+  - Build/Visual: Provide readable progress geometry so the 50% threshold can be validated from authored route state.
+  - Gameplay Function: Shifts difficulty from route correctness to timely execution.
+- **Closed-Route State** — Area: Each Level 3 route
+  - Build/Visual: Give every route a clear inactive/closed state that can be activated after that route fails the time threshold.
+  - Build/Visual: Keep remaining active routes visually distinct after the player returns to Checkpoint 3.
+  - Gameplay Function: Makes Gremlin failure persistent and understandable for the current run.
+###### Retry and Exit
+- **Checkpoint Retry Space** — Area: Each level start
+  - Build/Visual: Keep barrel respawn/search, teleport/return position, and temporary-block cleanup inside the same local reset space.
+  - Build/Visual: Do not reset earlier completed levels when the active level retries.
+  - Gameplay Function: Supports fast learning loops.
+- **Warden Halls Exit** — Area: End of Level 3
+  - Build/Visual: Make the next chamber readable immediately after final route success.
+  - Build/Visual: Keep all placed blocks/ladders, route states, barrel resources, markers, and effects inside reset ownership.
+  - Gameplay Function: Defines exact objective completion and handoff.
 
 ##### Important Build Notes
 
-- **Three Checkpoints Own Progression** — Upper/lower/side are route variations; Checkpoint 1 → 2 → 3 is the actual progression model.
-- **Collapse Only in Checkpoint 3** — No earlier checkpoint may trigger the route-collapse mechanic.
-- **Recovery Must Remain Valid** — After collapse or resource waste, at least one safe continuation must still be possible with the recovery/resupply rules.
-- **No Precision Traversal** — Movement challenge comes from building/tool choice, not pixel-perfect jumps or aim.
+- **Marked Placement Only** — Blocks and ladders may be placed only at authored positions.
+- **Viability Is Developer/Designer Truth, Not Player UI** — Level 1 middle/right and Level 2 right are fixed answers but must not be directly labeled as correct in-world.
+- **Local Reset Only** — Failed attempts remove current-level temporary placements and return to that checkpoint without replaying earlier levels.
+- **Level 3 Route Closure Must Be Visible** — A failed timed route cannot look available after it has been closed.
 
 #### Developer
 
-Implement the fixed station-owned crossing kit, three checkpoint progression, scripted movement tools, one Checkpoint-3 collapse, guaranteed recovery/resupply, Custodian Key completion, platform-side scoring evidence, interruption handling, and full restoration.
+Implement checkpoint-local barrel resources, restricted placement, fixed route viability, Level 1/2 retry, Level 3 timed route closure, platform-side scoring evidence, interruption handling, and full restoration.
 
 ##### Development Flow
 
-- **Mechanic Setup** — Grant the fixed kit, initialize three checkpoint states, Anchor charges, Spring Column, Custodian Key, resupply, and reset ownership.
-- **Checkpoint Progression** — Track approved placements/tool use and advance Checkpoint 1 → 2 → 3 while preserving resource state.
-- **Collapse and Completion** — In Checkpoint 3, resolve the warning/collapse at the authored threshold, switch the valid recovery state, and complete on far-pedestal key placement.
-- **Data and Reset** — Record resource/checkpoint/collapse/recovery evidence, calculate nothing in-map, then restore every temporary crossing state.
+- **Level Setup** — Initialize the active checkpoint, route availability, barrels/resources, placement markers, temporary blocks/ladders, timer, and player permissions.
+- **Placement and Route Validation** — Accept placement only at authored markers, track resource use and route progress, and detect resource/time failure locally.
+- **Level 3 Timed Adaptation** — Track the chosen route, evaluate the 50% progress threshold, close a failed route, and return the player to Checkpoint 3 for a new attempt.
+- **Completion and Reset** — Record raw checkpoint/resource/retry evidence, complete after Level 3 success, and restore all three levels for reuse.
 
 ##### Development Requirements
 
-###### Crossing Runtime
-- **Fixed Supply Kit**
-  - Requirement: Grant 12 bridge blocks, 4 ladder segments, one single-use Spring Column, two Anchor Ring grapple charges, and one Custodian Key in station-owned inventory.
-  - Requirement: Prevent drop/storage/duplication/cross-station use and placement outside approved zones.
-  - Requirement: Restore a critical lost resource only when validation detects an impossible state.
-  - Gameplay Function: The same bounded resource problem is available to every session.
-- **Scripted Movement Tools**
-  - Requirement: Implement Spring Column as one fixed vertical movement interaction.
-  - Requirement: Highlight only authored Anchor Rings while the tool is active; move the player along a fixed safe arc and consume a charge only after valid arrival.
-  - Gameplay Function: Special movement remains deterministic and touch-readable.
-###### Checkpoint and Collapse Logic
-- **Checkpoint State**
-  - Requirement: Store progression as Checkpoint 1, 2, and 3 plus checkpoint-local route/resource evidence.
-  - Requirement: Allow route variation inside a checkpoint without redefining the project progression order.
-  - Gameplay Function: Progress and recovery use one unambiguous model.
-- **Checkpoint 3 Collapse**
-  - Requirement: Enable collapse logic only after Checkpoint 3 becomes active.
-  - Requirement: Start a short warning and resolve the authored collapse when the player reaches approximately 50% of the final checkpoint or the configured safe fallback condition.
-  - Requirement: Seal only the current authored segment, update the recovery route, and never infer the target segment from camera direction.
-  - Gameplay Function: Creates one predictable adaptation event without trapping the player.
-- **Recovery, Resupply, and Completion**
-  - Requirement: Return falls to the nearest valid safe checkpoint/ledge with preserved progression.
-  - Requirement: Grant the single resupply only once after collapse or a validated low-kit state.
-  - Requirement: Complete only when the Custodian Key is accepted by the far pedestal; at station deadline preserve furthest checkpoint, resources, collapse, resupply, and key state.
-  - Gameplay Function: Every run remains finishable or meaningfully recordable without lethal failure.
+###### Level 1 Runtime
+- **Resource and Viability**
+  - Requirement: Provide the authored 12-block Level 1 allocation from checkpoint barrels.
+  - Requirement: Treat middle and right as viable routes and left as over-budget for that allocation.
+  - Requirement: Track resource use and route progress per attempt.
+  - Gameplay Function: Creates the first controlled route-selection problem.
+- **Retry**
+  - Requirement: If resource is exhausted before a viable crossing completes or the configured Level 1 time expires, return the player to Checkpoint 1.
+  - Requirement: Remove temporary placements from that attempt and restore the Level 1 barrel resource.
+  - Gameplay Function: Lets the player learn from a wrong choice without restarting the objective.
+###### Level 2 Runtime
+- **Resource and Viability**
+  - Requirement: Provide the authored Level 2 allocation needed for 20 blocks and 3 ladders.
+  - Requirement: Treat only the right route as viable for that allocation.
+  - Requirement: Validate block and ladder placement only at authored markers.
+  - Gameplay Function: Creates the harder single-route resource puzzle.
+- **Retry**
+  - Requirement: On resource exhaustion or configured Level 2 time expiry, return to Checkpoint 2 and remove only Level 2 temporary placements.
+  - Requirement: Preserve completed Level 1 state.
+  - Gameplay Function: Keeps progression checkpoint-local.
+###### Level 3 Runtime
+- **Timed Route State**
+  - Requirement: Start Level 3 with all three routes active and viable.
+  - Requirement: Bind the attempt to the first route the player materially commits to and evaluate progress from authored route-progress markers/state.
+  - Requirement: Require at least 50% progress before the configured threshold.
+  - Gameplay Function: Defines the Gremlin time challenge without hidden camera inference.
+- **Route Failure and Recovery**
+  - Requirement: If the threshold is missed, return the player to Checkpoint 3, remove current-attempt temporary placements, restore the resource-search loop, and close the failed route while another alternative remains.
+  - Requirement: Preserve at least one retryable active route so the objective does not become unwinnable before the station timeout boundary.
+  - Requirement: Record closed-route identity and the next chosen route.
+  - Gameplay Function: Turns failure into persistent route knowledge and adaptation.
+###### Completion and Interruption
+- **Objective Completion**
+  - Requirement: Complete only when the player reaches the authored exit beyond Level 3.
+  - Requirement: At station timeout preserve furthest completed level, current route, resource state, closed routes, retry count, and progress evidence.
+  - Requirement: On interruption restart the active objective from its authored clean state according to shared rejoin rules.
+  - Gameplay Function: Creates a clear finish while retaining partial evidence.
 
 ##### Scoring Setup
 
-- **Broken Gallery Score** — 0–100 — 40% Objective Progress + 28% Resource Planning + 24% Post-Collapse Adaptation + 8% Recovery Independence
-  - **Objective Progress (40%)** — Award from committed-route/checkpoint progress, final-collapse exposure, far platform reach, and Custodian Key placement.
-  - **Resource Planning (28%)** — Compare weighted resource use with the validated expected budget for the completed crossing; cap at full value.
-  - **Post-Collapse Adaptation (24%)** — Award for stopping attempts into the sealed segment, committing to the valid recovery continuation, and making forward progress after collapse.
-  - **Recovery Independence (8%)** — Full value for completion without resupply; partial value for completion after the single resupply.
-  - **Timer Start:** Start when the player receives the Gallery kit and Custodian Key.
-  - **Timer Stop:** Stop on far-pedestal Custodian Key acceptance or station deadline; pause time is excluded.
+- **Broken Gallery Score** — 0–100 — 40% Objective Progress + 28% Resource Planning + 24% Timed-Route Adaptation + 8% Recovery Independence
+  - **Objective Progress (40%)** — Award from Level 1 completion, Level 2 completion, Level 3 progress, and final exit reach.
+  - **Resource Planning (28%)** — Award from completing routes within their authored resource budgets and limiting resource-consuming wrong-route attempts.
+  - **Timed-Route Adaptation (24%)** — Award from Level 3 threshold success or, after a failed route, recognizing the closure and making progress through a remaining active route.
+  - **Recovery Independence (8%)** — Award from completing with fewer local resets while never removing points already earned for objective progress.
+  - **Timer Start:** Start when Level 1 becomes active and its resource barrels are available.
+  - **Timer Stop:** Stop on final Level 3 exit or the approved station deadline; pause time is excluded.
   - **No-Score Condition:** Do not finalize a completed Objective Score without a secured station-boundary record; preserve partial checkpoint/resource evidence for platform handling.
-  - **Duplicate Prevention:** Collapse fires once, resupply grants once, and Gallery completion exports once per session.
+  - **Duplicate Prevention:** Checkpoint completion, route closure, retry reset, and Gallery completion are idempotent per session/attempt identity.
   - **Final Result:** One of four Objective Scores combined in the completed session result.
-  - **Player-Facing Result:** Do not show a score or countdown; show only local resource, checkpoint, collapse, recovery, and completion feedback.
-  - **Telemetry / Export:** Export resource events, checkpoint/route state, collapse warning/fire, post-collapse actions, resupply, falls/recovery, key placement, timeout/completion, and component inputs; no final score field.
+  - **Player-Facing Result:** Do not show a calculated score; show only resource, placement, checkpoint, timer-warning, route-closure, retry, and completion feedback.
+  - **Telemetry / Export:** Export barrel/resource events, placement events, route choice/progress, checkpoint state, time-threshold state, route closure, retries, timeout/completion, and component inputs; no final score field.
 
 ##### Reset / Interruption
 
 - Clear station inventory/temporary permissions and remove all player-placed blocks/ladders.
-- Restore all three checkpoints, collapsed structures, recovery route, Anchor charges, Spring Column, resupply, Custodian Key, doors, entities, lights/audio/particles, and safe recovery markers.
-- **Reset Result:** The Broken Gallery returns to the pristine three-checkpoint crossing with a full fixed kit.
+- Restore all three route levels, barrels/resources, legal placement markers, timers, closed-route states, checkpoint positions, doors, entities, lights/audio/particles, and safe return markers.
+- **Reset Result:** The Broken Gallery returns to pristine Level 1 with all routes in their authored starting availability.
 
 ##### Important Development Notes
 
-- **Collapse Is Checkpoint-3 Only** — The collapse trigger cannot activate during Checkpoint 1 or 2.
-- **No Camera Inference** — Collapse/recovery ownership comes from authored checkpoint/segment state, never viewing direction alone.
-- **One Guaranteed Recovery** — Every authored collapse configuration must retain at least one valid continuation plus the one-use resupply safety net.
+- **Blocks and Ladders Only** — Gallery construction uses checkpoint barrel blocks/ladders and authored placement markers.
+- **No Free-Form Building** — Placement validation is marker-owned and fail-closed.
+- **Level 3 Uses Progress State** — Do not infer the 50% threshold from player camera direction alone.
 - **Raw Evidence Only** — The map records scoring inputs but sends no calculated Broken Gallery Score.
 
 ##### Acceptance
 
-- The Broken Gallery reaches its defined end condition without creating an unrecoverable player state.
+- The Broken Gallery reaches its defined end condition without creating an unrecoverable player state before the normal station timeout boundary.
 - The Broken Gallery preserves the approved player-facing behavior, data/result boundary, and lane isolation rules.
 - The Broken Gallery reset restores the authored starting state before the assigned lane is reused.
 
 ##### Terms
 
-- **Route commitment** — The route the player is actively attempting at the collapse event
-- **Spring Column** — A single-use climbable resource in the fixed kit
-- **Anchor Ring grapple** — A limited-charge interaction that reaches marked anchors
-- **Sealed segment** — The route section made unavailable by the scripted collapse
+- **Route Level** — One of the three checkpoint-based Gallery challenges.
+- **Viable Route** — A route that can be completed with that level’s authored resource allocation.
+- **Placement Marker** — An authored position where the current block/ladder resource may legally be placed.
+- **Route Closure** — The Level 3 state that makes a failed timed route unavailable for the remainder of that run while an alternative remains.
 
 ### 07. The Warden Halls
 
@@ -843,166 +867,169 @@ Implement the fixed station-owned crossing kit, three checkpoint progression, sc
 
 #### Gameplay Overview
 
-**Context:** The Warden Halls use wall, floor, and ceiling traps across three increasingly complex checkpoints. Echo Pebble disables wall/floor traps briefly; ceiling traps are solved through observation and timing.
+**Context:** The Warden Halls are a three-level trap maze using wall lasers, floor traps, and swinging ceiling axes. Echo Pebble is unlimited but has a 3-second throw cooldown and only interacts with authored laser solutions.
 
-**Main Objective:** Reach the inner gate by learning the trap families, using Echo Pebble selectively, and choosing when to wait or rush.
+**Main Objective:** Reach the inner gate by disabling or blocking selected wall lasers, avoiding floor traps, timing swinging axes, and recovering from trap damage at level checkpoints.
 
-**Result:** The player reaches the inner gate and the Gremlin’s Workshop route opens.
+**Result:** The player clears all three Warden levels and the Gremlin’s Workshop route opens.
 
 ##### Gameplay Information
 
-- **Game Purpose:** Create a learnable risk-reading challenge where cautious observation and informed rushing are both valid strategies.
+- **Game Purpose:** Create a readable hazard-navigation challenge where the player distinguishes Pebble-valid laser solutions from traps that must be avoided or timed.
 - **Gameplay Time:** Approximately 9 minutes.
-- **Starting Condition:** One authored layout is active, trap cycles/checkpoints are reset, and Echo Pebble is available.
-- **End Condition:** The player enters the inner gate trigger after clearing the final security sequence.
-- **Fail Condition:** Trap consequences are non-lethal and cost time or position only. The player returns to the nearest safe checkpoint without losing completed objective progress.
+- **Starting Condition:** Warden Level 1 is reset, trap cycles are in their authored starting states, gameplay health is safe, and Echo Pebble is available.
+- **End Condition:** The player clears the third trap level and enters the inner gate trigger.
+- **Fail Condition:** Trap contacts apply the approved gameplay damage/status effects. If gameplay health reaches zero, the player returns to the active level checkpoint with earlier Warden levels preserved.
 - **Scoring Criteria:** Objective Score 0–100 based on Objective Progress, Rule Recognition, Intentional Strategy, and Time-Loss Control.
 
 ##### Gameplay Flow
 
-- **Learn the Three Trap Families** — Encounter wall, floor, and ceiling traps separately and read their distinct warning tells and consequence states.
-- **Use Echo Pebble Selectively** — Disable wall or floor traps for a short window; ceiling traps reject Echo Pebble use and remain timing/observation challenges.
-- **Checkpoint 2 — Combine Hazards** — Cross combinations of trap types by choosing when to disable, wait through a full cycle, or rush through a valid window.
-- **Checkpoint 3 — Final Security Sequence** — Handle denser combinations and shorter decision windows using the same established rules; consequences return the player to a safe checkpoint.
-- **Reach the Inner Gate** — Enter the inner gate trigger, save raw strategy/progress evidence, and open the Gremlin’s Workshop transition.
+- **Read the Trap Families** — Learn that wall lasers use beam/sensor logic, floor traps must be avoided, and swinging axes must be crossed by timing.
+- **Use Echo Pebble on Laser Solutions** — Hit a wall-laser sensor for a temporary disable or strike an authored hanging stone to block a beam; invalid floor/axe targets do not disable.
+- **Respect the 3-Second Cooldown** — Move through the safe opening created by a valid throw while the next Pebble throw remains unavailable for three seconds.
+- **Cross Three Checkpoint Levels** — Face increasingly dense trap combinations; damage/effects may slow the player, and health depletion returns only to the active Warden checkpoint.
+- **Reach the Inner Gate** — Clear Level 3, save trap/Pebble/recovery evidence, and open the Workshop transition.
 
 #### Level Design
 
-Build three equivalent corridor layout variants containing the same three trap families and comparable traversal length. Wall and floor traps must support clear Echo Pebble disable targets; ceiling traps must not be Pebble-disableable and instead rely on readable observation/timing. All consequences are non-lethal and time-based.
+Build three increasingly demanding maze/corridor levels using the same three trap families. Every trap needs a readable danger state, a safe observation/approach space, and enough separation to prevent unavoidable chain damage.
 
 ##### Design Flow
 
-- **Approach** — Enter a readable zone before each trap and see its invented tell.
-- **Choose** — Probe, observe a full cycle, or rush.
-- **Consequence or Safe Crossing** — Receive a controlled time cost or advance through the valid window.
-- **inner gate** — Complete the final halls and reveal the Orrery routing record.
+- **Level 1 — Learn** — Introduce laser, floor, and axe behavior in readable encounters with generous safe space.
+- **Level 2 — Combine** — Mix hazard families so the player must decide when to throw, wait, avoid, or move.
+- **Level 3 — Execute** — Increase density and timing pressure without changing the learned rules.
+- **Inner Gate** — Provide a safe final checkpoint exit and clear Workshop handoff.
 
 ##### Build Requirements
 
-###### Hall and Layout Variants
-- **Three Layouts** — Area: Full station zone
-  - Build/Visual: Build Progressive Introduction, Alternating Risk, and Clustered Patterns variants.
-  - Build/Visual: Use the same count of each trap type, comparable length, and comparable total consequence dose.
-  - Build/Visual: Keep transition and inner gate positions consistent across variants.
-  - Gameplay Function: Provides authored variation without changing difficulty contract.
-- **Approach and Checkpoints** — Area: Authored area
-  - Build/Visual: Place a 3–5 block approach zone before each trap and safe space for observation.
-  - Build/Visual: Create two major checkpoints plus final-hall checkpoint.
-  - Build/Visual: Prevent overlapping danger volumes from producing unavoidable chained consequences.
-  - Gameplay Function: Enables reliable behavior classification and recovery.
-###### Trap Types
-- **Watcher Gate** — Area: Authored area
-  - Build/Visual: Build a mechanical eye with clear open/closed cycle, visible beam, and matching audio cue.
-  - Build/Visual: Provide a fixed knockback return marker.
-  - Gameplay Function: Supports waiting, probing, or timed rushing.
-- **Resonant Floor** — Area: Authored area
-  - Build/Visual: Build an outward rune pulse with matching sound and a padded under-hall with short return stairs.
-  - Build/Visual: Ensure visual rhythm remains readable when audio is muted.
-  - Gameplay Function: Creates a harmless drop and recovery loop.
-- **Warden Sweep** — Area: Authored area
-  - Build/Visual: Build sequential wall lights, safe recesses, and a short gate-delay consequence.
-  - Build/Visual: Keep the completed sweep visually readable for follow-behind movement.
-  - Gameplay Function: Creates a different time-only risk pattern.
-###### Tools and Ending
-- **Echo Pebble Targets** — Area: Authored area
-  - Build/Visual: Provide clear Echo Pebble target anchors and highlight states only on wall and floor trap instances.
-  - Build/Visual: Ceiling traps must have no valid Pebble target and must communicate their timing window through visual/audio tells.
-  - Build/Visual: Keep the tool unlimited and prevent projectiles/effects from leaving the lane.
-  - Gameplay Function: Supports selective safe windows without removing the ceiling-trap timing challenge.
-- **inner gate** — Area: Authored area
-  - Build/Visual: Build the inner gate reveal with a visible Orrery routing diagram and one-way Workshop transition.
-  - Build/Visual: Keep all trap pieces, under-halls, gates, and FX within reset ownership.
-  - Gameplay Function: Pays off the traversal and directs the final objective.
+###### Wall Laser Family
+- **Laser Sensor and Beam** — Area: Authored wall encounters
+  - Build/Visual: Use a visible wall-mounted sensor and beam with Active and Temporarily Disabled states.
+  - Build/Visual: Make valid Echo Pebble sensor targets obvious enough to learn without marking floor/axe traps as valid.
+  - Gameplay Function: Provides the primary Pebble-disable interaction.
+- **Hanging Laser Blocker Stone** — Area: Selected authored laser encounters
+  - Build/Visual: Place a readable hanging stone target above or near the beam path.
+  - Build/Visual: A valid Pebble hit must visibly move/drop the stone into the beam so the blocked state is understandable.
+  - Gameplay Function: Provides an alternate authored laser solution using the same Pebble tool.
+###### Non-Pebble Hazards
+- **Floor Trap** — Area: Authored floor encounters
+  - Build/Visual: Make danger tiles/areas visually readable before contact and leave a safe path or timing/avoidance decision.
+  - Build/Visual: Do not show a Pebble target state.
+  - Gameplay Function: Tests movement awareness and imposes the approved damage/status consequence when stepped on.
+- **Swinging Axe** — Area: Ceiling-mounted corridor encounters
+  - Build/Visual: Use a double-sided axe or equivalent readable blade with a clear left-right swing arc and safe timing window.
+  - Build/Visual: Provide approach space where the player can observe the cycle without taking unavoidable damage.
+  - Gameplay Function: Creates timing pressure that cannot be bypassed with Pebble.
+###### Checkpoints and Exit
+- **Three Level Checkpoints** — Area: Start of each Warden level
+  - Build/Visual: Provide a safe respawn/recovery position outside active trap volumes.
+  - Build/Visual: Completed earlier levels must not need to be replayed after gameplay-health depletion.
+  - Gameplay Function: Owns local failure recovery.
+- **Inner Gate** — Area: End of Level 3
+  - Build/Visual: Keep the final approach safe after the last trap and clearly reveal the Workshop route.
+  - Build/Visual: Keep trap pieces, blocker stones, gates, FX, and checkpoint markers inside reset ownership.
+  - Gameplay Function: Defines objective completion and handoff.
 
 ##### Important Build Notes
 
-- **Pebble Scope Is Explicit** — Only wall and floor traps accept Echo Pebble; ceiling traps never do.
-- **One Tell Owns One State** — Visual and audio warning cues must reflect the same authoritative trap cycle.
-- **Non-Lethal Consequences** — Knockback, padded return, or short gate delay may cost time but must not remove objective progress.
-- **Layout Parity** — All three layout variants require comparable length, trap counts, and tested consequence exposure.
+- **Pebble Targets Are Laser-Owned** — Only authored wall-laser sensors and authored hanging-stone targets accept Pebble as a gameplay solution.
+- **Floor and Axe Never Disable** — Their challenge remains avoidance/timing even when the player throws Pebble at them.
+- **Damage Must Be Readable** — Each hazard family needs distinct impact feedback before status effects alter movement/vision.
+- **Checkpoint Spawn Is Safe** — Recovery positions cannot overlap active beams, floor traps, or axe arcs.
 
 #### Developer
 
-Implement deterministic trap cycles, three equivalent layout variants, an unlimited Echo Pebble that disables wall/floor traps only, observation/wait/rush classification, non-lethal consequence recovery, platform-side scoring evidence, interruption handling, and complete reset.
+Implement deterministic trap cycles, unlimited Echo Pebble with a 3-second cooldown, 4-second temporary wall-laser disable windows, hanging-stone blocking interactions, exact hazard damage/status effects, checkpoint recovery, platform-side scoring evidence, interruption handling, and complete reset.
 
 ##### Development Flow
 
-- **Mechanic Setup** — Select one layout, initialize trap instances/checkpoints, bind visual/audio tells to deterministic game-time cycles, and grant Echo Pebble.
-- **Trap Reading and Pebble** — Track approach observation, allow 4-second wall/floor disables, reject ceiling targets, and classify wait/rush/probe behavior.
-- **Consequences and Completion** — Apply non-lethal time consequences, recover to valid checkpoints, complete on inner-gate entry, and preserve timeout progress.
-- **Data and Reset** — Export raw trap/strategy evidence only, then restore cycles, checkpoints, Pebble state, gates, effects, and selected layout.
+- **Mechanic Setup** — Initialize three Warden levels, checkpoints, trap instances/cycles, gameplay health/effects, valid Pebble targets, cooldown state, and permissions.
+- **Pebble and Trap Interaction** — Validate throws against laser sensors/hanging stones, enforce the 3-second cooldown, and keep floor/axe targets invalid.
+- **Damage and Recovery** — Apply exact hazard consequences, track gameplay-health depletion, and return the player safely to the active level checkpoint when needed.
+- **Completion and Reset** — Complete on inner-gate entry, export raw trap/strategy evidence only, and restore every trap/tool/checkpoint state.
 
 ##### Development Requirements
 
-###### Mechanic Setup
-- **Layout Selection**
-  - Requirement: Store three authored variants with identical trap-type counts and comparable path length.
-  - Requirement: Select one at station entry, record its ID, and keep it fixed through pause/resume.
-  - Requirement: Activate only the chosen variant’s geometry and trigger volumes.
-  - Gameplay Function: Provides controlled variation with a verifiable dose.
-- **Trap State Machines**
-  - Requirement: Implement fixed cycles for Watcher Gate, Resonant Floor, and Warden Sweep.
-  - Requirement: Expose visual and audio warning states from the same authoritative timer.
-  - Requirement: Pause and resume every cycle at its exact game-time position.
-  - Gameplay Function: Keeps trap tells consistent and deterministic.
-###### Gameplay Setup
-- **Echo Pebble**
-  - Requirement: Treat wall and floor trap instances as valid Echo Pebble targets; ceiling traps are invalid targets.
-  - Requirement: On a valid hit, disable the selected wall/floor trap for 4 seconds of game-time, then restore its normal cycle.
-  - Requirement: Return/refresh the unlimited Pebble after use, prevent cross-lane/invalid targets, and record target, prior trap state, disable start/end, and timestamp.
-  - Gameplay Function: Creates a short deliberate safe window while preserving ceiling-trap observation/timing.
-- **Behavior Classification**
-  - Requirement: Record approach enter/exit and time in zone.
-  - Requirement: Classify wait-out only after one complete observed cycle followed by a safe crossing without probe.
-  - Requirement: Classify rush when danger is entered before a full cycle or probe; record success or consequence.
-  - Gameplay Function: Creates interpretable raw evidence without prescribing one strategy.
-- **Consequence and Completion**
-  - Requirement: Use fixed knockback, padded drop/return, or gate-delay consequences with no damage.
-  - Requirement: Record consequence start/end and restore the player to a valid route.
-  - Requirement: Complete at inner gate entry; at timeout preserve furthest checkpoint and current trap state.
-  - Gameplay Function: Keeps setbacks low-stakes and measurable.
+###### Echo Pebble
+- **Unlimited Tool / Cooldown**
+  - Requirement: Keep Echo Pebble supply unlimited for the active objective.
+  - Requirement: After every valid or invalid throw that consumes the throw action, block the next throw for 3 seconds of game-time and expose a readable recharge/ready state.
+  - Requirement: Freeze/resume the cooldown with shared pause behavior.
+  - Gameplay Function: Prevents spam while keeping the puzzle independent of ammunition count.
+- **Valid Targets**
+  - Requirement: Accept authored wall-laser sensors and authored hanging-stone targets only.
+  - Requirement: On a sensor hit, disable that laser for 4 seconds of game-time before its authored cycle resumes.
+  - Requirement: On a hanging-stone hit, move the authored stone into its beam-blocking state for that encounter until local reset/completion.
+  - Requirement: Reject floor traps and swinging axes as disable targets.
+  - Gameplay Function: Preserves the approved difference between laser solutions and avoidance/timing hazards.
+###### Hazard Consequences
+- **Wall Laser Contact**
+  - Requirement: Apply 10 gameplay damage per valid contact tick/event according to the authored beam collision guard.
+  - Requirement: Apply Weakness II for 5 seconds and Slowness I for 3 seconds.
+  - Requirement: Prevent duplicate damage from one collision frame beyond the intended contact cadence.
+  - Gameplay Function: Makes forcing through an active laser costly and slows immediate follow-up movement.
+- **Floor Trap Contact**
+  - Requirement: Apply 5 gameplay damage.
+  - Requirement: Apply Slowness II for 5 seconds and Blindness for 3 seconds.
+  - Requirement: Debounce one trap activation so standing on one trigger does not create unintended duplicate stacks.
+  - Gameplay Function: Punishes careless footing without changing objective progress.
+- **Swinging Axe Contact**
+  - Requirement: Apply 10 gameplay damage and authored backward knockback.
+  - Requirement: Apply Weakness II for 5 seconds and Slowness I for 3 seconds.
+  - Requirement: Tie damage to the authored active swing/contact window.
+  - Gameplay Function: Makes incorrect timing visibly costly and pushes the player away from the hazard.
+###### Checkpoints and Completion
+- **Gameplay-Health Recovery**
+  - Requirement: If gameplay health reaches zero, clear invalid lingering hit states, restore the player to a safe gameplay-health/effect state, and return them to the active Warden level checkpoint.
+  - Requirement: Preserve earlier completed Warden levels and reset only encounter-local states that must be replayable from the checkpoint.
+  - Gameplay Function: Converts hazard defeat into local time loss rather than full-objective restart.
+- **Objective Completion**
+  - Requirement: Complete when the player enters the inner-gate trigger after Level 3.
+  - Requirement: At station timeout preserve furthest level/checkpoint, trap contacts, effects, Pebble actions/cooldowns, and recovery count.
+  - Gameplay Function: Creates a clear station boundary with meaningful partial evidence.
 
 ##### Scoring Setup
 
 - **Warden Halls Score** — 0–100 — 40% Objective Progress + 24% Rule Recognition + 20% Intentional Strategy + 16% Time-Loss Control
-  - **Objective Progress (40%)** — Award from two major checkpoints, the final hall, and inner gate entry.
-  - **Rule Recognition (24%)** — Award up to 8 points for each trap family from first informed safe crossing and later retained recognition.
-  - **Intentional Strategy (20%)** — Award from meaningful Echo Pebble probe/wait evidence or intentional rush/recovery evidence; no single play style is mandatory.
-  - **Time-Loss Control (16%)** — Calculate from non-pause consequence time against the configured reference dose.
-  - **Timer Start:** Start when the selected Warden layout activates and Echo Pebble is granted.
+  - **Objective Progress (40%)** — Award from Warden Level 1 completion, Level 2 completion, Level 3 progress, and inner-gate entry.
+  - **Rule Recognition (24%)** — Award from correctly distinguishing laser Pebble solutions from floor/axe avoidance/timing and retaining that distinction across later encounters.
+  - **Intentional Strategy (20%)** — Award from purposeful laser-sensor disables, blocker-stone use, safe waits/timed axe crossings, and avoidance choices rather than random Pebble spam.
+  - **Time-Loss Control (16%)** — Calculate from non-pause hazard impairment/checkpoint-recovery time and repeated contact cost against the configured reference dose.
+  - **Timer Start:** Start when Warden Level 1 activates and Echo Pebble becomes available.
   - **Timer Stop:** Stop on inner-gate entry or station deadline; pause time is excluded.
   - **No-Score Condition:** Do not finalize a completed Objective Score without a secured station-boundary record; partial raw progress remains available for platform handling.
-  - **Duplicate Prevention:** Each trap event, consequence, checkpoint, and completion boundary uses stable instance/session identity and idempotent export.
+  - **Duplicate Prevention:** Trap contacts, status applications, cooldown transitions, checkpoint recovery, and completion use stable session/instance identity.
   - **Final Result:** One of four Objective Scores combined in the completed session result.
-  - **Player-Facing Result:** Show trap tells, Pebble target/disable feedback, checkpoint/recovery cues, and completion only; no calculated score.
-  - **Telemetry / Export:** Export layout ID, trap instance/type, approach timing, Pebble probes/disable windows, observed cycles, wait/rush actions, consequences, same-type history, checkpoints, timeout/completion; no final score field.
+  - **Player-Facing Result:** Show trap tells, Pebble target/disable/block feedback, cooldown, health/effect consequences, checkpoint recovery, and completion only; no calculated score.
+  - **Telemetry / Export:** Export trap instance/type, contact/damage/effects, Pebble throw/target/result, disable/block windows, cooldowns, checkpoint/recovery, progress, timeout/completion, and component inputs; no final score field.
 
 ##### Reset / Interruption
 
-- Clear Echo Pebble/permissions and restore every wall, floor, and ceiling trap cycle to its authored initial state.
-- Restore gates, padded recovery areas, checkpoints, Vex triggers, doors, entities, visual/audio effects, and layout selection ownership.
-- **Reset Result:** The Warden Halls return to a clean authored layout-ready state with no previous trap-cycle or Pebble-disable state.
+- Clear Echo Pebble, gameplay-health/effects, cooldown, permissions, and projectile state.
+- Restore every laser sensor/beam, blocker stone, floor trap, swinging axe cycle, checkpoint, gate, Vex trigger, visual/audio effect, and authored level state.
+- **Reset Result:** The Warden Halls return to a clean Level 1 starting state with no previous damage, effect, cooldown, trap, or Pebble state.
 
 ##### Important Development Notes
 
-- **Ceiling Traps Never Disable** — Echo Pebble validation must reject ceiling traps consistently in gameplay, highlights, and telemetry.
-- **Deterministic Game-Time** — All trap cycles and 4-second disable windows freeze and resume with the script-owned pause state.
-- **Strategy Neutrality** — Cautious waits and informed rushes are both valid; scoring cannot require one style exclusively.
+- **3-Second Cooldown / 4-Second Laser Disable** — These are separate game-time rules and must not be conflated.
+- **Exact Hazard Effects** — Use the approved damage/effect values; do not retain the previous no-damage Warden behavior.
+- **No Floor-Trap Pebble Disable** — Floor traps remain avoidance hazards in gameplay, highlights, and telemetry.
 - **Raw Evidence Only** — The map records scoring inputs but sends no calculated Warden Halls Score.
 
 ##### Acceptance
 
-- The Warden Halls reaches its defined end condition without creating an unrecoverable player state.
-- The Warden Halls preserves the approved player-facing behavior, data/result boundary, and lane isolation rules.
+- The Warden Halls reaches its defined end condition using the approved checkpoint recovery behavior.
+- The Warden Halls preserves exact trap consequences, Pebble scope, data/result boundary, and lane isolation rules.
 - The Warden Halls reset restores the authored starting state before the assigned lane is reused.
 
 ##### Terms
 
-- **Echo Pebble** — The unlimited tool that temporarily disables a valid wall or floor trap for four seconds of game-time.
-- **Wall Trap** — A telegraphed security hazard that can be temporarily disabled with the Echo Pebble.
-- **Floor Trap** — A telegraphed ground hazard that can be temporarily disabled with the Echo Pebble.
-- **Ceiling Trap** — A timing-only hazard that cannot be disabled with the Echo Pebble.
-- **Warning Tell** — The consistent visual and audio cue that communicates a trap's active cycle before consequence.
+- **Echo Pebble** — The unlimited throwable tool with a 3-second cooldown used only on authored laser solutions.
+- **Wall Laser** — A sensor/beam hazard that may be timed, temporarily disabled, or blocked by an authored hanging stone.
+- **Floor Trap** — A ground hazard that cannot be disabled by Echo Pebble.
+- **Swinging Axe** — A ceiling timing hazard that swings across the player route and cannot be disabled by Echo Pebble.
+- **Gameplay Health** — The Objective 3 hazard-health state whose depletion causes checkpoint recovery.
 
 ### 08. The Gremlin’s Workshop
 
@@ -1010,158 +1037,172 @@ Implement deterministic trap cycles, three equivalent layout variants, an unlimi
 
 #### Gameplay Overview
 
-**Context:** The Workshop contains the Source Crystal, a 3×3 rotatable conduit grid, and the three-ring Great Orrery. After Ring 2, a Gremlin permanently breaks one active connection and the player must reroute around it.
+**Context:** The Workshop contains the Power Generator, three Great Orrery rings, and an authored power-routing field of 90-degree L rotators.
 
-**Main Objective:** Power Ring 1 and Ring 2, recover from the scripted sabotage, then reroute the network to power Ring 3 while restoring the full Orrery network.
+**Main Objective:** Keep one continuous network from Generator → Ring 1 → Ring 2 → Ring 3 while repairing the route swap and two later Gremlin rotator-sabotage events.
 
-**Result:** All three rings are powered together, the Great Orrery is restored, and the ending sequence begins.
+**Result:** Generator and all three rings are continuously powered, the Great Orrery restores, and the Clockwork exit opens.
 
 ##### Gameplay Information
 
-- **Game Purpose:** Test cumulative power-routing understanding and adaptation to a visible topology change rather than a hidden rule reversal.
+- **Game Purpose:** Test power-routing understanding, memory of previously solved sections, and adaptation when an external Gremlin visibly changes the network.
 - **Gameplay Time:** Approximately 9 minutes.
-- **Starting Condition:** The 3×3 grid is reset, all three ring targets are visible, Ring 1 has its easy authored route, and no connection is sabotaged.
-- **End Condition:** All three Orrery rings are powered simultaneously after the post-sabotage reroute.
-- **Fail Condition:** No permanent fail state. Rotations remain reversible; the sabotaged connection stays broken, but a valid authored reroute always exists. Vex may highlight a useful area but never solve the board.
-- **Scoring Criteria:** Objective Score 0–100 based on Ring Completion, Post-Fault Adaptation, and Independent Progress.
+- **Starting Condition:** The authored routing field is reset, Power Generator and Ring 1–3 are readable, normal blockers are in their initial states, and no Gremlin event has fired.
+- **End Condition:** Power Generator, Ring 1, Ring 2, and Ring 3 are all continuously connected after the 20-second route swap and 50%/80% rollback events.
+- **Fail Condition:** There is no permanent fail state. Rotators remain reversible and the authored blocker changes always leave a valid route; progress may be interrupted until earlier damaged connections are repaired.
+- **Scoring Criteria:** Objective Score 0–100 based on Ring Completion, Gremlin Adaptation, and Independent Progress.
 
 ##### Gameplay Flow
 
-- **Learn the Grid and Power Ring 1** — Rotate the deliberately easy first path and learn how node orientation and live flow connect the Source Crystal to the Orrery.
-- **Extend the Network to Ring 2** — Preserve Ring 1 while branching/extending the same cumulative network until Ring 2 is powered.
-- **Gremlin Sabotage** — About 20 seconds after Ring 2 stabilizes, briefly lock input, run the scripted Gremlin event, and permanently break one authored active connection with an unmistakable damaged visual.
-- **Reroute and Power Ring 3** — Restore any interrupted powered segment by routing around the broken edge, then extend the valid cumulative network to Ring 3. Vex may highlight but never auto-solve.
-- **Restore the Great Orrery** — Complete only when all three rings are powered simultaneously, save the complete action/fault sequence, lock the puzzle, and begin the ending.
+- **Level 1 — Power Ring 1** — Rotate 90-degree L junctions to create the first continuous route from the Generator to Ring 1.
+- **Level 2 — Extend to Ring 2** — Continue the same live network from Ring 1 to Ring 2 while preserving the Generator → Ring 1 connection.
+- **Route-Swap Sabotage** — About 20 seconds after Ring 2 stabilizes, the Gremlin blocks the route just used and opens a previously blocked alternate route. Reroute until Generator → Ring 1 → Ring 2 is live again.
+- **Level 3 — Repair 50% and 80% Rollbacks** — Extend from Ring 2 toward Ring 3. At 50% progress, repair two rotated junctions on Generator → Ring 1; at 80%, repair three rotated junctions on Ring 1 → Ring 2.
+- **Restore the Great Orrery** — Complete only when Generator and all three rings are simultaneously connected, save the full action/sabotage sequence, lock puzzle input, and begin the ending.
 
 #### Level Design
 
-Build a readable Workshop centered on the 3×3 rotatable conduit grid and three-ring Great Orrery. Source, live power flow, ring targets, the Gremlin path, and the permanently broken post-fault connection must remain visually readable without UI-only explanation. Show the broken connection as a physical topology change.
+Build a readable Workshop around the approved routing topology. Generator, live power, Ring 1–3, L-rotator orientation, normal blockers, Gremlin event blockers, and sabotage changes must remain understandable from the player’s puzzle position.
 
 ##### Design Flow
 
-- **Learn Ring 1** — Use an intentionally easy route that establishes rotation and live power-flow readability.
-- **Extend to Ring 2** — Require cumulative routing that preserves Ring 1 and introduces branching/split decisions.
-- **Gremlin Break** — Stage one fixed Gremlin path and damage one authored active connection with a permanent broken visual.
-- **Reroute to Ring 3** — Author a valid alternate route around the broken edge that restores the cumulative network and reaches Ring 3.
+- **Level 1 — Learn the Rotator** — Present the first Generator → Ring 1 route with enough clarity to teach the L-junction rule.
+- **Level 2 — Extend and Reroute** — Build the Ring 1 → Ring 2 continuation and the paired old-route-blocked / alternate-route-open sabotage state.
+- **Level 3 — Backtrack Repairs** — Keep earlier Generator → Ring 1 and Ring 1 → Ring 2 sections reachable/readable when the 50% and 80% events rotate them out of alignment.
+- **Orrery Payoff** — Frame the all-rings-powered state and opened exit as the final Workshop view.
 
 ##### Build Requirements
 
-###### Workshop and Orrery
-- **3×3 Conduit Grid** — Area: Central 3×3 interaction field
-  - Build/Visual: Use authored Straight, Elbow, and Split conduit nodes with clearly readable connection edges in every 90° rotation.
-  - Build/Visual: Show live powered, unpowered, and blocked-flow states directly on the grid; no form-only interpretation.
-  - Build/Visual: Do not rely on vanilla redstone textures or logic for the invented routing grammar.
-  - Gameplay Function: Provides the cumulative routing puzzle.
-- **Source Crystal and Three Rings** — Area: Visible from grid
-  - Build/Visual: Keep Source Crystal and Ring 1–3 targets readable together with the active network.
-  - Build/Visual: Each ring needs distinct inactive/powered feedback and the final three-ring restored state.
-  - Gameplay Function: Makes progression and completion visible without score UI.
-###### Sabotage and Reroute
-- **Broken Connection** — Area: One authored active edge after Ring 2
-  - Build/Visual: Provide one fixed Gremlin-accessible connection that can switch to a permanently damaged/sealed state.
-  - Build/Visual: The broken edge must read as an obvious physical sabotage event caused by the Gremlin.
-  - Gameplay Function: Creates the topology change that forces adaptation.
-- **Ring 3 Recovery Route** — Area: Remaining authored grid topology
-  - Build/Visual: Ensure a valid alternate connection path exists around the broken edge.
-  - Build/Visual: Require meaningful rerouting; the original exact route must no longer complete the full network after sabotage.
-  - Gameplay Function: Tests adaptation while preserving the original conduit rules.
-###### Gremlin and Ending
-- **Scripted Gremlin Path** — Area: Fixed cinematic route
-  - Build/Visual: Keep Gremlin movement, fault point, Vex reaction, and damaged-edge reveal visible from the player’s puzzle position.
-  - Build/Visual: Do not require navigation AI.
-  - Gameplay Function: Externalizes the sabotage as a deterministic authored event.
-- **Orrery Payoff Frame** — Area: Workshop completion view
-  - Build/Visual: Frame the all-rings-powered Great Orrery and the route into the ending sequence.
-  - Build/Visual: Keep grid nodes, source/rings, broken edge, Gremlin markers, lights, audio, and FX inside reset ownership.
+###### Core Network
+- **Power Generator** — Area: Visible source position
+  - Build/Visual: Provide clearly distinct offline/live/interrupted feedback and make the outgoing power direction readable.
+  - Gameplay Function: Defines the start of the continuous network.
+- **90-Degree L Rotators** — Area: Authored junction positions
+  - Build/Visual: Every rotator must visibly connect exactly two orthogonal directions and support four readable orientations.
+  - Build/Visual: Powered and unpowered states must remain distinct from the rotator’s physical orientation.
+  - Gameplay Function: Provides the player’s routing interaction.
+- **Ring 1, Ring 2, Ring 3** — Area: Authored milestone positions
+  - Build/Visual: Each ring needs inactive/powered feedback and must remain distinguishable by position/label.
+  - Build/Visual: Earlier rings must visibly lose power if a later Gremlin event breaks their actual upstream connection.
+  - Gameplay Function: Shows cumulative progression from the real network state.
+###### Blocker and Sabotage States
+- **Normal Blockers** — Area: Authored inactive route segments
+  - Build/Visual: Mark unavailable paths clearly without making them resemble powered paths.
+  - Build/Visual: Support the Level 2 alternate route opening when its blocker is removed.
+  - Gameplay Function: Controls which authored path is available at each puzzle state.
+- **Gremlin Event Blocker / Route Swap** — Area: Level 2 active route
+  - Build/Visual: After Ring 2 completion, show the previous active route becoming unmistakably blocked while the alternate route becomes available.
+  - Build/Visual: Keep the change visible long enough to understand without route-coordinate UI.
+  - Gameplay Function: Forces the first reroute.
+- **50% and 80% Rotator Changes** — Area: Earlier solved network sections
+  - Build/Visual: Keep the two Generator → Ring 1 rotators and three Ring 1 → Ring 2 rotators targeted by sabotage reachable and visually identifiable when they turn.
+  - Gameplay Function: Forces the player to repair previously solved sections during Level 3.
+###### Gremlin and Completion
+- **Gremlin Presentation Path** — Area: Authored sightline
+  - Build/Visual: Stage readable Gremlin movement/reaction for the route-swap and rollback events without requiring navigation AI.
+  - Build/Visual: The visual event must never expose the exact solution route.
+  - Gameplay Function: Makes every topology/orientation change feel externally caused rather than like a hidden rule change.
+- **Great Orrery / Exit Frame** — Area: Completion view
+  - Build/Visual: Show all three rings synchronized, restored power reaching the Orrery, and the Clockwork exit opening.
+  - Build/Visual: Keep Generator, rings, rotators, blockers, Gremlin state, FX, audio, and exit markers inside reset ownership.
   - Gameplay Function: Connects puzzle completion to the story payoff.
 
 ##### Important Build Notes
 
-- **Connection Rules Stay Constant** — The Gremlin breaks one physical connection; all other conduit connection rules remain unchanged.
-- **Broken Edge Is Permanent for the Run** — The sabotaged connection cannot be repaired before objective completion and must remain visibly blocked.
-- **Vex Does Not Auto-Solve** — Assist may highlight a useful connection or region only; it cannot rotate nodes or automatically reach Ring 2.
-- **Fault Must Be Unmissable** — Gremlin movement, input lock, break effect, Vex reaction, and damaged connection state must clearly read as external sabotage.
+- **Authored Route Topology** — Preserve the approved route topology and blocker states; player-facing communication uses in-world route states rather than coordinate labels.
+- **One Continuous Network** — A ring is powered only while a real connected route from the Generator exists through all required earlier links.
+- **Sabotage Is Visible** — Route blocking/opening and every forced rotator turn must be unmistakable before normal interaction resumes.
+- **Connection Grammar Never Changes** — The Gremlin changes blockers/orientation, not the learned L-rotator rule.
 
 #### Developer
 
-Implement the deterministic 3×3 conduit solver, cumulative Ring 1/2 progression, fixed post-Ring-2 physical connection sabotage, Ring 3 rerouting, highlight-only Vex assist, complete action/fault telemetry, platform-side scoring inputs, interruption handling, and full reset.
+Implement the approved authored routing graph, L-rotator state resolution, cumulative Ring 1/2/3 validation, 20-second route-swap sabotage, 50%/80% rollback events, platform-side scoring evidence, interruption handling, and full reset.
 
 ##### Development Flow
 
-- **Mechanic Setup** — Initialize node types/rotations, Source Crystal, ring states, power solver, authored sabotage edge, and player interaction permissions.
-- **Ring 1 and Ring 2** — Recalculate the complete orthogonal network after every rotation and validate Ring 1/2 cumulative power states.
-- **Sabotage and Ring 3** — After Ring 2, run the Gremlin event, mark one authored active edge permanently broken, recalculate flow, and require a valid reroute to Ring 3.
-- **Result and Reset** — Record the entire rotation/state/fault/assist sequence, complete on all three rings powered, then restore the original unsabotaged board.
+- **Mechanic Setup** — Initialize the authored topology, rotator orientations, blocker states, Generator, ring states, progress markers, Gremlin event flags, and interaction permissions.
+- **Level 1 / Level 2 Connectivity** — Recalculate power after every valid rotation, complete Ring 1 from actual connectivity, then extend and validate Ring 2 without losing Ring 1.
+- **Sabotage and Level 3** — Run the post-Ring-2 route swap, track Ring 2 → Ring 3 progress, fire the 50% two-rotator and 80% three-rotator events once, and require earlier links to be repaired.
+- **Result and Reset** — Record the full rotation/connectivity/sabotage sequence, complete on all rings connected, then restore original rotators/blockers/event state.
 
 ##### Development Requirements
 
-###### Conduit Runtime
-- **Conduit Solver**
-  - Requirement: Store Straight, Elbow, or Split node type plus 90° rotation for all 3×3 cells and resolve only orthogonal authored connections.
-  - Requirement: After every valid rotation, recalculate the full Source-to-network flow atomically and update visual state before the next input.
-  - Requirement: Keep Ring 1 and Ring 2 powered only while their actual route remains connected.
-  - Gameplay Function: Creates a deterministic replayable cumulative network.
+###### Connectivity Runtime
+- **Rotator Solver**
+  - Requirement: Store every authored 90-degree L rotator orientation and resolve only its two orthogonal connected sides.
+  - Requirement: After every valid player or Gremlin rotation, recalculate Generator-to-network connectivity atomically before accepting the next state-dependent milestone.
+  - Requirement: Update powered/unpowered visual state from actual connectivity rather than historical completion flags.
+  - Gameplay Function: Creates one deterministic continuous network.
 - **Ring Progression**
-  - Requirement: Ring 1 uses the deliberately easy authored solution.
-  - Requirement: Ring 2 extends/branches the existing network rather than resetting Ring 1.
-  - Requirement: Complete ring milestones from actual powered state, not button count.
-  - Gameplay Function: Progression teaches then extends the same routing rule.
-###### Fault and Adaptation
-- **Scripted Connection Sabotage**
-  - Requirement: Schedule the fault about 20 seconds after Ring 2 stabilizes using game-time.
-  - Requirement: Briefly lock input, play the fixed Gremlin path/Vex reaction, then permanently disable one authored active connection edge for the remainder of the run.
-  - Requirement: Record the broken edge ID, prior flow state, fault time, and first post-fault interaction. Keep all normal conduit connection rules unchanged.
-  - Gameplay Function: Creates one clear external topology change identical for every session.
-- **Ring 3 Reroute**
-  - Requirement: Recalculate the network with the broken edge unavailable.
-  - Requirement: Require the player to restore any lost powered segment by using an authored alternate route and then extend valid power to Ring 3.
-  - Requirement: Complete only when all three rings are simultaneously powered.
-  - Gameplay Function: Verifies real adaptation to the broken network.
-- **Vex Assist**
-  - Requirement: At the configured assist threshold, highlight one useful node/connection/region only.
-  - Requirement: Never rotate a node, change a connection, or automatically advance Ring 2/3.
-  - Requirement: Record assist shown/used state for scoring independence.
-  - Gameplay Function: Prevents a stalled session without removing the player’s puzzle completion.
+  - Requirement: Validate Ring 1 only from a live Generator → Ring 1 route.
+  - Requirement: Validate Ring 2 only while Generator → Ring 1 → Ring 2 remains continuously powered.
+  - Requirement: Level 3 begins from the restored Ring 2 network and tracks authored progress toward Ring 3.
+  - Gameplay Function: Keeps progression cumulative and physically meaningful.
+###### Level 2 Route Swap
+- **Post-Ring-2 Sabotage**
+  - Requirement: About 20 seconds after Ring 1 and Ring 2 are connected, run the Gremlin route-swap event once using game-time.
+  - Requirement: Set the authored previous route segment to Gremlin-blocked/unavailable and remove/open the authored blocker that previously prevented the alternate route.
+  - Requirement: Recalculate power immediately and record prior/new blocker state, lost ring power, event time, and first post-event interaction.
+  - Gameplay Function: Forces the player to reroute through the newly available path without changing rotator grammar.
+###### Level 3 Rollback Events
+- **50% Progress Sabotage**
+  - Requirement: Measure Ring 2 → Ring 3 progress from authored validated route-progress state defined by the technical layout.
+  - Requirement: On first reach of 50%, rotate exactly two authored previously correct rotators on the Generator → Ring 1 route to their sabotage orientations.
+  - Requirement: Recalculate power and require the player to restore the damaged earlier link before final completion can remain valid.
+  - Gameplay Function: Tests awareness of the whole network, not only the newest route segment.
+- **80% Progress Sabotage**
+  - Requirement: On first reach of 80%, rotate exactly three authored previously correct rotators on the Ring 1 → Ring 2 route to their sabotage orientations.
+  - Requirement: Recalculate power and require the player to repair that earlier connection before Ring 3 completion can resolve.
+  - Requirement: Each rollback event fires once per session and remains idempotent across pause/resume.
+  - Gameplay Function: Creates the final Gremlin interruption before full restoration.
+###### Completion and Interruption
+- **Full Network Completion**
+  - Requirement: Complete only when Generator, Ring 1, Ring 2, and Ring 3 are continuously connected after all required sabotage events for the run.
+  - Requirement: Lock puzzle interaction only after the valid completion record is committed, then begin the Great Orrery restoration presentation.
+  - Requirement: At timeout preserve rotator orientations, blocker states, ring connectivity, route progress, sabotage-fired flags, and action history.
+  - Gameplay Function: Defines the final objective boundary without bypassing a broken earlier link.
 
 ##### Scoring Setup
 
-- **Gremlin’s Workshop Score** — 0–100 — 72% Ring Completion + 20% Post-Fault Adaptation + 8% Independent Progress
-  - **Ring Completion (72%)** — Ring 1 contributes 16 points, Ring 2 contributes 24 points, and Ring 3 contributes 32 points.
-  - **Post-Fault Adaptation (20%)** — Award from recognizing the sabotaged connection, stopping attempts through the broken edge, restoring lost power through an alternate route, and using the rerouted network to reach Ring 3.
-  - **Independent Progress (8%)** — Full value when Ring 2 completes without Vex assist; highlight-only assistance does not remove ring or adaptation points.
-  - **Timer Start:** Start when Workshop conduit interaction becomes active.
-  - **Timer Stop:** Stop when all three rings are powered simultaneously or at the station deadline; pause time is excluded.
-  - **No-Score Condition:** Do not finalize a completed Objective Score without a secured Workshop boundary record; preserve raw partial ring/fault evidence for platform handling.
-  - **Duplicate Prevention:** Ring milestones, sabotage, assist, completion, and result export are idempotent per session; sabotage fires once.
+- **Gremlin’s Workshop Score** — 0–100 — 72% Ring Completion + 20% Gremlin Adaptation + 8% Independent Progress
+  - **Ring Completion (72%)** — Award from validated Ring 1, Ring 2, and Ring 3 progression based on actual continuous connectivity, with the largest share reserved for final all-rings restoration.
+  - **Gremlin Adaptation (20%)** — Award from responding correctly to the route swap, repairing the 50% Generator → Ring 1 rollback, repairing the 80% Ring 1 → Ring 2 rollback, and restoring lost power without repeatedly acting on visibly unavailable paths.
+  - **Independent Progress (8%)** — Award from completing the authored routing work without an external auto-solve; normal Vex narrative/warning lines do not remove progress points.
+  - **Timer Start:** Start when Workshop rotator interaction becomes active.
+  - **Timer Stop:** Stop when the full Generator → Ring 1 → Ring 2 → Ring 3 network is restored or at the station deadline; pause time is excluded.
+  - **No-Score Condition:** Do not finalize a completed Objective Score without a secured Workshop boundary record; preserve raw partial ring/sabotage evidence for platform handling.
+  - **Duplicate Prevention:** Ring milestones, route-swap event, 50% event, 80% event, completion, and result export are idempotent per session.
   - **Final Result:** The fourth Objective Score; after Workshop completion the session result contains all four objective scores and proceeds to the ending.
-  - **Player-Facing Result:** Show live power flow, ring states, sabotage damage, assist highlight, and completion only; no calculated score.
-  - **Telemetry / Export:** Export initial layout, every rotation/prior-new orientation, full flow state, ring timestamps, broken-edge fault details, post-fault actions, reroute recovery, assist, pause, timeout/completion; no final score field.
+  - **Player-Facing Result:** Show live power, ring states, blocked/open route changes, forced rotator changes, and completion only; no calculated score.
+  - **Telemetry / Export:** Export authored layout/version identity, every player/Gremlin rotation, prior/new orientation, connectivity state, ring timestamps, blocker changes, 50%/80% event details, post-event repairs, pause, timeout/completion, and component inputs; no final score field.
 
 ##### Reset / Interruption
 
-- Restore the original unsabotaged connection graph, node rotations, Source Crystal, ring states, timer, assist, Vex, Gremlin model/path, lights/audio/particles, interaction locks, and permissions.
-- Verify that the broken-edge state and all post-fault flags are cleared before lane reuse.
-- **Reset Result:** The Workshop returns to its authored initial grid with no sabotaged connection and all rings inactive.
+- Restore the original authored topology, rotator orientations, normal/event blocker states, Generator, ring states, progress markers, timers, Vex/Gremlin presentation state, lights/audio/particles, interaction locks, and permissions.
+- Verify that route-swap, 50%, 80%, and completion flags are cleared before lane reuse.
+- **Reset Result:** The Workshop returns to its authored Level 1 starting state with all three rings inactive and no Gremlin sabotage applied.
 
 ##### Important Development Notes
 
-- **Physical Sabotage** — The connection graph changes at one edge; conduit connection rules remain constant.
-- **Fault Uses Game-Time** — The ~20-second post-Ring-2 fault schedule freezes during pause.
-- **Assist Is Highlight-Only** — Vex cannot rotate nodes or auto-complete Ring 2/3 and assist state is recorded.
+- **Three Distinct Gremlin Events** — Route swap, 50% rollback, and 80% rollback have separate one-shot state and telemetry.
+- **Progress Comes From Authored Route State** — The technical layout defines exact Level 3 progress markers; do not estimate 50%/80% from camera direction or arbitrary rotation count.
+- **No Legacy 3×3 Contract** — Do not reduce this revision back to the previous 3×3 Straight/Elbow/Split single-fault model.
 - **Raw Evidence Only** — The map records scoring inputs but sends no calculated Workshop Score.
 
 ##### Acceptance
 
-- The Gremlin’s Workshop reaches its defined end condition without creating an unrecoverable player state.
-- The Gremlin’s Workshop preserves the approved player-facing behavior, data/result boundary, and lane isolation rules.
+- The Gremlin’s Workshop reaches its defined end condition with all earlier network links genuinely restored.
+- The Gremlin’s Workshop preserves the approved staged sabotage behavior, data/result boundary, and lane isolation rules.
 - The Gremlin’s Workshop reset restores the authored starting state before the assigned lane is reused.
 
 ##### Terms
 
-- **Orrery ring** — One of the three sequential power milestones
-- **Flow state** — The complete visible connection and powered state of the grid
-- **Conduit rule** — The invented behavior that determines how a node passes power
-- **Connection sabotage** — The one-time destruction of an active conduit connection after Ring 2
+- **Power Generator** — The source node for the complete Objective 4 network.
+- **Orrery Ring** — One of the three sequential power milestones connected in order.
+- **L Rotator** — A 90-degree junction that connects exactly two orthogonal directions and can be rotated by the player or scripted Gremlin event.
+- **Normal Blocker** — An authored unavailable route segment that may later open during the Level 2 route swap.
+- **Gremlin Event Blocker** — The visible blocked state applied to the previously active Level 2 route after sabotage.
+- **Rollback Event** — A Gremlin event that rotates already-correct junctions on an earlier powered section at 50% or 80% Level 3 progress.
 
 ### 09. Vault Restored
 
@@ -1179,7 +1220,7 @@ Implement the deterministic 3×3 conduit solver, cumulative Ring 1/2 progression
 
 - **Game Purpose:** Resolve the story and close the session without exposing platform scoring/analysis or adding another gameplay challenge.
 - **Gameplay Time:** Part of the approximately 5-minute transition and closing-scene allowance.
-- **Starting Condition:** Ring 3 completion and the valid all-rings-powered Great Orrery restoration event are secured.
+- **Starting Condition:** Valid Objective 4 completion and the all-rings-powered Great Orrery restoration event are secured.
 - **End Condition:** Session data is secured, Clockwork Wayfinder is delivered once, the player returns to the holding area, and the assigned lane is reusable-ready.
 - **Fail Condition:** Completed objective progress is preserved. Reward/save retries are idempotent, and a failed lane reset keeps that lane unavailable until it is clean.
 - **Scoring Criteria:** No new Objective Score. The ending closes the completed four-objective session.
@@ -1187,7 +1228,7 @@ Implement the deterministic 3×3 conduit solver, cumulative Ring 1/2 progression
 ##### Gameplay Flow
 
 - **Orrery Alignment** — See all three rings synchronize and release power into the restored Great Orrery.
-- **Vault Awakens** — Watch coordinated callbacks from the Workshop, inner gate, Resonance Engine, and Great Hall as the restored systems respond.
+- **Vault Awakens** — Watch coordinated callbacks from the Workshop, inner gate, Resonance Engine, and Great Hall as restored systems respond.
 - **Vex Recognition** — Vex delivers the closing dialogue and acknowledges completion of the restoration journey.
 - **Reward and Save** — Secure the session result and grant the Clockwork Wayfinder cosmetic reward exactly once.
 - **Return and Reset** — Open the safe return route, move the player to the holding area, clear temporary state, verify reset, and release the lane for reuse.
@@ -1246,8 +1287,8 @@ Implement one interruption-safe ending sequence, synchronized vault callbacks, V
 
 ###### Ending Setup
 - **Sequence Control**
-  - Requirement: Begin only after Ring 3 completion.
-  - Requirement: Lock puzzle inputs, maintain safe player control, and prevent duplicate ending starts.
+  - Requirement: Begin only after valid Objective 4 all-rings connectivity completion.
+  - Requirement: Lock Workshop inputs, maintain safe player control, and prevent duplicate ending starts.
   - Requirement: Use script-owned timing so pause/interruption behavior remains deterministic.
   - Gameplay Function: Creates one authoritative closing state.
 - **Cross-System Callbacks**
@@ -1303,280 +1344,379 @@ Implement one interruption-safe ending sequence, synchronized vault callbacks, V
 
 ##### Terms
 
-- **Session result** — The stored completion record containing raw completion and reward state, not a player-facing score
-- **Pending Recovery Record** — The fallback record created when primary session storage cannot complete
-- **Idempotent reward** — A reward operation that cannot grant the same cosmetic reward twice
-- **Lane verification** — The checks confirming that the completed lane is clean before reuse
+- **Session result** — The stored completion record containing raw completion and reward state, not a player-facing score.
+- **Pending Recovery Record** — The fallback record created when primary session storage cannot complete.
+- **Idempotent reward** — A reward operation that cannot grant the same cosmetic reward twice.
+- **Lane verification** — The checks confirming that the completed lane is clean before reuse.
 
 ## Production Assets
 
-### Voice Requirements
+### Non-Voice Requirements
 
-Source PRD revision: 1.0.0
-Voice system: Custodian Vex · direct in-world guide across the vault; no radio/communicator layer
+#### Global / Shared Assets
 
-#### 01. The Antechamber
+##### 3D Models
 
-##### VO-ANTE-01 — Vault Restoration Briefing
-- Type: Main Story
-- Function: briefing
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The assigned player enters the protected Antechamber and Vex activates for the first time.
-- Purpose: Establish why the player is trapped, what the Great Orrery means to the vault, that four connected systems must be restored, and that the Custodian Key begins the route forward.
-- Must communicate:
-  - The entrance will not reopen on its own.
-  - The vault protects the Great Orrery.
-  - Four connected systems must be restored in sequence.
-  - The Custodian Key opens the first mechanism rather than the exit.
-  - Restoring the vault creates the way home.
-- Must not add/repeat:
-  - Do not introduce an extra tutorial puzzle or warm-up objective.
-  - Do not imply the Custodian Key directly opens the exit.
-  - Do not explain later objective mechanics in detail during the opening briefing.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Journey Begins
-  - content.md → 04 The Antechamber → Gameplay Overview
-  - content.md → 04 The Antechamber → Developer → Briefing State
+###### Custodian Vex
+Requirement: Create or reuse one Clockwork-compatible Custodian Vex NPC presentation for all required story, briefing, warning, reminder, and ending moments. Vex must remain visually recognizable across the complete journey and support readable idle, speaking, pointing/highlight, alert, and completion-reaction states without changing gameplay rules.
+Usage: Shared across the Antechamber, Objectives 1-4, and the ending wherever canonical Voice Production is triggered.
 
-##### VO-ANTE-02 — Custodian Key Reminder
-- Type: Direct NPC Dialogue
-- Function: reminder
-- Necessity: supporting
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: After the opening briefing, the player misses the key/seal interaction or returns from a local interruption before the Resonance Engine seal is opened.
-- Purpose: Repeat only the minimum actionable onboarding cue without replaying the story briefing.
-- Must communicate:
-  - Take the Custodian Key.
-  - Use it on the marked Resonance Engine seal.
-- Must not add/repeat:
-  - Do not replay the vault history or four-objective briefing.
-  - Do not imply a fail state or consume the key before valid seal activation.
-- Source refs:
-  - content.md → 04 The Antechamber → Gameplay Information → Fail Condition
-  - content.md → 04 The Antechamber → Developer → Briefing State
+###### Gremlin
+Requirement: Create one small Clockwork Gremlin character used for authored sabotage moments. It needs a readable mischievous traversal/arrival state and a clear sabotage action that can be synchronized with route blocking, rotator changes, and the relevant warning presentation. It does not require navigation AI; authored movement is sufficient.
+Usage: Used for the Objective 2 final time-challenge framing and the Objective 4 sabotage sequences.
 
-#### 02. The Resonance Engine
+#### The Antechamber
 
-##### VO-RES-01 — Experiment Before the Target
-- Type: Main Story
-- Function: briefing
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The Resonance Engine seal opens and the player gains control inside the reset Engine chamber while the target display is still blank.
-- Purpose: Invite safe experimentation and clue reading before directed solving without revealing the authored hidden mapping.
-- Must communicate:
-  - The player should read the clue books and test the available machine inputs.
-  - Lever/plate experimentation is safe and produces readable feedback.
-  - The player should learn the machine rule before chasing a target.
-  - The target display will activate after the free-experimentation phase.
-- Must not add/repeat:
-  - Do not reveal a specific rule template or solution.
-  - Do not claim the target is already active.
-  - Do not introduce vanilla redstone knowledge.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Resonance Engine → Free Experimentation
-  - content.md → 05 The Resonance Engine → Level Design → Design Flow → Observation Point
-  - content.md → 05 The Resonance Engine → Developer → Free-Play and Targets
+##### 3D Models
 
-#### 03. The Broken Gallery
+###### Custodian Key
+Requirement: Create one clearly readable key item for the opening progression. It needs available/picked-up/accepted states and must visually belong to the Clockwork Vault rather than resemble an ordinary reward item.
+Usage: Presented on the Antechamber pedestal and accepted by the Resonance Engine seal.
 
-##### VO-GAL-01 — Carry the Key Across
-- Type: Main Story
-- Function: briefing
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The player enters the Broken Gallery after Resonance Engine completion and receives the fixed crossing kit plus Custodian Key.
-- Purpose: Establish the immediate crossing goal and limited-resource mindset without spoiling the authored Checkpoint 3 collapse.
-- Must communicate:
-  - Carry the Custodian Key to the far pedestal.
-  - Use the fixed construction supplies carefully.
-  - Choose repairs/routes that can actually be completed with the available kit.
-- Must not add/repeat:
-  - Do not reveal the exact future collapse timing or segment before its warning begins.
-  - Do not describe upper/lower/side as three separate progression tracks.
-  - Do not introduce lethal failure wording.
-- Source refs:
-  - content.md → 06 The Broken Gallery → Gameplay Overview
-  - content.md → 06 The Broken Gallery → Gameplay Flow → Survey the Crossing
-  - content.md → 06 The Broken Gallery → Developer → Fixed Supply Kit
+##### UI & Information
 
-##### VO-GAL-02 — Checkpoint 3 Collapse Warning
-- Type: Direct NPC Dialogue
-- Function: warning
-- Necessity: supporting
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: Checkpoint 3 is active and the authored short collapse-warning sequence begins while the player is crossing the final section.
-- Purpose: Reinforce the live danger state and make immediate forward movement clear while visual warning remains the primary readable cue.
-- Timing Constraint: Must complete within the short Checkpoint 3 warning sequence before the authored collapse resolves.
-- Must communicate:
-  - The current section is about to collapse.
-  - Keep moving through the active crossing.
-- Must not add/repeat:
-  - Do not give a camera-direction instruction or name a hidden route.
-  - Do not imply death or full-objective restart.
-  - Do not announce collapse before Checkpoint 3 warning begins.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Broken Gallery → Checkpoint 3
-  - content.md → 06 The Broken Gallery → Gameplay Flow → Checkpoint 3 — Collapse and Adapt
-  - content.md → 06 The Broken Gallery → Developer → Checkpoint 3 Collapse
+###### First Objective Prompt
+Requirement: Create one concise player-facing prompt that appears after the opening briefing and remains available until the first seal is opened.
+Content:
+```text
+TAKE THE CUSTODIAN KEY
+Use it on the marked Resonance Engine seal.
+```
 
-#### 04. The Warden Halls
+##### Visual Effects & Presentation
 
-##### VO-WARD-01 — Echo Pebble Rule Briefing
-- Type: Main Story
-- Function: briefing
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The Warden Halls layout activates and the player receives the unlimited Echo Pebble before the first trap-family sequence.
-- Purpose: Explain the invented Echo Pebble rule and the critical difference between wall/floor traps and ceiling traps before combinations become complex.
-- Must communicate:
-  - Echo Pebble can disable wall and floor traps.
-  - A valid disable lasts 4 seconds of game-time.
-  - Ceiling traps cannot be disabled.
-  - Ceiling hazards must be crossed by observing their cycle and timing movement.
-- Must not add/repeat:
-  - Do not imply the Pebble is consumed permanently.
-  - Do not imply ceiling traps can be disabled or bypassed by the Pebble.
-  - Do not prescribe one mandatory cautious/rush strategy.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Warden Halls
-  - content.md → 07 The Warden Halls → Gameplay Overview
-  - content.md → 07 The Warden Halls → Developer → Echo Pebble
+###### First Seal Activation
+Requirement: Create one short authored activation presentation for valid Custodian Key use: the seal acknowledges the key, the Objective 1 door visibly unlocks, and the route into the Resonance Engine becomes unmistakable. Keep the sequence short enough that it functions as a handoff rather than a cutscene.
+Usage: Runs once after valid Antechamber completion.
 
-##### VO-WARD-02 — The Wardens Still Serve
-- Type: Main Story
-- Function: transition
-- Necessity: supporting
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The player clears the final security sequence, enters the inner gate, and the route toward Gremlin’s Workshop opens.
-- Purpose: Connect the still-active security system to the vault’s story and frame the Workshop as the next destination without rebriefing trap mechanics.
-- Must communicate:
-  - The Wardens never stopped protecting the Great Orrery.
-  - Their continued activity shows that parts of the vault are still functioning.
-  - The player should continue to the Workshop.
-- Must not add/repeat:
-  - Do not replay Echo Pebble instructions.
-  - Do not claim the Great Orrery is already restored.
-  - Do not reveal the Workshop sabotage before it happens.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Warden Halls → Transition
-  - content.md → 07 The Warden Halls → Gameplay Flow → Reach the Inner Gate
+#### The Resonance Engine
 
-#### 05. The Gremlin’s Workshop
+##### UI & Information
 
-##### VO-WORK-01 — Build One Live Network
-- Type: Main Story
-- Function: briefing
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The player enters the Workshop and conduit interaction becomes active on the unsabotaged 3×3 grid.
-- Purpose: Establish the invented conduit grammar at the level needed to begin Ring 1 and understand cumulative Ring 1→2→3 progression.
-- Must communicate:
-  - Rotate conduits so connected sides carry power from the Source Crystal.
-  - Power Ring 1 first.
-  - Extend the same live network to Ring 2 and Ring 3.
-  - Previously powered rings must remain connected as the network grows.
-- Must not add/repeat:
-  - Do not describe vanilla redstone behavior.
-  - Do not reveal the exact authored route or future sabotaged edge.
-  - Do not imply each ring resets the previous solution.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Gremlin’s Workshop
-  - content.md → 08 The Gremlin’s Workshop → Gameplay Flow → Learn the Grid and Power Ring 1
-  - content.md → 08 The Gremlin’s Workshop → Developer → Conduit Solver / Ring Progression
+###### Objective 1 Instruction Panel
+Requirement: Create one persistent or easily re-readable instruction panel explaining the player task without revealing the missing colors, pulse location, or lever-to-color mapping. It must make clear that the books reveal missing target information while lever experimentation is used to produce the colors.
+Content:
+```text
+RESTORE THE THREE PILLARS
 
-##### VO-WORK-02 — Gremlin Sabotage Reaction
-- Type: Direct NPC Dialogue
-- Function: setback_recovery
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: About 20 seconds after Ring 2 stabilizes, the scripted Gremlin event visibly breaks one authored active connection and input is briefly locked.
-- Purpose: Make the external topology change unmistakable and immediately direct the player toward rerouting without changing the learned conduit rule.
-- Timing Constraint: Must fit within the authored sabotage reaction/input-lock beat before normal conduit interaction resumes.
-- Must communicate:
-  - The Gremlin severed an active connection.
-  - That broken connection is permanently unavailable for the rest of the run.
-  - The conduit connection rule itself has not changed.
-  - Reroute around the broken edge, restore lost power, and continue toward Ring 3.
-- Must not add/repeat:
-  - Do not imply the broken connection can be repaired.
-  - Do not introduce a reversed or new conduit rule.
-  - Do not identify a solution path that solves the reroute automatically.
-- Source refs:
-  - content.md → 08 The Gremlin’s Workshop → Gameplay Flow → Gremlin Sabotage
-  - content.md → 08 The Gremlin’s Workshop → Developer → Scripted Connection Sabotage
-  - content.md → 08 The Gremlin’s Workshop → Important Build Notes → Fault Must Be Unmissable
+1. Read the books scattered around the chamber.
+2. The door display reveals only part of the final combination.
+3. Find the missing LEFT and RIGHT colors and which lamp must PULSE.
+4. Try the TOP and BOTTOM levers until each lamp reaches the color you need.
 
-##### VO-WORK-03 — Highlight-Only Assist
-- Type: Direct NPC Dialogue
-- Function: reminder
-- Necessity: supporting
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: The configured Workshop assist threshold is reached and Vex highlights one useful node, connection, or region without changing the board.
-- Purpose: Direct attention to the authored highlight while preserving player ownership of the solution.
-- Must communicate:
-  - Look at the highlighted area/connection.
-  - The highlight is a clue, not an automatic solution.
-  - The player still needs to complete the route.
-- Must not add/repeat:
-  - Do not rotate a node or state an exact completed route.
-  - Do not claim the highlighted area is the entire solution.
-  - Do not change Ring 2/3 automatically.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Gremlin’s Workshop → Transition / Vex assist
-  - content.md → 08 The Gremlin’s Workshop → Developer → Vex Assist
+Lever order: TOP → BOTTOM
+Pressure Plate: STEADY / PULSE only
+```
 
-#### 06. Vault Restored
+###### Partial Door Target Display
+Requirement: Create one player-readable target display near the exit that intentionally reveals only the middle pillar color. It must not reveal the left color, right color, pulse location, or any lever combination. The unknown values remain visible as missing information until the player solves the puzzle through the books and machine experimentation.
+Content:
+```text
+LEFT      MIDDLE      RIGHT
+ ?         BROWN        ?
 
-##### VO-END-01 — The Vault Is Awake
-- Type: Main Story
-- Function: completion
-- Necessity: required
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: All three Orrery rings remain powered, the Great Orrery restoration callbacks complete, and the closing scene reaches Vex recognition.
-- Purpose: Resolve Vex’s story, name what the player accomplished, acknowledge that the vault was restored rather than merely escaped, and present the Clockwork Wayfinder reward.
-- Must communicate:
-  - The Great Orrery and connected vault systems are restored.
-  - The player restored what the vault was built to protect rather than merely finding an exit.
-  - The gateway is open.
-  - The player receives the Clockwork Wayfinder as the completion reward.
-- Must not add/repeat:
-  - Do not expose Objective Scores or platform analysis.
-  - Do not introduce a fifth objective or new challenge.
-  - Do not imply the reward can be granted repeatedly.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Vault Awakens
-  - content.md → 09 Vault Restored → Gameplay Flow → Vex Recognition / Reward and Save
-  - content.md → 09 Vault Restored → Developer → Reward and Session Save
+PULSE: ?
+```
+Usage: Visible throughout active Objective 1 solving. It may switch to a solved/confirmed presentation only after the complete hidden target state is matched.
 
-##### VO-END-02 — Safe Return Cue
-- Type: Main Story
-- Function: farewell
-- Necessity: supporting
-- Speaker: Custodian Vex
-- Channel: Direct
-- Trigger: Session result and reward state are secured and the safe return route to the holding area opens.
-- Purpose: Give one concise final navigation cue and close Vex’s guide role without adding more story exposition.
-- Must communicate:
-  - The gateway/return route is open.
-  - Follow it back to the holding area.
-  - The restoration journey is complete.
-- Must not add/repeat:
-  - Do not replay the completion speech or reward explanation.
-  - Do not introduce another gameplay task.
-  - Do not claim lane reset is complete before the player has safely returned.
-- Source refs:
-  - content.md → 02 Gameplay Flow → The Vault Awakens → Leaving the Clockwork Vault
-  - content.md → 09 Vault Restored → Gameplay Flow → Return and Reset
+###### Pillar State Labels
+Requirement: Give each of the three puzzle pillars stable LEFT, MIDDLE, and RIGHT identities so book clues, display information, and live lamp outputs cannot be confused. Each live lamp must make its current color and steady/pulsing state readable at the same time.
+Usage: Remains visible throughout Objective 1.
+
+###### Scattered Clue Book Set
+Requirement: Produce twelve one-paragraph books scattered around the chamber with no required reading order. The set contains two mechanic-rule books, eight useful clue books, and two harmless decoys. Useful clues must be easy to understand without being overly obvious and must help the player infer the hidden target Left = Orange, Right = Purple, and Pulse = Left. They must not teach all twelve lever-to-color mappings. The two decoys must contain ordinary maintenance/lore information and must never provide false puzzle facts. A player who finds useful books first may solve faster by luck, and valid completion must not require reading all twelve books.
+Content:
+```text
+BOOK 1 — LEVER INSTRUCTIONS
+Each pillar has two levers. Read the TOP lever first, then the BOTTOM lever. Try different settings and watch the lamp. Each setting produces a different color.
+
+BOOK 2 — PRESSURE PLATE INSTRUCTIONS
+The pressure plate does not change the lamp's color. It only changes how the lamp shines. A pressed plate makes the lamp pulse. Otherwise, the lamp stays steady.
+
+BOOK 3 — LAMP NOTE
+The left lamp should have a warm glow. It should not look pale or too dark.
+
+BOOK 4 — OLD ENGINEER'S NOTE
+The left light was described as closer to firelight than to the soft color of a flower.
+
+BOOK 5 — MAINTENANCE RECORD
+When the Engine was working properly, the left side gave off a gentle glow like warm embers.
+
+BOOK 6 — LAMP RECORD
+The right lamp should not use the bright shade of sunlight or the color of fresh leaves.
+
+BOOK 7 — SAFETY NOTE
+The correct right-side light is deeper and calmer than the color normally used for danger warnings.
+
+BOOK 8 — OLD VAULT RECORD
+The right lamp was once compared to a dark ceremonial cloth used for important occasions.
+
+BOOK 9 — RHYTHM NOTE
+Only one of the three lamps should pulse. The middle lamp shown on the door display must stay steady.
+
+BOOK 10 — CALIBRATION NOTE
+The right lamp must also stay steady. Only the remaining lamp should pulse.
+
+BOOK 11 — REPAIR LOG
+The lower gear housing was repaired after the last restoration cycle. No further damage was found during inspection.
+
+BOOK 12 — WORKSHOP NOTE
+Spare tools were moved to the eastern storage cabinet after the last maintenance shift.
+```
+
+##### Visual Effects & Presentation
+
+###### Pillar Interaction Feedback
+Requirement: Every valid lever change must produce immediate readable lamp feedback on its own pillar so the player can discover the lever-to-color behavior through experimentation. Every pressure-plate interaction must visibly switch only that pillar between steady and pulsing without changing its selected color. When the hidden final target is matched—Left Orange pulsing, Middle Brown steady, Right Purple steady—run one concise confirmation response before opening the next route.
+Usage: Active throughout Objective 1 and reset completely for the next run.
+
+###### Resonance Engine Restoration
+Requirement: Create one short completion presentation that visually confirms all three pillars have synchronized and the Engine has returned to operation, then directs attention toward the newly opened Broken Gallery route.
+Usage: Runs once after valid Objective 1 completion.
+
+#### The Broken Gallery
+
+##### UI & Information
+
+###### Objective 2 Instruction Panel
+Requirement: Create one concise instruction panel explaining the repeatable loop shared by the three route levels: search barrels, repair only marked gaps, and reach the next checkpoint. It must explain that failed attempts reset only the current level.
+Content:
+```text
+CROSS THE BROKEN GALLERY
+
+SEARCH BARRELS → REPAIR MARKED GAPS → REACH THE CHECKPOINT
+
+Blocks and ladders can only be placed on marked positions.
+If a route runs out of resources or time, this level resets and you can try again.
+```
+
+###### Level 1 Brief
+Requirement: Show the Level 1 rules without revealing which two routes are viable.
+Content:
+```text
+LEVEL 1 · EASY
+Three routes. Two can be completed.
+A viable crossing needs 12 blocks.
+Choose carefully and reach the next checkpoint.
+```
+
+###### Level 2 Brief
+Requirement: Show the Level 2 resource requirement without revealing that the right route is the viable answer.
+Content:
+```text
+LEVEL 2 · MEDIUM
+Three routes. Only one can be completed.
+Crossing supply: 20 blocks + 3 ladders.
+Place them only on marked positions.
+```
+
+###### Level 3 Time-Challenge Brief
+Requirement: Clearly explain that all three routes are initially valid in Level 3, but the chosen route must reach at least 50% progress before the authored time threshold. Explain the consequence without revealing route geometry.
+Content:
+```text
+LEVEL 3 · GREMLIN TIME CHALLENGE
+All three routes can work.
+Reach 50% of your chosen route before the timer expires.
+If you fail, that route closes and you return to Checkpoint 3.
+```
+
+###### Route Failure Message
+Requirement: Create one recovery message for Level 1/2 failed attempts and one distinct route-closed message for Level 3.
+Content:
+```text
+ROUTE RESET
+Return to the checkpoint, search the barrels again, and try another route.
+
+ROUTE LOST
+That route is now closed.
+Return to Checkpoint 3, resupply, and choose another active route.
+```
+
+###### Valid Placement Markers
+Requirement: Create one consistent player-readable marker treatment for every position where a bridge block or ladder is allowed. The marker must distinguish legal placement from ordinary environment blocks without revealing which full route is viable.
+Usage: Present only on authored placement positions and restored with each current-level reset.
+
+##### Audio
+
+###### Level 3 Time-Challenge Cue
+Requirement: Create one independent short warning cue that clearly marks the start of the Level 3 progress deadline. It should read as Gremlin-triggered urgency and remain distinct from normal checkpoint, placement, or route-reset sounds.
+Usage: Plays when the Level 3 authored timer begins; Voice Production may play alongside it but is owned separately.
+
+##### Visual Effects & Presentation
+
+###### Level Retry Reset
+Requirement: Create one brief readable reset presentation for failed Level 1/2 attempts: temporary placed blocks/ladders are removed, the player returns to the current checkpoint, and the resource-search loop visibly becomes available again. Avoid presenting this as a full objective failure.
+Usage: Runs only for the current level that failed.
+
+###### Gremlin Route-Closed Event
+Requirement: Create one Level 3 failure presentation in which the selected failed route changes to a clearly unavailable state, the player returns to Checkpoint 3, and the remaining active routes stay readable. The Gremlin framing and warning cue may be synchronized inside this authored sequence.
+Usage: Runs after a Level 3 route misses its required progress threshold while another active route remains.
+
+#### The Warden Halls
+
+##### 3D Models
+
+###### Echo Pebble
+Requirement: Create one small throwable pebble item, visually derived from a stone/snowball-scale projectile but clearly authored for the Clockwork Vault. It needs held/throw/projectile/valid-hit feedback and must support an unlimited-use loop with a visible 3-second cooldown. Its impact feedback must distinguish a valid wall-laser sensor or hanging-stone target from an invalid floor/axe target.
+Usage: Granted for Objective 3 and removed/reset at objective exit.
+
+###### Wall Laser Sensor
+Requirement: Create one readable wall-mounted laser sensor/beam assembly with Active and Temporarily Disabled states. The sensor must be an obvious Echo Pebble target; a valid hit disables the beam for the approved 4-second game-time window before normal behavior resumes. Attached activation/deactivation VFX and SFX remain part of this asset.
+Usage: Distributed across the three Warden levels.
+
+###### Laser Blocker Stone
+Requirement: Create one authored hanging-stone target for selected laser encounters. A valid Echo Pebble hit must cause the stone to move/drop into the beam path and visibly block the laser, creating a readable alternate solution without changing unrelated traps.
+Usage: Used only at authored laser encounters that support the blocker-stone solution.
+
+###### Swinging Axe Trap
+Requirement: Create one large double-sided swinging axe trap mounted from the ceiling. It needs a clearly readable left-right swing cycle, safe timing windows, contact/knockback feedback, and a reset state. It must never appear to accept Echo Pebble disable input.
+Usage: Distributed across the Warden levels as a timing hazard.
+
+##### UI & Information
+
+###### Objective 3 Instruction Panel
+Requirement: Create one concise instruction panel that distinguishes Pebble-valid hazards from timing/avoidance hazards and states the 3-second cooldown.
+Content:
+```text
+SURVIVE THE WARDEN HALLS
+
+ECHO PEBBLE
+• Wall laser sensors: Disable them for 4 seconds.
+• Marked hanging stones: Knock them into a laser beam.
+• Floor traps: AVOID.
+• Swinging axes: TIME YOUR MOVEMENT.
+
+Pebbles are unlimited · 3 sec cooldown per throw.
+```
+
+###### Echo Pebble Cooldown Indicator
+Requirement: Create one compact player-facing cooldown indicator that appears after a throw and clearly returns to READY after 3 seconds. It must not imply that the player has a limited pebble count.
+Content:
+```text
+ECHO PEBBLE · READY
+ECHO PEBBLE · RECHARGING
+```
+
+###### Trap Warning Readability
+Requirement: Give wall lasers, floor traps, and swinging axes distinct warning language/icons or in-world markers where additional information is needed. Never mark floor traps or swinging axes as Pebble-disableable.
+Usage: Used only where the physical hazard alone would not be sufficiently readable.
+
+##### Visual Effects & Presentation
+
+###### Trap Hit Feedback
+Requirement: Create clear but compact feedback for each approved hazard consequence so the player can identify which trap hit them and understand the resulting temporary impairment. Laser, floor, and axe hits must remain distinguishable while avoiding screen obstruction during active traversal.
+Usage: Triggered on valid hazard contact together with the approved damage/status effects.
+
+###### Checkpoint Recovery
+Requirement: When trap damage reduces gameplay health to zero, present one quick checkpoint recovery that returns the player to the active Warden level without replaying earlier completed levels. Restore player control only after the checkpoint position is safe.
+Usage: Runs on Objective 3 hazard defeat only.
+
+#### The Gremlin's Workshop
+
+##### 3D Models
+
+###### Power Generator
+Requirement: Create one central power-source machine with clearly different Offline, Live, and Power-Interrupted feedback. The output direction into the routing network must remain visually readable from the puzzle area. Attached startup/interruption SFX and energy VFX remain part of this asset.
+Usage: Source of the Objective 4 continuous power network.
+
+###### 90-Degree Rotator Junction
+Requirement: Create one reusable L-shaped power junction that rotates in 90-degree steps and connects exactly two orthogonal directions. It needs four readable orientations plus Powered and Unpowered visual states. Interaction must make the route direction legible without exposing the route solution.
+Usage: Repeated at authored Objective 4 junction locations.
+
+###### Orrery Ring
+Requirement: Create one reusable ring mechanism used as Ring 1, Ring 2, and Ring 3 with clearly readable Inactive and Powered states. The three instances must remain distinguishable by position/label while sharing one visual grammar. The final state must support all three rings operating together as the Great Orrery restoration payoff.
+Usage: Sequential milestones in Objective 4 and the ending transition.
+
+##### UI & Information
+
+###### Objective 4 Instruction Panel
+Requirement: Create one instruction panel explaining the continuous network rule without exposing route coordinates or the layout solution.
+Content:
+```text
+CONNECT THE POWER
+
+Generator → Ring 1 → Ring 2 → Ring 3
+
+Rotate the L-junctions to turn the power route.
+Keep every earlier ring connected as you continue.
+```
+
+###### Ring Progress Display
+Requirement: Create one compact player-facing or in-world status treatment showing which rings currently have power. It must update from actual connectivity rather than milestone history so a Gremlin disruption can visibly remove power from an earlier ring.
+Content:
+```text
+RING 1 · POWERED / OFFLINE
+RING 2 · POWERED / OFFLINE
+RING 3 · POWERED / OFFLINE
+```
+
+###### First Sabotage Message
+Requirement: Explain the post-Ring-2 route swap without identifying the alternate-route solution.
+Content:
+```text
+GREMLIN SABOTAGE
+The previous route is blocked.
+A different path has opened.
+Reroute the power and restore the connection.
+```
+
+###### 50% Sabotage Message
+Requirement: Tell the player exactly which earlier network section lost alignment and how many rotators were changed, without identifying their positions.
+Content:
+```text
+POWER LOST · GENERATOR → RING 1
+Two rotators were turned.
+Repair the earlier connection, then continue toward Ring 3.
+```
+
+###### 80% Sabotage Message
+Requirement: Tell the player which second earlier network section lost alignment and how many rotators were changed, without identifying their positions.
+Content:
+```text
+POWER LOST · RING 1 → RING 2
+Three rotators were turned.
+Restore the connection, then finish Ring 3.
+```
+
+##### Visual Effects & Presentation
+
+###### Ring 2 Route-Swap Sabotage
+Requirement: About 20 seconds after Ring 1 and Ring 2 are connected, run one authored Gremlin sequence that makes the previously active route become visibly blocked, makes the previously blocked alternate path visibly available, removes power where connectivity is broken, and then returns control for rerouting. The change must be understandable without exposing route coordinates or implementation labels.
+Usage: Runs once per Objective 4 session after the approved Ring 2 condition.
+
+###### 50% Rotator Sabotage
+Requirement: At the approved 50% Ring 2-to-Ring 3 progress trigger, run one short Gremlin disruption in which exactly two already-correct rotators on the Generator-to-Ring-1 connection visibly turn out of alignment. Power loss must propagate to the affected ring states before normal input resumes.
+Usage: Runs once per Objective 4 session.
+
+###### 80% Rotator Sabotage
+Requirement: At the approved 80% Ring 2-to-Ring 3 progress trigger, run one short Gremlin disruption in which exactly three already-correct rotators on the Ring-1-to-Ring-2 connection visibly turn out of alignment. The player must see that an earlier completed section has broken before normal input resumes.
+Usage: Runs once per Objective 4 session.
+
+###### Great Orrery Restoration
+Requirement: When Generator, Ring 1, Ring 2, and Ring 3 are continuously connected, create one strong final restoration presentation: all three rings synchronize, power visibly reaches the Great Orrery, puzzle input closes, and the Clockwork exit begins opening. Keep the transition compatible with the existing ending sequence rather than creating a fifth objective.
+Usage: Runs once on valid Objective 4 completion.
+
+#### Vault Restored
+
+##### 3D Models
+
+###### Clockwork Wayfinder
+Requirement: Create one cosmetic completion reward object with a distinct Clockwork-Vault silhouette and a clear reward-reveal presentation. It does not provide new gameplay power and must support one-time grant/readability in the ending scene.
+Usage: Presented after the Great Orrery restoration and granted exactly once through the existing ending flow.
+
+##### UI & Information
+
+###### Completion Message
+Requirement: Create one concise completion message confirming that the restoration journey is finished and directing the player toward the reopened return route without exposing platform scoring.
+Content:
+```text
+THE CLOCKWORK VAULT IS RESTORED
+The gateway is open.
+Follow the return route home.
+```
+
+##### Visual Effects & Presentation
+
+###### Vault Awakening and Exit Reveal
+Requirement: Create one coordinated closing presentation that carries restored power from the Great Orrery into the surrounding vault, reveals the reopened exit, frames Vex's closing moment and Clockwork Wayfinder reward, then hands control to the safe return route. This sequence must remain reset-owned and must not introduce another challenge.
+Usage: Runs after Objective 4 completion and before the player returns to the holding area.

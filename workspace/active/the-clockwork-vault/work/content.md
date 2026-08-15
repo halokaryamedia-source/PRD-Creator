@@ -100,7 +100,7 @@ The Warden Halls are a three-level trap maze built around wall lasers, floor tra
 
 ### The Gremlin’s Workshop
 
-The Workshop contains the Power Generator, three Great Orrery rings, and an authored network of power paths controlled by 90-degree L-shaped rotator junctions. The exact coordinate grid and route layout belong to a separate technical support document and are not part of the PRD.
+The Workshop contains the Power Generator, three Great Orrery rings, and an authored network of power paths controlled by 90-degree L-shaped rotator junctions.
 
 - **Level 1 — Generator to Ring 1**
   - The player learns the routing rule by rotating L-junctions until one continuous powered path reaches Ring 1. Each rotator connects exactly two orthogonal directions, so an incorrect orientation visibly interrupts the route.
@@ -827,7 +827,7 @@ Implement checkpoint-local barrel resources, restricted placement, fixed route v
 
 #### Important Development Notes
 
-- **No Legacy Special Tools** — This revision uses checkpoint barrels, blocks, ladders, route choice, and the Level 3 time challenge; do not require the prior Spring Column or Anchor Ring mechanics.
+- **Blocks and Ladders Only** — Gallery construction uses checkpoint barrel blocks/ladders and authored placement markers.
 - **No Free-Form Building** — Placement validation is marker-owned and fail-closed.
 - **Level 3 Uses Progress State** — Do not infer the 50% threshold from player camera direction alone.
 - **Raw Evidence Only** — The map records scoring inputs but sends no calculated Broken Gallery Score.
@@ -1021,7 +1021,7 @@ Implement deterministic trap cycles, unlimited Echo Pebble with a 3-second coold
 
 ### Gameplay Overview
 
-**Context:** The Workshop contains the Power Generator, three Great Orrery rings, and an authored power-routing field of 90-degree L rotators. The exact coordinate layout is maintained separately as technical support rather than embedded in the PRD.
+**Context:** The Workshop contains the Power Generator, three Great Orrery rings, and an authored power-routing field of 90-degree L rotators.
 
 **Main Objective:** Keep one continuous network from Generator → Ring 1 → Ring 2 → Ring 3 while repairing the route swap and two later Gremlin rotator-sabotage events.
 
@@ -1046,7 +1046,7 @@ Implement deterministic trap cycles, unlimited Echo Pebble with a 3-second coold
 
 ### Level Design
 
-Build a readable Workshop around the authored routing topology without reproducing technical grid coordinates in the PRD. Generator, live power, Ring 1–3, L-rotator orientation, normal blockers, Gremlin event blockers, and sabotage changes must remain understandable from the player’s puzzle position.
+Build a readable Workshop around the approved routing topology. Generator, live power, Ring 1–3, L-rotator orientation, normal blockers, Gremlin event blockers, and sabotage changes must remain understandable from the player’s puzzle position.
 
 #### Design Flow
 
@@ -1093,14 +1093,14 @@ Build a readable Workshop around the authored routing topology without reproduci
 
 #### Important Build Notes
 
-- **Technical Coordinates Stay Separate** — The supporting Objective 4 layout owns grid coordinates/layers/route geometry; the PRD owns gameplay behavior and readable states only.
+- **Authored Route Topology** — Preserve the approved route topology and blocker states; player-facing communication uses in-world route states rather than coordinate labels.
 - **One Continuous Network** — A ring is powered only while a real connected route from the Generator exists through all required earlier links.
 - **Sabotage Is Visible** — Route blocking/opening and every forced rotator turn must be unmistakable before normal interaction resumes.
 - **Connection Grammar Never Changes** — The Gremlin changes blockers/orientation, not the learned L-rotator rule.
 
 ### Developer
 
-Implement the authored connectivity graph, L-rotator state resolution, cumulative Ring 1/2/3 validation, 20-second route-swap sabotage, 50%/80% rollback events, platform-side scoring evidence, interruption handling, and full reset. The technical layout document supplies exact topology/coordinates; it does not change these gameplay rules.
+Implement the approved authored routing graph, L-rotator state resolution, cumulative Ring 1/2/3 validation, 20-second route-swap sabotage, 50%/80% rollback events, platform-side scoring evidence, interruption handling, and full reset.
 
 #### Development Flow
 

@@ -2,18 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_CANONICAL_REVISION_READY_FOR_PROJECTION`
+`CLOCKWORK_PRD_HANDOFF_READY`
 
-The Clockwork Vault bounded gameplay revision for Objectives 1-4 is approved and persisted in current requirement state and canonical `workspace/active/the-clockwork-vault/work/content.md`.
+The approved Clockwork gameplay revision for Objectives 1-4 is projected into the current v1.0.0 delivery bundle and mechanically validated. Objective 1 uses the approved partial display, 2 rule + 8 useful clue + 2 harmless decoy book structure, and hidden Orange / Brown / Purple + Left-pulse solution.
 
-Objective 1 now uses the approved partial-display clue model: the door display reveals only Middle = Brown; the hidden final state is Left Orange + pulse, Middle Brown + steady, Right Purple + steady. Twelve books are scattered without reading order and use a 2 mechanic-rule + 8 useful clue + 2 harmless decoy structure. The books help recover missing target information rather than teach all twelve lever-to-color mappings; the fixed color mapping is learned through lever experimentation and immediate lamp feedback. A player who finds useful books earlier by chance may solve faster, and reading all twelve is not required.
-
-The non-Voice `work/asset-requirements.md` is current for the canonical revision and includes the final twelve book texts, partial target display, instruction UI, required custom gameplay objects, and authored presentation events.
-
-The supplied Objective 4 HTML remains a supporting technical-layout source only. Its coordinates and preview implementation are not copied into player-facing PRD content.
-
-The previous `work/render-data.json`, versioned `prd.html`, AI context/index, and Voice canonical sources intentionally remain stale because they still reflect the previous gameplay projection. Handoff therefore remains `revision_in_progress` rather than being falsely restored to ready.
+Existing Voice canonical files remain stale for the previous gameplay revision and were intentionally excluded from the current PRD render.
 
 ## Next Step
 
-Regenerate `work/render-data.json` and the versioned delivery bundle from the current canonical Clockwork revision, then run the relevant PRD validation before restoring `handoff_ready` and reopening the affected Voice Production scope.
+Revise the affected Voice requirements and Voice Production from the current handoff-ready PRD, validate Voice, then rerender the same v1.0.0 project HTML with revised Voice included.
