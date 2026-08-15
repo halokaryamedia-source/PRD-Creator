@@ -14,4 +14,5 @@ acceptance: work/acceptance.md
 handoff: output/README.md
 revision_review: work/review.md
 asset_requirements: work/asset-requirements.md
+asset_requirements_status: draft_pending_current_prd_acceptance
 next_step: resolve_obj1_clue_mapping_then_regenerate_and_validate
