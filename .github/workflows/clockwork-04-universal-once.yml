@@ -45,6 +45,9 @@ jobs:
           t = t.replace('.pa-content,.pa-build-row .voice-script-text', '.pa-content,.pa-row-voice .voice-script-text')
           t = t.replace('.pa-build-row .voice-script-text{border-left-color:', '.pa-row-voice .voice-script-text{border-left-color:')
           t = t.replace('.pa-build-row,.pa-moment{break-inside:avoid}', '.pa-build-row,.pa-row-voice,.pa-moment{break-inside:avoid}')
+          t = t.replace("f'<section class=\"pa-part\" id=", "f'<div class=\"pa-part\" id=")
+          t = t.replace("f'<section class=\"pa-part pa-where\" id=", "f'<div class=\"pa-part pa-where\" id=")
+          t = t.replace("+ '</div></section>'", "+ '</div></div>'")
           p.write_text(t, encoding='utf-8')
           PY
           cp .tmp-clockwork-04-universal/renderer.py kits/project-document-generator/renderer/production_assets_objective.py
@@ -95,15 +98,12 @@ jobs:
           assert 'Throughout Objective' in html
           assert 'Objective Complete' in html
 
-          # No hidden/tabbed information architecture remains.
           for token in ['data-pa-tab', 'pa-tab-list', 'pa-panel[hidden]', 'View Prompt']:
               assert token not in renderer, token
 
-          # Pure behavior / abstract feedback entries are no longer production assets.
           for token in ['#### Pillar Lamp Feedback', '#### Warden Hit Effects', '#### Warden Recovery']:
               assert token not in assets, token
 
-          # Generic schema is present on every current concrete asset block.
           blocks = re.findall(r'(?ms)^#### (.+?)\n(.*?)(?=^#### |^### |^## |\Z)', assets)
           assert blocks
           for title, body in blocks:
@@ -116,7 +116,6 @@ jobs:
               for field in ['- Create:', '- Used:', '- Moment:']:
                   assert field in body, f'{vid}: {field}'
 
-          # Renderer must stay objective-agnostic.
           for token in ['Warden Halls', 'Broken Gallery', 'Resonance Engine', "Gremlin's Workshop"]:
               assert token not in renderer, token
 
