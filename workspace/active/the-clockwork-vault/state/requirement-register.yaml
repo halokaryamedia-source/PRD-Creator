@@ -122,3 +122,11 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+  - id: REQ-016
+    area: voice-production
+    statement: Gremlin is an additional speaking character for Objective 4. Use four short mischievous taunts tied to the route-swap sabotage, the 50-percent rollback, the 80-percent rollback, and the final successful restoration/Gremlin defeat beat. Gremlin dialogue is character flavor and sabotage acknowledgement only; Custodian Vex remains the primary guide and owns actionable gameplay instructions. Gremlin lines must not introduce new mechanics, reveal a solution route, contradict Vex, or become long exposition.
+    provenance: [SRC-008]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: medium
