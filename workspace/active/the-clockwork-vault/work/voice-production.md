@@ -1,10 +1,10 @@
 # The Clockwork Vault Voice Production
-Version: 1.3.0
+Version: 1.3.1
 Source Voice Requirements: 1.0.0 / work/voice-requirements.md
 
 Voice Cast:
 - Custodian Vex: William Shanks - Rich and Deep
-- Gremlin: Target Voice Profile — small, raspy, mischievous, quick, theatrical, and clearly distinct from Vex; playful nuisance rather than frightening villain. Actual ElevenLabs voice not selected yet.
+- Gremlin: The Cheeky Trickster — selected ElevenLabs voice; young, mid-high pitch, quick, mischievous, teasing, and clearly distinct from Vex.
 
 ## 01. The Antechamber
 
