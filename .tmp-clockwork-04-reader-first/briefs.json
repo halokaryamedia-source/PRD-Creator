@@ -2,6 +2,7 @@
   "Custodian Vex": ["MODEL", "In-world guide character used for story, briefing, warning, and completion moments.", "One reusable Clockwork custodian NPC that stays visually consistent across the map. Include the idle, speaking, guidance/pointing, alert, and completion-reaction states required by the approved dialogue moments."],
   "Gremlin": ["MODEL", "Mischievous sabotage character used during the Gallery challenge and Workshop interference moments.", "One reusable small Clockwork Gremlin with a clearly recognizable silhouette. Include the arrival/movement, sabotage, taunt, and defeated/outsmarted reactions required by the authored moments."],
   "Custodian Key": ["ITEM", "Story key the player takes in the Antechamber to open the first seal.", "One distinct Clockwork key item that is easy to recognize on its pedestal and when collected. Keep the same item readable when it is accepted by the first seal."],
+  "Custodian Key Prompt": ["UI / TEXT", "Tells the player to take the Custodian Key and use it to begin opening the vault.", null],
   "Objective 1 Instruction Panel": ["UI / TEXT", "Introduces the three-pillar objective without revealing the missing solution.", null],
   "Partial Door Target Display": ["UI / TEXT", "Shows the one target value the door still remembers while leaving the missing answers unknown.", null],
   "Scattered Clue Book Set": ["UI / TEXT", "Provides the twelve in-world notes used to discover the missing Resonance Engine target information.", null],
