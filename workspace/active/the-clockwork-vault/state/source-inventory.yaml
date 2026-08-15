@@ -114,3 +114,12 @@ sources:
     origin: user
     inspection: full
     summary: User approved the Production Assets information-architecture audit. Section 04 must match the usability quality of sections 01-03: gameplay flows are interactive tabs, only the active flow is shown by default, assets use compact production rows rather than large repeated cards, per-flow For text is not repeated, Voice prompts are collapsed by default, Voice Cast is shown once in Shared Assets, exact UI/Text remains directly copyable, and non-deliverable design requirements belong in Development rather than Production Assets.
+
+
+  - id: SRC-015
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User superseded the tab-hidden Production Assets presentation. Section 04 must keep every production requirement visible and use hybrid contextual grouping rather than forcing every objective into gameplay-flow tabs. Grouping follows how assets are actually used: shared/objective-wide kits, meaningful phases/crossings, or specific authored events. Each production item must state concise Used and Purpose context; exact UI/Text and Voice remain copy-ready; navigation may use visible anchor links only and must never hide other groups. Objective 3 specifically needs a Core Trap Kit including the Floor Trap as a concrete production asset.

@@ -15,6 +15,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The assigned player enters the protected Antechamber and Vex activates for the first time.
 - Flow: 01 — Arrival & Briefing
+- Group: 01 — Opening Story
+- Used: When the player first enters the Antechamber.
 - For: Establish the vault, Great Orrery, and the player's reason to continue.
 - Purpose: Open the story and establish that restoring the vault is the only way home.
 - Must communicate:
@@ -38,6 +40,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: After the opening briefing, the player has not yet used the Custodian Key on the first seal.
 - Flow: 02 — Take Key & Open Seal
+- Group: 02 — Open First Seal
+- Used: If the first seal is still closed after the opening briefing.
 - For: Give one in-world reminder that the Custodian Key belongs to the first seal.
 - Purpose: Nudge the player forward without replaying the opening story.
 - Must communicate:
@@ -58,6 +62,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The Resonance Engine seal opens and the player enters the chamber with the partial door display visible.
 - Flow: 01 — The Door Remembers
+- Group: 01 — Chamber Guidance
+- Used: When the player enters the Resonance Engine.
 - For: Give the Resonance Engine mystery a story voice and hint that the missing answer remains in the chamber.
 - Purpose: Frame Objective 1 as restoring an old machine whose missing knowledge is still present in the room.
 - Must communicate:
@@ -83,6 +89,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The player first enters the Broken Gallery.
 - Flow: 01 — Enter the Gallery
+- Group: 01 — Shared Gallery Assets
+- Used: When the player first enters the Broken Gallery.
 - For: Establish the Gallery's collapse and hint that Gremlin has already been through it.
 - Purpose: Give the traversal challenge story context without reading its route/resource rules aloud.
 - Must communicate:
@@ -103,6 +111,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The final Gallery crossing begins and the player is about to choose a route.
 - Flow: 04 — Gremlin’s Wager
+- Group: 04 — Gremlin’s Wager
+- Used: Before the final Gallery crossing begins.
 - For: Let Gremlin personally challenge the player before the final crossing.
 - Purpose: Create urgency and character without stating the internal threshold or retry rules.
 - Must communicate:
@@ -126,6 +136,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The Warden Halls activate and the player receives the Echo Pebble.
 - Flow: 01 — Enter the Warden Halls
+- Group: 03 — Voice
+- Used: When the player enters the Warden Halls.
 - For: Establish the Wardens as active guardians and give one light in-world hint about the Echo Pebble.
 - Purpose: Support the fiction of the Warden Halls without narrating cooldowns and exact hazard rules.
 - Must communicate:
@@ -148,6 +160,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The player clears the third Warden level and the route toward Gremlin's Workshop opens.
 - Flow: 04 — Enter the Workshop
+- Group: 05 — Transition
+- Used: After the final Warden section is cleared.
 - For: Close the Warden Halls story beat and point the journey toward the Workshop.
 - Purpose: Connect the active security system to the Great Orrery story.
 - Must communicate:
@@ -170,6 +184,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The player enters the Workshop and sees the Generator and Orrery rings.
 - Flow: 01 — Wake Ring One
+- Group: 02 — Workshop Intro
+- Used: When the player first sees the Orrery power system.
 - For: Reveal the Workshop as the heart of the Great Orrery and frame the restoration goal.
 - Purpose: Give the final objective narrative weight without explaining L-junction geometry.
 - Must communicate:
@@ -191,6 +207,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The route-swap sabotage blocks the player's old path and opens the alternate path.
 - Flow: 03 — Gremlin Changes the Path
+- Group: 03 — Gremlin Route Swap
+- Used: When Gremlin blocks the old route.
 - For: Let Gremlin gloat when he takes the player's route away.
 - Purpose: Make the sabotage feel intentional and character-driven.
 - Must communicate:
@@ -210,6 +228,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: Immediately after the route-swap sabotage visibly cuts power to Ring 2.
 - Flow: 03 — Gremlin Changes the Path
+- Group: 03 — Gremlin Route Swap
+- Used: Immediately after Ring Two loses power.
 - For: Have Vex react naturally when Ring Two loses power and a new path opens.
 - Purpose: Keep the player oriented without restating routing rules.
 - Must communicate:
@@ -230,6 +250,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The first rollback sabotage breaks the earlier line to Ring 1.
 - Flow: 04 — First Rollback
+- Group: 04 — First Sabotage
+- Used: When Gremlin breaks the earlier line to Ring One.
 - For: Let Gremlin enjoy undoing an earlier part of the player's work.
 - Purpose: Escalate Gremlin's nuisance personality without exposing implementation details.
 - Must communicate:
@@ -249,6 +271,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: Immediately after the first rollback makes Ring 1 lose power.
 - Flow: 04 — First Rollback
+- Group: 04 — First Sabotage
+- Used: Immediately after the first sabotage.
 - For: Have Vex react to Gremlin attacking the earlier line.
 - Purpose: Point attention backward without reading the repair specification aloud.
 - Must communicate:
@@ -267,6 +291,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The second rollback sabotage breaks the earlier line to Ring 2.
 - Flow: 05 — Second Rollback
+- Group: 05 — Second Sabotage
+- Used: When Gremlin breaks the earlier line to Ring Two.
 - For: Let Gremlin taunt the player one last time before the final repair.
 - Purpose: Escalate the final nuisance beat without becoming gameplay instruction.
 - Must communicate:
@@ -286,6 +312,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: Immediately after the second rollback makes Ring 2 lose power.
 - Flow: 05 — Second Rollback
+- Group: 05 — Second Sabotage
+- Used: Immediately after the second sabotage.
 - For: Have Vex react to the final setback and keep the story momentum moving.
 - Purpose: Keep the affected ring readable without restating the routing specification.
 - Must communicate:
@@ -305,6 +333,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The full Orrery network is restored after all sabotage events and the Great Orrery begins to wake.
 - Flow: 06 — Wake the Great Orrery
+- Group: 06 — Final Restoration
+- Used: When the Great Orrery begins to wake.
 - For: Give Gremlin one short defeated reaction when the player finally outsmarts him.
 - Purpose: Close Gremlin's character beat before Vex owns the ending.
 - Must communicate:
@@ -326,6 +356,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The Great Orrery restoration completes and the closing scene reaches Vex.
 - Flow: 01 — The Vault Awakens
+- Group: 01 — Finale
+- Used: After the Great Orrery and vault systems are restored.
 - For: Resolve Vex's story and reward the player after the Great Orrery wakes.
 - Purpose: Confirm that the player restored the vault rather than merely escaping it.
 - Must communicate:
@@ -347,6 +379,8 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Channel: Direct
 - Trigger: The gateway is open and the player can leave the restored vault.
 - Flow: 02 — The Way Home
+- Group: 01 — Finale
+- Used: When the gateway home is open.
 - For: Give one final in-world farewell as the gateway home opens.
 - Purpose: Close Vex's guide role without using session-management terminology.
 - Must communicate:

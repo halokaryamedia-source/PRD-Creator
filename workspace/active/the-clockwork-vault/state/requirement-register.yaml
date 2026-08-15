@@ -167,3 +167,13 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+
+
+  - id: REQ-021
+    area: production-assets
+    statement: Section 04 is a contextual production checklist, not a flow mirror or hidden-tab interface. All production groups remain visible on the page. Use hybrid grouping based on actual production use: shared/objective-wide kits, distinct phases/crossings only when they materially differ, and specific authored events such as sabotage or completion. Every production deliverable shows literal type, asset name, concise Used context, and concise Purpose. Exact UI/Text and Voice remain copy-ready. Anchor navigation may scroll to groups but must not hide content. Do not force Objective 3 into artificial flow groups; present its Core Trap Kit, Player Communication, Voice, Gameplay Feedback, and Transition directly, including Floor Trap as a concrete asset.
+    provenance: [SRC-015]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high

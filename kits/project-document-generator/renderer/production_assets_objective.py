@@ -20,6 +20,8 @@ class AssetEntry:
     title: str
     category: str = ""
     flow: str = ""
+    group: str = ""
+    used: str = ""
     for_text: str = ""
     requirement: str = ""
     usage: str = ""
@@ -159,6 +161,10 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     break
                 if meta.startswith("Flow:"):
                     entry.flow = meta.split(":", 1)[1].strip()
+                elif meta.startswith("Group:"):
+                    entry.group = meta.split(":", 1)[1].strip()
+                elif meta.startswith("Used:"):
+                    entry.used = meta.split(":", 1)[1].strip()
                 elif meta.startswith("For:"):
                     entry.for_text = meta.split(":", 1)[1].strip()
                 elif meta.startswith("Requirement:"):
@@ -183,6 +189,10 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
 
             if not entry.flow:
                 raise ValueError(f"Production Asset is missing Flow: {entry.title}")
+            if not entry.group:
+                entry.group = entry.flow
+            if not entry.used:
+                entry.used = entry.usage or entry.flow
             if not entry.for_text:
                 raise ValueError(f"Production Asset is missing For: {entry.title}")
             if not entry.requirement:
@@ -364,6 +374,7 @@ def _category_label(category: str, title: str = "") -> str:
         "Wall Laser Sensor": "MODEL / VFX",
         "Laser Blocker Stone": "MODEL / ANIMATION",
         "Swinging Axe Trap": "MODEL / ANIMATION",
+        "Floor Trap": "MODEL / PRESENTATION",
         "Power Generator": "MODEL / VFX",
         "90-Degree Rotator Junction": "MODEL / ANIMATION",
         "Orrery Ring": "MODEL / ANIMATION",
@@ -412,7 +423,8 @@ def _asset_html(entry: AssetEntry, page_id: str) -> str:
         f'<span class="pa-type">{esc(type_label)}</span>'
         '<div class="pa-row-info">'
         f'<h4>{esc(entry.title)}</h4>'
-        f'<p>{esc(entry.for_text)}</p>'
+        f'<p class="pa-meta"><span>Used</span>{esc(entry.used)}</p>'
+        f'<p class="pa-meta"><span>Purpose</span>{esc(entry.for_text)}</p>'
         '</div>'
         f'<div class="pa-row-actions">{actions}</div>'
         '</div>'
@@ -425,6 +437,7 @@ def _voice_html(
     entry: voice.VoiceEntry,
     doc: voice.VoiceProduction,
     for_text: str,
+    used_text: str,
 ) -> str:
     prompt_id = f"voice-prompt-{slug(entry.voice_id)}"
     selected_voice = voice._voice_for(doc.cast, entry.speaker)
@@ -434,7 +447,8 @@ def _voice_html(
         '<span class="pa-type pa-type-voice">VOICE</span>'
         '<div class="pa-row-info">'
         f'<h4>{esc(entry.speaker)} — {esc(entry.title)}</h4>'
-        f'<p>{esc(for_text)}</p>'
+        f'<p class="pa-meta"><span>Used</span>{esc(used_text)}</p>'
+        f'<p class="pa-meta"><span>Purpose</span>{esc(for_text)}</p>'
         f'<small>{esc(selected_voice)} · {esc(entry.duration)}</small>'
         '</div>'
         '<div class="pa-row-actions">'
@@ -471,6 +485,28 @@ def _shared_voice_cast_html(doc: voice.VoiceProduction | None) -> str:
     )
 
 
+def _parse_voice_requirement_field(path: Path, label: str) -> dict[str, str]:
+    values: dict[str, str] = {}
+    current: str | None = None
+    entry_re = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]")
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.rstrip()
+        match = entry_re.match(line)
+        if match:
+            current = match.group(1)
+            continue
+        prefix = f"- {label}:"
+        if current and line.startswith(prefix):
+            value = line.split(":", 1)[1].strip()
+            if value:
+                values[current] = value
+    return values
+
+
+def _group_display(label: str) -> str:
+    return re.sub(r"^\s*\d+\s*[—-]\s*", "", label).strip()
+
+
 def _pages_and_nav(
     render_data: dict[str, Any],
     assets: AssetRequirements | None,
@@ -478,6 +514,8 @@ def _pages_and_nav(
     triggers: dict[str, str],
     voice_flows: dict[str, str],
     voice_for: dict[str, str],
+    voice_groups: dict[str, str],
+    voice_used: dict[str, str],
 ) -> tuple[str, str]:
     asset_map = {
         voice._title_key(section.title): section
@@ -503,71 +541,52 @@ def _pages_and_nav(
         meta = _presentation(render_data, title)
         grouped_assets: dict[str, list[AssetEntry]] = {}
         for entry in asset_entries:
-            grouped_assets.setdefault(entry.flow, []).append(entry)
+            grouped_assets.setdefault(entry.group, []).append(entry)
 
         grouped_voices: dict[str, list[voice.VoiceEntry]] = {}
         for entry in voice_entries:
-            flow = voice_flows.get(entry.voice_id)
-            if not flow:
-                raise ValueError(f"Voice requirement Flow missing for canonical production entry: {entry.voice_id}")
-            grouped_voices.setdefault(flow, []).append(entry)
+            group = voice_groups.get(entry.voice_id)
+            if not group:
+                raise ValueError(f"Voice requirement Group missing for canonical production entry: {entry.voice_id}")
+            grouped_voices.setdefault(group, []).append(entry)
 
-        flow_defs = dict(asset_section.flows) if asset_section else {}
-        flow_titles = sorted(
-            set(flow_defs) | set(grouped_assets) | set(grouped_voices),
-            key=_flow_sort_key,
-        )
-        for flow_title in flow_titles:
-            if flow_title not in flow_defs:
-                raise ValueError(
-                    f"Gameplay Flow metadata missing for Production Assets section: {title} / {flow_title}"
-                )
+        group_titles = sorted(set(grouped_assets) | set(grouped_voices), key=_flow_sort_key)
 
         body = (
             '<header class="pa-shell">'
             '<small>Production Assets</small>'
             f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong>'
-            '<p class="pa-section-note">Production-ready assets and exact in-game copy. Mechanics stay in 03 Development.</p>'
+            '<p class="pa-section-note">Concrete production assets and exact in-game copy. Mechanics stay in 03 Development.</p>'
             '</header>'
         )
         if key == voice._title_key(SHARED_SECTION):
             body += _shared_voice_cast_html(voice_doc)
 
-        body += f'<div class="pa-tabs" data-pa-tabs="{esc(meta.page_id)}">'
-        body += '<div class="pa-tab-list" role="tablist" aria-label="Production flow">'
-        for pos, flow_title in enumerate(flow_titles):
-            panel_id = f"{meta.page_id}-flow-{slug(flow_title)}"
-            selected = 'true' if pos == 0 else 'false'
-            active = ' is-active' if pos == 0 else ''
-            body += (
-                f'<button class="pa-tab{active}" type="button" role="tab" '
-                f'aria-selected="{selected}" aria-controls="{esc(panel_id)}" '
-                f'data-pa-tab="{esc(panel_id)}">{esc(flow_title)}</button>'
-            )
-        body += '</div>'
+        if len(group_titles) > 1:
+            body += '<nav class="pa-group-nav" aria-label="Production groups"><span>Jump to</span>'
+            for group_title in group_titles:
+                group_id = f"{meta.page_id}-group-{slug(group_title)}"
+                body += f'<a href="#{esc(group_id)}">{esc(_group_display(group_title))}</a>'
+            body += '</nav>'
 
-        for pos, flow_title in enumerate(flow_titles):
-            flow_assets = grouped_assets.get(flow_title, [])
-            flow_voices = grouped_voices.get(flow_title, [])
-            panel_id = f"{meta.page_id}-flow-{slug(flow_title)}"
-            hidden = '' if pos == 0 else ' hidden'
+        for group_title in group_titles:
+            group_id = f"{meta.page_id}-group-{slug(group_title)}"
             body += (
-                f'<div class="pa-panel" id="{esc(panel_id)}" role="tabpanel"{hidden}>'
-                f'<div class="pa-panel-head"><h3>{esc(flow_title)}</h3>'
-                f'<span>{len(flow_assets) + len(flow_voices)} production items</span></div>'
+                f'<div class="pa-group" id="{esc(group_id)}">'
+                f'<h3>{esc(_group_display(group_title))}</h3>'
                 '<div class="pa-rows">'
             )
-            for entry in flow_assets:
+            for entry in grouped_assets.get(group_title, []):
                 body += _asset_html(entry, meta.page_id)
-            for entry in flow_voices:
+            for entry in grouped_voices.get(group_title, []):
                 for_text = voice_for.get(entry.voice_id)
-                if not for_text:
-                    raise ValueError(f"Voice requirement For missing for canonical production entry: {entry.voice_id}")
+                used_text = voice_used.get(entry.voice_id)
+                if not for_text or not used_text:
+                    raise ValueError(f"Voice requirement For/Used missing for canonical production entry: {entry.voice_id}")
                 if voice_doc is None:
                     raise ValueError("Voice entry exists without Voice Production document.")
-                body += _voice_html(entry, voice_doc, for_text)
+                body += _voice_html(entry, voice_doc, for_text, used_text)
             body += '</div></div>'
-        body += '</div>'
 
         index = len(pages)
         pid = meta.page_id
@@ -613,65 +632,31 @@ OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
 .pa-section-note{max-width:78ch;margin:0;color:var(--muted);font-size:.72rem;line-height:1.45}
 .pa-cast{margin:14px 0 18px;border:1px solid var(--line);border-radius:5px;overflow:hidden}
 .pa-cast-head{display:flex;align-items:baseline;gap:10px;padding:9px 12px;background:var(--soft);border-bottom:1px solid var(--line)}
-.pa-cast-head span{color:var(--navy);font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.06em}
-.pa-cast-head p{margin:0;color:var(--muted);font-size:.69rem}
-.pa-cast-row{display:grid;grid-template-columns:minmax(120px,.8fr) minmax(0,2fr) auto;gap:12px;align-items:center;padding:9px 12px;border-top:1px solid var(--line);font-size:.72rem}
-.pa-cast-row:first-child{border-top:0}.pa-cast-row strong{color:var(--navy)}.pa-cast-row small{color:var(--muted)}
-.pa-tabs{margin-top:14px}
-.pa-tab-list{display:flex;gap:5px;overflow-x:auto;padding:0 0 8px;border-bottom:1px solid var(--line);scrollbar-width:thin}
-.pa-tab{flex:0 0 auto;min-height:34px;padding:7px 10px;border:1px solid transparent;border-radius:4px 4px 0 0;background:transparent;color:#52616a;font:750 .68rem/1.2 var(--font);cursor:pointer;text-align:left}
-.pa-tab:hover,.pa-tab:focus-visible{color:var(--blue);outline:0;background:var(--soft)}
-.pa-tab.is-active{border-color:var(--line);border-bottom-color:var(--paper);background:var(--paper);color:var(--navy);box-shadow:inset 0 3px 0 var(--blue)}
-.pa-panel{padding-top:15px}.pa-panel[hidden]{display:none!important}
-.pa-panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}
-.pa-panel-head h3{margin:0;color:var(--navy);font-size:1.08rem;line-height:1.25;text-transform:none}
-.pa-panel-head span{color:var(--muted);font-size:.62rem;white-space:nowrap}
-.pa-rows{border-top:1px solid #cbd7dd}
-.pa-row{border-bottom:1px solid #cbd7dd;background:var(--paper)}
-.pa-row-main{display:grid;grid-template-columns:118px minmax(0,1fr) auto;gap:13px;align-items:center;padding:11px 8px}
-.pa-type{display:inline-flex;align-items:center;width:max-content;max-width:112px;padding:4px 7px;border-radius:3px;background:var(--soft);color:var(--blue);font-size:.59rem;font-weight:900;letter-spacing:.055em;line-height:1.25;text-transform:uppercase}
-.pa-type-voice{color:#9a5a0a;background:#fff5df}
-.pa-row-info h4{margin:0;color:var(--navy);font-size:.86rem;line-height:1.3;text-transform:none}
-.pa-row-info p{margin:3px 0 0;color:#52616a;font-size:.71rem;line-height:1.42}
-.pa-row-info small{display:block;margin-top:4px;color:var(--muted);font-size:.62rem}
-.pa-row-actions{display:flex;align-items:center;gap:6px;justify-content:flex-end}
-.pa-copy-button,.pa-row .voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:6px 8px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .57rem/1 var(--font);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
-.pa-copy-button:hover,.pa-copy-button:focus-visible,.pa-row .voice-copy-button:hover,.pa-row .voice-copy-button:focus-visible{background:var(--blue);border-color:var(--blue);outline:0}
-.pa-row-copy,.pa-row-details{margin:0 8px 10px 139px}
-.pa-row-details{padding-top:0}
-.pa-row-details summary{display:inline-flex;cursor:pointer;color:var(--blue);font-size:.66rem;font-weight:800;margin:0 0 7px;user-select:none}
-.pa-content,.pa-row .voice-script-text{margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:3px;background:#f8fafb;color:var(--navy);font:700 .76rem/1.52 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
-.pa-row .voice-script-text{display:block!important;border-left-color:var(--amber)}
-.pa-row .voice-script-display{margin-top:7px;padding:8px 0 0;border-top:1px solid var(--line)}
-.pa-row .voice-performance-tag{font-size:.57rem}.pa-row .voice-script-line{font-size:.75rem;line-height:1.5}.pa-row .voice-script-gap{height:6px}
-body.theme-dark .pa-tab.is-active,body.theme-dark .pa-row{background:#17262d}
-body.theme-dark .pa-tab.is-active{border-bottom-color:#17262d}
-body.theme-dark .pa-type{background:#1d2f37}.theme-dark .pa-type-voice{background:#3a2c14;color:#ffd488}
-body.theme-dark .pa-row-info p,body.theme-dark .pa-section-note{color:#c8d7dc}
-body.theme-dark .pa-content,body.theme-dark .pa-row .voice-script-text{background:#1d2f37;color:#e8eff3}
-@media(max-width:760px){.pa-row-main{grid-template-columns:1fr auto}.pa-type{grid-column:1}.pa-row-info{grid-column:1/-1;grid-row:2}.pa-row-actions{grid-column:2;grid-row:1}.pa-row-copy,.pa-row-details{margin-left:8px}.pa-cast-row{grid-template-columns:1fr}.pa-panel-head{align-items:flex-start;flex-direction:column;gap:3px}}
-@media print{.pa-tab-list{display:none!important}.pa-panel[hidden]{display:block!important}.pa-row{break-inside:avoid}.pa-copy-button,.pa-row .voice-copy-button{display:none!important}}
+.pa-cast-head span{color:var(--navy);font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.06em}.pa-cast-head p{margin:0;color:var(--muted);font-size:.69rem}
+.pa-cast-row{display:grid;grid-template-columns:minmax(120px,.8fr) minmax(0,2fr) auto;gap:12px;align-items:center;padding:9px 12px;border-top:1px solid var(--line);font-size:.72rem}.pa-cast-row:first-child{border-top:0}.pa-cast-row strong{color:var(--navy)}.pa-cast-row small{color:var(--muted)}
+.pa-group-nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0 2px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.pa-group-nav>span{margin-right:3px;color:var(--muted);font-size:.61rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.pa-group-nav a{display:inline-flex;padding:5px 8px;border:1px solid var(--line);border-radius:3px;color:var(--navy);background:var(--paper);font-size:.64rem;font-weight:750;text-decoration:none}.pa-group-nav a:hover,.pa-group-nav a:focus-visible{border-color:var(--blue);color:var(--blue);outline:0}
+.pa-group{scroll-margin-top:72px;margin-top:22px}.pa-group+.pa-group{padding-top:18px;border-top:2px solid var(--line)}
+.pa-group h3{margin:0 0 8px;color:var(--navy);font-size:1.04rem;line-height:1.25;text-transform:none}
+.pa-rows{border-top:1px solid #cbd7dd}.pa-row{border-bottom:1px solid #cbd7dd;background:var(--paper)}
+.pa-row-main{display:grid;grid-template-columns:122px minmax(0,1fr) auto;gap:13px;align-items:start;padding:12px 8px}
+.pa-type{display:inline-flex;align-items:center;width:max-content;max-width:116px;padding:4px 7px;border-radius:3px;background:var(--soft);color:var(--blue);font-size:.59rem;font-weight:900;letter-spacing:.055em;line-height:1.25;text-transform:uppercase}.pa-type-voice{color:#9a5a0a;background:#fff5df}
+.pa-row-info h4{margin:0 0 5px;color:var(--navy);font-size:.87rem;line-height:1.3;text-transform:none}.pa-row-info small{display:block;margin-top:5px;color:var(--muted);font-size:.62rem}
+.pa-meta{display:grid;grid-template-columns:54px minmax(0,1fr);gap:7px;margin:2px 0;color:#52616a;font-size:.7rem;line-height:1.4}.pa-meta span{color:var(--blue);font-size:.56rem;font-weight:850;letter-spacing:.05em;text-transform:uppercase}
+.pa-row-actions{display:flex;align-items:center;gap:6px;justify-content:flex-end;padding-top:1px}
+.pa-copy-button,.pa-row .voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:6px 8px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .57rem/1 var(--font);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;white-space:nowrap}.pa-copy-button:hover,.pa-copy-button:focus-visible,.pa-row .voice-copy-button:hover,.pa-row .voice-copy-button:focus-visible{background:var(--blue);border-color:var(--blue);outline:0}
+.pa-row-copy,.pa-row-details{margin:0 8px 10px 143px}.pa-row-details{padding-top:0}.pa-row-details summary{display:inline-flex;cursor:pointer;color:var(--blue);font-size:.66rem;font-weight:800;margin:0 0 7px;user-select:none}
+.pa-content,.pa-row .voice-script-text{margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:3px;background:#f8fafb;color:var(--navy);font:700 .76rem/1.52 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}.pa-row .voice-script-text{display:block!important;border-left-color:var(--amber)}
+.pa-row .voice-script-display{margin-top:7px;padding:8px 0 0;border-top:1px solid var(--line)}.pa-row .voice-performance-tag{font-size:.57rem}.pa-row .voice-script-line{font-size:.75rem;line-height:1.5}.pa-row .voice-script-gap{height:6px}
+body.theme-dark .pa-row{background:#17262d}body.theme-dark .pa-type{background:#1d2f37}.theme-dark .pa-type-voice{background:#3a2c14;color:#ffd488}body.theme-dark .pa-meta,body.theme-dark .pa-section-note{color:#c8d7dc}body.theme-dark .pa-content,body.theme-dark .pa-row .voice-script-text{background:#1d2f37;color:#e8eff3}
+@media(max-width:760px){.pa-row-main{grid-template-columns:1fr auto}.pa-type{grid-column:1}.pa-row-info{grid-column:1/-1;grid-row:2}.pa-row-actions{grid-column:2;grid-row:1}.pa-row-copy,.pa-row-details{margin-left:8px}.pa-cast-row{grid-template-columns:1fr}.pa-meta{grid-template-columns:50px minmax(0,1fr)}}
+@media print{.pa-group-nav,.pa-copy-button,.pa-row .voice-copy-button{display:none!important}.pa-row,.pa-group{break-inside:avoid}}
 </style>'''
 
 OBJECTIVE_COPY_SCRIPT = r'''<script id="production-assets-flow-copy-script">(function(){
-  function fallbackCopy(text){
-    var area=document.createElement('textarea');area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();try{document.execCommand('copy');}finally{document.body.removeChild(area);}
-  }
-  document.addEventListener('click',function(event){
-    var tab=event.target.closest('[data-pa-tab]');
-    if(tab){
-      var tabs=tab.closest('[data-pa-tabs]');if(!tabs)return;
-      var id=tab.getAttribute('data-pa-tab');
-      tabs.querySelectorAll('[data-pa-tab]').forEach(function(btn){var active=btn===tab;btn.classList.toggle('is-active',active);btn.setAttribute('aria-selected',active?'true':'false');});
-      tabs.querySelectorAll('.pa-panel').forEach(function(panel){panel.hidden=panel.id!==id;});
-      return;
-    }
-    var button=event.target.closest('[data-pa-copy]');if(!button)return;
-    var source=document.getElementById(button.getAttribute('data-pa-copy'));if(!source)return;
-    var text=source.textContent||'';var label=button.querySelector('.pa-copy-label');var original=label?label.textContent:'Copy';
-    var done=function(){button.classList.add('is-copied');if(label)label.textContent='Copied ✓';else button.textContent='Copied ✓';setTimeout(function(){button.classList.remove('is-copied');if(label)label.textContent=original;else button.textContent=original;},1400);};
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallbackCopy(text);done();});}else{fallbackCopy(text);done();}
-  });
+  function fallbackCopy(text){var area=document.createElement('textarea');area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();try{document.execCommand('copy');}finally{document.body.removeChild(area);}}
+  document.addEventListener('click',function(event){var button=event.target.closest('[data-pa-copy]');if(!button)return;var source=document.getElementById(button.getAttribute('data-pa-copy'));if(!source)return;var text=source.textContent||'';var label=button.querySelector('.pa-copy-label');var original=label?label.textContent:'Copy';var done=function(){button.classList.add('is-copied');if(label)label.textContent='Copied ✓';else button.textContent='Copied ✓';setTimeout(function(){button.classList.remove('is-copied');if(label)label.textContent=original;else button.textContent=original;},1400);};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallbackCopy(text);done();});}else{fallbackCopy(text);done();}});
 })();</script>'''
 
 
@@ -695,12 +680,14 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
     triggers = voice.parse_voice_requirement_triggers(requirements_path) if has_voice else {}
     voice_flows = voice.parse_voice_requirement_flows(requirements_path) if has_voice else {}
     voice_for = voice.parse_voice_requirement_for(requirements_path) if has_voice else {}
+    voice_groups = _parse_voice_requirement_field(requirements_path, "Group") if has_voice else {}
+    voice_used = _parse_voice_requirement_field(requirements_path, "Used") if has_voice else {}
     source = output.read_text(encoding="utf-8")
 
     if voice.STYLE_MARKER in source or OBJECTIVE_STYLE_MARKER in source:
         raise ValueError("Production Assets extension already exists in rendered HTML.")
 
-    pages, nav = _pages_and_nav(render_data, assets, voice_doc, triggers, voice_flows, voice_for)
+    pages, nav = _pages_and_nav(render_data, assets, voice_doc, triggers, voice_flows, voice_for, voice_groups, voice_used)
     nav_pattern = re.compile(r'(<nav class="sidebar-nav">)(.*?)(</nav>)', re.S)
     main_pattern = re.compile(r'(<main class="document-main">.*?)(</main>)', re.S)
     if len(nav_pattern.findall(source)) != 1:
