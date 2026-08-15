@@ -15,15 +15,11 @@ SHARED_SECTION = "Global / Shared Assets"
 OBJECTIVE_STYLE_MARKER = 'id="production-assets-objective-style"'
 
 TYPE_PRIORITY = {
-    "ENTITY / MODEL": 10,
+    "MODEL": 10,
     "ITEM": 20,
-    "ITEM / PROJECTILE": 21,
-    "BLOCK / PROP": 30,
-    "UI / TEXT": 40,
-    "VOICE": 50,
-    "SOUND": 60,
-    "PARTICLE": 70,
-    "SEQUENCE": 80,
+    "UI / TEXT": 30,
+    "AUDIO": 40,
+    "PARTICLE": 50,
 }
 
 
@@ -36,6 +32,8 @@ class AssetEntry:
     create_text: str = ""
     used: str = ""
     includes: str = ""
+    function_text: str = ""
+    asset_brief: str = ""
     moment: str = ""
     for_text: str = ""
     requirement: str = ""
@@ -74,6 +72,8 @@ class ProductionItem:
     create_text: str
     used: str
     includes: str
+    function_text: str
+    asset_brief: str
     moment: str
     flow: str
     flow_order: int
@@ -87,10 +87,10 @@ class ProductionItem:
 
 def _default_type(category: str) -> str:
     return {
-        "3D Models": "ENTITY / MODEL",
+        "3D Models": "MODEL",
         "UI & Information": "UI / TEXT",
-        "Audio": "SOUND",
-        "Visual Effects & Presentation": "SEQUENCE",
+        "Audio": "AUDIO",
+        "Visual Effects & Presentation": "PARTICLE",
     }.get(category, category.upper())
 
 
@@ -194,6 +194,10 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     entry.used = meta.split(":", 1)[1].strip()
                 elif meta.startswith("Includes:"):
                     entry.includes = meta.split(":", 1)[1].strip()
+                elif meta.startswith("Function:"):
+                    entry.function_text = meta.split(":", 1)[1].strip()
+                elif meta.startswith("Asset Brief:"):
+                    entry.asset_brief = meta.split(":", 1)[1].strip()
                 elif meta.startswith("Moment:"):
                     entry.moment = meta.split(":", 1)[1].strip()
                 elif meta.startswith("For:"):
@@ -368,6 +372,8 @@ def _asset_to_item(entry: AssetEntry, section: AssetSection | None, page_id: str
         create_text=entry.create_text,
         used=entry.used,
         includes=entry.includes,
+        function_text=entry.function_text or entry.for_text,
+        asset_brief=entry.asset_brief,
         moment=entry.moment,
         flow=entry.flow,
         flow_order=_flow_order(section, entry.flow),
@@ -377,34 +383,17 @@ def _asset_to_item(entry: AssetEntry, section: AssetSection | None, page_id: str
 
 
 def _voice_to_item(
-    entry: voice.VoiceEntry,
-    doc: voice.VoiceProduction,
-    section: AssetSection | None,
-    page_id: str,
-    flow: str,
-    used: str,
-    moment: str,
-    create_text: str,
-    order: int,
+    entry: voice.VoiceEntry, doc: voice.VoiceProduction, section: AssetSection | None,
+    page_id: str, flow: str, moment: str, function_text: str, order: int,
 ) -> ProductionItem:
     return ProductionItem(
-        item_id=f"{page_id}-build-{slug(entry.voice_id)}",
-        title=f"{entry.speaker} — {entry.title}",
-        type_label="VOICE",
-        create_text=create_text or f"Create one {entry.speaker} dialogue line for this gameplay moment.",
-        used=used or _plain_flow(flow) or "This gameplay section.",
-        includes="",
-        moment=moment or _plain_flow(flow) or "Gameplay Use",
-        flow=flow,
-        flow_order=_flow_order(section, flow),
-        sort_order=order,
-        content=entry.performance,
-        speaker=entry.speaker,
-        selected_voice=voice._voice_for(doc.cast, entry.speaker),
-        duration=entry.duration,
-        is_voice=True,
+        item_id=f"{page_id}-build-{slug(entry.voice_id)}", title=f"{entry.speaker} — {entry.title}",
+        type_label="AUDIO", create_text="", used="", includes="",
+        function_text=function_text or "Story or character audio for this gameplay moment.", asset_brief="",
+        moment=moment or _plain_flow(flow) or "Gameplay Use", flow=flow, flow_order=_flow_order(section, flow),
+        sort_order=order, content=entry.performance, speaker=entry.speaker,
+        selected_voice=voice._voice_for(doc.cast, entry.speaker), duration=entry.duration, is_voice=True,
     )
-
 
 def _item_sort_key(item: ProductionItem) -> tuple[int, int, int, str]:
     return (
@@ -425,71 +414,33 @@ def _moment_sort_key(moment: str, items: list[ProductionItem]) -> tuple[int, int
 def _build_item_html(item: ProductionItem) -> str:
     exact = ""
     if item.content:
-        copy_id = f"{item.item_id}-copy"
-        label = "Copy Prompt" if item.is_voice else "Copy Text"
-        heading = "Prompt" if item.is_voice else "Player Text"
-        exact = (
-            '<div class="pa-exact">'
-            '<div class="pa-exact-head">'
-            f'<span>{esc(heading)}</span>{_copy_button(copy_id, label)}'
-            '</div>'
-            f'<pre class="{"voice-script-text" if item.is_voice else "pa-content"}" id="{esc(copy_id if not item.is_voice else "voice-prompt-" + item.item_id.split("-build-")[-1])}">{esc(item.content)}</pre>'
-            '</div>'
-        )
         if item.is_voice:
-            # Voice validator requires canonical prompt IDs based on Voice ID. Replace the generic id above.
-            voice_slug = item.item_id.split("-build-")[-1]
-            exact = exact.replace(f'data-pa-copy="{esc(copy_id)}"', f'data-pa-copy="voice-prompt-{voice_slug}"')
-
-    rows = [
-        ('Create', item.create_text),
-        ('Used', item.used),
-    ]
-    if item.includes:
-        rows.append(('Includes', item.includes))
+            target = "voice-prompt-" + item.item_id.split("-build-")[-1]; head="Prompt"; label="Copy Prompt"; cls="voice-script-text"
+        else:
+            target = f"{item.item_id}-copy"; head="Player Text"; label="Copy Text"; cls="pa-content"
+        exact = ('<div class="pa-exact"><div class="pa-exact-head">'
+                 f'<span>{esc(head)}</span>{_copy_button(target,label)}</div>'
+                 f'<pre class="{cls}" id="{esc(target)}">{esc(item.content)}</pre></div>')
+    meta = '<div class="pa-build-meta-row"><b>Function</b><span>'+esc(item.function_text)+'</span></div>'
     if item.is_voice:
-        rows.append(('Voice', f"{item.selected_voice} · {item.duration}"))
-    meta = ''.join(
-        f'<div class="pa-build-meta-row"><b>{esc(label)}</b><span>{esc(value)}</span></div>'
-        for label, value in rows if value
-    )
-    classes = "pa-row pa-row-voice" if item.is_voice else "pa-build-row pa-row"
-    return (
-        f'<article class="{classes}" id="{esc(item.item_id)}">'
-        '<div class="pa-build-head">'
-        f'<span class="pa-type">{esc(item.type_label)}</span>'
-        f'<h4>{esc(item.title)}</h4>'
-        '</div>'
-        f'<div class="pa-build-meta">{meta}</div>'
-        f'{exact}'
-        '</article>'
-    )
+        meta += '<div class="pa-build-meta-row"><b>Voice Setup</b><span>'+esc(item.selected_voice)+' · Eleven v3</span></div>'
+        meta += '<div class="pa-build-meta-row"><b>Expected</b><span>'+esc(item.duration)+'</span></div>'
+    elif item.asset_brief:
+        meta += '<div class="pa-build-meta-row"><b>Asset Brief</b><span>'+esc(item.asset_brief)+'</span></div>'
+    cls = "pa-row pa-row-voice" if item.is_voice else "pa-build-row pa-row"
+    return (f'<article class="{cls}" id="{esc(item.item_id)}"><div class="pa-build-head">'
+            f'<span class="pa-type">{esc(item.type_label)}</span><h4>{esc(item.title)}</h4></div>'
+            f'<div class="pa-build-meta">{meta}</div>{exact}</article>')
 
-
-def _usage_map_html(items: list[ProductionItem], page_id: str) -> str:
-    grouped: dict[str, list[ProductionItem]] = {}
-    for item in items:
-        grouped.setdefault(item.moment, []).append(item)
-    moments = sorted(grouped, key=lambda moment: _moment_sort_key(moment, grouped[moment]))
-    blocks: list[str] = []
-    for index, moment in enumerate(moments, 1):
-        links = []
-        for item in sorted(grouped[moment], key=_item_sort_key):
-            links.append(
-                f'<a class="pa-use-item" href="#{esc(item.item_id)}">'
-                f'<span class="pa-use-type">{esc(item.type_label)}</span>'
-                f'<span>{esc(item.title)}</span></a>'
-            )
-        blocks.append(
-            '<div class="pa-moment">'
-            f'<span class="pa-moment-index">{index:02d}</span>'
-            '<div class="pa-moment-body">'
-            f'<h4>{esc(moment)}</h4>'
-            f'<div class="pa-use-items">{"".join(links)}</div>'
-            '</div></div>'
-        )
-    return ''.join(blocks)
-
+def _moment_html(items: list[ProductionItem]) -> str:
+    grouped={}
+    for item in items: grouped.setdefault(item.moment,[]).append(item)
+    moments=sorted(grouped,key=lambda m:_moment_sort_key(m,grouped[m])); out=[]
+    for i,m in enumerate(moments,1):
+        out.append('<div class="pa-moment"><div class="pa-moment-head">'
+                   f'<span>{i:02d}</span><h3>{esc(m)}</h3></div><div class="pa-build-list">'
+                   +''.join(_build_item_html(x) for x in sorted(grouped[m],key=_item_sort_key))+'</div></div>')
+    return ''.join(out)
 
 def _pages_and_nav(
     render_data: dict[str, Any],
@@ -500,9 +451,8 @@ def _pages_and_nav(
     asset_map = {voice._title_key(section.title): section for section in (assets.sections if assets else [])}
     voice_map = {voice._title_key(section.title): section for section in (voice_doc.sections if voice_doc else [])}
     voice_flows = _voice_requirement_meta(requirements_path, "Flow")
-    voice_used = _voice_requirement_meta(requirements_path, "Used")
     voice_moments = _voice_requirement_meta(requirements_path, "Moment")
-    voice_create = _voice_requirement_meta(requirements_path, "Create")
+    voice_function = _voice_requirement_meta(requirements_path, "For")
 
     brand = render_data["document"].get("brand") or render_data["document"]["title"]
     pages: list[str] = []
@@ -528,9 +478,8 @@ def _pages_and_nav(
                         asset_section,
                         meta.page_id,
                         flow,
-                        voice_used.get(entry.voice_id, ""),
                         voice_moments.get(entry.voice_id, ""),
-                        voice_create.get(entry.voice_id, ""),
+                        voice_function.get(entry.voice_id, ""),
                         order,
                     )
                 )
@@ -538,27 +487,9 @@ def _pages_and_nav(
             continue
 
         body = (
-            '<header class="pa-shell">'
-            '<small>Production Assets</small>'
-            f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong>'
-            '<p class="pa-section-note">Concrete Minecraft production deliverables. Gameplay behavior and logic stay in 03 Development.</p>'
-            '</header>'
-            '<nav class="pa-page-jump" aria-label="Production Assets sections">'
-            f'<a href="#{esc(meta.page_id)}-what">What to Build</a>'
-            f'<a href="#{esc(meta.page_id)}-where">Where It Is Used</a>'
-            '</nav>'
-            f'<div class="pa-part" id="{esc(meta.page_id)}-what">'
-            '<div class="pa-part-head"><small>01</small><h3>What to Build</h3>'
-            '<p>Only concrete production setups and exact in-game content.</p></div>'
-            '<div class="pa-build-list">'
-            + ''.join(_build_item_html(item) for item in sorted(items, key=_item_sort_key))
-            + '</div></div>'
-            f'<div class="pa-part pa-where" id="{esc(meta.page_id)}-where">'
-            '<div class="pa-part-head"><small>02</small><h3>Where It Is Used</h3>'
-            '<p>Gameplay moments that actually require the production items above.</p></div>'
-            '<div class="pa-moments">'
-            + _usage_map_html(items, meta.page_id)
-            + '</div></div>'
+            '<header class="pa-shell"><small>Production Assets</small>'
+            f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong></header>'
+            '<div class="pa-moments">' + _moment_html(items) + '</div>'
         )
 
         index = len(pages)
@@ -598,15 +529,7 @@ def _pages_and_nav(
 
 
 OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
-.pa-shell{margin:0 0 12px}.pa-shell>small{display:block;margin-bottom:5px;color:var(--blue);font-size:.61rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase}.pa-shell h2{margin:0;color:var(--navy);font-size:1.9rem;line-height:1.12;letter-spacing:-.025em}.pa-shell>strong{display:block;margin:5px 0 7px;color:var(--amber);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}.pa-section-note{max-width:82ch;margin:0;color:var(--muted);font-size:.72rem;line-height:1.45}
-.pa-page-jump{display:flex;gap:6px;flex-wrap:wrap;margin:13px 0 18px}.pa-page-jump a{padding:6px 9px;border:1px solid var(--line);border-radius:3px;color:var(--navy);font-size:.64rem;font-weight:800;text-decoration:none;background:var(--paper)}.pa-page-jump a:hover,.pa-page-jump a:focus-visible{border-color:var(--blue);color:var(--blue);outline:0}
-.pa-part{scroll-margin-top:74px}.pa-part+.pa-part{margin-top:26px;padding-top:22px;border-top:2px solid var(--line)}.pa-part-head{margin-bottom:10px}.pa-part-head small{display:block;color:var(--amber);font-size:.56rem;font-weight:900;letter-spacing:.08em}.pa-part-head h3{margin:1px 0 3px;color:var(--navy);font-size:1.14rem;line-height:1.25;text-transform:uppercase;letter-spacing:.025em}.pa-part-head p{margin:0;color:var(--muted);font-size:.7rem;line-height:1.4}
-.pa-build-list{border-top:1px solid #cbd7dd}.pa-build-row,.pa-row-voice{padding:12px 7px 13px;border-bottom:1px solid #cbd7dd;background:var(--paper);scroll-margin-top:74px}.pa-build-head{display:grid;grid-template-columns:126px minmax(0,1fr);gap:12px;align-items:center}.pa-type{display:inline-flex;width:max-content;max-width:120px;align-items:center;padding:4px 7px;border-radius:3px;background:var(--soft);color:var(--blue);font-size:.58rem;font-weight:900;letter-spacing:.05em;line-height:1.25;text-transform:uppercase}.pa-build-head h4{margin:0;color:var(--navy);font-size:.88rem;line-height:1.3;text-transform:none}.pa-build-meta{margin:8px 0 0 138px}.pa-build-meta-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;margin-top:4px;font-size:.71rem;line-height:1.42}.pa-build-meta-row:first-child{margin-top:0}.pa-build-meta-row b{color:var(--blue);font-size:.57rem;letter-spacing:.055em;text-transform:uppercase}.pa-build-meta-row span{color:#52616a}
-.pa-exact{margin:10px 0 0 138px}.pa-exact-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}.pa-exact-head>span{color:var(--blue);font-size:.58rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.pa-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:27px;padding:6px 8px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .56rem/1 var(--font);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}.pa-copy-button:hover,.pa-copy-button:focus-visible{background:var(--blue);border-color:var(--blue);outline:0}.pa-copy-button.is-copied{background:var(--green);border-color:var(--green)}.pa-content,.pa-row-voice .voice-script-text{display:block!important;margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:3px;background:#f8fafb;color:var(--navy);font:700 .75rem/1.5 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}.pa-row-voice .voice-script-text{border-left-color:var(--amber)}
-.pa-moments{border-top:1px solid #cbd7dd}.pa-moment{display:grid;grid-template-columns:42px minmax(0,1fr);gap:12px;padding:12px 7px;border-bottom:1px solid #cbd7dd}.pa-moment-index{display:flex;align-items:flex-start;justify-content:center;padding-top:2px;color:var(--amber);font-size:.61rem;font-weight:900}.pa-moment-body h4{margin:0 0 7px;color:var(--navy);font-size:.86rem;line-height:1.3;text-transform:uppercase;letter-spacing:.02em}.pa-use-items{display:grid;gap:5px}.pa-use-item{display:grid;grid-template-columns:118px minmax(0,1fr);gap:9px;align-items:center;color:var(--navy);font-size:.7rem;text-decoration:none}.pa-use-item:hover,.pa-use-item:focus-visible{color:var(--blue);outline:0}.pa-use-type{display:inline-flex;width:max-content;max-width:112px;padding:3px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.54rem;font-weight:850;letter-spacing:.045em;text-transform:uppercase}
-body.theme-dark .pa-section-note,body.theme-dark .pa-part-head p,body.theme-dark .pa-build-meta-row span{color:#c8d7dc}body.theme-dark .pa-build-row,body.theme-dark .pa-page-jump a{background:#17262d}body.theme-dark .pa-type,body.theme-dark .pa-use-type{background:#1d2f37}body.theme-dark .pa-content,body.theme-dark .pa-build-row .voice-script-text{background:#1d2f37;color:#e8eff3}
-@media(max-width:760px){.pa-build-head{grid-template-columns:1fr}.pa-build-meta,.pa-exact{margin-left:0}.pa-use-item{grid-template-columns:1fr}.pa-moment{grid-template-columns:32px 1fr}}
-@media print{.pa-page-jump,.pa-copy-button{display:none!important}.pa-build-row,.pa-row-voice,.pa-moment{break-inside:avoid}}
+.pa-shell{margin:0 0 18px}.pa-shell>small{display:block;margin-bottom:5px;color:var(--blue);font-size:.61rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase}.pa-shell h2{margin:0;color:var(--navy);font-size:1.9rem;line-height:1.12}.pa-shell>strong{display:block;margin-top:5px;color:var(--amber);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}.pa-moments{display:grid;gap:22px}.pa-moment+.pa-moment{padding-top:20px;border-top:1px solid var(--line)}.pa-moment-head{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}.pa-moment-head>span{color:var(--amber);font-size:.61rem;font-weight:900}.pa-moment-head h3{margin:0;color:var(--navy);font-size:1.05rem;text-transform:none}.pa-build-list{border-top:1px solid #cbd7dd}.pa-build-row,.pa-row-voice{padding:12px 10px;border-bottom:1px solid #cbd7dd;background:var(--paper);break-inside:avoid}.pa-build-head{display:flex;align-items:center;gap:9px}.pa-type{padding:3px 7px;border-radius:3px;background:var(--soft);color:var(--blue);font-size:.58rem;font-weight:900;letter-spacing:.055em;text-transform:uppercase}.pa-build-head h4{margin:0;color:var(--navy);font-size:.88rem;text-transform:none}.pa-build-meta{display:grid;gap:4px;margin-top:8px}.pa-build-meta-row{display:grid;grid-template-columns:82px minmax(0,1fr);gap:9px;color:#52616a;font-size:.72rem;line-height:1.45}.pa-build-meta-row b{color:var(--navy);font-size:.61rem;font-weight:850;text-transform:uppercase}.pa-exact{margin-top:9px}.pa-exact-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.pa-exact-head>span{color:var(--blue);font-size:.59rem;font-weight:850;text-transform:uppercase}.pa-copy-button{min-height:27px;padding:5px 8px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .56rem/1 var(--font);text-transform:uppercase}.pa-content,.pa-row-voice .voice-script-text{display:block!important;margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:3px;background:#f8fafb;color:var(--navy);font:700 .76rem/1.52 var(--font);white-space:pre-wrap}.pa-row-voice .voice-script-text{border-left-color:var(--amber)}body.theme-dark .pa-build-row,body.theme-dark .pa-row-voice{background:#17262d}body.theme-dark .pa-build-meta-row{color:#c8d7dc}@media(max-width:760px){.pa-build-meta-row{grid-template-columns:1fr;gap:1px}}@media print{.pa-copy-button{display:none!important}}
 </style>'''
 
 OBJECTIVE_COPY_SCRIPT = r'''<script id="production-assets-flow-copy-script">(function(){

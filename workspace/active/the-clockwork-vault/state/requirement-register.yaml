@@ -187,3 +187,13 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+
+
+  - id: REQ-023
+    area: production-assets
+    statement: Section 04 uses one generic reader-first, moment-first production brief for every objective. Moment headings answer when the resource is needed, so resource rows do not repeat Used/Trigger context. The only primary resource types are MODEL, ITEM, UI / TEXT, AUDIO, and standalone PARTICLE. Every resource must be a concrete thing that actually needs to be prepared. MODEL/ITEM/PARTICLE show Function plus a concise Asset Brief specific enough to start production; UI / TEXT shows Function plus exact copy-ready player text; AUDIO dialogue shows Function, selected ElevenLabs voice, Eleven v3, expected duration, and exact prompt; non-dialogue AUDIO shows Function plus Asset Brief and clearly states when there is no spoken dialogue. Animation, sound, particle, and state work belonging to a parent MODEL/ITEM remains inside that setup. Gameplay behavior and SEQUENCE entries are not Production Assets. Do not display internal document/process guidance, Used at, Create, Includes, For, Group, Speaker, separate WHAT TO BUILD / WHERE IT IS USED sections, or VoiceLab/provider labels. Section 03 Development remains unchanged.
+    provenance: [SRC-017]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high

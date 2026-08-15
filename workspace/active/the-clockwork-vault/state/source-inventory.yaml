@@ -132,3 +132,12 @@ sources:
     origin: user
     inspection: full
     summary: User approved one universal Section 04 Production Assets presentation for every objective. Every objective must use the same two-part structure: WHAT TO BUILD and WHERE IT IS USED. WHAT TO BUILD contains only concrete Minecraft production deliverables and states Type, Create, Used, and optional Includes; exact UI/Text and Voice remain directly copyable. WHERE IT IS USED maps those same deliverables to visible gameplay moments without hiding content. Pure gameplay behavior remains in 03 Development. Animation, sound, and particle work that belongs to one entity/model setup stays inside that setup instead of being split into artificial standalone assets. Renderer behavior must remain generic and must never contain objective-specific layout rules.
+
+
+  - id: SRC-017
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User superseded the two-part WHAT TO BUILD / WHERE IT IS USED design. Section 04 must use one universal moment-first production brief for every objective. A moment heading supplies timing/context; each resource directly explains its Function and the production information needed to create it. MODEL, ITEM, UI / TEXT, AUDIO, and standalone PARTICLE are the only primary resource types. MODEL/ITEM/PARTICLE use Function + Asset Brief; UI / TEXT uses Function + exact player copy; AUDIO dialogue uses Function + selected ElevenLabs voice, Eleven v3, expected duration, and exact prompt; non-dialogue AUDIO uses Function + Asset Brief and must explicitly say there is no spoken dialogue when relevant. Attached animation/sound/particle/state work stays inside its parent model/item. Gameplay-behavior SEQUENCE entries are not Production Assets. Section 03 Development is frozen and must not be edited by this 04 revision.
