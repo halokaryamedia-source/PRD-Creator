@@ -63,44 +63,44 @@ Requirement: Give each of the three puzzle pillars a stable player-readable iden
 Usage: Remains visible throughout Objective 1.
 
 #### Pillar Clue Book Set
-Requirement: Produce twelve short clue-book paragraphs, four per pillar, that teach the lever-to-color mapping indirectly but clearly enough for a light deduction puzzle. Keep each book to one short paragraph. The current prepared wording assumes the provisional list-order combination-to-color pairing recorded in the gameplay revision review and must be updated if that pairing is corrected.
+Requirement: Produce twelve short clue-book paragraphs, four per pillar, using the approved lever-to-color mapping. Each book must remain one short paragraph and should imply the color through recognizable imagery instead of naming the answer directly. Book titles should identify the pillar/source entry but must not contain the answer color.
 Content:
 ```text
-RIGHT PILLAR — RED
-When both brass handles stand raised, the eastern lens burns the color of hot iron.
+RIGHT PILLAR · ENTRY I
+When both brass handles stand raised, the eastern lens wakes like iron fresh from the forge—hot, bright, and impossible to mistake.
 
-RIGHT PILLAR — YELLOW
-When both eastern handles rest low, the lens settles into a warm harvest-gold.
+RIGHT PILLAR · ENTRY II
+When both eastern handles rest low, the lens takes on the warm shade of old brass under lamplight.
 
-RIGHT PILLAR — GREEN
-Raise the upper eastern handle and leave the lower asleep; the lens answers in fresh green.
+RIGHT PILLAR · ENTRY III
+Raise the upper eastern handle and leave the lower at rest; the lens answers with the shade of fresh leaves after rain.
 
-RIGHT PILLAR — PURPLE
-Let the upper eastern handle rest and raise only the lower; the glass deepens to royal violet.
+RIGHT PILLAR · ENTRY IV
+Leave the upper eastern handle low and raise only the lower; the glass deepens to the shade once reserved for royal cloth.
 
-MIDDLE PILLAR — BLUE
-When both center handles stand raised, the middle lens clears to the blue of open sky.
+MIDDLE PILLAR · ENTRY I
+When both center handles stand raised, the middle lens clears to the same shade as an open sky above the vault.
 
-MIDDLE PILLAR — DARK BLUE
-Lower both center handles and the middle lens sinks into a midnight blue.
+MIDDLE PILLAR · ENTRY II
+Lower both center handles and the lens sinks into the shade of the sky long after sunset.
 
-MIDDLE PILLAR — BROWN
-Raise the upper center handle while the lower rests; the lens takes the color of old wood.
+MIDDLE PILLAR · ENTRY III
+Raise the upper center handle while the lower rests; the lens takes the shade of old timber and worn wooden gears.
 
-MIDDLE PILLAR — DARK GREEN
-Leave the upper center handle low and raise the lower; the lens turns the deep green of moss.
+MIDDLE PILLAR · ENTRY IV
+Leave the upper center handle low and raise the lower; the lens turns the deep shade of moss growing where daylight never reaches.
 
-LEFT PILLAR — PINK
-When both western handles stand raised, the left lens glows a soft rose-pink.
+LEFT PILLAR · ENTRY I
+When both western handles stand raised, the left lens glows with the soft shade of a pale rose petal.
 
-LEFT PILLAR — ORANGE
-When both western handles rest low, the left lens warms to ember-orange.
+LEFT PILLAR · ENTRY II
+When both western handles rest low, the lens warms to the shade of an ember just before it fades.
 
-LEFT PILLAR — WHITE
-Raise only the upper western handle; the left lens clears to bright white.
+LEFT PILLAR · ENTRY III
+Raise only the upper western handle; the left lens becomes as bright and clean as fresh snow under a lamp.
 
-LEFT PILLAR — BLACK
-Leave the upper western handle low and raise the lower; the left lens falls almost black.
+LEFT PILLAR · ENTRY IV
+Leave the upper western handle low and raise only the lower; the lens darkens to the shade of soot inside an old furnace.
 ```
 
 ### Visual Effects & Presentation
@@ -188,8 +188,8 @@ Requirement: Create one brief readable reset presentation for failed Level 1/2 a
 Usage: Runs only for the current level that failed.
 
 #### Gremlin Route-Closed Event
-Requirement: Create one Level 3 failure presentation in which the selected failed route changes to a clearly unavailable state, the player returns to Checkpoint 3, and the two remaining active routes stay readable. The Gremlin framing and warning cue may be synchronized inside this authored sequence.
-Usage: Can occur once per chosen Level 3 route until the player succeeds or the available route set is exhausted by the authored recovery rules.
+Requirement: Create one Level 3 failure presentation in which the selected failed route changes to a clearly unavailable state, the player returns to Checkpoint 3, and the remaining active routes stay readable. The Gremlin framing and warning cue may be synchronized inside this authored sequence.
+Usage: Runs after a Level 3 route misses its required progress threshold while another active route remains.
 
 ## The Warden Halls
 
@@ -200,7 +200,7 @@ Requirement: Create one small throwable pebble item, visually derived from a sto
 Usage: Granted for Objective 3 and removed/reset at objective exit.
 
 #### Wall Laser Sensor
-Requirement: Create one readable wall-mounted laser sensor/beam assembly with Active and Temporarily Disabled states. The sensor must be an obvious Echo Pebble target; disabling it must visibly interrupt the beam long enough for the player to understand the safe window. Attached activation/deactivation VFX and SFX remain part of this asset.
+Requirement: Create one readable wall-mounted laser sensor/beam assembly with Active and Temporarily Disabled states. The sensor must be an obvious Echo Pebble target; a valid hit disables the beam for the approved 4-second game-time window before normal behavior resumes. Attached activation/deactivation VFX and SFX remain part of this asset.
 Usage: Distributed across the three Warden levels.
 
 #### Laser Blocker Stone
@@ -220,7 +220,7 @@ Content:
 SURVIVE THE WARDEN HALLS
 
 ECHO PEBBLE
-• Wall laser sensors: Disable them temporarily.
+• Wall laser sensors: Disable them for 4 seconds.
 • Marked hanging stones: Knock them into a laser beam.
 • Floor traps: AVOID.
 • Swinging axes: TIME YOUR MOVEMENT.
@@ -259,7 +259,7 @@ Requirement: Create one central power-source machine with clearly different Offl
 Usage: Source of the Objective 4 continuous power network.
 
 #### 90-Degree Rotator Junction
-Requirement: Create one reusable L-shaped power junction that rotates in 90-degree steps and connects exactly two orthogonal directions. It needs four readable orientations plus Powered and Unpowered visual states. Interaction must make the route direction legible without referring to the separate technical grid document.
+Requirement: Create one reusable L-shaped power junction that rotates in 90-degree steps and connects exactly two orthogonal directions. It needs four readable orientations plus Powered and Unpowered visual states. Interaction must make the route direction legible without exposing the route solution.
 Usage: Repeated at authored Objective 4 junction locations.
 
 #### Orrery Ring
@@ -269,7 +269,7 @@ Usage: Sequential milestones in Objective 4 and the ending transition.
 ### UI & Information
 
 #### Objective 4 Instruction Panel
-Requirement: Create one instruction panel explaining the continuous network rule without exposing route coordinates or the technical layout solution.
+Requirement: Create one instruction panel explaining the continuous network rule without exposing route coordinates or the layout solution.
 Content:
 ```text
 CONNECT THE POWER
@@ -320,7 +320,7 @@ Restore the connection, then finish Ring 3.
 ### Visual Effects & Presentation
 
 #### Ring 2 Route-Swap Sabotage
-Requirement: About 20 seconds after Ring 1 and Ring 2 are connected, run one authored Gremlin sequence that makes the previously active route become visibly blocked, makes the previously blocked alternate path visibly available, removes power where connectivity is broken, and then returns control for rerouting. The change must be understandable without exposing grid coordinates or route labels from the technical HTML.
+Requirement: About 20 seconds after Ring 1 and Ring 2 are connected, run one authored Gremlin sequence that makes the previously active route become visibly blocked, makes the previously blocked alternate path visibly available, removes power where connectivity is broken, and then returns control for rerouting. The change must be understandable without exposing route coordinates or implementation labels.
 Usage: Runs once per Objective 4 session after the approved Ring 2 condition.
 
 #### 50% Rotator Sabotage
