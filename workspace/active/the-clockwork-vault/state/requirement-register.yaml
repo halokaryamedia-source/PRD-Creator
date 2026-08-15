@@ -26,7 +26,7 @@ requirements:
     impact: high
   - id: REQ-004
     area: gameplay
-    statement: Objective 2 Level 3 makes all three routes initially viable but requires the player to reach at least 50 percent of the chosen route before the authored time threshold. Failure returns the player to Checkpoint 3, closes the failed route for that run, requires resource search again, and leaves the remaining active routes available.
+    statement: Objective 2 Level 3 makes all three routes initially viable but requires the player to reach at least 50 percent of the chosen route before the authored time threshold. Failure returns the player to Checkpoint 3, closes the failed route for that run while another alternative remains, requires resource search again, and leaves the remaining active routes available.
     provenance: [SRC-004, SRC-006]
     evidence_status: supported
     recovery_class: none
@@ -34,11 +34,12 @@ requirements:
     impact: high
   - id: REQ-005
     area: gameplay
-    statement: Objective 3 uses three trap checkpoints. Wall laser traps can be passed by timing or temporarily disabled with Echo Pebble; Pebble may also knock an authored hanging stone into a beam to block it. Floor traps and swinging ceiling axes cannot be disabled with Pebble and must be avoided or timed. Echo Pebble supply is unlimited with a 3-second cooldown between throws.
-    provenance: [SRC-004, SRC-006]
+    statement: Objective 3 uses three trap checkpoints. Wall laser traps can be passed by timing or temporarily disabled with Echo Pebble for the previously accepted 4-second game-time window; Pebble may also knock an authored hanging stone into a beam to block it. Floor traps and swinging ceiling axes cannot be disabled with Pebble and must be avoided or timed. Echo Pebble supply is unlimited with a 3-second cooldown between throws.
+    provenance: [SRC-001, SRC-004, SRC-006]
     evidence_status: supported
-    recovery_class: none
-    approval_status: not_required
+    recovery_class: completion
+    approval_status: approved
+    resolution: The current clarification says Objective 3 gameplay remains the same while specifying Pebble scope and a 3-second throw cooldown; therefore the previously accepted 4-second wall-laser disable duration remains current where not replaced.
     impact: high
   - id: REQ-006
     area: gameplay
