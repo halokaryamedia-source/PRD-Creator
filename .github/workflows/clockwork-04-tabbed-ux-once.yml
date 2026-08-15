@@ -41,6 +41,10 @@ jobs:
           t=t.replace("</style>''' '''\n    style = style.strip()", "</style>''' \"\"\"\n    style = style.strip()")
           t=t.replace("scripts = r'''OBJECTIVE_COPY_SCRIPT = r'''<script", "scripts = r\"\"\"OBJECTIVE_COPY_SCRIPT = r'''<script")
           t=t.replace("</script>''' '''\n    scripts = scripts.strip()", "</script>''' \"\"\"\n    scripts = scripts.strip()")
+          old="""    for title in ['Pillar Readability', 'Level Retry Reset', 'Trap Readability', 'Checkpoint Recovery']:\n        text = remove_asset_block(text, title)\n"""
+          new="""    for title in ['Pillar Readability', 'Level Retry Reset', 'Trap Readability', 'Checkpoint Recovery']:\n        if f'\\n#### {title}\\n' in text:\n            text = remove_asset_block(text, title)\n"""
+          if old in t:
+              t=t.replace(old,new,1)
           p.write_text(t, encoding='utf-8')
           PY
           python .tmp-clockwork-04-ux/patch.py
@@ -64,7 +68,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
           project=Path('workspace/active/the-clockwork-vault')
           html=(project/'output/v1.0.0/prd.html').read_text(encoding='utf-8')
           assets=(project/'work/asset-requirements.md').read_text(encoding='utf-8')
@@ -90,7 +93,6 @@ jobs:
           for token in ['Pillar Readability','Trap Readability','Checkpoint Recovery','Level Retry Reset']:
               assert f'#### {token}' not in assets, token
 
-          # Tabs should hide every panel except the first in each tab set at initial render.
           tabsets=html.count('class="pa-tabs"')
           assert tabsets >= 6, tabsets
           assert html.count('role="tab"') > tabsets
