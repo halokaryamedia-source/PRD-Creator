@@ -30,7 +30,7 @@ jobs:
 
       - name: Reconstruct exact render data
         run: |
-          cat .tmp-clockwork/seg*.b64 | base64 -d | xz -d > workspace/active/the-clockwork-vault/work/render-data.json
+          cat .tmp-clockwork/seg00.b64 .tmp-clockwork/seg01a0.b64 .tmp-clockwork/seg01a1a.b64 .tmp-clockwork/seg01a1b.b64 .tmp-clockwork/seg01b.b64 .tmp-clockwork/seg02.b64 .tmp-clockwork/seg03.b64 .tmp-clockwork/seg04.b64 .tmp-clockwork/seg05.b64 .tmp-clockwork/seg06.b64 .tmp-clockwork/seg07.b64 .tmp-clockwork/seg08.b64 | base64 -d | xz -d > workspace/active/the-clockwork-vault/work/render-data.json
           test "$(git hash-object workspace/active/the-clockwork-vault/work/render-data.json)" = "e78565f40a4ddd85532c2042a8e43aaf6d26d8ec"
 
       - name: Prepare handoff state for delivery
