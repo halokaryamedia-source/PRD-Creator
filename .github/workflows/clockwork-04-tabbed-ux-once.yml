@@ -82,12 +82,11 @@ jobs:
           for token in required:
               assert token in html, token
 
-          forbidden=[
+          forbidden_html=[
               'class="pa-asset-card"', 'class="pa-voice-inline"', 'pa-voice-setup-block',
-              '<b>For</b>', 'Pillar Readability', 'Trap Readability',
-              'Checkpoint Recovery', 'Level Retry Reset',
+              '<b>For</b>',
           ]
-          for token in forbidden:
+          for token in forbidden_html:
               assert token not in html, token
 
           for token in ['Pillar Readability','Trap Readability','Checkpoint Recovery','Level Retry Reset']:
