@@ -106,3 +106,11 @@ sources:
     origin: user
     inspection: full
     summary: User requires section 04 Production Assets to reach the same clarity and quality as PRD sections 01-03. Voice must primarily serve story, character, atmosphere, reaction, or light in-world hints rather than reading gameplay specifications aloud. Player-facing UI/Text must be pure in-game communication with no internal development terminology, implementation counts, reset/checkpoint language, or debug labels unless genuinely needed by the player. Asset type labels must be literal and unambiguous (MODEL, ANIMATION, VFX, SFX, UI / TEXT, VOICE, PRESENTATION), and technical gameplay rules remain in Development.
+
+  - id: SRC-014
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User approved the Production Assets information-architecture audit. Section 04 must match the usability quality of sections 01-03: gameplay flows are interactive tabs, only the active flow is shown by default, assets use compact production rows rather than large repeated cards, per-flow For text is not repeated, Voice prompts are collapsed by default, Voice Cast is shown once in Shared Assets, exact UI/Text remains directly copyable, and non-deliverable design requirements belong in Development rather than Production Assets.

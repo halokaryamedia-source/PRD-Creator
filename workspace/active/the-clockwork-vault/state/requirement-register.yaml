@@ -158,3 +158,12 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+
+  - id: REQ-020
+    area: production-assets
+    statement: Section 04 must use a low-density production reference architecture comparable in clarity to sections 01-03. Each objective page uses interactive gameplay-flow tabs with only one flow visible by default. Inside a flow, each concrete production deliverable is a compact row showing literal asset type, asset name, one short purpose sentence, and Copy/View actions only when exact text or Voice exists. Do not repeat flow-level For descriptions. Voice prompts are collapsed by default and Voice Cast appears once in Global / Shared Assets. Remove abstract design/readability/reset requirements from 04 when they do not represent a concrete production deliverable; those remain owned by Development.
+    provenance: [SRC-014]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high

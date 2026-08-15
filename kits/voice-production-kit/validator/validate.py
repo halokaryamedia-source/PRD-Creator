@@ -164,22 +164,13 @@ def validate_project_html(
         issues.append("Project HTML missing Production Assets presentation")
     if "Production Assets" not in source or "production-assets-nav" not in source:
         issues.append("Project HTML missing Production Assets Voice navigation")
+    if source.count('class="pa-row pa-row-voice"') != len(script):
+        issues.append("Project HTML compact Voice row count differs from canonical script")
 
-    voice_shell_count = (
-        source.count('class="voice-objective-shell"')
-        + source.count('class="pa-shell voice-objective-shell"')
-    )
-    voice_section_count = source.count('data-voice-section="')
-    if voice_section_count == 0:
-        voice_section_count = voice_shell_count
-    if voice_section_count != len(sections):
-        issues.append("Project HTML Voice section count differs from canonical gameplay sections")
-    if voice_shell_count != len(sections):
-        issues.append("Project HTML objective shell count differs from canonical gameplay sections")
-    if source.count('class="voice-script-position"') != len(script):
-        issues.append("Project HTML Voice line-position count differs from canonical script")
-    if source.count('class="voice-script-context"') != len(script):
-        issues.append("Project HTML Voice developer-context count differs from canonical script")
+    for section in sections:
+        plain = re.sub(r"^\s*\d+\.\s*", "", section).strip()
+        if plain and html.escape(plain, quote=True) not in source:
+            issues.append(f"Project HTML missing Voice gameplay section: {plain}")
 
     for vid,e in script.items():
         prompt_id=f"voice-prompt-{vid.lower()}"
@@ -191,12 +182,9 @@ def validate_project_html(
         actual=html.unescape(matches[0])
         if actual != e.performance:
             issues.append(f"Project HTML performance text differs from canonical script for {vid}")
-
-        requirement=requirements.get(vid)
-        if requirement is not None:
-            expected_trigger=html.escape(requirement.trigger, quote=True)
-            if expected_trigger not in source:
-                issues.append(f"Project HTML missing Flow 5 Trigger context for {vid}")
+        identity = html.escape(f"{e.speaker} — {e.title}", quote=True)
+        if identity not in source:
+            issues.append(f"Project HTML missing compact Voice identity for {vid}")
     return issues
 
 

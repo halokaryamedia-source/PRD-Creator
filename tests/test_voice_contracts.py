@@ -120,20 +120,14 @@ The trial is complete.
 """
 
 
-def project_html(*, omit_intro_context: bool = False) -> str:
-    intro_trigger = "" if omit_intro_context else html.escape("Trial start before active play begins.")
-    end_trigger = html.escape("Trial completion after the final objective resolves.")
+def project_html(*, omit_intro_prompt: bool = False) -> str:
+    intro = "" if omit_intro_prompt else '<div class="pa-row pa-row-voice"><h4>Narrator — Welcome</h4><pre class="voice-script-text" id="voice-prompt-vo-intro-01">[calm]\nBegin the trial.</pre></div>'
     return f"""<!doctype html>
 <html><head><style id="production-assets-style"></style></head><body>
 <div class="nav-group production-assets-nav">Production Assets</div>
-<section data-page-role="production-assets"><div class="voice-objective-shell"></div>
-<div class="voice-script-position">Introduction · Voice Line 1/1</div>
-<p class="voice-script-context">{intro_trigger}</p>
-<pre class="voice-script-text" id="voice-prompt-vo-intro-01">[calm]\nBegin the trial.</pre></section>
-<section data-page-role="production-assets"><div class="voice-objective-shell"></div>
-<div class="voice-script-position">Ending · Voice Line 1/1</div>
-<p class="voice-script-context">{end_trigger}</p>
-<pre class="voice-script-text" id="voice-prompt-vo-end-01">[clear]\nThe trial is complete.</pre></section>
+<section data-page-role="production-assets"><h2>Intro</h2>{intro}</section>
+<section data-page-role="production-assets"><h2>Ending</h2>
+<div class="pa-row pa-row-voice"><h4>Guide — Complete</h4><pre class="voice-script-text" id="voice-prompt-vo-end-01">[clear]\nThe trial is complete.</pre></div></section>
 </body></html>"""
 
 
@@ -198,17 +192,17 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         self.assertIn("project_html=passed", validated.stdout)
 
-    def test_validator_rejects_missing_flow5_trigger_context_in_project_html(self) -> None:
+    def test_validator_rejects_missing_voice_prompt_in_project_html(self) -> None:
         project = self.make_project()
         (project / "output/v1.0.0/prd.html").write_text(
-            project_html(omit_intro_context=True),
+            project_html(omit_intro_prompt=True),
             encoding="utf-8",
         )
 
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1)
         self.assertIn(
-            "Project HTML missing Flow 5 Trigger context for VO-INTRO-01",
+            "Project HTML must contain exact Voice prompt panel once for VO-INTRO-01",
             validated.stdout,
         )
 
