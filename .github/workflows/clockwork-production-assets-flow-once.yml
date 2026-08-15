@@ -29,7 +29,9 @@ jobs:
           python -m pip check
 
       - name: Apply flow-first Production Assets patch
-        run: python .tmp-pa-flow/patch.py
+        run: |
+          python .tmp-pa-flow/patch.py
+          python .tmp-pa-flow/fix_nested.py
 
       - name: Compile and contract-test renderer
         run: |
