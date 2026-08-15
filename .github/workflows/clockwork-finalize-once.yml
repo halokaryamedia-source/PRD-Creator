@@ -57,7 +57,14 @@ jobs:
           import hashlib,json
           from pathlib import Path
           p=Path('workspace/active/the-clockwork-vault')
-          d=json.loads((p/'work/render-data.next.json').read_text(encoding='utf-8'))
+          rp=p/'work/render-data.next.json'
+          d=json.loads(rp.read_text(encoding='utf-8'))
+          d['overview'].update({
+              'main_experience':'A solo restoration journey where the player learns invented vault mechanics, adapts to controlled setbacks, and restores the Great Orrery across four scored objectives.',
+              'document_scope':'Defines the complete player journey plus the level-design, runtime, scoring evidence, persistence, reset, and handoff requirements needed to build The Clockwork Vault.',
+              'intended_use':'Production reference for Level Design, Development, QA, and project review.'
+          })
+          rp.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           expected=hashlib.sha256((p/'work/content.md').read_bytes()).hexdigest()
           assert d['canonical_content_sha256']==expected
           assert len(d['gameplay_flow'])==7
