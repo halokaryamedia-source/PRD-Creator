@@ -41,72 +41,80 @@ Usage: Runs once after valid Antechamber completion.
 ### UI & Information
 
 #### Objective 1 Instruction Panel
-Requirement: Create one persistent or easily re-readable instruction panel explaining the complete player action without revealing any lever-to-color solution. The top/bottom lever reading order and the pressure-plate steady/blinking function must be explicit.
+Requirement: Create one persistent or easily re-readable instruction panel explaining the player task without revealing the missing colors, pulse location, or lever-to-color mapping. It must make clear that the books reveal missing target information while lever experimentation is used to produce the colors.
 Content:
 ```text
-MATCH ALL THREE PILLARS
+RESTORE THE THREE PILLARS
 
-1. Find and read the clue books.
-2. Set each pillar's TOP and BOTTOM levers.
-3. Use the pressure plate to switch STEADY / BLINKING.
-4. Match the target shown near the exit.
+1. Read the books scattered around the chamber.
+2. The door display reveals only part of the final combination.
+3. Find the missing LEFT and RIGHT colors and which lamp must PULSE.
+4. Try the TOP and BOTTOM levers until each lamp reaches the color you need.
 
-Lever order is read TOP → BOTTOM.
+Lever order: TOP → BOTTOM
+Pressure Plate: STEADY / PULSE only
 ```
 
-#### Three-Pillar Target Display
-Requirement: Create one player-readable target display near the exit showing the required state for all three pillars. Each target must communicate the required color and whether that pillar must be STEADY or BLINKING. The display must not expose the lever combination itself.
-Usage: Visible throughout active Objective 1 solving and switches to a completed/confirmed state only when all three pillar outputs match.
-
-#### Pillar State Labels
-Requirement: Give each of the three puzzle pillars a stable player-readable identity such as LEFT, MIDDLE, and RIGHT so clue books, target information, and live machine outputs cannot be confused. The live lamp must make color and steady/blinking state readable at the same time.
-Usage: Remains visible throughout Objective 1.
-
-#### Pillar Clue Book Set
-Requirement: Produce twelve short clue-book paragraphs, four per pillar, using the approved lever-to-color mapping. Each book must remain one short paragraph and should imply the color through recognizable imagery instead of naming the answer directly. Book titles should identify the pillar/source entry but must not contain the answer color.
+#### Partial Door Target Display
+Requirement: Create one player-readable target display near the exit that intentionally reveals only the middle pillar color. It must not reveal the left color, right color, pulse location, or any lever combination. The unknown values remain visible as missing information until the player solves the puzzle through the books and machine experimentation.
 Content:
 ```text
-RIGHT PILLAR · ENTRY I
-When both brass handles stand raised, the eastern lens wakes like iron fresh from the forge—hot, bright, and impossible to mistake.
+LEFT      MIDDLE      RIGHT
+ ?         BROWN        ?
 
-RIGHT PILLAR · ENTRY II
-When both eastern handles rest low, the lens takes on the warm shade of old brass under lamplight.
+PULSE: ?
+```
+Usage: Visible throughout active Objective 1 solving. It may switch to a solved/confirmed presentation only after the complete hidden target state is matched.
 
-RIGHT PILLAR · ENTRY III
-Raise the upper eastern handle and leave the lower at rest; the lens answers with the shade of fresh leaves after rain.
+#### Pillar State Labels
+Requirement: Give each of the three puzzle pillars stable LEFT, MIDDLE, and RIGHT identities so book clues, display information, and live lamp outputs cannot be confused. Each live lamp must make its current color and steady/pulsing state readable at the same time.
+Usage: Remains visible throughout Objective 1.
 
-RIGHT PILLAR · ENTRY IV
-Leave the upper eastern handle low and raise only the lower; the glass deepens to the shade once reserved for royal cloth.
+#### Scattered Clue Book Set
+Requirement: Produce twelve one-paragraph books scattered around the chamber with no required reading order. The set contains two mechanic-rule books, eight useful clue books, and two harmless decoys. Useful clues must be easy to understand without being overly obvious and must help the player infer the hidden target Left = Orange, Right = Purple, and Pulse = Left. They must not teach all twelve lever-to-color mappings. The two decoys must contain ordinary maintenance/lore information and must never provide false puzzle facts. A player who finds useful books first may solve faster by luck, and valid completion must not require reading all twelve books.
+Content:
+```text
+BOOK 1 — LEVER INSTRUCTIONS
+Each pillar has two levers. Read the TOP lever first, then the BOTTOM lever. Try different settings and watch the lamp. Each setting produces a different color.
 
-MIDDLE PILLAR · ENTRY I
-When both center handles stand raised, the middle lens clears to the same shade as an open sky above the vault.
+BOOK 2 — PRESSURE PLATE INSTRUCTIONS
+The pressure plate does not change the lamp's color. It only changes how the lamp shines. A pressed plate makes the lamp pulse. Otherwise, the lamp stays steady.
 
-MIDDLE PILLAR · ENTRY II
-Lower both center handles and the lens sinks into the shade of the sky long after sunset.
+BOOK 3 — LAMP NOTE
+The left lamp should have a warm glow. It should not look pale or too dark.
 
-MIDDLE PILLAR · ENTRY III
-Raise the upper center handle while the lower rests; the lens takes the shade of old timber and worn wooden gears.
+BOOK 4 — OLD ENGINEER'S NOTE
+The left light was described as closer to firelight than to the soft color of a flower.
 
-MIDDLE PILLAR · ENTRY IV
-Leave the upper center handle low and raise the lower; the lens turns the deep shade of moss growing where daylight never reaches.
+BOOK 5 — MAINTENANCE RECORD
+When the Engine was working properly, the left side gave off a gentle glow like warm embers.
 
-LEFT PILLAR · ENTRY I
-When both western handles stand raised, the left lens glows with the soft shade of a pale rose petal.
+BOOK 6 — LAMP RECORD
+The right lamp should not use the bright shade of sunlight or the color of fresh leaves.
 
-LEFT PILLAR · ENTRY II
-When both western handles rest low, the lens warms to the shade of an ember just before it fades.
+BOOK 7 — SAFETY NOTE
+The correct right-side light is deeper and calmer than the color normally used for danger warnings.
 
-LEFT PILLAR · ENTRY III
-Raise only the upper western handle; the left lens becomes as bright and clean as fresh snow under a lamp.
+BOOK 8 — OLD VAULT RECORD
+The right lamp was once compared to a dark ceremonial cloth used for important occasions.
 
-LEFT PILLAR · ENTRY IV
-Leave the upper western handle low and raise only the lower; the lens darkens to the shade of soot inside an old furnace.
+BOOK 9 — RHYTHM NOTE
+Only one of the three lamps should pulse. The middle lamp shown on the door display must stay steady.
+
+BOOK 10 — CALIBRATION NOTE
+The right lamp must also stay steady. Only the remaining lamp should pulse.
+
+BOOK 11 — REPAIR LOG
+The lower gear housing was repaired after the last restoration cycle. No further damage was found during inspection.
+
+BOOK 12 — WORKSHOP NOTE
+Spare tools were moved to the eastern storage cabinet after the last maintenance shift.
 ```
 
 ### Visual Effects & Presentation
 
 #### Pillar Interaction Feedback
-Requirement: Every valid lever change must produce immediate readable lamp feedback on its own pillar, and every pressure-plate interaction must visibly switch that pillar between steady and blinking without changing its selected color. When all three required states match, run one concise confirmation response before opening the next route.
+Requirement: Every valid lever change must produce immediate readable lamp feedback on its own pillar so the player can discover the lever-to-color behavior through experimentation. Every pressure-plate interaction must visibly switch only that pillar between steady and pulsing without changing its selected color. When the hidden final target is matched—Left Orange pulsing, Middle Brown steady, Right Purple steady—run one concise confirmation response before opening the next route.
 Usage: Active throughout Objective 1 and reset completely for the next run.
 
 #### Resonance Engine Restoration
