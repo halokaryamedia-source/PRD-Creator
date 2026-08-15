@@ -397,7 +397,7 @@ def _pages_and_nav(
             flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
             flow_copy = _flow_copy_text(flow_title, flow_assets, flow_voices)
             body += (
-                f'<section class="pa-flow" id="{flow_id}">'
+                f'<div class="pa-flow" id="{flow_id}">'
                 '<div class="pa-flow-head"><div>'
                 f'<span>{i18n(bi("Gameplay Flow", "Flow Gameplay"))}</span>'
                 f'<h3>{esc(flow_title)}</h3></div>'
@@ -436,7 +436,7 @@ def _pages_and_nav(
                 )
                 voice_number += 1
 
-            body += '</div></section>'
+            body += '</div></div>'
 
         index = len(pages)
         pid = meta.page_id

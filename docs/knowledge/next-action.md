@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_GREMLIN_VOICE_READY`
+`CLOCKWORK_PRODUCTION_ASSETS_FLOW_READY`
 
-The Clockwork PRD remains handoff-ready. Voice Production now contains 17 current lines: Custodian Vex remains the primary guide and Gremlin has four short Objective 4 taunts for route swap, 50-percent rollback, 80-percent rollback, and the final outsmarted reaction. The Gremlin lines add character only and do not replace Vex gameplay guidance.
+The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets has been revised from asset-category-first presentation to gameplay-flow-first implementation packs. Each objective page now provides quick-jump flow navigation, combines UI text, Voice, audio, visual/presentation, and model needs inside the relevant gameplay flow, and exposes exact copy-ready player text / Voice prompts with Copy actions. Asset categories remain secondary badges only.
 
-Gremlin has a prepared Target Voice Profile but no actual ElevenLabs voice has been selected yet. Audio evidence remains not provided.
+The current HTML has passed PRD, handoff, and Voice mechanical validation. Browser-level visual quality is still not claimed until an actual visual review is performed.
 
 ## Next Step
 
-Select an actual ElevenLabs voice for Gremlin before Generation Mode, then generate/review takes if audio production is requested.
+Review the regenerated Production Assets pages visually in-browser; if presentation is accepted, continue to actual ElevenLabs Generation Mode / audio review when needed.

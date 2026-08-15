@@ -66,3 +66,11 @@ sources:
     origin: user
     inspection: full
     summary: User approved adding Gremlin as a speaking Voice character in Objective 4. Gremlin should have short mischievous taunts tied to the route swap, 50-percent rollback, 80-percent rollback, and a final defeat/flee reaction. Custodian Vex remains the primary guide and owns gameplay instructions; Gremlin lines add character and acknowledge sabotage without introducing new rules or replacing Vex guidance.
+
+  - id: SRC-009
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User requested Production Assets to be gameplay-flow-first rather than category-first. Each gameplay flow must combine every relevant implementation need in one place, including exact copy-ready UI text, Voice prompt text, audio cues, visual/presentation behavior, and models. Category labels are secondary only. Production Assets must provide quick-jump interaction and Copy actions so developers can go directly to the flow and production text they need.

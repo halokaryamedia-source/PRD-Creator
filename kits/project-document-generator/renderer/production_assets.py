@@ -186,6 +186,26 @@ def parse_voice_requirement_triggers(path: Path) -> dict[str, str]:
     return triggers
 
 
+
+def parse_voice_requirement_flows(path: Path) -> dict[str, str]:
+    if not path.is_file():
+        return {}
+
+    flows: dict[str, str] = {}
+    current_id: str | None = None
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.rstrip()
+        match = ENTRY_RE.match(line)
+        if match:
+            current_id = match.group(1)
+            continue
+        if current_id and line.startswith("- Flow:"):
+            flow = line.split(":", 1)[1].strip()
+            if not flow:
+                raise ValueError(f"Voice requirement Flow is empty for: {current_id}")
+            flows[current_id] = flow
+    return flows
+
 def _voice_for(cast: dict[str, str], speaker: str) -> str:
     speaker_key = speaker.casefold()
     for cast_speaker, voice in cast.items():
