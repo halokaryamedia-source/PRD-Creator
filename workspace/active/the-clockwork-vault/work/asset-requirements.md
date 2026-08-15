@@ -17,12 +17,12 @@ Done When:
 
 #### Custodian Vex
 Flow: 01 — Shared Characters
-Asset Brief: One reusable Clockwork custodian NPC that stays visually consistent across the map. Include the idle, speaking, guidance/pointing, alert, and completion-reaction states required by the approved dialogue moments.
-Function: In-world guide character used for story, briefing, warning, and completion moments.
+Visual Brief: Clockwork custodian NPC. Needs the idle, speaking, pointing, alert, and completion animations used by the story.
+Function: Guide NPC used for story, warnings, and completion dialogue.
 Type: MODEL
 Create: Create one reusable Custodian Vex NPC/model setup.
 Used: Across the story wherever Custodian Vex appears.
-Moment: Throughout Project
+Moment: Used Across the Map
 Includes: NPC model/texture; idle and speaking states; required authored character animations.
 Group: 01 — Shared Characters
 For: Vex’s reusable in-world character asset.
@@ -31,12 +31,12 @@ Usage: Shared across the Antechamber, Objectives 1-4, and the ending wherever ca
 
 #### Gremlin
 Flow: 01 — Shared Characters
-Asset Brief: One reusable small Clockwork Gremlin with a clearly recognizable silhouette. Include the arrival/movement, sabotage, taunt, and defeated/outsmarted reactions required by the authored moments.
-Function: Mischievous sabotage character used during the Gallery challenge and Workshop interference moments.
+Visual Brief: Small clockwork gremlin NPC. Needs movement, sabotage, taunt, and defeated reactions used in the map.
+Function: Sabotage character used in the final Gallery crossing and the Workshop.
 Type: MODEL
 Create: Create one reusable Gremlin NPC/model setup.
 Used: During the Broken Gallery challenge and Workshop sabotage moments.
-Moment: Throughout Project
+Moment: Used Across the Map
 Includes: Character model/texture; appearance/movement states; sabotage and reaction animations.
 Group: 01 — Shared Characters
 For: Gremlin’s reusable in-world sabotage character.
@@ -70,12 +70,12 @@ Done When:
 
 #### Custodian Key
 Flow: 01 — Arrival & Briefing
-Asset Brief: One distinct Clockwork key item that is easy to recognize on its pedestal and when collected. Keep the same item readable when it is accepted by the first seal.
-Function: Story key the player takes in the Antechamber to open the first seal.
+Visual Brief: Distinct key item for the opening pedestal and pickup.
+Function: Opening key used to unlock the first seal.
 Type: ITEM
 Create: Create one reusable Custodian Key item setup.
 Used: At the opening pedestal and first seal.
-Moment: Objective Start
+Moment: Entering the Antechamber
 Includes: Item appearance; readable pickup/pedestal state; accepted state at the first seal.
 Group: 01 — Opening Story
 For: The story key used to open the first seal.
@@ -90,7 +90,7 @@ Function: Tells the player to take the Custodian Key and use it to begin opening
 Type: UI / TEXT
 Create: Create the exact player-facing Custodian Key Prompt.
 Used: When the player must take the Custodian Key.
-Moment: Take Key & Open Seal
+Moment: Opening the First Seal
 Group: 02 — Open First Seal
 For: Point the player toward the first seal.
 Requirement: Keep the prompt short and fully in-world.
@@ -108,7 +108,7 @@ The first seal is waiting.
 For: Introduce the incomplete answer and the mystery of the chamber.
 Trigger: The Resonance Engine seal opens and the player gains control inside the reset chamber.
 Player Experience: The player immediately sees the basic task and the intentionally incomplete target: Middle is Brown while Left, Right, and Pulse remain unknown.
-Uses: Custodian Vex; Objective 1 Instruction Panel; Partial Door Target Display
+Uses: Custodian Vex; Resonance Engine Entrance Message; Partial Door Target Display
 Done When:
 - The instruction text is readable and does not reveal the hidden Left/Right colors, pulse location, or lever solutions.
 - The door display shows Middle = Brown and keeps the other target values unknown.
@@ -147,13 +147,13 @@ Done When:
 
 ### UI & Information
 
-#### Objective 1 Instruction Panel
+#### Resonance Engine Entrance Message
 Flow: 01 — The Door Remembers
-Function: Introduces the three-pillar objective without revealing the missing solution.
+Function: Tells the player the missing clues are somewhere in the chamber without giving the solution.
 Type: UI / TEXT
-Create: Create the exact player-facing Objective 1 Instruction Panel.
+Create: Create the exact player-facing Resonance Engine Entrance Message.
 Used: When the Resonance Engine objective begins.
-Moment: Objective Start
+Moment: Entering the Resonance Engine
 Group: 01 — Chamber Guidance
 For: Hint that the missing answer is still somewhere in the chamber.
 Requirement: Keep the opening prompt short, mysterious, and non-technical.
@@ -169,11 +169,11 @@ Look carefully, then bring the Engine back to life.
 
 #### Partial Door Target Display
 Flow: 01 — The Door Remembers
-Function: Shows the one target value the door still remembers while leaving the missing answers unknown.
+Function: Shows Middle = Brown. Left, Right, and Pulse remain unknown.
 Type: UI / TEXT
 Create: Create the exact player-facing Partial Door Target Display.
 Used: Throughout Resonance Engine solving.
-Moment: Throughout Objective
+Moment: Throughout the Resonance Engine
 Group: 01 — Chamber Guidance
 For: Show the one answer the door still remembers.
 Requirement: Create one player-readable target display near the exit that intentionally reveals only the middle pillar color. It must not reveal the left color, right color, pulse location, or any lever combination. The unknown values remain visible as missing information until the player solves the puzzle through the books and machine experimentation.
@@ -188,11 +188,11 @@ Usage: Visible throughout active Objective 1 solving. It may switch to a solved/
 
 #### Scattered Clue Book Set
 Flow: 02 — Search the Chamber
-Function: Provides the twelve in-world notes used to discover the missing Resonance Engine target information.
+Function: Provides 12 books: 2 rule notes, 8 useful clues, and 2 decoys.
 Type: UI / TEXT
 Create: Create the exact player-facing Scattered Clue Book Set.
 Used: While the player searches the Resonance Engine chamber for clues.
-Moment: Search the Chamber
+Moment: Searching the Chamber
 Group: 02 — Clue Set
 For: Provide the scattered notes that reveal the missing answer.
 Requirement: Keep all twelve books short, natural, and readable as old vault notes. Two teach machine behavior, eight provide useful clues, and two are harmless maintenance notes. No reading order is required.
@@ -294,11 +294,11 @@ Done When:
 
 #### Broken Gallery Entrance Message
 Flow: 01 — Enter the Gallery
-Function: Introduces the damaged Gallery and points the player toward the remaining supplies.
+Function: Tells the player to use the old supplies and repair only marked gaps.
 Type: UI / TEXT
 Create: Create the exact player-facing Broken Gallery Entrance Message.
 Used: When the player enters the Broken Gallery.
-Moment: Objective Start
+Moment: Entering the Broken Gallery
 Group: 01 — Shared Gallery Assets
 For: Point the player toward the old supplies and the damaged crossings.
 Requirement: Keep the Gallery instruction short and in-world.
@@ -312,7 +312,7 @@ Repair only the marked breaks and find a way across.
 
 #### First Crossing Message
 Flow: 02 — First Crossing
-Function: Frames the first Gallery crossing without revealing which routes work.
+Function: Tells the player more than one route can work without revealing which ones.
 Type: UI / TEXT
 Create: Create the exact player-facing First Crossing Message.
 Used: When the first Gallery crossing becomes active.
@@ -330,7 +330,7 @@ Choose carefully before you spend your supplies.
 
 #### Second Crossing Message
 Flow: 03 — Second Crossing
-Function: Frames the tighter second crossing without naming the correct route.
+Function: Tells the player only one route can work without naming it.
 Type: UI / TEXT
 Create: Create the exact player-facing Second Crossing Message.
 Used: When the second Gallery crossing becomes active.
@@ -348,11 +348,11 @@ Count what you have before you commit.
 
 #### Gremlin's Wager Message
 Flow: 04 — Gremlin’s Wager
-Function: Introduces Gremlin’s final crossing challenge in player-facing language.
+Function: Explains the final crossing: choose a path and reach halfway before time runs out.
 Type: UI / TEXT
 Create: Create the exact player-facing Gremlin's Wager Message.
 Used: When the final Gallery crossing begins.
-Moment: Gremlin's Wager — final crossing
+Moment: Gremlin's Final Crossing
 Group: 04 — Gremlin’s Wager
 For: Make Gremlin's final crossing feel dangerous without exposing internal timing language.
 Requirement: Use player-facing language; “halfway” is allowed, internal percentages/threshold terminology are not.
@@ -367,11 +367,11 @@ or Gremlin will take that route away.
 
 #### Crossing Failure Messages
 Flow: 05 — When a Path Fails
-Function: Tells the player when a crossing has failed or when Gremlin has taken a route away.
+Function: Shows a short message when a crossing fails or Gremlin removes a route.
 Type: UI / TEXT
 Create: Create the exact player-facing Crossing Failure Messages.
 Used: When a Gallery crossing attempt fails or a final route is lost.
-Moment: Crossing Failure / Route Lost
+Moment: Crossing Failed / Route Lost
 Group: 05 — Path Failure
 For: Give simple in-world feedback when a crossing fails.
 Requirement: Do not mention checkpoints, local resets, resource state, or run-state terminology.
@@ -388,12 +388,12 @@ Find another way across.
 
 #### Repair Gap Markers
 Flow: 01 — Enter the Gallery
-Asset Brief: One simple reusable marker/prop treatment that sits naturally on damaged gaps and is clearly different from ordinary environment blocks. It must communicate a valid repair position without debug-style text.
-Function: Marks the exact damaged positions where the player is allowed to repair the Gallery route.
+Visual Brief: Simple marker or prop placed on repairable gaps. It must stand out from normal blocks without using debug text.
+Function: Marks the gaps where the player is allowed to place repair blocks.
 Type: MODEL
 Create: Create one reusable marker treatment for repairable Gallery gaps.
 Used: Throughout all Broken Gallery crossings.
-Moment: Throughout Objective
+Moment: Throughout the Broken Gallery
 Includes: Visible environment marker treatment for valid repair positions.
 Group: 01 — Shared Gallery Assets
 For: Make repairable gaps visually distinct without putting debug text into the world.
@@ -404,12 +404,12 @@ Usage: Visible only at authored repair positions.
 
 #### Gallery Challenge Warning Sound
 Flow: 04 — Gremlin’s Wager
-Asset Brief: One short mechanical/mischievous warning cue. This is a sound cue only—no spoken dialogue.
-Function: Non-dialogue warning sound that marks the start of Gremlin’s final Gallery crossing challenge.
+Audio Brief: Short mechanical warning sound with a mischievous feel. No spoken dialogue.
+Function: Signals the start of Gremlin's final Gallery crossing.
 Type: AUDIO
 Create: Create one standalone Gremlin Wager Cue sound.
 Used: When the final Gallery crossing begins.
-Moment: Gremlin's Wager — final crossing
+Moment: Gremlin's Final Crossing
 Group: 04 — Gremlin’s Wager
 For: Gremlin-flavored warning sound as the final crossing turns dangerous.
 Requirement: Create one independent short warning cue that clearly marks the start of the Level 3 progress deadline. It should read as Gremlin-triggered urgency and remain distinct from normal checkpoint, placement, or route-reset sounds.
@@ -464,12 +464,12 @@ Done When:
 
 #### Echo Pebble
 Flow: 01 — Enter the Warden Halls
-Asset Brief: One small stone-like throwable that is visibly different from a normal Minecraft snowball. Prepare a readable held/item form and projectile form as the same reusable item setup.
-Function: Throwable tool used on wall laser sensors and selected hanging stones.
+Visual Brief: Small ordinary stone used as the throwable item. Use the same simple stone look in hand and as a projectile.
+Function: Thrown at wall sensors and selected hanging stones.
 Type: ITEM
 Create: Create one reusable throwable Echo Pebble item/projectile setup.
 Used: Throughout the Warden Halls.
-Moment: Throughout Objective
+Moment: Throughout the Warden Halls
 Includes: Inventory/held appearance; projectile appearance; readable valid-hit response.
 Group: 01 — Core Trap Kit
 For: The throwable tool used against Warden sensors and loose stones.
@@ -478,12 +478,12 @@ Usage: Granted for Objective 3 and removed/reset at objective exit.
 
 #### Wall Laser Sensor
 Flow: 02 — Echo Pebble
-Asset Brief: One reusable mechanical sensor mounted on a wall with a clearly readable laser emitter facing across the path. Include the visible beam and clear Active and Disabled visual states in the same model setup.
-Function: Laser trap that blocks the player’s path and can be temporarily disabled by the Echo Pebble.
+Visual Brief: Wall-mounted mechanical laser emitter with a visible beam. It needs clear active and disabled looks.
+Function: Laser trap that blocks the path and can be disabled with the Echo Pebble.
 Type: MODEL
 Create: Create one reusable wall-mounted laser sensor setup.
 Used: At laser encounters throughout the Warden Halls.
-Moment: Throughout Objective
+Moment: Throughout the Warden Halls
 Includes: Sensor model/texture; visible laser beam; active and disabled states; attached animation/sound only when part of this same setup.
 Group: 01 — Core Trap Kit
 For: The wall-mounted Warden target the Echo Pebble can disturb.
@@ -492,12 +492,12 @@ Usage: Distributed across the three Warden levels.
 
 #### Laser Blocker Stone
 Flow: 02 — Echo Pebble
-Asset Brief: One reusable suspended stone target positioned above selected laser paths. Include its hanging position and its dropped/blocking position, with the drop motion belonging to the same setup.
-Function: Hanging stone target that can drop into a laser beam as an alternate solution.
+Visual Brief: Stone hanging above selected laser paths. It drops into the beam and stays there as the blocker.
+Function: Hanging stone that drops into a laser beam and blocks it.
 Type: MODEL
 Create: Create one reusable hanging blocker-stone setup.
 Used: At selected laser encounters that use the blocker-stone solution.
-Moment: Throughout Objective
+Moment: Throughout the Warden Halls
 Includes: Stone model/texture; hanging state; drop/block animation.
 Group: 01 — Core Trap Kit
 For: A loose stone that can fall into a laser beam.
@@ -506,12 +506,12 @@ Usage: Used only at authored laser encounters that support the blocker-stone sol
 
 #### Swinging Axe Trap
 Flow: 01 — Enter the Warden Halls
-Asset Brief: One large double-sided axe suspended from the ceiling and positioned to swing across the corridor. Include the ceiling mount, left-right swing animation, and resting/reset position in the same setup.
-Function: Moving ceiling obstacle that the player must pass with correct timing.
+Visual Brief: Large double-sided axe hanging from the ceiling with a left-right swing animation.
+Function: Ceiling trap that swings across the corridor.
 Type: MODEL
 Create: Create one reusable ceiling-mounted swinging axe trap setup.
 Used: At axe encounters throughout the Warden Halls.
-Moment: Throughout Objective
+Moment: Throughout the Warden Halls
 Includes: Axe model/texture; ceiling mount; swing animation; reset state.
 Group: 01 — Core Trap Kit
 For: The ceiling hazard the player must time past.
@@ -520,12 +520,12 @@ Usage: Distributed across the Warden levels as a timing hazard.
 
 #### Floor Trap
 Flow: 01 — Enter the Warden Halls
-Asset Brief: One reusable trap integrated into the floor but still distinguishable from normal surrounding blocks. Prepare clear Armed, Triggered, and Reset visual states without choosing a specific trap shape that has not been approved.
-Function: Ground trap that activates when the player steps onto it.
+Visual Brief: Floor-mounted trap that looks different from normal floor blocks. It needs a ready look and a triggered look.
+Function: Floor trap that activates when the player steps on it.
 Type: MODEL
 Create: Create one reusable floor-trap setup.
 Used: At floor-trap encounters throughout the Warden Halls.
-Moment: Throughout Objective
+Moment: Throughout the Warden Halls
 Includes: Trap model/visual; armed, triggered, and reset states.
 Group: 01 — Core Trap Kit
 For: The ground hazard the player must avoid.
@@ -536,11 +536,11 @@ Usage: Distributed across the Warden levels as an avoid-only ground hazard.
 
 #### Warden Halls Entrance Message
 Flow: 01 — Enter the Warden Halls
-Function: Introduces the Warden Halls and gives a light in-world hint about the Echo Pebble.
+Function: Introduces the Warden Halls and hints that the Echo Pebble works on wall sensors.
 Type: UI / TEXT
 Create: Create the exact player-facing Warden Halls Entrance Message.
 Used: When the player enters the Warden Halls.
-Moment: Objective Start
+Moment: Entering the Warden Halls
 Group: 02 — Player Communication
 For: Give one in-world hint about the Echo Pebble and the Warden hazards.
 Requirement: Keep exact cooldown/damage math in Development; player text should read like part of the vault.
@@ -557,11 +557,11 @@ The floor and the axes will not be fooled.
 
 #### Echo Pebble HUD
 Flow: 02 — Echo Pebble
-Function: Shows whether the Echo Pebble is ready to use again.
+Function: Shows whether the Echo Pebble is ready.
 Type: UI / TEXT
 Create: Create the exact player-facing Echo Pebble HUD.
 Used: While the Echo Pebble is available.
-Moment: Throughout Objective
+Moment: Throughout the Warden Halls
 Group: 02 — Player Communication
 For: Show when the Echo Pebble can be thrown again.
 Requirement: Keep the HUD state compact; the exact recharge duration stays in Development.
@@ -641,12 +641,12 @@ Done When:
 
 #### Power Generator
 Flow: 01 — Wake Ring One
-Asset Brief: One central Clockwork power machine with a clearly readable output direction. Prepare distinct Offline, Live, and Power-Interrupted visual states as part of the same setup.
-Function: Visible source that feeds power into the Orrery routing network.
+Visual Brief: Central power machine with a clear output side. It needs powered and unpowered looks.
+Function: Power source for the Orrery network.
 Type: MODEL
 Create: Create one reusable power-generator setup for the Orrery network.
 Used: Throughout the Gremlin Workshop objective.
-Moment: Throughout Objective
+Moment: Throughout Gremlin's Workshop
 Includes: Model/texture; offline, live, and interrupted states; attached energy/sound only when part of this same setup.
 Group: 01 — Core Network Kit
 For: The visible source feeding power into the Orrery network.
@@ -655,12 +655,12 @@ Usage: Source of the Objective 4 continuous power network.
 
 #### 90-Degree Rotator Junction
 Flow: 01 — Wake Ring One
-Asset Brief: One compact L-shaped junction with two perpendicular connection ports. Prepare four 90-degree orientations plus clear Powered and Unpowered states; the rotation animation belongs to this same setup.
-Function: Rotatable junction the player uses to redirect power through the Workshop network.
+Visual Brief: Compact L-shaped junction with two perpendicular connections. It rotates in 90-degree steps and needs powered and unpowered looks.
+Function: L-shaped junction the player rotates to redirect power.
 Type: MODEL
 Create: Create one reusable rotator-junction setup.
 Used: Throughout the Gremlin Workshop objective.
-Moment: Throughout Objective
+Moment: Throughout Gremlin's Workshop
 Includes: Junction model/texture; four orientations; powered/unpowered states; rotation animation.
 Group: 01 — Core Network Kit
 For: The reusable junction the player turns to redirect power.
@@ -669,12 +669,12 @@ Usage: Repeated at authored Objective 4 junction locations.
 
 #### Orrery Ring
 Flow: 02 — Wake Ring Two
-Asset Brief: One reusable ring model used three times in the Workshop. Prepare clearly different Inactive and Powered states and the ring motion needed when all rings operate together at completion.
-Function: Reusable ring mechanism used as Ring 1, Ring 2, and Ring 3 while restoring the Great Orrery.
+Visual Brief: Clockwork ring mechanism with powered and unpowered looks and the motion used during final restoration.
+Function: Ring mechanism used for Ring 1, Ring 2, and Ring 3.
 Type: MODEL
 Create: Create one reusable Orrery Ring setup used for all three rings.
 Used: Throughout the Gremlin Workshop objective.
-Moment: Throughout Objective
+Moment: Throughout Gremlin's Workshop
 Includes: Ring model/texture; inactive/powered states; motion used during final restoration.
 Group: 01 — Core Network Kit
 For: The three visible milestones the player brings back to life.
@@ -685,11 +685,11 @@ Usage: Sequential milestones in Objective 4 and the ending transition.
 
 #### Workshop Entrance Message
 Flow: 01 — Wake Ring One
-Function: Introduces the final objective and tells the player to carry power through all three rings.
+Function: Tells the player to carry power from the Generator through all three rings.
 Type: UI / TEXT
 Create: Create the exact player-facing Workshop Entrance Message.
 Used: When the player enters the Gremlin Workshop.
-Moment: Objective Start
+Moment: Entering Gremlin's Workshop
 Group: 02 — Workshop Intro
 For: Frame the final objective as bringing power back through all three rings.
 Requirement: Keep connector geometry and route logic in Development.
@@ -703,28 +703,33 @@ Keep every earlier ring alive as you move forward.
 
 #### Orrery Ring Status
 Flow: 02 — Wake Ring Two
-Function: Shows which Orrery rings currently have power.
+Function: Shows one current power state for each Orrery ring: POWERED or NO POWER.
 Type: UI / TEXT
 Create: Create the exact player-facing Orrery Ring Status.
 Used: Throughout the Gremlin Workshop objective.
-Moment: Throughout Objective
+Moment: Throughout Gremlin's Workshop
 Group: 01 — Core Network Kit
 For: Show which Orrery rings currently have power.
 Requirement: Use simple in-world state words and update from actual connectivity.
 Content:
 ```text
-RING 1 · LIVE / DARK
-RING 2 · LIVE / DARK
-RING 3 · LIVE / DARK
+RING 1 · POWERED
+RING 1 · NO POWER
+
+RING 2 · POWERED
+RING 2 · NO POWER
+
+RING 3 · POWERED
+RING 3 · NO POWER
 ```
 
 #### Route Swap Message
 Flow: 03 — Gremlin Changes the Path
-Function: Tells the player that Gremlin blocked the previous route and another path is now available.
+Function: Tells the player the old route is blocked and another route is open.
 Type: UI / TEXT
 Create: Create the exact player-facing Route Swap Message.
 Used: Immediately after Gremlin changes the route.
-Moment: Route Swap — after Ring Two restoration
+Moment: Gremlin Changes the Route
 Group: 03 — Gremlin Route Swap
 For: Tell the player Gremlin blocked the old path and opened another.
 Requirement: Do not explain the route solution or implementation state.
@@ -738,40 +743,40 @@ Another way has opened.
 Find it and bring Ring Two back to life.
 ```
 
-#### First Rollback Message
+#### Ring One Power-Loss Message
 Flow: 04 — First Rollback
-Function: Tells the player that Ring One lost power after Gremlin’s first sabotage.
+Function: Tells the player Ring One lost power after Gremlin's sabotage.
 Type: UI / TEXT
-Create: Create the exact player-facing First Rollback Message.
+Create: Create the exact player-facing Ring One Power-Loss Message.
 Used: When the first sabotage makes Ring One lose power.
-Moment: First Sabotage — final route
+Moment: Ring One Loses Power
 Group: 04 — First Sabotage
 For: Tell the player Ring One has gone dark after Gremlin's sabotage.
 Requirement: Do not expose percentages, rotator counts, positions, or internal connection names.
 Content:
 ```text
-RING ONE IS DARK
+RING ONE LOST POWER
 
-Gremlin has disturbed the first line.
-Bring the power back.
+Gremlin knocked the power line out.
+Restore Ring One.
 ```
 
-#### Second Rollback Message
+#### Ring Two Power-Loss Message
 Flow: 05 — Second Rollback
-Function: Tells the player that Ring Two lost power after Gremlin strikes again.
+Function: Tells the player Ring Two lost power after Gremlin's sabotage.
 Type: UI / TEXT
-Create: Create the exact player-facing Second Rollback Message.
+Create: Create the exact player-facing Ring Two Power-Loss Message.
 Used: When the second sabotage makes Ring Two lose power.
-Moment: Second Sabotage — final route
+Moment: Ring Two Loses Power
 Group: 05 — Second Sabotage
 For: Tell the player Ring Two has gone dark after Gremlin strikes again.
 Requirement: Do not expose percentages, rotator counts, positions, or internal connection names.
 Content:
 ```text
-RING TWO IS DARK
+RING TWO LOST POWER
 
-He struck again.
-Restore the earlier line.
+Gremlin struck the power line again.
+Restore Ring Two.
 ```
 
 ### Visual Effects & Presentation
@@ -803,12 +808,12 @@ Done When:
 
 #### Clockwork Wayfinder
 Flow: 01 — The Vault Awakens
-Asset Brief: One distinct Clockwork reward item/model that reads as a completion reward rather than a normal key or gameplay tool. Keep the silhouette clear enough for the final reward reveal.
-Function: Cosmetic reward presented after the vault is restored.
+Visual Brief: Distinct reward item shown at the end of the map.
+Function: Reward item shown after the vault is restored.
 Type: ITEM
 Create: Create one Clockwork Wayfinder reward item/model.
 Used: During the final reward reveal.
-Moment: Restoration Payoff
+Moment: Vault Restored
 Includes: Reward item/model appearance; readable reward reveal state.
 Group: 01 — Finale
 For: The cosmetic reward presented at the end of the story.
@@ -819,7 +824,7 @@ Usage: Presented after the Great Orrery restoration and granted exactly once thr
 
 #### Vault Restored Message
 Flow: 02 — The Way Home
-Function: Confirms that the Clockwork Vault is restored and points the player toward the open gateway.
+Function: Confirms the vault is restored and points the player to the open gateway.
 Type: UI / TEXT
 Create: Create the exact player-facing Vault Restored Message.
 Used: When the return gateway is open.

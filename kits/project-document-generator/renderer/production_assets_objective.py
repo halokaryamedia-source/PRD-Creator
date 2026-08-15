@@ -34,6 +34,7 @@ class AssetEntry:
     includes: str = ""
     function_text: str = ""
     asset_brief: str = ""
+    size: str = ""
     moment: str = ""
     for_text: str = ""
     requirement: str = ""
@@ -74,6 +75,7 @@ class ProductionItem:
     includes: str
     function_text: str
     asset_brief: str
+    size: str
     moment: str
     flow: str
     flow_order: int
@@ -196,8 +198,10 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     entry.includes = meta.split(":", 1)[1].strip()
                 elif meta.startswith("Function:"):
                     entry.function_text = meta.split(":", 1)[1].strip()
-                elif meta.startswith("Asset Brief:"):
+                elif meta.startswith("Asset Brief:") or meta.startswith("Visual Brief:") or meta.startswith("Audio Brief:"):
                     entry.asset_brief = meta.split(":", 1)[1].strip()
+                elif meta.startswith("Size:"):
+                    entry.size = meta.split(":", 1)[1].strip()
                 elif meta.startswith("Moment:"):
                     entry.moment = meta.split(":", 1)[1].strip()
                 elif meta.startswith("For:"):
@@ -374,6 +378,7 @@ def _asset_to_item(entry: AssetEntry, section: AssetSection | None, page_id: str
         includes=entry.includes,
         function_text=entry.function_text or entry.for_text,
         asset_brief=entry.asset_brief,
+        size=entry.size,
         moment=entry.moment,
         flow=entry.flow,
         flow_order=_flow_order(section, entry.flow),
@@ -389,7 +394,7 @@ def _voice_to_item(
     return ProductionItem(
         item_id=f"{page_id}-build-{slug(entry.voice_id)}", title=f"{entry.speaker} — {entry.title}",
         type_label="AUDIO", create_text="", used="", includes="",
-        function_text=function_text or "Story or character audio for this gameplay moment.", asset_brief="",
+        function_text=function_text or "Story or character audio for this gameplay moment.", asset_brief="", size="",
         moment=moment or _plain_flow(flow) or "Gameplay Use", flow=flow, flow_order=_flow_order(section, flow),
         sort_order=order, content=entry.performance, speaker=entry.speaker,
         selected_voice=voice._voice_for(doc.cast, entry.speaker), duration=entry.duration, is_voice=True,
@@ -411,26 +416,59 @@ def _moment_sort_key(moment: str, items: list[ProductionItem]) -> tuple[int, int
     return (1, min((item.flow_order for item in items), default=999), lowered)
 
 
+def _reader_section_title(meta: SectionPresentation) -> str:
+    label = txt(meta.package_label)["en"].strip()
+    name = meta.title.strip()
+    if label.casefold().startswith("objective"):
+        name = re.sub(r"^The\s+", "", name, flags=re.I)
+        return f"{label} · {name}"
+    if label.casefold() == "introduction":
+        return f"Introduction · {name}"
+    if label.casefold() == "ending":
+        return f"Ending · {name}"
+    if label.casefold() == "shared":
+        return "Shared Assets"
+    return f"{label} · {name}" if label else name
+
+
 def _build_item_html(item: ProductionItem) -> str:
     exact = ""
     if item.content:
         if item.is_voice:
-            target = "voice-prompt-" + item.item_id.split("-build-")[-1]; head="Prompt"; label="Copy Prompt"; cls="voice-script-text"
+            target = "voice-prompt-" + item.item_id.split("-build-")[-1]
+            exact = (
+                '<div class="pa-exact pa-audio-prompt"><div class="pa-exact-head">'
+                f'<span>Prompt</span>{_copy_button(target, "Copy Prompt")}</div>'
+                f'<pre class="voice-script-text" id="{esc(target)}">{esc(item.content)}</pre>'
+                f'<div class="voice-script-display">{voice._performance_html(item.content)}</div></div>'
+            )
         else:
-            target = f"{item.item_id}-copy"; head="Player Text"; label="Copy Text"; cls="pa-content"
-        exact = ('<div class="pa-exact"><div class="pa-exact-head">'
-                 f'<span>{esc(head)}</span>{_copy_button(target,label)}</div>'
-                 f'<pre class="{cls}" id="{esc(target)}">{esc(item.content)}</pre></div>')
+            target = f"{item.item_id}-copy"
+            exact = (
+                '<div class="pa-exact"><div class="pa-exact-head">'
+                f'<span>Player Text</span>{_copy_button(target, "Copy Text")}</div>'
+                f'<pre class="pa-content" id="{esc(target)}">{esc(item.content)}</pre></div>'
+            )
+
     meta = '<div class="pa-build-meta-row"><b>Function</b><span>'+esc(item.function_text)+'</span></div>'
     if item.is_voice:
-        meta += '<div class="pa-build-meta-row"><b>Voice Setup</b><span>'+esc(item.selected_voice)+' · Eleven v3</span></div>'
-        meta += '<div class="pa-build-meta-row"><b>Expected</b><span>'+esc(item.duration)+'</span></div>'
+        meta += '<div class="pa-build-meta-row"><b>Voice Preset</b><span>'+esc(item.selected_voice)+'</span></div>'
+        meta += '<div class="pa-build-meta-row"><b>ElevenLabs Model</b><span>Eleven v3</span></div>'
+        meta += '<div class="pa-build-meta-row"><b>Estimated Duration</b><span>'+esc(item.duration)+'</span></div>'
     elif item.asset_brief:
-        meta += '<div class="pa-build-meta-row"><b>Asset Brief</b><span>'+esc(item.asset_brief)+'</span></div>'
+        brief_label = 'Audio Brief' if item.type_label.upper() == 'AUDIO' else 'Visual Brief'
+        meta += '<div class="pa-build-meta-row"><b>'+brief_label+'</b><span>'+esc(item.asset_brief)+'</span></div>'
+        if item.size:
+            meta += '<div class="pa-build-meta-row"><b>Size</b><span>'+esc(item.size)+'</span></div>'
+
+    type_class = 'pa-type-' + slug(item.type_label)
     cls = "pa-row pa-row-voice" if item.is_voice else "pa-build-row pa-row"
-    return (f'<article class="{cls}" id="{esc(item.item_id)}"><div class="pa-build-head">'
-            f'<span class="pa-type">{esc(item.type_label)}</span><h4>{esc(item.title)}</h4></div>'
-            f'<div class="pa-build-meta">{meta}</div>{exact}</article>')
+    return (
+        f'<article class="{cls}" id="{esc(item.item_id)}">'
+        f'<div class="pa-build-head"><span class="pa-type {type_class}">{esc(item.type_label)}</span>'
+        f'<h4>{esc(item.title)}</h4></div>'
+        f'<div class="pa-build-meta">{meta}</div>{exact}</article>'
+    )
 
 def _moment_html(items: list[ProductionItem]) -> str:
     grouped={}
@@ -487,8 +525,8 @@ def _pages_and_nav(
             continue
 
         body = (
-            '<header class="pa-shell"><small>Production Assets</small>'
-            f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong></header>'
+            '<header class="pa-shell">'
+            f'<h2>{esc(_reader_section_title(meta))}</h2></header>'
             '<div class="pa-moments">' + _moment_html(items) + '</div>'
         )
 
@@ -529,7 +567,7 @@ def _pages_and_nav(
 
 
 OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
-.pa-shell{margin:0 0 18px}.pa-shell>small{display:block;margin-bottom:5px;color:var(--blue);font-size:.61rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase}.pa-shell h2{margin:0;color:var(--navy);font-size:1.9rem;line-height:1.12}.pa-shell>strong{display:block;margin-top:5px;color:var(--amber);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}.pa-moments{display:grid;gap:22px}.pa-moment+.pa-moment{padding-top:20px;border-top:1px solid var(--line)}.pa-moment-head{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}.pa-moment-head>span{color:var(--amber);font-size:.61rem;font-weight:900}.pa-moment-head h3{margin:0;color:var(--navy);font-size:1.05rem;text-transform:none}.pa-build-list{border-top:1px solid #cbd7dd}.pa-build-row,.pa-row-voice{padding:12px 10px;border-bottom:1px solid #cbd7dd;background:var(--paper);break-inside:avoid}.pa-build-head{display:flex;align-items:center;gap:9px}.pa-type{padding:3px 7px;border-radius:3px;background:var(--soft);color:var(--blue);font-size:.58rem;font-weight:900;letter-spacing:.055em;text-transform:uppercase}.pa-build-head h4{margin:0;color:var(--navy);font-size:.88rem;text-transform:none}.pa-build-meta{display:grid;gap:4px;margin-top:8px}.pa-build-meta-row{display:grid;grid-template-columns:82px minmax(0,1fr);gap:9px;color:#52616a;font-size:.72rem;line-height:1.45}.pa-build-meta-row b{color:var(--navy);font-size:.61rem;font-weight:850;text-transform:uppercase}.pa-exact{margin-top:9px}.pa-exact-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.pa-exact-head>span{color:var(--blue);font-size:.59rem;font-weight:850;text-transform:uppercase}.pa-copy-button{min-height:27px;padding:5px 8px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .56rem/1 var(--font);text-transform:uppercase}.pa-content,.pa-row-voice .voice-script-text{display:block!important;margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:3px;background:#f8fafb;color:var(--navy);font:700 .76rem/1.52 var(--font);white-space:pre-wrap}.pa-row-voice .voice-script-text{border-left-color:var(--amber)}body.theme-dark .pa-build-row,body.theme-dark .pa-row-voice{background:#17262d}body.theme-dark .pa-build-meta-row{color:#c8d7dc}@media(max-width:760px){.pa-build-meta-row{grid-template-columns:1fr;gap:1px}}@media print{.pa-copy-button{display:none!important}}
+.pa-shell{margin:0 0 18px}.pa-shell h2{margin:0;color:var(--navy);font-size:1.72rem;line-height:1.14;letter-spacing:-.02em}.pa-moments{display:grid;gap:22px}.pa-moment+.pa-moment{padding-top:20px;border-top:1px solid var(--line)}.pa-moment-head{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}.pa-moment-head>span{color:var(--amber);font-size:.62rem;font-weight:900}.pa-moment-head h3{margin:0;color:var(--navy);font-size:1.07rem;text-transform:none}.pa-build-list{border-top:1px solid #cbd7dd}.pa-build-row,.pa-row-voice{padding:13px 10px;border-bottom:1px solid #cbd7dd;background:var(--paper);break-inside:avoid}.pa-build-head{display:flex;flex-direction:column;align-items:flex-start;gap:5px}.pa-type{display:inline-flex;padding:4px 8px;border-radius:3px;background:var(--soft);color:var(--blue);font-size:.64rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.pa-type-audio{background:#fff3dc;color:#8a4e00}.pa-type-ui-text{background:#eaf4fb;color:#145d83}.pa-type-model{background:#eaf6ef;color:#2d6847}.pa-type-item{background:#f0effa;color:#51458c}.pa-type-particle{background:#f5edf8;color:#74457e}.pa-build-head h4{margin:0;color:var(--navy);font-size:.94rem;line-height:1.3;text-transform:none}.pa-build-meta{display:grid;gap:8px;margin-top:10px}.pa-build-meta-row{display:block;color:#52616a;font-size:.74rem;line-height:1.48}.pa-build-meta-row b{display:block;margin-bottom:2px;color:var(--navy);font-size:.61rem;font-weight:900;letter-spacing:.035em;text-transform:uppercase}.pa-exact{margin-top:10px}.pa-exact-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.pa-exact-head>span{color:var(--blue);font-size:.61rem;font-weight:900;text-transform:uppercase}.pa-audio-prompt .pa-exact-head>span{color:#9a5a0a}.pa-copy-button{min-height:27px;padding:5px 8px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .56rem/1 var(--font);text-transform:uppercase}.pa-content{margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:3px;background:#f8fafb;color:var(--navy);font:700 .76rem/1.52 var(--font);white-space:pre-wrap}.pa-row-voice .voice-script-text{display:none!important}.pa-row-voice .voice-script-display{margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:3px;background:#f8fafb}.pa-row-voice .voice-performance-tag{display:inline-flex;margin:0 0 5px;padding:2px 6px;border-radius:3px;background:#fff0d2;color:#965700;font-size:.65rem;font-weight:900}.pa-row-voice .voice-script-line{color:var(--navy);font-size:.76rem;line-height:1.55}.pa-row-voice .voice-script-gap{height:6px}body.theme-dark .pa-build-row,body.theme-dark .pa-row-voice{background:#17262d}body.theme-dark .pa-build-meta-row{color:#c8d7dc}body.theme-dark .pa-row-voice .voice-script-display,body.theme-dark .pa-content{background:#1d2f37;color:#e8eff3}body.theme-dark .pa-type-audio{background:#3b2c13;color:#ffd284}@media print{.pa-copy-button{display:none!important}}
 </style>'''
 
 OBJECTIVE_COPY_SCRIPT = r'''<script id="production-assets-flow-copy-script">(function(){

@@ -141,3 +141,12 @@ sources:
     origin: user
     inspection: full
     summary: User superseded the two-part WHAT TO BUILD / WHERE IT IS USED design. Section 04 must use one universal moment-first production brief for every objective. A moment heading supplies timing/context; each resource directly explains its Function and the production information needed to create it. MODEL, ITEM, UI / TEXT, AUDIO, and standalone PARTICLE are the only primary resource types. MODEL/ITEM/PARTICLE use Function + Asset Brief; UI / TEXT uses Function + exact player copy; AUDIO dialogue uses Function + selected ElevenLabs voice, Eleven v3, expected duration, and exact prompt; non-dialogue AUDIO uses Function + Asset Brief and must explicitly say there is no spoken dialogue when relevant. Attached animation/sound/particle/state work stays inside its parent model/item. Gameplay-behavior SEQUENCE entries are not Production Assets. Section 03 Development is frozen and must not be edited by this 04 revision.
+
+
+  - id: SRC-018
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User approved the final humanized Section 04 direction. Production Assets must read like short production notes written by a person: literal, concise, and free of AI-style filler, invented visual traits, or unnecessary taxonomy. Echo Pebble is an ordinary stone, not magical. Every objective uses the same moment-first layout. Visual resources use only Function plus a direct Visual Brief; Size is optional and may appear only when a real approved Minecraft-scale value is known. Do not show generic States, Position, Orientation, Reuse, placeholder size, or similar metadata. Animation or visual changes are described directly inside the Visual Brief when they are part of the model. UI / TEXT keeps exact player-facing copy. AUDIO dialogue keeps Function, Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt; performance-direction tags must be visually distinct from spoken dialogue. AUDIO without dialogue uses Function plus a short Audio Brief. Resource type must be visually prominent above the resource title. Moment names and resource names must be reader-friendly rather than internal mechanic labels. Duplicate Production Assets headings are not allowed. Section 03 Development remains unchanged.

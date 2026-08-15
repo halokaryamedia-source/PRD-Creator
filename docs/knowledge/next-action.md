@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_04_READER_FIRST_READY`
+`CLOCKWORK_04_HUMANIZED_READY`
 
-The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 now uses one universal reader-first, moment-first production brief for every objective. Gameplay-moment headings provide timing/context. Each concrete resource directly states its Function and the production information needed to prepare it: MODEL/ITEM/PARTICLE use Function + Asset Brief; UI / TEXT uses Function + exact player text; AUDIO dialogue uses Function + selected ElevenLabs voice + Eleven v3 + expected duration + exact prompt; non-dialogue AUDIO uses Function + Asset Brief and clearly states when it contains no spoken dialogue. Attached animation/sound/particle/state work remains inside its parent model/item. Gameplay behavior and old SEQUENCE entries are excluded from 04. No internal document guidance, Used-at metadata, duplicate What-to-Build/Where-It-Is-Used split, Speaker label, or VoiceLab/provider label is rendered. Section 03 Development was hash-checked and left unchanged.
+The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 now uses the final universal humanized production-brief logic: each gameplay moment groups the resources needed there; resource type is shown above the resource name; MODEL/ITEM/PARTICLE use Function + concise Visual Brief + optional Size only when an approved value exists; UI / TEXT uses Function + exact player copy; AUDIO dialogue uses Function + Voice Preset + ElevenLabs Model + Estimated Duration + exact Prompt; non-dialogue AUDIO uses Function + Audio Brief. Performance-direction tags are visually distinct from spoken dialogue. Internal mechanic names, duplicated Production Assets headings, generic States/Position/Orientation/Reuse metadata, placeholder size, and AI-style filler are not rendered. Echo Pebble is explicitly an ordinary stone. Section 03 Development was hash-checked and left unchanged.
 
-PRD, handoff, Voice, unit-contract, and reader-first Production Assets validation pass. Browser-level visual quality still requires user review.
+PRD, handoff, Voice, unit-contract, and humanized Production Assets validation pass. Browser-level visual quality still requires user review.
 
 ## Next Step
 
-Review Section 04 visually from the perspective of a reader who does not already know the gameplay, especially whether each visual Asset Brief is concrete enough to start model production.
+Review Section 04 visually against Sections 01-03 and flag only concrete wording, size, or visual-brief corrections.

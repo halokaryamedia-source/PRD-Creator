@@ -197,3 +197,13 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+
+
+  - id: REQ-024
+    area: production-assets
+    statement: Section 04 is a universal, humanized, moment-first production brief. Use plain, literal language and remove AI-style filler, speculative visual details, and unnecessary metadata. Echo Pebble is a normal stone. Visual resources render as TYPE, resource name, Function, Visual Brief, and optional Size only when a real approved size exists; animation and visual changes stay in the Visual Brief rather than generic States/Position/Orientation/Reuse fields. UI / TEXT renders Function plus exact player copy. AUDIO dialogue renders Function, Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt with performance-direction tags visually separated from spoken lines; non-dialogue AUDIO renders Function plus Audio Brief. Type appears above the resource title. Moment and asset names use reader-friendly gameplay wording, not internal labels such as Rollback. The body must not duplicate the Production Assets page header. Section 03 Development is frozen and must not be edited by Section 04 work.
+    provenance: [SRC-018]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high
