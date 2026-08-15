@@ -2,6 +2,16 @@
 
 ## Global / Shared Assets
 
+### Gameplay Flow 01 — Shared Characters
+Trigger: Referenced whenever Custodian Vex or Gremlin appears in a gameplay flow.
+Player Experience: Vex reads as the consistent guide while Gremlin reads as the recognizable mischievous saboteur.
+Uses: Custodian Vex; Gremlin
+Done When:
+- Vex supports the current idle, speaking, alert, guidance, and completion states used by the approved Voice lines.
+- Gremlin supports appear, sabotage, taunt, and outsmarted/defeat reaction states.
+- Both characters stay visually and audibly distinct and can be reused by every referenced flow without duplicate implementations.
+
+
 ### 3D Models
 
 #### Custodian Vex
@@ -15,6 +25,25 @@ Requirement: Create one small Clockwork Gremlin character used for authored sabo
 Usage: Used for the Objective 2 final time-challenge framing and the Objective 4 sabotage sequences.
 
 ## The Antechamber
+
+### Gameplay Flow 01 — Arrival & Briefing
+Trigger: The assigned player enters the protected Antechamber and Custodian Vex activates for the first time.
+Player Experience: The player understands why the vault is sealed, what the Great Orrery is, and sees the Custodian Key as the first actionable object.
+Uses: Custodian Vex; Custodian Key
+Done When:
+- Vex opening briefing plays once for the current session.
+- The Custodian Key is clearly visible and available after the briefing.
+- The player understands the key starts the restoration route and is not the exit key.
+
+### Gameplay Flow 02 — Take Key & Open Seal
+Trigger: The opening briefing is complete and the Resonance Engine seal is still closed.
+Player Experience: The player takes the key, receives only the minimum reminder if needed, uses the key on the marked seal, and sees the first objective route open.
+Uses: Custodian Vex; Custodian Key; Resonance Engine seal
+Done When:
+- The exact key prompt remains readable until valid seal activation.
+- Valid Custodian Key use opens the Resonance Engine seal once and gives clear feedback.
+- The handoff into Objective 1 is readable and does not become a separate puzzle.
+
 
 ### 3D Models
 
@@ -42,6 +71,43 @@ Requirement: Create one short authored activation presentation for valid Custodi
 Usage: Runs once after valid Antechamber completion.
 
 ## The Resonance Engine
+
+### Gameplay Flow 01 — Read Partial Target
+Trigger: The Resonance Engine seal opens and the player gains control inside the reset chamber.
+Player Experience: The player immediately sees the basic task and the intentionally incomplete target: Middle is Brown while Left, Right, and Pulse remain unknown.
+Uses: Custodian Vex; Objective 1 Instruction Panel; Partial Door Target Display
+Done When:
+- The instruction text is readable and does not reveal the hidden Left/Right colors, pulse location, or lever solutions.
+- The door display shows Middle = Brown and keeps the other target values unknown.
+- Vex briefing matches the same information and does not contradict the display.
+
+### Gameplay Flow 02 — Search Clues
+Trigger: Objective 1 is active and the twelve scattered books are available around the chamber.
+Player Experience: The player searches books in any order, may find useful clues early by luck, and gradually narrows the missing target information without needing every book.
+Uses: Scattered Clue Book Set
+Done When:
+- All twelve approved books use the exact current text.
+- The set remains 2 rule books + 8 useful clues + 2 harmless decoys with no forced reading order.
+- Decoys contain no false puzzle facts and completion never requires all twelve books.
+
+### Gameplay Flow 03 — Experiment with Pillars
+Trigger: The player changes a pillar lever or pressure-plate state while Objective 1 is active.
+Player Experience: The player learns each pillar by experimentation: lever combinations change color and the plate changes only steady versus pulse.
+Uses: Left / Middle / Right pillar labels; pillar lamps; upper/lower levers; pressure plates
+Done When:
+- LEFT, MIDDLE, and RIGHT identities remain clear from the player position.
+- Every lever change produces immediate deterministic lamp-color feedback for that pillar.
+- Pressure plates change only steady/pulse state and never change the selected color.
+
+### Gameplay Flow 04 — Complete & Transition
+Trigger: Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are all valid at the same time.
+Player Experience: The three pillars visibly synchronize, the Resonance Engine returns to operation, and attention moves to the newly opened Broken Gallery route.
+Uses: Resonance Engine restoration presentation; pillar completion feedback
+Done When:
+- Completion validates the full simultaneous final state rather than a partial match.
+- The completion response plays once and clearly confirms success.
+- The Broken Gallery route opens and Objective 1 temporary state is ready for the next reset.
+
 
 ### UI & Information
 
@@ -144,6 +210,52 @@ Usage: Runs once after valid Objective 1 completion.
 
 ## The Broken Gallery
 
+### Gameplay Flow 01 — Enter & Learn Route Loop
+Trigger: The player enters Broken Gallery Level 1 with checkpoint barrels and the three route choices available.
+Player Experience: The player learns the repeated loop: search barrels, repair only marked gaps, reach the checkpoint, and retry only the current level on failure.
+Uses: Custodian Vex; Objective 2 Instruction Panel; Valid Placement Markers
+Done When:
+- The route-loop instruction text is readable without revealing a viable route.
+- Legal placement markers are clearly different from ordinary environment blocks.
+- Vex briefing communicates limited-resource planning and local retry without introducing old mechanics.
+
+### Gameplay Flow 02 — Level 1
+Trigger: Checkpoint 1 is active and Level 1 resources/routes are reset.
+Player Experience: The player reads three routes, uses the 12-block allocation, and must avoid wasting supplies on the non-viable route.
+Uses: Level 1 Brief; checkpoint barrels; Valid Placement Markers
+Done When:
+- The Level 1 brief uses the exact approved text and does not reveal which two routes work.
+- The authored allocation is 12 blocks and only marked placements are accepted.
+- Middle and Right remain viable, Left remains non-viable, and successful crossing reaches Checkpoint 2.
+
+### Gameplay Flow 03 — Level 2
+Trigger: Checkpoint 2 is active and Level 2 resources/routes are reset.
+Player Experience: The player solves a tighter route/resource problem using 20 blocks and 3 ladders while only one route can be completed.
+Uses: Level 2 Brief; checkpoint barrels; blocks; ladders; Valid Placement Markers
+Done When:
+- The Level 2 brief uses the exact approved text without naming the viable route.
+- The authored allocation is 20 blocks + 3 ladders and placement remains marker-owned.
+- Only the Right route is viable and successful crossing reaches Checkpoint 3.
+
+### Gameplay Flow 04 — Level 3 Time Challenge
+Trigger: Checkpoint 3 is active, all three routes are initially viable, and the timed attempt begins when the player materially commits to a route.
+Player Experience: The player chooses a route, hears/sees Gremlin-timed urgency, and must reach at least 50% route progress before the authored threshold.
+Uses: Gremlin; Custodian Vex; Level 3 Time-Challenge Brief; Level 3 Time-Challenge Cue; route-progress state
+Done When:
+- The exact Level 3 instruction is readable before/during the attempt without revealing route geometry.
+- The warning cue and Vex line clearly mark the timed requirement.
+- At least 50% progress before the threshold preserves the chosen route and allows the crossing to continue.
+
+### Gameplay Flow 05 — Retry / Route Closure
+Trigger: The active level exhausts its resources or configured time, or a Level 3 attempt misses the 50% progress threshold.
+Player Experience: The player gets a local reset. Level 1/2 simply retry; Level 3 visibly loses the failed route while another alternative remains.
+Uses: Route Failure Message; Level Retry Reset; Gremlin Route-Closed Event
+Done When:
+- Temporary blocks/ladders from the failed attempt are removed and the active checkpoint becomes safe/retryable.
+- Current-level resources become available again while earlier completed Gallery levels remain complete.
+- A failed Level 3 route is visibly unavailable while alternatives remain, and the last remaining route never makes the objective unwinnable before normal timeout.
+
+
 ### UI & Information
 
 #### Objective 2 Instruction Panel
@@ -236,6 +348,43 @@ Usage: Runs after a Level 3 route misses its required progress threshold while a
 
 ## The Warden Halls
 
+### Gameplay Flow 01 — Learn Trap Rules
+Trigger: The Warden Halls activate and the player receives the unlimited Echo Pebble before the first trap-family encounters.
+Player Experience: The player understands which hazards accept Echo Pebble interaction and which must instead be avoided or timed.
+Uses: Custodian Vex; Echo Pebble; Wall Laser Sensor; Swinging Axe Trap; Objective 3 Instruction Panel
+Done When:
+- The instruction panel uses the exact approved trap/Pebble rules.
+- Wall lasers, floor traps, and swinging axes remain visually distinguishable.
+- Nothing implies that floor traps or swinging axes can be disabled with Echo Pebble.
+
+### Gameplay Flow 02 — Use Echo Pebble
+Trigger: The player throws Echo Pebble at a valid wall-laser sensor or authored hanging-stone target.
+Player Experience: A valid sensor hit creates a short four-second laser opening; selected hanging stones can instead block the beam, while the three-second throw cooldown remains readable.
+Uses: Echo Pebble; Wall Laser Sensor; Laser Blocker Stone; Echo Pebble Cooldown Indicator
+Done When:
+- Each throw starts the approved 3-second cooldown and the UI returns to READY afterward.
+- A valid wall-laser sensor hit disables only that laser for 4 seconds of game-time.
+- Only authored hanging-stone targets create the alternate beam-blocking solution; invalid floor/axe targets do not disable anything.
+
+### Gameplay Flow 03 — Hazard Contact & Recovery
+Trigger: The player contacts a laser, floor trap, or swinging axe, or gameplay health reaches zero from Warden hazards.
+Player Experience: The player receives hazard-specific feedback/effects; zero gameplay health returns them to the current safe checkpoint instead of restarting the full objective.
+Uses: Trap Hit Feedback; Checkpoint Recovery; active Warden checkpoint
+Done When:
+- Laser, floor, and axe contacts apply their approved damage/status effects and remain distinguishable.
+- Gameplay health reaching zero returns the player to the active Warden checkpoint in a safe recovered state.
+- Earlier completed Warden levels remain complete after checkpoint recovery.
+
+### Gameplay Flow 04 — Complete & Transition
+Trigger: The player clears the third Warden level and reaches the inner gate.
+Player Experience: Vex acknowledges that the Wardens are still serving the vault and directs the player into Gremlin’s Workshop.
+Uses: Custodian Vex; inner gate transition
+Done When:
+- The transition Voice plays once without replaying Pebble instructions.
+- The Workshop route becomes the clear next destination.
+- No Workshop sabotage is revealed before its authored trigger.
+
+
 ### 3D Models
 
 #### Echo Pebble
@@ -311,6 +460,62 @@ Requirement: When trap damage reduces gameplay health to zero, present one quick
 Usage: Runs on Objective 3 hazard defeat only.
 
 ## The Gremlin's Workshop
+
+### Gameplay Flow 01 — Learn Network / Ring 1
+Trigger: The player enters the Workshop and the unsabotaged L-rotator network becomes interactive.
+Player Experience: The player learns that power begins at the Generator, each rotator is an L connection, and one continuous route must reach Ring 1.
+Uses: Custodian Vex; Power Generator; 90-Degree Rotator Junction; Orrery Ring; Objective 4 Instruction Panel; Ring Progress Display
+Done When:
+- The instruction text explains Generator → Ring 1 → Ring 2 → Ring 3 without exposing the authored route solution.
+- Each rotator has four readable orientations and powered/unpowered state is visually clear.
+- Ring 1 becomes powered only when a continuous valid path exists from the Generator.
+
+### Gameplay Flow 02 — Extend to Ring 2
+Trigger: Ring 1 is powered and the player continues the same network toward Ring 2.
+Player Experience: The player extends the existing live route while keeping Ring 1 connected; the status display reflects actual connectivity.
+Uses: Power Generator; 90-Degree Rotator Junction; Orrery Rings; Ring Progress Display
+Done When:
+- Ring 2 becomes powered only while Generator → Ring 1 → Ring 2 is continuously connected.
+- The Ring Progress Display immediately reflects any real loss of power rather than milestone history.
+- The post-Ring-2 route-swap trigger becomes eligible only after the approved stable state.
+
+### Gameplay Flow 03 — Route Swap Sabotage
+Trigger: About 20 seconds after Ring 1 and Ring 2 are continuously connected.
+Player Experience: Gremlin deliberately blocks the route the player just used, a previously blocked alternate path opens, Ring 2 loses power, Gremlin taunts, then Vex gives recovery guidance.
+Uses: Gremlin; Custodian Vex; Power Generator; 90-Degree Rotator Junction; Ring Progress Display; First Sabotage Message
+Done When:
+- The route-swap sabotage triggers once for the session.
+- The old route becomes clearly unavailable, the authored alternate opens, and connectivity/power is recalculated immediately.
+- The exact sabotage text plus Gremlin and Vex lines play in the intended order without revealing the solution path.
+- The player can recover using the same L-rotator rule.
+
+### Gameplay Flow 04 — 50% Rollback
+Trigger: Validated Ring 2 → Ring 3 route progress reaches 50% for the first time.
+Player Experience: Gremlin rotates exactly two previously correct Generator → Ring 1 rotators, earlier power drops, Gremlin gloats, and Vex directs the player back to repair the link.
+Uses: Gremlin; Custodian Vex; 90-Degree Rotator Junction; Ring Progress Display; 50% Sabotage Message
+Done When:
+- Exactly two approved Generator → Ring 1 rotators change orientation once.
+- Power loss propagates immediately and the exact 50% message identifies the affected section without exposing rotator positions.
+- Gremlin taunt and Vex repair guidance play without changing the learned routing rule.
+
+### Gameplay Flow 05 — 80% Rollback
+Trigger: Validated Ring 2 → Ring 3 route progress reaches 80% for the first time.
+Player Experience: Gremlin rotates exactly three previously correct Ring 1 → Ring 2 rotators, removes earlier power again, and the player must repair that section before finishing.
+Uses: Gremlin; Custodian Vex; 90-Degree Rotator Junction; Ring Progress Display; 80% Sabotage Message
+Done When:
+- Exactly three approved Ring 1 → Ring 2 rotators change orientation once.
+- The exact 80% message and visible power state make the broken earlier section clear.
+- Gremlin and Vex lines play in order and the player can repair with the same L-rotator rule.
+
+### Gameplay Flow 06 — Restore Great Orrery
+Trigger: Generator, Ring 1, Ring 2, and Ring 3 are all continuously connected after all authored sabotage events.
+Player Experience: Gremlin realizes the player has outsmarted the sabotage, all rings synchronize, the Great Orrery returns to life, puzzle input closes, and the exit begins opening.
+Uses: Gremlin; Power Generator; Orrery Rings; Great Orrery Restoration
+Done When:
+- Completion requires one continuous final network across Generator and all three rings.
+- Gremlin’s outsmarted reaction plays once and does not replace Vex’s later ending speech.
+- The final restoration presentation clearly confirms success and begins the ending/exit handoff.
+
 
 ### 3D Models
 
@@ -408,6 +613,25 @@ Requirement: When Generator, Ring 1, Ring 2, and Ring 3 are continuously connect
 Usage: Runs once on valid Objective 4 completion.
 
 ## Vault Restored
+
+### Gameplay Flow 01 — Restoration Payoff & Reward
+Trigger: The Great Orrery restoration callbacks complete and the closing scene reaches Vex recognition.
+Player Experience: Vex acknowledges what the player restored, the gateway is open, and the Clockwork Wayfinder reward is presented after the completion record is secured.
+Uses: Custodian Vex; Clockwork Wayfinder; Completion Message; Great Orrery / gateway presentation
+Done When:
+- The completion message and Vex line use the exact approved wording without exposing platform scoring.
+- The Clockwork Wayfinder is presented/granted exactly once after the completion state is secured.
+- The reopened gateway is clearly visible as the next action.
+
+### Gameplay Flow 02 — Return Home
+Trigger: Session result and reward state are secured and the safe return route is open.
+Player Experience: Vex gives one concise farewell/navigation cue and the player follows the reopened route back to the holding area while lane cleanup begins safely.
+Uses: Custodian Vex; Vault Awakening and Exit Reveal; safe return route
+Done When:
+- The exact safe-return Voice cue plays without repeating the completion speech.
+- The return route is obvious and no new gameplay task is introduced.
+- Lane reset/cleanup does not invalidate the player’s safe return and prepares the lane for reuse.
+
 
 ### 3D Models
 

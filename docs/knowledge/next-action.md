@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_PRODUCTION_ASSETS_READABLE`
+`CLOCKWORK_IMPLEMENTATION_PACK_READY`
 
-The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets is gameplay-flow-first with quick-jump navigation. Copy Flow Text aggregation has been removed. Each Asset Requirement now presents a compact developer work card: secondary asset-type badge, What to Build, When/Where when available, and exact per-item player text or Voice prompt with its own Copy action.
+The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets now works as a gameplay-flow implementation pack rather than an asset catalog. Each flow provides Trigger, Player Experience, reusable dependencies, an Implementation Checklist, direct asset purpose/use, exact copy-ready player text and Voice prompts, and Done When. Quick Jump is retained. Asset-count summaries, asset numbering, category-first grouping, and Copy Flow Text are removed from the primary developer experience.
 
-PRD, handoff, Voice validation, renderer contract tests, and the Production Assets readability structural check pass. Browser-level visual quality still requires direct visual review.
+The current HTML has passed PRD, handoff, Voice, and implementation-pack structural validation. Browser-level visual quality is still not claimed until visual review.
 
 ## Next Step
 
-Review the regenerated Production Assets pages in-browser. If the work-card hierarchy is accepted, continue with implementation/audio production rather than adding more document structure.
+Review the regenerated Production Assets pages visually in-browser. If the structure is accepted, continue only with any visual polish findings or actual ElevenLabs generation/audio review.

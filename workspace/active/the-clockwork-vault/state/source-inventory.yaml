@@ -82,3 +82,11 @@ sources:
     origin: user
     inspection: full
     summary: User refined the Production Assets developer UX: remove Copy Flow Text, keep fast gameplay-flow navigation, and make each Asset Requirement easier to scan and use. Each item should clearly separate What to Build, When/Where context when available, and exact per-item player text or Voice prompt with its own Copy action.
+
+  - id: SRC-011
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User approved the final developer-facing Production Assets information architecture: each gameplay flow is an implementation pack with Trigger, Player Experience, Implementation Checklist, direct asset purpose/use, exact per-item copy/Voice, and Done When. Quick Jump remains. Asset counts, asset numbering, category-first grouping, and Copy Flow Text are not useful primary UI and must not drive the presentation.

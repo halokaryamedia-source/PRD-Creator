@@ -133,8 +133,8 @@ requirements:
 
   - id: REQ-017
     area: production-assets
-    statement: Production Assets must be organized by gameplay flow within each objective/section, not by asset category. Each flow presents all implementation needs together. Every Asset Requirement must be scan-friendly: show the secondary asset-type badge, a clear What to Build block, When/Where context when available, and exact per-item player-facing text or Voice prompt with its own Copy action. Pages retain quick-jump navigation between flows. Do not provide Copy Flow Text aggregation.
-    provenance: [SRC-009, SRC-010]
+    statement: Production Assets must behave as developer implementation packs organized by gameplay flow. Each flow shows its Trigger, intended Player Experience, reusable assets it depends on, an Implementation Checklist, the concrete assets/Voice needed with a direct explanation of what each is for and when it is used, exact per-item player text or Voice prompt with individual Copy actions, and a Done When checklist. Quick Jump between flows remains. Asset-category-first grouping, asset counts, asset numbering, and Copy Flow Text aggregation must not be used as the primary developer experience.
+    provenance: [SRC-009, SRC-010, SRC-011]
     evidence_status: approved
     recovery_class: none
     approval_status: not_required
