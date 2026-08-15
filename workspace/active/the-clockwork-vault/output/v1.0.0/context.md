@@ -1434,7 +1434,7 @@ Usage: Runs once after valid Antechamber completion.
 #### The Resonance Engine
 
 ##### Gameplay Flow 01 — Read Partial Target
-For: Show the objective instructions and incomplete target when Objective 1 starts.
+For: Start the puzzle with the partial door answer and a light hint to search the chamber.
 Trigger: The Resonance Engine seal opens and the player gains control inside the reset chamber.
 Player Experience: The player immediately sees the basic task and the intentionally incomplete target: Middle is Brown while Left, Right, and Pulse remain unknown.
 Uses: Custodian Vex; Objective 1 Instruction Panel; Partial Door Target Display
@@ -1454,7 +1454,7 @@ Done When:
 - Decoys contain no false puzzle facts and completion never requires all twelve books.
 
 ##### Gameplay Flow 03 — Experiment with Pillars
-For: Make pillar identity, color feedback, and pulse state readable while testing controls.
+For: Keep the three pillars easy to distinguish while the player experiments.
 Trigger: The player changes a pillar lever or pressure-plate state while Objective 1 is active.
 Player Experience: The player learns each pillar by experimentation: lever combinations change color and the plate changes only steady versus pulse.
 Uses: Left / Middle / Right pillar labels; pillar lamps; upper/lower levers; pressure plates
@@ -1478,19 +1478,16 @@ Done When:
 
 ###### Objective 1 Instruction Panel
 Flow: 01 — Read Partial Target
-For: Give the player the exact Objective 1 instructions without revealing the hidden solution.
-Requirement: Create one persistent or easily re-readable instruction panel explaining the player task without revealing the missing colors, pulse location, or lever-to-color mapping. It must make clear that the books reveal missing target information while lever experimentation is used to produce the colors.
+For: Hint that the missing answer can be found inside the chamber.
+Requirement: Keep the opening prompt short, in-world, and non-technical. It should direct the player to search the chamber without explaining the hidden solution or the machine logic.
 Content:
 ```text
 RESTORE THE THREE PILLARS
 
-1. Read the books scattered around the chamber.
-2. The door display reveals only part of the final combination.
-3. Find the missing LEFT and RIGHT colors and which lamp must PULSE.
-4. Try the TOP and BOTTOM levers until each lamp reaches the color you need.
+The door reveals only part of the answer.
 
-Lever order: TOP → BOTTOM
-Pressure Plate: STEADY / PULSE only
+Everything you need is somewhere in this chamber.
+Search carefully, then restore all three pillars.
 ```
 
 ###### Partial Door Target Display
@@ -1506,33 +1503,17 @@ PULSE: ?
 ```
 Usage: Visible throughout active Objective 1 solving. It may switch to a solved/confirmed presentation only after the complete hidden target state is matched.
 
-###### Pillar State Labels
-Flow: 03 — Experiment with Pillars
-For: Keep LEFT, MIDDLE, RIGHT and STEADY/PULSE states easy to read.
-Requirement: Give each of the three puzzle pillars stable LEFT, MIDDLE, and RIGHT identities so book clues, display information, and live lamp outputs cannot be confused. Each live lamp must make its current color and steady/pulsing state readable at the same time.
-Usage: Remains visible throughout Objective 1.
-
-Content:
-```text
-LEFT
-MIDDLE
-RIGHT
-
-STEADY
-PULSE
-```
-
 ###### Scattered Clue Book Set
 Flow: 02 — Search Clues
 For: Provide the 12 approved books used to infer the missing target information.
 Requirement: Produce twelve one-paragraph books scattered around the chamber with no required reading order. The set contains two mechanic-rule books, eight useful clue books, and two harmless decoys. Useful clues must be easy to understand without being overly obvious and must help the player infer the hidden target Left = Orange, Right = Purple, and Pulse = Left. They must not teach all twelve lever-to-color mappings. The two decoys must contain ordinary maintenance/lore information and must never provide false puzzle facts. A player who finds useful books first may solve faster by luck, and valid completion must not require reading all twelve books.
 Content:
 ```text
-BOOK 1 — LEVER INSTRUCTIONS
-Each pillar has two levers. Read the TOP lever first, then the BOTTOM lever. Try different settings and watch the lamp. Each setting produces a different color.
+BOOK 1 — LEVER NOTES
+Each pillar is tuned by two levers. Start with the upper lever, then try the lower one. Watch the lamp after each change. Different positions reveal different colors.
 
-BOOK 2 — PRESSURE PLATE INSTRUCTIONS
-The pressure plate does not change the lamp's color. It only changes how the lamp shines. A pressed plate makes the lamp pulse. Otherwise, the lamp stays steady.
+BOOK 2 — PRESSURE PLATE NOTES
+The plate does not change the lamp's color. It only changes the way the lamp shines. Step on it to make the lamp pulse. Leave it clear to keep the light steady.
 
 BOOK 3 — LAMP NOTE
 The left lamp should have a warm glow. It should not look pale or too dark.
@@ -1566,6 +1547,12 @@ Spare tools were moved to the eastern storage cabinet after the last maintenance
 ```
 
 ##### Visual Effects & Presentation
+
+###### Pillar Readability
+Flow: 03 — Experiment with Pillars
+For: Distinguish the Left, Middle, and Right pillars through the environment, not debug-style UI.
+Requirement: Make the three pillars readable through stable placement, visual identity, and lamp presentation. Do not add technical state labels such as STEADY/PULSE as standalone player UI.
+Usage: Active throughout Objective 1.
 
 ###### Pillar Interaction Feedback
 Flow: 03 — Experiment with Pillars
@@ -1804,19 +1791,19 @@ Usage: Distributed across the Warden levels as a timing hazard.
 
 ###### Objective 3 Instruction Panel
 Flow: 01 — Learn Trap Rules
-For: Give the exact Pebble, laser, floor-trap, axe, and cooldown rules.
-Requirement: Create one concise instruction panel that distinguishes Pebble-valid hazards from timing/avoidance hazards and states the 3-second cooldown.
+For: Tell the player what the Echo Pebble can affect and what must be avoided.
+Requirement: Keep the trap guidance player-facing and concise while preserving the approved timing rules.
 Content:
 ```text
 SURVIVE THE WARDEN HALLS
 
 ECHO PEBBLE
-• Wall laser sensors: Disable them for 4 seconds.
-• Marked hanging stones: Knock them into a laser beam.
-• Floor traps: AVOID.
-• Swinging axes: TIME YOUR MOVEMENT.
+• Hit wall sensors to drop the beam for 4 seconds.
+• Knock hanging stones into a laser beam.
+• Avoid floor traps.
+• Time your movement past swinging axes.
 
-Pebbles are unlimited · 3 sec cooldown per throw.
+Pebbles never run out · 3 seconds between throws.
 ```
 
 ###### Echo Pebble Cooldown Indicator
@@ -1829,21 +1816,13 @@ ECHO PEBBLE · READY
 ECHO PEBBLE · RECHARGING
 ```
 
-###### Trap Warning Readability
-Flow: 01 — Learn Trap Rules
-For: Label hazard types only where the environment alone is not clear enough.
-Requirement: Give wall lasers, floor traps, and swinging axes distinct warning language/icons or in-world markers where additional information is needed. Never mark floor traps or swinging axes as Pebble-disableable.
-Usage: Used only where the physical hazard alone would not be sufficiently readable.
-
-Content:
-```text
-LASER SENSOR · PEBBLE WORKS
-HANGING STONE · PEBBLE WORKS
-FLOOR TRAP · AVOID
-SWINGING AXE · TIME YOUR MOVE
-```
-
 ##### Visual Effects & Presentation
+
+###### Trap Readability
+Flow: 01 — Learn Trap Rules
+For: Make lasers, floor traps, and swinging axes readable from their appearance and motion.
+Requirement: Communicate hazard type through environment design, animation, beam state, and motion rather than debug-style instructional labels. Floor traps and swinging axes must never look Pebble-disableable.
+Usage: Present wherever the physical hazard needs stronger readability.
 
 ###### Trap Hit Feedback
 Flow: 03 — Hazard Contact & Recovery
@@ -1945,16 +1924,16 @@ Usage: Sequential milestones in Objective 4 and the ending transition.
 
 ###### Objective 4 Instruction Panel
 Flow: 01 — Learn Network / Ring 1
-For: Give the exact continuous-network rule from Generator through Ring 3.
-Requirement: Create one instruction panel explaining the continuous network rule without exposing route coordinates or the layout solution.
+For: Tell the player how to guide one continuous power route through all three rings.
+Requirement: Keep the routing instruction player-facing and concise without exposing the authored solution.
 Content:
 ```text
 CONNECT THE POWER
 
 Generator → Ring 1 → Ring 2 → Ring 3
 
-Rotate the L-junctions to turn the power route.
-Keep every earlier ring connected as you continue.
+Turn the L-shaped junctions to guide the power.
+Keep the earlier rings connected as you move forward.
 ```
 
 ###### Ring Progress Display
@@ -1982,24 +1961,24 @@ Reroute the power and restore the connection.
 
 ###### 50% Sabotage Message
 Flow: 04 — 50% Rollback
-For: Tell the player Generator → Ring 1 lost alignment and two rotators changed.
-Requirement: Tell the player exactly which earlier network section lost alignment and how many rotators were changed, without identifying their positions.
+For: Tell the player the first power connection has been disrupted.
+Requirement: Identify the affected gameplay connection without exposing implementation counts or rotator positions.
 Content:
 ```text
 POWER LOST · GENERATOR → RING 1
-Two rotators were turned.
-Repair the earlier connection, then continue toward Ring 3.
+The first connection has been knocked out of line.
+Restore it, then continue toward Ring 3.
 ```
 
 ###### 80% Sabotage Message
 Flow: 05 — 80% Rollback
-For: Tell the player Ring 1 → Ring 2 lost alignment and three rotators changed.
-Requirement: Tell the player which second earlier network section lost alignment and how many rotators were changed, without identifying their positions.
+For: Tell the player an earlier Ring 1 → Ring 2 connection has been disrupted.
+Requirement: Identify the affected gameplay connection without exposing implementation counts or rotator positions.
 Content:
 ```text
 POWER LOST · RING 1 → RING 2
-Three rotators were turned.
-Restore the connection, then finish Ring 3.
+An earlier connection has been knocked out of line.
+Restore it, then finish Ring 3.
 ```
 
 ##### Visual Effects & Presentation

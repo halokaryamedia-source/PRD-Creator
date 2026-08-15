@@ -139,3 +139,12 @@ requirements:
     recovery_class: none
     approval_status: not_required
     impact: high
+
+  - id: REQ-018
+    area: production-assets
+    statement: Player-facing UI, readable text, and in-game labels must be pure gameplay/story communication. Do not surface internal development terms, debug labels, implementation counts, or technical state labels as player UI unless that information is genuinely required by the gameplay. Keep Production Assets concise with short For statements and clear visual separation between assets. Objective 1 opening copy should hint that the answer is in the chamber without explaining the full mechanic; rule-book wording should feel natural; pillar identity and trap readability belong to environmental/visual presentation rather than technical text labels.
+    provenance: [SRC-012]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high

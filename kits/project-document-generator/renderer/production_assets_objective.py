@@ -574,8 +574,10 @@ OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
 .pa-flow-head h3{margin:0;color:var(--navy);font-size:1.1rem;line-height:1.25;text-transform:none}
 .pa-flow-head p{margin:5px 0 0;color:#52616a;font-size:.75rem;line-height:1.45}
 .pa-flow-head p b,.pa-for>span{margin-right:6px;color:var(--blue);font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
-.pa-assets{display:grid;gap:8px}
-.pa-asset-card,.pa-voice-inline{padding:12px 13px;border:1px solid #d8e1e5;border-radius:4px;background:var(--paper);break-inside:avoid}
+.pa-assets{display:grid;gap:16px}
+.pa-asset-card,.pa-voice-inline{padding:14px 15px;border:1px solid #cbd7dd;border-radius:5px;background:var(--paper);break-inside:avoid}
+.pa-asset-card{border-left:4px solid var(--blue)}
+.pa-voice-inline{border-left:4px solid var(--amber)}
 .pa-asset-head{display:flex;align-items:center;gap:8px}
 .pa-type-badge{display:inline-flex;align-items:center;min-height:20px;padding:2px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.56rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .pa-asset-head h4{margin:0;color:var(--navy);font-size:.93rem;line-height:1.3;text-transform:none}

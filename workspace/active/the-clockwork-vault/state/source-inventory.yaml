@@ -90,3 +90,11 @@ sources:
     origin: user
     inspection: full
     summary: User approved the final developer-facing Production Assets information architecture: each gameplay flow is an implementation pack with Trigger, Player Experience, Implementation Checklist, direct asset purpose/use, exact per-item copy/Voice, and Done When. Quick Jump remains. Asset counts, asset numbering, category-first grouping, and Copy Flow Text are not useful primary UI and must not drive the presentation.
+
+  - id: SRC-012
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User requires player-facing UI and text to contain only real gameplay/story copy, never internal development or debug terminology. Production Assets should remain concise: each flow and asset gets a short For statement, exact in-game text is copy-ready, technical mechanic detail stays in Development, and separate assets must have clear visual boundaries. Objective 1 opening guidance should only hint that the missing clues are already in the chamber; the lever rule book should read naturally; technical pillar-state labels and technical trap labels are not player UI.

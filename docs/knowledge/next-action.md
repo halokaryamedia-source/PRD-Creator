@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_PRODUCTION_ASSETS_CONCISE_READY`
+`CLOCKWORK_PLAYER_UI_PURITY_READY`
 
-The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets is now a concise gameplay-flow companion to Development: each flow shows only a short For statement, then the required assets with a short purpose statement. Exact player text and Voice prompts remain directly copyable. Quick Jump remains; duplicated mechanic context, Trigger, Player Experience, Implementation Checklist, Done When, asset counts, numbering, category-first grouping, and Copy Flow Text are not shown.
+The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets stays concise and flow-first, but player-facing UI/text has now been audited for gameplay purity: technical/internal labels are removed from player copy, Objective 1 guidance is subtle and in-world, rule-book wording is more natural, Warden and Workshop instructions read as gameplay copy, and sabotage messages no longer expose implementation counts. Asset and Voice cards also have stronger visual separation.
 
-The current HTML has passed PRD, handoff, Voice, and concise Production Assets structural validation. Browser-level visual quality is still not claimed until visual review.
+PRD, handoff, Voice, and player-facing purity validation pass. Browser-level visual quality still requires user review.
 
 ## Next Step
 
-Review the concise Production Assets pages visually in-browser. Continue only with specific visual polish findings or actual ElevenLabs generation/audio review.
+Review the regenerated Production Assets visually. If accepted, continue only with specific visual polish or actual ElevenLabs generation/audio review.
