@@ -1,5 +1,6 @@
 project: the-clockwork-vault
 flow: 2
-status: ready_for_prd
-ready_for_prd: true
-preview_approved: true
+status: needs_decision
+ready_for_prd: false
+preview_approved: false
+next_step: Confirm or correct the Objective 1 lever-combination to color pairing used by the 12 prepared clue books; all other bounded gameplay revisions are approved.
