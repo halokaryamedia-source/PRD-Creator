@@ -1,9 +1,9 @@
 # Voice Acceptance
-Status: voice_delivery_ready
-Mechanical: PASS
-Voice Script Readiness: PASS
-Communication Conservation: PASS
-Project HTML Visual: PASS
+Status: stale_due_upstream_gameplay_revision
+Mechanical: STALE
+Voice Script Readiness: STALE
+Communication Conservation: STALE
+Project HTML Visual: STALE
 Audio Evidence: not_provided
-Critical: 0
-Major: 0
+Critical: 0 confirmed
+Major: current Objective 1-4 Voice scope and wording must be regenerated after the revised PRD is accepted
