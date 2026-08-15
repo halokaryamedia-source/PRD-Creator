@@ -56,6 +56,7 @@ jobs:
           python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
           python -m pip check
 
+      # test_prd_voice_assets includes the additive 04 / protected-core regression.
       - name: Compile PRD sources
         run: |
           python -m compileall -q kits/project-document-generator \
