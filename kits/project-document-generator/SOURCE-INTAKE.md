@@ -264,7 +264,7 @@ Saran AI                 # required when material AI-chosen Proposals exist
 
 Use one short Global Rules block only when shared rules materially affect all objectives.
 
-Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, validator detail, or a long Production Asset inventory by default. **Do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
+Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, validator detail, or a long Production Asset inventory by default. **do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
 
 Every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval. This includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, runtime-behavior defaults, or material Production Asset choices. Source-backed recovery and non-material production implications do not need individual labels. Keep one compact disclosure list rather than a multi-question decision dialog.
 
