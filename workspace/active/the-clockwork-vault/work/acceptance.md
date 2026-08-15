@@ -1,8 +1,8 @@
 # PRD Acceptance
 Status: revision_in_progress
-Mechanical: STALE — canonical content/render/output still represent the previously accepted gameplay revision
-Semantic Readiness: PENDING — current gameplay revision has one unresolved Objective 1 clue mapping proposal
-Material Conservation: PENDING — revised Objectives 1-4 are captured in requirement state/review but not yet regenerated into canonical content.md
-Visual sanity: STALE — current rendered HTML has not been regenerated for this revision
+Mechanical: PENDING — work/render-data.json and the versioned delivery bundle still represent the previously accepted gameplay projection
+Semantic Readiness: PASS — the approved Objective 1-4 revision and mapping are represented in current work/content.md
+Material Conservation: PASS — current canonical content preserves the approved pillar mapping, Gallery route/resource/retry rules, Warden Pebble/damage/checkpoint rules, and all three Workshop sabotage events
+Visual sanity: STALE — output/v1.0.0/prd.html has not been regenerated from the current canonical revision
 Critical: 0 confirmed
-Major: pending regeneration review
+Major: 1 — regenerate the derived render-data/delivery bundle and run the relevant PRD validation before restoring handoff_ready
