@@ -133,7 +133,7 @@ requirements:
 
   - id: REQ-017
     area: production-assets
-    statement: Production Assets must behave as developer implementation packs organized by gameplay flow. Each flow shows its Trigger, intended Player Experience, reusable assets it depends on, an Implementation Checklist, the concrete assets/Voice needed with a direct explanation of what each is for and when it is used, exact per-item player text or Voice prompt with individual Copy actions, and a Done When checklist. Quick Jump between flows remains. Asset-category-first grouping, asset counts, asset numbering, and Copy Flow Text aggregation must not be used as the primary developer experience.
+    statement: Production Assets is a concise companion to Development rather than a second implementation specification. Organize by gameplay flow and retain Quick Jump, but show only a short For statement for the flow, then each asset with its secondary type badge, name, and short For statement. Exact player-facing text and Voice prompts keep their per-item Copy actions. Do not show duplicated Trigger, Player Experience, Implementation Checklist, Done When, long objective context, asset-count summaries, asset numbering, category-first grouping, or Copy Flow Text.
     provenance: [SRC-009, SRC-010, SRC-011]
     evidence_status: approved
     recovery_class: none

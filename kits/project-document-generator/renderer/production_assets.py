@@ -206,6 +206,24 @@ def parse_voice_requirement_flows(path: Path) -> dict[str, str]:
             flows[current_id] = flow
     return flows
 
+
+def parse_voice_requirement_for(path: Path) -> dict[str, str]:
+    if not path.is_file():
+        return {}
+    values: dict[str, str] = {}
+    current_id: str | None = None
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.rstrip()
+        match = ENTRY_RE.match(line)
+        if match:
+            current_id = match.group(1)
+            continue
+        if current_id and line.startswith("- For:"):
+            value = line.split(":", 1)[1].strip()
+            if value:
+                values[current_id] = value
+    return values
+
 def _voice_for(cast: dict[str, str], speaker: str) -> str:
     speaker_key = speaker.casefold()
     for cast_speaker, voice in cast.items():
