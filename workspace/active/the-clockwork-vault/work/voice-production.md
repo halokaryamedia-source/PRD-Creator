@@ -38,13 +38,13 @@ That's our first way forward.
 ### VO-RES-01 — Find the Missing Combination
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 16–19 seconds
+Estimated Duration: 17–20 seconds
 
 ```performance
 [focused]
 The door gives you one answer: the middle pillar is BROWN.
 
-Search the scattered books for the missing colors and the lamp that should pulse. You won't need every book.
+Search the scattered books in any order for the missing colors and the lamp that should pulse. You won't need every book.
 
 Then test each pillar's two levers, watch the lamp, and make all three states match the combination.
 ```
@@ -68,7 +68,7 @@ Study the route before you build. If an attempt runs dry, this checkpoint resets
 ### VO-GAL-02 — Level 3 Gremlin Threshold
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 12–14 seconds
+Estimated Duration: 13–15 seconds
 
 ```performance
 [urgent]
@@ -76,7 +76,7 @@ Gremlin's timing this crossing. All three routes can work—for now.
 
 Pick one and get at least halfway before the window closes.
 
-Miss it, and that route is gone for this run.
+Miss it, and that route is gone. You'll restart from this checkpoint.
 ```
 
 ## 04. The Warden Halls
@@ -140,25 +140,25 @@ The rotator rule hasn't changed—reroute through the new path and restore power
 ### VO-WORK-03 — First Rollback Reaction
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 8–10 seconds
+Estimated Duration: 9–11 seconds
 
 ```performance
 [urgent]
 He knocked the first link out of line! The Generator-to-Ring-One connection is down.
 
-Go back and realign the rotators he turned, then continue.
+Same rule—go back and realign the rotators he turned, then continue.
 ```
 
 ### VO-WORK-04 — Second Rollback Reaction
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 8–10 seconds
+Estimated Duration: 9–11 seconds
 
 ```performance
 [urgent]
 Again—this time between Ring One and Ring Two.
 
-Those rotators are out of line. Repair that section and restore the network before you finish Ring Three.
+Same rule. Repair the rotators he turned and restore that section before you finish Ring Three.
 ```
 
 ## 06. Vault Restored
