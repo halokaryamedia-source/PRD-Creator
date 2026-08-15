@@ -10,8 +10,8 @@ requirements:
     impact: high
   - id: REQ-002
     area: gameplay
-    statement: Objective 1 targets approximately 9 minutes and uses three puzzle pillars. Each pillar has an upper lever, lower lever, and pressure plate; lever state is read upper then lower with four possible combinations, while the plate controls whether that pillar lamp is steady or blinking. The player reads short clue books to infer the lever-to-color mapping and matches the required three-pillar target shown near the exit.
-    provenance: [SRC-004, SRC-006]
+    statement: Objective 1 targets approximately 9 minutes and uses three puzzle pillars. Each pillar has an upper lever, lower lever, pressure plate, and colored indicator lamp. Lever state is read upper then lower with four possible combinations; the matching pressure plate controls only steady versus pulsing/blinking and does not change color. The exit display reveals only the middle target color Brown, so the player must use scattered books to discover the missing left/right target colors and which pillar must pulse, then use lever experimentation and immediate lamp feedback to produce the required colors.
+    provenance: [SRC-004, SRC-006, SRC-007]
     evidence_status: supported
     recovery_class: none
     approval_status: not_required
@@ -67,12 +67,12 @@ requirements:
     impact: high
   - id: REQ-009
     area: gameplay
-    statement: For the 12 Objective 1 clue books, pair the four lever combinations to each pillar's four listed colors by list order: ON/ON to color 1, OFF/OFF to color 2, ON/OFF to color 3, and OFF/ON to color 4. Right pillar colors are Red, Yellow, Green, Purple; middle pillar colors are Blue, Dark Blue, Brown, Dark Green; left pillar colors are Pink, Orange, White, Black.
-    provenance: [SRC-004, SRC-006]
+    statement: Objective 1 lever-to-color behavior remains fixed by the approved list-order mapping: ON/ON to color 1, OFF/OFF to color 2, ON/OFF to color 3, and OFF/ON to color 4. Right pillar colors are Red, Yellow, Green, Purple; middle pillar colors are Blue, Dark Blue, Brown, Dark Green; left pillar colors are Pink, Orange, White, Black. This mapping is machine behavior discovered through experimentation and immediate feedback; it is not the information that the twelve clue books directly explain.
+    provenance: [SRC-004, SRC-006, SRC-007]
     evidence_status: approved
     recovery_class: proposal
     approval_status: approved
-    resolution: User approved the list-order lever-to-color pairing on 2026-08-15. The 12 clue-book texts may use this mapping as current project authority.
+    resolution: User approved the list-order mapping on 2026-08-15, then clarified that the books should reveal the required final target rather than teach all twelve mapping entries.
     impact: high
   - id: REQ-010
     area: scoring
@@ -103,6 +103,22 @@ requirements:
     statement: Project-facing PRD copy describes player, gameplay, and production behavior without exposing the Objective 4 coordinate grid, HTML preview controls, Golden/page-contract/renderer/validator mechanics, or other document-production internals. Material gameplay meaning must not be deleted during Humanize cleanup.
     provenance: [SRC-002, SRC-006]
     evidence_status: supported
+    recovery_class: none
+    approval_status: not_required
+    impact: high
+  - id: REQ-014
+    area: gameplay
+    statement: The authored Objective 1 door solution is Left = Orange, Middle = Brown, Right = Purple. Only the Left pressure plate is active, so Left pulses/blinks while Middle and Right remain steady. The exit display reveals only Middle = Brown; the other two colors and pulse location remain unknown until inferred from the scattered books.
+    provenance: [SRC-007]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high
+  - id: REQ-015
+    area: production-assets
+    statement: Objective 1 uses twelve books scattered around the chamber with no required reading order: two mechanic-rule books, eight useful clues, and two harmless decoys. The two rule books explain TOP-to-BOTTOM lever reading and that pressure plates control pulse rather than color. The eight useful clues are independent, easy-to-understand hints that collectively narrow Left to Orange, Right to Purple, and Pulse to Left without stating those answers directly. The two decoys are ordinary maintenance/lore notes and must not contain false puzzle information. Finding useful books earlier by chance is valid player luck; completion must not require reading all twelve books.
+    provenance: [SRC-007]
+    evidence_status: approved
     recovery_class: none
     approval_status: not_required
     impact: high
