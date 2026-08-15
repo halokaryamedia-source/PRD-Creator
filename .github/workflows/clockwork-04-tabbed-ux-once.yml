@@ -1,0 +1,138 @@
+name: Clockwork 04 Tabbed UX Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-04-ux/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Fix patch quoting and apply UX rebuild
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.tmp-clockwork-04-ux/patch.py')
+          t=p.read_text(encoding='utf-8')
+          t=t.replace("style = r'''OBJECTIVE_STYLE = r'''<style", "style = r\"\"\"OBJECTIVE_STYLE = r'''<style")
+          t=t.replace("</style>''' '''\n    style = style.strip()", "</style>''' \"\"\"\n    style = style.strip()")
+          t=t.replace("scripts = r'''OBJECTIVE_COPY_SCRIPT = r'''<script", "scripts = r\"\"\"OBJECTIVE_COPY_SCRIPT = r'''<script")
+          t=t.replace("</script>''' '''\n    scripts = scripts.strip()", "</script>''' \"\"\"\n    scripts = scripts.strip()")
+          p.write_text(t, encoding='utf-8')
+          PY
+          python .tmp-clockwork-04-ux/patch.py
+          python .tmp-clockwork-04-ux/contract_patch.py
+
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit tests
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+
+      - name: Verify tabbed low-density UX
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          project=Path('workspace/active/the-clockwork-vault')
+          html=(project/'output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          assets=(project/'work/asset-requirements.md').read_text(encoding='utf-8')
+          renderer=Path('kits/project-document-generator/renderer/production_assets_objective.py').read_text(encoding='utf-8')
+
+          required=[
+              'class="pa-tab-list"', 'role="tab"', 'class="pa-panel"',
+              'class="pa-row"', 'View Prompt', 'Copy Prompt', 'Copy Text',
+              'class="pa-cast"', 'Voice Cast', 'UI / TEXT', 'PRESENTATION', 'SFX',
+              'Gremlin Path Collapse', 'Warden Hit Effects', 'Pillar Lamp Feedback',
+          ]
+          for token in required:
+              assert token in html, token
+
+          forbidden=[
+              'class="pa-asset-card"', 'class="pa-voice-inline"', 'pa-voice-setup-block',
+              '<b>For</b>', 'Pillar Readability', 'Trap Readability',
+              'Checkpoint Recovery', 'Level Retry Reset',
+          ]
+          for token in forbidden:
+              assert token not in html, token
+
+          for token in ['Pillar Readability','Trap Readability','Checkpoint Recovery','Level Retry Reset']:
+              assert f'#### {token}' not in assets, token
+
+          # Tabs should hide every panel except the first in each tab set at initial render.
+          tabsets=html.count('class="pa-tabs"')
+          assert tabsets >= 6, tabsets
+          assert html.count('role="tab"') > tabsets
+          assert html.count('class="pa-row pa-row-voice"') == 17
+          assert 'data-pa-tab' in renderer
+          print('04 tabbed low-density UX PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_04_TABBED_UX_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 Production Assets now uses the same low-density information hierarchy expected from sections 01-03: gameplay flows are interactive tabs with one active flow at a time; concrete production assets are compact rows rather than repeated large cards; flow-level For text is no longer repeated; exact UI/Text stays copy-ready; Voice prompts are collapsed by default; Voice Cast is shown once in Global / Shared Assets; and abstract readability/reset requirements that are not concrete production deliverables remain in Development instead of 04.
+
+          PRD, handoff, Voice, unit-contract, and tabbed-UX validation pass. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review the tabbed Production Assets pages visually in-browser. Continue only with concrete visual/content polish findings or actual ElevenLabs generation/audio review.
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-04-Tabbed-UX
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-04-ux
+          rm -f .github/workflows/clockwork-04-tabbed-ux-once.yml
+
+      - name: Commit 04 tabbed UX
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "restructure Production Assets for fast scanning"
+          git push origin HEAD:Local
