@@ -4,19 +4,22 @@ Status: active Flow 6 policy
 
 ## Purpose
 
-Flow 6 turns `voice_requirements_ready` into canonical Eleven v3 production wording and publishes it into the **same project HTML** without changing upstream Voice scope or PRD meaning.
+Flow 6 turns `voice_requirements_ready` into canonical Eleven v3 production wording and publishes it into the **same project HTML** without changing upstream Voice scope or PRD/project meaning.
 
 ## Ownership
 
 ```text
-accepted PRD
+accepted project / PRD meaning
 → work/voice-requirements.md
 → Flow 6 / SoundMaker v3
 → work/voice-production.md
-→ output/v<document.version>/prd.html → Production Assets → matching gameplay section → Audio → Voice Production
+→ output/v<document.version>/prd.html
+   → 04 Production Assets
+      → matching gameplay moment
+         → AUDIO
 ```
 
-- accepted PRD owns project/gameplay truth;
+- accepted project/PRD meaning owns gameplay/story truth;
 - `voice-requirements.md` owns Voice asset scope, communication intent/context, and authoritative timing truth when one exists;
 - `SOUNDMAKER.md` owns Eleven v3 preparation/generation procedure;
 - `voice-production.md` owns selected actor voice when known, Estimated Duration, and exact performance wording;
@@ -69,7 +72,7 @@ Voice Cast:
 - <Speaker>: <selected ElevenLabs voice>
 ```
 
-Do not repeat commercial voice names in every line.
+Do not repeat commercial voice names in every canonical line.
 
 An unselected actor voice may remain pending during Preparation Mode when a clear Target Voice Profile is enough to write responsibly. Actual Generation Mode requires the active Speaker's intended voice to be selected.
 
@@ -93,7 +96,7 @@ Do not duplicate Channel, Trigger, Purpose, Timing Constraint, requirement bulle
 
 # Consolidated project HTML
 
-After canonical Voice Production exists, the normal renderer publishes it into the same `output/v<document.version>/prd.html` as a professional-only downstream section while preserving the existing accepted PRD navigation/page identity.
+After canonical Voice Production exists, the normal renderer publishes it into the same `output/v<document.version>/prd.html` while preserving accepted 01–03 navigation/page identity.
 
 ```text
 03 Development
@@ -104,39 +107,38 @@ After canonical Voice Production exists, the normal renderer publishes it into t
    <gameplay section title>
       <accepted PRD package label>
 
-page content
-→ Audio
-   → Voice Production
+page body
+→ <natural gameplay moment>
+   → AUDIO
 ```
 
-Production Assets is additive. It does not promote gameplay packages out of Development and does not renumber PRD package/page codes. Voice does not own a separate sidebar category.
+Production Assets is additive. It does not promote gameplay packages out of Development and does not renumber PRD package/page codes. Voice does not own a separate sidebar category or an `Audio → Voice Production` dashboard.
 
-Each gameplay page containing Voice uses:
+Each canonical Voice line is rendered as:
 
 ```text
-common Production Assets page header
-→ gameplay section title + accepted PRD package label/context
-→ asset counts
-→ Audio
-   → Voice Production
-      → Voice line count + Primary Speaker
-      → compact Voice Setup for that gameplay section
+AUDIO
+<Character> — <Line Title>
+
+Function
+<communication/story purpose for this moment>
+
+Voice Preset
+<selected actor voice>
+
+ElevenLabs Model
+Eleven v3
+
+Estimated Duration
+<duration>
+
+Prompt
+<exact canonical performance payload>
 ```
 
-Each Voice line shows:
+Character identity in the title means 04 does not need a separate visible Speaker row. Flow 5 Trigger/Context, line counts, Primary Speaker, Voice Setup, Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the reader-first 04 resource.
 
-```text
-title
-→ accepted PRD package label · Voice Line X/Y
-→ Context = exact Flow 5 Trigger
-→ Speaker + Estimated Duration
-→ exact Eleven v3 prompt with performance directions visually distinct
-→ Copy Prompt
-```
-
-The visible `Context` is a direct projection of the existing Flow 5 Trigger, not a duplicate Flow 6 field. Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the HTML.
-
-Production Assets navigation labels may wrap naturally and must remain readable without clipping. `Copy Prompt` copies only the exact canonical performance block.
+Performance-direction tags remain visually distinct without changing copied bytes. `Copy Prompt` copies only the exact canonical performance block.
 
 No separate Voice HTML is created by default.
 

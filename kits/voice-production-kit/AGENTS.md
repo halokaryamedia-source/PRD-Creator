@@ -35,17 +35,20 @@ Do not broad-read every Voice/reference file by default. Recover current project
 ## Canonical boundary
 
 ```text
-accepted PRD
+accepted project / PRD meaning
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/v<document.version>/prd.html → Production Assets → matching gameplay section → Audio → Voice Production
+→ output/v<document.version>/prd.html
+   → 04 Production Assets
+      → matching gameplay moment
+         → AUDIO
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
 
-- PRD owns project/gameplay truth and the fact that a Voice asset is required.
+- PRD/project authority owns gameplay/story truth and the fact that a Voice asset is required.
 - Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, required communication, exclusions, and source timing truth when present.
-- `work/voice-production.md` owns canonical production content.
+- `work/voice-production.md` owns canonical production content, Estimated Duration, and selected actor voice when known.
 - `output/v<document.version>/prd.html` is the default derived operator presentation; it is not wording authority.
 - DOCX is optional export only.
 
@@ -61,34 +64,41 @@ Production Assets extends the existing accepted PRD navigation. It must not rebu
 04 Production Assets
    <gameplay section title>
       <accepted PRD package label>
-
-page content
-→ Audio
-   → Voice Production
 ```
 
-Voice does not own a separate sidebar category. Each matching Production Assets link uses the gameplay/section title plus the accepted PRD label, and long text wraps naturally instead of being truncated.
+Voice does not own a separate sidebar category and does not create an `Audio → Voice Production` sub-dashboard.
 
-A gameplay page containing Voice shows the common Production Assets page header and counts, then `Audio → Voice Production` with Voice line count, Primary Speaker, and compact Voice Setup.
-
-Each Voice line shows:
+Each canonical line is rendered in its matching natural gameplay moment as:
 
 ```text
-title
-→ <PRD package label> · Voice Line X/Y
-→ Context = exact Flow 5 Trigger
-→ Speaker + Estimated Duration
-→ canonical production text
-→ Copy Prompt
+AUDIO
+<Character> — <Line Title>
+
+Function
+<communication/story purpose>
+
+Voice Preset
+<selected actor voice>
+
+ElevenLabs Model
+Eleven v3
+
+Estimated Duration
+<duration>
+
+Prompt
+<exact canonical performance payload>
 ```
 
-The visible developer `Context` is a direct presentation of the existing Flow 5 Trigger. Do not duplicate it into canonical Flow 6 content. Purpose, `Must communicate`, `Must not add/repeat`, source refs, reasoning, and QA notes remain internal.
+Character identity in the title replaces a separate visible Speaker field. Flow 5 Trigger/Context, line counts, Primary Speaker summaries, Voice Setup blocks, Purpose, `Must communicate`, `Must not add/repeat`, source refs, reasoning, and QA remain outside the visible reader-first 04 resource unless another current owner explicitly needs them.
+
+Performance directions are visually distinct; copied Prompt bytes remain canonical.
 
 ## Semantic vs technical ownership
 
 Use the root `voice-production` specialist for semantic/product-contract defects. When semantics are already correct, route mechanics directly:
 
-- objective-first Production Assets composition/navigation → `kits/project-document-generator/renderer/production_assets_objective.py`;
+- objective/moment-first Production Assets composition/navigation → `kits/project-document-generator/renderer/production_assets_objective.py`;
 - Voice-specific Production Assets parsing/presentation primitives → `kits/project-document-generator/renderer/production_assets.py`;
 - optional DOCX generation/pagination → `builder/build_docx.py`;
 - optional DOCX presentation contract → `DOCX-FORMAT.md`;
@@ -97,8 +107,9 @@ Use the root `voice-production` specialist for semantic/product-contract defects
 
 ## Validator / builder rules
 
-- exact Voice ID, Type, and Speaker parity are fail-closed;
-- when the current versioned `prd.html` exists, validator checks section/page parity, developer Context, and canonical payload parity;
+- exact Voice ID, Type, and Speaker parity are fail-closed in canonical sources;
+- when the current versioned `prd.html` exists, validator checks Voice section/prompt identity and exact canonical payload parity;
+- current visible 04 AUDIO field/layout behavior is owned by the Project Document 04 compositor regression, not duplicated as a second Voice HTML schema;
 - when optional DOCX exists, validator checks that export too;
 - builder/validator PASS does not establish semantic or visual quality;
 - never hand-edit `prd.html` or DOCX as the source fix.
@@ -128,13 +139,13 @@ python kits/voice-production-kit/validator/validate.py \
   workspace/active/<project>
 ```
 
-Use `Voice Verify` for changed Voice contracts and `PRD Verify` when the Production Assets compositor changes.
+Use `Voice Verify` for changed Voice semantic/validator contracts and `PRD Verify` when the Production Assets compositor changes.
 
 ## Boundaries
 
 - kit owns Flow 5–7 only;
 - project definition/PRD belongs to Project Document Generator;
 - Production Assets pages are downstream presentation, not a new PRD semantic owner;
-- SFX remains separate until explicitly developed;
+- non-dialogue AUDIO remains owned by the Project Document Production Assets contract, not this Voice kit;
 - DOCX remains optional compatibility/export, not the default operator surface;
 - do not add a second Voice HTML, generic asset framework, or extra workflow layer without a concrete need.

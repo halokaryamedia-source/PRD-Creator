@@ -6,7 +6,7 @@ Status: active Flow 7 policy
 
 Flow 7 decides whether the current `voice_script_ready` revision is safe to deliver for the requested Voice Production scope.
 
-Default non-audio delivery is the **same project HTML** containing PRD core + `Production Assets → matching gameplay section → Audio → Voice Production`. DOCX and audio are optional scopes.
+Default non-audio delivery is the **same project HTML** containing PRD core + `04 Production Assets → matching gameplay moment → AUDIO`. DOCX and audio are optional scopes.
 
 ## Canonical sequence
 
@@ -37,7 +37,7 @@ python kits/voice-production-kit/validator/validate.py \
 
 Mechanical validation always checks canonical requirements/script parity.
 
-When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/page parity, exact Flow 5 Trigger context presentation, and exact canonical performance text.
+When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/prompt identity and exact canonical performance text. Current visible AUDIO-field/layout behavior is owned by the Project Document 04 compositor regression rather than duplicated as another Voice HTML schema.
 
 When optional DOCX exists, it validates that export too.
 
@@ -69,20 +69,18 @@ Voice Script Readiness: PASS | FAIL
 
 ## Production Assets HTML
 
-When project HTML readiness is claimed, inspect the Voice presentation for:
+When project HTML visual readiness is claimed, inspect the Voice presentation for:
 
 - accepted PRD sidebar hierarchy/page identity remains intact;
 - gameplay/objective sections stay under `03 Development`;
-- `04 Production Assets` is additive and links the matching gameplay/shared pages rather than a separate Voice category;
-- a gameplay page with Voice contains `Audio → Voice Production`;
-- every matching Production Assets navigation link shows the gameplay/section title plus the accepted PRD package label;
-- Production Assets navigation text wraps naturally and is not clipped at the desktop widths being claimed;
-- Voice sections and scripts follow canonical gameplay/Trigger order;
-- each gameplay page with Voice shows gameplay title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup;
-- each line shows title, `<PRD package label> · Voice Line X/Y`, exact Flow 5 Trigger as Context, Speaker, Estimated Duration, exact script, and Copy Prompt;
+- `04 Production Assets` is additive and links matching gameplay/shared pages rather than a separate Voice category;
+- Voice appears as `AUDIO` inside the correct natural gameplay moment;
+- each dialogue resource title identifies `<Character> — <Line Title>`;
+- each dialogue resource visibly includes Function, Voice Preset, ElevenLabs Model = `Eleven v3`, Estimated Duration, and Prompt;
+- a separate visible Speaker row, Flow 5 Context/Trigger row, line-count summary, Primary Speaker summary, and Voice Setup block are absent unless a future approved contract explicitly reintroduces them;
 - performance-direction tags remain visually distinct without changing the copied canonical payload;
-- Flow 5 Purpose, `Must communicate`, `Must not add/repeat`, source refs, reasoning, WPM math, QA, and other internal fields stay out of the visible Voice page;
-- no clipping/overlap or obvious break from the PRD visual language exists.
+- Flow 5 Purpose, Trigger, `Must communicate`, `Must not add/repeat`, source refs, reasoning, WPM math, QA, and other internal fields stay out of the visible 04 resource;
+- navigation labels wrap naturally and no clipping/overlap or obvious break from the PRD visual language exists at the desktop widths being claimed.
 
 Record:
 
@@ -157,7 +155,7 @@ change
 → Communication Conservation
 → integrated readiness on affected scope
 → rerender current versioned prd.html
-→ recheck affected Production Assets view
+→ recheck affected 04 AUDIO view
 → stop
 ```
 

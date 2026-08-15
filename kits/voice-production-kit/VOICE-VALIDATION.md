@@ -19,7 +19,9 @@ python kits/voice-production-kit/validator/validate.py \
 
 Mechanical validation always checks current Voice ID/Type/Speaker parity and canonical script structure.
 
-When `output/v<document.version>/prd.html` exists, it also checks section/page parity, per-line position/context presentation, exact Flow 5 Trigger Context, and exact canonical prompt payload. DOCX is checked only when that optional export exists.
+When `output/v<document.version>/prd.html` exists, it also checks Voice section/prompt identity and exact canonical payload parity. The Project Document 04 regression owns the current visible AUDIO field/layout contract; do not duplicate that compositor contract inside the Voice validator.
+
+DOCX is checked only when that optional export exists.
 
 Mechanical PASS does not prove semantic or visual quality.
 
@@ -45,19 +47,19 @@ Do not create separate persisted scorecards for these lenses.
 
 ## Production Assets HTML review
 
-When the consolidated project HTML is claimed current, verify:
+When the consolidated project HTML is claimed visually current, verify:
 
 - the accepted PRD sidebar hierarchy/page identities remain unchanged;
 - gameplay/objective sections remain under `03 Development`;
-- `04 Production Assets` is additive and links the matching gameplay/shared pages rather than a separate Voice category;
-- a gameplay page containing Voice shows `Audio → Voice Production`;
-- every matching Production Assets navigation link shows gameplay section title + accepted PRD package label;
-- sidebar labels wrap naturally and are not clipped at the desktop widths being claimed;
-- section order matches canonical Voice order;
-- each gameplay page with Voice shows title, accepted PRD label/context, Voice line count, Primary Speaker, and compact Voice Setup;
-- each line shows title, `<PRD package label> · Voice Line X/Y`, exact Flow 5 Trigger as Context, Speaker, Estimated Duration, exact canonical prompt, and Copy Prompt;
-- the copied payload remains exact;
-- Flow 5 Purpose/requirements/source refs/reasoning/QA stay out of the visible page;
+- `04 Production Assets` is additive and links matching gameplay/shared pages rather than a separate Voice category;
+- Voice appears as `AUDIO` inside the correct natural gameplay moment;
+- the resource title is `<Character> — <Line Title>`;
+- visible fields are Function, Voice Preset, ElevenLabs Model, Estimated Duration, and Prompt;
+- `ElevenLabs Model` displays `Eleven v3`;
+- the copied Prompt remains exact canonical performance content;
+- performance-direction tags remain visually distinct from spoken dialogue;
+- separate visible Speaker, Flow 5 Context/Trigger, line-count, Primary Speaker, and Voice Setup presentation is absent under the current 04 contract;
+- Flow 5 Purpose/requirements/source refs/reasoning/QA stay out of the visible resource;
 - no clipping/overlap or obvious visual break from the PRD design language exists.
 
 Record:

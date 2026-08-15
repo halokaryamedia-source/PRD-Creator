@@ -1,6 +1,6 @@
 ---
 name: voice-production-kit
-description: Extract Voice requirements from accepted PRDs, prepare canonical Eleven v3 production content, conserve required communication, and publish developer-ready Voice Production into the same project HTML without inventing upstream project facts.
+description: Extract Voice requirements from accepted PRDs, prepare canonical Eleven v3 production content, conserve required communication, and publish developer-ready Voice Production into matching 04 AUDIO resources without inventing upstream project facts.
 version: 1.11.2
 ---
 
@@ -8,8 +8,8 @@ version: 1.11.2
 
 ## Flow ownership
 
-1. **Flow 5 — Voice Requirement Extraction**: accepted PRD → `work/voice-requirements.md`.
-2. **Flow 6 — Voice Production**: Voice Requirements → canonical `work/voice-production.md` → same project `output/v<document.version>/prd.html`.
+1. **Flow 5 — Voice Requirement Extraction**: accepted project/PRD meaning → `work/voice-requirements.md`.
+2. **Flow 6 — Voice Production**: Voice Requirements → canonical `work/voice-production.md` → matching AUDIO resources in the same project `output/v<document.version>/prd.html`.
 3. **Flow 7 — Voice Validation & Delivery**: current revision → compact acceptance + delivery state.
 
 DOCX and audio remain optional downstream scopes.
@@ -27,17 +27,20 @@ The former duplicate `SCRIPT-PRODUCTION.md` lifecycle owner is retired in v1.11.
 # Authority chain
 
 ```text
-accepted PRD
+accepted project / PRD meaning
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/v<document.version>/prd.html → Production Assets → Voice
+→ output/v<document.version>/prd.html
+   → 04 Production Assets
+      → matching gameplay moment
+         → AUDIO
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
 
-- PRD owns project/gameplay truth and the need for a Voice asset.
+- PRD/project authority owns gameplay/story truth and the need for a Voice asset.
 - Flow 5 owns which Voice assets exist and their communication intent/context.
-- Flow 6 owns canonical production content.
+- Flow 6 owns canonical production content, Estimated Duration, and actor selection when known.
 - `output/v<document.version>/prd.html` is derived developer/operator presentation only.
 - DOCX is optional export only.
 
@@ -61,6 +64,8 @@ canonical performance payload
 
 `Type` and `Speaker` match Flow 5. Do not duplicate Trigger/Purpose/requirements/source refs/reasoning/QA into every canonical entry.
 
+The canonical script may also store one selected ElevenLabs actor voice per recurring Speaker in its `Voice Cast` header when known.
+
 # Project HTML production surface
 
 The same `output/v<document.version>/prd.html` is the default human-facing project document.
@@ -75,28 +80,37 @@ Production Assets extends the accepted PRD navigation rather than rebuilding it:
 04 Production Assets
    <gameplay section title>
       <accepted PRD package label>
-
-page content
-→ Audio
-   → Voice Production
 ```
 
-Gameplay/objective sections remain under Development and accepted PRD page codes stay unchanged. Voice does not own a separate sidebar category; every linked gameplay section shows section title + accepted PRD label, with natural wrapping for long sidebar text.
+Voice does not own a separate sidebar category or an `Audio → Voice Production` dashboard. Canonical Voice entries are merged as normal `AUDIO` resources inside their matching gameplay moments.
 
-Each Voice section page shows gameplay title, accepted PRD package label/context, Voice line count, Primary Speaker, and compact Voice Setup.
-
-Each line shows:
+Visible dialogue resource:
 
 ```text
-title
-→ <PRD package label> · Voice Line X/Y
-→ Context = exact Flow 5 Trigger
-→ Speaker + Estimated Duration
-→ canonical production text
-→ Copy Prompt
+AUDIO
+<Character> — <Line Title>
+
+Function
+<communication/story purpose>
+
+Voice Preset
+<selected actor voice>
+
+ElevenLabs Model
+Eleven v3
+
+Estimated Duration
+<duration>
+
+Prompt
+<exact canonical performance payload>
 ```
 
-The visible Context is the existing Flow 5 Trigger projected into HTML; it is not a new Flow 6 field. Internal Purpose/requirements/source refs/reasoning/QA stay in their owners.
+Do not require visible line count, Primary Speaker, compact Voice Setup, Flow 5 Context/Trigger, or separate Speaker field in 04. Those are not current reader-first Production Asset fields.
+
+Performance-direction tags are visually distinct from spoken text. `Copy Prompt` copies the exact canonical performance payload.
+
+Internal Purpose/Trigger/requirements/source refs/reasoning/QA stay in their owners.
 
 ## Optional DOCX
 
@@ -132,7 +146,7 @@ Static HTML parity is not visual proof; visual PASS requires actual rendered/bro
 # Non-negotiable rules
 
 - SoundMaker scope is **Eleven v3 only**.
-- Voice Production is downstream from accepted PRD, not a separate source-intake project.
+- Voice Production is downstream from accepted project/PRD meaning, not a separate source-intake project.
 - recover existing project context before asking the user.
 - Voice scope cannot change silently after Flow 5.
 - downstream performance/presentation cannot create project facts, Speakers, Channels, Triggers, mechanics, rewards, outcomes, or source timing truth.
