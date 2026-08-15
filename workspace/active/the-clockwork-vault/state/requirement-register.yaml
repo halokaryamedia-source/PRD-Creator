@@ -2,64 +2,105 @@ project: the-clockwork-vault
 requirements:
   - id: REQ-001
     area: gameplay
-    statement: The Antechamber is story briefing, Custodian Key pickup, and Resonance Engine seal activation; it does not add a separate warm-up puzzle or Objective Score.
-    provenance: [SRC-001, SRC-002]
+    statement: The Antechamber remains story briefing, Custodian Key pickup, and Resonance Engine seal activation; it adds no separate warm-up puzzle or Objective Score.
+    provenance: [SRC-001, SRC-002, SRC-006]
     evidence_status: supported
     recovery_class: proposal
     approval_status: approved
     impact: high
   - id: REQ-002
     area: gameplay
-    statement: The Resonance Engine begins with approximately 90 seconds of free play while the target display is blank or inactive, then runs Target 1 followed by Target 2.
-    provenance: [SRC-001, SRC-002]
+    statement: Objective 1 targets approximately 9 minutes and uses three puzzle pillars. Each pillar has an upper lever, lower lever, and pressure plate; lever state is read upper then lower with four possible combinations, while the plate controls whether that pillar lamp is steady or blinking. The player reads short clue books to infer the lever-to-color mapping and matches the required three-pillar target shown near the exit.
+    provenance: [SRC-004, SRC-006]
     evidence_status: supported
-    recovery_class: proposal
-    approval_status: approved
+    recovery_class: none
+    approval_status: not_required
     impact: high
   - id: REQ-003
     area: gameplay
-    statement: The Broken Gallery uses three checkpoints; collapse appears only in Checkpoint 3 around 50 percent of final-checkpoint progress and failure must remain recoverable.
-    provenance: [SRC-001, SRC-002]
+    statement: Objective 2 targets approximately 9 minutes and is divided into three checkpoints with three route choices each. Level 1 has two viable routes and requires 12 blocks for a viable crossing. Level 2 has one viable route and requires 20 blocks plus 3 ladders. Placement is allowed only on authored marked positions. Wrong-route resource exhaustion or the configured time limit returns the player to that level checkpoint and resets placed resources for another attempt.
+    provenance: [SRC-004, SRC-006]
     evidence_status: supported
-    recovery_class: proposal
-    approval_status: approved
+    recovery_class: none
+    approval_status: not_required
     impact: high
   - id: REQ-004
     area: gameplay
-    statement: Echo Pebble has unlimited use and disables valid wall or floor traps for four seconds of game-time; ceiling traps remain timing and observation challenges.
-    provenance: [SRC-001, SRC-002]
+    statement: Objective 2 Level 3 makes all three routes initially viable but requires the player to reach at least 50 percent of the chosen route before the authored time threshold. Failure returns the player to Checkpoint 3, closes the failed route for that run, requires resource search again, and leaves the remaining active routes available.
+    provenance: [SRC-004, SRC-006]
     evidence_status: supported
-    recovery_class: proposal
-    approval_status: approved
+    recovery_class: none
+    approval_status: not_required
     impact: high
   - id: REQ-005
     area: gameplay
-    statement: The Gremlin Workshop uses Straight, Elbow, and Split conduits; after Ring 2 stabilizes one authored active connection is permanently sabotaged and the player must reroute, while Vex assistance remains highlight-only.
-    provenance: [SRC-001, SRC-002]
+    statement: Objective 3 uses three trap checkpoints. Wall laser traps can be passed by timing or temporarily disabled with Echo Pebble; Pebble may also knock an authored hanging stone into a beam to block it. Floor traps and swinging ceiling axes cannot be disabled with Pebble and must be avoided or timed. Echo Pebble supply is unlimited with a 3-second cooldown between throws.
+    provenance: [SRC-004, SRC-006]
     evidence_status: supported
-    recovery_class: proposal
-    approval_status: approved
+    recovery_class: none
+    approval_status: not_required
     impact: high
   - id: REQ-006
-    area: result
-    statement: The ending grants Clockwork Wayfinder once, adds no fifth Objective Score, and uses idempotent reward and completion-save behavior.
-    provenance: [SRC-001, SRC-002]
+    area: gameplay
+    statement: Objective 3 hazard consequences follow the current source values. Laser contact applies 10 gameplay damage, Weakness II for 5 seconds, and Slowness I for 3 seconds. Floor-trap contact applies 5 gameplay damage, Slowness II for 5 seconds, and Blindness for 3 seconds. Swinging-axe contact applies 10 gameplay damage, backward knockback, Weakness II for 5 seconds, and Slowness I for 3 seconds. If gameplay health reaches zero, the player returns to the current level checkpoint. This objective is an explicit exception to the earlier global no-death assumption.
+    provenance: [SRC-004, SRC-006]
     evidence_status: supported
-    recovery_class: proposal
-    approval_status: approved
+    recovery_class: none
+    approval_status: not_required
     impact: high
   - id: REQ-007
-    area: scoring
-    statement: The four scored objectives retain a 0 to 100 Objective Score scale and their approved component weights total 100 percent within each objective; Antechamber and ending remain no-score progression packages.
-    provenance: [SRC-001, SRC-002]
+    area: gameplay
+    statement: Objective 4 targets approximately 9 minutes and uses one continuous power network from Power Generator to Ring 1, then Ring 2, then Ring 3. Junction rotators are 90-degree L connectors that route power through one valid active path. The technical grid coordinates and layout remain outside the PRD and belong in a later supporting technical document.
+    provenance: [SRC-004, SRC-005, SRC-006]
     evidence_status: supported
-    recovery_class: proposal
-    approval_status: approved
+    recovery_class: none
+    approval_status: not_required
     impact: high
   - id: REQ-008
+    area: gameplay
+    statement: Objective 4 has staged Gremlin sabotage. About 20 seconds after Ring 1 and Ring 2 are connected, the active route is blocked and a previously blocked alternate route opens. During Ring 2 to Ring 3 progression, reaching 50 percent changes two rotators on the Power Generator to Ring 1 route; reaching 80 percent changes three rotators on the Ring 1 to Ring 2 route. The player must repair those earlier connections and finish with Generator, Ring 1, Ring 2, and Ring 3 continuously connected; completion opens the Clockwork exit.
+    provenance: [SRC-004, SRC-005, SRC-006]
+    evidence_status: supported
+    recovery_class: none
+    approval_status: not_required
+    impact: high
+  - id: REQ-009
+    area: gameplay
+    statement: For the 12 Objective 1 clue books, pair the four lever combinations to each pillar's four listed colors by list order: ON/ON to color 1, OFF/OFF to color 2, ON/OFF to color 3, and OFF/ON to color 4. Right pillar colors are Red, Yellow, Green, Purple; middle pillar colors are Blue, Dark Blue, Brown, Dark Green; left pillar colors are Pink, Orange, White, Black.
+    provenance: [SRC-004]
+    evidence_status: inferred
+    recovery_class: proposal
+    approval_status: pending
+    resolution: The source gives the four lever combinations and four colors per pillar but does not explicitly pair them. Order-pairing is the smallest deterministic completion needed to prepare all 12 clue-book texts; replace it if the implemented pillar logic differs.
+    impact: high
+  - id: REQ-010
+    area: scoring
+    statement: The four objectives retain the existing 0-100 Objective Score boundary, but scoring evidence must be updated to the revised mechanics rather than old Target 1/Target 2, old collapse, old floor-trap disable, or single-fault Workshop assumptions. Existing component-weight families may be retained where their meaning still applies. The map continues to emit raw evidence only and does not display or export the calculated final score.
+    provenance: [SRC-001, SRC-002, SRC-004, SRC-006]
+    evidence_status: supported
+    recovery_class: completion
+    approval_status: approved
+    impact: high
+  - id: REQ-011
+    area: production-assets
+    statement: Production Asset preparation covers all custom player-visible, readable, heard, and authored presentation needs implied by the revised gameplay, including Objective 1 clue books and instruction UI, Objective 2 route/checkpoint/time-challenge information, Objective 3 Echo Pebble/trap assets and instruction UI, Objective 4 power-routing and Gremlin-event assets, and revised Voice Production. The Objective 4 technical layout itself is not a PRD Production Asset page.
+    provenance: [SRC-004, SRC-006]
+    evidence_status: supported
+    recovery_class: none
+    approval_status: not_required
+    impact: high
+  - id: REQ-012
+    area: result
+    statement: The ending retains the Clockwork Wayfinder one-time reward, adds no fifth Objective Score, and keeps idempotent reward and completion-save behavior unless a later user instruction changes the ending.
+    provenance: [SRC-001, SRC-002]
+    evidence_status: supported
+    recovery_class: none
+    approval_status: not_required
+    impact: high
+  - id: REQ-013
     area: document-content
-    statement: Project-facing copy must describe Clockwork gameplay and production behavior without exposing Golden, page-contract, renderer, validator, content-lock, or other document-production mechanics; material gameplay meaning must not be deleted during Humanize cleanup.
-    provenance: [SRC-002]
+    statement: Project-facing PRD copy describes player, gameplay, and production behavior without exposing the Objective 4 coordinate grid, HTML preview controls, Golden/page-contract/renderer/validator mechanics, or other document-production internals. Material gameplay meaning must not be deleted during Humanize cleanup.
+    provenance: [SRC-002, SRC-006]
     evidence_status: supported
     recovery_class: none
     approval_status: not_required
