@@ -1,0 +1,123 @@
+name: Clockwork UI Purity Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-ui-purity/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Apply player-facing UI cleanup
+        run: python .tmp-ui-purity/patch.py
+
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+
+      - name: Verify player-facing purity and visual separation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('workspace/active/the-clockwork-vault/output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          required = [
+              'Everything you need is somewhere in this chamber.',
+              'BOOK 1 — LEVER NOTES',
+              'BOOK 2 — PRESSURE PLATE NOTES',
+              'Pebbles never run out · 3 seconds between throws.',
+              'Turn the L-shaped junctions to guide the power.',
+              'The first connection has been knocked out of line.',
+              'An earlier connection has been knocked out of line.',
+              'Pillar Readability',
+              'Trap Readability',
+              '.pa-assets{display:grid;gap:16px}',
+              '.pa-asset-card{border-left:4px solid var(--blue)}',
+              '.pa-voice-inline{border-left:4px solid var(--amber)}',
+          ]
+          for token in required:
+              assert token in html, token
+          forbidden = [
+              'Pillar State Labels',
+              'LASER SENSOR · PEBBLE WORKS',
+              'HANGING STONE · PEBBLE WORKS',
+              'Two rotators were turned.',
+              'Three rotators were turned.',
+              '1. Read the books scattered around the chamber.',
+              'Lever order: TOP → BOTTOM',
+              'Pressure Plate: STEADY / PULSE only',
+          ]
+          for token in forbidden:
+              assert token not in html, token
+          print('player-facing UI purity PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_PLAYER_UI_PURITY_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets stays concise and flow-first, but player-facing UI/text has now been audited for gameplay purity: technical/internal labels are removed from player copy, Objective 1 guidance is subtle and in-world, rule-book wording is more natural, Warden and Workshop instructions read as gameplay copy, and sabotage messages no longer expose implementation counts. Asset and Voice cards also have stronger visual separation.
+
+          PRD, handoff, Voice, and player-facing purity validation pass. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review the regenerated Production Assets visually. If accepted, continue only with specific visual polish or actual ElevenLabs generation/audio review.
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-Player-UI-Purity
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-ui-purity
+          rm -f .github/workflows/clockwork-ui-purity-once.yml
+
+      - name: Commit player-facing UI cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "refine player-facing Production Assets copy"
+          git push origin HEAD:Local
