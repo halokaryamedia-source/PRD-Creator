@@ -6,4 +6,4 @@ Communication Conservation: STALE
 Project HTML Visual: STALE
 Audio Evidence: not_provided
 Critical: 0 confirmed
-Major: current Objective 1-4 Voice scope and wording must be regenerated after the revised PRD is accepted
+Major: current Objective 1-4 Voice scope and wording must be re-extracted after the revised PRD projection is regenerated, validated, and restored to handoff_ready
