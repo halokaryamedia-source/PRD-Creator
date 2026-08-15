@@ -102,14 +102,16 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         result = run_cli(RENDERER, project / "work/render-data.json", output)
         return result, output
 
-    def production_page(self, html: str, page_id: str) -> str:
-        start_marker = (
-            '<section class="sheet professional-only production-assets-page" '
-            f'data-page-role="production-assets" id="{page_id}">'
-        )
-        start = html.index(start_marker)
-        end = html.index("</section>", start)
+    def section_page(self, html: str, page_id: str) -> str:
+        id_position = html.index(f'id="{page_id}"')
+        start = html.rfind("<section", 0, id_position)
+        end = html.index("</section>", id_position) + len("</section>")
         return html[start:end]
+
+    def production_page(self, html: str, page_id: str) -> str:
+        page = self.section_page(html, page_id)
+        self.assertIn('data-page-role="production-assets"', page)
+        return page
 
     def test_voice_uses_objective_first_production_assets_navigation(self) -> None:
         rendered, output = self.render(self.make_project())
@@ -199,6 +201,90 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
             "Cinematic &amp; Presentation",
         ):
             self.assertNotIn(legacy_dashboard, html)
+
+    def test_fresh_approved_fixture_adds_04_without_changing_core(self) -> None:
+        baseline_result, baseline_output = self.render(
+            self.make_project(include_voice=False, include_assets=False)
+        )
+        self.assertEqual(
+            baseline_result.returncode,
+            0,
+            baseline_result.stderr or baseline_result.stdout,
+        )
+        baseline_html = baseline_output.read_text(encoding="utf-8")
+
+        completed_result, completed_output = self.render(
+            self.make_project(include_voice=True, include_assets=True)
+        )
+        self.assertEqual(
+            completed_result.returncode,
+            0,
+            completed_result.stderr or completed_result.stdout,
+        )
+        completed_html = completed_output.read_text(encoding="utf-8")
+
+        protected_core_ids = (
+            "summary",
+            "flow-start",
+            "flow-core",
+            "development-overview",
+            "shared-systems",
+            "shared-data-reset",
+            "phase-development",
+            "dev-core-requirement",
+            "dev-core-level",
+            "dev-core-developer",
+        )
+        for page_id in protected_core_ids:
+            self.assertEqual(
+                self.section_page(baseline_html, page_id),
+                self.section_page(completed_html, page_id),
+                f"04 changed protected core section {page_id}",
+            )
+
+        self.assertNotIn('data-page-role="production-assets"', baseline_html)
+        self.assertIn('data-page-role="production-assets"', completed_html)
+
+        shared_page = self.production_page(
+            completed_html, "production-assets-global-shared"
+        )
+        intro_page = self.production_page(
+            completed_html, "production-assets-journey-the-journey-begins"
+        )
+        core_page = self.production_page(completed_html, "production-assets-core")
+        production_html = shared_page + intro_page + core_page
+
+        for visible_type in (
+            ">MODEL<",
+            ">UI / TEXT<",
+            ">AUDIO<",
+            ">PARTICLE<",
+        ):
+            self.assertIn(visible_type, production_html)
+        for moment in (
+            "During the Journey",
+            "Entering the Core Trial",
+            "Completing the Core Trial",
+        ):
+            self.assertIn(moment, production_html)
+
+        self.assertIn("Visual Brief", core_page)
+        self.assertIn("2 × 1 × 2 blocks", core_page)
+        self.assertIn("Player Text", shared_page + core_page)
+        self.assertIn("Voice Preset", intro_page)
+        self.assertIn("ElevenLabs Model", intro_page)
+        self.assertIn("Estimated Duration", intro_page)
+        self.assertIn("Prompt", intro_page)
+
+        for retired_visible_field in (
+            "<b>Requirement</b>",
+            "<b>Usage</b>",
+            "<b>Used At</b>",
+            "<b>Speaker</b>",
+            "<b>Context</b>",
+            ">SEQUENCE<",
+        ):
+            self.assertNotIn(retired_visible_field, production_html)
 
     def test_asset_only_project_can_publish_production_assets(self) -> None:
         rendered, output = self.render(
