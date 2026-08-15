@@ -1,0 +1,125 @@
+name: Clockwork 04 Reader First Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-04-reader-first/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+      - name: Preserve Development authority hash
+        run: sha256sum "$PROJECT/work/content.md" > /tmp/content.before
+      - name: Apply reader-first 04 logic
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.tmp-clockwork-04-reader-first/patch.py')
+          t=p.read_text(encoding='utf-8')
+          t=t.replace("css='''OBJECTIVE_STYLE = r'''<style", "css=\"\"\"OBJECTIVE_STYLE = r'''<style")
+          t=t.replace("</style>'''\\n'''\n    t=re.sub", "</style>'''\\n\"\"\"\n    t=re.sub")
+          p.write_text(t,encoding='utf-8')
+          PY
+          python .tmp-clockwork-04-reader-first/patch.py
+      - name: Verify 03 untouched
+        run: |
+          sha256sum "$PROJECT/work/content.md" > /tmp/content.after
+          diff -u /tmp/content.before /tmp/content.after
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit tests
+          python -m unittest tests.test_voice_contracts -v
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+      - name: Verify reader-first Production Assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('workspace/active/the-clockwork-vault')
+          html=(p/'output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          assets=(p/'work/asset-requirements.md').read_text(encoding='utf-8')
+          renderer=Path('kits/project-document-generator/renderer/production_assets_objective.py').read_text(encoding='utf-8')
+          for token in ['What to Build','Where It Is Used','Concrete Minecraft production deliverables','Used at','>Create<','>Includes<','>Speaker<','View Prompt','SEQUENCE']:
+              assert token not in html, token
+          for token in ['>MODEL<','>ITEM<','UI / TEXT','>AUDIO<','Function','Asset Brief','Voice Setup','Eleven v3','Expected','William Shanks','The Cheeky Trickster']:
+              assert token in html, token
+          assert 'Gallery Challenge Warning Sound' in html
+          assert 'no spoken dialogue' in html
+          assert 'Gremlin Wager Cue' not in html
+          assert html.count('class="pa-row pa-row-voice"') == 17
+          for token in ['Resonance Engine Seal Opening','Resonance Engine Restoration','Gremlin Path Collapse','Gremlin Route Swap','First Rollback Sabotage','Second Rollback Sabotage','Great Orrery Restoration','Vault Awakening Sequence']:
+              assert f'#### {token}' not in assets, token
+          blocks=re.findall(r'(?ms)^#### (.+?)\n(.*?)(?=^#### |^### |^## |\Z)',assets)
+          assert blocks
+          allowed={'MODEL','ITEM','UI / TEXT','AUDIO','PARTICLE'}
+          for title,body in blocks:
+              typ=re.search(r'(?m)^Type:\s*(.+)$',body)
+              fun=re.search(r'(?m)^Function:\s*(.+)$',body)
+              assert typ and typ.group(1).strip() in allowed, title
+              assert fun and fun.group(1).strip(), title
+              if typ.group(1).strip() in {'MODEL','ITEM','PARTICLE','AUDIO'} and 'Content:' not in body:
+                  assert re.search(r'(?m)^Asset Brief:\s*.+$',body), title
+          for token in ['Warden Halls','Broken Gallery','Resonance Engine',"Gremlin's Workshop"]:
+              assert token not in renderer, token
+          print('04 reader-first production brief PASS')
+          PY
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_04_READER_FIRST_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 now uses one universal reader-first, moment-first production brief for every objective. Gameplay-moment headings provide timing/context. Each concrete resource directly states its Function and the production information needed to prepare it: MODEL/ITEM/PARTICLE use Function + Asset Brief; UI / TEXT uses Function + exact player text; AUDIO dialogue uses Function + selected ElevenLabs voice + Eleven v3 + expected duration + exact prompt; non-dialogue AUDIO uses Function + Asset Brief and clearly states when it contains no spoken dialogue. Attached animation/sound/particle/state work remains inside its parent model/item. Gameplay behavior and old SEQUENCE entries are excluded from 04. No internal document guidance, Used-at metadata, duplicate What-to-Build/Where-It-Is-Used split, Speaker label, or VoiceLab/provider label is rendered. Section 03 Development was hash-checked and left unchanged.
+
+          PRD, handoff, Voice, unit-contract, and reader-first Production Assets validation pass. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review Section 04 visually from the perspective of a reader who does not already know the gameplay, especially whether each visual Asset Brief is concrete enough to start model production.
+          EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-04-Reader-First
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-04-reader-first
+          rm -f .github/workflows/clockwork-04-reader-first-once.yml
+      - name: Commit reader-first 04 logic
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "make Production Assets reader-first and visual"
+          git push origin HEAD:Local
