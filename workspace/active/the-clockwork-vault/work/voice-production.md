@@ -1,9 +1,10 @@
 # The Clockwork Vault Voice Production
-Version: 1.2.0
+Version: 1.3.0
 Source Voice Requirements: 1.0.0 / work/voice-requirements.md
 
 Voice Cast:
 - Custodian Vex: William Shanks - Rich and Deep
+- Gremlin: Target Voice Profile — small, raspy, mischievous, quick, theatrical, and clearly distinct from Vex; playful nuisance rather than frightening villain. Actual ElevenLabs voice not selected yet.
 
 ## 01. The Antechamber
 
@@ -125,6 +126,16 @@ Build one continuous route to Ring One, then extend that same live network throu
 Keep the earlier links powered.
 ```
 
+### VO-GREM-01 — Route Swap Taunt
+Type: Direct NPC Dialogue
+Speaker: Gremlin
+Estimated Duration: 4–6 seconds
+
+```performance
+[mischievous]
+Heh! Liked that route? Too bad—I blocked it. Let's see what you do now!
+```
+
 ### VO-WORK-02 — Route Swap Reaction
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
@@ -135,6 +146,16 @@ Estimated Duration: 10–12 seconds
 That Gremlin switched the route! The path you used is blocked, but another just opened.
 
 The rotator rule hasn't changed—reroute through the new path and restore power to Ring Two.
+```
+
+### VO-GREM-02 — First Rollback Taunt
+Type: Direct NPC Dialogue
+Speaker: Gremlin
+Estimated Duration: 3–5 seconds
+
+```performance
+[gleeful]
+Ha! I twisted your first link out of place. Back you go!
 ```
 
 ### VO-WORK-03 — First Rollback Reaction
@@ -149,6 +170,16 @@ He knocked the first link out of line! The Generator-to-Ring-One connection is d
 Same rule—go back and realign the rotators he turned, then continue.
 ```
 
+### VO-GREM-03 — Second Rollback Taunt
+Type: Direct NPC Dialogue
+Speaker: Gremlin
+Estimated Duration: 3–5 seconds
+
+```performance
+[taunting]
+Not again? Oh, yes—again! I knocked another link loose. So close!
+```
+
 ### VO-WORK-04 — Second Rollback Reaction
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
@@ -159,6 +190,16 @@ Estimated Duration: 9–11 seconds
 Again—this time between Ring One and Ring Two.
 
 Same rule. Repair the rotators he turned and restore that section before you finish Ring Three.
+```
+
+### VO-GREM-04 — Outsmarted Reaction
+Type: Direct NPC Dialogue
+Speaker: Gremlin
+Estimated Duration: 4–6 seconds
+
+```performance
+[startled]
+What?! You fixed ALL of it? ...Fine! Keep your ridiculous Orrery!
 ```
 
 ## 06. Vault Restored
