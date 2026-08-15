@@ -61,12 +61,16 @@ jobs:
 
           required_html = [
               'UI / TEXT', 'SFX', 'PRESENTATION', 'MODEL / ANIMATION',
-              'The Gallery Has Fallen', "Gremlin's Wager", 'The Wardens Are Listening',
-              "The Orrery's Heart", 'RING ONE IS DARK', 'Follow the light home.',
+              'The Gallery Has Fallen', 'The Wardens Are Listening',
+              'RING ONE IS DARK', 'Follow the light home.',
               'Only production-ready assets and in-game copy are shown here.',
           ]
           for token in required_html:
               assert token in html, token
+
+          required_voice = ["Gremlin's Wager", "The Orrery's Heart", 'Ring Two Goes Dark', 'The Way Home']
+          for token in required_voice:
+              assert token in voice, token
 
           forbidden_html = [
               '>VFX</span>First Seal Activation', 'BUILD HERE', 'LEVEL 1 · EASY', 'LEVEL 2 · MEDIUM',
