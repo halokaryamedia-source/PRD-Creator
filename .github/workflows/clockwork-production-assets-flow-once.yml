@@ -1,0 +1,108 @@
+name: Clockwork Production Assets Flow Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-pa-flow/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Apply flow-first Production Assets patch
+        run: python .tmp-pa-flow/patch.py
+
+      - name: Compile and contract-test renderer
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: |
+          python kits/project-document-generator/renderer/delivery.py workspace/active/the-clockwork-vault/
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py workspace/active/the-clockwork-vault/
+          python kits/project-document-generator/validator/validate_handoff.py workspace/active/the-clockwork-vault/
+          python kits/voice-production-kit/validator/validate.py workspace/active/the-clockwork-vault/
+
+      - name: Verify flow-first developer UX
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('workspace/active/the-clockwork-vault/output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          required = [
+              'class="pa-flow-nav"',
+              'Copy Flow Text',
+              'Developer Copy',
+              '01 — Read Partial Target',
+              '04 — Level 3 Time Challenge',
+              '03 — Route Swap Sabotage',
+              'LASER SENSOR · PEBBLE WORKS',
+              'BUILD HERE',
+              'The Cheeky Trickster',
+          ]
+          for token in required:
+              assert token in html, token
+          forbidden = [
+              '<h3>UI &amp; Information</h3>',
+              '<h3>Audio</h3>',
+              '<h3>Visual Effects &amp; Presentation</h3>',
+              '<h3>3D Models</h3>',
+          ]
+          for token in forbidden:
+              assert token not in html, token
+          print('flow-first Production Assets UX PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_PRODUCTION_ASSETS_FLOW_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets has been revised from asset-category-first presentation to gameplay-flow-first implementation packs. Each objective page now provides quick-jump flow navigation, combines UI text, Voice, audio, visual/presentation, and model needs inside the relevant gameplay flow, and exposes exact copy-ready player text / Voice prompts with Copy actions. Asset categories remain secondary badges only.
+
+          The current HTML has passed PRD, handoff, and Voice mechanical validation. Browser-level visual quality is still not claimed until an actual visual review is performed.
+
+          ## Next Step
+
+          Review the regenerated Production Assets pages visually in-browser; if presentation is accepted, continue to actual ElevenLabs Generation Mode / audio review when needed.
+          EOF
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-pa-flow
+          rm -f .github/workflows/clockwork-production-assets-flow-once.yml
+
+      - name: Commit flow-first Production Assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "make Clockwork Production Assets flow-first"
+          git push origin HEAD:Local
