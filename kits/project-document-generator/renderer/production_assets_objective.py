@@ -357,13 +357,26 @@ def _copy_button(target_id: str, label: str) -> str:
     )
 
 
-def _category_label(category: str) -> str:
+def _category_label(category: str, title: str = "") -> str:
+    overrides = {
+        "Custodian Vex": "MODEL / ANIMATION",
+        "Gremlin": "MODEL / ANIMATION",
+        "Wall Laser Sensor": "MODEL / VFX",
+        "Laser Blocker Stone": "MODEL / ANIMATION",
+        "Swinging Axe Trap": "MODEL / ANIMATION",
+        "Power Generator": "MODEL / VFX",
+        "90-Degree Rotator Junction": "MODEL / ANIMATION",
+        "Orrery Ring": "MODEL / ANIMATION",
+        "Repair Markers": "PRESENTATION",
+    }
+    if title in overrides:
+        return overrides[title]
     return {
-        "3D Models": "Model",
-        "UI & Information": "UI",
-        "Audio": "Audio",
-        "Visual Effects & Presentation": "VFX",
-    }.get(category, category)
+        "3D Models": "MODEL",
+        "UI & Information": "UI / TEXT",
+        "Audio": "SFX",
+        "Visual Effects & Presentation": "PRESENTATION",
+    }.get(category, category.upper())
 
 
 def _asset_html(entry: AssetEntry, page_id: str) -> str:
@@ -387,7 +400,7 @@ def _asset_html(entry: AssetEntry, page_id: str) -> str:
     return (
         '<article class="pa-asset-card">'
         '<div class="pa-asset-head">'
-        f'<span class="pa-type-badge">{esc(_category_label(entry.category))}</span>'
+        f'<span class="pa-type-badge">{esc(_category_label(entry.category, entry.title))}</span>'
         f'<h4>{esc(entry.title)}</h4></div>'
         f'<p class="pa-for"><span>For</span>{esc(entry.for_text)}</p>'
         f'{content}</article>'
@@ -456,7 +469,7 @@ def _pages_and_nav(
             f'<header class="pa-shell {"voice-objective-shell" if voice_section else ""}">'
             '<small>Production Assets</small>'
             f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong>'
-            '<p class="pa-section-note">Assets and copy-ready content for this gameplay section. See 03 Development for mechanic and implementation details.</p>'
+            '<p class="pa-section-note">Only production-ready assets and in-game copy are shown here. See 03 Development for mechanics.</p>'
             '</header>'
         )
 
@@ -578,11 +591,11 @@ OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
 .pa-asset-card,.pa-voice-inline{padding:14px 15px;border:1px solid #cbd7dd;border-radius:5px;background:var(--paper);break-inside:avoid}
 .pa-asset-card{border-left:4px solid var(--blue)}
 .pa-voice-inline{border-left:4px solid var(--amber)}
-.pa-asset-head{display:flex;align-items:center;gap:8px}
+.pa-asset-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--soft)}
 .pa-type-badge{display:inline-flex;align-items:center;min-height:20px;padding:2px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.56rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .pa-asset-head h4{margin:0;color:var(--navy);font-size:.93rem;line-height:1.3;text-transform:none}
-.pa-for{margin:6px 0 0;color:#52616a;font-size:.75rem;line-height:1.45}
-.pa-copy-block{margin-top:9px}
+.pa-for{margin:0;padding:8px 12px;color:#52616a;font-size:.75rem;line-height:1.45}
+.pa-copy-block{padding:0 12px 12px}
 .pa-copy-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
 .pa-copy-head>span{color:var(--blue);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .pa-content{margin:0;padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:2px;background:#f8fafb;color:var(--navy);font:700 .78rem/1.5 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
@@ -592,8 +605,8 @@ OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
 .pa-copy-button:hover,.pa-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
 .pa-copy-button.is-copied{border-color:var(--green);background:var(--green)}
 .pa-voice-setup-block{margin:10px 0 0}
-.pa-voice-inline>.pa-type-badge{margin-bottom:0}
-.pa-voice-inline .voice-script-card{margin-top:7px;border:0;border-top:1px solid var(--line);border-radius:0}
+.pa-voice-inline>.pa-type-badge{margin:10px 12px 0}
+.pa-voice-inline .voice-script-card{margin:0 12px 12px;border:0;border-top:1px solid var(--line);border-radius:0}
 .pa-voice-inline .voice-script-index,.pa-voice-inline .voice-script-position,.pa-voice-inline .voice-script-context{display:none!important}
 .pa-voice-inline .voice-script-card-head{padding:10px 0 8px}
 .pa-voice-inline .voice-script-display{padding:11px 0 2px;border-top:1px solid var(--line)}

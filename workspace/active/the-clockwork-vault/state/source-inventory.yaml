@@ -98,3 +98,11 @@ sources:
     origin: user
     inspection: full
     summary: User requires player-facing UI and text to contain only real gameplay/story copy, never internal development or debug terminology. Production Assets should remain concise: each flow and asset gets a short For statement, exact in-game text is copy-ready, technical mechanic detail stays in Development, and separate assets must have clear visual boundaries. Objective 1 opening guidance should only hint that the missing clues are already in the chamber; the lever rule book should read naturally; technical pillar-state labels and technical trap labels are not player UI.
+
+  - id: SRC-013
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User requires section 04 Production Assets to reach the same clarity and quality as PRD sections 01-03. Voice must primarily serve story, character, atmosphere, reaction, or light in-world hints rather than reading gameplay specifications aloud. Player-facing UI/Text must be pure in-game communication with no internal development terminology, implementation counts, reset/checkpoint language, or debug labels unless genuinely needed by the player. Asset type labels must be literal and unambiguous (MODEL, ANIMATION, VFX, SFX, UI / TEXT, VOICE, PRESENTATION), and technical gameplay rules remain in Development.

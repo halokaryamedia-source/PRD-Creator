@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_PLAYER_UI_PURITY_READY`
+`CLOCKWORK_04_CONTENT_REBUILT`
 
-The Clockwork v1.0.0 PRD remains handoff-ready and Voice remains delivery-ready. Production Assets stays concise and flow-first, but player-facing UI/text has now been audited for gameplay purity: technical/internal labels are removed from player copy, Objective 1 guidance is subtle and in-world, rule-book wording is more natural, Warden and Workshop instructions read as gameplay copy, and sabotage messages no longer expose implementation counts. Asset and Voice cards also have stronger visual separation.
+The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 Production Assets has been rebuilt to match the clarity standard of sections 01-03: Voice is story/character/atmosphere/reaction-first instead of spoken Development instructions; player-facing UI/Text contains only real in-game copy; technical thresholds, reset/checkpoint language, debug labels, implementation counts, and engineering explanations stay in Development; gameplay-flow labels in 04 are now in-world rather than implementation labels; and asset badges are literal production types such as MODEL, MODEL / ANIMATION, MODEL / VFX, SFX, UI / TEXT, VOICE, and PRESENTATION.
 
-PRD, handoff, Voice, and player-facing purity validation pass. Browser-level visual quality still requires user review.
+The regenerated HTML passes PRD, handoff, Voice, and 04 content-purity validation. Browser-level visual quality still requires user review.
 
 ## Next Step
 
-Review the regenerated Production Assets visually. If accepted, continue only with specific visual polish or actual ElevenLabs generation/audio review.
+Review the rebuilt 04 Production Assets pages visually. Continue only with concrete visual/content polish findings or actual ElevenLabs generation/audio review.

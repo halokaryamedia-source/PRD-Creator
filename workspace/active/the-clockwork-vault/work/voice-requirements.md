@@ -1,33 +1,34 @@
 # The Clockwork Vault Voice Requirements
 
 Source PRD revision: 1.0.0
-Voice system: Custodian Vex · direct in-world primary guide across the vault; Gremlin · direct in-world mischievous taunts during Objective 4; no radio/communicator layer
+Voice system: Custodian Vex · direct in-world narrative guide; Gremlin · direct in-world mischievous character in the Broken Gallery final crossing and Objective 4 sabotage; no radio/communicator layer
+
+Voice direction: Voice exists for story, character, atmosphere, reaction, and light in-world hints. It must not read the Development specification aloud. Exact thresholds, reset logic, route viability, implementation counts, cooldown math, and other technical rules belong to Development or concise player UI when genuinely necessary.
 
 ## 01. The Antechamber
 
 ### VO-ANTE-01 — Vault Restoration Briefing
 - Type: Main Story
-- Function: briefing
+- Function: story_opening
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
 - Trigger: The assigned player enters the protected Antechamber and Vex activates for the first time.
 - Flow: 01 — Arrival & Briefing
-- For: Opening briefing that explains the vault, Great Orrery, and four-system restoration goal.
-- Purpose: Establish why the player is trapped, what the Great Orrery means to the vault, that four connected systems must be restored, and that the Custodian Key begins the route forward.
+- For: Establish the vault, Great Orrery, and the player's reason to continue.
+- Purpose: Open the story and establish that restoring the vault is the only way home.
 - Must communicate:
   - The entrance will not reopen on its own.
   - The vault protects the Great Orrery.
-  - Four connected systems must be restored in sequence.
-  - The Custodian Key opens the first mechanism rather than the exit.
-  - Restoring the vault creates the way home.
+  - Four connected systems stand between the player and the Orrery.
+  - The Custodian Key begins the restoration journey.
 - Must not add/repeat:
-  - Do not introduce an extra tutorial puzzle or warm-up objective.
+  - Do not explain later objective mechanics.
+  - Do not sound like a tutorial checklist.
   - Do not imply the Custodian Key directly opens the exit.
-  - Do not explain later objective mechanics in detail during the opening briefing.
 - Source refs:
-  - content.md → 02 Gameplay Flow → The Journey Begins
-  - content.md → 04 The Antechamber → Gameplay Overview
+  - content.md → The Journey Begins
+  - content.md → The Antechamber
 
 ### VO-ANTE-02 — Custodian Key Reminder
 - Type: Direct NPC Dialogue
@@ -35,117 +36,106 @@ Voice system: Custodian Vex · direct in-world primary guide across the vault; G
 - Necessity: supporting
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: After the opening briefing, the player misses the key/seal interaction or returns from a local interruption before the Resonance Engine seal is opened.
+- Trigger: After the opening briefing, the player has not yet used the Custodian Key on the first seal.
 - Flow: 02 — Take Key & Open Seal
-- For: Short reminder if the player has not used the Custodian Key on the first seal.
-- Purpose: Repeat only the minimum actionable onboarding cue without replaying the story briefing.
+- For: Give one in-world reminder that the Custodian Key belongs to the first seal.
+- Purpose: Nudge the player forward without replaying the opening story.
 - Must communicate:
-  - Take the Custodian Key.
-  - Use it on the marked Resonance Engine seal.
+  - The key belongs at the first seal.
 - Must not add/repeat:
-  - Do not replay the vault history or four-objective briefing.
-  - Do not imply a fail state or consume the key before valid seal activation.
+  - Do not mention reset, state, or objective logic.
+  - Do not replay the vault history.
 - Source refs:
   - content.md → The Antechamber
 
 ## 02. The Resonance Engine
 
-### VO-RES-01 — Find the Missing Combination
+### VO-RES-01 — The Engine Remembers
 - Type: Main Story
-- Function: briefing
+- Function: story_hint
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The Resonance Engine seal opens and the player gains control inside the reset chamber with the partial door display visible.
-- Flow: 01 — Read Partial Target
-- For: Objective 1 briefing for the partial target, scattered books, and pillar experimentation.
-- Purpose: Explain the partial-display and clue-search loop without revealing the hidden target colors, pulse location, or lever solutions.
+- Trigger: The Resonance Engine seal opens and the player enters the chamber with the partial door display visible.
+- Flow: 01 — The Door Remembers
+- For: Give the Resonance Engine mystery a story voice and hint that the missing answer remains in the chamber.
+- Purpose: Frame Objective 1 as restoring an old machine whose missing knowledge is still present in the room.
 - Must communicate:
-  - The door display already reveals Middle = Brown.
-  - Search the scattered books in any order for the missing colors and pulse information.
-  - Reading every book is not required.
-  - Test each pillar's upper/lower lever combinations and watch immediate lamp feedback.
-  - Make all three pillar states match the inferred final combination.
+  - The Resonance Engine once helped keep the vault in tune.
+  - The door remembers only part of the answer.
+  - The rest can still be found in the chamber.
 - Must not add/repeat:
-  - Do not say Left = Orange, Right = Purple, or Pulse = Left.
-  - Do not state any lever-to-color solution.
-  - Do not imply the books form a required sequence.
+  - Do not explain lever combinations, pressure-plate behavior, clue counts, or the hidden answer.
+  - Do not tell the player to read every book.
+  - Do not sound like a puzzle manual.
 - Source refs:
   - content.md → The Resonance Engine
-  - REQ-002
   - REQ-014
   - REQ-015
 
 ## 03. The Broken Gallery
 
-### VO-GAL-01 — Read the Routes and Supplies
+### VO-GAL-01 — The Gallery Has Fallen
 - Type: Main Story
-- Function: briefing
+- Function: story_atmosphere
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The player enters Broken Gallery Level 1 with the three routes, checkpoint barrels, and marked repair positions available.
-- Flow: 01 — Enter & Learn Route Loop
-- For: Gallery briefing for barrels, marked placements, limited supplies, and local retry.
-- Purpose: Establish the repeated route-reading and limited-resource loop without revealing which route is viable.
+- Trigger: The player first enters the Broken Gallery.
+- Flow: 01 — Enter the Gallery
+- For: Establish the Gallery's collapse and hint that Gremlin has already been through it.
+- Purpose: Give the traversal challenge story context without reading its route/resource rules aloud.
 - Must communicate:
-  - Search checkpoint barrels for the current level's supplies.
-  - Blocks and ladders may be placed only on marked gaps/positions.
-  - Inspect the routes before spending limited resources.
-  - A failed active level resets locally rather than restarting the whole Gallery.
+  - The Gallery once carried the vault's keepers deeper inside.
+  - Much of it was lost in the collapse.
+  - Gremlin has interfered with this part of the vault.
 - Must not add/repeat:
-  - Do not reveal the viable route for Level 1 or Level 2.
-  - Do not introduce Spring Column, Anchor Ring, or Custodian Key carrying.
-  - Do not imply free-form building.
+  - Do not explain barrels, placement markers, resource counts, retries, or viable routes.
+  - Do not use checkpoint/reset language.
 - Source refs:
   - content.md → The Broken Gallery
-  - REQ-003
 
-### VO-GAL-02 — Level 3 Gremlin Threshold
+### VO-GAL-02 — Gremlin's Wager
 - Type: Direct NPC Dialogue
-- Function: warning
+- Function: character_challenge
 - Necessity: required
-- Speaker: Custodian Vex
+- Speaker: Gremlin
 - Channel: Direct
-- Trigger: Level 3 begins with all three routes active and the player is about to commit to one route under the authored progress threshold.
-- Flow: 04 — Level 3 Time Challenge
-- For: Level 3 warning that explains the halfway threshold and route-loss consequence.
-- Purpose: Make the 50-percent requirement and route-loss consequence clear before the timed attempt.
+- Trigger: The final Gallery crossing begins and the player is about to choose a route.
+- Flow: 04 — Gremlin’s Wager
+- For: Let Gremlin personally challenge the player before the final crossing.
+- Purpose: Create urgency and character without stating the internal threshold or retry rules.
 - Must communicate:
-  - All three Level 3 routes are initially viable.
-  - Choose one route and reach at least halfway before the threshold expires.
-  - Missing the threshold closes that failed route while another alternative remains.
-  - Failure returns the player to Checkpoint 3 for another attempt.
+  - Gremlin is watching the crossing.
+  - The player should move quickly.
+  - Gremlin may take the chosen path away.
 - Must not add/repeat:
-  - Do not name a preferred route.
-  - Do not imply full-objective restart.
-  - Do not imply a closed route reopens during the same run unless the gameplay state explicitly does so.
+  - Do not say 50 percent, checkpoint, threshold, viable route, reset, or authored timer.
+  - Do not name a correct route.
 - Source refs:
   - content.md → The Broken Gallery → Level 3
   - REQ-004
 
 ## 04. The Warden Halls
 
-### VO-WARD-01 — Echo Pebble and Trap Rules
+### VO-WARD-01 — The Wardens Are Listening
 - Type: Main Story
-- Function: briefing
+- Function: story_hint
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The Warden Halls activate and the player receives the unlimited Echo Pebble before the first trap-family encounters.
-- Flow: 01 — Learn Trap Rules
-- For: Warden briefing for Pebble targets, cooldown, laser disable, floor traps, and axes.
-- Purpose: Explain valid Pebble targets, cooldown, laser-disable duration, hanging-stone option, and which hazards must instead be avoided or timed.
+- Trigger: The Warden Halls activate and the player receives the Echo Pebble.
+- Flow: 01 — Enter the Warden Halls
+- For: Establish the Wardens as active guardians and give one light in-world hint about the Echo Pebble.
+- Purpose: Support the fiction of the Warden Halls without narrating cooldowns and exact hazard rules.
 - Must communicate:
-  - Echo Pebble supply is unlimited with a 3-second cooldown between throws.
-  - A valid wall-laser sensor hit disables that laser for 4 seconds of game-time.
-  - Some authored hanging stones can be struck to block a laser beam.
-  - Floor traps cannot be disabled with Pebble.
-  - Swinging axes cannot be disabled with Pebble and must be timed.
+  - The Wardens are still active.
+  - Wall sensors can be distracted by the Echo Pebble.
+  - Floor traps and axes will not be fooled the same way.
 - Must not add/repeat:
-  - Do not imply the Pebble disables floor traps.
-  - Do not imply the Pebble disables swinging axes.
-  - Do not prescribe one mandatory strategy for every laser encounter.
+  - Do not state the 3-second cooldown or 4-second laser window.
+  - Do not list hazard damage/status effects.
+  - Do not sound like an instruction manual.
 - Source refs:
   - content.md → The Warden Halls
   - REQ-005
@@ -156,176 +146,156 @@ Voice system: Custodian Vex · direct in-world primary guide across the vault; G
 - Necessity: supporting
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The player clears the third Warden level, reaches the inner gate, and the route toward Gremlin's Workshop opens.
-- Flow: 04 — Complete & Transition
-- For: Short transition line after the final Warden checkpoint.
-- Purpose: Connect the still-active security system to the vault's story and frame the Workshop as the next destination without replaying trap instructions.
+- Trigger: The player clears the third Warden level and the route toward Gremlin's Workshop opens.
+- Flow: 04 — Enter the Workshop
+- For: Close the Warden Halls story beat and point the journey toward the Workshop.
+- Purpose: Connect the active security system to the Great Orrery story.
 - Must communicate:
-  - The Wardens never stopped protecting the Great Orrery.
-  - Parts of the vault remain functional.
-  - Continue to the Workshop.
+  - The Wardens never stopped protecting the Orrery.
+  - Parts of the vault are still working.
+  - The Workshop is next.
 - Must not add/repeat:
-  - Do not replay Echo Pebble instructions.
-  - Do not claim the Great Orrery is already restored.
-  - Do not reveal the Workshop sabotage sequence.
+  - Do not replay Echo Pebble rules.
+  - Do not reveal Workshop sabotage.
 - Source refs:
   - content.md → The Warden Halls → Transition
 
 ## 05. The Gremlin’s Workshop
 
-### VO-WORK-01 — Build One Continuous Network
+### VO-WORK-01 — The Orrery's Heart
 - Type: Main Story
-- Function: briefing
+- Function: story_reveal
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: The player enters the Workshop and L-rotator interaction becomes active on the unsabotaged network.
-- Flow: 01 — Learn Network / Ring 1
-- For: Workshop briefing for the Generator, L-rotators, and continuous Ring 1 → Ring 3 network.
-- Purpose: Explain the continuous Generator → Ring 1 → Ring 2 → Ring 3 routing rule without revealing authored route solutions.
+- Trigger: The player enters the Workshop and sees the Generator and Orrery rings.
+- Flow: 01 — Wake Ring One
+- For: Reveal the Workshop as the heart of the Great Orrery and frame the restoration goal.
+- Purpose: Give the final objective narrative weight without explaining L-junction geometry.
 - Must communicate:
-  - Power begins at the Generator.
-  - Each rotator is an L-shaped connection between two orthogonal sides.
-  - Build one continuous powered route to Ring 1, then extend through Ring 2 and Ring 3.
-  - Earlier connections must remain powered as the network grows.
+  - This is the heart of the Great Orrery's power system.
+  - Power once crossed the rings without a break.
+  - Bringing the current back can wake the vault.
 - Must not add/repeat:
-  - Do not describe a 3×3 Straight/Elbow/Split board.
-  - Do not reveal an exact route.
-  - Do not preview sabotage timing before it occurs.
+  - Do not explain right angles, exact rotator rules, route coordinates, or sabotage timing.
+  - Do not sound like an engineering tutorial.
 - Source refs:
   - content.md → The Gremlin’s Workshop
   - REQ-007
 
 ### VO-GREM-01 — Route Swap Taunt
 - Type: Direct NPC Dialogue
-- Function: reveal
+- Function: character_reaction
 - Necessity: supporting
 - Speaker: Gremlin
 - Channel: Direct
-- Trigger: About 20 seconds after Ring 1 and Ring 2 are connected, the authored route swap visibly blocks the previous route and opens the alternate route.
-- Flow: 03 — Route Swap Sabotage
-- For: Gremlin taunt when the Ring 2 route swap occurs.
-- Purpose: Give the Gremlin a clear mischievous personality and make the sabotage feel intentional without becoming gameplay guidance.
+- Trigger: The route-swap sabotage blocks the player's old path and opens the alternate path.
+- Flow: 03 — Gremlin Changes the Path
+- For: Let Gremlin gloat when he takes the player's route away.
+- Purpose: Make the sabotage feel intentional and character-driven.
 - Must communicate:
-  - The Gremlin deliberately caused the route disruption.
-  - The Gremlin is pleased with the inconvenience.
+  - Gremlin caused the disruption.
+  - Gremlin enjoys the inconvenience.
 - Must not add/repeat:
-  - Do not tell the player which rotators to use.
-  - Do not explain the alternate route; Vex owns recovery guidance.
-  - Do not introduce a new routing rule.
+  - Do not explain the alternate route or connector logic.
 - Source refs:
   - REQ-008
   - REQ-016
-  - SRC-008
 
-### VO-WORK-02 — Route Swap Reaction
+### VO-WORK-02 — Ring Two Goes Dark
 - Type: Direct NPC Dialogue
-- Function: setback_recovery
+- Function: character_reaction
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: Immediately after the route-swap sabotage is visible and Gremlin has made the disruption clear.
-- Flow: 03 — Route Swap Sabotage
-- For: Vex recovery guidance immediately after the route swap.
-- Purpose: Explain the actionable recovery rule after the route swap.
+- Trigger: Immediately after the route-swap sabotage visibly cuts power to Ring 2.
+- Flow: 03 — Gremlin Changes the Path
+- For: Have Vex react naturally when Ring Two loses power and a new path opens.
+- Purpose: Keep the player oriented without restating routing rules.
 - Must communicate:
-  - The old route is blocked and a different route is now available.
-  - The L-rotator rule itself has not changed.
-  - Reroute and restore the continuous Generator → Ring 1 → Ring 2 network.
+  - Gremlin cut the line.
+  - Ring Two is dark.
+  - A new path must be found.
 - Must not add/repeat:
-  - Do not reveal the exact alternate solution path.
-  - Do not imply the old route remains usable.
-  - Do not introduce a new connector rule.
+  - Do not say rotator rule, continuous network, connector rule, or exact solution path.
 - Source refs:
   - content.md → The Gremlin’s Workshop → First Gremlin Sabotage
   - REQ-008
 
 ### VO-GREM-02 — First Rollback Taunt
 - Type: Direct NPC Dialogue
-- Function: reveal
+- Function: character_reaction
 - Necessity: supporting
 - Speaker: Gremlin
 - Channel: Direct
-- Trigger: During Ring 2 → Ring 3 progress, the 50-percent sabotage rotates two previously correct Generator → Ring 1 rotators and that earlier link loses power.
-- Flow: 04 — 50% Rollback
-- For: Gremlin taunt when the 50% rollback breaks the first connection.
-- Purpose: Let Gremlin gloat over the first rollback without explaining how to repair it.
+- Trigger: The first rollback sabotage breaks the earlier line to Ring 1.
+- Flow: 04 — First Rollback
+- For: Let Gremlin enjoy undoing an earlier part of the player's work.
+- Purpose: Escalate Gremlin's nuisance personality without exposing implementation details.
 - Must communicate:
-  - Gremlin intentionally disturbed an earlier connection.
-  - Gremlin is enjoying forcing the player backward.
+  - Gremlin disturbed an earlier line.
+  - Gremlin enjoys forcing the player backward.
 - Must not add/repeat:
-  - Do not state which exact two rotators changed.
-  - Do not give repair instructions.
-  - Do not imply Ring 3 progress itself is erased unless gameplay state says so.
+  - Do not mention percentages, rotator counts, positions, or repair logic.
 - Source refs:
   - REQ-008
   - REQ-016
-  - SRC-008
 
-### VO-WORK-03 — First Rollback Reaction
+### VO-WORK-03 — Gremlin Strikes Back
 - Type: Direct NPC Dialogue
-- Function: setback_recovery
+- Function: character_reaction
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: Immediately after the 50-percent sabotage removes the Generator → Ring 1 connection.
-- Flow: 04 — 50% Rollback
-- For: Vex guidance to repair Generator → Ring 1 after the first rollback.
-- Purpose: Direct the player back to the damaged earlier connection using the same established rotator rule.
+- Trigger: Immediately after the first rollback makes Ring 1 lose power.
+- Flow: 04 — First Rollback
+- For: Have Vex react to Gremlin attacking the earlier line.
+- Purpose: Point attention backward without reading the repair specification aloud.
 - Must communicate:
-  - The Generator → Ring 1 connection is down.
-  - Repair the rotators Gremlin changed.
-  - The routing rule is unchanged.
-  - Resume Ring 3 progress after restoring the earlier link.
+  - Gremlin has gone back after the first ring.
+  - The player's earlier work is being undone.
 - Must not add/repeat:
-  - Do not solve the rotator orientations.
-  - Do not introduce a new rule.
+  - Do not mention 50 percent, exact rotators, orientations, or implementation rules.
 - Source refs:
   - content.md → The Gremlin’s Workshop → Level 3 Rollback Events
-  - REQ-008
 
 ### VO-GREM-03 — Second Rollback Taunt
 - Type: Direct NPC Dialogue
-- Function: reveal
+- Function: character_reaction
 - Necessity: supporting
 - Speaker: Gremlin
 - Channel: Direct
-- Trigger: At 80-percent Ring 2 → Ring 3 progress, the second sabotage rotates three previously correct Ring 1 → Ring 2 rotators and that section loses power.
-- Flow: 05 — 80% Rollback
-- For: Gremlin taunt when the 80% rollback breaks the second connection.
-- Purpose: Escalate Gremlin's nuisance personality at the final rollback without duplicating Vex's recovery instructions.
+- Trigger: The second rollback sabotage breaks the earlier line to Ring 2.
+- Flow: 05 — Second Rollback
+- For: Let Gremlin taunt the player one last time before the final repair.
+- Purpose: Escalate the final nuisance beat without becoming gameplay instruction.
 - Must communicate:
-  - Gremlin intentionally sabotaged the network again.
-  - Gremlin expects the player to be frustrated by another rollback.
+  - Gremlin sabotaged the network again.
+  - Gremlin is enjoying the player's frustration.
 - Must not add/repeat:
-  - Do not state the exact rotator solution.
-  - Do not explain how to repair the link.
-  - Do not invent another sabotage after this authored event.
+  - Do not mention 80 percent, rotator counts, positions, or repair logic.
 - Source refs:
   - REQ-008
   - REQ-016
-  - SRC-008
 
-### VO-WORK-04 — Second Rollback Reaction
+### VO-WORK-04 — One More Sabotage
 - Type: Direct NPC Dialogue
-- Function: setback_recovery
+- Function: character_reaction
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: Immediately after the 80-percent sabotage removes power between Ring 1 and Ring 2.
-- Flow: 05 — 80% Rollback
-- For: Vex guidance to repair Ring 1 → Ring 2 after the second rollback.
-- Purpose: Identify the affected earlier section and direct repair before final Ring 3 completion.
+- Trigger: Immediately after the second rollback makes Ring 2 lose power.
+- Flow: 05 — Second Rollback
+- For: Have Vex react to the final setback and keep the story momentum moving.
+- Purpose: Keep the affected ring readable without restating the routing specification.
 - Must communicate:
-  - The Ring 1 → Ring 2 connection is down.
-  - Repair the rotators Gremlin changed using the same rule.
-  - Restore that section before completing Ring 3.
+  - Gremlin struck the earlier line again.
+  - Ring Two is dark.
+  - The player is close to finishing.
 - Must not add/repeat:
-  - Do not state exact correct orientations.
-  - Do not introduce another routing rule.
+  - Do not mention 80 percent, exact rotators, or implementation rules.
 - Source refs:
   - content.md → The Gremlin’s Workshop → Level 3 Rollback Events
-  - REQ-008
 
 ### VO-GREM-04 — Outsmarted Reaction
 - Type: Direct NPC Dialogue
@@ -333,20 +303,18 @@ Voice system: Custodian Vex · direct in-world primary guide across the vault; G
 - Necessity: supporting
 - Speaker: Gremlin
 - Channel: Direct
-- Trigger: The final network validates Generator, Ring 1, Ring 2, and Ring 3 as continuously powered after all sabotage events and the Great Orrery restoration begins.
-- Flow: 06 — Restore Great Orrery
-- For: Gremlin reaction when the player restores the full network despite sabotage.
-- Purpose: Give Gremlin one short defeated reaction that acknowledges the player outsmarted the sabotage before Vex owns the main completion scene.
+- Trigger: The full Orrery network is restored after all sabotage events and the Great Orrery begins to wake.
+- Flow: 06 — Wake the Great Orrery
+- For: Give Gremlin one short defeated reaction when the player finally outsmarts him.
+- Purpose: Close Gremlin's character beat before Vex owns the ending.
 - Must communicate:
-  - Gremlin realizes the player successfully restored the full network despite the sabotage.
-  - Gremlin is frustrated and gives up interfering with this completed attempt.
+  - Gremlin realizes the player succeeded despite the sabotage.
+  - Gremlin gives up interfering with this completed attempt.
 - Must not add/repeat:
   - Do not replace Vex's completion speech.
-  - Do not claim Gremlin is killed or permanently removed from the world.
-  - Do not introduce another objective or sabotage event.
+  - Do not kill or permanently remove Gremlin from the world.
 - Source refs:
   - REQ-016
-  - SRC-008
 
 ## 06. Vault Restored
 
@@ -356,39 +324,36 @@ Voice system: Custodian Vex · direct in-world primary guide across the vault; G
 - Necessity: required
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: All three Orrery rings remain powered, the Great Orrery restoration callbacks complete, and the closing scene reaches Vex recognition.
-- Flow: 01 — Restoration Payoff & Reward
-- For: Main completion speech after the Great Orrery and vault systems are restored.
-- Purpose: Resolve Vex's story, name what the player accomplished, acknowledge that the vault was restored rather than merely escaped, and present the Clockwork Wayfinder reward.
+- Trigger: The Great Orrery restoration completes and the closing scene reaches Vex.
+- Flow: 01 — The Vault Awakens
+- For: Resolve Vex's story and reward the player after the Great Orrery wakes.
+- Purpose: Confirm that the player restored the vault rather than merely escaping it.
 - Must communicate:
-  - The Great Orrery and connected vault systems are restored.
-  - The player restored what the vault was built to protect rather than merely finding an exit.
+  - The Great Orrery is awake.
+  - The player restored what the vault was built to protect.
   - The gateway is open.
-  - The player receives the Clockwork Wayfinder as the completion reward.
+  - The Clockwork Wayfinder is the reward.
 - Must not add/repeat:
-  - Do not expose Objective Scores or platform analysis.
-  - Do not introduce a fifth objective or new challenge.
-  - Do not imply the reward can be granted repeatedly.
+  - Do not expose platform scoring or internal completion state.
+  - Do not introduce another challenge.
 - Source refs:
   - content.md → The Vault Awakens
 
-### VO-END-02 — Safe Return Cue
+### VO-END-02 — The Way Home
 - Type: Main Story
 - Function: farewell
 - Necessity: supporting
 - Speaker: Custodian Vex
 - Channel: Direct
-- Trigger: Session result and reward state are secured and the safe return route to the holding area opens.
-- Flow: 02 — Return Home
-- For: Final navigation cue directing the player through the open gateway.
-- Purpose: Give one concise final navigation cue and close Vex's guide role without adding more story exposition.
+- Trigger: The gateway is open and the player can leave the restored vault.
+- Flow: 02 — The Way Home
+- For: Give one final in-world farewell as the gateway home opens.
+- Purpose: Close Vex's guide role without using session-management terminology.
 - Must communicate:
-  - The gateway/return route is open.
-  - Follow it back to the holding area.
-  - The restoration journey is complete.
+  - The way home is clear.
+  - Follow the gateway.
 - Must not add/repeat:
-  - Do not replay the completion speech or reward explanation.
-  - Do not introduce another gameplay task.
-  - Do not claim lane reset is complete before the player has safely returned.
+  - Do not say holding area, lane, reset, cleanup, session result, or other internal terms.
+  - Do not replay the completion speech.
 - Source refs:
   - content.md → The Vault Awakens → Leaving the Clockwork Vault

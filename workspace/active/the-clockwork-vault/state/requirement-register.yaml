@@ -124,7 +124,7 @@ requirements:
     impact: high
   - id: REQ-016
     area: voice-production
-    statement: Gremlin is an additional speaking character for Objective 4. Use four short mischievous taunts tied to the route-swap sabotage, the 50-percent rollback, the 80-percent rollback, and the final successful restoration/Gremlin defeat beat. Gremlin dialogue is character flavor and sabotage acknowledgement only; Custodian Vex remains the primary guide and owns actionable gameplay instructions. Gremlin lines must not introduce new mechanics, reveal a solution route, contradict Vex, or become long exposition.
+    statement: Gremlin is an additional speaking character for authored sabotage and challenge moments, including the Broken Gallery final crossing and Objective 4. Custodian Vex remains the primary narrative guide. Voice exists for story, character, atmosphere, reaction, and light in-world hints; it must not become a spoken copy of Development mechanics. Gremlin dialogue adds personality and sabotage acknowledgement without revealing solutions or internal implementation state.
     provenance: [SRC-008]
     evidence_status: approved
     recovery_class: none
@@ -144,6 +144,16 @@ requirements:
     area: production-assets
     statement: Player-facing UI, readable text, and in-game labels must be pure gameplay/story communication. Do not surface internal development terms, debug labels, implementation counts, or technical state labels as player UI unless that information is genuinely required by the gameplay. Keep Production Assets concise with short For statements and clear visual separation between assets. Objective 1 opening copy should hint that the answer is in the chamber without explaining the full mechanic; rule-book wording should feel natural; pillar identity and trap readability belong to environmental/visual presentation rather than technical text labels.
     provenance: [SRC-012]
+    evidence_status: approved
+    recovery_class: none
+    approval_status: not_required
+    impact: high
+
+
+  - id: REQ-019
+    area: production-assets
+    statement: Section 04 Production Assets must match the clarity of PRD sections 01-03 while remaining a concise production companion rather than a second Development specification. Player-facing UI/Text contains only real in-game communication; Voice serves story/character/atmosphere/reaction or light in-world hints; internal development terminology, thresholds, reset/checkpoint language, implementation counts, debug labels, and engineering explanations stay in Development unless genuinely required by the player. Asset badges use literal production types so MODEL, ANIMATION, VFX, SFX, UI / TEXT, VOICE, and PRESENTATION cannot be confused.
+    provenance: [SRC-013]
     evidence_status: approved
     recovery_class: none
     approval_status: not_required

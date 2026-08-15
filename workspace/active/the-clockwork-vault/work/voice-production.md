@@ -1,5 +1,5 @@
 # The Clockwork Vault Voice Production
-Version: 1.3.1
+Version: 1.4.0
 Source Voice Requirements: 1.0.0 / work/voice-requirements.md
 
 Voice Cast:
@@ -11,89 +11,87 @@ Voice Cast:
 ### VO-ANTE-01 — Vault Restoration Briefing
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 18–21 seconds
+Estimated Duration: 16–19 seconds
 
 ```performance
 [serious]
 You made it inside... but the entrance won't reopen on its own.
 
-This vault protects the Great Orrery, and four systems between us and that machine have gone dark.
+This vault protects the Great Orrery. Four old systems between us and that machine have gone dark.
 
 [reassuring]
-Take the Custodian Key. Restore them in order, and the vault will open a way home.
+Take the Custodian Key. Wake them again, and the vault may finally open a way home.
 ```
 
 ### VO-ANTE-02 — Custodian Key Reminder
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 4–6 seconds
+Estimated Duration: 4–5 seconds
 
 ```performance
-[firmly]
-Take the Custodian Key to the marked seal.
-That's our first way forward.
+[gently]
+That key belongs to the first seal.
+Give it a try.
 ```
 
 ## 02. The Resonance Engine
 
-### VO-RES-01 — Find the Missing Combination
+### VO-RES-01 — The Engine Remembers
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 17–20 seconds
+Estimated Duration: 11–14 seconds
 
 ```performance
-[focused]
-The door gives you one answer: the middle pillar is BROWN.
+[thoughtful]
+The Resonance Engine once kept the whole vault in tune.
 
-Search the scattered books in any order for the missing colors and the lamp that should pulse. You won't need every book.
+Now even the door has forgotten most of its answer.
 
-Then test each pillar's two levers, watch the lamp, and make all three states match the combination.
+Look around. This chamber may remember more than it seems.
 ```
 
 ## 03. The Broken Gallery
 
-### VO-GAL-01 — Read the Routes and Supplies
+### VO-GAL-01 — The Gallery Has Fallen
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 13–16 seconds
+Estimated Duration: 11–14 seconds
 
 ```performance
 [cautious]
-Three routes, limited supplies.
+This gallery once carried every keeper deeper into the vault.
 
-Search the barrels, then use the blocks and ladders only on the marked gaps.
+Most of it didn't survive the collapse.
 
-Study the route before you build. If an attempt runs dry, this checkpoint resets—not the whole Gallery.
+What's left will have to be enough... and if you hear laughing, Gremlin's been here.
 ```
 
-### VO-GAL-02 — Level 3 Gremlin Threshold
+### VO-GAL-02 — Gremlin's Wager
 Type: Direct NPC Dialogue
-Speaker: Custodian Vex
-Estimated Duration: 13–15 seconds
+Speaker: Gremlin
+Estimated Duration: 5–7 seconds
 
 ```performance
-[urgent]
-Gremlin's timing this crossing. All three routes can work—for now.
-
-Pick one and get at least halfway before the window closes.
-
-Miss it, and that route is gone. You'll restart from this checkpoint.
+[mischievous]
+Oh, this part is fun.
+Pick a path—quickly.
+I might not leave it there for long!
 ```
 
 ## 04. The Warden Halls
 
-### VO-WARD-01 — Echo Pebble and Trap Rules
+### VO-WARD-01 — The Wardens Are Listening
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 20–24 seconds
+Estimated Duration: 12–15 seconds
 
 ```performance
 [serious]
-You have all the Echo Pebbles you need, but each throw takes three seconds to recharge.
+The Wardens are still awake. They were built to listen as much as watch.
 
-Hit a wall-laser sensor and the beam drops for four seconds. Some lasers can be blocked by knocking down a hanging stone.
+That pebble may distract their wall sensors.
 
-Floor traps and swinging axes won't disable—avoid them, or time your move.
+The floor and the axes, though... they won't be fooled.
 ```
 
 ### VO-WARD-02 — The Wardens Still Serve
@@ -112,18 +110,18 @@ Keep moving—the Workshop is next.
 
 ## 05. The Gremlin’s Workshop
 
-### VO-WORK-01 — Build One Continuous Network
+### VO-WORK-01 — The Orrery's Heart
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 16–19 seconds
+Estimated Duration: 11–14 seconds
 
 ```performance
-[focused]
-Power starts at the Generator. Every rotator is an L, connecting two sides at a right angle.
+[awed]
+There it is—the heart of the Great Orrery.
 
-Build one continuous route to Ring One, then extend that same live network through Ring Two and Ring Three.
+Power once crossed these rings without a break.
 
-Keep the earlier links powered.
+Bring that current back, and the vault may finally remember how to wake.
 ```
 
 ### VO-GREM-01 — Route Swap Taunt
@@ -133,19 +131,20 @@ Estimated Duration: 4–6 seconds
 
 ```performance
 [mischievous]
-Heh! Liked that route? Too bad—I blocked it. Let's see what you do now!
+Heh! Liked that route? Too bad—I blocked it.
+Let's see what you do now!
 ```
 
-### VO-WORK-02 — Route Swap Reaction
+### VO-WORK-02 — Ring Two Goes Dark
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 10–12 seconds
+Estimated Duration: 6–8 seconds
 
 ```performance
 [alert]
-That Gremlin switched the route! The path you used is blocked, but another just opened.
+He cut the line! Ring Two's gone dark.
 
-The rotator rule hasn't changed—reroute through the new path and restore power to Ring Two.
+Find the new path before he gets another idea.
 ```
 
 ### VO-GREM-02 — First Rollback Taunt
@@ -155,19 +154,20 @@ Estimated Duration: 3–5 seconds
 
 ```performance
 [gleeful]
-Ha! I twisted your first link out of place. Back you go!
+Ha! I tugged at the first line.
+Back you go!
 ```
 
-### VO-WORK-03 — First Rollback Reaction
+### VO-WORK-03 — Gremlin Strikes Back
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 9–11 seconds
+Estimated Duration: 5–7 seconds
 
 ```performance
 [urgent]
-He knocked the first link out of line! The Generator-to-Ring-One connection is down.
+He's gone back after the first ring.
 
-Same rule—go back and realign the rotators he turned, then continue.
+Don't let him undo your work.
 ```
 
 ### VO-GREM-03 — Second Rollback Taunt
@@ -177,19 +177,20 @@ Estimated Duration: 3–5 seconds
 
 ```performance
 [taunting]
-Not again? Oh, yes—again! I knocked another link loose. So close!
+Not again? Oh, yes—again!
+I couldn't let you finish that easily.
 ```
 
-### VO-WORK-04 — Second Rollback Reaction
+### VO-WORK-04 — One More Sabotage
 Type: Direct NPC Dialogue
 Speaker: Custodian Vex
-Estimated Duration: 9–11 seconds
+Estimated Duration: 5–7 seconds
 
 ```performance
 [urgent]
-Again—this time between Ring One and Ring Two.
+Again—he struck the line behind you.
 
-Same rule. Repair the rotators he turned and restore that section before you finish Ring Three.
+Ring Two's gone dark. You're close. Bring it back.
 ```
 
 ### VO-GREM-04 — Outsmarted Reaction
@@ -199,7 +200,8 @@ Estimated Duration: 4–6 seconds
 
 ```performance
 [startled]
-What?! You fixed ALL of it? ...Fine! Keep your ridiculous Orrery!
+What?! You fixed ALL of it?
+...Fine! Keep your ridiculous Orrery!
 ```
 
 ## 06. Vault Restored
@@ -221,13 +223,13 @@ The Great Orrery is awake, and the gateway is open.
 Take the Clockwork Wayfinder. You've earned it.
 ```
 
-### VO-END-02 — Safe Return Cue
+### VO-END-02 — The Way Home
 Type: Main Story
 Speaker: Custodian Vex
-Estimated Duration: 4–6 seconds
+Estimated Duration: 3–5 seconds
 
 ```performance
 [warmly]
 The way home is clear.
-Follow the gateway back to the holding area.
+Follow the gateway.
 ```
