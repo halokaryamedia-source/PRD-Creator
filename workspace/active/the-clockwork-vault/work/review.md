@@ -1,10 +1,10 @@
 # The Clockwork Vault — Bounded Gameplay Revision Review
 
-Status: approved gameplay revision with one pending Objective 1 mapping detail
+Status: approved
 
 ## Revision Boundary
 
-This revision updates gameplay meaning for Objectives 1-4 and the Production Assets derived from those rules. The supplied Objective 4 HTML is a technical topology/layout reference only; coordinates, preview controls, and route-layout implementation detail do not belong in the PRD.
+This revision updates gameplay meaning for Objectives 1-4 and the Production Assets derived from those rules. The supplied Objective 4 HTML is accepted as a supporting topology/layout reference only; its coordinates, preview controls, and route-layout implementation detail are not project-facing PRD content.
 
 ## Objective 1 — Resonance Engine
 
@@ -18,6 +18,11 @@ Match the required output state across three puzzle pillars within the approxima
 - Use lever combinations to produce the required color on each pillar.
 - Use the pressure plate to switch that pillar indicator between steady and blinking.
 - Compare the live pillar outputs with the required target displayed near the exit and correct the machine until all three pillars match.
+
+### Approved Lever-to-Color Mapping
+- Right pillar: ON/ON → Red; OFF/OFF → Yellow; ON/OFF → Green; OFF/ON → Purple.
+- Middle pillar: ON/ON → Blue; OFF/OFF → Dark Blue; ON/OFF → Brown; OFF/ON → Dark Green.
+- Left pillar: ON/ON → Pink; OFF/OFF → Orange; ON/OFF → White; OFF/ON → Black.
 
 ### Hasil
 The three required pillar states are correct, the Resonance Engine is restored, and the Broken Gallery opens.
@@ -46,7 +51,7 @@ Cross three route-selection levels by finding resources, repairing only marked p
 - Level 2: choose among three routes; only one is viable and the viable crossing requires 20 blocks plus 3 ladders.
 - If a wrong route consumes the available resources or the configured level time expires, return to that level checkpoint, remove the placed temporary blocks, recollect the resources, and try another route.
 - Level 3: all three routes are initially viable, but the player must reach at least 50% of the chosen route before the authored time threshold.
-- If the Level 3 threshold is missed, return to Checkpoint 3, close the failed route for the rest of that run, recollect resources, and choose from the remaining active routes.
+- If the Level 3 threshold is missed, return to Checkpoint 3, close the failed route for the rest of that run while another alternative remains, recollect resources, and choose from the remaining active routes.
 
 ### Hasil
 The player clears all three route levels and reaches the next chamber.
@@ -60,7 +65,7 @@ The player clears all three route levels and reaches the next chamber.
 ### Developer
 - Own resource allocation and temporary placement per checkpoint.
 - Reset checkpoint-local temporary blocks/resources on retry without restarting completed earlier levels.
-- Level 3 owns a visible time challenge, 50% route-progress threshold, route-close event, and maximum three-route state.
+- Level 3 owns a visible time challenge, 50% route-progress threshold, route-close event, and recoverable active-route state.
 - Update scoring evidence around checkpoint progress, resource planning, timed-route adaptation, and recovery independence.
 
 ## Objective 3 — Warden Halls
@@ -70,7 +75,7 @@ Cross three trap checkpoints and reach the end of the maze by understanding whic
 
 ### Apa yang Player Lakukan
 - Read and avoid three trap families: wall laser, floor trap, and swinging ceiling axe.
-- Throw Echo Pebble at a wall-laser sensor to disable that laser temporarily.
+- Throw Echo Pebble at a wall-laser sensor to disable that laser temporarily; the previously accepted 4-second disable window remains in use.
 - Where authored, throw Echo Pebble at a hanging stone so it drops/blocks a laser beam and creates a safe passage.
 - Floor traps cannot be disabled with Echo Pebble and must be avoided.
 - Swinging axes cannot be disabled with Echo Pebble and must be crossed by timing.
@@ -94,6 +99,7 @@ The player reaches the final checkpoint exit and gains access to Objective 4.
 ### Developer
 - Enforce 3-second Echo Pebble cooldown while keeping supply unlimited.
 - Validate Pebble only against authored wall-laser sensors and authored hanging-stone targets.
+- Preserve the 4-second temporary laser-disable window from the previously accepted gameplay rule.
 - Apply the exact trap damage/status effects and checkpoint recovery behavior above.
 - Update scoring evidence around checkpoint progress, trap-rule recognition, deliberate Pebble/timing decisions, and time/recovery cost.
 
@@ -116,10 +122,10 @@ Create one continuous power route from Power Generator to Ring 1, Ring 2, and Ri
 Power Generator, Ring 1, Ring 2, and Ring 3 are continuously connected, the Great Orrery restores, and the Clockwork exit opens.
 
 ### Level Design
-- PRD describes only the player-readable power-routing rule and staged sabotage behavior.
-- Do not embed grid coordinates, preview colors, route coordinates, layer geometry, or HTML control labels in PRD content.
-- The exact topology/layout remains a separate supporting technical document derived from the supplied HTML reference.
+- Use the approved authored routing layout while keeping player-facing guidance focused on the rotator, blocker, power, and ring states.
 - Every Gremlin event must have an unmistakable blocked/open/rotated visual state so the player understands what changed.
+- Keep earlier solved sections reachable/readable because Level 3 intentionally sends the player back to repair them.
+- Exact route coordinates/layout remain supporting implementation evidence rather than player-facing instructions.
 
 ### Developer
 - Resolve power as one continuous authored route using 90-degree L rotators.
@@ -130,8 +136,4 @@ Power Generator, Ring 1, Ring 2, and Ring 3 are continuously connected, the Grea
 
 ## Production Asset Scope
 
-Prepare only gameplay-required custom assets and player-facing information. Keep normal terrain/build geometry in Level Design and keep Objective 4 grid/layout coordinates in the later technical support document.
-
-## Saran AI
-
-- The source lists four lever combinations and four colors for each Objective 1 pillar but does not explicitly pair them. To make the 12 clue-book texts production-ready, use list-order pairing unless the implemented puzzle uses another mapping: ON/ON → color 1, OFF/OFF → color 2, ON/OFF → color 3, OFF/ON → color 4. This is the only remaining material decision in the bounded revision.
+Prepare only gameplay-required custom assets and player-facing information. Keep normal terrain/build geometry in Level Design. The approved Objective 1 mapping is final and may be used by the twelve clue-book texts.
