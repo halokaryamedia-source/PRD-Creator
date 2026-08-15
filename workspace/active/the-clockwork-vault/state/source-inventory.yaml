@@ -9,7 +9,7 @@ sources:
     sha256: f4d58341ce3cb7fb17bfc9986b5df67a23058d1b94a0bc78c1dad09abdd445d0
     inspection: full
     retention: external
-    summary: Original authoritative Clockwork source used for the accepted v1.0.0 PRD baseline.
+    summary: Original authoritative Clockwork source used for the accepted v1.0.0 PRD baseline and still authoritative where the current bounded revision did not replace project meaning.
   - id: SRC-002
     type: instruction
     role: authoritative
@@ -51,4 +51,4 @@ sources:
     status: current
     origin: user
     inspection: full
-    summary: User approved the revised gameplay interpretation, explicitly excluded the Objective 4 HTML layout from the PRD, reserved it for a later supporting technical document, and requested preparation through the Production Asset requirements including Voice/UI information.
+    summary: User approved the revised gameplay interpretation, explicitly excluded the Objective 4 HTML layout from the PRD, reserved it for a later supporting technical document, requested preparation through required Production Assets including Voice/UI information, and on 2026-08-15 approved list-order Objective 1 mapping: ON/ON to color 1, OFF/OFF to color 2, ON/OFF to color 3, OFF/ON to color 4.
