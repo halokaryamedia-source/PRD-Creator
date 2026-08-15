@@ -1,0 +1,146 @@
+name: Clockwork 04 Humanized Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-04-humanized/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Preserve Development authority hash
+        run: sha256sum "$PROJECT/work/content.md" > /tmp/content.before
+
+      - name: Apply humanized 04 logic
+        run: python .tmp-clockwork-04-humanized/patch.py
+
+      - name: Verify 03 untouched
+        run: |
+          sha256sum "$PROJECT/work/content.md" > /tmp/content.after
+          diff -u /tmp/content.before /tmp/content.after
+
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit tests
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+
+      - name: Verify humanized Production Assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('workspace/active/the-clockwork-vault')
+          html = (p/'output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          assets = (p/'work/asset-requirements.md').read_text(encoding='utf-8')
+          renderer = Path('kits/project-document-generator/renderer/production_assets_objective.py').read_text(encoding='utf-8')
+
+          assert 'Objective 1 · Resonance Engine' in html
+          assert 'Objective 3 · Warden Halls' in html
+          assert 'Ending · Vault Restored' in html
+          assert 'Resonance Engine Entrance Message' in html
+          assert 'Ring One Power-Loss Message' in html
+          assert 'Ring Two Power-Loss Message' in html
+          assert 'Throughout the Resonance Engine' in html
+          assert 'Entering the Warden Halls' in html
+          assert "Gremlin Changes the Route" in html
+          assert 'Visual Brief' in html
+          assert 'Voice Preset' in html
+          assert 'ElevenLabs Model' in html
+          assert 'Estimated Duration' in html
+          assert 'Audio Brief' in html
+          assert 'Small ordinary stone used as the throwable item.' in html
+          assert 'magical stone' not in html.casefold()
+          assert 'RING 1 · POWERED' in html and 'RING 1 · NO POWER' in html
+          assert 'RING ONE LOST POWER' in html
+          assert 'RING TWO LOST POWER' in html
+          assert 'class="pa-type pa-type-audio">AUDIO<' in html
+          assert 'voice-performance-tag' in html
+          assert html.count('class="pa-row pa-row-voice"') == 17
+
+          # No duplicated body Production Assets label or retired metadata labels.
+          assert '<header class="pa-shell"><small>Production Assets</small>' not in html
+          for token in ['>Expected</b>', '>Asset Brief</b>', '>Used At</b>', '>States</b>', '>Reuse</b>', '>Orientation</b>', '>Position</b>']:
+              assert token not in html, token
+
+          # New visual source wording is direct and supports optional Size without placeholders.
+          assert 'Visual Brief: Small ordinary stone used as the throwable item.' in assets
+          assert 'Asset Brief:' not in assets
+          assert '[approved dimensions' not in assets
+          assert 'Size: TBD' not in assets
+
+          # Renderer stays generic: no objective-specific names.
+          for token in ['Warden Halls', 'Broken Gallery', 'Resonance Engine', "Gremlin's Workshop"]:
+              assert token not in renderer, token
+
+          print('04 humanized reader-first validation PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_04_HUMANIZED_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 now uses the final universal humanized production-brief logic: each gameplay moment groups the resources needed there; resource type is shown above the resource name; MODEL/ITEM/PARTICLE use Function + concise Visual Brief + optional Size only when an approved value exists; UI / TEXT uses Function + exact player copy; AUDIO dialogue uses Function + Voice Preset + ElevenLabs Model + Estimated Duration + exact Prompt; non-dialogue AUDIO uses Function + Audio Brief. Performance-direction tags are visually distinct from spoken dialogue. Internal mechanic names, duplicated Production Assets headings, generic States/Position/Orientation/Reuse metadata, placeholder size, and AI-style filler are not rendered. Echo Pebble is explicitly an ordinary stone. Section 03 Development was hash-checked and left unchanged.
+
+          PRD, handoff, Voice, unit-contract, and humanized Production Assets validation pass. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review Section 04 visually against Sections 01-03 and flag only concrete wording, size, or visual-brief corrections.
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-04-Humanized
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-04-humanized
+          rm -f .github/workflows/clockwork-04-humanized-once.yml
+
+      - name: Commit humanized 04 logic
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "humanize Production Assets handoff"
+          git push origin HEAD:Local
