@@ -133,8 +133,8 @@ requirements:
 
   - id: REQ-017
     area: production-assets
-    statement: Production Assets must be organized by gameplay flow within each objective/section, not by asset category. Each flow presents all implementation needs together; UI/player-facing strings and Voice prompts provide exact copy-ready text with Copy actions, while audio, visual/presentation, and model requirements show their implementation context/trigger in the same flow. Category names remain secondary badges. Pages provide quick-jump navigation to gameplay flows and may provide Copy Flow Text for all copy-ready content in that flow.
-    provenance: [SRC-009]
+    statement: Production Assets must be organized by gameplay flow within each objective/section, not by asset category. Each flow presents all implementation needs together. Every Asset Requirement must be scan-friendly: show the secondary asset-type badge, a clear What to Build block, When/Where context when available, and exact per-item player-facing text or Voice prompt with its own Copy action. Pages retain quick-jump navigation between flows. Do not provide Copy Flow Text aggregation.
+    provenance: [SRC-009, SRC-010]
     evidence_status: approved
     recovery_class: none
     approval_status: not_required

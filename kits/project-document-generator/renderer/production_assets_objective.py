@@ -259,19 +259,23 @@ def _copy_button(target_id: str, label: str) -> str:
 
 def _asset_html(entry: AssetEntry, number: int, page_id: str) -> str:
     copy_id = f"{page_id}-asset-copy-{number}"
-    context = (
-        f'<p class="pa-usage"><span>{i18n(bi("Trigger / Placement", "Trigger / Penempatan"))}</span>'
-        f'{esc(entry.usage)}</p>'
+    usage = (
+        '<div class="pa-work-row">'
+        f'<span>{i18n(bi("When / Where", "Kapan / Di Mana"))}</span>'
+        f'<p>{esc(entry.usage)}</p></div>'
         if entry.usage
         else ""
     )
     content = ""
     if entry.content:
+        copy_label = "Player Text" if entry.category == "UI & Information" else "Copy-ready Text"
         content = (
+            '<div class="pa-content-block">'
             '<div class="pa-content-head">'
-            f'<span>{i18n(bi("Developer Copy", "Developer Copy"))}</span>'
+            f'<span>{esc(copy_label)}</span>'
             f'{_copy_button(copy_id, "Copy Text")}</div>'
             f'<pre class="pa-content" id="{copy_id}">{esc(entry.content)}</pre>'
+            '</div>'
         )
     return (
         '<article class="pa-card">'
@@ -281,24 +285,11 @@ def _asset_html(entry: AssetEntry, number: int, page_id: str) -> str:
         f'<span class="pa-type-badge">{esc(entry.category)}</span>'
         f'<h4>{esc(entry.title)}</h4></div></div>'
         '<div class="pa-card-body">'
-        f'<p class="pa-requirement"><span>{i18n(bi("Implementation", "Implementasi"))}</span>'
-        f'{esc(entry.requirement)}</p>'
-        f'{context}{content}</div></article>'
+        '<div class="pa-work-row">'
+        f'<span>{i18n(bi("What to Build", "Yang Dibuat"))}</span>'
+        f'<p>{esc(entry.requirement)}</p></div>'
+        f'{usage}{content}</div></article>'
     )
-
-
-def _flow_copy_text(
-    flow_title: str,
-    assets: list[AssetEntry],
-    voices: list[voice.VoiceEntry],
-) -> str:
-    blocks = [flow_title]
-    for entry in assets:
-        if entry.content:
-            blocks.append(f"[{entry.category}] {entry.title}\n{entry.content}")
-    for entry in voices:
-        blocks.append(f"[VOICE · {entry.speaker}] {entry.title}\n{entry.performance}")
-    return "\n\n".join(blocks).strip()
 
 
 def _pages_and_nav(
@@ -364,9 +355,7 @@ def _pages_and_nav(
             '<div class="pa-context-box">'
             f'<span>{i18n(bi("Gameplay Context", "Konteks Gameplay"))}</span>'
             f'<p class="pa-context">{i18n(context)}</p></div>'
-            '<p class="pa-use-note">Follow the gameplay flows below. Each flow combines every implementation need '
-            'for that beat—player text, Voice, audio, visual presentation, and models. Use the Copy buttons for '
-            'exact production text.</p>'
+            '<p class="pa-use-note">Choose the gameplay flow you are implementing. Every relevant model, player text, Voice, audio cue, and visual requirement for that beat is kept together below. Copy only the exact text or Voice prompt you need.</p>'
             f'{summary}</header>'
         )
 
@@ -395,20 +384,13 @@ def _pages_and_nav(
             flow_assets = grouped_assets.get(flow_title, [])
             flow_voices = grouped_voices.get(flow_title, [])
             flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
-            flow_copy = _flow_copy_text(flow_title, flow_assets, flow_voices)
             body += (
                 f'<div class="pa-flow" id="{flow_id}">'
                 '<div class="pa-flow-head"><div>'
                 f'<span>{i18n(bi("Gameplay Flow", "Flow Gameplay"))}</span>'
-                f'<h3>{esc(flow_title)}</h3></div>'
+                f'<h3>{esc(flow_title)}</h3></div></div>'
+                '<div class="pa-flow-items">'
             )
-            if flow_copy:
-                flow_copy_id = f"{flow_id}-copy"
-                body += _copy_button(flow_copy_id, "Copy Flow Text")
-            body += '</div>'
-            if flow_copy:
-                body += f'<pre class="pa-flow-copy-source" id="{flow_copy_id}">{esc(flow_copy)}</pre>'
-            body += '<div class="pa-flow-items">'
 
             for entry in flow_assets:
                 body += _asset_html(entry, asset_number, meta.page_id)
@@ -500,27 +482,29 @@ OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
 .pa-card-title{min-width:0}
 .pa-type-badge{display:inline-block;margin:0 0 5px;padding:2px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .pa-card h4{margin:0;color:var(--navy);font-size:.95rem;line-height:1.3;text-transform:none}
-.pa-card-body{margin:8px 0 0 35px}
-.pa-requirement,.pa-usage{max-width:84ch;margin:0;color:var(--ink);font-size:.79rem;line-height:1.55}
-.pa-usage{margin-top:7px;color:#52616a;font-size:.74rem}
-.pa-requirement>span,.pa-usage>span{display:block;margin-bottom:2px;color:var(--muted);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
-.pa-content-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
-.pa-content-head>span{color:var(--muted);font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
-.pa-content{margin:5px 0 0;padding:11px 12px;border-left:3px solid var(--blue);background:#f8fafb;color:var(--navy);font:700 .78rem/1.52 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
+.pa-card-body{display:grid;gap:0;margin:10px 0 0 35px;border-top:1px solid var(--line)}
+.pa-work-row{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.pa-work-row>span{padding-top:1px;color:var(--muted);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-work-row p{max-width:76ch;margin:0;color:var(--ink);font-size:.79rem;line-height:1.55}
+.pa-work-row+ .pa-work-row p{color:#52616a;font-size:.75rem}
+.pa-content-block{padding-top:10px}
+.pa-content-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.pa-content-head>span{color:var(--blue);font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-content{margin:0;padding:12px 13px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:2px;background:#f8fafb;color:var(--navy);font:700 .8rem/1.55 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
 .pa-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:7px 9px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .6rem/1 var(--font);letter-spacing:.045em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .pa-copy-button:hover,.pa-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
 .pa-copy-button.is-copied{border-color:var(--green);background:var(--green)}
-.pa-flow-copy-source{display:none}
 .pa-voice-setup-block{margin:12px 0 0}
 .pa-voice-inline>.pa-type-badge{margin:0 0 5px 1px}
 .pa-voice-inline .voice-script-card{margin:0}
-body.theme-dark .pa-context,body.theme-dark .pa-usage{color:#c8d7dc}
+body.theme-dark .pa-context,body.theme-dark .pa-work-row p{color:#c8d7dc}
 body.theme-dark .pa-context-box,body.theme-dark .pa-type-badge{background:#1d2f37}
 body.theme-dark .pa-card{border-color:#405761;background:#17262d}
 body.theme-dark .pa-content{background:#1d2f37;color:#e8eff3}
 @media(max-width:760px){
 .pa-flow-head{align-items:stretch;flex-direction:column}
 .pa-card-body{margin-left:0}
+.pa-work-row{grid-template-columns:1fr;gap:3px}
 .pa-content-head{align-items:flex-start}
 }
 @media print{
