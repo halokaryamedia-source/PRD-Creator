@@ -9,14 +9,14 @@ sources:
     sha256: f4d58341ce3cb7fb17bfc9986b5df67a23058d1b94a0bc78c1dad09abdd445d0
     inspection: full
     retention: external
-    summary: Exact authoritative source used for the accepted regeneration; recovered project meaning is persisted in canonical state rather than duplicating the large source HTML in Git.
+    summary: Original authoritative Clockwork source used for the accepted v1.0.0 PRD baseline.
   - id: SRC-002
     type: instruction
     role: authoritative
     status: current
     origin: user
     inspection: full
-    summary: Approved Clockwork gameplay resolutions and bounded Content Purity plus Humanize cleanup.
+    summary: Previously approved Clockwork gameplay resolutions and bounded Content Purity plus Humanize cleanup.
   - id: SRC-003
     type: generated
     role: generated
@@ -24,4 +24,31 @@ sources:
     origin: prior review artifact
     inspection: full
     sha256: 82025447edb630d9b18918f0707e36c103937ab41ff8bee86dbbc3fde2a51016
-    summary: Humanized review used only as supporting wording and placement evidence.
+    summary: Humanized review retained only as supporting wording and placement evidence.
+  - id: SRC-004
+    type: file
+    role: authoritative
+    status: current
+    origin: user-provided source
+    filename: Clockwork - Boost.docx
+    sha256: c9cc2ff5a47acfffc1ef41028181419618a526b03a09eb717336a5dfd7f89fba
+    inspection: full
+    retention: external
+    summary: Current gameplay clarification for Objectives 1-4, including Objective 1 pillar logic and clue books, Objective 2 three-level route/resource rules, Objective 3 trap/damage/Echo Pebble rules, Objective 4 progressive power routing and Gremlin sabotage events, plus requested Voice and UI information updates.
+  - id: SRC-005
+    type: file
+    role: supporting
+    status: current
+    origin: user-provided source
+    filename: objective_level_preview_v28_fixed_preview(1).html
+    sha256: dc8304a1fc995d053c6e8faf61b8b2375b1228f3990aa91a5b2039c17bcee7bb
+    inspection: full
+    retention: external
+    summary: Objective 4 technical layout reference only. It demonstrates route topology, rotator placement, blockers, and staged route states; it must not be copied into the PRD as layout/coordinate content.
+  - id: SRC-006
+    type: instruction
+    role: authoritative
+    status: current
+    origin: user
+    inspection: full
+    summary: User approved the revised gameplay interpretation, explicitly excluded the Objective 4 HTML layout from the PRD, reserved it for a later supporting technical document, and requested preparation through the Production Asset requirements including Voice/UI information.
