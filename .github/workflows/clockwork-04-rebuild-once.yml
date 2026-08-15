@@ -35,6 +35,52 @@ jobs:
         run: |
           sed -i 's/Do not display labels such as BUILD HERE\./Do not display debug-style placement text./' .tmp-clockwork-04-rebuild/patch.py
           python .tmp-clockwork-04-rebuild/patch.py
+          python - <<'PY'
+          from pathlib import Path
+          project = Path('workspace/active/the-clockwork-vault')
+          flow_map = {
+              '01 — Read Partial Target': '01 — The Door Remembers',
+              '02 — Search Clues': '02 — Search the Chamber',
+              '03 — Experiment with Pillars': '03 — Tune the Pillars',
+              '04 — Complete & Transition': '04 — Engine Restored',
+              '01 — Enter & Learn Route Loop': '01 — Enter the Gallery',
+              '02 — Level 1': '02 — First Crossing',
+              '03 — Level 2': '03 — Second Crossing',
+              '04 — Level 3 Time Challenge': '04 — Gremlin’s Wager',
+              '05 — Retry / Route Closure': '05 — When a Path Fails',
+              '01 — Learn Trap Rules': '01 — Enter the Warden Halls',
+              '02 — Use Echo Pebble': '02 — Echo Pebble',
+              '03 — Hazard Contact & Recovery': '03 — Warden Hazards',
+              '04 — Complete & Transition': '04 — Enter the Workshop',
+              '01 — Learn Network / Ring 1': '01 — Wake Ring One',
+              '02 — Extend to Ring 2': '02 — Wake Ring Two',
+              '03 — Route Swap Sabotage': '03 — Gremlin Changes the Path',
+              '04 — 50% Rollback': '04 — First Rollback',
+              '05 — 80% Rollback': '05 — Second Rollback',
+              '06 — Restore Great Orrery': '06 — Wake the Great Orrery',
+              '01 — Restoration Payoff & Reward': '01 — The Vault Awakens',
+              '02 — Return Home': '02 — The Way Home',
+          }
+          for rel in ['work/asset-requirements.md', 'work/voice-requirements.md']:
+              path = project / rel
+              text = path.read_text(encoding='utf-8')
+              for old, new in flow_map.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+
+          asset = project / 'work/asset-requirements.md'
+          text = asset.read_text(encoding='utf-8')
+          title_map = {
+              '#### Ring 2 Route-Swap Sabotage': '#### Gremlin Route Swap',
+              '#### 50% Rotator Sabotage': '#### First Rollback Sabotage',
+              '#### 80% Rotator Sabotage': '#### Second Rollback Sabotage',
+              '#### Level 3 Time-Challenge Cue': '#### Gremlin Wager Cue',
+              '#### Checkpoint Recovery': '#### Warden Recovery',
+          }
+          for old, new in title_map.items():
+              text = text.replace(old, new)
+          asset.write_text(text, encoding='utf-8')
+          PY
 
       - name: Compile and contract-test
         run: |
@@ -58,27 +104,31 @@ jobs:
           html = (project / 'output/v1.0.0/prd.html').read_text(encoding='utf-8')
           voice = (project / 'work/voice-production.md').read_text(encoding='utf-8')
           assets = (project / 'work/asset-requirements.md').read_text(encoding='utf-8')
+          marker = 'id="production-assets-global-shared"'
+          assert marker in html
+          prod = html[html.index(marker):]
 
-          required_html = [
+          required_prod = [
               'UI / TEXT', 'SFX', 'PRESENTATION', 'MODEL / ANIMATION',
               'The Gallery Has Fallen', 'The Wardens Are Listening',
               'RING ONE IS DARK', 'Follow the light home.',
+              'Gremlin Changes the Path', 'First Rollback', 'Second Rollback',
               'Only production-ready assets and in-game copy are shown here.',
           ]
-          for token in required_html:
-              assert token in html, token
+          for token in required_prod:
+              assert token in prod, token
 
           required_voice = ["Gremlin's Wager", "The Orrery's Heart", 'Ring Two Goes Dark', 'The Way Home']
           for token in required_voice:
               assert token in voice, token
 
-          forbidden_html = [
+          forbidden_prod = [
               '>VFX</span>First Seal Activation', 'BUILD HERE', 'LEVEL 1 · EASY', 'LEVEL 2 · MEDIUM',
               'Return to Checkpoint 3', '50% of your chosen route', 'Two rotators were turned.',
-              'Three rotators were turned.', 'holding area', 'The rotator rule hasn',
+              'Three rotators were turned.', 'holding area', 'rotator rule', '50% Rollback', '80% Rollback',
           ]
-          for token in forbidden_html:
-              assert token not in html, token
+          for token in forbidden_prod:
+              assert token not in prod, token
 
           forbidden_voice = [
               'this checkpoint resets', 'get at least halfway', 'three seconds to recharge',
@@ -104,7 +154,7 @@ jobs:
 
           `CLOCKWORK_04_CONTENT_REBUILT`
 
-          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 Production Assets has been rebuilt to match the clarity standard of sections 01-03: Voice is story/character/atmosphere/reaction-first instead of spoken Development instructions; player-facing UI/Text contains only real in-game copy; technical thresholds, reset/checkpoint language, debug labels, implementation counts, and engineering explanations stay in Development; and asset badges are literal production types such as MODEL, MODEL / ANIMATION, MODEL / VFX, SFX, UI / TEXT, VOICE, and PRESENTATION.
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 Production Assets has been rebuilt to match the clarity standard of sections 01-03: Voice is story/character/atmosphere/reaction-first instead of spoken Development instructions; player-facing UI/Text contains only real in-game copy; technical thresholds, reset/checkpoint language, debug labels, implementation counts, and engineering explanations stay in Development; gameplay-flow labels in 04 are now in-world rather than implementation labels; and asset badges are literal production types such as MODEL, MODEL / ANIMATION, MODEL / VFX, SFX, UI / TEXT, VOICE, and PRESENTATION.
 
           The regenerated HTML passes PRD, handoff, Voice, and 04 content-purity validation. Browser-level visual quality still requires user review.
 
