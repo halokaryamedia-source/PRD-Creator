@@ -138,7 +138,7 @@ Done When:
 For: Resonance Engine restoration and the route opening.
 Trigger: Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are all valid at the same time.
 Player Experience: The three pillars visibly synchronize, the Resonance Engine returns to operation, and attention moves to the newly opened Broken Gallery route.
-Uses: Resonance Engine restoration presentation; pillar completion feedback
+Uses: Custodian Vex; Resonance Engine Restored Message; Resonance Engine restoration presentation; pillar completion feedback
 Done When:
 - Completion validates the full simultaneous final state rather than a partial match.
 - The completion response plays once and clearly confirms success.
@@ -235,6 +235,24 @@ BOOK 12 — WORKSHOP NOTE
 Spare tools were moved to the eastern storage cabinet after the last maintenance shift.
 ```
 
+#### Resonance Engine Restored Message
+Flow: 04 — Engine Restored
+Function: Confirms the Resonance Engine is restored and points the player to the Broken Gallery.
+Type: UI / TEXT
+Create: Create the exact player-facing Resonance Engine Restored Message.
+Used: When Objective 1 completes.
+Moment: Resonance Engine Restored
+Group: 04 — Engine Restored
+For: Confirm the successful restoration and make the next route obvious.
+Requirement: Keep the completion message short and in-world. Do not repeat the hidden combination or puzzle rules.
+Content:
+```text
+ENGINE RESTORED
+
+The pillars are in tune again.
+The Broken Gallery is open.
+```
+
 ### Visual Effects & Presentation
 
 ## The Broken Gallery
@@ -289,6 +307,16 @@ Done When:
 - Current-level resources become available again while earlier completed Gallery levels remain complete.
 - A failed Level 3 route is visibly unavailable while alternatives remain, and the last remaining route never makes the objective unwinnable before normal timeout.
 
+
+### Gameplay Flow 06 — Gallery Cleared
+For: Confirm the final crossing is complete and hand the player to the Warden Halls.
+Trigger: The player clears the final Gallery crossing and reaches the exit.
+Player Experience: The damaged Gallery is behind them, the next route is open, and Vex points them toward the Warden Halls.
+Uses: Custodian Vex; Gallery Cleared Message
+Done When:
+- The success response plays once after the final crossing is secured.
+- The completion message clearly names the Warden Halls as the next destination.
+- The player is not given any Warden trap solution before entering the next objective.
 
 ### UI & Information
 
@@ -386,6 +414,24 @@ Gremlin took that route.
 Find another way across.
 ```
 
+#### Gallery Cleared Message
+Flow: 06 — Gallery Cleared
+Function: Confirms the Broken Gallery is cleared and points the player to the Warden Halls.
+Type: UI / TEXT
+Create: Create the exact player-facing Gallery Cleared Message.
+Used: When Objective 2 completes.
+Moment: Broken Gallery Cleared
+Group: 06 — Gallery Cleared
+For: Confirm the successful crossing and make the next destination clear.
+Requirement: Keep the completion message short and in-world. Do not repeat route, resource, retry, or timer rules.
+Content:
+```text
+GALLERY CLEARED
+
+The last crossing is behind you.
+The Warden Halls are ahead.
+```
+
 #### Repair Gap Markers
 Flow: 01 — Enter the Gallery
 Visual Brief: Simple marker or prop placed on repairable gaps. It must stand out from normal blocks without using debug text.
@@ -453,7 +499,7 @@ Done When:
 For: Story transition into the Workshop.
 Trigger: The player clears the third Warden level and reaches the inner gate.
 Player Experience: Vex acknowledges that the Wardens are still serving the vault and directs the player into Gremlin’s Workshop.
-Uses: Custodian Vex; inner gate transition
+Uses: Custodian Vex; Warden Halls Cleared Message; inner gate transition
 Done When:
 - The transition Voice plays once without replaying Pebble instructions.
 - The Workshop route becomes the clear next destination.
@@ -569,6 +615,24 @@ Content:
 ```text
 ECHO PEBBLE · READY
 ECHO PEBBLE · RECHARGING
+```
+
+#### Warden Halls Cleared Message
+Flow: 04 — Enter the Workshop
+Function: Confirms the Warden Halls are cleared and points the player to the Workshop.
+Type: UI / TEXT
+Create: Create the exact player-facing Warden Halls Cleared Message.
+Used: When Objective 3 completes.
+Moment: Warden Halls Cleared
+Group: 04 — Enter the Workshop
+For: Confirm the inner gate has opened and make the Workshop the clear next destination.
+Requirement: Keep the completion message short and in-world. Do not repeat Echo Pebble or hazard rules.
+Content:
+```text
+WARDEN HALLS CLEARED
+
+The inner gate is open.
+The Workshop is next.
 ```
 
 ### Visual Effects & Presentation

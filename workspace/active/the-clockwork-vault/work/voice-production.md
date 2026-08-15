@@ -1,5 +1,5 @@
 # The Clockwork Vault Voice Production
-Version: 1.4.0
+Version: 1.5.0
 Source Voice Requirements: 1.0.0 / work/voice-requirements.md
 
 Voice Cast:
@@ -50,6 +50,18 @@ Now even the door has forgotten most of its answer.
 Look around. This chamber may remember more than it seems.
 ```
 
+### VO-RES-02 — The Engine Answers
+Type: Main Story
+Speaker: Custodian Vex
+Estimated Duration: 5–7 seconds
+
+```performance
+[satisfied]
+That's it. The Engine remembers its tune.
+
+The Broken Gallery is open. Keep moving.
+```
+
 ## 03. The Broken Gallery
 
 ### VO-GAL-01 — The Gallery Has Fallen
@@ -76,6 +88,18 @@ Estimated Duration: 5–7 seconds
 Oh, this part is fun.
 Pick a path—quickly.
 I might not leave it there for long!
+```
+
+### VO-GAL-03 — Across the Gallery
+Type: Main Story
+Speaker: Custodian Vex
+Estimated Duration: 5–7 seconds
+
+```performance
+[steady]
+You made it across. The Gallery is behind us.
+
+The Warden Halls are next. Stay sharp.
 ```
 
 ## 04. The Warden Halls

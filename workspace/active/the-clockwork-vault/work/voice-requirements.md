@@ -85,6 +85,29 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
   - REQ-014
   - REQ-015
 
+### VO-RES-02 — The Engine Answers
+- Type: Main Story
+- Function: transition
+- Necessity: supporting
+- Speaker: Custodian Vex
+- Channel: Direct
+- Trigger: The Resonance Engine restores and the Broken Gallery route opens.
+- Flow: 04 — Engine Restored
+- Create: Create one short Custodian Vex completion line for this gameplay moment.
+- Used: Immediately after Objective 1 completes.
+- Moment: Resonance Engine Restored
+- Group: 04 — Completion
+- For: Acknowledge the restored Engine and point the player toward the Broken Gallery.
+- Purpose: Give Objective 1 a short story payoff and a clear handoff into the next room.
+- Must communicate:
+  - The Resonance Engine is working again.
+  - The Broken Gallery is now open/next.
+- Must not add/repeat:
+  - Do not repeat the pillar combination, clue logic, or lever rules.
+  - Do not mention validation, reset, state, or implementation language.
+- Source refs:
+  - content.md → The Resonance Engine → Transition
+
 ## 03. The Broken Gallery
 
 ### VO-GAL-01 — The Gallery Has Fallen
@@ -135,6 +158,29 @@ Voice direction: Voice exists for story, character, atmosphere, reaction, and li
 - Source refs:
   - content.md → The Broken Gallery → Level 3
   - REQ-004
+
+### VO-GAL-03 — Across the Gallery
+- Type: Main Story
+- Function: transition
+- Necessity: supporting
+- Speaker: Custodian Vex
+- Channel: Direct
+- Trigger: The player clears the final Broken Gallery crossing and reaches the exit into the Warden Halls.
+- Flow: 06 — Gallery Cleared
+- Create: Create one short Custodian Vex completion line for this gameplay moment.
+- Used: Immediately after Objective 2 completes.
+- Moment: Broken Gallery Cleared
+- Group: 06 — Completion
+- For: Acknowledge the completed Gallery crossing and point the player toward the Warden Halls.
+- Purpose: Give Objective 2 a short success beat before the next room begins.
+- Must communicate:
+  - The Broken Gallery crossing is complete/behind the player.
+  - The Warden Halls are next.
+- Must not add/repeat:
+  - Do not repeat resource, route, retry, or timer rules.
+  - Do not explain Warden trap solutions before the player enters the next objective.
+- Source refs:
+  - content.md → The Broken Gallery → Transition
 
 ## 04. The Warden Halls
 
