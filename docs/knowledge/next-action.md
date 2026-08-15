@@ -2,12 +2,12 @@
 
 ## Current Status
 
-`CLOCKWORK_04_HUMANIZED_READY`
+`PRD_04_SKILL_ALIGNMENT_READY`
 
-The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 now uses the final universal humanized production-brief logic: each gameplay moment groups the resources needed there; resource type is shown above the resource name; MODEL/ITEM/PARTICLE use Function + concise Visual Brief + optional Size only when an approved value exists; UI / TEXT uses Function + exact player copy; AUDIO dialogue uses Function + Voice Preset + ElevenLabs Model + Estimated Duration + exact Prompt; non-dialogue AUDIO uses Function + Audio Brief. Performance-direction tags are visually distinct from spoken dialogue. Internal mechanic names, duplicated Production Assets headings, generic States/Position/Orientation/Reuse metadata, placeholder size, and AI-style filler are not rendered. Echo Pebble is explicitly an ordinary stone. Section 03 Development was hash-checked and left unchanged.
+The existing Project Document Production / Project Document Generator instructions are now aligned so normal production can start from project discussion + original source, recover one complete approved project model, preserve the approved 01–03 PRD-core workflow unchanged, and continue to 04 Production Assets from that same model. `PRODUCTION-ASSETS.md` is the single detailed 04 owner and now uses the approved moment-first, reader-first, humanized contract: MODEL / ITEM / UI / TEXT / AUDIO / PARTICLE; short Function; literal Visual Brief; optional real approved Size; exact player UI copy; canonical Voice presentation; no generic States/Position/Orientation/Reuse metadata; no fake SEQUENCE/gameplay-behavior assets; no unsupported visual/lore invention.
 
-PRD, handoff, Voice, unit-contract, and humanized Production Assets validation pass. Browser-level visual quality still requires user review.
+The change is instruction-layer only. `CONTENT-CONTRACT.md`, Golden templates, PRD-core renderer/pages, and the existing 01–03 output contract were not changed.
 
 ## Next Step
 
-Review Section 04 visually against Sections 01-03 and flag only concrete wording, size, or visual-brief corrections.
+Run one representative fresh-project production from discussion/source and confirm that the existing 01–03 output remains unchanged in style/structure while justified 04 Production Assets are produced from the same approved project model.

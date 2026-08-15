@@ -1,11 +1,11 @@
 ---
 name: project-document-production
-description: Semantic/product-contract owner for PRD-Creator Flow 2–4. Use for source recovery, Golden-guided completion proposals, canonical PRD meaning, Golden representation requirements, PRD readiness, and handoff semantics. Do not use as a generic HTML/Python wrapper when semantics are already correct.
+description: Semantic/product-contract owner for PRD-Creator Flow 2–4 plus the bounded 04 Production Assets completion contract. Use for source recovery, Golden-guided completion proposals, canonical PRD meaning, Golden representation requirements, PRD readiness/handoff semantics, and ensuring the same approved project model can produce actionable 04 Production Assets without changing the approved 01–03 contract. Do not use as a generic HTML/Python wrapper when semantics are already correct.
 ---
 
 # Project Document Production
 
-Own Flow 2–4 semantic judgment. Detailed procedure and mechanics stay with the nearest kit owner.
+Own Flow 2–4 semantic judgment plus the bounded non-Voice Production Assets completion boundary. Detailed procedure and mechanics stay with the nearest kit owner.
 
 ## Authority chain
 
@@ -14,16 +14,20 @@ originals + current user instruction + approved decisions
 → recovered requirement state
 → pending AI proposals for missing/conflicting material meaning
 → user-approved Simple Chat Preview
-→ approved requirement state
-→ content.md                 canonical meaning
-→ render-data.json           derived projection
-→ current versioned prd.html                 derived presentation
+→ approved project model
+   ├─ content.md                 canonical PRD-core meaning
+   │  → render-data.json        derived PRD-core projection
+   │  → current versioned prd.html → 01–03
+   └─ asset-requirements.md     canonical non-Voice 04 production requirements when needed
+      → current versioned prd.html → 04 Production Assets
 → acceptance / handoff
 ```
 
+The PRD core and 04 come from the **same approved project model**. 04 is not discovered by rereading generated 01–03 and brainstorming extra assets afterward.
+
 Generated output never becomes project authority. Pending AI proposals are allowed to complete the preview model, but they do not become project authority until the user approves/corrects the preview. Golden/reference material supplies document function, slot responsibilities and presentation quality, not project-specific mechanics, counts, lore, scoring, or implementation facts.
 
-## Single semantic owner
+## Single semantic owners
 
 Do not maintain another Golden checklist here. The gameplay PRD blueprint, mandatory surfaces, Scoring / Result rules, mandatory-slot states, role completeness, terminology/glossary semantics, material-detail conservation, Humanize behavior, and Reverse-derived Golden fill map are owned by:
 
@@ -31,11 +35,20 @@ Do not maintain another Golden checklist here. The gameplay PRD blueprint, manda
 kits/project-document-generator/CONTENT-CONTRACT.md
 ```
 
+The bounded non-Voice 04 requirement/writing contract is owned by:
+
+```text
+kits/project-document-generator/PRODUCTION-ASSETS.md
+```
+
+Do not duplicate either contract here.
+
 ## Active owners
 
 - Flow 2 source recovery/completion/preview readiness → `SOURCE-INTAKE.md`
-- Flow 3 content/quality → `CONTENT-CONTRACT.md`
-- projection/template mechanics → `RENDERING.md`
+- Flow 3 PRD-core content/quality → `CONTENT-CONTRACT.md`
+- non-Voice 04 Production Assets → `PRODUCTION-ASSETS.md`
+- projection/template/compositor mechanics → `RENDERING.md`
 - Flow 4 acceptance/handoff → `VALIDATION.md`
 
 Use only the smallest owner needed by the current problem.
@@ -45,6 +58,10 @@ Use only the smallest owner needed by the current problem.
 Use `SOURCE-INTAKE.md` to produce a **complete reviewable project model** before Flow 3.
 
 Use the Reverse-derived Golden fill map as a completeness guide: it tells the AI what each project/global/objective/role surface must be able to answer. Golden does not supply the project answer.
+
+The same understanding pass must also preserve concrete production needs that are already explicit or necessarily implied by the project. This does **not** mean adding an asset dashboard to the chat preview. It means the approved model should know what real MODEL / ITEM / UI / TEXT / AUDIO / standalone PARTICLE resources the project requires, so 04 can later be projected without guessing from generated 01–03.
+
+Material production choices that would change gameplay, story, player communication, or another project fact follow the same Proposal/approval boundary as other project meaning. Obvious production implications do not require a second approval framework.
 
 Mandatory concerns ultimately resolve only as defined by `CONTENT-CONTRACT.md`:
 
@@ -69,7 +86,7 @@ When several options are genuinely balanced, still choose one reasonable preview
 
 AI proposals may include mechanics, timings, quantities, recovery, scoring behavior, names, build expectations, runtime behavior and other material decisions at the abstraction needed by the PRD. Their protection is explicit pending approval, not vagueness.
 
-The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot or internal proposal record. Every material AI-chosen Proposal must appear once in `Saran AI` before approval, while source-backed recovery and non-material production choices stay unlabeled. Keep the disclosure compact instead of turning it into a question-by-question approval flow.
+The Simple Chat Preview stays objective-based and simple. It summarizes the complete underlying model; it does not need to expose every Golden slot, every Production Asset, or internal proposal record. Every material AI-chosen Proposal must appear once in `Saran AI` before approval, while source-backed recovery and non-material production implications stay unlabeled. Keep the disclosure compact instead of turning it into a question-by-question approval flow.
 
 Approval of the complete preview approves the represented pending proposals unless the user explicitly corrects/rejects them. A material Proposal is represented only when its chosen default is visible once in `Saran AI`; hidden material AI choices cannot be promoted by blanket approval. Persist those approvals before entering Flow 3.
 
@@ -89,6 +106,8 @@ Apply the bounded Humanize behavior from `CONTENT-CONTRACT.md` only after meanin
 
 Flow 3 must not invent new product decisions. If authoring exposes a missing material answer, return only that affected slice to Flow 2, create/update the proposal, preview it, obtain approval, and continue.
 
+The approved 01–03 style, format, Golden hierarchy, and existing authoring behavior are protected. Adding 04 is not permission to redesign or rewrite them.
+
 ## Flow 4 judgment
 
 Use `VALIDATION.md` for one integrated semantic review against the current authoritative evidence, preview-approved decisions, and PRD.
@@ -99,11 +118,38 @@ For a representative regeneration of the project used to establish the Golden Sa
 
 Mechanical validation proves deterministic structure only; browser/visual claims require actual browser/visual evidence.
 
+## 04 Production Assets judgment
+
+Use `PRODUCTION-ASSETS.md` after the project model is approved to materialize the non-Voice Production Assets source and current 04 presentation.
+
+The key rule is:
+
+```text
+same approved project model
+→ PRD core 01–03
+→ Production Assets 04
+```
+
+not:
+
+```text
+generated 01–03
+→ reread finished document
+→ brainstorm 04
+```
+
+04 contains only concrete resources that must actually be prepared. Keep resource wording short, literal, reader-first, and free of invented style/lore. Gameplay behavior stays in its existing owner and must not be repackaged as fake assets or sequences.
+
+Voice remains downstream in the Voice Production owners. When canonical Voice exists, the shared compositor may present it inside the matching 04 moment; this skill does not take ownership of Speaker/actor/script decisions.
+
+A project with no justified custom Production Assets must not receive filler entries merely to force an empty 04.
+
 ## Proof economy
 
 - do not load the full reference/Golden HTML during normal authoring;
 - use the compact Reverse-derived Golden fill map for normal completeness work;
 - do load the canonical Golden artifact during a Golden-regression audit or representative parity review;
+- do not reread generated 01–03 as the normal source-discovery method for 04;
 - do not reread unchanged packages during bounded revisions;
 - default visual proof is targeted desktop-only unless the task is specifically mobile/responsive;
 - do not rerun Voice checks for PRD-only work unless shared code changed;
@@ -111,4 +157,4 @@ Mechanical validation proves deterministic structure only; browser/visual claims
 
 ## Boundary
 
-This skill owns PRD Flow 2–4 semantics only. Renderer/validator mechanics stay in the kit, Voice stays downstream, and `output/v<document.version>/prd.html` is never edited as source of truth.
+This skill owns PRD Flow 2–4 semantics plus the bounded non-Voice Production Assets completion boundary. Renderer/validator mechanics stay in the kit, Voice stays downstream, 01–03 remain governed by their existing approved contracts, and `output/v<document.version>/prd.html` is never edited as source of truth.

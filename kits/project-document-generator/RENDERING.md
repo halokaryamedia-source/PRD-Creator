@@ -1,6 +1,6 @@
 # Rendering Contract
 
-`CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. `PRODUCTION-ASSETS.md` owns the compact non-Voice Production Asset requirement contract. This file owns deterministic projection into the approved PRD composition and the downstream Production Assets extension inside the same project HTML.
+`CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. `PRODUCTION-ASSETS.md` owns the bounded non-Voice 04 Production Asset requirement/writing contract. This file owns deterministic projection into the approved PRD composition and the downstream 04 Production Assets extension inside the same project HTML.
 
 ## Authority chain
 
@@ -8,16 +8,16 @@
 work/content.md
 → work/render-data.json
 → exact Golden template + deterministic projection
-→ PRD core in output/v<document.version>/prd.html
+→ PRD core 01–03 in output/v<document.version>/prd.html
 ```
 
 Optional downstream extension:
 
 ```text
-accepted PRD core
+approved project model
 → optional work/asset-requirements.md
 → optional Voice canonical production source
-→ deterministic objective-first Production Assets projection
+→ deterministic objective/moment-first 04 Production Assets projection
 → same output/v<document.version>/prd.html
 ```
 
@@ -28,17 +28,17 @@ The renderer may represent owned data. It does not invent project meaning, asset
 `output/v<document.version>/prd.html` is the single human-facing project document.
 
 ```text
-PRD core pages
+PRD core pages 01–03
 = accepted product/gameplay/level-design/developer truth
 = owned by content.md + render-data.json
 
-Production Assets pages
-= downstream operator/developer material
+04 Production Assets pages
+= production handoff material
 = non-Voice requirement owner: work/asset-requirements.md
 = Voice production owner: work/voice-production.md
 ```
 
-Adding or revising downstream Production Assets does not reopen PRD acceptance while `content.md` and `render-data.json` remain unchanged.
+Adding or revising 04 Production Assets does not reopen PRD-core acceptance while `content.md` and `render-data.json` remain unchanged.
 
 ## Versioned delivery package
 
@@ -60,13 +60,13 @@ output/v<document.version>/index.json
 
 Responsibilities stay narrow:
 
-- `prd.html` is the only human-facing project document and keeps the approved Golden presentation;
+- `prd.html` is the only human-facing project document and keeps the approved Golden presentation for 01–03;
 - `context.md` is a reasoning-friendly development projection of accepted PRD meaning plus only existing downstream non-Voice/Voice requirements that are relevant to implementation;
 - `index.json` is a compact navigation tree with `context.md` line ranges, not a prose copy, schema registry, dependency engine, or second PRD;
-- `output/README.md` is the stable resume entry point that identifies the current version and reading route.
-- when `work/asset-requirements.md` exists, the consolidated `prd.html` carries one `asset-requirements-sha256` source binding so Flow 4 can reject a stale non-Voice Production Assets view; this is a single freshness binding, not an asset manifest/checksum registry.
+- `output/README.md` is the stable resume entry point that identifies the current version and reading route;
+- when `work/asset-requirements.md` exists, the consolidated `prd.html` carries one `asset-requirements-sha256` source binding so stale non-Voice 04 presentation can be rejected; this is a single freshness binding, not an asset manifest/checksum registry.
 
-`document.version` must use semantic `X.Y.Z` for a handoff package. Version folders track PRD/project meaning; a downstream-only Production Assets refresh may regenerate files inside the same version when accepted PRD meaning did not change.
+`document.version` must use semantic `X.Y.Z` for a handoff package. Version folders track PRD/project meaning; a downstream-only 04 refresh may regenerate files inside the same version when accepted PRD meaning did not change.
 
 The AI reading path is intentionally bounded:
 
@@ -96,7 +96,7 @@ e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 
 Do not replace either path with a cleaned, reconstructed, or generic interpretation.
 
-Production Assets does not rewrite Golden template bytes. The base PRD core is rendered first; downstream pages and narrowly scoped extension styles/interactions are appended only when at least one accepted downstream canonical source exists.
+04 Production Assets does not rewrite Golden template bytes. The base PRD core is rendered first; downstream pages and narrowly scoped extension styles/interactions are appended only when at least one accepted downstream canonical source exists.
 
 ## Runtime binding
 
@@ -110,12 +110,14 @@ Base runtime preprocessing may perform only project binding needed for the PRD r
 - replace glossary data;
 - bind render-data revision metadata.
 
-After the PRD core is rendered, the Production Assets compositor may:
+After the PRD core is rendered, the 04 compositor may:
 
-- append one professional-only `Production Assets` navigation group to the **existing** PRD sidebar;
-- create one page per accepted gameplay/shared Production Assets section that actually contains downstream assets;
-- group only non-zero categories inside that page;
-- merge canonical Voice Production into the matching gameplay page's `Audio` category;
+- append one professional-only `04 Production Assets` navigation group to the **existing** PRD sidebar;
+- create one page per accepted gameplay/shared section that actually contains downstream resources;
+- order pages by accepted project journey;
+- group resource entries by natural gameplay moment inside the page;
+- render visible resource types as `MODEL`, `ITEM`, `UI / TEXT`, `AUDIO`, or `PARTICLE`;
+- merge canonical Voice Production into the matching moment as `AUDIO`;
 - append downstream pages after PRD-core pages;
 - inject narrowly scoped extension CSS/interactions;
 - do nothing when no downstream canonical production source exists.
@@ -124,8 +126,9 @@ It must not:
 
 - rebuild Overview, Gameplay Flow, or Development navigation;
 - promote gameplay/objective sections out of Development;
-- nest categories or individual asset entries in the sidebar;
-- render empty/zero categories;
+- change 01–03 page composition or Golden template bytes;
+- nest moments, types, or individual asset entries in the sidebar;
+- render empty placeholder groups/cards;
 - duplicate Voice canonical data into generic asset requirements;
 - renumber accepted PRD package/page codes;
 - hand-patch project meaning into generated HTML.
@@ -210,46 +213,59 @@ Do not rename these merely to create cleaner implementation aliases.
 
 For `N` gameplay sections the PRD-core page count remains `6 + 4N`.
 
-Production Assets pages are downstream extensions and are not counted as PRD-core pages.
+04 Production Assets pages are additive downstream pages and are not counted as PRD-core pages.
 
-## Production Assets navigation
+## 04 Production Assets navigation
 
-Production Assets is additive and **objective-first**:
+04 is additive and **objective-first**:
 
 ```text
 03 Development
    existing PRD global + gameplay/objective navigation
 
 04 Production Assets
-   Global / Shared Assets      # only when real shared assets exist
+   Global / Shared Assets      # only when real shared resources exist
    <gameplay section title>
       <Introduction | Objective N | Ending | accepted PRD label>
 ```
 
-The sidebar does not expose category or asset-entry nesting. Inside each page, only categories with at least one asset are rendered:
+The sidebar does not expose moment/type/asset-entry nesting.
+
+Inside each page, the body is **moment-first**, not a category dashboard:
 
 ```text
-3D Models
-UI & Information
-Audio
-Visual Effects & Presentation
+Objective N · <Objective Name>
+
+01 · <natural gameplay moment>
+   TYPE
+   Resource Name
+   resource-specific fields
+
+02 · <next natural gameplay moment>
+   ...
 ```
 
 Rules:
 
 - gameplay/objective navigation remains under Development;
 - PRD page identities remain unchanged;
-- Production Assets keep top-level navigation number `04`, but their page footer codes use the distinct `PA-01`, `PA-02`, ... namespace so they cannot be confused with accepted PRD Development page codes; DOM page IDs are stable semantic identities derived from the owning shared/journey/package section rather than current list position;
+- 04 keeps top-level navigation number `04`, while its page footer codes use the distinct `PA-01`, `PA-02`, ... namespace so they cannot be confused with accepted PRD Development page codes;
+- DOM page IDs are stable semantic identities derived from the owning shared/journey/package section rather than current list position;
 - page order follows accepted project journey, with `Global / Shared Assets` first only when present;
-- zero-count categories are absent rather than shown as `0`, `None`, or empty headings;
-- Voice appears inside `Audio` on the matching page and retains its detailed Voice Production card, exact Trigger context, Speaker, Estimated Duration, canonical Eleven v3 payload, and Copy Prompt;
+- moment numbering follows the actual displayed order and remains sequential;
+- reader-facing page titles use `Objective N · Name`, `Introduction · Name`, `Ending · Name`, or the matching accepted label;
+- body copy does not repeat a second `Production Assets` heading when page chrome already identifies Section 04;
+- visible type labels are `MODEL`, `ITEM`, `UI / TEXT`, `AUDIO`, `PARTICLE`;
+- internal markdown storage headings are parser/source organization only and must not become the visible dashboard;
+- Voice appears as `AUDIO` in the matching moment and retains canonical Voice payload while using the approved 04 visible fields: Function, Voice Preset, ElevenLabs Model, Estimated Duration, Prompt;
+- performance-direction tags are visually distinct from spoken dialogue while Copy Prompt copies the exact canonical payload;
 - long sidebar labels wrap naturally; clipping/ellipsis is not the target behavior;
 - non-Voice requirement integrity remains owned by `PRODUCTION-ASSETS.md` + project `work/asset-requirements.md`;
 - Voice semantic/payload integrity remains owned by the Voice Production Kit and its project canonical sources.
 
-## Golden visual language for Production Assets
+## Visual language for 04 Production Assets
 
-Production Assets must look native to the same project document, not like a separate dashboard.
+04 must look native to the same project document, not like a separate dashboard.
 
 Reuse:
 
@@ -259,25 +275,51 @@ Reuse:
 - existing document variables and professional-view behavior;
 - print behavior.
 
-Production Assets pages should remain scan-first:
+A non-Voice visual resource renders as:
 
 ```text
-section title + accepted label + short context
-→ total asset count + non-zero category counts
-→ category heading
-→ direct actionable asset requirements
+TYPE
+Resource Name
+
+Function
+<short direct function>
+
+Visual Brief
+<short literal production brief>
+
+Size
+<optional; only when a real approved size exists>
 ```
 
-A generic non-Voice asset entry displays only what production needs:
+`Size` is omitted when unknown. Do not render placeholder size, vague `Large/Small`, or invented dimensions.
+
+UI / TEXT renders:
 
 ```text
-Asset Name
-Requirement       # mandatory
-Usage             # optional
-Content           # optional exact player-facing content
+UI / TEXT
+Resource Name
+
+Function
+...
+
+Player Text
+<exact copy>
 ```
 
-Do not render component inventories such as Model / Texture / Animation / Particle / SFX when those are simply parts of one owning asset. Add only concrete asset-specific UI needed by the current production surface; do not introduce a generic asset-management framework or speculative dashboard controls.
+Non-dialogue AUDIO renders:
+
+```text
+AUDIO
+Resource Name
+
+Function
+...
+
+Audio Brief
+...
+```
+
+Do not render generic `States`, `Position`, `Orientation`, `Reuse`, `Used At`, `Create`, `Includes`, or `Build Specs` metadata for new 04 presentation. Do not render component inventories such as Model / Texture / Animation / Particle / SFX when those are simply parts of one owning resource.
 
 ## Golden prototype rule — PRD core
 
@@ -351,7 +393,7 @@ Scoring/result and Reset/Interruption stay inside Development Requirements.
 
 ## Glossary
 
-`packages[].terms` is the canonical package glossary source. Production Assets does not create glossary definitions.
+`packages[].terms` is the canonical package glossary source. 04 Production Assets does not create glossary definitions.
 
 Visible Terms Used follows Golden:
 
@@ -368,11 +410,11 @@ Production Assets    no
 
 `document.version` remains PRD project/release metadata, not an edit counter.
 
-Adding/updating downstream Production Assets does not change `document.version` unless accepted PRD/project meaning also enters a new declared revision.
+Adding/updating downstream 04 Production Assets does not change `document.version` unless accepted PRD/project meaning also enters a new declared revision.
 
 ## Render economy
 
-Initial PRD production:
+Initial PRD-core production:
 
 ```text
 approved project meaning
@@ -381,14 +423,16 @@ approved project meaning
 → one deterministic versioned prd.html render
 ```
 
-Downstream extension:
+04 extension:
 
 ```text
-accepted PRD core
+same approved project model
 → optional asset-requirements.md + optional Voice canonical production
 → one consolidated versioned prd.html rerender
 ```
 
-If no downstream canonical source exists, Production Assets composition is a no-op.
+The file materialization can happen after PRD-core approval, but asset needs should not be rediscovered by brainstorming over generated 01–03.
+
+If no downstream canonical source exists, 04 composition is a no-op.
 
 Do not create a second default HTML, partial-page renderer, page cache, generic asset registry/schema, or speculative preview renderer merely to avoid a cheap deterministic full-file write.

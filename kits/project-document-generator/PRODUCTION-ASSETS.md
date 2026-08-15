@@ -1,29 +1,96 @@
 # Production Assets Contract
 
-This owner defines the PRD-derived, non-Voice Production Asset Requirement contract. Voice keeps its own Flow 5–7 owners and canonical production source.
+This owner defines the non-Voice `04 Production Assets` contract. It extends the existing PRD production system; it does not create another Flow, Skill, PRD family, or asset-management framework. Voice keeps its existing Flow 5–7 owners and canonical production source.
 
 ## Purpose
 
-After the PRD is accepted, Production Assets should tell a developer or artist exactly what must be made for each gameplay section without creating a second PRD or a technical component inventory.
-
-The default human-facing result remains the same project document:
+The Project Document Generator must be able to start from project discussion + original source, understand the complete project, and produce both:
 
 ```text
-accepted PRD
-→ optional work/asset-requirements.md
-→ optional Voice canonical sources
-→ same output/final.html
-   PRD core
-   + 04 Production Assets
+approved project model
+├─ PRD core 01–03
+└─ 04 Production Assets
 ```
 
-## Objective-first organization
+Production Assets are therefore planned from the **same approved project model** as 01–03. Do not discover 04 by rereading the finished HTML and brainstorming extra assets afterward.
 
-Production Assets follows the project journey, not an asset-category dashboard:
+The artifact may be materialized after approval, but the production need must already be recoverable from the original source, current user direction, approved proposals, and the complete project model.
+
+The final human-facing result remains one project document:
+
+```text
+output/v<document.version>/prd.html
+   01 Overview
+   02 Gameplay Flow
+   03 Development
+   04 Production Assets
+```
+
+The approved 01–03 Golden structure, style, content contract, and renderer behavior are protected. Work on 04 must not redesign or rewrite them.
+
+## Production coverage during project understanding
+
+While Flow 2 recovers Gameplay, Level Design, and Developer meaning, also recover the concrete resources that production will actually need.
+
+For each Introduction / Objective / Ending, ask:
+
+> What must the team actually create or prepare so this approved gameplay can exist as described?
+
+Use the original project evidence and approved model, not speculative decoration.
+
+Keep a resource only when at least one of these is true:
+
+1. **Explicit requirement** — the source or approved discussion names it.
+2. **Necessary production implication** — the approved gameplay clearly cannot be produced without it.
+3. **Approved material choice** — a form/content/behavior choice that changes gameplay, story, player communication, or another project fact was resolved through the existing Completion/Proposal process.
+
+Do not create an approval step for obvious production implications. Do not invent decorative props, extra VFX, sounds, or presentation beats simply because they might look good.
+
+The Simple Chat Preview does not need to list every resource. It only needs to expose material AI-chosen decisions that require approval. Production implications can remain in the underlying approved model.
+
+## What counts as a Production Asset
+
+A Production Asset is a concrete resource someone must prepare.
+
+Visible resource types are intentionally small:
+
+```text
+MODEL
+ITEM
+UI / TEXT
+AUDIO
+PARTICLE
+```
+
+Use them literally:
+
+- **MODEL** — custom character, machine, trap, puzzle object, door, prop, or other model that must be built.
+- **ITEM** — custom held/projectile/inventory item that must be prepared as an item asset.
+- **UI / TEXT** — player-facing HUD, prompt, instruction, warning, objective/result text, hologram text, or other exact readable copy.
+- **AUDIO** — dialogue or a real standalone non-dialogue audio cue.
+- **PARTICLE** — only a genuinely standalone reusable particle/effect resource.
+
+Do **not** turn these into Production Assets:
+
+- gameplay logic;
+- reset/recovery behavior;
+- percentage/threshold logic;
+- route switching or power recalculation;
+- checkpoint state;
+- pure event sequencing;
+- a generic `SEQUENCE` wrapper;
+- camera/fade/transition behavior that is only part of implementation;
+- animation/sound/particle that belongs to an existing MODEL or ITEM.
+
+Animation or visible state changes may be mentioned inside a model's Visual Brief when they are required to build that asset. They are not separate taxonomy fields.
+
+## Reader-first organization
+
+04 follows the project journey and is grouped by **gameplay moment**, not by asset-category dashboard.
 
 ```text
 04 Production Assets
-   Global / Shared Assets      # only when shared assets exist
+   Global / Shared Assets      # only when truly shared resources exist
    Introduction
    Objective 1
    Objective 2
@@ -31,9 +98,213 @@ Production Assets follows the project journey, not an asset-category dashboard:
    Ending
 ```
 
-Each gameplay/shared page shows only categories that actually contain assets.
+A page body uses:
 
-Allowed categories are intentionally small:
+```text
+Objective N · <Objective Name>
+
+01 · <natural gameplay moment>
+    <resource>
+    <resource>
+
+02 · <next natural gameplay moment>
+    <resource>
+```
+
+Moment names must read like real project moments, for example:
+
+```text
+Throughout the Warden Halls
+Entering the Warden Halls
+Searching the Chamber
+Gremlin Changes the Route
+Vault Restored
+```
+
+Avoid template wording such as `Objective Start`, `Throughout Objective`, `Objective Complete`, `First Rollback`, or other internal mechanic labels when a normal reader-friendly name is available.
+
+Moment numbering is generated from the order that actually appears: `01`, `02`, `03`, ... . Do not reuse unrelated Gameplay Flow numbering when it creates gaps or duplicates.
+
+## Resource writing contract
+
+### MODEL / ITEM / PARTICLE
+
+Show only information that helps someone create the resource:
+
+```text
+TYPE
+Resource Name
+
+Function
+<what it is used for>
+
+Visual Brief
+<what must be made>
+
+Size
+<only when a real approved numeric/Block size exists>
+```
+
+Rules:
+
+- **Function**: one short direct sentence. Explain what the resource does in the project.
+- **Visual Brief**: one or two short literal sentences. Describe the form that must be made. Include required animation or visible change only when it materially belongs to the asset.
+- **Size**: optional. Use only a real approved size/footprint, preferably in Minecraft blocks when relevant. Omit it when unknown.
+
+Never write placeholder or vague size values such as `Large`, `Small`, `TBD`, `[approved size]`, or invented dimensions.
+
+Do not add generic metadata such as:
+
+```text
+States
+Position
+Orientation
+Reuse
+Placement
+Variants
+Build Specs
+Used At
+Create
+Includes
+```
+
+If a sentence can be removed without changing what the artist/modeler must make, remove it.
+
+Example:
+
+```text
+MODEL
+Swinging Axe Trap
+
+Function
+Ceiling trap that swings across the corridor.
+
+Visual Brief
+Large double-sided axe hanging from the ceiling with a left-right swing animation.
+```
+
+Example:
+
+```text
+ITEM
+Echo Pebble
+
+Function
+Thrown at wall sensors and selected hanging stones.
+
+Visual Brief
+Small ordinary stone used as the throwable item.
+```
+
+Do not add visual adjectives or lore that the project did not approve. `ordinary stone` must not become `magical stone`, `arcane stone`, or another invented interpretation.
+
+### UI / TEXT
+
+Use:
+
+```text
+UI / TEXT
+Resource Name
+
+Function
+<why the player needs this information>
+
+Player Text
+<exact copy>
+```
+
+Player Text is real player-facing copy. Keep internal implementation language out of it unless the project explicitly uses that language in-game.
+
+Avoid leaking terms such as checkpoint state, local reset, validated progress, authored threshold, rotator count, run state, or internal mechanic names into player-facing text.
+
+### AUDIO — dialogue
+
+Voice scope and canonical wording remain owned by the Voice Production system. The 04 compositor only presents canonical Voice data.
+
+Visible dialogue form:
+
+```text
+AUDIO
+<Character> — <Line Title>
+
+Function
+<what this line does for the player/story>
+
+Voice Preset
+<selected ElevenLabs voice>
+
+ElevenLabs Model
+Eleven v3
+
+Estimated Duration
+<duration>
+
+Prompt
+<exact canonical performance payload>
+```
+
+Do not render a separate `Speaker` field when the character is already identified in the title. Performance-direction tags such as `[serious]` or `[mischievous]` must be visually distinguishable from spoken dialogue, while Copy Prompt still copies the exact canonical payload.
+
+### AUDIO — non-dialogue
+
+Use:
+
+```text
+AUDIO
+Resource Name
+
+Function
+<what event/information the cue supports>
+
+Audio Brief
+<short description of the sound to make>
+```
+
+When there is no speech and ambiguity is possible, say it directly: `No spoken dialogue.`
+
+Do not create a non-dialogue audio asset for every object action. Sound that only belongs to a MODEL/ITEM interaction stays in that asset's brief when it is materially required.
+
+## Humanize / anti-AI-SLOP gate
+
+04 is a production brief, not design prose.
+
+Write as if a lead is handing a task to an artist, modeler, audio producer, or developer who has not memorized the project.
+
+Use three checks:
+
+1. **Does this sentence help someone make the resource?** If not, delete it.
+2. **Is this detail supported by project authority?** If not, do not invent it.
+3. **Can a new reader tell what to make without decoding internal terminology?** If not, make the wording clearer, not longer.
+
+Avoid filler such as:
+
+- `clearly readable visual language`;
+- `visually recognizable while fitting naturally`;
+- `enhances the player experience`;
+- `supports strong visual feedback`;
+- decorative adjectives that do not change the production task.
+
+Prefer direct wording:
+
+```text
+Wall-mounted mechanical laser emitter with a visible beam.
+```
+
+over:
+
+```text
+A visually readable sensor treatment that clearly communicates the active hazard state to the player.
+```
+
+## Canonical project file
+
+When non-Voice Production Assets exist, store the actionable source in:
+
+```text
+work/asset-requirements.md
+```
+
+The current parser keeps four internal storage headings for compatibility:
 
 ```text
 3D Models
@@ -42,153 +313,105 @@ Audio
 Visual Effects & Presentation
 ```
 
-A category with zero assets is omitted completely. Do not render empty headings, `0 Assets`, `None`, or placeholder cards.
+These are **source grouping only**. They are not the visible 04 navigation or visible resource taxonomy.
 
-## Asset discovery and recommendation pass
-
-Production Assets must not depend on the source explicitly naming every model, UI element, sound, or presentation asset.
-
-After the gameplay/PRD meaning is complete, inspect each shared/journey/gameplay section once and ask:
-
-```text
-What custom player-visible, player-readable, player-heard, or authored presentation asset
-must exist for this accepted gameplay to work as specified?
-```
-
-Use this rule:
-
-1. **Explicit requirement** — if accepted authority already names or clearly requires the asset, carry it directly into Production Assets.
-2. **Necessary production implication** — if accepted gameplay logically requires a custom asset even though the source never named it, derive the asset need rather than leaving production to guess. Example: a gameplay rule that requires the player to repair three broken power nodes justifies a `Power Node` model requirement with the necessary Broken/Restored states.
-3. **Material design choice** — if choosing a specific form, name, content, or behavior would change gameplay, lore, player communication, or another accepted project fact, resolve that choice upstream through the existing Completion/Proposal process before finalizing the asset requirement.
-4. **Production-only recommendation** — when several production forms can satisfy the same accepted gameplay without changing project meaning, choose one practical recommendation at the production layer. Do not create another approval framework or pretend the recommendation came from the source.
-
-Recommend only assets with a real gameplay, information, audio, or presentation function. Do not invent decorative models, extra VFX, UI, or sounds merely to fill a category or make the document look complete.
-
-## Asset requirement rule
-
-An asset entry describes the production result, not its implementation components.
-
-Good:
-
-```text
-Main Generator
-Requirement: Create one large objective generator with clearly different Inactive and Active states. When activated, its moving parts start, the energy core lights, a short electrical spark appears, and the mechanical startup sound plays.
-Usage: Starts Inactive and changes permanently to Active when the objective is completed.
-```
-
-Do not replace that with a component checklist such as Model / Texture / Animation / Particle / SFX.
-
-Animation, particle/VFX, texture treatment, state changes, and SFX that belong directly to one model/UI/presentation stay inside that owning asset requirement.
-
-## Category boundaries
-
-### 3D Models
-
-Use for a concrete custom model/object that must be produced, such as a character/NPC, enemy, objective entity, machine, interactive object, door, puzzle object, tool/item, or custom environmental prop.
-
-State exactly which model must be created and what visible/interactive states it needs. Attached animation, VFX, and SFX remain in the same requirement when they are part of that model's behavior.
-
-Do not move terrain, room composition, paths, arena construction, or normal block-by-block level building here; those remain Level Design.
-
-### UI & Information
-
-Use for player-facing information such as HUD, hologram, objective text, interaction prompt, tutorial/instruction, waypoint, icon, warning, or result information.
-
-State its function, when it appears/changes/disappears, and include the exact player-facing text whenever that text is already knowable.
-
-Classify by player-facing function rather than implementation technique. A health bar or hologram still belongs here even if its Minecraft implementation uses geometry, entities, textures, or animation.
-
-### Audio
-
-Use only for audio that is a meaningful independent production asset, such as Voice Over, narration, music, ambience, countdown/global cue, or other sound not better owned by a model/UI/presentation requirement.
-
-An SFX that exists only because one model/object performs an action stays inside that model/object requirement.
-
-Voice entries are not duplicated into `asset-requirements.md`; the renderer merges canonical Voice Production into the Audio section of the matching gameplay page.
-
-### Visual Effects & Presentation
-
-Use for standalone visual effects or complete authored presentation sequences whose primary function is not owned by one model/UI asset. Examples include environmental/area VFX, directional or boundary effects, intro/ending presentation, cutscene, objective reveal, camera sequence, fade, or transition presentation.
-
-Describe what the player must see, when it appears/runs, and any important state or timing relationship. Do not split one presentation sequence into separate Camera / Animation / VFX / SFX asset entries.
-
-A spark, glow, animation, or effect that exists only as part of one model/UI asset remains inside that owning requirement instead of becoming a separate Visual Effects & Presentation entry.
-
-## Shared assets
-
-Use `Global / Shared Assets` only for a real asset reused across multiple gameplay sections. Define it once rather than duplicating the same production requirement under several objectives.
-
-## Canonical project file
-
-When non-Voice Production Asset requirements exist, store only the actionable requirement set in:
-
-```text
-work/asset-requirements.md
-```
-
-Format:
+New authoring should use only the minimum fields needed by the current compositor:
 
 ````markdown
 # Production Asset Requirements
 
-## <Global / Shared Assets | accepted gameplay section title>
+## <Global / Shared Assets | accepted gameplay/journey section title>
 
-### <3D Models | UI & Information | Audio | Visual Effects & Presentation>
+### Gameplay Flow 01 — <accepted flow title>
+### Gameplay Flow 02 — <accepted flow title>
 
-#### <Asset Name>
-Requirement: <exactly what must be made and the important result/state behavior>
-Usage: <optional; when/where it is used, changes, or stops>
+### 3D Models
+
+#### <Resource Name>
+Flow: 01 — <accepted flow title>
+Moment: <natural reader-facing moment>
+Type: <MODEL | ITEM>
+Function: <short direct function>
+Visual Brief: <short literal production brief>
+Size: <optional approved size only>
+
+### UI & Information
+
+#### <Resource Name>
+Flow: 01 — <accepted flow title>
+Moment: <natural reader-facing moment>
+Type: UI / TEXT
+Function: <short direct function>
 Content:
 ```text
-<optional exact player-facing text/content>
+<exact player-facing copy>
 ```
+
+### Audio
+
+#### <Resource Name>
+Flow: 02 — <accepted flow title>
+Moment: <natural reader-facing moment>
+Type: AUDIO
+Function: <short direct function>
+Audio Brief: <short non-dialogue sound brief>
+
+### Visual Effects & Presentation
+
+#### <Resource Name>
+Flow: 02 — <accepted flow title>
+Moment: <natural reader-facing moment>
+Type: PARTICLE
+Function: <short direct function>
+Visual Brief: <short literal particle brief>
 ````
 
-`Requirement` is mandatory. `Usage` and `Content` are included only when useful. Do not add IDs, component lists, status matrices, confidence scores, recommendation flags, or implementation-file metadata by default.
+Do not generate legacy metadata (`Create`, `Used`, `Includes`, `Group`, `For`, `Requirement`, `Usage`) for new projects unless a concrete compatibility need requires it. Existing project files may retain those fields; the compositor remains backward-compatible.
 
-Every non-shared section must map to an accepted PRD gameplay/journey section. If a material asset choice would change accepted project meaning, resolve that semantic gap upstream instead of inventing it in the asset file or renderer. Production-only recommendations that preserve accepted gameplay may stay at this downstream abstraction.
+Every non-shared section must map to an accepted journey/gameplay section. Material choices that change project meaning return to the existing approval model; the asset source or renderer must not invent them.
 
 ## HTML presentation
 
-The sidebar stays scan-first:
+The sidebar stays simple:
 
 ```text
 04 Production Assets
-   <gameplay section title>
+   <gameplay/shared section title>
       <Introduction | Objective N | Ending | accepted label>
 ```
 
-Do not add category or individual-asset nesting to the sidebar.
+Do not nest moments, types, or individual resources in the sidebar.
 
-Each page uses:
+The body starts with the reader-facing section identity, for example:
 
 ```text
-Production Assets
-<gameplay section title>
-<accepted PRD label>
-<context>
-<total assets + non-zero category counts>
-
-<non-zero category>
-  asset requirement
-  asset requirement
-
-<next non-zero category>
-  ...
+Objective 3 · Warden Halls
 ```
 
-Voice keeps its current detailed production card (Trigger/Context, Speaker, Estimated Duration, exact Eleven v3 prompt, Copy Prompt) but appears inside the matching page's Audio section.
+Do not repeat a second `Production Assets` heading inside the body when the page chrome already identifies Section 04.
 
-## Anti-slop / stop rules
+Inside the page:
+
+```text
+moment
+→ resource type
+→ resource name
+→ resource-specific fields
+```
+
+The type label must be visually easy to scan and appear above/before the resource name. 04 uses the same project document typography/layout language but must not modify Golden PRD-core bytes or 01–03 composition.
+
+## Scope and stop rules
 
 - no new Production Asset Flow;
 - no new root Skill or separate Production Asset Kit;
 - no generic asset schema/registry/manifest;
-- no Model/Texture/Animation/Particle/SFX component checklist;
-- no empty category headings or zero-count categories;
-- no duplicate shared assets per objective;
-- no second default HTML;
+- no asset-category dashboard;
+- no generic `States / Position / Orientation / Reuse` metadata;
+- no component checklist for Model / Texture / Animation / Particle / SFX;
+- no gameplay behavior or `SEQUENCE` disguised as an asset;
 - no duplicated Voice canonical data inside `asset-requirements.md`;
-- no asset requirement invented by the renderer;
-- no optional/decorative asset invented merely to fill a taxonomy;
-- stop once the accepted PRD-derived requirements are actionable and the consolidated output is readable.
+- no second default HTML;
+- no decorative/filler asset invented to make 04 look complete;
+- no change to the approved 01–03 style, structure, Golden contract, or PRD-core renderer as part of ordinary 04 authoring;
+- stop when every real required production resource is clear enough to hand off and the consolidated document is readable.

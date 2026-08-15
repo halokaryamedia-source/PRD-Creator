@@ -2,9 +2,9 @@
 
 **Version:** 1.14.0
 
-Project Document Generator produces the accepted Golden PRD core and can append bounded downstream Production Assets to the same project HTML.
+Project Document Generator turns project discussion + source into the approved PRD core and can complete 04 Production Assets from the same approved project model in the same project HTML.
 
-## PRD core
+## PRD core 01–03
 
 ```text
 source + approved decisions
@@ -15,9 +15,11 @@ source + approved decisions
 → output/v<document.version>/{prd.html, context.md, index.json}
 ```
 
-The PRD core remains `6 + 4N` pages for `N` gameplay sections. Golden template bytes remain unchanged by downstream composition.
+The PRD core remains `6 + 4N` pages for `N` gameplay sections. Golden template bytes and the existing 01–03 structure/style remain unchanged by 04 composition.
 
-## Downstream Production Assets
+## 04 Production Assets
+
+Concrete Production Asset needs are recovered while the project is understood from discussion/source. They are not normally discovered by rereading generated 01–03 and brainstorming extra assets afterward.
 
 Optional non-Voice requirements use:
 
@@ -31,18 +33,19 @@ Contract owner:
 PRODUCTION-ASSETS.md
 ```
 
-Current categories are:
+04 is objective/moment-first. Visible resource types are:
 
 ```text
-3D Models
-UI & Information
-Audio
-Visual Effects & Presentation
+MODEL
+ITEM
+UI / TEXT
+AUDIO
+PARTICLE
 ```
 
-Production Assets is objective-first. Sidebar links identify the gameplay/shared section and accepted PRD label; categories appear inside the page only when they contain assets.
+Only resources that actually need to be created/prepared are included. Visual resources use short Function + literal Visual Brief + optional real approved Size. UI / TEXT carries exact player copy. Non-dialogue AUDIO uses a short Audio Brief. Gameplay behavior and generic sequences are not assets.
 
-Voice remains canonical in the Voice Production Kit and is merged into the matching page's `Audio → Voice Production` block.
+Voice remains canonical in the Voice Production Kit and is merged into the matching 04 moment as `AUDIO`.
 
 ## Package structure
 
@@ -65,20 +68,22 @@ kits/project-document-generator/
     └── runtime-template.html
 ```
 
-`delivery.py` is the normal handoff entry point and generates the human PRD plus compact AI side documents in one pass. `production_assets_objective.py` composes objective-first mixed Production Assets. `production_assets.py` supplies the existing Voice-specific parsing/presentation primitives.
+`delivery.py` is the normal handoff entry point and generates the human PRD plus compact AI side documents in one pass. `production_assets_objective.py` composes objective/moment-first mixed Production Assets. `production_assets.py` supplies the existing Voice-specific parsing/presentation primitives.
 
 ## Artifact lifecycle
 
-PRD-only projects need no downstream asset files. After PRD handoff, projects may add only the downstream sources they actually use:
+Projects use only the sources they need:
 
 ```text
-work/asset-requirements.md     optional non-Voice requirements
+work/content.md                canonical PRD-core meaning
+work/render-data.json          derived PRD-core projection
+work/asset-requirements.md     optional non-Voice 04 requirements
 work/voice-requirements.md     Voice only
 work/voice-production.md       Voice only
 work/voice-acceptance.md       Voice only
 state/voice-state.yaml         Voice only
 ```
 
-All current delivery surfaces are regenerated together from the same canonical project truth. The human PRD remains `prd.html`; `context.md` and `index.json` are derived AI reading aids only.
+All current delivery surfaces are regenerated from their canonical sources into the same project document. The human PRD remains `prd.html`; `context.md` and `index.json` are derived AI reading aids only.
 
-The objective-first compositor has contract coverage for generic asset-only, Voice-only, mixed asset + Voice, zero-category omission, source mapping, and no-downstream no-op behavior.
+The 04 compositor has contract coverage for generic asset-only, Voice-only, mixed asset + Voice, source mapping, and no-downstream no-op behavior.

@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-08-14
+Updated: 2026-08-15
 
 Use this file to locate the current owner before creating, moving, or editing repository structure. It combines area-level ownership and exact implementation/procedure routing so there is only one ownership map.
 
@@ -13,7 +13,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | `.agents/skills/` | reusable semantic routing/judgment |
 | `docs/foundation/` | durable Flow 1–7 production policy |
 | `docs/knowledge/` | current repository memory, ownership, decisions, evidence and operations |
-| `kits/project-document-generator/` | Flow 2–4 PRD implementation/procedure + bounded PRD-derived Production Assets requirement/presentation contract |
+| `kits/project-document-generator/` | Flow 2–4 PRD implementation/procedure + bounded 04 Production Assets requirement/presentation contract |
 | `kits/voice-production-kit/` | Flow 5–7 Voice requirements/production/validation semantics and optional DOCX export |
 | `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering and repeatable CI contracts |
 | `workspace/active/` | current project production packages |
@@ -41,13 +41,13 @@ Use this file to locate the current owner before creating, moving, or editing re
 | End-to-end PRD production sequence | `docs/foundation/01-production-flow.md` |
 | Flow 2 policy | `docs/foundation/02-source-intake-recovery.md` |
 | Flow 2 detailed procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
-| Flow 3 PRD + Golden semantic contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
-| non-Voice Production Asset requirement contract | `kits/project-document-generator/PRODUCTION-ASSETS.md` + project `work/asset-requirements.md` |
+| Flow 3 PRD-core + Golden semantic contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
+| non-Voice 04 Production Asset requirement/writing contract | `kits/project-document-generator/PRODUCTION-ASSETS.md` + project `work/asset-requirements.md` |
 | PRD-core rendering + shared project HTML composition contract | `kits/project-document-generator/RENDERING.md` |
 | versioned delivery orchestration | `kits/project-document-generator/renderer/delivery.py` |
 | PRD-core page projection | `kits/project-document-generator/renderer/pages.py` |
 | lower-level HTML renderer orchestration | `kits/project-document-generator/renderer/render.py` |
-| objective-first Production Assets composition | `kits/project-document-generator/renderer/production_assets_objective.py` |
+| objective/moment-first 04 Production Assets composition | `kits/project-document-generator/renderer/production_assets_objective.py` |
 | Voice-specific Production Assets parsing/presentation primitives | `kits/project-document-generator/renderer/production_assets.py` |
 | stable project resume navigator | project `output/README.md` |
 | human-facing project PRD | project `output/v<document.version>/prd.html` |
@@ -60,7 +60,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
 | Current system/project evidence | `docs/knowledge/reviews/current-validation.md` |
 
-`PRODUCTION-ASSETS.md` owns only the compact actionable non-Voice requirement contract. `renderer/production_assets_objective.py` owns presentation/composition mechanics and may not invent asset requirements. `renderer/production_assets.py` remains the Voice-specific helper and may not invent Voice scope, scripts, actor selection, or project meaning. `renderer/delivery.py` packages existing accepted meaning into the versioned human/AI handoff surfaces; it is not another semantic owner.
+`PRODUCTION-ASSETS.md` owns only the bounded actionable non-Voice 04 requirement/writing contract. It must plan concrete Production Asset needs from the same approved project model that feeds 01–03; it does not authorize a second design pass over generated PRD output. `renderer/production_assets_objective.py` owns presentation/composition mechanics and may not invent asset requirements. `renderer/production_assets.py` remains the Voice-specific helper and may not invent Voice scope, scripts, actor selection, or project meaning. `renderer/delivery.py` packages existing accepted meaning into the versioned human/AI handoff surfaces; it is not another semantic owner.
 
 ## Voice Owners
 
@@ -70,7 +70,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | Flow 6 lifecycle/output contract | `kits/voice-production-kit/README.md` + `docs/foundation/06-elevenlabs-script-production.md` |
 | Flow 6 canonical Voice Asset Production | project `work/voice-production.md` |
 | Eleven v3 performance craft | `kits/voice-production-kit/SOUNDMAKER.md` |
-| default human/operator Voice presentation | shared `output/v<document.version>/prd.html → Production Assets → <gameplay section> → Audio → Voice Production` |
+| default human/operator Voice presentation | shared `output/v<document.version>/prd.html → 04 Production Assets → matching gameplay moment → AUDIO` |
 | optional DOCX presentation | `kits/voice-production-kit/DOCX-FORMAT.md` |
 | optional DOCX builder | `kits/voice-production-kit/builder/build_docx.py` |
 | Flow 7 Voice validation | `kits/voice-production-kit/VOICE-VALIDATION.md` + `validator/validate.py` |
@@ -84,22 +84,36 @@ The former duplicate `kits/voice-production-kit/SCRIPT-PRODUCTION.md` owner is r
 `output/v<document.version>/prd.html` is one derived human-facing project document with separate canonical owners behind it:
 
 ```text
-PRD core
+PRD core 01–03
 ← work/content.md + work/render-data.json
 
-Production Assets — non-Voice
+04 Production Assets — non-Voice
 ← optional work/asset-requirements.md
 
-Production Assets — Voice
+04 Production Assets — Voice
 ← work/voice-production.md
-   with Flow 5 Trigger context from work/voice-requirements.md
+   with Flow 5 requirement/context kept in Voice owners
 ```
 
-Production Assets extends the accepted PRD sidebar. Gameplay/objective navigation stays under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
+Production Asset needs are recovered from the same source/discussion + approved project model as 01–03. The canonical non-Voice file is materialized after approval; generated 01–03 is not the normal discovery source for 04.
 
-The Production Assets sidebar is objective-first. Categories (`3D Models`, `UI & Information`, `Audio`, `Visual Effects & Presentation`) appear inside matching pages only, and zero-count categories are omitted. Voice is merged into `Audio` for the matching gameplay section without duplicating canonical Voice data or creating a separate Voice sidebar category.
+04 extends the accepted PRD sidebar. Gameplay/objective navigation stays under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
 
-A downstream-only change may rerender the current versioned `prd.html` without changing PRD semantic ownership/acceptance when PRD canonical sources remain unchanged.
+The 04 sidebar is objective-first. The page body is moment-first. Visible resource types are:
+
+```text
+MODEL
+ITEM
+UI / TEXT
+AUDIO
+PARTICLE
+```
+
+Internal markdown storage headings exist only for source/parser organization and are not the visible 04 taxonomy/dashboard.
+
+Visual resources use `Function` + literal `Visual Brief` + optional real approved `Size`. UI / TEXT uses `Function` + exact player copy. Non-dialogue AUDIO uses `Function` + `Audio Brief`. Canonical Voice is merged as AUDIO with Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt. Generic visible metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, or `Build Specs` is not part of new 04 authoring.
+
+A downstream-only change may rerender the current versioned `prd.html` without changing PRD-core semantic ownership/acceptance when PRD canonical sources remain unchanged.
 
 Never patch `prd.html`, `context.md`, or `index.json` manually to reconcile owners; fix the canonical source or delivery owner and regenerate the invalidated projection.
 
@@ -107,13 +121,13 @@ Never patch `prd.html`, `context.md`, or `index.json` manually to reconcile owne
 
 ```text
 CONTENT-CONTRACT.md
-→ PRD-core semantic + visible-composition authority
+→ PRD-core 01–03 semantic + visible-composition authority
 
 PRODUCTION-ASSETS.md
-→ bounded non-Voice Production Asset requirement contract
+→ bounded non-Voice 04 Production Asset requirement/writing contract
 
 RENDERING.md
-→ deterministic PRD-core binding + downstream composition contract
+→ deterministic PRD-core binding + 04 composition contract
 
 template/golden-reference.html
 → canonical PRD reference bytes
@@ -122,7 +136,7 @@ template/runtime-template.html
 → renderer runtime alias; byte-identical to the reference
 ```
 
-Production Assets does not modify the Golden template bytes or become part of the PRD-core Golden page family.
+04 Production Assets does not modify the Golden template bytes or become part of the PRD-core Golden page family.
 
 ## New-Owner Rule
 

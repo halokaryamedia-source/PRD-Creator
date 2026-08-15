@@ -1,6 +1,6 @@
 # PRD-Creator
 
-PRD-Creator produces a development-ready PRD plus optional objective-first Production Assets in the same project HTML.
+PRD-Creator turns project discussion + source material into a development-ready PRD and, when needed, 04 Production Assets in the same project HTML.
 
 Current versions: Project Document Generator **v1.14.0**; Voice Production Kit **v1.11.2**; Voice scope **Eleven v3**. Development continues on `Local`.
 
@@ -15,13 +15,13 @@ output/
     └── index.json             # compact AI navigation + context line ranges
 ```
 
-`prd.html` keeps the approved human-facing PRD presentation. `context.md` and `index.json` are derived side documents from the same accepted project truth; they are not a second PRD authority.
+`prd.html` keeps the approved 01–03 PRD-core presentation. `context.md` and `index.json` are derived side documents from the same accepted project truth; they are not a second PRD authority.
 
-Production Assets pages show only non-zero categories: `3D Models`, `UI & Information`, `Audio`, and `Visual Effects & Presentation`.
+04 Production Assets is planned from the same approved project model as 01–03 and is presented objective/moment-first. Visible resource types are `MODEL`, `ITEM`, `UI / TEXT`, `AUDIO`, and `PARTICLE`; only real required resources are included.
 
-Optional non-Voice requirements use `work/asset-requirements.md` and are governed by `kits/project-document-generator/PRODUCTION-ASSETS.md`. Voice keeps its existing Flow 5–7 canonical sources and appears inside the matching gameplay page under `Audio → Voice Production`.
+Optional non-Voice requirements use `work/asset-requirements.md` and are governed by `kits/project-document-generator/PRODUCTION-ASSETS.md`. Voice keeps its existing Flow 5–7 canonical sources and is merged into the matching 04 moment as `AUDIO`.
 
-The accepted PRD hierarchy, PRD page identities, and Golden template bytes remain unchanged by downstream composition.
+The accepted 01–03 hierarchy, PRD page identities, Golden template bytes, and PRD-core style remain unchanged by 04 composition.
 
 Current ownership and continuation:
 
