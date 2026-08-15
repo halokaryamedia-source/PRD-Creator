@@ -4,12 +4,16 @@
 
 `CLOCKWORK_CANONICAL_REVISION_READY_FOR_PROJECTION`
 
-The Clockwork Vault bounded gameplay revision for Objectives 1-4 is approved and persisted in current requirement state and canonical `workspace/active/the-clockwork-vault/work/content.md`. The approved Objective 1 lever-to-color mapping is fixed, and the non-Voice `work/asset-requirements.md` has been prepared from the revised gameplay, including twelve indirect clue-book texts, player-facing UI/information, required custom gameplay objects, and authored presentation events.
+The Clockwork Vault bounded gameplay revision for Objectives 1-4 is approved and persisted in current requirement state and canonical `workspace/active/the-clockwork-vault/work/content.md`.
+
+Objective 1 now uses the approved partial-display clue model: the door display reveals only Middle = Brown; the hidden final state is Left Orange + pulse, Middle Brown + steady, Right Purple + steady. Twelve books are scattered without reading order and use a 2 mechanic-rule + 8 useful clue + 2 harmless decoy structure. The books help recover missing target information rather than teach all twelve lever-to-color mappings; the fixed color mapping is learned through lever experimentation and immediate lamp feedback. A player who finds useful books earlier by chance may solve faster, and reading all twelve is not required.
+
+The non-Voice `work/asset-requirements.md` is current for the canonical revision and includes the final twelve book texts, partial target display, instruction UI, required custom gameplay objects, and authored presentation events.
 
 The supplied Objective 4 HTML remains a supporting technical-layout source only. Its coordinates and preview implementation are not copied into player-facing PRD content.
 
-The previous `work/render-data.json`, versioned `prd.html`, AI context/index, and Voice canonical sources intentionally remain stale because they still reflect the previously accepted Target 1/Target 2, Gallery collapse/tool, floor-trap Pebble, and single-fault Workshop model. Handoff is therefore correctly kept at `revision_in_progress` rather than falsely restored to ready.
+The previous `work/render-data.json`, versioned `prd.html`, AI context/index, and Voice canonical sources intentionally remain stale because they still reflect the previous gameplay projection. Handoff therefore remains `revision_in_progress` rather than being falsely restored to ready.
 
 ## Next Step
 
-Regenerate `work/render-data.json` and the versioned delivery bundle from the current canonical Clockwork revision, then run the relevant PRD validation before restoring `handoff_ready`.
+Regenerate `work/render-data.json` and the versioned delivery bundle from the current canonical Clockwork revision, then run the relevant PRD validation before restoring `handoff_ready` and reopening the affected Voice Production scope.
