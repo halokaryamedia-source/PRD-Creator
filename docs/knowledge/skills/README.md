@@ -193,4 +193,4 @@ Durable decision:
 - [Activation Matrix](activation-matrix.md)
 - [Work Routing](../work-routing.md)
 - [Repository Ownership](../ownership.md)
-- [Production Assets Contract](../../kits/project-document-generator/PRODUCTION-ASSETS.md)
+- [Production Assets Contract](../../../kits/project-document-generator/PRODUCTION-ASSETS.md)

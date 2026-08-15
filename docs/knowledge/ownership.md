@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-08-15
+Updated: 2026-08-16
 
 Use this file to locate the current owner before creating, moving, or editing repository structure. It combines area-level ownership and exact implementation/procedure routing so there is only one ownership map.
 
@@ -60,7 +60,7 @@ Use this file to locate the current owner before creating, moving, or editing re
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
 | Current system/project evidence | `docs/knowledge/reviews/current-validation.md` |
 
-`PRODUCTION-ASSETS.md` owns only the bounded actionable non-Voice 04 requirement/writing contract. It must plan concrete Production Asset needs from the same approved project model that feeds 01–03; it does not authorize a second design pass over generated PRD output. `renderer/production_assets_objective.py` owns presentation/composition mechanics and may not invent asset requirements. `renderer/production_assets.py` remains the Voice-specific helper and may not invent Voice scope, scripts, actor selection, or project meaning. `renderer/delivery.py` packages existing accepted meaning into the versioned human/AI handoff surfaces; it is not another semantic owner.
+`PRODUCTION-ASSETS.md` owns the bounded actionable non-Voice 04 requirement/writing contract and readiness gate. It plans concrete Production Asset needs from the same approved project model that feeds 01–03; it does not authorize a second design pass over generated PRD output. `renderer/production_assets_objective.py` owns presentation/composition mechanics and may not invent asset requirements. `renderer/production_assets.py` remains the Voice-specific helper and may not invent Voice scope, scripts, actor selection, or project meaning. `renderer/delivery.py` packages existing accepted meaning into the versioned human/AI handoff surfaces; it is not another semantic owner.
 
 ## Voice Owners
 
@@ -109,9 +109,20 @@ AUDIO
 PARTICLE
 ```
 
-Internal markdown storage headings exist only for source/parser organization and are not the visible 04 taxonomy/dashboard.
+The current parser still recognizes these internal source-group headings for backward compatibility:
 
-Visual resources use `Function` + literal `Visual Brief` + optional real approved `Size`. UI / TEXT uses `Function` + exact player copy. Non-dialogue AUDIO uses `Function` + `Audio Brief`. Canonical Voice is merged as AUDIO with Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt. Generic visible metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, or `Build Specs` is not part of new 04 authoring.
+```text
+3D Models
+UI & Information
+Audio
+Visual Effects & Presentation
+```
+
+Those headings are **internal markdown/parser organization only**. They are not the visible 04 taxonomy/dashboard and must not be treated as reader-facing categories by authoring or verification.
+
+Visual resources use `Function` + literal `Visual Brief` + optional real approved `Size`. UI / TEXT uses `Function` + exact player copy. Non-dialogue AUDIO uses `Function` + `Audio Brief`. Canonical Voice is merged as AUDIO with Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt. Generic visible metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, `Build Specs`, Flow 5 Context, line-count summaries, Primary Speaker, or separate Speaker rows are not part of current reader-first 04 authoring.
+
+The integrated Flow 4 semantic review applies the `PRODUCTION-ASSETS.md` readiness gate whenever 04 exists. This does not create a separate persisted PASS field; 04 readiness is one lens inside `Semantic Readiness`.
 
 A downstream-only change may rerender the current versioned `prd.html` without changing PRD-core semantic ownership/acceptance when PRD canonical sources remain unchanged.
 
