@@ -1,0 +1,119 @@
+name: Clockwork 04 Contextual Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-04-contextual/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Apply contextual Production Assets structure
+        run: python .tmp-clockwork-04-contextual/patch.py
+
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit tests
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+
+      - name: Verify contextual visible Production Assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          project=Path('workspace/active/the-clockwork-vault')
+          html=(project/'output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          assets=(project/'work/asset-requirements.md').read_text(encoding='utf-8')
+          voice=(project/'work/voice-requirements.md').read_text(encoding='utf-8')
+          renderer=Path('kits/project-document-generator/renderer/production_assets_objective.py').read_text(encoding='utf-8')
+
+          required=[
+              'class="pa-group"', 'class="pa-group-nav"', '>Used</span>', '>Purpose</span>',
+              'Core Trap Kit', 'Player Communication', 'Gameplay Feedback', 'Transition',
+              'Core Network Kit', 'Gremlin Route Swap', 'First Sabotage', 'Second Sabotage',
+              'Floor Trap', 'Copy Text', 'Copy Prompt', 'Voice Cast'
+          ]
+          for token in required:
+              assert token in html, token
+
+          forbidden=['class="pa-tabs"','role="tab"','data-pa-tab=','.pa-panel[hidden]','production items</span>']
+          for token in forbidden:
+              assert token not in html, token
+
+          assert 'Group: 01 — Core Trap Kit' in assets
+          assert 'Used: Across the Warden Halls.' in assets
+          assert '#### Floor Trap' in assets
+          assert '- Group: 03 — Voice' in voice
+          assert '- Used: When the player enters the Warden Halls.' in voice
+          assert '_group_display' in renderer
+          print('04 contextual visible UX PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_04_CONTEXTUAL_CHECKLIST_READY`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 Production Assets is now a fully visible contextual production checklist rather than a flow mirror or hidden-tab interface. All groups remain visible and may only be reached faster through anchor links. Grouping is hybrid and follows actual production use: shared/objective-wide kits, meaningful crossing/phase groups where appropriate, and authored events such as sabotage or completion. Every production row shows literal Type, Used, and Purpose context; exact UI/Text and Voice remain copy-ready. Objective 3 is no longer forced into artificial flows and now exposes Core Trap Kit, Player Communication, Voice, Gameplay Feedback, and Transition, including Floor Trap as a concrete production asset.
+
+          PRD, handoff, Voice, unit-contract, and contextual-UX validation pass. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review section 04 visually in-browser and compare its scanning comfort against sections 01-03. Continue only with concrete content or visual polish findings.
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-04-Contextual
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-04-contextual
+          rm -f .github/workflows/clockwork-04-contextual-once.yml
+
+      - name: Commit contextual Production Assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "make Production Assets contextual and fully visible"
+          git push origin HEAD:Local
