@@ -16,5 +16,5 @@ voice_script_readiness: PASS
 communication_conservation: PASS
 project_html_visual: NOT_PROVEN
 audio_evidence: not_provided
-gremlin_voice_selection: pending_actual_elevenlabs_voice
-next_step: select_gremlin_voice_then_optional_generation_mode
+gremlin_voice_selection: The Cheeky Trickster
+next_step: optional_generation_mode_or_audio_review
