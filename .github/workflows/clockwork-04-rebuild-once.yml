@@ -1,0 +1,128 @@
+name: Clockwork 04 Production Assets Rebuild Once
+
+on:
+  push:
+    branches: [Local]
+    paths:
+      - ".tmp-clockwork-04-rebuild/READY"
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: workspace/active/the-clockwork-vault
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Local
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Apply total 04 content rebuild
+        run: python .tmp-clockwork-04-rebuild/patch.py
+
+      - name: Compile and contract-test
+        run: |
+          python -m compileall -q kits/project-document-generator/renderer kits/voice-production-kit
+          python -m unittest tests.test_voice_contracts -v
+
+      - name: Rerender Clockwork
+        run: python kits/project-document-generator/renderer/delivery.py "$PROJECT/"
+
+      - name: Validate PRD and Voice
+        run: |
+          python kits/project-document-generator/validator/validate.py "$PROJECT/"
+          python kits/project-document-generator/validator/validate_handoff.py "$PROJECT/"
+          python kits/voice-production-kit/validator/validate.py "$PROJECT/"
+
+      - name: Verify 04 content purity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          project = Path('workspace/active/the-clockwork-vault')
+          html = (project / 'output/v1.0.0/prd.html').read_text(encoding='utf-8')
+          voice = (project / 'work/voice-production.md').read_text(encoding='utf-8')
+          assets = (project / 'work/asset-requirements.md').read_text(encoding='utf-8')
+
+          required_html = [
+              'UI / TEXT', 'SFX', 'PRESENTATION', 'MODEL / ANIMATION',
+              'The Gallery Has Fallen', "Gremlin's Wager", 'The Wardens Are Listening',
+              "The Orrery's Heart", 'RING ONE IS DARK', 'Follow the light home.',
+              'Only production-ready assets and in-game copy are shown here.',
+          ]
+          for token in required_html:
+              assert token in html, token
+
+          forbidden_html = [
+              '>VFX</span>First Seal Activation', 'BUILD HERE', 'LEVEL 1 · EASY', 'LEVEL 2 · MEDIUM',
+              'Return to Checkpoint 3', '50% of your chosen route', 'Two rotators were turned.',
+              'Three rotators were turned.', 'holding area', 'The rotator rule hasn',
+          ]
+          for token in forbidden_html:
+              assert token not in html, token
+
+          forbidden_voice = [
+              'this checkpoint resets', 'get at least halfway', 'three seconds to recharge',
+              'beam drops for four seconds', 'Every rotator is an L', 'rotator rule',
+              'realign the rotators', 'holding area',
+          ]
+          for token in forbidden_voice:
+              assert token not in voice, token
+
+          assert 'BOOK 1 — LEVER NOTES' in assets
+          assert 'BOOK 2 — PULSE NOTES' in assets
+          assert 'Repair Markers' in assets
+          assert 'Pillar State Labels' not in assets
+          print('04 Production Assets content purity PASS')
+          PY
+
+      - name: Update next action
+        run: |
+          cat > docs/knowledge/next-action.md <<'EOF'
+          # Next Action
+
+          ## Current Status
+
+          `CLOCKWORK_04_CONTENT_REBUILT`
+
+          The Clockwork v1.0.0 PRD remains handoff-ready. Section 04 Production Assets has been rebuilt to match the clarity standard of sections 01-03: Voice is story/character/atmosphere/reaction-first instead of spoken Development instructions; player-facing UI/Text contains only real in-game copy; technical thresholds, reset/checkpoint language, debug labels, implementation counts, and engineering explanations stay in Development; and asset badges are literal production types such as MODEL, MODEL / ANIMATION, MODEL / VFX, SFX, UI / TEXT, VOICE, and PRESENTATION.
+
+          The regenerated HTML passes PRD, handoff, Voice, and 04 content-purity validation. Browser-level visual quality still requires user review.
+
+          ## Next Step
+
+          Review the rebuilt 04 Production Assets pages visually. Continue only with concrete visual/content polish findings or actual ElevenLabs generation/audio review.
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: The-Clockwork-Vault-PRD-v1.0.0-04-Rebuilt
+          path: workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+          if-no-files-found: error
+
+      - name: Cleanup one-shot tooling
+        run: |
+          rm -rf .tmp-clockwork-04-rebuild
+          rm -f .github/workflows/clockwork-04-rebuild-once.yml
+
+      - name: Commit rebuilt 04
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "rebuild Production Assets content quality"
+          git push origin HEAD:Local
