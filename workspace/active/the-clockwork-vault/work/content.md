@@ -16,7 +16,7 @@ The Clockwork Vault is a solo adventure set inside a sealed ancient machine comp
 ### Complete Gameplay Journey
 
 1. **The Antechamber** — Meet Custodian Vex, learn why the vault is sealed, obtain the Custodian Key, and open the first objective chamber.
-2. **The Resonance Engine** — Search short clue books, decode the four lever combinations for three colored-light pillars, set each pillar to the required steady/blinking state, and restore the Engine.
+2. **The Resonance Engine** — Search scattered books to discover the hidden Left and Right target colors and which pillar must pulse, then experiment with the three pillar controls until the Engine matches the final state.
 3. **The Broken Gallery** — Cross three route-selection levels by searching checkpoint barrels, repairing only marked gaps, managing limited blocks/ladders, and surviving the final Gremlin time challenge.
 4. **The Warden Halls** — Cross three trap checkpoints using the Echo Pebble against wall-laser systems while avoiding floor traps and timing swinging ceiling axes.
 5. **The Gremlin’s Workshop** — Route continuous power from the Generator through Ring 1, Ring 2, and Ring 3, repairing the network each time the Gremlin disrupts an earlier connection.
@@ -58,17 +58,17 @@ The Antechamber is a protected lobby and narrative introduction where the player
 
 ### The Resonance Engine
 
-The player enters a compact puzzle chamber containing three pillars. Each pillar has an upper lever, lower lever, pressure plate, and colored indicator lamp. Twelve short clue books around the chamber explain the lever-to-color relationships indirectly.
+The player enters a puzzle chamber containing three pillars. Each pillar has an upper lever, lower lever, pressure plate, and colored indicator lamp. Twelve books are scattered around the chamber with no required reading order.
 
-- **Read the Target and Search for Clues**
-  - A target near the exit shows the required three-pillar output state. The player can see the three live pillar indicators but does not receive the lever solution. The player searches the nearby books and reads short clue paragraphs to learn which upper/lower lever combinations create each color.
-- **Decode the Three Pillars**
-  - Lever state is always read upper then lower: ON/ON, OFF/OFF, ON/OFF, or OFF/ON. The right pillar maps those combinations to Red, Yellow, Green, and Purple; the middle pillar maps them to Blue, Dark Blue, Brown, and Dark Green; the left pillar maps them to Pink, Orange, White, and Black. The clue books communicate these rules in puzzle language rather than listing the answer table directly.
-- **Set Steady or Blinking Output**
-  - Each pillar’s pressure plate controls whether its current lamp output is steady or blinking. Using the pressure plate changes that presentation state without changing the selected color, so the player must solve both the color and steady/blinking requirement for each pillar.
-- **Restore the Resonance Engine**
-  - The player compares the live pillar states with the target and revises any incorrect lever or plate state. When all three pillar outputs match the required color and steady/blinking states together, the Engine locks the solved state and visibly restores power.
-- **Transition:** The Broken Gallery opens after all three required pillar states are confirmed and the Resonance Engine completion boundary is secured.
+- **Read the Partial Door Display**
+  - The display near the exit reveals only one part of the required combination: the Middle pillar must be Brown. The Left color, Right color, and the one pillar that must pulse remain unknown. The display never reveals any lever combination.
+- **Search Scattered Books for Missing Information**
+  - The twelve books are a mixed set rather than a sequence: two explain machine rules, eight provide useful clues, and two are harmless maintenance/lore decoys. The rule books explain TOP → BOTTOM lever reading and that pressure plates control steady/pulsing behavior rather than color. The useful books gradually narrow the hidden target to Left = Orange, Right = Purple, and Pulse = Left. A player who finds useful books first may solve faster; reading all twelve is not required.
+- **Experiment with the Pillars**
+  - The books do not teach all twelve lever-to-color mappings. The player tries the four TOP → BOTTOM lever combinations on each pillar and reads the immediate lamp feedback to discover how that pillar produces its available colors. The pressure plate independently switches that pillar between steady and pulsing without changing the selected color.
+- **Match the Hidden Final State**
+  - The valid door solution is Left Orange and pulsing, Middle Brown and steady, Right Purple and steady. The player combines the book deductions with lever experimentation until all three live pillar states match this complete target simultaneously.
+- **Transition:** When Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are confirmed together, the Resonance Engine restores, the completion boundary is secured, and the Broken Gallery opens.
 
 ### The Broken Gallery
 
@@ -499,91 +499,92 @@ Implement the Vex story briefing, Custodian Key pickup, keyed seal validation, f
 
 ### Gameplay Overview
 
-**Context:** The Resonance Engine chamber contains three puzzle pillars. Each pillar has an upper lever, lower lever, pressure plate, colored indicator lamp, nearby clue books, and a target state that must be matched.
+**Context:** The Resonance Engine chamber contains three puzzle pillars with upper/lower levers, pressure plates, and colored indicator lamps. Twelve books are scattered through the chamber with no required reading order, while the door display reveals only Middle = Brown.
 
-**Main Objective:** Read the clue books, decode each pillar’s lever-to-color mapping, set the required steady/blinking state, and match all three target outputs.
+**Main Objective:** Use the scattered books to discover the missing Left and Right target colors and which pillar must pulse, then experiment with each pillar’s lever combinations until the machine reaches the complete hidden door solution.
 
-**Result:** All three pillar states are correct together, the Resonance Engine restores, and the Broken Gallery route opens.
+**Result:** Left is Orange and pulsing, Middle is Brown and steady, and Right is Purple and steady; the Resonance Engine restores and the Broken Gallery route opens.
 
 #### Gameplay Information
 
-- **Game Purpose:** Create a light deduction puzzle where the player converts short written clues into machine settings and verifies the result through immediate visual feedback.
+- **Game Purpose:** Create a light deduction-and-experimentation puzzle where books reveal the missing target information and direct machine testing reveals how each lever pair produces color.
 - **Gameplay Time:** Approximately 9 minutes.
-- **Starting Condition:** All three pillars are reset, the twelve clue books are available, pressure-plate states are initialized, and the required target is readable near the exit.
-- **End Condition:** Right, middle, and left pillar outputs simultaneously match the required color and steady/blinking states.
-- **Fail Condition:** There is no permanent fail state. Lever and pressure-plate states remain reversible; at the station deadline, partial clue/pillar progress is recorded and the journey follows the session timeout rule.
+- **Starting Condition:** All three pillars are reset, twelve books are scattered and readable, all pressure plates begin in their authored initial state, and the door display shows only Middle = Brown with the other target information unknown.
+- **End Condition:** Left = Orange + pulse, Middle = Brown + steady, and Right = Purple + steady are simultaneously active.
+- **Fail Condition:** There is no permanent fail state. Lever and pressure-plate states remain reversible; at the station deadline, partial book/pillar progress is recorded and the journey follows the session timeout rule.
 - **Scoring Criteria:** Objective Score 0–100 based on Pillar Completion, Clue Coverage, and Rule Application.
 
 #### Gameplay Flow
 
-- **Read the Target** — Enter the chamber, identify the three pillars and the required output state near the exit.
-- **Search the Clue Books** — Find and read the short authored clue books that describe lever-to-color relationships indirectly.
-- **Set the Pillar Colors** — Use each upper/lower lever pair in TOP → BOTTOM order until the three live colors match the target.
-- **Set Steady / Blinking** — Use each pillar’s pressure plate to switch its current lamp between steady and blinking as required.
-- **Restore and Transition** — Confirm all three complete pillar states together, lock the solved response, save raw evidence, and open the Broken Gallery route.
+- **Read the Partial Display** — See LEFT = ?, MIDDLE = BROWN, RIGHT = ?, and PULSE = ? near the exit.
+- **Search the Scattered Books** — Find any of twelve non-sequential books: two mechanic-rule books, eight useful clues, and two harmless decoys. Useful books gradually identify Left = Orange, Right = Purple, and Pulse = Left; reading all twelve is not required.
+- **Experiment with Lever Colors** — Use each upper/lower lever pair in TOP → BOTTOM order and watch immediate lamp feedback to discover which combination produces the color needed on that pillar.
+- **Set the Pulse State** — Use each pillar’s pressure plate only for steady/pulse behavior. Activate the Left plate and keep Middle/Right steady.
+- **Restore and Transition** — Confirm Orange pulse / Brown steady / Purple steady together, lock the solved response, save raw evidence, and open the Broken Gallery route.
 
 ### Level Design
 
-Build one compact deduction room where the player can compare three pillars, their live indicator lamps, the target near the exit, and nearby clue-book locations without excessive walking. The puzzle should feel like reading and testing a machine, not searching a maze.
+Build one readable deduction room where the three pillars and partial door display remain easy to compare while the twelve books are spread broadly enough to create light exploration. The books must not form a numbered, directional, or location-based reading sequence; finding useful books earlier by chance is valid.
 
 #### Design Flow
 
-- **Target Read** — Frame the exit-side target so the player understands what the final three-pillar state must resemble.
-- **Clue Search** — Distribute twelve short books around the chamber in readable locations that require light searching but do not dominate playtime.
-- **Pillar Adjustment** — Keep upper lever, lower lever, pressure plate, and indicator lamp visually grouped for each pillar.
-- **Engine Restoration** — Synchronize all three solved pillars and frame the newly opened Broken Gallery route.
+- **Partial Target Read** — Frame the exit-side display with only Middle = Brown and unknown Left/Right/pulse fields.
+- **Scattered Book Search** — Distribute twelve books across the chamber/exploration space without implying order: two rule books, eight useful clues, and two harmless decoys.
+- **Pillar Experimentation** — Keep upper lever, lower lever, pressure plate, and indicator lamp visually grouped for each pillar so color discovery through testing is immediate.
+- **Engine Restoration** — Synchronize Orange pulse / Brown steady / Purple steady and frame the newly opened Broken Gallery route.
 
 #### Build Requirements
 
 ##### Pillar Puzzle
 - **Right Pillar** — Area: Fixed authored station
   - Build/Visual: Provide one upper lever, one lower lever, one pressure plate, and one indicator lamp.
-  - Build/Visual: Support Red, Yellow, Green, and Purple outputs plus clearly readable steady/blinking presentation.
-  - Gameplay Function: Holds one third of the final Resonance target.
+  - Build/Visual: Support Red, Yellow, Green, and Purple outputs plus clearly readable steady/pulsing presentation.
+  - Gameplay Function: Provides the Right target, which must finish as Purple + steady.
 - **Middle Pillar** — Area: Fixed authored station
   - Build/Visual: Provide one upper lever, one lower lever, one pressure plate, and one indicator lamp.
-  - Build/Visual: Support Blue, Dark Blue, Brown, and Dark Green outputs plus clearly readable steady/blinking presentation.
-  - Gameplay Function: Holds one third of the final Resonance target.
+  - Build/Visual: Support Blue, Dark Blue, Brown, and Dark Green outputs plus clearly readable steady/pulsing presentation.
+  - Gameplay Function: Provides the only target color revealed by the door display and must finish as Brown + steady.
 - **Left Pillar** — Area: Fixed authored station
   - Build/Visual: Provide one upper lever, one lower lever, one pressure plate, and one indicator lamp.
-  - Build/Visual: Support Pink, Orange, White, and Black outputs plus clearly readable steady/blinking presentation.
-  - Gameplay Function: Holds one third of the final Resonance target.
-##### Clues and Target
-- **Twelve Clue Books** — Area: Chamber-wide but compact
-  - Build/Visual: Provide four short books for each pillar; each book contains one short paragraph clue.
-  - Build/Visual: Keep books retrievable/readable without precision movement or hidden parkour.
-  - Gameplay Function: Gives the player enough authored evidence to infer all lever-to-color mappings.
-- **Target Display** — Area: Near the exit
-  - Build/Visual: Communicate the required right/middle/left output states clearly enough to compare with the live pillars.
-  - Build/Visual: Show required color and steady/blinking state without displaying the lever solution.
-  - Gameplay Function: Defines exact completion while preserving deduction.
+  - Build/Visual: Support Pink, Orange, White, and Black outputs plus clearly readable steady/pulsing presentation.
+  - Gameplay Function: Provides the hidden Left target and must finish as Orange + pulse.
+##### Clues and Partial Target
+- **Twelve Scattered Books** — Area: Chamber-wide exploration space
+  - Build/Visual: Provide two mechanic-rule books, eight useful clue books, and two harmless decoy books; every book is one short paragraph.
+  - Build/Visual: Scatter them without numbering/location sequence. Keep them readable/retrievable without hidden parkour; a lucky player may encounter useful books before decoys.
+  - Build/Visual: Decoys may contain ordinary maintenance/lore notes but cannot contradict or falsify puzzle information.
+  - Gameplay Function: Helps the player infer the missing target facts without requiring all twelve books or teaching the full lever-to-color table.
+- **Partial Door Display** — Area: Near the exit
+  - Build/Visual: Show LEFT = ?, MIDDLE = BROWN, RIGHT = ?, and PULSE = ? while the puzzle is unsolved.
+  - Build/Visual: Do not expose Orange, Purple, Left pulse, or any lever combination before valid completion.
+  - Gameplay Function: Gives one anchor fact and defines which missing information the player must discover.
 ##### Feedback and Transition
 - **Immediate Pillar Feedback** — Area: Each pillar
-  - Build/Visual: Every lever change updates that pillar’s color immediately; every plate interaction switches only its steady/blinking state.
-  - Build/Visual: Color and blinking must remain distinguishable with audio muted.
-  - Gameplay Function: Makes experimentation interpretable.
+  - Build/Visual: Every lever change updates that pillar’s color immediately; every plate interaction switches only its steady/pulsing state.
+  - Build/Visual: Color and pulse must remain distinguishable with audio muted.
+  - Gameplay Function: Lets the player discover the fixed lever mapping through experimentation after the book clues identify the target.
 - **Engine Completion / Exit** — Area: Exit frame
-  - Build/Visual: Show all three pillars synchronizing before the Broken Gallery route opens.
+  - Build/Visual: Show all three pillars synchronizing only after Orange pulse / Brown steady / Purple steady is reached.
   - Build/Visual: Keep all books, lever states, plates, lamps, FX, and door state inside reset ownership.
   - Gameplay Function: Converts puzzle completion into visible vault restoration.
 
 #### Important Build Notes
 
-- **TOP → BOTTOM Reading Order** — The physical lever arrangement must make the approved combination order obvious.
-- **Clues Stay Short** — Each book is one short paragraph; difficulty comes from interpretation, not reading volume.
-- **Target Does Not Reveal the Solution** — The target shows desired output only, never the lever combination.
-- **Steady and Blinking Are Independent** — The pressure plate changes lamp behavior without changing its selected color.
+- **Books Have No Reading Order** — Do not number, group, or place the books in a way that creates a mandatory sequence.
+- **Clues Reveal Target, Not Mapping** — Book content identifies the missing target colors/pulse through understandable hints; lever-to-color behavior is learned from live experimentation.
+- **Two Decoys Are Harmless** — Decoy notes contain no false puzzle information and may simply cost search/read time.
+- **Steady and Pulse Are Independent** — The pressure plate changes lamp behavior without changing its selected color.
 
 ### Developer
 
-Implement the fixed three-pillar mapping, independent steady/blinking state, twelve clue sources, target validation, immediate feedback, platform-side scoring evidence, interruption handling, and full reset.
+Implement the fixed three-pillar lever mapping, fixed hidden final target, partial door display, non-sequential twelve-book set, independent steady/pulse state, immediate feedback, platform-side scoring evidence, interruption handling, and full reset.
 
 #### Development Flow
 
-- **Mechanic Setup** — Initialize the three pillars, target state, clue-book tracking, lever states, plate states, lamps, permissions, and timer.
-- **Clue and Pillar Interaction** — Record clue reads, resolve upper/lower combinations, update lamp colors immediately, and toggle steady/blinking state from the matching pressure plate.
-- **Completion and Data** — Validate the complete three-pillar target atomically, store clue/action/state evidence, and emit raw scoring inputs only.
-- **Reset and Reuse** — Restore all lever/plate/lamp/book/target/door states and remove temporary session data before lane reuse.
+- **Mechanic Setup** — Initialize the three pillars, fixed final target, partial display, twelve book IDs, lever states, plate states, lamps, permissions, and timer.
+- **Books and Experimentation** — Record unique book reads, keep completion independent of reading all twelve, resolve lever combinations with immediate lamp feedback, and toggle pulse state from the matching pressure plate.
+- **Completion and Data** — Validate Orange pulse / Brown steady / Purple steady atomically, store book/action/state evidence, and emit raw scoring inputs only.
+- **Reset and Reuse** — Restore all lever/plate/lamp/book/display/door states and remove temporary session data before lane reuse.
 
 #### Development Requirements
 
@@ -592,78 +593,80 @@ Implement the fixed three-pillar mapping, independent steady/blinking state, twe
   - Requirement: Read the lever pair upper then lower.
   - Requirement: Resolve ON/ON → Red, OFF/OFF → Yellow, ON/OFF → Green, OFF/ON → Purple.
   - Requirement: Update the live right-pillar lamp immediately after a valid lever change.
-  - Gameplay Function: Implements the approved right-pillar clue answer set.
+  - Gameplay Function: Provides a fixed machine behavior the player can discover through testing; the final Right target is Purple.
 - **Middle Pillar Mapping**
   - Requirement: Read the lever pair upper then lower.
   - Requirement: Resolve ON/ON → Blue, OFF/OFF → Dark Blue, ON/OFF → Brown, OFF/ON → Dark Green.
   - Requirement: Update the live middle-pillar lamp immediately after a valid lever change.
-  - Gameplay Function: Implements the approved middle-pillar clue answer set.
+  - Gameplay Function: Provides a fixed machine behavior the player can discover through testing; the displayed Middle target is Brown.
 - **Left Pillar Mapping**
   - Requirement: Read the lever pair upper then lower.
   - Requirement: Resolve ON/ON → Pink, OFF/OFF → Orange, ON/OFF → White, OFF/ON → Black.
   - Requirement: Update the live left-pillar lamp immediately after a valid lever change.
-  - Gameplay Function: Implements the approved left-pillar clue answer set.
+  - Gameplay Function: Provides a fixed machine behavior the player can discover through testing; the hidden Left target is Orange.
 ##### Plate and Target State
-- **Steady / Blinking State**
+- **Steady / Pulse State**
   - Requirement: Bind one pressure plate to each pillar.
-  - Requirement: A valid plate interaction switches only that pillar between steady and blinking; it must not alter the selected color.
-  - Requirement: Record plate interaction and resulting presentation state.
-  - Gameplay Function: Adds the second independent dimension of each target state.
-- **Target Validation**
-  - Requirement: Store the authored required color + steady/blinking state for all three pillars.
-  - Requirement: Re-evaluate the full target after every valid pillar state change.
-  - Requirement: Complete only when all three pillar states match simultaneously; completion is idempotent.
-  - Gameplay Function: Defines one deterministic completion boundary.
-##### Clues, Timeout, and Recovery
-- **Clue Tracking**
-  - Requirement: Provide twelve authored clue books using the approved mapping, four per pillar.
-  - Requirement: Record first read/open evidence per clue source without requiring all twelve books for valid completion.
-  - Gameplay Function: Supports clue-coverage scoring while preserving player freedom.
+  - Requirement: A valid plate interaction switches only that pillar between steady and pulsing; it must not alter the selected color.
+  - Requirement: The final target requires Left pulsing and Middle/Right steady.
+  - Gameplay Function: Adds the independent pulse dimension that the player must infer from the clue books.
+- **Partial Door Display and Target Validation**
+  - Requirement: While unsolved, expose only Middle = Brown plus unknown Left, Right, and Pulse fields.
+  - Requirement: Store the fixed complete target as Left Orange + pulse, Middle Brown + steady, Right Purple + steady.
+  - Requirement: Re-evaluate the full target after every valid pillar state change and complete only when all three states match simultaneously; completion is idempotent.
+  - Gameplay Function: Preserves the deduction gap while keeping one deterministic completion boundary.
+##### Books, Timeout, and Recovery
+- **Book Set and Tracking**
+  - Requirement: Provide twelve scattered, order-independent book sources: two rule books, eight useful clue books, and two harmless decoys.
+  - Requirement: Rule books explain TOP → BOTTOM lever reading and pressure-plate pulse behavior. Useful clues narrow Left → Orange, Right → Purple, and Pulse → Left without explicitly stating the final answers. Decoys contain no false puzzle facts.
+  - Requirement: Record first read/open evidence per book source, but never require all twelve books—or any fixed reading sequence—for valid completion.
+  - Gameplay Function: Supports exploration/clue-coverage evidence while allowing luck and deduction to change solve speed.
 - **Timeout / Interruption**
-  - Requirement: At station timeout, preserve clue coverage, final lever/plate/lamp states, target-match state, and action history for platform handling.
+  - Requirement: At station timeout, preserve book coverage, final lever/plate/lamp states, target-match state, and action history for platform handling.
   - Requirement: On interrupted restart, restore the objective to its authored initial state while retaining earlier completed objective results.
   - Gameplay Function: Protects partial evidence without resuming an ambiguous machine state.
 
 #### Scoring Setup
 
 - **Resonance Engine Score** — 0–100 — 64% Pillar Completion + 16% Clue Coverage + 20% Rule Application
-  - **Pillar Completion (64%)** — Award proportionally from correct final target progress across the three complete pillar states; full value requires all three color + steady/blinking targets together.
-  - **Clue Coverage (16%)** — Award proportionally from unique authored clue books opened/read during the objective, capped at the twelve available books.
-  - **Rule Application (20%)** — Award from evidence that the player converts clue information into correct lever/plate changes and avoids an extended repeated-action loop after demonstrating the mapping.
+  - **Pillar Completion (64%)** — Award proportionally from correct progress toward Orange pulse / Brown steady / Purple steady; full value requires all three final pillar states together.
+  - **Clue Coverage (16%)** — Award proportionally from unique authored books opened/read during the objective, capped at the twelve available books. Reading all twelve is not a completion requirement.
+  - **Rule Application (20%)** — Award from evidence that the player converts discovered target information into purposeful lever/plate experimentation and avoids an extended repeated-action loop after demonstrating the needed mapping.
   - **Timer Start:** Start when Resonance Engine interaction becomes active.
-  - **Timer Stop:** Stop when all three pillar target states are confirmed or at the approved station deadline; pause time is excluded.
+  - **Timer Stop:** Stop when the complete hidden target is confirmed or at the approved station deadline; pause time is excluded.
   - **No-Score Condition:** Do not create a completed Objective Score if the station boundary record cannot be secured; preserve raw partial evidence for platform handling.
   - **Duplicate Prevention:** Pillar completion and objective export are idempotent per session.
   - **Final Result:** One of four Objective Scores; the session result combines the four objective results after the Workshop.
-  - **Player-Facing Result:** Do not display the calculated score in-game; show only clue/pillar/target feedback and completion.
-  - **Telemetry / Export:** Export clue reads, lever states, plate states, lamp color/blink states, target state, target-match transitions, timeout/completion, and component inputs; no final score field from the map.
+  - **Player-Facing Result:** Do not display the calculated score in-game; show only book, pillar, partial-target, and completion feedback.
+  - **Telemetry / Export:** Export unique book reads, lever states, plate states, lamp color/pulse states, partial-display state, target-match transitions, timeout/completion, and component inputs; no final score field from the map.
 
 #### Reset / Interruption
 
-- Restore all six lever states, three pressure-plate states, three indicator lamps, target presentation, clue-book availability, timer, inventory/effects, and permissions.
-- Verify no solved/target/lamp state from the previous run remains before the lane becomes reusable.
-- **Reset Result:** The Resonance Engine returns to its authored three-pillar starting state.
+- Restore all six lever states, three pressure-plate states, three indicator lamps, partial target display, twelve book sources, timer, inventory/effects, and permissions.
+- Verify no solved/display/lamp state from the previous run remains before the lane becomes reusable.
+- **Reset Result:** The Resonance Engine returns to its authored three-pillar starting state with Middle = Brown as the only displayed target fact.
 
 #### Important Development Notes
 
-- **Mapping Is Fixed** — Use the approved list-order lever-to-color mapping exactly; do not randomize it per run.
-- **Immediate Feedback** — Every valid lever/plate interaction updates its observable pillar state in the same controlled update cycle.
-- **Plate Does Not Change Color** — Color mapping and steady/blinking state are independent.
-- **Raw Evidence Only** — The map logs raw scoring evidence but does not send or display the final score.
+- **Fixed Machine Mapping** — Use the approved list-order lever-to-color mapping exactly; do not randomize it per run.
+- **Books Do Not Teach the Full Mapping** — Books reveal missing target information; color mapping remains discoverable through immediate machine feedback.
+- **No Mandatory Book Sequence** — Player luck may expose useful clues early, and completion is owned only by the valid final machine state.
+- **Plate Does Not Change Color** — Color mapping and steady/pulse state are independent.
 
 #### Acceptance
 
-- The Resonance Engine reaches its defined end condition without creating an unrecoverable player state.
-- The Resonance Engine preserves the approved player-facing behavior, data/result boundary, and lane isolation rules.
+- The Resonance Engine reaches its defined end condition without requiring all twelve books or a fixed reading order.
+- The Resonance Engine preserves the partial display, hidden Orange/Purple/Left-pulse deduction, fixed lever mapping, data/result boundary, and lane isolation rules.
 - The Resonance Engine reset restores the authored starting state before the assigned lane is reused.
 
 #### Terms
 
 - **Pillar** — One of the three Resonance Engine puzzle stations containing an upper lever, lower lever, pressure plate, and indicator lamp.
-- **Lever Combination** — The approved TOP → BOTTOM ON/OFF pair that selects a pillar color.
-- **Steady / Blinking State** — The independent lamp behavior controlled by that pillar’s pressure plate.
-- **Clue Book** — One short authored paragraph that indirectly explains one lever-to-color relationship.
-- **Target State** — The required color and steady/blinking output for the three pillars.
+- **Lever Combination** — The fixed TOP → BOTTOM ON/OFF pair that selects a pillar color and is discovered through experimentation.
+- **Steady / Pulse State** — The independent lamp behavior controlled by that pillar’s pressure plate.
+- **Clue Book** — One of twelve scattered one-paragraph books; rule and useful clue books help recover missing target information while two harmless decoys add search uncertainty.
+- **Partial Door Display** — The exit display that reveals only Middle = Brown and leaves Left, Right, and Pulse unknown until the puzzle is solved.
+- **Final Target State** — Left Orange + pulse, Middle Brown + steady, Right Purple + steady.
 
 ## 06. The Broken Gallery
 
