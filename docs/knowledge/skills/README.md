@@ -13,7 +13,7 @@ Current frozen set after P0.2 re-audit:
 | Skill | Canonical path | Function |
 |---|---|---|
 | `development-brief` | `.agents/skills/development-brief/SKILL.md` | mandatory Developing front door: goal/method/reference separation, execution channel, authority, Build/Acceptance POV, minimal scope, 2–5 criteria, proof budget, final contract gate |
-| `project-document-production` | `.agents/skills/project-document-production/SKILL.md` | semantic/product-contract specialist for Flow 2–4: source recovery, canonical PRD meaning, render representation contract, PRD readiness/handoff |
+| `project-document-production` | `.agents/skills/project-document-production/SKILL.md` | semantic/product-contract specialist for Flow 2–4 plus bounded 04 Production Assets completion: source recovery, canonical PRD-core meaning, 04 resource meaning, representation requirements, readiness/handoff |
 | `voice-production` | `.agents/skills/voice-production/SKILL.md` | semantic/product-contract specialist for Flow 5–7: Voice scope, performance wording, artifact representation contract, Voice acceptance/delivery |
 
 ## Relationship To Production Kits
@@ -30,11 +30,13 @@ AGENTS / development-brief / activation matrix
 
 ### Project Document Generator
 
-Detailed Flow 2–4 procedure and executable mechanics stay under:
+Detailed Flow 2–4 procedure, bounded non-Voice 04 completion, and executable mechanics stay under:
 
 `kits/project-document-generator/`
 
-The root `project-document-production` specialist protects authority, representation meaning, readiness, and handoff contracts. Pure renderer/template/validator mechanics remain kit-local when those semantics are already correct.
+The root `project-document-production` specialist protects authority, PRD-core representation meaning, bounded 04 requirement meaning, readiness, and handoff contracts. Pure renderer/template/validator mechanics remain kit-local when those semantics are already correct.
+
+04 does not create another root skill, numbered Flow, or production kit.
 
 ### Voice Production Kit
 
@@ -42,7 +44,7 @@ Detailed Flow 5–7 procedure and executable mechanics stay under:
 
 `kits/voice-production-kit/`
 
-The root `voice-production` specialist protects accepted-PRD → Voice scope → wording → artifact meaning → acceptance authority. Pure DOCX builder/validator mechanics remain kit-local when those semantics are already correct.
+The root `voice-production` specialist protects accepted project/PRD → Voice scope → wording → artifact meaning → acceptance authority. Pure DOCX builder/validator mechanics remain kit-local when those semantics are already correct.
 
 ## Repository Engineering Is Not A Production Skill
 
@@ -60,7 +62,7 @@ Current responsibilities include:
 - exact dependency verification environment;
 - focused high-risk production contract regressions;
 - static repository invariants;
-- fail-closed `Production Verify` and `Repository Verify`.
+- fail-closed domain/repository verification.
 
 These concerns are reusable repository engineering, but they do not form a production semantic specialist and do not consume the single-specialist slot.
 
@@ -78,7 +80,7 @@ Result: `development-brief`.
 
 **Decision:** `KEEP KIT + KEEP ROOT SEMANTIC ROUTER`.
 
-The existing Project Document Generator kit owns detailed Flow 2–4 production. The root specialist is retained for semantic/product-contract judgment, not as a generic renderer/validator debugger.
+The existing Project Document Generator kit owns detailed Flow 2–4 production plus bounded 04 completion. The root specialist is retained for semantic/product-contract judgment, not as a generic renderer/validator debugger.
 
 Result: `project-document-production` + existing kit.
 
@@ -96,8 +98,8 @@ Earlier Phase 1 wording said these implementation surfaces were merged into thei
 
 **Current decision:** `MOVE PURE MECHANICS TO MODULE-LOCAL; KEEP PRODUCT CONTRACT WITH SEMANTIC OWNER`.
 
-- what PRD rendering/validation is required to represent → `project-document-production`;
-- PRD renderer/template/validator executable mechanics → Project Document kit-local owner;
+- what PRD/04 rendering/validation is required to represent → `project-document-production`;
+- PRD renderer/template/validator/compositor executable mechanics → Project Document kit-local owner;
 - what Voice script/DOCX/validation is required to represent → `voice-production`;
 - Voice DOCX builder/validator executable mechanics → Voice kit-local owner;
 - shared dependency/test/CI mechanics → repository engineering.
@@ -126,18 +128,20 @@ References demonstrate approved structure/quality but are not independent work o
 
 ## Skill Freeze Rule
 
-The current three-skill root architecture was re-audited in P0.2 after real executable production verification and remains frozen.
+The current three-skill root architecture remains frozen.
 
 Freeze meaning:
 
 - root skills represent distinct reusable semantic/product-contract procedure;
 - module-local executable ownership does not need a matching root skill;
-- repository engineering does not become a production specialist merely because it is shared.
+- repository engineering does not become a production specialist merely because it is shared;
+- bounded 04 Production Assets completion stays inside the existing Project Document production ownership rather than becoming another root skill.
 
 Do not add another root skill because:
 
 - another file format appears;
 - another validation/build script exists;
+- another Production Asset type appears;
 - a project has a unique content type;
 - a one-off technical bug needs repair;
 - Python/dependency/CI appears in the task;
@@ -168,7 +172,7 @@ Kit-local `SKILL.md` / `AGENTS.md` files are production/contributor procedures, 
 
 Do not recreate the retired generalized Production Document Builder skill architecture as a compatibility layer.
 
-Do not create `renderer`, `docx-builder`, `python-tooling`, `artifact-engineering`, or `evidence-gate` root skills from current evidence.
+Do not create `renderer`, `docx-builder`, `python-tooling`, `artifact-engineering`, `production-assets`, or `evidence-gate` root skills from current evidence.
 
 ## External Helpers
 
@@ -189,3 +193,4 @@ Durable decision:
 - [Activation Matrix](activation-matrix.md)
 - [Work Routing](../work-routing.md)
 - [Repository Ownership](../ownership.md)
+- [Production Assets Contract](../../kits/project-document-generator/PRODUCTION-ASSETS.md)

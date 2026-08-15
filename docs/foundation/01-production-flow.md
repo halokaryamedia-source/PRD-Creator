@@ -15,20 +15,48 @@ Flow 7  Voice Validation & Delivery
 ## Flow ownership
 
 - **Flow 1** — resume current repository/project state without asking the user to reconstruct it.
-- **Flow 2** — preserve/triage source, recover production meaning, use the Golden fill map to identify required detail, complete missing/conflicting material meaning with explicit AI proposals, then show one complete objective-by-objective Chat Preview and obtain user approval/corrections before `ready_for_prd`.
-- **Flow 3** — turn preview-approved `ready_for_prd` meaning into canonical PRD content and deterministic **Golden hierarchy/page-composition HTML** without adding new project meaning.
-- **Flow 4** — distinguish generated PRD from development-ready PRD and create current acceptance/handoff evidence; missed or newly exposed product/design meaning returns only the affected slice to Flow 2.
-- **Flow 5** — derive justified Voice requirements from the accepted PRD without inventing upstream facts.
-- **Flow 6** — create canonical Eleven v3 performance wording and publish its derived Production Assets view into the same project HTML while preserving Voice scope; DOCX remains optional export.
+- **Flow 2** — preserve/triage source, recover production meaning, use the Golden fill map to identify required PRD-core detail, recover real Production Asset needs from the same project model, complete missing/conflicting material meaning with explicit AI proposals, then show one complete objective-by-objective Chat Preview and obtain user approval/corrections before `ready_for_prd`.
+- **Flow 3** — turn preview-approved `ready_for_prd` meaning into canonical PRD-core content and deterministic **01–03 Golden hierarchy/page-composition HTML** without adding new project meaning.
+- **Flow 4** — distinguish generated output from development-ready output and create current acceptance/handoff evidence; when 04 exists, its Production Asset readiness is one lens inside the same integrated Semantic Readiness review. Missed or newly exposed product/design meaning returns only the affected slice to Flow 2.
+- **Flow 5** — derive justified Voice requirements from accepted project/PRD meaning without inventing upstream facts.
+- **Flow 6** — create canonical Eleven v3 performance wording and publish its derived AUDIO resources into matching 04 gameplay moments while preserving Voice scope; DOCX remains optional export.
 - **Flow 7** — validate the current Voice Requirements → Script → consolidated project-HTML chain; optional DOCX and actual audio are reviewed only when present/in scope.
 
 There is no canonical Flow 8. The Simple Chat Preview is the final user-facing checkpoint **inside Flow 2**, not a new flow or new artifact.
+
+## Bounded 04 Production Assets completion
+
+04 is a normal capability of the existing Project Document Generator, not another numbered Flow.
+
+The important authority shape is:
+
+```text
+project discussion + original source + approved decisions
+→ complete approved project model
+   ├─ PRD core 01–03
+   └─ 04 Production Assets
+```
+
+Concrete Production Asset needs are recovered during the same Flow 2 understanding/completion pass. After approval, the system may materialize the non-Voice 04 source in `work/asset-requirements.md` and merge canonical Voice data when it exists.
+
+Do **not** use this as the normal design path:
+
+```text
+finished 01–03
+→ reread generated document
+→ brainstorm extra assets
+→ invent 04
+```
+
+The artifact may be written after PRD-core materialization, but its meaning comes from the same approved project model.
 
 ## Proposal boundary
 
 Flow 2 may create concrete gameplay/design/development proposals so the preview is complete. A proposal is not source truth and is not approved project authority until the user approves or corrects the preview.
 
-Golden/reference material tells Flow 2 **what questions the complete PRD must answer**. It does not supply unrelated project facts.
+The same rule applies to Production Assets: a necessary resource implication does not require a new approval layer, but a material choice that changes gameplay, story, player communication, scope, or another project fact must use the existing Proposal/approval boundary.
+
+Golden/reference material tells Flow 2 **what questions the complete PRD core must answer**. It does not supply unrelated project facts or generic asset decoration.
 
 ## Architecture rule
 

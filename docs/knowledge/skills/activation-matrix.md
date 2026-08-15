@@ -16,12 +16,12 @@ Do not select skills by file format or implementation language.
 ## Fast routing
 
 ```text
-create/revise PRD with existing system
+create/revise PRD with existing system, including justified 04 Production Assets
 → Production Execution
 → project-document-production
-→ Project Document Generator active Flow owner
+→ Project Document Generator active owner
 
-create/revise Voice output from accepted PRD
+create/revise Voice output from accepted project/PRD meaning
 → Production Execution
 → voice-production
 → Voice Production active Flow owner
@@ -40,7 +40,7 @@ bug/regression/cleanup/stale docs
 
 | Wrong semantic/product contract | Owner |
 |---|---|
-| source recovery, canonical PRD meaning, Golden representation requirement, PRD readiness/handoff meaning | `project-document-production` |
+| source recovery, canonical PRD-core meaning, bounded non-Voice 04 requirement meaning, Golden/04 representation requirement, project-document readiness/handoff meaning | `project-document-production` |
 | Voice requirement scope, Voice ID/Type/speaker/channel/trigger meaning, performance wording, Voice delivery meaning | `voice-production` |
 
 Do **not** load those skills merely because HTML/Python/DOCX/ElevenLabs appears in the task.
@@ -48,10 +48,10 @@ Do **not** load those skills merely because HTML/Python/DOCX/ElevenLabs appears 
 ## Semantic vs technical boundary
 
 ```text
-PRD meaning/representation requirement wrong
+PRD-core or non-Voice 04 meaning/representation requirement wrong
 → project-document-production
 
-PRD semantic contract correct; renderer/template/validator mechanics wrong
+PRD/04 semantic contract correct; renderer/template/validator/compositor mechanics wrong
 → kits/project-document-generator/AGENTS.md
 → exact implementation owner
 
@@ -72,7 +72,7 @@ If both semantic and mechanical defects exist, resolve/reframe them as separate 
 
 `development-brief` is required for non-trivial repository/system Developing. It establishes goal vs method, authority, Build/Acceptance POV, minimal scope, 2–5 acceptance criteria, and proof budget.
 
-It does **not** apply to normal Flow 2–7 project production.
+It does **not** apply to normal Flow 2–7 project production or normal bounded 04 completion.
 
 ## Root skill set
 
@@ -84,7 +84,7 @@ It does **not** apply to normal Flow 2–7 project production.
 
 Production kit `SKILL.md` files are procedures, not alternate root specialists. Nearest kit `AGENTS.md` files own module mechanics/technical Maintenance.
 
-Do not add renderer, HTML-validator, DOCX-builder, Python-tooling, artifact-engineering, research, or evidence-gate root skills without repeated evidence of a distinct reusable semantic ownership gap.
+Do not add renderer, HTML-validator, Production Asset, DOCX-builder, Python-tooling, artifact-engineering, research, or evidence-gate root skills without repeated evidence of a distinct reusable semantic ownership gap.
 
 ## Final ambiguity check
 

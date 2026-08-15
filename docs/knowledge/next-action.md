@@ -2,16 +2,12 @@
 
 ## Current Status
 
-`PRD_04_PRODUCTION_CONTRACT_HARDENED`
+`PRD_04_SKILL_ALIGNMENT_READY`
 
-The Project Document Production / Project Document Generator instructions now treat 04 Production Assets as a professional bounded extension of the same approved project model used by 01–03. The approved 01–03 PRD-core workflow remains protected and unchanged.
+The existing Project Document Production / Project Document Generator instructions are now aligned so normal production can start from project discussion + original source, recover one complete approved project model, preserve the approved 01–03 PRD-core workflow unchanged, and continue to 04 Production Assets from that same model. `PRODUCTION-ASSETS.md` is the single detailed 04 owner and now uses the approved moment-first, reader-first, humanized contract: MODEL / ITEM / UI / TEXT / AUDIO / PARTICLE; short Function; literal Visual Brief; optional real approved Size; exact player UI copy; canonical Voice presentation; no generic States/Position/Orientation/Reuse metadata; no fake SEQUENCE/gameplay-behavior assets; no unsupported visual/lore invention.
 
-`PRODUCTION-ASSETS.md` owns the final reader-first authoring contract and now includes one explicit 04 readiness gate covering coverage, authority, actionability, context, purity, exactness, reader usability, duplication economy, and PRD-core protection. `VALIDATION.md` runs that gate inside the existing integrated Semantic Readiness review whenever 04 exists; no extra workflow, status field, asset framework, or acceptance document was added.
-
-The 04 regression fixture is aligned to the approved moment-first output instead of the retired category-dashboard / Requirement-Usage presentation. Internal parser headings such as `Visual Effects & Presentation` remain documented strictly as backward-compatibility source grouping and are not visible 04 taxonomy.
-
-No fresh-project test is required as a dedicated next step. Existing `Repository Verify` and `PRD Verify` are the repeatable proof owners for this contract alignment.
+The change is instruction-layer only. `CONTENT-CONTRACT.md`, Golden templates, PRD-core renderer/pages, and the existing 01–03 output contract were not changed.
 
 ## Next Step
 
-Continue normal Production Execution. For any project that contains 04 Production Assets, apply the integrated 04 readiness gate during the ordinary Flow 4 Semantic Readiness review and use targeted visual review only when the 04 presentation itself is changed or high-risk.
+Run one representative fresh-project production from discussion/source and confirm that the existing 01–03 output remains unchanged in style/structure while justified 04 Production Assets are produced from the same approved project model.

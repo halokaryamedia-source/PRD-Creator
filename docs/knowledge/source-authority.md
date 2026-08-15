@@ -23,12 +23,15 @@ Use the most upstream valid owner:
 current user instruction
 → approved project decisions
 → authoritative project source
-→ requirement register / intake state
-→ accepted canonical PRD
+→ requirement register / intake state / approved project model
+   ├─ accepted canonical PRD core 01–03
+   └─ accepted non-Voice 04 Production Asset requirements when present
 → accepted Voice Requirements
 → canonical Voice Production wording
 → derived HTML/DOCX/audio/evidence
 ```
+
+Generated 01–03 is not the normal discovery authority for 04. Both PRD-core meaning and non-Voice 04 resource needs are projections of the same approved project model, with separate canonical owners.
 
 Derived artifacts do not repair or outrank upstream meaning.
 
@@ -47,15 +50,16 @@ Never use file date or polish to silently select a winner.
 ## Flow 2–4 project sources
 
 - originals/provenance/inspection coverage → source inventory;
-- explicit + recovered requirements/exclusions/topology/terminology → requirement register;
+- explicit + recovered requirements/exclusions/topology/terminology/necessary Production Asset implications → requirement register;
 - intake readiness → intake state;
-- canonical project meaning → `work/content.md`;
+- canonical PRD-core meaning → `work/content.md`;
+- canonical non-Voice 04 resource requirements when present → `work/asset-requirements.md` under `PRODUCTION-ASSETS.md`;
 - derived render data/HTML → never project authority;
 - acceptance/handoff → Flow 4 owner.
 
 ## Reference / Golden Samples
 
-References can establish demonstrated presentation, structure, tone, or quality only within their recorded contract. They cannot by themselves establish current project facts, objective count, mechanics/scoring, quantities, speaker/Voice rules, or current-project correctness.
+References can establish demonstrated presentation, structure, tone, or quality only within their recorded contract. They cannot by themselves establish current project facts, objective count, mechanics/scoring, quantities, speaker/Voice rules, asset style/lore, or current-project correctness.
 
 ## Conflict rule
 

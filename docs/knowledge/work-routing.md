@@ -1,6 +1,6 @@
 # Work Routing
 
-Updated: 2026-08-13
+Updated: 2026-08-16
 
 Use this note as the single **agent work-routing map**. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
 
@@ -16,7 +16,7 @@ flowchart TD
     C -->|Developing| D[development-brief<br/>goal/method/reference → authority → POVs → scope/proof]
     C -->|Maintenance| M[Maintenance flow<br/>observe defect/drift → root cause]
 
-    PE --> I[Inspect current project state + smallest active Flow owner]
+    PE --> I[Inspect current project state + smallest active owner]
     D --> N{Development needed?}
     N -- No --> NC[Reuse / explain / no-change + minimum proof]
     N -- Yes --> I2[Inspect canonical repository owner + affected boundary]
@@ -24,7 +24,7 @@ flowchart TD
     M --> I2
 
     I --> PRD{PRD or Voice production?}
-    PRD -->|PRD| PP[Flow 2–4 production procedure]
+    PRD -->|PRD| PP[Flow 2–4 + bounded 04 production procedure]
     PRD -->|Voice| VP[Flow 5–7 production procedure]
 
     I2 --> K{Cause/scope grounded?}
@@ -34,7 +34,7 @@ flowchart TD
     S -- No --> CH[Smallest complete change]
     SP --> CH
 
-    PP --> V[Owning Flow validation / acceptance]
+    PP --> V[Owning validation / acceptance]
     VP --> V
     CH --> V2[Minimum useful proof]
     NC --> G
@@ -58,13 +58,14 @@ Use when the user is using the existing system to create or revise project deliv
 Examples:
 
 ```text
-create PRD from supplied project source
+create PRD + justified 04 Production Assets from supplied project source
 revise an existing approved PRD objective
-extract Voice requirements from accepted PRD
+revise bounded 04 resource requirements from approved project meaning
+extract Voice requirements from accepted project/PRD meaning
 produce/update Voice Production output
 ```
 
-Production Execution bypasses `development-brief`. Use the matching production owner and smallest active Flow procedure directly.
+Production Execution bypasses `development-brief`. Use the matching production owner and smallest active procedure directly.
 
 ### Developing
 
@@ -79,7 +80,7 @@ development-brief
 
 Select by semantic owner:
 
-- PRD-Creator source/recovery/PRD/handoff system changes → `project-document-production`;
+- PRD-Creator source/recovery/PRD/04/handoff system changes → `project-document-production`;
 - Voice system/contract changes → `voice-production`.
 
 Do not select by incidental file format or technology.
@@ -98,9 +99,11 @@ Product production flow
 Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7
 ```
 
-Normal PRD Production Execution routes directly into Flow 2–4. Normal Voice Production Execution routes directly into Flow 5–7 when its upstream entry boundary is satisfied.
+04 Production Assets is a bounded Project Document Generator capability using the same Flow 2 approved project model; it is not an additional numbered Flow.
 
-A Maintenance task may repair Flow 6 without restarting Flow 2. A repository Developing request may change the Flow 5 system without running an actual Voice project.
+Normal PRD Production Execution routes directly into Flow 2–4 plus bounded 04 completion when justified. Normal Voice Production Execution routes directly into Flow 5–7 when its upstream entry boundary is satisfied.
+
+A Maintenance task may repair Flow 6 without restarting Flow 2. A repository Developing request may change the 04 system without running an actual project.
 
 ## Plan Mode
 
@@ -117,11 +120,11 @@ Use when the problem, architecture, or high-impact decision is not yet grounded.
 
 Use the owning production procedure directly.
 
-For PRD:
+For PRD + non-Voice 04:
 
 ```text
 project-document-production
-→ kits/project-document-generator/ active Flow owner
+→ kits/project-document-generator/ active owner
 ```
 
 For Voice:

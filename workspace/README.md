@@ -11,7 +11,7 @@ saved project  → workspace/archive/<project>/
 
 Project packages grow only when the current production stage needs an artifact. Do not pre-create a full folder tree.
 
-## Core PRD artifacts
+## Core project artifacts
 
 ```text
 Flow 2
@@ -19,9 +19,12 @@ state/source-inventory.yaml
 state/requirement-register.yaml
 state/intake-state.yaml
 
-Flow 3
-work/content.md              canonical PRD meaning
-work/render-data.json        deterministic PRD projection
+Flow 3 — PRD core 01–03
+work/content.md              canonical PRD-core meaning
+work/render-data.json        deterministic PRD-core projection
+
+Bounded 04 Production Assets, when justified
+work/asset-requirements.md   canonical non-Voice 04 resource requirements
 
 Flow 4
 work/acceptance.md
@@ -29,7 +32,7 @@ state/handoff-state.yaml
 
 Versioned delivery
 output/README.md                         stable handoff / resume navigator
-output/v<document.version>/prd.html      human-facing PRD
+output/v<document.version>/prd.html      human-facing project document
 output/v<document.version>/context.md    AI development context
 output/v<document.version>/index.json    compact AI navigation + context line ranges
 ```
@@ -52,17 +55,42 @@ document.version: 1.0.0
 → output/v1.0.0/
 ```
 
-A downstream-only Production Assets refresh may regenerate the current version folder when accepted PRD meaning did not change.
+A downstream-only Production Assets refresh may regenerate the current version folder when accepted project/PRD meaning did not change.
 
-## Downstream Production Assets
+## 04 Production Assets
 
-After the PRD is accepted, non-Voice Production Asset requirements may be added only when real asset production needs them:
+Production Asset needs are recovered while the project is understood from discussion/source. They are **not** normally discovered by rereading finished 01–03 and brainstorming extra assets afterward.
+
+The approved project model can feed both:
 
 ```text
-work/asset-requirements.md
+approved project model
+├─ work/content.md → 01–03
+└─ work/asset-requirements.md → non-Voice 04
 ```
 
-This optional file contains objective-first actionable requirements using only the current categories that actually have assets:
+Create `work/asset-requirements.md` only when the project has real non-Voice production resources that must be prepared.
+
+The current visible 04 resource types are:
+
+```text
+MODEL
+ITEM
+UI / TEXT
+AUDIO
+PARTICLE
+```
+
+Visible authoring is reader-first and moment-first:
+
+- MODEL / ITEM / PARTICLE → `Function` + literal `Visual Brief` + optional real approved numeric/block `Size`;
+- UI / TEXT → `Function` + exact player-facing `Player Text`;
+- standalone non-dialogue AUDIO → `Function` + short `Audio Brief`;
+- dialogue AUDIO → canonical Voice data from the Voice Production owners.
+
+Do not create gameplay logic, reset/route/threshold behavior, generic sequences, empty categories, duplicate shared assets, speculative decoration, placeholder sizes, or generic metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, or `Build Specs`.
+
+The current parser still accepts internal source-group headings for backward compatibility:
 
 ```text
 3D Models
@@ -71,39 +99,36 @@ Audio
 Visual Effects & Presentation
 ```
 
-A generic entry uses:
+Those headings are **internal storage only**. They are not the visible 04 taxonomy or page dashboard.
 
-```text
-Asset Name
-Requirement     mandatory
-Usage           optional
-Content         optional exact player-facing content
-```
-
-Do not create component inventories, empty categories, duplicate shared assets, or a second human-facing HTML output.
-
-When downstream Production Assets exist, the normal delivery pass regenerates the current versioned project document:
+When 04 exists, the normal delivery pass regenerates the same current versioned project document:
 
 ```text
 output/v<document.version>/prd.html
-= accepted PRD core
+= approved PRD core 01–03
 + 04 Production Assets
 ```
 
-Production Assets navigation is objective-first:
+Production Assets navigation is objective-first and page bodies are moment-first:
 
 ```text
 04 Production Assets
-   Global / Shared Assets      # only when present
+   Global / Shared Assets      # only when real shared resources exist
    <gameplay section title>
       <accepted PRD label>
+
+page body
+→ 01 · <natural gameplay moment>
+   → TYPE
+   → Resource Name
+   → resource-specific fields
 ```
 
-Categories appear inside each page only when non-zero. Gameplay/objective PRD sections remain under `03 Development`; downstream composition does not renumber accepted PRD page identities.
+Gameplay/objective PRD sections remain under `03 Development`; downstream composition does not renumber or rewrite accepted 01–03 page identities.
 
 ## Downstream Voice
 
-Create only after entering Voice Flow 5–7:
+Create Voice artifacts only after entering Voice Flow 5–7:
 
 ```text
 state/voice-state.yaml
@@ -112,7 +137,29 @@ work/voice-production.md
 work/voice-acceptance.md
 ```
 
-Voice remains canonical in those files and is not duplicated into `asset-requirements.md`. Its derived presentation appears inside the matching gameplay page's `Audio → Voice Production` block in the current versioned `prd.html`.
+Voice remains canonical in those files and is not duplicated into `asset-requirements.md`. Its derived 04 presentation appears as an `AUDIO` resource inside the matching gameplay moment:
+
+```text
+AUDIO
+<Character> — <Line Title>
+
+Function
+...
+
+Voice Preset
+...
+
+ElevenLabs Model
+Eleven v3
+
+Estimated Duration
+...
+
+Prompt
+<exact canonical performance payload>
+```
+
+Flow 5 Trigger/Purpose/source refs remain in Voice owners and are not visible Production Asset metadata.
 
 ## Optional derived exports
 
@@ -120,7 +167,7 @@ Voice remains canonical in those files and is not duplicated into `asset-require
 output/Voice Production.docx
 ```
 
-DOCX is produced only when a portable Voice export is requested or useful. It does not replace canonical Voice Production or the versioned PRD delivery bundle.
+DOCX is produced only when a portable Voice export is requested or useful. It does not replace canonical Voice Production or the versioned project delivery bundle.
 
 ## Typical package
 
@@ -158,10 +205,10 @@ This is an eventual example, not a bootstrap checklist.
 
 ```text
 source evidence + current user instruction + approved decisions
-→ requirement state
-→ canonical PRD
-→ PRD acceptance
-→ optional non-Voice asset requirements
+→ approved project model
+   ├─ canonical PRD core
+   └─ optional non-Voice 04 requirements
+→ PRD/04 acceptance
 → optional Voice requirements + canonical Voice Production
 → versioned derived delivery surfaces
 → downstream acceptance/state where applicable

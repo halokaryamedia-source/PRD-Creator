@@ -11,41 +11,17 @@ from tests.test_voice_contracts import SCRIPT as BASE_SCRIPT, requirements
 SCRIPT = BASE_SCRIPT.replace("## Intro", "## 01. The Journey Begins").replace(
     "## Ending", "## 02. Core Trial"
 )
-REQ = (
-    requirements()
-    .replace("## Intro", "## 01. The Journey Begins")
-    .replace("## Ending", "## 02. Core Trial")
-    .replace(
-        "- Trigger: Trial start before active play begins.\n",
-        "- Flow: 01 — Arrival\n"
-        "- Moment: Entering the Fixture\n"
-        "- For: Tell the player to begin the trial.\n"
-        "- Trigger: Trial start before active play begins.\n",
-        1,
-    )
-    .replace(
-        "- Trigger: Trial completion after the final objective resolves.\n",
-        "- Flow: 02 — Completion\n"
-        "- Moment: Completing the Core Trial\n"
-        "- For: Acknowledge that the trial is complete.\n"
-        "- Trigger: Trial completion after the final objective resolves.\n",
-        1,
-    )
+REQ = requirements().replace("## Intro", "## 01. The Journey Begins").replace(
+    "## Ending", "## 02. Core Trial"
 )
-
 ASSETS = """# Production Asset Requirements
 
 ## Global / Shared Assets
 
-### Gameplay Flow 01 — Shared Journey
-
 ### UI & Information
 
 #### Objective HUD
-Flow: 01 — Shared Journey
-Moment: Throughout the Journey
-Type: UI / TEXT
-Function: Shows the current objective update in the shared HUD.
+Requirement: Show the current objective in one shared HUD surface used across the complete journey.
 Content:
 ```text
 OBJECTIVE UPDATED
@@ -53,25 +29,16 @@ OBJECTIVE UPDATED
 
 ## 02. Core Trial
 
-### Gameplay Flow 01 — Trial Ready
-### Gameplay Flow 02 — Trial Complete
-
 ### 3D Models
 
 #### Trial Console
-Flow: 01 — Trial Ready
-Moment: Starting the Core Trial
-Type: MODEL
-Function: Main interaction object used to complete the Core Trial.
-Visual Brief: One central trial console with distinct Ready and Complete visual states. The completion light change belongs to the same model setup.
+Requirement: Create one central trial console with clearly different Ready and Complete states. When completed, the console lights and plays its short completion sound as one combined object response.
+Usage: Ready during active play; Complete after the valid interaction resolves.
 
 ### UI & Information
 
 #### Trial Hologram
-Flow: 01 — Trial Ready
-Moment: Starting the Core Trial
-Type: UI / TEXT
-Function: Tells the player when to begin and confirms completion after success.
+Requirement: Show the active trial instruction beside the console and replace it with the completion state after success.
 Content:
 ```text
 BEGIN THE CORE TRIAL
@@ -82,11 +49,8 @@ TRIAL COMPLETE
 ### Visual Effects & Presentation
 
 #### Trial Completion Reveal
-Flow: 02 — Trial Complete
-Moment: Completing the Core Trial
-Type: PARTICLE
-Function: Gives one short visual confirmation when the trial is completed.
-Visual Brief: One brief standalone completion pulse around the trial area.
+Requirement: Create one short objective-completion presentation with a brief area-wide visual pulse and camera emphasis. It is a standalone presentation response, not a component of the console or hologram assets.
+Usage: Runs once after valid trial completion.
 """
 
 
@@ -126,12 +90,13 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         result = run_cli(RENDERER, project / "work/render-data.json", output)
         return result, output
 
-    def test_voice_uses_objective_first_moment_first_production_assets(self) -> None:
+    def test_voice_uses_objective_first_production_assets_navigation(self) -> None:
         rendered, output = self.render(self.make_project())
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         html = output.read_text(encoding="utf-8")
 
         self.assertIn('class="nav-submenu phase-navigation"', html)
+        self.assertIn('data-section-code="04"', html)
         self.assertIn('class="nav-group is-open professional-nav production-assets-nav"', html)
         self.assertIn('data-full-index="04" data-overview-index="">04</span>', html)
         self.assertEqual(html.count('data-target="production-assets-'), 2)
@@ -143,22 +108,16 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('data-en="Introduction" data-id="Introduction">Introduction</span>', html)
         self.assertIn('data-en="Fixture Package" data-id="Fixture Package">Fixture Package</span>', html)
 
-        self.assertIn('<h2>Introduction · The Journey Begins</h2>', html)
-        self.assertIn('<h2>Fixture Package · Core Trial</h2>', html)
-        self.assertIn('<h3>Entering the Fixture</h3>', html)
-        self.assertIn('<h3>Completing the Core Trial</h3>', html)
-        self.assertIn('class="pa-type pa-type-audio">AUDIO</span>', html)
-        self.assertIn('<b>Function</b><span>Tell the player to begin the trial.</span>', html)
-        self.assertIn('<b>Voice Preset</b><span>William Shanks - Rich and Deep</span>', html)
-        self.assertIn('<b>ElevenLabs Model</b><span>Eleven v3</span>', html)
-        self.assertIn('<b>Estimated Duration</b><span>2–3 seconds</span>', html)
-        self.assertIn('data-pa-copy="voice-prompt-vo-intro-01"', html)
-        self.assertNotIn('<b>Speaker</b>', html)
-        self.assertNotIn('VoiceLab', html)
-        self.assertNotIn('class="pa-summary"', html)
-        self.assertNotIn('class="voice-production-block"', html)
+        self.assertIn('<h2>Core Trial</h2>', html)
+        self.assertIn('class="pa-summary"', html)
+        self.assertIn('<h3>Audio</h3>', html)
+        self.assertIn('class="voice-production-block"', html)
+        self.assertIn('class="voice-script-context"', html)
+        self.assertIn('data-voice-copy="voice-prompt-vo-intro-01"', html)
+        self.assertIn("William Shanks - Rich and Deep", html)
+        self.assertIn("Trial start before active play begins.", html)
 
-    def test_non_voice_assets_merge_into_the_same_reader_first_pages(self) -> None:
+    def test_non_voice_assets_merge_into_the_same_objective_pages(self) -> None:
         rendered, output = self.render(self.make_project(include_assets=True))
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         html = output.read_text(encoding="utf-8")
@@ -171,29 +130,19 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn("Global / Shared Assets", html)
         self.assertIn("Trial Console", html)
         self.assertIn("Trial Hologram", html)
-        self.assertIn("Trial Completion Reveal", html)
         self.assertIn("BEGIN THE CORE TRIAL", html)
         self.assertIn("TRIAL COMPLETE", html)
-        self.assertIn('class="pa-type pa-type-model">MODEL</span>', html)
-        self.assertIn('class="pa-type pa-type-ui-text">UI / TEXT</span>', html)
-        self.assertIn('class="pa-type pa-type-audio">AUDIO</span>', html)
-        self.assertIn('class="pa-type pa-type-particle">PARTICLE</span>', html)
-        self.assertIn("Main interaction object used to complete the Core Trial.", html)
-        self.assertIn("One central trial console with distinct Ready and Complete visual states.", html)
-        self.assertNotIn("3D Models <b>", html)
-        self.assertNotIn("UI &amp; Information <b>", html)
-        self.assertNotIn("Visual Effects &amp; Presentation <b>", html)
+        self.assertIn("3D Models <b>1</b>", html)
+        self.assertIn("UI &amp; Information <b>1</b>", html)
+        self.assertIn("Audio <b>1</b>", html)
+        self.assertIn("Visual Effects &amp; Presentation <b>1</b>", html)
         self.assertNotIn("Cinematic &amp; Presentation", html)
-        self.assertNotIn("<b>Requirement</b>", html)
-        self.assertNotIn("<b>Usage</b>", html)
-        self.assertNotIn("<b>Used At</b>", html)
 
-        core_start = html.index('id="production-assets-core"')
-        core_end = html.index("</section>", core_start)
+        core_start = html.index("<h2>Core Trial</h2>")
+        core_end = html.index('</section><div class="page-foot">', core_start)
         core_page = html[core_start:core_end]
         self.assertIn("Trial Console", core_page)
         self.assertIn("Trial Hologram", core_page)
-        self.assertIn("Trial Completion Reveal", core_page)
         self.assertIn("voice-prompt-vo-end-01", core_page)
 
     def test_asset_only_project_can_publish_production_assets(self) -> None:
@@ -206,33 +155,18 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('id="production-assets-objective-style"', html)
         self.assertNotIn('id="production-assets-copy-script"', html)
         self.assertIn("Trial Console", html)
-        self.assertIn("Trial Completion Reveal", html)
         self.assertNotIn('<article class="voice-script-card">', html)
 
-    def test_reader_first_contract_owner_contains_integrated_readiness_gate(self) -> None:
-        root = Path(__file__).resolve().parents[1]
-        owner = (
-            root / "kits" / "project-document-generator" / "PRODUCTION-ASSETS.md"
-        ).read_text(encoding="utf-8")
-        validation = (
-            root / "kits" / "project-document-generator" / "VALIDATION.md"
-        ).read_text(encoding="utf-8")
-
-        self.assertIn("## 04 readiness gate", owner)
-        for marker in (
-            "Coverage",
-            "Authority",
-            "Actionability",
-            "Context",
-            "Purity",
-            "Exactness",
-            "Reader test",
-            "Economy",
-            "PRD-core protection",
-        ):
-            self.assertIn(marker, owner)
-        self.assertIn("Production Assets", validation)
-        self.assertIn("`PRODUCTION-ASSETS.md` readiness gate", validation)
+    def test_renderer_rejects_empty_asset_category(self) -> None:
+        bad = ASSETS.replace(
+            "#### Trial Console\nRequirement: Create one central trial console with clearly different Ready and Complete states. When completed, the console lights and plays its short completion sound as one combined object response.\nUsage: Ready during active play; Complete after the valid interaction resolves.\n\n",
+            "",
+        )
+        rendered, _ = self.render(
+            self.make_project(include_voice=False, include_assets=True, asset_text=bad)
+        )
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("contains empty categories", rendered.stderr)
 
     def test_renderer_rejects_voice_without_initial_performance_tag(self) -> None:
         bad = SCRIPT.replace("[calm]\nBegin the trial.", "Begin the trial.", 1)
@@ -240,14 +174,11 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("must begin with at least one initial", rendered.stderr)
 
-    def test_voice_requirement_trigger_is_not_visible_production_metadata(self) -> None:
-        rendered, output = self.render(self.make_project())
-        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
-        html = output.read_text(encoding="utf-8")
-        self.assertNotIn("Trial start before active play begins.", html)
-        self.assertNotIn("Trial completion after the final objective resolves.", html)
-        self.assertIn("Entering the Fixture", html)
-        self.assertIn("Completing the Core Trial", html)
+    def test_renderer_rejects_missing_requirement_trigger_context(self) -> None:
+        bad = REQ.replace("- Trigger: Trial start before active play begins.\n", "", 1)
+        rendered, _ = self.render(self.make_project(requirements_text=bad))
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("Trigger missing", rendered.stderr)
 
     def test_prd_without_downstream_assets_keeps_production_assets_absent(self) -> None:
         rendered, output = self.render(
@@ -261,10 +192,9 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('data-en="04A" data-id="04A">04A</span>', html)
 
     def test_objective_page_id_is_stable_when_shared_assets_are_added(self) -> None:
-        core_section = (
-            "# Production Asset Requirements\n\n## 02. Core Trial"
-            + ASSETS.split("## 02. Core Trial", 1)[1]
-        )
+        core_only = ASSETS.split("## Global / Shared Assets", 1)[0] + "# Production Asset Requirements\n\n" if False else None
+        core_section = "# Production Asset Requirements\n\n" + ASSETS.split("## 02. Core Trial", 1)[1]
+        core_section = "# Production Asset Requirements\n\n## 02. Core Trial" + core_section.split("# Production Asset Requirements", 1)[1]
         without_shared, output_without = self.render(
             self.make_project(include_voice=False, include_assets=True, asset_text=core_section)
         )
@@ -279,6 +209,7 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         html_with = output_with.read_text(encoding="utf-8")
         self.assertIn('id="production-assets-global-shared"', html_with)
         self.assertIn('id="production-assets-core"', html_with)
+
 
     def test_voice_helper_module_contains_primitives_not_retired_compositor(self) -> None:
         source = (
@@ -304,6 +235,7 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
             "VOICE_COPY_SCRIPT =",
         ):
             self.assertIn(marker, source)
+
 
 
 if __name__ == "__main__":

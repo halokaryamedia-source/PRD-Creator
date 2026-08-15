@@ -1,6 +1,6 @@
 # Source Intake & Requirement Recovery
 
-Flow 2 turns uneven project material into a **complete reviewable project model** before Flow 3 writes the PRD. It recovers supported meaning, notices material gaps/conflicts, forms practical AI proposals when authority does not settle an answer, propagates the chosen model across production roles, and obtains user approval through the Simple Chat Preview.
+Flow 2 turns uneven project material into a **complete reviewable project model** before Flow 3 writes the PRD. It recovers supported meaning, notices material gaps/conflicts, forms practical AI proposals when authority does not settle an answer, propagates the chosen model across production roles, preserves real Production Asset needs, and obtains user approval through the Simple Chat Preview.
 
 Source-backed meaning and AI-proposed meaning remain distinguishable internally until approval. A Proposal may be concrete; it must never be presented as if it came from the source.
 
@@ -15,7 +15,7 @@ state/intake-state.yaml
 work/review.md                 # only when a readable decision summary materially helps
 ```
 
-The Simple Chat Preview is **chat output, not another artifact**. Do not create topology maps, coverage spreadsheets, dependency graphs, preview HTML, or extra approval files.
+The Simple Chat Preview is **chat output, not another artifact**. Do not create topology maps, coverage spreadsheets, dependency graphs, preview HTML, asset-inventory previews, or extra approval files.
 
 ## 1. Bootstrap, authority, and source retention
 
@@ -82,7 +82,7 @@ replaced by
 
 Do not broaden them beyond their actual scope.
 
-Create one `REQ-###` per meaningful production rule/constraint/conflict/exclusion/topology rule/proposed decision that must survive into PRD/acceptance. Do not mirror every source sentence.
+Create one `REQ-###` per meaningful production rule/constraint/conflict/exclusion/topology rule/proposed decision that must survive into project documentation/acceptance. Do not mirror every source sentence.
 
 Normal source-backed requirement:
 
@@ -135,7 +135,7 @@ After explicit recovery, run **one reasoning pass**, not separate forms/reviews.
 | Gameplay | purpose/objective, start, player action/feedback, completion/end, fail/retry/recovery, result |
 | Level Design | required areas/objects/routes, relationships, readability, known spatial constraints, gameplay function |
 | Developer | activation, state/progression, timing/quantities, validation, data/result, interruption/reset, handoff |
-| Production Assets | custom 3D models, UI/information, independent audio, and standalone visual-effects/presentation needs implied by the gameplay; shared vs local ownership |
+| Production Assets | concrete `MODEL`, `ITEM`, `UI / TEXT`, standalone `AUDIO`, and standalone `PARTICLE` resources that the approved experience actually requires; shared vs local ownership; exact player-facing copy when known |
 | Lifecycle | precondition → trigger → active behavior → success/fail/interruption → result → retry/reset |
 | Quantitative coherence | related timings/counts/capacities/scoring inputs/weights agree |
 | Global/local coherence | shared defaults remain shared; local exceptions are explicit |
@@ -144,13 +144,15 @@ After explicit recovery, run **one reasoning pass**, not separate forms/reviews.
 
 Only inspect concerns that apply. Optional/decorative detail is not a reason to inflate scope.
 
-The Production Assets concern is a **meaning check, not a new Flow or artifact**. If accepted gameplay necessarily needs a custom object or information/audio/presentation asset, the model should not leave that production need invisible merely because the source did not name the asset. If choosing a particular form/name/content would materially change gameplay, lore, communication, or scope, use the existing Completion/Proposal rules. Downstream `PRODUCTION-ASSETS.md` later converts accepted needs into the compact actionable requirement set.
+The Production Assets concern is a **meaning check, not a new Flow or artifact**. If accepted gameplay necessarily needs a concrete resource, the model should not leave that production need invisible merely because the source did not name an asset file. Do not invent visual style, lore, dimensions, animations, VFX, sound, or presentation beats simply to fill 04.
+
+If choosing a particular asset form/name/content would materially change gameplay, lore, communication, or scope, use the existing Completion/Proposal rules. Obvious production implications do not require another approval framework. `PRODUCTION-ASSETS.md` later materializes the approved resource needs into the compact reader-first 04 source.
 
 ### Golden-guided completeness
 
-Use the **Reverse-derived Golden fill map** in `CONTENT-CONTRACT.md` as the finite guide for what the final PRD must be able to answer.
+Use the **Reverse-derived Golden fill map** in `CONTENT-CONTRACT.md` as the finite guide for what the final PRD core must be able to answer.
 
-Golden supplies **questions, placement, hierarchy, and presentation behavior**. It never supplies project mechanics, counts, lore, timings, scoring values, or implementation facts for another project.
+Golden supplies **questions, placement, hierarchy, and presentation behavior**. It never supplies project mechanics, counts, lore, timings, scoring values, implementation facts, or asset style for another project.
 
 When authority does not answer a material Golden-required question, do not leave the future slot empty merely because source is incomplete. Resolve it through authority, Completion, concrete Proposal, Explicit No / Not Applicable where truthful, or Blocked as the last resort.
 
@@ -197,13 +199,13 @@ For every material gap/conflict:
 
 Use Completion only when the result follows from evidence/necessary implication and does not select among plausible product/design options.
 
-Use Proposal whenever the AI actually chooses a material default, including gameplay behavior, quantities, timings, recovery, scoring behavior, names, objects, build expectations, runtime behavior, or implementation rules.
+Use Proposal whenever the AI actually chooses a material default, including gameplay behavior, quantities, timings, recovery, scoring behavior, names, objects, build expectations, runtime behavior, implementation rules, or a Production Asset choice that changes project meaning.
 
 The objective is **not to minimize AI decisions**. The objective is to give the user a coherent complete model to approve/correct without pretending unsupported choices are source facts.
 
 ### Materiality
 
-A gap is material when leaving it unresolved would force production to choose product behavior/scope or would change player experience, build scope, runtime behavior, scoring/result, timing, transition/handoff, interruption, or reset.
+A gap is material when leaving it unresolved would force production to choose product behavior/scope or would change player experience, build scope, runtime behavior, scoring/result, timing, transition/handoff, interruption, reset, or another approved project fact.
 
 Optional advisory improvements remain out of the preview by default.
 
@@ -217,10 +219,13 @@ requirement
 → Gameplay
 → Level Design
 → Developer
+→ Production Asset implications
 → timing / quantities / scoring
 → transition / handoff
 → retry / interruption / reset
 ```
+
+Production Asset implications remain resource meaning only. Do not move runtime logic from Developer into 04 and do not turn logic into fake SEQUENCE assets.
 
 Reuse existing REQs + `affects` where useful. Do not build a dependency-graph artifact.
 
@@ -259,9 +264,9 @@ Saran AI                 # required when material AI-chosen Proposals exist
 
 Use one short Global Rules block only when shared rules materially affect all objectives.
 
-Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, or validator detail by default. **do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
+Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, validator detail, or a long Production Asset inventory by default. **Do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
 
-Do not label every recovered sentence as source-derived versus AI-added. However, every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval. This includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, or runtime-behavior defaults. Source-backed recovery and non-material production choices do not need individual labels. Keep one compact disclosure list rather than a multi-question decision dialog.
+Every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval. This includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, runtime-behavior defaults, or material Production Asset choices. Source-backed recovery and non-material production implications do not need individual labels. Keep one compact disclosure list rather than a multi-question decision dialog.
 
 `Perlu Konfirmasi` is the exception for a genuinely user/external-only blocker, not the normal response to incomplete design.
 

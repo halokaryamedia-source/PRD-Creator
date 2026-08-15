@@ -1,6 +1,6 @@
 # PRD Validation & Team Handoff
 
-`CONTENT-CONTRACT.md` owns PRD-core meaning and Golden composition. `PRODUCTION-ASSETS.md` owns the bounded non-Voice 04 requirement/writing contract. This file owns the minimum proof needed to accept the current revision.
+`CONTENT-CONTRACT.md` owns PRD meaning and Golden composition. This file owns the minimum proof needed to accept the current revision.
 
 ## Default sequence
 
@@ -13,7 +13,7 @@ current PRD revision
 → development_ready | handoff_ready
 ```
 
-Do not create separate review passes for New Reader, Level Design, Developer, Production Assets, Content Purity, Project Consistency, Acceptance, or Golden Fidelity. They are lenses inside one review, not independent workflow gates.
+Do not create separate review passes for New Reader, Level Design, Developer, Content Purity, Project Consistency, Acceptance, or Golden Fidelity. They are lenses inside one review, not independent workflow gates.
 
 ## 1. Mechanical validation
 
@@ -26,7 +26,7 @@ python kits/project-document-generator/validator/validate.py \
 
 Mechanical validation owns deterministic facts: Flow 2 readiness, required current artifacts, canonical/projection/render bindings, non-Voice Production Asset source freshness when that source exists, page order/IDs/navigation, scoring arithmetic, required Golden markers, and the narrow observed content-purity regression set.
 
-Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, 04 production readiness, or visual readability.
+Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, or visual readability.
 
 Content-purity checks stay narrow. They may reject concrete observed leakage such as generator/template/page narration, generic `Global Rule N`, or plain note strings that would render as generic `Important Note N`. Do not grow this into a prose score, word-count gate, or broad keyword blacklist.
 
@@ -39,22 +39,19 @@ Review the current revision once. During that pass ask the relevant questions be
 | New Reader | journey, objective, result, setback/recovery, and transition are understandable without reopening source |
 | Level Designer | build-owned areas, objects, relationships, constraints, and gameplay functions are sufficient |
 | Developer | trigger/state/progression/timing/scoring/reset/handoff behavior is sufficient |
-| Production Assets | when 04 exists, every real required production resource passes the `PRODUCTION-ASSETS.md` readiness gate: correct coverage/authority, actionable reader-first brief, correct gameplay moment, no behavior disguised as an asset, exact player/Voice facts preserved, no filler or unsupported invention, and 01–03 remain protected |
 | Content Purity | visible project copy explains the project, not PRD-Creator or document-production mechanics |
-| Project Consistency | terminology, timing, scoring, reset, production requirements, and package handoff agree across the revision |
-| Golden Placement | PRD-core meaning is placed in the matching approved Golden component family without unapproved presentation invention; 04 remains additive and does not rewrite the 01–03 Golden contract |
+| Project Consistency | terminology, timing, scoring, reset, and package handoff agree across the revision |
+| Golden Placement | project meaning is placed in the matching approved Golden component family without unapproved presentation invention |
 
 Record one result: `Semantic Readiness: PASS | FAIL`.
 
-When 04 exists, apply the `PRODUCTION-ASSETS.md` readiness gate inside this same semantic review. Do **not** add another persisted `Production Assets PASS` field, another workflow, or a second acceptance document. If the 04 gate fails, `Semantic Readiness` fails until the first wrong canonical owner is corrected.
-
-Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, terminology, and non-material production-brief corrections stay in the current semantic owner.
+Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, and terminology corrections stay in the current semantic owner.
 
 ## 3. Material conservation
 
 Material conservation remains a separate gate because a document can be clear yet accidentally omit an independent rule.
 
-For changed or regenerated scope, verify that material conditions, values, exceptions, recovery rules, result behavior, role-owned requirements, and materially required production resources still have an explicit readable representation. Do not use word count or row count as a proxy.
+For changed or regenerated scope, verify that material conditions, values, exceptions, recovery rules, result behavior, and role-owned requirements still have an explicit readable representation. Do not use word count or row count as a proxy.
 
 Record one result: `Material Conservation: PASS | FAIL`.
 
@@ -62,15 +59,15 @@ Record one result: `Material Conservation: PASS | FAIL`.
 
 The approved Golden is already locked by `CONTENT-CONTRACT.md` and focused static regression coverage. Normal project production does **not** reread/re-prove the entire reference from scratch when the Golden/template/renderer composition is unchanged.
 
-Re-run the reverse reference → contract proof only when the Golden artifact, template, visible PRD-core page composition, or its semantic slot contract changes.
+Re-run the reverse reference → contract proof only when the Golden artifact, template, visible page composition, or its semantic slot contract changes.
 
-For ordinary content-only or 04-only production, prove the forward direction only: current accepted project meaning fills the existing approved contract correctly and 04 stays additive.
+For ordinary content-only production, prove the forward direction only: current project meaning fills the existing approved contract correctly.
 
 ## 5. Targeted desktop visual sanity
 
 Visual PASS requires actual rendered/browser evidence. Static HTML inspection cannot claim visual PASS.
 
-For ordinary PRD-core content-only work, inspect only representative/high-risk pages, normally:
+For ordinary content-only work, inspect only representative/high-risk pages, normally:
 
 ```text
 Overview
@@ -80,9 +77,7 @@ Overview
 + one dense Developer page
 ```
 
-When 04 presentation itself changed or a dense/new Production Assets page is part of the invalidated scope, include one representative 04 page in the same targeted sanity pass.
-
-Check readable summary density, wrapping/overflow, component order, semantic note titles, table/list readability, Production Asset scanability when applicable, and obvious material thinning.
+Check readable summary density, wrapping/overflow, component order, semantic note titles, table/list readability, and obvious material thinning.
 
 Escalate to every-page or broader browser testing only when the template/CSS/JS/page-composition changed, a targeted finding suggests a global defect, a new component was approved, or the user explicitly asks for broader proof.
 
@@ -104,7 +99,7 @@ Critical: N
 Major: N
 ```
 
-`Semantic Readiness` replaces duplicated persisted fields for reader, role, consistency, Production Assets readiness, acceptance, content-purity semantics, and Golden placement. The review still considers those lenses; it simply records one integrated decision.
+`Semantic Readiness` replaces duplicated persisted fields for reader, role, consistency, acceptance, content-purity semantics, and Golden placement. The review still considers those lenses; it simply records one integrated decision.
 
 `Material Conservation` stays explicit because omission risk is independent from readability. `Visual sanity` stays explicit because browser evidence is a different proof channel.
 
@@ -118,8 +113,6 @@ python kits/project-document-generator/validator/validate_handoff.py \
 ```
 
 Handoff must point to the current canonical content/projection, acceptance record, `output/README.md`, and the matching versioned `prd.html` / `context.md` / `index.json` bundle. The accepted PRD version must use semantic `X.Y.Z` and match `render-data.document.version` plus the version declared by the side documents.
-
-When 04 exists, handoff also depends on the same integrated Semantic Readiness result having covered the `PRODUCTION-ASSETS.md` readiness gate. Mechanical source freshness alone is not a claim that the production brief is professionally actionable.
 
 `output/README.md` is the human/AI resume navigator, not a second project-status database. It identifies the current artifact set and reading route; implementation progress remains owned by the implementation repository. Do not duplicate checksum tables or internal validation transcripts when Git state and the validators already own those checks.
 

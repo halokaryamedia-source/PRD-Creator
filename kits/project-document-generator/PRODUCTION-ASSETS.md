@@ -296,26 +296,6 @@ over:
 A visually readable sensor treatment that clearly communicates the active hazard state to the player.
 ```
 
-## 04 readiness gate
-
-Before 04 is treated as ready for handoff, review the complete Production Assets scope once against the approved project model. This is one integrated semantic check, not a new workflow or status system.
-
-04 is ready only when every applicable check below passes:
-
-1. **Coverage** — every concrete resource that is explicit, necessarily implied, or materially approved appears once under the correct shared section or gameplay moment. No required resource is missing and no filler resource exists merely to make 04 look complete.
-2. **Authority** — every visual, textual, audio, size, state, and animation detail is supported by source authority, an approved decision, or a necessary production implication. Unsupported style, lore, dimensions, effects, and sounds are removed rather than guessed.
-3. **Actionability** — MODEL / ITEM / PARTICLE entries have a direct Function and literal Visual Brief; UI / TEXT has a direct Function and exact player copy; standalone non-dialogue AUDIO has a direct Function and Audio Brief; dialogue AUDIO comes from canonical Voice Production.
-4. **Context** — every non-shared resource sits under the accepted Introduction / Objective / Ending and a natural reader-facing Moment. A producer must not need internal checkpoint, threshold, state-machine, or renderer terminology to understand when the resource is used.
-5. **Purity** — gameplay logic, reset behavior, route logic, thresholds, scoring, camera sequencing, and generic SEQUENCE wrappers are not disguised as assets. Attached animation/sound/particle work remains inside its owning MODEL or ITEM when appropriate.
-6. **Exactness** — approved numeric sizes, exact player-facing copy, selected Voice Preset, ElevenLabs model, expected duration, and canonical prompt are preserved exactly wherever those facts are known.
-7. **Reader test** — a new artist/modeler/audio producer can answer `what do I need to make, what is it for, and at what gameplay moment is it needed?` from 04 without reopening 03 just to decode the production task.
-8. **Economy** — shared assets are defined once only when genuinely reused; objective-specific resources are not promoted to Global / Shared; the same resource is not duplicated across moments as separate pseudo-assets.
-9. **PRD-core protection** — ordinary 04 authoring does not rewrite `content.md`, Golden templates, PRD-core page composition, or the approved 01–03 style/structure merely to make 04 easier to render.
-
-If any check fails, correct the first wrong canonical owner or return the affected material decision to the existing approval boundary. Do not patch generated HTML and do not lower the 04 standard to preserve a stale fixture/test expectation.
-
-Legacy parser fields may remain in already-existing project files for compatibility, but compatibility is not the authoring standard. New or materially revised 04 content must follow the current reader-first contract above.
-
 ## Canonical project file
 
 When non-Voice Production Assets exist, store the actionable source in:

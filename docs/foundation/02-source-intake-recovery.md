@@ -83,19 +83,22 @@ Before preview, inspect only applicable material concerns:
 - Gameplay: objective, start, player actions/feedback, completion, fail/retry/recovery, result;
 - Level Design: areas/objects/routes, relationships, spatial constraints, gameplay function;
 - Developer: activation, state/progression, timing/quantities, completion/result, data, interruption/reset, handoff;
+- Production Assets: concrete MODEL / ITEM / UI / TEXT / standalone AUDIO / standalone PARTICLE resources that are explicit, necessarily implied, or materially approved; shared vs local ownership; exact player-facing copy when known;
 - lifecycle: precondition → trigger → active → success/fail/interruption → result → retry/reset;
 - quantitative coherence: related timings/counts/capacities/scoring values can coexist;
 - global/local coherence: shared defaults and legitimate exceptions agree;
 - authoritative known constraints: no silent conflict with required behavior;
 - operational clarity: competent production roles should not reasonably build materially different behavior from the approved model.
 
-Optional/decorative detail is not a gap merely because it could be specified.
+Optional/decorative detail is not a gap merely because it could be specified. Do not invent asset style, lore, dimensions, animations, VFX, or sound to make the project model look complete.
+
+Production Asset coverage is a meaning check, not another Flow or preview artifact. The Simple Chat Preview does not need to list every resource. It only needs to expose material AI-chosen decisions that require approval.
 
 ## Golden-guided completeness
 
-The Reverse-derived Golden fill map in `CONTENT-CONTRACT.md` is the finite guide for what the PRD must eventually be able to answer.
+The Reverse-derived Golden fill map in `CONTENT-CONTRACT.md` is the finite guide for what the PRD core must eventually be able to answer.
 
-Golden supplies **questions, placement, page family, labels, and presentation behavior**. It never supplies another project's mechanics, counts, timings, lore, scoring values, or implementation facts.
+Golden supplies **questions, placement, page family, labels, and presentation behavior**. It never supplies another project's mechanics, counts, timings, lore, scoring values, implementation facts, or asset style.
 
 When a material Golden-required answer is absent, resolve it through current authority, Completion, Proposal, Explicit No / Not Applicable where truthful, or Blocked as last resort. Do not leave a material future slot empty merely because source is incomplete.
 
@@ -109,10 +112,13 @@ requirement
 → Gameplay
 → Level Design
 → Developer
+→ Production Asset implications
 → timing/quantities/scoring
 → transition/handoff
 → retry/interruption/reset
 ```
+
+Production Asset implications remain separate from Developer behavior: concrete resources go to the 04 model; runtime logic stays in Developer meaning.
 
 Do not create a dependency graph merely to record this propagation.
 
@@ -133,9 +139,9 @@ Objective N
   Saran AI       # required when material AI-chosen Proposals exist
 ```
 
-Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker.
+Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. Do not dump a production-asset inventory into the preview by default. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker.
 
-Every **material AI-chosen Proposal** must appear once in the preview's `Saran AI` block before approval. Material means a chosen default that changes gameplay behavior or scope, including timing, quantity, progression, scoring, fail/recovery, reward, build scope, or runtime behavior. State the chosen default concisely; do not turn this into a question-by-question approval flow. Omit `Saran AI` only when the reviewed slice contains no material AI-chosen Proposal.
+Every **material AI-chosen Proposal** must appear once in the preview's `Saran AI` block before approval. Material means a chosen default that changes gameplay behavior or scope, including timing, quantity, progression, scoring, fail/recovery, reward, build scope, runtime behavior, or a Production Asset choice that changes project meaning. State the chosen default concisely; do not turn this into a question-by-question approval flow. Omit `Saran AI` only when the reviewed slice contains no material AI-chosen Proposal.
 
 Approval of the complete preview promotes the represented pending Proposals unless the user corrects/rejects them. A bounded revision previews only the affected slice when interpretation changed; an unambiguous current user instruction may itself approve that slice.
 
@@ -148,7 +154,7 @@ Repository-backed Flow 2 keeps:
 - `state/intake-state.yaml`;
 - `work/review.md` only when useful.
 
-`ready_for_prd` requires real stable source/requirement evidence, sufficient inspection, approved preview meaning, and no current unambiguous blocker such as `approval_status: pending`, `recovery_class: blocked`, or current authoritative source `inspection: blocked` affecting scope.
+`ready_for_prd` requires real stable source/requirement evidence, sufficient inspection, approved preview meaning, production-complete implications including justified 04 resource needs, and no current unambiguous blocker such as `approval_status: pending`, `recovery_class: blocked`, or current authoritative source `inspection: blocked` affecting scope.
 
 After Flow 2 completes, do not preserve a stale Flow-2 `next_step` merely because the schema once allowed it; later continuation belongs to current canonical/handoff state and repository `next-action.md`.
 
