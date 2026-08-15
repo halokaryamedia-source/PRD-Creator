@@ -26,9 +26,19 @@ class AssetEntry:
 
 
 @dataclass
+class FlowDefinition:
+    title: str
+    trigger: str = ""
+    experience: str = ""
+    uses: list[str] = field(default_factory=list)
+    done_when: list[str] = field(default_factory=list)
+
+
+@dataclass
 class AssetSection:
     title: str
     categories: dict[str, list[AssetEntry]] = field(default_factory=dict)
+    flows: dict[str, FlowDefinition] = field(default_factory=dict)
 
 
 @dataclass
@@ -41,6 +51,8 @@ class SectionPresentation:
     title: str
     package_label: Any
     context: Any
+    goal: Any
+    completion: Any
     page_id: str
 
 
@@ -66,6 +78,46 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
             sections.append(current_section)
             current_category = None
             i += 1
+            continue
+
+        if line.startswith("### Gameplay Flow "):
+            if current_section is None:
+                raise ValueError("Gameplay Flow metadata appears before a Production Asset section.")
+            flow_title = line[len("### Gameplay Flow "):].strip()
+            if not flow_title:
+                raise ValueError("Gameplay Flow title cannot be empty.")
+            flow = FlowDefinition(flow_title)
+            i += 1
+            list_mode: str | None = None
+            while i < len(lines):
+                meta = lines[i].rstrip()
+                if meta.startswith(("## ", "### ", "#### ")):
+                    break
+                if meta.startswith("Trigger:"):
+                    flow.trigger = meta.split(":", 1)[1].strip()
+                    list_mode = None
+                elif meta.startswith("Player Experience:"):
+                    flow.experience = meta.split(":", 1)[1].strip()
+                    list_mode = None
+                elif meta.startswith("Uses:"):
+                    raw = meta.split(":", 1)[1].strip()
+                    flow.uses = [item.strip() for item in raw.split(";") if item.strip()]
+                    list_mode = None
+                elif meta.strip() == "Done When:":
+                    list_mode = "done"
+                elif list_mode == "done" and re.match(r"^\s*-\s+", meta):
+                    flow.done_when.append(re.sub(r"^\s*-\s+", "", meta).strip())
+                i += 1
+            if not flow.trigger:
+                raise ValueError(f"Gameplay Flow is missing Trigger: {current_section.title} / {flow_title}")
+            if not flow.experience:
+                raise ValueError(f"Gameplay Flow is missing Player Experience: {current_section.title} / {flow_title}")
+            if not flow.done_when:
+                raise ValueError(f"Gameplay Flow is missing Done When: {current_section.title} / {flow_title}")
+            if flow_title in current_section.flows:
+                raise ValueError(f"Duplicate Gameplay Flow in {current_section.title}: {flow_title}")
+            current_section.flows[flow_title] = flow
+            current_category = None
             continue
 
         if line.startswith("### "):
@@ -120,6 +172,8 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     entry.content = "\n".join(body).strip()
                 i += 1
 
+            if not entry.flow:
+                raise ValueError(f"Production Asset is missing Flow: {entry.title}")
             if not entry.requirement:
                 raise ValueError(f"Production Asset is missing Requirement: {entry.title}")
             current_section.categories[current_category].append(entry)
@@ -137,13 +191,26 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
         if key in seen:
             raise ValueError(f"Duplicate Production Asset section: {section.title}")
         seen.add(key)
+        if not section.flows:
+            raise ValueError(f"Production Asset section has no Gameplay Flow definitions: {section.title}")
         empty = [name for name, entries in section.categories.items() if not entries]
         if empty:
             raise ValueError(
                 f"Production Asset section {section.title} contains empty categories: "
                 + ", ".join(empty)
             )
-        total += sum(len(entries) for entries in section.categories.values())
+        entries = [
+            entry
+            for category in ASSET_CATEGORIES
+            for entry in section.categories.get(category, [])
+        ]
+        for entry in entries:
+            if entry.flow not in section.flows:
+                raise ValueError(
+                    f"Production Asset Flow does not match a defined Gameplay Flow: "
+                    f"{section.title} / {entry.title} / {entry.flow}"
+                )
+        total += len(entries)
 
     if not total:
         raise ValueError("Production Asset requirements contain no asset entries.")
@@ -159,8 +226,16 @@ def _presentation(render_data: dict[str, Any], section_title: str) -> SectionPre
             SHARED_SECTION,
             bi("Shared", "Shared"),
             bi(
-                "Assets reused across multiple gameplay sections.",
-                "Asset yang digunakan ulang di beberapa bagian gameplay.",
+                "Reusable character and presentation assets referenced by multiple gameplay flows.",
+                "Asset karakter dan presentasi reusable yang dipakai oleh beberapa flow gameplay.",
+            ),
+            bi(
+                "Keep recurring character assets consistent and reusable across the journey.",
+                "Jaga asset karakter berulang tetap konsisten dan reusable sepanjang perjalanan.",
+            ),
+            bi(
+                "Every referenced gameplay flow can use the approved states without duplicating the asset.",
+                "Setiap flow terkait dapat memakai state yang disetujui tanpa menduplikasi asset.",
             ),
             "production-assets-global-shared",
         )
@@ -168,21 +243,35 @@ def _presentation(render_data: dict[str, Any], section_title: str) -> SectionPre
     for index, package in enumerate(render_data.get("packages", [])):
         if voice._title_key(txt(package.get("title", ""))["en"]) == key:
             package_id = str(package.get("id") or slug(title))
+            gameplay = package.get("gameplay", {})
             return SectionPresentation(
                 title,
                 package.get("package_label", f"Gameplay {index + 1}"),
-                package.get("gameplay", {}).get("context", ""),
+                gameplay.get("context", ""),
+                gameplay.get("main_objective", ""),
+                gameplay.get("end_condition", "") or gameplay.get("result", ""),
                 f"production-assets-{slug(package_id)}",
             )
 
     journey = render_data.get("overview", {}).get("journey", [])
+    flow_pages = render_data.get("gameplay_flow", [])
     for index, item in enumerate(journey):
         if voice._title_key(txt(item.get("title", ""))["en"]) == key:
             label = "Introduction" if index == 0 else "Ending" if index == len(journey) - 1 else "Journey"
+            matching_flow = next(
+                (
+                    flow
+                    for flow in flow_pages
+                    if voice._title_key(txt(flow.get("title", ""))["en"]) == key
+                ),
+                {},
+            )
             return SectionPresentation(
                 title,
                 bi(label, label),
                 item.get("description", ""),
+                item.get("description", ""),
+                matching_flow.get("next_destination", ""),
                 f"production-assets-journey-{slug(title)}",
             )
 
@@ -257,11 +346,24 @@ def _copy_button(target_id: str, label: str) -> str:
     )
 
 
-def _asset_html(entry: AssetEntry, number: int, page_id: str) -> str:
-    copy_id = f"{page_id}-asset-copy-{number}"
+def _purpose_text(requirement: str) -> str:
+    text = requirement.strip()
+    text = re.sub(
+        r"^(?:Create|Produce|Give|Build|Implement)\s+(?:or reuse\s+)?(?:one\s+)?",
+        "",
+        text,
+        flags=re.I,
+    )
+    if text:
+        text = text[0].upper() + text[1:]
+    return text
+
+
+def _asset_html(entry: AssetEntry, page_id: str) -> str:
+    copy_id = f"{page_id}-asset-copy-{slug(entry.title)}"
     usage = (
-        '<div class="pa-work-row">'
-        f'<span>{i18n(bi("When / Where", "Kapan / Di Mana"))}</span>'
+        '<div class="pa-asset-row">'
+        f'<span>{i18n(bi("Use / Trigger", "Penggunaan / Trigger"))}</span>'
         f'<p>{esc(entry.usage)}</p></div>'
         if entry.usage
         else ""
@@ -270,25 +372,60 @@ def _asset_html(entry: AssetEntry, number: int, page_id: str) -> str:
     if entry.content:
         copy_label = "Player Text" if entry.category == "UI & Information" else "Copy-ready Text"
         content = (
-            '<div class="pa-content-block">'
-            '<div class="pa-content-head">'
+            '<div class="pa-copy-block">'
+            '<div class="pa-copy-head">'
             f'<span>{esc(copy_label)}</span>'
             f'{_copy_button(copy_id, "Copy Text")}</div>'
             f'<pre class="pa-content" id="{copy_id}">{esc(entry.content)}</pre>'
             '</div>'
         )
     return (
-        '<article class="pa-card">'
-        '<div class="pa-card-head">'
-        f'<div class="pa-card-number">{number:02d}</div>'
-        '<div class="pa-card-title">'
+        '<article class="pa-asset-card">'
+        '<div class="pa-asset-head">'
         f'<span class="pa-type-badge">{esc(entry.category)}</span>'
-        f'<h4>{esc(entry.title)}</h4></div></div>'
-        '<div class="pa-card-body">'
-        '<div class="pa-work-row">'
-        f'<span>{i18n(bi("What to Build", "Yang Dibuat"))}</span>'
-        f'<p>{esc(entry.requirement)}</p></div>'
+        f'<h4>{esc(entry.title)}</h4></div>'
+        '<div class="pa-asset-body">'
+        '<div class="pa-asset-row">'
+        f'<span>{i18n(bi("Purpose", "Fungsi"))}</span>'
+        f'<p>{esc(_purpose_text(entry.requirement))}</p></div>'
         f'{usage}{content}</div></article>'
+    )
+
+
+def _checklist_html(
+    assets: list[AssetEntry],
+    voices: list[voice.VoiceEntry],
+    triggers: dict[str, str],
+) -> str:
+    items: list[str] = []
+    for entry in assets:
+        items.append(
+            '<li><span class="pa-check">□</span><div>'
+            f'<strong>{esc(entry.title)}</strong>'
+            f'<small>{esc(entry.category)}</small>'
+            f'<p>{esc(_purpose_text(entry.requirement))}</p></div></li>'
+        )
+    for entry in voices:
+        trigger = triggers.get(entry.voice_id, "")
+        items.append(
+            '<li><span class="pa-check">□</span><div>'
+            f'<strong>{esc(entry.title)}</strong>'
+            f'<small>Voice · {esc(entry.speaker)}</small>'
+            f'<p>{esc(trigger)}</p></div></li>'
+        )
+    if not items:
+        return ""
+    return (
+        '<div class="pa-checklist"><h4>Implementation Checklist</h4>'
+        '<ul>' + "".join(items) + '</ul></div>'
+    )
+
+
+def _done_html(items: list[str]) -> str:
+    return (
+        '<div class="pa-done"><h4>Done When</h4><ul>'
+        + "".join(f'<li><span>✓</span>{esc(item)}</li>' for item in items)
+        + '</ul></div>'
     )
 
 
@@ -318,8 +455,7 @@ def _pages_and_nav(
         voice_section = voice_map.get(key)
         asset_entries = _asset_entries(asset_section)
         voice_entries = list(voice_section.entries) if voice_section else []
-        total = len(asset_entries) + len(voice_entries)
-        if total == 0:
+        if not asset_entries and not voice_entries:
             continue
 
         meta = _presentation(render_data, title)
@@ -330,33 +466,37 @@ def _pages_and_nav(
 
         grouped_assets: dict[str, list[AssetEntry]] = {}
         for entry in asset_entries:
-            flow = entry.flow or "01 — General Implementation"
-            grouped_assets.setdefault(flow, []).append(entry)
+            grouped_assets.setdefault(entry.flow, []).append(entry)
 
         grouped_voices: dict[str, list[voice.VoiceEntry]] = {}
         for entry in voice_entries:
-            flow = voice_flows.get(entry.voice_id) or "90 — Voice & Guidance"
+            flow = voice_flows.get(entry.voice_id)
+            if not flow:
+                raise ValueError(f"Voice requirement Flow missing for canonical production entry: {entry.voice_id}")
             grouped_voices.setdefault(flow, []).append(entry)
 
-        flow_titles = sorted(set(grouped_assets) | set(grouped_voices), key=_flow_sort_key)
-        copyable = sum(1 for entry in asset_entries if entry.content) + len(voice_entries)
-        summary = (
-            '<div class="pa-summary">'
-            f'<strong>{total} implementation items</strong>'
-            f'<span><b>{len(flow_titles)}</b> gameplay flows</span>'
-            f'<span><b>{copyable}</b> copy-ready texts</span>'
-            f'<span><b>{len(voice_entries)}</b> voice lines</span>'
-            '</div>'
+        flow_defs = dict(asset_section.flows) if asset_section else {}
+        flow_titles = sorted(
+            set(flow_defs) | set(grouped_assets) | set(grouped_voices),
+            key=_flow_sort_key,
         )
-        shell_class = "pa-shell voice-objective-shell" if voice_section else "pa-shell"
+        for flow_title in flow_titles:
+            if flow_title not in flow_defs:
+                raise ValueError(
+                    f"Gameplay Flow metadata missing for Production Assets section: {title} / {flow_title}"
+                )
+
         body = (
-            f'<header class="{shell_class}"><small>Production Assets</small>'
+            f'<header class="pa-shell {"voice-objective-shell" if voice_section else ""}">'
+            '<small>Production Assets</small>'
             f'<h2>{esc(meta.title)}</h2><strong>{i18n(meta.package_label)}</strong>'
-            '<div class="pa-context-box">'
-            f'<span>{i18n(bi("Gameplay Context", "Konteks Gameplay"))}</span>'
-            f'<p class="pa-context">{i18n(context)}</p></div>'
-            '<p class="pa-use-note">Choose the gameplay flow you are implementing. Every relevant model, player text, Voice, audio cue, and visual requirement for that beat is kept together below. Copy only the exact text or Voice prompt you need.</p>'
-            f'{summary}</header>'
+            f'<p class="pa-context">{i18n(context)}</p>'
+            '<div class="pa-overview">'
+            '<article><span>Player Goal</span>'
+            f'<p>{i18n(meta.goal)}</p></article>'
+            '<article><span>Completion</span>'
+            f'<p>{i18n(meta.completion)}</p></article>'
+            '</div></header>'
         )
 
         if voice_section and voice_doc:
@@ -367,35 +507,44 @@ def _pages_and_nav(
                 + '</div>'
             )
 
-        if len(flow_titles) > 1:
-            body += '<nav class="pa-flow-nav" aria-label="Gameplay flow quick jump">'
-            for flow_title in flow_titles:
-                flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
-                body += f'<a href="#{flow_id}">{esc(flow_title)}</a>'
-            body += '</nav>'
+        body += '<nav class="pa-flow-nav" aria-label="Gameplay flow quick jump">'
+        for flow_title in flow_titles:
+            flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
+            body += f'<a href="#{flow_id}">{esc(flow_title)}</a>'
+        body += '</nav>'
 
         voice_positions = {
             entry.voice_id: (index, len(voice_entries))
             for index, entry in enumerate(voice_entries, 1)
         }
-        asset_number = 1
 
         for flow_title in flow_titles:
+            flow = flow_defs[flow_title]
             flow_assets = grouped_assets.get(flow_title, [])
             flow_voices = grouped_voices.get(flow_title, [])
             flow_id = f"{meta.page_id}-flow-{slug(flow_title)}"
             body += (
                 f'<div class="pa-flow" id="{flow_id}">'
-                '<div class="pa-flow-head"><div>'
-                f'<span>{i18n(bi("Gameplay Flow", "Flow Gameplay"))}</span>'
-                f'<h3>{esc(flow_title)}</h3></div></div>'
-                '<div class="pa-flow-items">'
+                '<div class="pa-flow-head">'
+                '<span>Gameplay Flow</span>'
+                f'<h3>{esc(flow_title)}</h3></div>'
+                '<div class="pa-flow-brief">'
+                '<article><span>Trigger</span>'
+                f'<p>{esc(flow.trigger)}</p></article>'
+                '<article><span>Player Experience</span>'
+                f'<p>{esc(flow.experience)}</p></article>'
+                '</div>'
             )
-
+            if flow.uses:
+                body += (
+                    '<div class="pa-uses"><span>Uses</span>'
+                    + "".join(f'<b>{esc(item)}</b>' for item in flow.uses)
+                    + '</div>'
+                )
+            body += _checklist_html(flow_assets, flow_voices, triggers)
+            body += '<div class="pa-assets">'
             for entry in flow_assets:
-                body += _asset_html(entry, asset_number, meta.page_id)
-                asset_number += 1
-
+                body += _asset_html(entry, meta.page_id)
             for entry in flow_voices:
                 trigger = triggers.get(entry.voice_id)
                 if not trigger:
@@ -417,8 +566,7 @@ def _pages_and_nav(
                     + '</div>'
                 )
                 voice_number += 1
-
-            body += '</div></div>'
+            body += '</div>' + _done_html(flow.done_when) + '</div>'
 
         index = len(pages)
         pid = meta.page_id
@@ -457,59 +605,76 @@ def _pages_and_nav(
 
 
 OBJECTIVE_STYLE = r'''<style id="production-assets-objective-style">
-.pa-shell{margin:0 0 18px}
+.pa-shell{margin:0 0 16px}
 .pa-shell>small{display:block;margin-bottom:7px;color:var(--blue);font-size:.63rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
 .pa-shell h2{margin:0;color:var(--navy);font-size:1.9rem;line-height:1.12;letter-spacing:-.025em}
-.pa-shell>strong{display:block;margin:6px 0 12px;color:var(--amber);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
-.pa-context-box{padding:12px 14px;border-left:3px solid var(--blue);background:var(--soft)}
-.pa-context-box>span{display:block;margin-bottom:5px;color:var(--blue);font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
-.pa-context{max-width:82ch;margin:0;color:#52616a;font-size:.8rem;line-height:1.52}
-.pa-use-note{max-width:84ch;margin:11px 0 0;color:var(--muted);font-size:.75rem;line-height:1.48}
-.pa-summary{display:flex;align-items:center;gap:9px 18px;flex-wrap:wrap;margin-top:13px;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--muted);font-size:.67rem}
-.pa-summary>strong,.pa-summary b{color:var(--navy)}
-.pa-flow-nav{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0 3px}
+.pa-shell>strong{display:block;margin:6px 0 9px;color:var(--amber);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+.pa-context{max-width:82ch;margin:0 0 12px;color:#52616a;font-size:.79rem;line-height:1.48}
+.pa-overview{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pa-overview article{padding:12px 15px 12px 0}
+.pa-overview article+article{padding-left:15px;border-left:1px solid var(--line)}
+.pa-overview span,.pa-flow-brief span,.pa-uses>span{display:block;margin-bottom:4px;color:var(--blue);font-size:.58rem;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
+.pa-overview p,.pa-flow-brief p{margin:0;color:var(--ink);font-size:.78rem;line-height:1.48}
+.pa-flow-nav{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0 3px}
 .pa-flow-nav a{display:inline-flex;align-items:center;min-height:30px;padding:6px 9px;border:1px solid var(--line);border-radius:3px;background:var(--paper);color:var(--navy);font-size:.67rem;font-weight:750;text-decoration:none}
 .pa-flow-nav a:hover,.pa-flow-nav a:focus-visible{border-color:var(--blue);color:var(--blue);outline:0}
 .pa-flow{scroll-margin-top:74px;margin-top:22px;padding-top:3px}
-.pa-flow+.pa-flow{padding-top:22px;border-top:2px solid var(--line)}
-.pa-flow-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px}
-.pa-flow-head span{display:block;margin-bottom:3px;color:var(--amber);font-size:.6rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
-.pa-flow-head h3{margin:0;color:var(--navy);font-size:1.08rem;line-height:1.25;letter-spacing:0;text-transform:none}
-.pa-flow-items{display:grid;gap:10px}
-.pa-card{padding:13px 14px;border:1px solid #d8e1e5;border-radius:4px;background:var(--paper);break-inside:avoid}
-.pa-card-head{display:flex;gap:10px;align-items:flex-start}
-.pa-card-number{min-width:25px;padding-top:3px;color:var(--amber);font-size:.67rem;font-weight:900;letter-spacing:.08em}
-.pa-card-title{min-width:0}
-.pa-type-badge{display:inline-block;margin:0 0 5px;padding:2px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
-.pa-card h4{margin:0;color:var(--navy);font-size:.95rem;line-height:1.3;text-transform:none}
-.pa-card-body{display:grid;gap:0;margin:10px 0 0 35px;border-top:1px solid var(--line)}
-.pa-work-row{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
-.pa-work-row>span{padding-top:1px;color:var(--muted);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
-.pa-work-row p{max-width:76ch;margin:0;color:var(--ink);font-size:.79rem;line-height:1.55}
-.pa-work-row+ .pa-work-row p{color:#52616a;font-size:.75rem}
-.pa-content-block{padding-top:10px}
-.pa-content-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
-.pa-content-head>span{color:var(--blue);font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-flow+.pa-flow{padding-top:24px;border-top:2px solid var(--line)}
+.pa-flow-head{margin-bottom:10px}
+.pa-flow-head>span{display:block;margin-bottom:3px;color:var(--amber);font-size:.6rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.pa-flow-head h3{margin:0;color:var(--navy);font-size:1.14rem;line-height:1.25;letter-spacing:0;text-transform:none}
+.pa-flow-brief{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);margin-bottom:10px;border:1px solid var(--line);background:var(--soft)}
+.pa-flow-brief article{padding:11px 13px}
+.pa-flow-brief article+article{border-left:1px solid var(--line)}
+.pa-uses{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
+.pa-uses>span{margin:0 4px 0 0}
+.pa-uses b{padding:3px 7px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--navy);font-size:.62rem}
+.pa-checklist{margin:10px 0 12px;padding:12px 14px;border-left:3px solid var(--navy);background:#f8fafb}
+.pa-checklist h4,.pa-done h4{margin:0 0 8px;color:var(--navy);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+.pa-checklist ul,.pa-done ul{margin:0;padding:0;list-style:none}
+.pa-checklist li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:7px 0;border-top:1px solid var(--line)}
+.pa-checklist li:first-child{border-top:0;padding-top:0}
+.pa-check{color:var(--blue);font-size:1rem;line-height:1.25}
+.pa-checklist strong{display:inline;color:var(--navy);font-size:.78rem}
+.pa-checklist small{margin-left:7px;color:var(--muted);font-size:.58rem;text-transform:uppercase}
+.pa-checklist p{margin:2px 0 0;color:#52616a;font-size:.71rem;line-height:1.4}
+.pa-assets{display:grid;gap:10px}
+.pa-asset-card{padding:13px 14px;border:1px solid #d8e1e5;border-radius:4px;background:var(--paper);break-inside:avoid}
+.pa-asset-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pa-type-badge{display:inline-block;padding:2px 6px;border-radius:2px;background:var(--soft);color:var(--blue);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-asset-head h4{margin:0;color:var(--navy);font-size:.96rem;line-height:1.3;text-transform:none}
+.pa-asset-body{margin-top:9px;border-top:1px solid var(--line)}
+.pa-asset-row{display:grid;grid-template-columns:95px minmax(0,1fr);gap:13px;padding:9px 0;border-bottom:1px solid var(--line)}
+.pa-asset-row>span{padding-top:1px;color:var(--muted);font-size:.57rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.pa-asset-row p{max-width:78ch;margin:0;color:var(--ink);font-size:.77rem;line-height:1.48}
+.pa-copy-block{padding-top:10px}
+.pa-copy-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.pa-copy-head>span{color:var(--blue);font-size:.58rem;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .pa-content{margin:0;padding:12px 13px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:2px;background:#f8fafb;color:var(--navy);font:700 .8rem/1.55 var(--font);white-space:pre-wrap;overflow-wrap:anywhere}
 .pa-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:7px 9px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .6rem/1 var(--font);letter-spacing:.045em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .pa-copy-button:hover,.pa-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
 .pa-copy-button.is-copied{border-color:var(--green);background:var(--green)}
-.pa-voice-setup-block{margin:12px 0 0}
+.pa-voice-setup-block{margin:11px 0 0}
 .pa-voice-inline>.pa-type-badge{margin:0 0 5px 1px}
 .pa-voice-inline .voice-script-card{margin:0}
-body.theme-dark .pa-context,body.theme-dark .pa-work-row p{color:#c8d7dc}
-body.theme-dark .pa-context-box,body.theme-dark .pa-type-badge{background:#1d2f37}
-body.theme-dark .pa-card{border-color:#405761;background:#17262d}
+.pa-done{margin-top:12px;padding:12px 14px;border-left:3px solid var(--green);background:#eef6f2}
+.pa-done li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:6px;margin-top:5px;color:#365b50;font-size:.73rem;line-height:1.42}
+.pa-done li:first-child{margin-top:0}
+.pa-done li span{color:var(--green);font-weight:900}
+body.theme-dark .pa-context,body.theme-dark .pa-flow-brief p,body.theme-dark .pa-checklist p{color:#c8d7dc}
+body.theme-dark .pa-flow-brief,body.theme-dark .pa-checklist,body.theme-dark .pa-type-badge{background:#1d2f37}
+body.theme-dark .pa-asset-card{border-color:#405761;background:#17262d}
 body.theme-dark .pa-content{background:#1d2f37;color:#e8eff3}
+body.theme-dark .pa-done{background:#193029}
 @media(max-width:760px){
-.pa-flow-head{align-items:stretch;flex-direction:column}
-.pa-card-body{margin-left:0}
-.pa-work-row{grid-template-columns:1fr;gap:3px}
-.pa-content-head{align-items:flex-start}
+.pa-overview,.pa-flow-brief{grid-template-columns:1fr}
+.pa-overview article+article,.pa-flow-brief article+article{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+.pa-asset-row{grid-template-columns:1fr;gap:3px}
+.pa-copy-head{align-items:flex-start}
 }
 @media print{
 .pa-flow-nav,.pa-copy-button{display:none!important}
-.pa-card,.pa-flow{break-inside:avoid}
+.pa-asset-card,.pa-flow,.pa-done,.pa-checklist{break-inside:avoid}
 }
 </style>'''
 
