@@ -67,11 +67,11 @@ requirements:
   - id: REQ-009
     area: gameplay
     statement: For the 12 Objective 1 clue books, pair the four lever combinations to each pillar's four listed colors by list order: ON/ON to color 1, OFF/OFF to color 2, ON/OFF to color 3, and OFF/ON to color 4. Right pillar colors are Red, Yellow, Green, Purple; middle pillar colors are Blue, Dark Blue, Brown, Dark Green; left pillar colors are Pink, Orange, White, Black.
-    provenance: [SRC-004]
-    evidence_status: inferred
+    provenance: [SRC-004, SRC-006]
+    evidence_status: approved
     recovery_class: proposal
-    approval_status: pending
-    resolution: The source gives the four lever combinations and four colors per pillar but does not explicitly pair them. Order-pairing is the smallest deterministic completion needed to prepare all 12 clue-book texts; replace it if the implemented pillar logic differs.
+    approval_status: approved
+    resolution: User approved the list-order lever-to-color pairing on 2026-08-15. The 12 clue-book texts may use this mapping as current project authority.
     impact: high
   - id: REQ-010
     area: scoring
