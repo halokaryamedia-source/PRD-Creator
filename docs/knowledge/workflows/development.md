@@ -1,6 +1,6 @@
 # Development Workflow
 
-Updated: 2026-08-10
+Updated: 2026-08-16
 
 This is the end-to-end path for **repository/system Developing** work in PRD-Creator.
 
@@ -14,6 +14,7 @@ User asks to change PRD-Creator itself
    ├─ no → explain/reuse + minimum proof
    └─ yes
       → at most one semantic specialist when useful
+      → choose a safe execution channel/tool
       → smallest complete implementation
       → minimum useful proof
       → Acceptance POV check
@@ -69,9 +70,17 @@ If a PRD system change later invalidates Voice behavior, finish the upstream cor
 
 ## Execution Channel
 
+Apply the root `AGENTS.md` **Execution channel and tool fit** gate before any write. This workflow does not authorize connector workarounds when the root gate says the current channel is a mismatch.
+
 ### ChatGPT → GitHub
 
-Prepare repository/source/artifact changes as far as static evidence allows.
+Use this channel for bounded repository reads, small complete text-file edits, and static/CI inspection that the connector supports natively.
+
+- Use direct branch/file fetches for current state; use search only for discovery.
+- A safe `update_file` requires the complete current file and represents one full-file replacement. Do not chunk it or reconstruct a large file from partial reads.
+- Large/multi-hunk refactors, atomic multi-file changes, binary edits, or tasks that need real patch semantics belong in a Local/Codex-style git workspace instead of repeated SHA-chained replacements.
+- Browser/audio/local runtime work requires the corresponding real capability. Do not create a temporary GitHub Action as a fallback shell.
+- Permission/safety/capability denial is a hard stop for that operation unless the user explicitly changes channel or asks for a durable capability.
 
 Do not claim:
 
@@ -83,7 +92,7 @@ When a material claim remains unproven, leave the exact local proof required.
 
 ### Local / Codex-style
 
-Use the same brief and acceptance criteria. Run the smallest local check that can prove/disprove the remaining claim. Do not restart planning or run broad suites merely because a shell is available.
+Use the same brief and acceptance criteria. Prefer this channel when work needs real patch semantics, coordinated multi-file edits, local build/runtime tools, or other capabilities that GitHub connector does not safely provide. Run the smallest local check that can prove/disprove the remaining claim. Do not restart planning or run broad suites merely because a shell is available.
 
 ## Implementation
 
@@ -92,7 +101,8 @@ Before editing:
 1. inspect the canonical owner;
 2. inspect directly affected state/contract/caller/artifact path;
 3. establish root cause when correcting behavior;
-4. confirm the change remains inside the brief.
+4. confirm the change remains inside the brief;
+5. confirm the chosen tool/channel can perform the operation safely without emulation.
 
 Then:
 
