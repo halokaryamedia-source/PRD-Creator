@@ -1,80 +1,35 @@
 # Skill Activation Matrix
 
-Use this file **only when the correct owner is ambiguous**. If root `AGENTS.md`, current project state, or nearest kit owner already resolves the task, do not load this matrix.
+Use this file **only when the correct semantic/technical owner remains ambiguous** after root `AGENTS.md` and the nearest obvious owner are considered. Do not load it by default.
 
-## Default budget
-
-| Mode | Default owner budget |
-|---|---|
-| Plan | no specialist by default |
-| Production Execution | one matching production specialist + smallest active kit procedure |
-| Developing | `development-brief` + at most one useful specialist |
-| Maintenance | root-cause-first; specialist optional |
-
-Do not select skills by file format or implementation language.
-
-## Fast routing
-
-```text
-create/revise PRD with existing system, including justified 04 Production Assets
-→ Production Execution
-→ project-document-production
-→ Project Document Generator active owner
-
-create/revise Voice output from accepted project/PRD meaning
-→ Production Execution
-→ voice-production
-→ Voice Production active Flow owner
-
-change PRD-Creator policy/workflow/skills/renderer/validator/builder/repository mechanics
-→ Developing
-→ development-brief
-→ add one semantic specialist only if it materially helps
-
-bug/regression/cleanup/stale docs
-→ Maintenance
-→ first wrong owner
-```
-
-## Semantic specialist routing
-
-| Wrong semantic/product contract | Owner |
-|---|---|
-| source recovery, canonical PRD-core meaning, bounded non-Voice 04 requirement meaning, Golden/04 representation requirement, project-document readiness/handoff meaning | `project-document-production` |
-| Voice requirement scope, Voice ID/Type/speaker/channel/trigger meaning, performance wording, Voice delivery meaning | `voice-production` |
-
-Do **not** load those skills merely because HTML/Python/DOCX/ElevenLabs appears in the task.
+Root `AGENTS.md` owns work-mode routing and skill budget. This matrix only resolves **which specialist, if any, adds reusable semantic judgment**.
 
 ## Semantic vs technical boundary
 
-```text
-PRD-core or non-Voice 04 meaning/representation requirement wrong
-→ project-document-production
+| Wrong contract | Route |
+|---|---|
+| Source recovery, PRD-core meaning, non-Voice 04 requirement meaning, Golden representation requirement, PRD readiness/handoff meaning | `project-document-production` |
+| Voice scope, Speaker/Channel/Trigger/Purpose meaning, canonical Voice wording/performance meaning, Voice readiness/delivery meaning | `voice-production` |
+| PRD/04 semantics correct; renderer/template/validator/compositor mechanics wrong | `kits/project-document-generator/AGENTS.md` → exact implementation owner |
+| Voice semantics correct; DOCX builder/validator mechanics wrong | `kits/voice-production-kit/AGENTS.md` → exact implementation owner |
+| Shared dependency / test / CI mechanics wrong | repository engineering owner |
 
-PRD/04 semantic contract correct; renderer/template/validator/compositor mechanics wrong
-→ kits/project-document-generator/AGENTS.md
-→ exact implementation owner
-
-Voice meaning/artifact contract wrong
-→ voice-production
-
-Voice semantic contract correct; DOCX builder/validator mechanics wrong
-→ kits/voice-production-kit/AGENTS.md
-→ exact implementation owner
-
-shared dependency / test / CI wrong
-→ requirements.lock.txt / tests / tools / workflows
-```
-
-If both semantic and mechanical defects exist, resolve/reframe them as separate boundaries instead of stacking specialists.
+Do **not** select a semantic specialist merely because HTML, Python, DOCX, ElevenLabs, renderer, validator, or another implementation technology appears in the task.
 
 ## Developing front door
 
-`development-brief` is required for non-trivial repository/system Developing. It establishes goal vs method, authority, Build/Acceptance POV, minimal scope, 2–5 acceptance criteria, and proof budget.
+For non-trivial repository/system Developing:
 
-It does **not** apply to normal Flow 2–7 project production or normal bounded 04 completion.
+```text
+development-brief
++ at most one semantic specialist when it materially helps
+```
 
-## Root skill set
+Normal project Production Execution does not use `development-brief`.
+
+Maintenance begins root-cause-first; a root specialist is optional when the semantic contract is already correct.
+
+## Current root skill set
 
 ```text
 .agents/skills/development-brief
@@ -82,18 +37,22 @@ It does **not** apply to normal Flow 2–7 project production or normal bounded 
 .agents/skills/voice-production
 ```
 
-Production kit `SKILL.md` files are procedures, not alternate root specialists. Nearest kit `AGENTS.md` files own module mechanics/technical Maintenance.
+Kit `SKILL.md` / `AGENTS.md` files are detailed production/contributor procedure and module routing, not alternate root specialists.
 
-Do not add renderer, HTML-validator, Production Asset, DOCX-builder, Python-tooling, artifact-engineering, research, or evidence-gate root skills without repeated evidence of a distinct reusable semantic ownership gap.
-
-## Final ambiguity check
+## Ambiguity questions
 
 Before loading a specialist ask:
 
-1. Is this normal project production or a change to PRD-Creator?
+1. Is the user using the existing product, changing PRD-Creator itself, or repairing a concrete defect?
 2. What exact contract is wrong?
-3. Is it semantic/product meaning or executable mechanics?
+3. Is the defect about product/semantic meaning or executable mechanics?
 4. Which owner would still own the problem if the file format/language changed?
-5. Does a specialist add useful reusable judgment beyond root policy + nearest module rules?
+5. Does a specialist add judgment beyond root policy + nearest module rules?
 
-If the owner is already obvious, stop here and use that owner directly.
+If the owner is already obvious, stop here and use it directly.
+
+## New-skill guard
+
+Do not add renderer, validator, Production Asset, DOCX-builder, Python-tooling, artifact-engineering, research, or evidence-gate root skills merely because those surfaces exist.
+
+A new/split/renamed root skill requires repeated evidence of a distinct reusable semantic ownership/procedure gap that cannot be represented by root policy, foundation policy, nearest kit procedure/AGENTS, repository engineering, or one existing specialist.

@@ -1,36 +1,49 @@
 # Repository Knowledge
 
-Updated: 2026-08-13
+Updated: 2026-08-17
 
-This directory is the navigation and operating-memory layer for PRD-Creator. Use one owner per question; do not broad-read the whole directory.
+This directory is the navigation and operating-memory layer for PRD-Creator. It does **not** define a second boot policy or duplicate the contracts owned by root/foundation/kits.
 
-## Start Here
+## Boot ownership
 
-For a normal session:
+Root `../../AGENTS.md` owns how a session boots.
 
-1. `../../AGENTS.md` — repository rules, work modes, proof, branch policy.
-2. `../../CONTEXT.md` — stable product context and production boundaries.
-3. `next-action.md` — current status and the single continuation point.
-4. Open only the smallest owner needed after that.
+Key distinction:
 
-## Current Owners
+```text
+observe / recover repository context
+→ read-only recovery + report
+
+non-trivial Developing
+→ full continuity recovery before edit
+
+bounded mechanical Maintenance
+→ smaller boot allowed only when wider context cannot change the decision
+```
+
+Do not use this directory index as a reason to broad-read every knowledge file.
+
+## Current owners
 
 | Need | Owner |
 |---|---|
-| Work-mode routing | `work-routing.md` |
+| Active continuation / resume checkpoint | `next-action.md` |
+| Detailed work-routing explanation | `work-routing.md` |
 | Repository/code/procedure ownership | `ownership.md` |
 | Source/state authority | `source-authority.md` |
-| Developing workflow | `workflows/development.md` |
+| Developing lifecycle overview | `workflows/development.md` |
 | Maintenance workflow | `workflows/maintenance.md` |
 | Skill inventory | `skills/README.md` |
-| Skill selection | `skills/activation-matrix.md` |
+| Ambiguous specialist selection | `skills/activation-matrix.md` |
 | Durable decision register | `decisions/README.md` |
 | Decision-recording threshold | `decisions/recording-policy.md` |
 | Current + historical review evidence | `reviews/README.md` |
 | Future/non-active work | `operations/backlog.md` |
-| Boot/routing regression baseline | `operations/boot-baseline.md` |
+| Boot/routing regression scenarios | `operations/boot-baseline.md` |
 
-## Directory Structure
+Top-level work modes and session boot remain owned by root `AGENTS.md`. GitHub execution discipline remains owned by root `GITHUB_RULES.md`.
+
+## Directory structure
 
 ```text
 docs/knowledge/
@@ -60,15 +73,15 @@ docs/knowledge/
     └── backlog.md
 ```
 
-## Separation Rule
+## Separation rule
 
 ```text
-active task              → next-action.md
-durable choice/reason    → decisions/
-current/historical proof → reviews/
-future work              → operations/backlog.md
-production policy        → ../foundation/
-project-specific state   → ../../workspace/
+active continuation       → next-action.md
+durable choice/reason     → decisions/
+current/historical proof  → reviews/
+future/non-active work    → operations/backlog.md
+production policy         → ../foundation/
+project-specific state    → ../../workspace/
 ```
 
-Historical review bodies remain capture-time evidence. Current policy comes from active owners, not from whichever audit has the strongest wording.
+Historical reviews/decisions are evidence and rationale, not automatic current work. Current execution follows root routing plus the nearest current owner.

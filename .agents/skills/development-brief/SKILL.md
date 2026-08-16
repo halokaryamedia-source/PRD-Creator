@@ -1,120 +1,128 @@
 ---
 name: development-brief
-description: Mandatory front door for non-trivial repository/system Developing tasks in PRD-Creator. Ground the real goal in repository/project evidence, separate suggested method and sample/reference from the requirement, detect execution channel, decide whether development is needed, choose Build and Acceptance POVs, define minimal scope with 2–5 provable criteria and a proof budget, then hand off to at most one semantic specialist. Re-check the same contract before completion. Do not use for normal Flow 2–7 project production such as creating or revising a PRD from project source.
+description: Mandatory front door for non-trivial repository/system Developing in PRD-Creator. Recover stable repository context and active continuation, ground the real goal in current evidence, separate suggested method/reference from the requirement, decide whether development is needed, choose Build/Acceptance POVs, define minimal scope with 2–5 provable criteria and a proof budget, then use at most one semantic specialist. Do not use for normal Flow 2–7 project production.
 ---
 
 # Development Brief
 
-Turn a repository/system create/change request into the smallest grounded development contract.
+Turn a repository/system create/change request into the smallest grounded development contract **without losing cross-session context**.
 
-Root `AGENTS.md` owns source precedence, independent judgment, root-cause gating, proof economy, evidence status, and anti-slop behavior. Apply those rules instead of duplicating them here.
+Root `AGENTS.md` owns boot, work-mode, continuity, authority, evidence, and skill-budget behavior. `GITHUB_RULES.md` owns GitHub execution. Apply those owners instead of duplicating them here.
 
-## Do not trigger for normal production
+## Entry boundary
 
-Normal project production is **Production Execution**, not repository Developing.
+Use `development-brief` only when the user asks to change or extend **how PRD-Creator itself works**, for example policy, skills, workflow, renderer/validator/builder contract, repository structure, or shared tooling.
 
-Examples that bypass this skill:
+Normal project production is **Production Execution**, not Developing.
+
+Examples:
 
 ```text
 "Here are the project sources; create the PRD."
-→ Project Document Generator Flow 2–4 directly
+→ project-document-production / active Project Document owner
 
-"Update Objective 3 in the existing PRD using this approved change."
-→ Project Document Generator revision fast path directly
+"Update Objective 3 using this approved project change."
+→ bounded Production Execution revision
 
 "Create Voice Production from the accepted PRD."
-→ Voice Production Flow 5–7 directly
+→ voice-production / active Voice owner
+
+"Change how incomplete project sources are recovered before PRD creation."
+→ Developing → development-brief
 ```
 
-Use `development-brief` only when the user asks to change or extend **how PRD-Creator itself works**, for example its policy, skills, workflow, renderer contract, validator contract, builder behavior, repository structure, or shared tooling.
+A read-only `amati / inspect / understand / recover repo context` request does not enter implementation. Recover context, report, and stop unless the user also asks to continue/change something.
 
-## Required Decisions
+## Mandatory Developing continuity
+
+Before non-trivial Developing, recover:
+
+```text
+AGENTS.md
+→ GITHUB_RULES.md Core Rules for material GitHub work
+→ CONTEXT.md
+→ docs/knowledge/next-action.md
+→ smallest evidence/owner needed to ground this change
+```
+
+`CONTEXT.md` and `next-action.md` are mandatory here. Their purpose is to prevent a new chat from inventing repository boundaries, repeating finished work, or selecting arbitrary TODOs.
+
+Do not ask the user to restate information recoverable from these owners/current source.
+
+If `next-action.md` and current source materially disagree:
+
+```text
+verify exact current owner
+→ identify stale continuity vs stale implementation
+→ reconcile the correct owner
+→ continue from actual state
+```
+
+Do not blindly repeat the stale step and do not replace it with a nearby backlog/review/TODO item.
+
+## Required decisions
 
 Before implementation establish only what materially affects the task:
 
 ```text
-Goal:
-Suggested method (if any):
-Observed sample/reference (if any):
-Generic requirement:
-Execution channel:
-Input authority:
-Expected output:
-Build POV:
-Acceptance POV:
-Interface constraints:
-In scope / Out of scope:
+Goal
+Suggested method (if any)
+Observed sample/reference (if any)
+Actual requirement
+Input authority
+Expected output
+Build POV
+Acceptance POV
+In scope / Out of scope
 Acceptance criteria: 2–5
-Proof budget:
-Open high-impact decisions:
+Proof budget
+Open high-impact decisions
 ```
 
-Omit fields that do not apply.
+Omit fields that do not apply. Execution-channel/tool mechanics follow `GITHUB_RULES.md`; record the channel only when it materially constrains proof or implementation.
 
 ## Procedure
 
-1. **Ground the goal**
-   - Read `CONTEXT.md`, `docs/knowledge/next-action.md`, and only the relevant policy/source.
-   - Separate fact, approved decision, assumption, generated artifact, and unknown.
+1. **Recover context and ground the goal**
+   - Use the mandatory Developing continuity above.
+   - Read only the smallest additional owner/source that can change the decision.
+   - Separate current fact, approved decision, assumption/proposal, derived artifact, historical evidence, and unknown.
    - Treat the user-proposed solution as a method, not automatically as the requirement.
-   - Treat Golden Samples/reference documents as demonstrated evidence unless object/project-specific behavior is explicitly requested.
+   - Treat references/Golden material only within their recorded authority.
 
-2. **Detect execution channel**
-   - `ChatGPT → GitHub`: repository preparation/static artifact proof only.
-   - `Local / Codex-style`: targeted local render/build/runtime/audio/browser proof may be available; verify availability first.
-   - Goal, scope, authority, Acceptance POV, and criteria remain the same across channels.
-
-3. **Check whether development is necessary**
-   - Inspect the existing owner/pattern before creating work.
+2. **Check whether development is necessary**
+   - Inspect current behavior/owner before creating work.
    - `No change required` is valid when current behavior already satisfies the goal.
+   - Old audits, backlog items, historical failures, and adjacent cleanup are not scope by default.
 
-4. **Choose the two POVs**
-   - **Build POV**: the semantic owner responsible for making the change correctly.
-   - **Acceptance POV**: the downstream reader/operator/consumer who determines whether the result is useful.
-   - Keep renderer, validator, builder, file format, and other tooling as interface constraints rather than extra personas unless they are the actual failure owner.
+3. **Choose Build and Acceptance POVs**
+   - **Build POV**: semantic/implementation owner responsible for making the change correctly.
+   - **Acceptance POV**: downstream reader/operator/consumer that determines whether the result solves the actual need.
+   - File format/tooling is an interface constraint, not automatically another owner/persona.
 
-5. **Set minimal scope and proof**
-   - Define 2–5 acceptance criteria that can actually be disproved/proved.
-   - Use root minimum-useful-proof and evidence-status rules.
-   - Ask the user only for unresolved high-impact decisions that repository inspection cannot recover safely.
+4. **Set minimal scope and proof**
+   - Define 2–5 falsifiable acceptance criteria.
+   - Choose the cheapest proof that can falsify the changed claim.
+   - Ask the user only for unresolved material decisions that repository inspection cannot recover responsibly.
 
-6. **Select implementation owner**
-   - Use this skill alone for trivial repository/routing work.
-   - For PRD/source/handoff system changes, add `project-document-production` when its domain procedure materially helps.
-   - For Voice requirement/script/DOCX/delivery system changes, add `voice-production` when its domain procedure materially helps.
-   - Add at most one specialist. If investigation exposes a second independent problem, finish or explicitly reframe the first boundary before switching owner.
+5. **Select implementation owner**
+   - Use this skill alone when another specialist adds no semantic value.
+   - PRD/source/04/handoff semantic-system changes → optionally add `project-document-production`.
+   - Voice requirement/production/delivery semantic-system changes → optionally add `voice-production`.
+   - Pure technical mechanics with correct semantics → nearest kit `AGENTS.md` + exact implementation owner; no semantic specialist required.
+   - Add at most one semantic specialist. If a second independent problem appears, finish/reframe the first boundary before switching.
 
-7. **Implement and final-gate**
+6. **Implement and final-gate**
    - Make the smallest complete change.
-   - Before `Selesai`, re-check the original goal, out-of-scope boundary, acceptance criteria, and available proof.
-   - Distinguish `implemented` from `verified` when material local/browser/audio/runtime proof remains unavailable.
+   - Preserve valid behavior outside scope.
+   - Follow `GITHUB_RULES.md` for commit/history/tool/CI discipline.
+   - Re-check goal, out-of-scope, acceptance criteria, and actual proof before `Selesai`.
+   - Distinguish implemented from verified when material runtime/browser/audio proof remains unavailable.
+   - Update `next-action.md` only if active continuation meaningfully changed.
 
-## Example Owner Selection
+## User-facing brief
 
-```text
-User asks to change how incomplete gameplay sources become a PRD
-→ repository Developing
-→ development-brief
-→ project-document-production
-
-User supplies incomplete gameplay sources and asks for the PRD
-→ Production Execution
-→ project-document-production / Project Document Generator directly
-
-User asks to change Voice moment extraction or ElevenLabs script wording rules
-→ repository Developing
-→ development-brief
-→ voice-production
-
-User reports a blank page in Voice Production.docx
-→ Maintenance mode first
-→ identify builder root cause
-→ voice-production only if its domain procedure helps
-```
-
-## User-Facing Brief
-
-For non-trivial repository Developing work:
+For non-trivial repository Developing, a compact visible brief is enough when useful:
 
 ```text
 Tujuan:
@@ -124,17 +132,15 @@ Tidak diubah:
 Cara memastikan benar:
 ```
 
-For a trivial unambiguous change, one short line is enough.
-
-Normal Production Execution does not show this meta-brief to the user.
+For a trivial unambiguous correction, one short line is enough. Normal Production Execution does not show this meta-brief.
 
 ## Escalation
 
-Escalate only when the concrete task requires it:
+Escalate only when the current task proves the need:
 
 - unresolved high-impact requirement → focused discovery/question;
-- cross-cutting architecture/migration spanning multiple owners → durable decision/change plan;
-- uncertain material evidence → root `AGENTS.md` evidence statuses;
-- post-implementation independent critique → review only when it adds real value.
+- real cross-owner architecture/migration → durable decision/change note under the existing recording threshold;
+- uncertain material evidence → root evidence statuses;
+- independent critique → review only when it adds real value.
 
 None are default ceremony.

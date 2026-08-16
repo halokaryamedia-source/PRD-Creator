@@ -2,74 +2,60 @@
 
 Voice Production Kit owns accepted project/PRD meaning → Voice requirements → canonical Eleven v3 production content → Voice validation/delivery.
 
+This README is package **orientation/navigation only**. Detailed production procedure is `SKILL.md`; exact Flow/craft/validation contracts stay in their named owners.
+
 ## Flow
 
 ```text
 accepted project / PRD meaning
 → work/voice-requirements.md
 → work/voice-production.md
-→ same output/v<document.version>/prd.html
+→ current project HTML presentation
 → work/voice-acceptance.md
 → state/voice-state.yaml
 ```
 
-## Current project HTML presentation
-
-Production Assets navigation is objective-first and page bodies are moment-first:
-
-```text
-04 Production Assets
-   <gameplay section title>
-      <accepted PRD label>
-
-page body
-→ <natural gameplay moment>
-   → AUDIO
-```
-
-Voice does not create a separate category/dashboard inside 04. Each canonical line appears as:
-
-```text
-AUDIO
-<Character> — <Line Title>
-
-Function
-<communication/story purpose>
-
-Voice Preset
-<selected actor voice>
-
-ElevenLabs Model
-Eleven v3
-
-Estimated Duration
-<duration>
-
-Prompt
-<exact canonical Eleven v3 performance payload>
-```
-
-Performance-direction tags are visually distinct from spoken dialogue. `Copy Prompt` copies the exact canonical payload.
-
-Visible line count, Primary Speaker, Voice Setup, Flow 5 Context/Trigger, and a separate Speaker row are not part of the current 04 reader-first contract. Those facts remain in their canonical Voice owners when needed for production reasoning/validation.
-
-Voice content remains canonical in `work/voice-production.md` and is not copied into generic `work/asset-requirements.md`.
-
-A Production Assets page may also contain non-Voice MODEL / ITEM / UI / TEXT / AUDIO / PARTICLE resources. Voice validation therefore checks Voice-specific canonical parity rather than treating every Production Assets page as Voice-only.
+DOCX and generated audio are optional downstream scopes.
 
 ## Active owners
 
 ```text
-VOICE-EXTRACTION.md    Flow 5 scope/context
-SOUNDMAKER.md          Eleven v3 performance production
+VOICE-EXTRACTION.md    Flow 5 scope/context extraction
+SKILL.md               end-to-end Flow 5–7 Production Execution
+SOUNDMAKER.md          Eleven v3 performance-writing craft
 VOICE-VALIDATION.md    Flow 7 validation/evidence
-DOCX-FORMAT.md         optional portable export
+DOCX-FORMAT.md         optional portable DOCX presentation
+AGENTS.md              kit file/mechanical routing
 ```
 
-`SCRIPT-PRODUCTION.md` remains retired as a duplicate lifecycle owner.
+Durable Flow policy lives in `docs/foundation/05-voice-requirement-extraction.md`, `06-elevenlabs-script-production.md`, and `07-voice-validation-delivery.md`.
 
-## Optional DOCX
+## Canonical vs derived
 
-`output/Voice Production.docx` is optional and does not replace canonical Voice Production or the consolidated project HTML.
+- `work/voice-requirements.md` owns Voice scope/communication requirements.
+- `work/voice-production.md` owns canonical production wording/performance.
+- project HTML is derived operator/developer presentation.
+- `output/Voice Production.docx` is optional portable export.
+- generated audio quality requires actual audio evidence.
 
-The 04 presentation contract does not alter Voice wording, Speaker/Type/Trigger authority, performance payloads, or the v1.11.2 Voice semantic contract.
+Voice content is not duplicated into generic non-Voice `work/asset-requirements.md`.
+
+## Shared 04 presentation
+
+Canonical Voice is presented in the existing project `04 Production Assets` surface as `AUDIO` inside the matching natural gameplay moment.
+
+The **exact reader-facing Production Assets resource/presentation contract** is owned by:
+
+```text
+kits/project-document-generator/PRODUCTION-ASSETS.md
+```
+
+The shared compositor mechanics are owned by the Project Document Generator. This Voice kit does not maintain a second HTML schema or `Audio → Voice Production` dashboard contract.
+
+## Boundary
+
+- Voice Production is downstream from accepted project/PRD meaning;
+- Flow 6 cannot silently change Flow 5 scope;
+- derived HTML/DOCX cannot become canonical Voice authority;
+- PRD/shared 04 presentation defects route to their Project Document owners when canonical Voice is already correct;
+- do not create another Voice HTML, asset framework, settings database, or workflow layer without a concrete need.

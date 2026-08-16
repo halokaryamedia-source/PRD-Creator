@@ -2,225 +2,171 @@
 
 Updated: 2026-08-17
 
-Use this note as the single **agent work-routing map**. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
+Root `AGENTS.md` is the canonical top-level work-mode/boot authority. This file is the **detailed explanation** used only when the route or boundary needs more context. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
 
-## Agent Routing
+## Routing overview
 
 ```mermaid
 flowchart TD
-    A[User request] --> B[Boot minimally<br/>AGENTS → only applicable state/owner]
-    B --> C{Work mode}
+    A[User request] --> B{Read-only context request?}
+    B -->|Yes| O[Recover AGENTS + GitHub Core + CONTEXT + next-action<br/>smallest owner if needed]
+    O --> OR[Report current understanding<br/>NO EDIT → STOP]
+    B -->|No| C{Work mode from AGENTS}
 
-    C -->|Plan| P[Ground problem / inspect owner<br/>No edit until method/scope is clear]
-    C -->|Production Execution| PE[Use matching production owner directly<br/>No development-brief]
-    C -->|Developing| D[development-brief<br/>goal/method/reference → authority → POVs → scope/proof]
-    C -->|Maintenance| M[Maintenance flow<br/>observe defect/drift → root cause]
+    C -->|Plan| P[Ground problem / inspect owner<br/>No edit until requested]
+    C -->|Production Execution| PE[Matching production specialist<br/>+ smallest active kit owner]
+    C -->|Developing| D[Recover full Developing continuity<br/>→ development-brief]
+    C -->|Maintenance| M[Concrete defect/drift<br/>→ first wrong owner]
 
-    PE --> I[Inspect current project state + smallest active owner]
     D --> N{Development needed?}
-    N -- No --> NC[Reuse / explain / no-change + minimum proof]
-    N -- Yes --> I2[Inspect canonical repository owner + affected boundary]
-    P --> I2
-    M --> I2
+    N -->|No| NC[Reuse / explain / no-change + minimum proof]
+    N -->|Yes| I[Smallest relevant semantic/implementation owner]
+    P --> I
+    M --> I
 
-    I --> PRD{PRD or Voice production?}
-    PRD -->|PRD| PP[Flow 2–4 + bounded 04 production procedure]
-    PRD -->|Voice| VP[Flow 5–7 production procedure]
-
-    I2 --> K{Cause/scope grounded?}
-    K -- No --> X[UNKNOWN / LOCAL PROOF REQUIRED<br/>Perlu pemeriksaan or Terhenti]
-    K -- Yes --> S{One specialist adds real value?}
-    S -- Yes --> SP[Load one semantic specialist]
-    S -- No --> CH[Smallest complete change]
-    SP --> CH
-
-    PP --> V[Owning validation / acceptance]
-    VP --> V
-    CH --> V2[Minimum useful proof]
-    NC --> G
-    V2 --> G{Developing?}
-    G -- Yes --> AP[Acceptance POV + original-scope gate]
-    G -- No --> F{Evidence sufficient for claimed status?}
-    AP --> F
-
-    V --> F
-    F -- No --> PR[Perlu pemeriksaan<br/>state exact remaining proof]
-    F -- Yes --> OK[Selesai]
-    OK --> U[Update only canonical state/decision/review/owner that changed]
+    PE --> V[Owning production validation / acceptance]
+    I --> V2[Minimum useful proof]
+    NC --> F
+    V --> F{Evidence sufficient for claimed status?}
+    V2 --> F
+    F -->|No| R[Perlu pemeriksaan / exact remaining proof]
+    F -->|Yes| S[Selesai]
+    S --> U[Update only canonical state/decision owner that actually changed]
 ```
 
-## Minimal Boot
+## Context recovery is not implementation
 
-Start from root `AGENTS.md`, then load only state that can change the task:
-
-```text
-material GitHub work
-→ GITHUB_RULES.md Core Rules
-
-stable product/boundary facts matter
-→ CONTEXT.md
-
-continuing/changing active milestone or blocker
-→ next-action.md
-
-implementation/semantic decision
-→ smallest relevant owner
-```
-
-Do not open `CONTEXT.md` and `next-action.md` merely because a session is material. Conditional GitHub surfaces, review history, decisions, activation matrix, and secondary indexes are opened only when their information can change the decision.
-
-## Mode Boundary
-
-### Production Execution
-
-Use when the user is using the existing system to create or revise project deliverables.
-
-Examples:
-
-```text
-create PRD + justified 04 Production Assets from supplied project source
-revise an existing approved PRD objective
-revise bounded 04 resource requirements from approved project meaning
-extract Voice requirements from accepted project/PRD meaning
-produce/update Voice Production output
-```
-
-Production Execution bypasses `development-brief`. Use the matching production owner and smallest active procedure directly.
-
-### Developing
-
-Use when the user asks to change **PRD-Creator itself**: its policy, skills, workflow, renderer/validator/builder contracts, repository structure, or shared tooling.
-
-## Developing Owner Budget
-
-```text
-development-brief
-+ at most one useful specialist
-```
-
-Select by semantic owner:
-
-- PRD-Creator source/recovery/PRD/04/handoff system changes → `project-document-production`;
-- Voice system/contract changes → `voice-production`.
-
-Do not select by incidental file format or technology.
-
-## Production Flow Is A Separate Layer
-
-Agent routing decides **how work is approached**. Production Flow decides **which product stage owns the project artifact**.
-
-```text
-Agent routing
-Plan / Production Execution / Developing / Maintenance
-        ↓
-semantic owner + proof boundary
-        ↓
-Product production flow
-Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7
-```
-
-04 Production Assets is a bounded Project Document Generator capability using the same Flow 2 approved project model; it is not an additional numbered Flow.
-
-Normal PRD Production Execution routes directly into Flow 2–4 plus bounded 04 completion when justified. Normal Voice Production Execution routes directly into Flow 5–7 when its upstream entry boundary is satisfied.
-
-A Maintenance task may repair Flow 6 without restarting Flow 2. A repository Developing request may change the 04 system without running an actual project.
-
-## Plan Mode
-
-Use when the problem, architecture, or high-impact decision is not yet grounded.
-
-- inspect repository/project evidence before proposing structure;
-- separate goal from suggested method;
-- identify the canonical owner before proposing a new file/skill/layer;
-- use `decisions/recording-policy.md` only when a cross-owner durable change threshold is actually met;
-- do not implement merely to make the plan feel concrete;
-- end with one actionable next step.
-
-## Production Execution Mode
-
-Use the owning production procedure directly.
-
-For PRD + non-Voice 04:
-
-```text
-project-document-production
-→ kits/project-document-generator/ active owner
-```
-
-For Voice:
-
-```text
-voice-production
-→ kits/voice-production-kit/ active Flow owner
-```
-
-Keep user effort low: auto-bootstrap internal project state, inspect before asking, use Flow 2 solve-before-ask recovery/problem solving, batch only the material decisions still unresolved, use delta revision paths, and deliver only the requested artifact plus concise material information.
-
-## Developing Mode
-
-Use `development-brief` before non-trivial **repository/system** implementation.
-
-See `workflows/development.md` for the detailed route.
-
-## Maintenance Mode
-
-Use for bugs, regressions, cleanup, stale routing/docs, and behavior-preserving corrections.
-
-Canonical procedure:
-
-`workflows/maintenance.md`
-
-Maintenance does not automatically use `development-brief`. It begins from concrete defect/drift evidence and root cause, then uses the smallest semantic owner/proof needed.
-
-## Ownership / Source Routing
-
-When the owner or authority is unclear:
-
-1. `ownership.md` — repository-area owner plus exact current implementation/procedure routing;
-2. `source-authority.md` — which source/state/artifact is authoritative for the claim;
-3. the nearest owner named by those files — inspect only that active implementation/procedure.
-
-Do not create or rely on a separate implementation map when `ownership.md` already owns that routing.
-
-## Review / Decision Separation
-
-```text
-current + historical review evidence
-→ reviews/README.md
-
-durable choice/reason
-→ decisions/README.md + matching decision record when one exists
-
-active task status
-→ next-action.md
-```
-
-A review does not become current policy merely because it contains a recommendation.
-
-## Evidence Boundary
-
-When a material claim cannot be proven in the active execution channel, use root evidence statuses rather than pretending static inspection proves runtime/browser/audio behavior.
-
-## Continuity
-
-New session:
+When the user says only `amati`, inspect, understand, study, or recover the repository:
 
 ```text
 AGENTS.md
 → GITHUB_RULES.md Core Rules when GitHub work is material
-→ CONTEXT.md only when stable facts matter
-→ next-action.md only when active continuation matters
-→ smallest relevant owner
+→ CONTEXT.md
+→ next-action.md
+→ smallest owner needed to explain the current state
+→ report understanding
+→ STOP
 ```
 
-Open the activation matrix **only when the correct owner/skill is genuinely ambiguous**. Do not load every review, decision, or kit during normal boot unless the active boundary requires it.
+Do not execute the recorded next step merely because it was discovered. Do not promote backlog/audit/TODO items. If the user says `amati ... lalu lanjutkan next step`, finish context recovery first, then enter Developing/Production/Maintenance as appropriate.
+
+## Non-trivial Developing continuity
+
+Repository/system Developing must survive session limits. Before editing:
+
+```text
+AGENTS.md
+→ GITHUB_RULES.md Core Rules
+→ CONTEXT.md
+→ next-action.md
+→ development-brief
+→ smallest relevant owner/source
+```
+
+This is **minimum sufficient context**, not unnecessary ceremony. After this continuity bootstrap, further reading must remain bounded to what can change the decision.
+
+If `next-action.md` disagrees materially with current source/state, do not blindly follow either. Verify the exact current owner, reconcile the stale continuity/implementation record, then continue from actual state.
+
+## Mode boundaries
+
+### Plan
+
+Use when the user wants understanding/decision support or when a high-impact method/scope is not yet grounded. Inspect authority/ownership first. Do not implement merely to make the plan feel concrete.
+
+### Production Execution
+
+Use when the user is using the existing system to create/revise project deliverables.
+
+```text
+PRD / non-Voice 04
+→ project-document-production
+→ Project Document Generator active owner
+
+Voice
+→ voice-production
+→ Voice Production active Flow owner
+```
+
+Normal Production Execution bypasses `development-brief`.
+
+### Developing
+
+Use when changing **PRD-Creator itself**: policy, skills, workflows, renderer/validator/builder contracts, repository structure, or shared tooling.
+
+```text
+development-brief
++ at most one semantic specialist when it adds real value
+```
+
+Detailed procedure: `workflows/development.md` → canonical `development-brief` skill.
+
+### Maintenance
+
+Use for bugs, regressions, cleanup, stale routing/docs, and behavior-preserving corrections. Begin from concrete defect/drift and the first wrong owner. Maintenance does not automatically invoke `development-brief`.
+
+Detailed procedure: `workflows/maintenance.md`.
+
+## Semantic vs technical routing
+
+Choose the owner by **what is wrong**, not by file format/language:
+
+```text
+PRD/source/04/readiness meaning wrong
+→ project-document-production
+
+Voice scope/wording/readiness meaning wrong
+→ voice-production
+
+semantic contract correct; renderer/template/validator/builder mechanics wrong
+→ nearest kit AGENTS + exact implementation owner
+
+shared dependency / test / CI wrong
+→ repository engineering owner
+```
+
+Use `skills/activation-matrix.md` only when this remains genuinely ambiguous.
+
+## Production flow is a separate layer
+
+Agent work mode answers **how to approach the task**. Product Flow answers **which production stage owns the artifact**.
+
+```text
+Plan / Production Execution / Developing / Maintenance
+→ semantic/implementation owner
+→ Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7 as applicable
+```
+
+A Maintenance task may repair Flow 6 without restarting Flow 2. A repository Developing task may change the 04 system without producing a project.
+
+## Ownership / source ambiguity
+
+- `ownership.md` → **who owns** the responsibility/file/procedure?
+- `source-authority.md` → **which source/state** is authoritative for the claim?
+
+Open only when direct routing does not already answer the question.
+
+## Continuity and inactive work
+
+```text
+active continuation
+→ next-action.md
+
+future/non-active work
+→ operations/backlog.md
+
+historical evidence
+→ reviews/
+
+durable rationale
+→ decisions/
+```
+
+Old TODOs, review findings, decisions, and backlog items are not active work by themselves.
 
 ## Related
 
 - [Development Workflow](workflows/development.md)
 - [Maintenance Workflow](workflows/maintenance.md)
 - [Skill Activation Matrix](skills/activation-matrix.md)
-- [Skill Catalog](skills/README.md)
 - [Repository Ownership](ownership.md)
 - [Source Authority](source-authority.md)
-- [Review Register](reviews/README.md)

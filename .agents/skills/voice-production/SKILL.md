@@ -1,83 +1,118 @@
 ---
 name: voice-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 5–7. Use for PRD-derived Voice scope, Flow 5→6 intent completeness, canonical Voice production content, communication conservation, consolidated 04 AUDIO presentation, or Voice validation/delivery semantics.
+description: Reusable semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when accepted PRD → Voice scope, Flow 5 communication intent, canonical Voice production meaning, communication conservation, or Voice readiness/delivery semantics are the actual problem. Do not use as a generic DOCX/HTML/builder/validator wrapper when semantics are already correct.
 ---
 
 # Voice Production
 
-This skill owns semantic judgment around Voice Production Flow 5–7. Detailed procedure stays in `kits/voice-production-kit/`.
+Own **semantic judgment** around Voice Production Flow 5–7. Detailed Production Execution stays in `kits/voice-production-kit/SKILL.md`; exact craft/validation procedure stays in the nearest Voice owner.
 
-## Authority
+## Semantic authority shape
 
 ```text
 accepted project / PRD meaning
-→ work/voice-requirements.md
-→ work/voice-production.md
-→ output/v<document.version>/prd.html
-   → 04 Production Assets
-      → matching gameplay moment
-         → AUDIO
-→ work/voice-acceptance.md
-→ state/voice-state.yaml
+→ canonical Voice requirements
+→ canonical Voice Production
+→ Voice acceptance / delivery evidence
 ```
 
-PRD/project authority owns gameplay/story truth. Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, communication requirements, and source timing truth. Flow 6 owns canonical production wording/performance, Estimated Duration, and actor-voice selection when known. Flow 7 owns Voice readiness/evidence.
+Project/PRD authority owns gameplay/story truth. Voice work may interpret approved communication/performance needs but may not invent upstream project facts.
 
-Generic `work/asset-requirements.md` may share the same Production Assets gameplay page but does not own or duplicate Voice data.
+Derived project HTML and optional DOCX are presentation only, not Voice wording authority.
 
-## Routing
+## Use this specialist when
 
-- Voice scope/context defect → Flow 5 owners.
-- Voice production wording/performance defect → Flow 6 / `SOUNDMAKER.md`.
-- Voice validation/delivery defect → Flow 7 / `VOICE-VALIDATION.md`.
-- correct canonical Voice but wrong objective/moment-first HTML composition → Project Document Generator Production Assets compositor.
-- optional DOCX-only defect → Voice DOCX owner/builder.
-- missing project fact → return to accepted PRD/project authority.
+The actual question requires reusable judgment about:
 
-## Production output
+- whether a Voice moment is justified by accepted project/PRD meaning;
+- whether Flow 5 communication intent/context is complete enough for production;
+- whether Flow 6 wording/performance preserves required communication without changing upstream meaning;
+- whether Voice scope/Speaker/Channel/Trigger/Purpose has changed or must be reopened;
+- whether a downstream presentation problem is semantic or purely compositor/builder mechanics;
+- whether Flow 7 evidence truthfully supports Voice readiness/delivery.
 
-Production Assets sidebar navigation is objective-first:
+Do not load this skill solely because a task mentions ElevenLabs, AUDIO, HTML, DOCX, Python, builder, or validator.
+
+## Canonical detailed owners
 
 ```text
-04 Production Assets
-   <gameplay section title>
-      <accepted PRD label>
+Flow 5 scope/context extraction
+→ kits/voice-production-kit/VOICE-EXTRACTION.md
+
+Flow 6 durable policy
+→ docs/foundation/06-elevenlabs-script-production.md
+
+Eleven v3 performance-writing craft
+→ kits/voice-production-kit/SOUNDMAKER.md
+
+Flow 7 validation/evidence
+→ kits/voice-production-kit/VOICE-VALIDATION.md
+
+normal end-to-end Voice Production Execution
+→ kits/voice-production-kit/SKILL.md
 ```
 
-Voice does **not** create an `Audio → Voice Production` sub-dashboard. Each canonical Voice line is presented as an `AUDIO` resource inside its matching natural gameplay moment:
+The shared 04 Production Assets exact reader-facing resource contract is owned by `kits/project-document-generator/PRODUCTION-ASSETS.md`; do not duplicate its field schema here.
+
+## Semantic judgment rules
+
+### Flow 5
+
+Voice requirements define **what must be communicated, by whom, through which approved channel/trigger context, for what listener-facing purpose, with any authoritative timing truth**.
+
+Do not create Voice merely because a reference project used it. Missing project-level facts return upstream instead of being invented downstream.
+
+### Flow 6
+
+Canonical Voice Production owns final production wording/performance and production decisions allowed by the current Voice contract. It may not silently change Voice scope or upstream gameplay/story meaning.
+
+Communication polish cannot remove required information or add unsupported lore/mechanics/rewards/outcomes.
+
+### Shared project HTML
+
+Canonical Voice may be presented as `AUDIO` inside the matching 04 gameplay moment, but exact visible resource fields/layout belong to the shared Production Assets contract/compositor.
+
+If Voice canonical meaning is correct but the 04 HTML is wrong:
 
 ```text
-AUDIO
-<Character> — <Line Title>
-
-Function
-<communication/story purpose at this moment>
-
-Voice Preset
-<selected actor voice>
-
-ElevenLabs Model
-Eleven v3
-
-Estimated Duration
-<duration>
-
-Prompt
-<exact canonical performance payload>
+→ Project Document Generator 04 compositor owner
 ```
 
-Do not show separate visible `Speaker`, Flow 5 `Context`, Trigger, line count, Primary Speaker, or Voice Setup metadata when the current 04 contract does not need them. Character identity is already in the resource title; Flow 5 Trigger/Purpose/requirements/source refs remain in their canonical owners.
+Do not redefine Voice semantics merely to fit a presentation defect.
 
-Performance-direction tags remain visually distinct from spoken dialogue while `Copy Prompt` copies the exact canonical performance payload.
+### Flow 7
 
-## Validation boundary
+Mechanical parity alone does not prove communication quality, visual quality, or generated-audio quality. Visual claims require rendered/browser evidence; audio quality requires actual audio evidence.
 
-A Production Assets page can contain Voice plus non-Voice resources, so Voice mechanical validation checks Voice-specific canonical parity and prompt presence rather than treating every Production Assets page as Voice-only.
+## Semantic vs technical handoff
 
-The Project Document 04 regression owns visible AUDIO-field/compositor behavior. Voice validation owns Voice requirement/script/payload semantics.
+When semantics are correct:
 
-Static HTML checks do not prove visual quality. Generated-audio quality requires actual audio evidence.
+```text
+Voice-specific 04 parsing/presentation primitive defect
+→ Project Document kit implementation owner
 
-## Scope discipline
+optional DOCX builder/pagination defect
+→ Voice kit AGENTS + builder
 
-Voice-only changes do not reopen PRD-core acceptance when PRD canonical sources are unchanged. Voice data is not duplicated into generic asset requirements, no separate Voice HTML is required by default, and Voice presentation changes do not authorize 01–03 changes.
+Voice mechanical validator defect
+→ Voice kit AGENTS + validator
+
+shared dependency/test/CI defect
+→ repository engineering
+```
+
+If a technical change alters what Voice is required to represent/accept, reopen the semantic owner first.
+
+## Proof economy
+
+- recover accepted project/Voice context before asking the user;
+- revise only invalidated Voice/Speaker scope;
+- do not reopen PRD-core acceptance for Voice-only changes when PRD meaning is unchanged;
+- do not duplicate Voice data into generic non-Voice asset requirements;
+- do not add separate Voice HTML, asset manifests, settings databases, scoring systems, extra approval layers, or speculative hardening without a concrete defect;
+- stop when the requested semantic scope is correct and sufficiently proven.
+
+## Boundary
+
+This skill owns Voice Flow 5–7 **semantic judgment** only. Detailed production procedure stays in the Voice kit; pure builder/validator/presentation mechanics stay with exact implementation owners; upstream project truth stays with the PRD/project authority.

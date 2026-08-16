@@ -2,40 +2,51 @@
 
 ## Current Status
 
-`GITHUB_RULES_PRD_ACTIVE`
+`RULE_OWNERSHIP_CONTINUITY_CLEANUP_COMPLETE`
 
-The PRD 01–04 development boundary remains finished for now.
+PRD-Creator `Local` uses repository-backed continuity so a new ChatGPT session can recover the current development context without asking the user to restate prior work.
 
-Current scope is **PRD-Creator only**. ChatGPT ↔ GitHub operating policy is active in this repository through:
+The current continuity chain is:
 
 ```text
-GITHUB_RULES.md
-→ GitHub/AI working discipline used by PRD-Creator
-
 AGENTS.md
-→ PRD-Creator-specific branch, ownership, domain, skill, and communication rules
+→ GITHUB_RULES.md Core Rules for material GitHub work
+→ CONTEXT.md
+→ next-action.md
+→ development-brief for non-trivial Developing
+→ smallest relevant owner/source
 ```
 
-`GITHUB_RULES.md` owns the common repository-working sequence:
+## Active Boundary
+
+Normal PRD-Creator work may continue using the current Flow/product owners. Repository governance is not an active hardening project by default.
+
+For a new chat where the user only says `amati repo ini` / inspect / understand / recover context:
 
 ```text
-PIN
-→ READ MINIMUM
-→ DIAGNOSE
-→ TOOL FIT
-→ WRITE ONCE
-→ VERIFY MINIMUM
-→ STOP
+recover repository context
+→ report current understanding
+→ no edit
+→ no next-step execution
 ```
 
-It also owns the recurring failure-prevention rules for GitHub work, including exact branch/ref authority, bounded reading, first-wrong-owner diagnosis, safe Contents API/SHA usage, no partial-read full replacement or chunked `update_file`, tool/capability hard stops, serialized/coherent writes, minimum relevant validation, API/rate-limit handling, scoped/read-only GitHub Actions, repository-governance safety, secret handling, bounded retries, no unnecessary repository side effects, and an explicit STOP state.
+When the user explicitly asks to continue/implement non-trivial repository Developing, recover the full continuity chain above before editing.
 
-Root `AGENTS.md` points to `GITHUB_RULES.md` instead of duplicating that policy. Existing PRD/Voice domain ownership remains unchanged.
+Current rollout scope remains **PRD-Creator only**. BuildIT, TranslateIT, and other repositories are not part of this policy rollout until the user explicitly requests them.
 
-The same rules are **not being rolled out to BuildIT, TranslateIT, or other repositories yet**. Those repositories remain outside this development scope until the user explicitly requests adoption there.
+## Last Completed
 
-No new Skill, framework, workflow, sync bot, validator, or orchestration layer was added for this policy.
+- `GITHUB_RULES.md` established GitHub operating, commit/history, CI/API, safety, and STOP discipline for PRD-Creator.
+- Commit history discipline uses one categorized logical delivery by default rather than micro-commits.
+- Repository continuity/routing ownership was simplified so stable context is preserved while duplicated rule authorities are reduced.
+- Existing PRD/Voice product behavior, Golden bytes, detailed production contracts, renderer/validator behavior, and project outputs remain outside that cleanup.
+
+## Deferred / Do Not Continue
+
+- Do not promote `docs/knowledge/operations/backlog.md`, historical review findings, old TODOs, or Git history into active work unless current user intent or this file explicitly promotes one boundary.
+- Do not continue speculative governance hardening merely because another cleanup is theoretically possible.
+- Do not roll these repository rules into BuildIT, TranslateIT, or another repository without explicit user instruction.
 
 ## Next Step
 
-Use and observe `GITHUB_RULES.md` during normal PRD-Creator repository work; change it again only when a concrete recurring GitHub failure shows a missing or incorrect rule.
+Use the current continuity/routing model during normal PRD-Creator work; change repository governance again only when a concrete recurring failure or user-requested improvement proves that the current model is insufficient.

@@ -1,54 +1,44 @@
 # Skill Catalog
 
-Use this note for repository skill inventory, ownership, and lineage. Use `activation-matrix.md` for routing.
+Use this note for the **current root skill inventory and ownership boundary**. Historical consolidation rationale belongs in the linked decision/review records; do not replay it during normal routing.
 
-## Repository-Wide Skills
+## Canonical root skills
 
-All canonical repository-wide agent skills live under:
+All repository-wide agent skills live under `.agents/skills/`:
 
-`.agents/skills/`
+| Skill | Function |
+|---|---|
+| `development-brief` | mandatory front door for non-trivial repository/system Developing; grounds goal, authority, minimal scope, acceptance criteria and proof budget |
+| `project-document-production` | reusable semantic/product-contract judgment for Flow 2–4 plus bounded non-Voice 04 completion |
+| `voice-production` | reusable semantic/product-contract judgment for Flow 5–7 |
 
-Current frozen set after P0.2 re-audit:
+The canonical root set is intentionally small.
 
-| Skill | Canonical path | Function |
-|---|---|---|
-| `development-brief` | `.agents/skills/development-brief/SKILL.md` | mandatory Developing front door: goal/method/reference separation, execution channel, authority, Build/Acceptance POV, minimal scope, 2–5 criteria, proof budget, final contract gate |
-| `project-document-production` | `.agents/skills/project-document-production/SKILL.md` | semantic/product-contract specialist for Flow 2–4 plus bounded 04 Production Assets completion: source recovery, canonical PRD-core meaning, 04 resource meaning, representation requirements, readiness/handoff |
-| `voice-production` | `.agents/skills/voice-production/SKILL.md` | semantic/product-contract specialist for Flow 5–7: Voice scope, performance wording, artifact representation contract, Voice acceptance/delivery |
-
-## Relationship To Production Kits
-
-The root skill architecture and production kits are deliberately separate layers:
+## Relationship to production kits
 
 ```text
-AGENTS / development-brief / activation matrix
-→ classify semantic/product contract vs executable mechanics
-→ root semantic specialist only when useful
-→ nearest kit procedure/AGENTS
+root AGENTS / development-brief
+→ decide work mode + semantic vs technical boundary
+→ optional one root semantic specialist
+→ nearest kit procedure / kit AGENTS
 → exact implementation/project owner
 ```
 
 ### Project Document Generator
 
-Detailed Flow 2–4 procedure, bounded non-Voice 04 completion, and executable mechanics stay under:
+`project-document-production` owns reusable PRD/source/04/readiness **semantic judgment**.
 
-`kits/project-document-generator/`
-
-The root `project-document-production` specialist protects authority, PRD-core representation meaning, bounded 04 requirement meaning, readiness, and handoff contracts. Pure renderer/template/validator mechanics remain kit-local when those semantics are already correct.
-
-04 does not create another root skill, numbered Flow, or production kit.
+`kits/project-document-generator/SKILL.md` owns detailed normal Production Execution procedure. Kit `AGENTS.md` owns module/file routing and pure technical Maintenance. Exact Flow contracts remain in `SOURCE-INTAKE.md`, `CONTENT-CONTRACT.md`, `PRODUCTION-ASSETS.md`, `RENDERING.md`, and `VALIDATION.md`.
 
 ### Voice Production Kit
 
-Detailed Flow 5–7 procedure and executable mechanics stay under:
+`voice-production` owns reusable Voice **semantic judgment**.
 
-`kits/voice-production-kit/`
+`kits/voice-production-kit/SKILL.md` owns detailed Flow 5–7 Production Execution procedure. Kit `AGENTS.md` owns module/file routing and pure technical Maintenance. Exact craft/validation contracts remain in `VOICE-EXTRACTION.md`, `SOUNDMAKER.md`, `VOICE-VALIDATION.md`, and related current owners.
 
-The root `voice-production` specialist protects accepted project/PRD → Voice scope → wording → artifact meaning → acceptance authority. Pure DOCX builder/validator mechanics remain kit-local when those semantics are already correct.
+## Repository engineering is not a production skill
 
-## Repository Engineering Is Not A Production Skill
-
-Shared executable engineering is owned by:
+Shared engineering is owned directly by:
 
 ```text
 requirements.lock.txt
@@ -57,140 +47,32 @@ tools/
 .github/workflows/
 ```
 
-Current responsibilities include:
+Dependency, test, CI, and repository-invariant mechanics do not consume the single semantic specialist slot.
 
-- exact dependency verification environment;
-- focused high-risk production contract regressions;
-- static repository invariants;
-- fail-closed domain/repository verification.
+## Skill freeze rule
 
-These concerns are reusable repository engineering, but they do not form a production semantic specialist and do not consume the single-specialist slot.
+Do not add/rename/split a root skill because:
 
-## Consolidation Decisions
-
-### Generic Developing front door
-
-**Decision:** `RECOVER AS ROOT SKILL`.
-
-Useful BuildIT behavior—goal/method separation, Build/Acceptance POV, execution-channel detection, development necessity, acceptance criteria, and proof budget—is domain-independent and was missing from PRD-Creator.
-
-Result: `development-brief`.
-
-### Project Document production capability
-
-**Decision:** `KEEP KIT + KEEP ROOT SEMANTIC ROUTER`.
-
-The existing Project Document Generator kit owns detailed Flow 2–4 production plus bounded 04 completion. The root specialist is retained for semantic/product-contract judgment, not as a generic renderer/validator debugger.
-
-Result: `project-document-production` + existing kit.
-
-### Voice Production capability
-
-**Decision:** `KEEP KIT + KEEP ROOT SEMANTIC ROUTER`.
-
-The existing Voice Production Kit owns detailed Flow 5–7 production. The root specialist is retained for Voice semantic/product-contract judgment, not as a generic DOCX/validator debugger.
-
-Result: `voice-production` + existing kit.
-
-### Renderer / validator / DOCX builder — P0.2 refinement
-
-Earlier Phase 1 wording said these implementation surfaces were merged into their semantic owner. P0.2 refines that decision.
-
-**Current decision:** `MOVE PURE MECHANICS TO MODULE-LOCAL; KEEP PRODUCT CONTRACT WITH SEMANTIC OWNER`.
-
-- what PRD/04 rendering/validation is required to represent → `project-document-production`;
-- PRD renderer/template/validator/compositor executable mechanics → Project Document kit-local owner;
-- what Voice script/DOCX/validation is required to represent → `voice-production`;
-- Voice DOCX builder/validator executable mechanics → Voice kit-local owner;
-- shared dependency/test/CI mechanics → repository engineering.
-
-A root semantic specialist is not mandatory for pure technical Maintenance.
-
-### Candidate production-tooling / Python / artifact-engineering skill
-
-**Decision:** `DROP AS ROOT SKILL + MOVE TO MODULE-LOCAL / REPOSITORY ENGINEERING`.
-
-P0.2 found no distinct cross-kit artifact/runtime contract beyond generic Python execution. PRD HTML and Voice DOCX mechanics have different module contracts, while dependency/test/CI already has a smaller shared owner.
-
-Do not add such a skill merely to mirror BuildIT's TypeScript/Bun/runtime specialist inventory.
-
-### Evidence gate
-
-**Decision:** `MOVE TO ROOT AGENTS; NO SKILL`.
-
-Evidence classification is baseline agent behavior and does not consume a specialist slot.
-
-### Reference / Golden Sample handling
-
-**Decision:** `KEEP AS FOUNDATION/KIT POLICY; NO SKILL`.
-
-References demonstrate approved structure/quality but are not independent work owners.
-
-## Skill Freeze Rule
-
-The current three-skill root architecture remains frozen.
-
-Freeze meaning:
-
-- root skills represent distinct reusable semantic/product-contract procedure;
-- module-local executable ownership does not need a matching root skill;
-- repository engineering does not become a production specialist merely because it is shared;
-- bounded 04 Production Assets completion stays inside the existing Project Document production ownership rather than becoming another root skill.
-
-Do not add another root skill because:
-
-- another file format appears;
-- another validation/build script exists;
+- another file format or programming language appears;
+- another renderer/validator/builder exists;
 - another Production Asset type appears;
-- a project has a unique content type;
+- a project has unique content;
 - a one-off technical bug needs repair;
-- Python/dependency/CI appears in the task;
-- a global/user helper would be convenient to copy locally.
+- a generic helper would be convenient.
 
-Add/rename/split a skill only when current repeated work proves a distinct reusable owner/procedure that cannot be represented by root policy, foundation policy, nearest kit procedure/AGENTS, repository engineering, or one current specialist.
+Change the root skill set only when repeated work proves a distinct reusable semantic owner/procedure that existing root policy, foundation, kit procedure/AGENTS, repository engineering, and current specialists cannot represent cleanly.
 
-## Capability Audit Vocabulary
+## Historical rationale
 
-Use:
+Current three-skill architecture and semantic-vs-technical separation are preserved in:
 
-```text
-KEEP
-RENAME
-MERGE
-MOVE
-DROP
-RECOVER
-```
+- `../decisions/technical-ownership-boundary.md`
+- `../reviews/technical-ownership-refinement-audit.md`
 
-Judge by actual trigger/function and ownership, not historical filename, implementation language, or technology.
+Those records explain **why** the architecture exists. They are not required boot material.
 
-## Non-Canonical / Retired Concepts
-
-Do not create parallel repository skill roots under `kits/`, `docs/`, or project workspaces.
-
-Kit-local `SKILL.md` / `AGENTS.md` files are production/contributor procedures, not alternate project-wide routing roots.
-
-Do not recreate the retired generalized Production Document Builder skill architecture as a compatibility layer.
-
-Do not create `renderer`, `docx-builder`, `python-tooling`, `artifact-engineering`, `production-assets`, or `evidence-gate` root skills from current evidence.
-
-## External Helpers
-
-Global/user capabilities are not copied into the repository solely for availability. If an environment provides focused planning, review, research, testing, or diagnostic helpers, use them conditionally under root routing rules.
-
-## Evidence
-
-P0.2 audit:
-
-`../reviews/technical-ownership-refinement-audit.md`
-
-Durable decision:
-
-`../decisions/technical-ownership-boundary.md`
-
-## Parent
+## Related
 
 - [Activation Matrix](activation-matrix.md)
 - [Work Routing](../work-routing.md)
 - [Repository Ownership](../ownership.md)
-- [Production Assets Contract](../../../kits/project-document-generator/PRODUCTION-ASSETS.md)

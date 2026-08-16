@@ -2,172 +2,110 @@
 
 Updated: 2026-08-17
 
-This is the end-to-end path for **repository/system Developing** work in PRD-Creator.
+This file is the human-readable lifecycle overview for **repository/system Developing**. The canonical implementation procedure is `.agents/skills/development-brief/SKILL.md`; do not duplicate that procedure here.
 
-Normal project Production Execution (for example creating or revising a PRD from project source) does **not** use this flow. It routes directly to the matching production owner/kit.
+Normal project Production Execution does **not** use this workflow.
+
+## Entry
+
+Non-trivial Developing begins only after repository continuity is recovered:
 
 ```text
-User asks to change PRD-Creator itself
+AGENTS.md
+→ GITHUB_RULES.md Core Rules
+→ CONTEXT.md
+→ docs/knowledge/next-action.md
 → development-brief
-→ goal/method/reference/authority grounded
-→ development needed?
-   ├─ no → explain/reuse + minimum proof
-   └─ yes
-      → at most one semantic specialist when useful
-      → choose a safe execution channel/tool
-      → smallest complete implementation
-      → minimum useful proof
-      → Acceptance POV check
-      → evidence-status check if material uncertainty remains
-      → update repository state
 ```
 
-## Development Brief
+`CONTEXT.md` protects stable repository/product boundaries. `next-action.md` protects cross-session continuation. They are mandatory for non-trivial Developing even though later investigation should remain read-minimal.
 
-`development-brief` is mandatory before non-trivial repository/system implementation. Its canonical procedure lives in `.agents/skills/development-brief/SKILL.md`.
+A read-only `amati / inspect / understand / recover context` request stops after context recovery/reporting and does not enter implementation.
 
-The user does not need to provide an expert prompt. The brief establishes:
-
-- real goal;
-- suggested method vs actual requirement;
-- sample/reference vs generic requirement;
-- authoritative input;
-- expected output;
-- execution channel;
-- Build POV;
-- Acceptance POV;
-- minimal scope and out-of-scope boundary;
-- 2–5 acceptance criteria;
-- proof budget.
-
-A proposed method is not automatically a requirement. Reject or redirect it when current evidence shows it is unsupported, contradicts accepted project meaning, repeats a failed approach, reduces downstream usability, or adds unnecessary parallel architecture.
-
-## Development Necessity
-
-Inspect existing behavior before inventing work.
-
-`No change required` is a valid result when current behavior already satisfies the goal.
-
-Do not create a new skill, schema, compatibility layer, renderer abstraction, validation report, or project state file merely because it could be useful later.
-
-## Specialist Boundary
-
-Use `development-brief` alone when another skill adds no material domain value.
-
-Otherwise choose exactly one semantic specialist for the **system contract being changed**:
+## Lifecycle
 
 ```text
-Project Document Flow 2–4 system/policy
+recover current context
+→ development-brief grounds goal / method / authority / scope / proof
+→ development needed?
+   ├─ no → explain/reuse + minimum proof → STOP
+   └─ yes
+      → at most one useful semantic specialist
+      → smallest relevant owner/source
+      → smallest complete implementation
+      → cheapest relevant proof
+      → Acceptance POV + original-scope check
+      → update only continuity/decision owner whose state actually changed
+      → STOP
+```
+
+## Owner selection
+
+Use `development-brief` alone when another specialist adds no semantic value.
+
+```text
+PRD/source/04/handoff system meaning
 → project-document-production
 
-Voice Production Flow 5–7 system/policy
+Voice scope/production/delivery system meaning
 → voice-production
+
+pure technical mechanics with correct semantics
+→ nearest kit AGENTS + exact implementation owner
+
+shared dependency/test/CI mechanics
+→ repository engineering owner
 ```
 
-Do not stack both because the final project pipeline contains both. Select the owner of the active system change.
+If investigation reveals a second independent problem, finish/reframe the first boundary before switching. Do not stack specialists because the full product eventually contains both PRD and Voice.
 
-If a PRD system change later invalidates Voice behavior, finish the upstream correction and explicitly mark downstream behavior for revalidation rather than keeping both specialists active at once.
+## Execution channel
 
-## Execution Channel
+GitHub mechanics, commit/history quality, retries, and GitHub proof boundaries are canonical in root `GITHUB_RULES.md`.
 
-GitHub mechanics, tool fit, commit atomicity/history quality, retries, and GitHub proof boundaries are canonical in [`GITHUB_RULES.md`](../../../GITHUB_RULES.md). Do not restate or fork those mechanics here.
-
-This workflow adds only the Developing-specific selection rule:
+This workflow only adds the Developing selection principle:
 
 ```text
-bounded static repository change that fits GITHUB_RULES
+bounded repository change fitting current GitHub capability
 → GitHub-capable channel
 
 coordinated multi-file / patch-semantic / local build-runtime need
-→ Local or Codex-style workspace with the required capability
+→ Local or Codex-style workspace with required capability
 
-browser / audio / local runtime acceptance claim
+browser / audio / runtime acceptance claim
 → actual matching capability
 ```
 
-Use the same development brief and acceptance criteria across channels. Do not restart planning, broaden validation, or create a workaround merely because another tool exists. When a material claim cannot be proved in the active channel, leave the exact proof requirement instead of upgrading the claim.
+Do not create temporary Actions, helper architecture, or extra repository files to emulate a missing capability.
 
-## Implementation
+## Continuity reconciliation
 
-Before editing:
-
-1. inspect the canonical owner;
-2. inspect directly affected state/contract/caller/artifact path;
-3. establish root cause when correcting behavior;
-4. confirm the change remains inside the brief;
-5. confirm the chosen tool/channel can perform the operation safely without emulation.
-
-Then:
-
-- make the smallest complete change;
-- preserve valid behavior outside scope;
-- never promote a project/reference-specific detail to generic policy without an explicit requirement;
-- update derived artifacts only from their canonical owners.
-
-## Dual Validation
-
-### Build Pass
-
-Check whether the semantic owner produced the intended system change correctly.
-
-Examples:
-
-- Flow 2 requirement/provenance recovery contract is internally consistent;
-- Flow 3 canonical content/render projection contract agrees materially;
-- Flow 6 exact Voice ID/Type parity remains intact;
-- builder/validator changes pass the targeted mechanical check.
-
-### Acceptance Pass
-
-Re-check the original `development-brief` from the downstream Acceptance POV:
-
-- does the result solve the actual user/team need?
-- is the output usable without hidden assumptions?
-- did scope remain inside the brief?
-- does the claimed status match actual evidence?
-
-Build PASS without Acceptance PASS is not completion.
-
-## Evidence Escalation
-
-Use root evidence labels only when a material claim remains uncertain:
-
-- `CURRENT-PROJECT VERIFIED`;
-- `AUTHORITATIVE-SOURCE VERIFIED`;
-- `LOCAL PROOF REQUIRED`;
-- `UNSUPPORTED`;
-- `UNKNOWN`.
-
-Routine edits with clear proof do not need ceremonial labeling.
-
-## Repository Continuity
-
-Do not create a planning note per task.
-
-Update only the canonical owner:
-
-- active goal/status/blocker/proof/next step → `docs/knowledge/next-action.md`;
-- durable decision/reason → `docs/knowledge/decisions/README.md`;
-- stable production policy → `docs/foundation/` only when policy itself changes;
-- skill inventory/routing → `docs/knowledge/skills/` only when skill architecture changes;
-- detailed Flow procedure → affected kit/foundation owner.
-
-## User Reporting
-
-For material repository/system implementation:
+If `next-action.md` conflicts materially with current source/state:
 
 ```text
-Status:
-Hasil:
-Bukti:
-Batasan:
-Next step:
+verify exact current owner
+→ determine which record is stale
+→ reconcile that owner
+→ continue from actual current state
 ```
 
-Distinguish implemented from verified when material proof is still pending.
+Do not implement a stale next step twice. Do not select a nearby TODO/audit finding as replacement work without explicit current authority.
 
-## Parent
+## Completion
+
+Before `Selesai`, re-check:
+
+- original goal and out-of-scope boundary;
+- 2–5 acceptance criteria from `development-brief`;
+- whether actual proof supports the claimed status;
+- whether any current continuity/decision owner truly changed.
+
+Distinguish `implemented` from `verified` when browser/audio/runtime proof remains unavailable.
+
+Do not create a planning note per task. `next-action.md` changes only when the active continuation meaningfully changes; durable decision records require the threshold in `../decisions/recording-policy.md`.
+
+## Related
 
 - [Work Routing](../work-routing.md)
-- [Skill Activation Matrix](../skills/activation-matrix.md)
-- [Knowledge Dashboard](../README.md)
+- [Maintenance Workflow](maintenance.md)
+- [Decision Recording Policy](../decisions/recording-policy.md)

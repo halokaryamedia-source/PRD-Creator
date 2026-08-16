@@ -1,154 +1,127 @@
 # Repository Ownership
 
-Updated: 2026-08-16
+Updated: 2026-08-17
 
-Use this file to locate the current owner before creating, moving, or editing repository structure. It combines area-level ownership and exact implementation/procedure routing so there is only one ownership map.
+Use this file only to answer **who owns what**. It maps responsibilities to current owners/paths; it does not duplicate the detailed contracts inside those owners.
 
-## Repository Areas
+## Root operating owners
+
+| Boundary | Owner |
+|---|---|
+| Top-level boot, work modes, continuity behavior, authority and skill budget | `AGENTS.md` |
+| GitHub branch/ref, tool fit, write/commit/history, CI/API/safety and STOP discipline | `GITHUB_RULES.md` |
+| Stable product/repository orientation | `CONTEXT.md` |
+| Active continuation / resume checkpoint | `docs/knowledge/next-action.md` |
+| Detailed work-routing explanation | `docs/knowledge/work-routing.md` |
+| Developing lifecycle overview | `docs/knowledge/workflows/development.md` |
+| Canonical non-trivial Developing procedure | `.agents/skills/development-brief/SKILL.md` |
+| Maintenance procedure | `docs/knowledge/workflows/maintenance.md` |
+| Ambiguous specialist selection | `docs/knowledge/skills/activation-matrix.md` |
+| Source/state precedence | `docs/knowledge/source-authority.md` |
+| Review/evidence current interpretation | `docs/knowledge/reviews/README.md` |
+| Durable decisions/rationale | `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/` |
+| Decision-recording threshold | `docs/knowledge/decisions/recording-policy.md` |
+| Future/non-active work | `docs/knowledge/operations/backlog.md` |
+
+## Repository areas
 
 | Area | Responsibility |
 |---|---|
-| `AGENTS.md` | repository-wide work modes, proof, branch and edit rules |
-| `CONTEXT.md` | stable product context and terminology |
-| `.agents/skills/` | reusable semantic routing/judgment |
+| `.agents/skills/` | reusable semantic judgment |
 | `docs/foundation/` | durable Flow 1–7 production policy |
-| `docs/knowledge/` | current repository memory, ownership, decisions, evidence and operations |
-| `kits/project-document-generator/` | Flow 2–4 PRD implementation/procedure + bounded 04 Production Assets requirement/presentation contract |
-| `kits/voice-production-kit/` | Flow 5–7 Voice requirements/production/validation semantics and optional DOCX export |
-| `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering and repeatable CI contracts |
-| `workspace/active/` | current project production packages |
+| `docs/knowledge/` | continuity, routing, ownership, decisions, evidence, backlog |
+| `kits/project-document-generator/` | Flow 2–4 + bounded non-Voice 04 procedure/implementation |
+| `kits/voice-production-kit/` | Flow 5–7 procedure/implementation + optional DOCX |
+| `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering / repeatable verification |
+| `workspace/active/` | current project packages |
 | `workspace/archive/` | inactive retained project packages |
 
-## Operating Owners
+## PRD semantic and procedure owners
 
 | Boundary | Owner |
 |---|---|
-| Active continuation | `docs/knowledge/next-action.md` |
-| Work-mode routing | `docs/knowledge/work-routing.md` |
-| Developing workflow | `docs/knowledge/workflows/development.md` |
-| Maintenance workflow | `docs/knowledge/workflows/maintenance.md` |
-| Root skill routing | `docs/knowledge/skills/activation-matrix.md` |
-| Source/state authority | `docs/knowledge/source-authority.md` |
-| Review/evidence status | `docs/knowledge/reviews/README.md` |
-| Durable decisions | `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/` |
-| Decision-recording policy | `docs/knowledge/decisions/recording-policy.md` |
-| Future/non-active work | `docs/knowledge/operations/backlog.md` |
-
-## PRD / Project Delivery Owners
-
-| Boundary | Owner |
-|---|---|
-| End-to-end PRD production sequence | `docs/foundation/01-production-flow.md` |
-| Flow 2 policy | `docs/foundation/02-source-intake-recovery.md` |
+| Reusable PRD/source/04/readiness semantic judgment | `.agents/skills/project-document-production/SKILL.md` |
+| End-to-end production sequence | `docs/foundation/01-production-flow.md` |
+| Flow 2 durable policy | `docs/foundation/02-source-intake-recovery.md` |
 | Flow 2 detailed procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
-| Flow 3 PRD-core + Golden semantic contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
-| non-Voice 04 Production Asset requirement/writing contract | `kits/project-document-generator/PRODUCTION-ASSETS.md` + project `work/asset-requirements.md` |
+| PRD-core 01–03 exact semantic/visible-composition contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
+| non-Voice 04 exact resource/writing/readiness contract | `kits/project-document-generator/PRODUCTION-ASSETS.md` |
+| Flow 4 durable policy | `docs/foundation/04-prd-validation-handoff.md` |
+| Flow 4 detailed validation/handoff procedure | `kits/project-document-generator/VALIDATION.md` |
+| Project Document kit end-to-end Production Execution procedure | `kits/project-document-generator/SKILL.md` |
+| PRD kit module/file routing | `kits/project-document-generator/AGENTS.md` |
+
+## PRD implementation owners
+
+| Boundary | Owner |
+|---|---|
 | PRD-core rendering + shared project HTML composition contract | `kits/project-document-generator/RENDERING.md` |
 | versioned delivery orchestration | `kits/project-document-generator/renderer/delivery.py` |
 | PRD-core page projection | `kits/project-document-generator/renderer/pages.py` |
 | lower-level HTML renderer orchestration | `kits/project-document-generator/renderer/render.py` |
-| objective/moment-first 04 Production Assets composition | `kits/project-document-generator/renderer/production_assets_objective.py` |
-| Voice-specific Production Assets parsing/presentation primitives | `kits/project-document-generator/renderer/production_assets.py` |
-| stable project resume navigator | project `output/README.md` |
-| human-facing project PRD | project `output/v<document.version>/prd.html` |
-| AI development context projection | project `output/v<document.version>/context.md` |
-| AI navigation / context line-range index | project `output/v<document.version>/index.json` |
-| Flow 4 policy | `docs/foundation/04-prd-validation-handoff.md` |
-| Flow 4 detailed validation/handoff | `kits/project-document-generator/VALIDATION.md` |
-| PRD mechanical validator | `kits/project-document-generator/validator/_engine.py` core mechanics + `validator/validate.py` narrow content-purity/CLI wrapper |
-| PRD handoff consistency | `kits/project-document-generator/validator/validate_handoff.py` |
+| reusable renderer primitives | `kits/project-document-generator/renderer/core.py` |
+| objective/moment-first 04 composition | `kits/project-document-generator/renderer/production_assets_objective.py` |
+| Voice-specific 04 parsing/presentation primitives | `kits/project-document-generator/renderer/production_assets.py` |
+| canonical Golden bytes | `kits/project-document-generator/template/golden-reference.html` |
+| runtime Golden alias | `kits/project-document-generator/template/runtime-template.html` |
+| PRD mechanical validation | `kits/project-document-generator/validator/_engine.py` + `validator/validate.py` |
+| PRD → Voice handoff consistency | `kits/project-document-generator/validator/validate_handoff.py` |
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
-| Current system/project evidence | `docs/knowledge/reviews/current-validation.md` |
 
-`PRODUCTION-ASSETS.md` owns the bounded actionable non-Voice 04 requirement/writing contract and readiness gate. It plans concrete Production Asset needs from the same approved project model that feeds 01–03; it does not authorize a second design pass over generated PRD output. `renderer/production_assets_objective.py` owns presentation/composition mechanics and may not invent asset requirements. `renderer/production_assets.py` remains the Voice-specific helper and may not invent Voice scope, scripts, actor selection, or project meaning. `renderer/delivery.py` packages existing accepted meaning into the versioned human/AI handoff surfaces; it is not another semantic owner.
-
-## Voice Owners
+## Voice owners
 
 | Boundary | Owner |
 |---|---|
-| Flow 5 Voice Asset Requirement | `kits/voice-production-kit/VOICE-EXTRACTION.md` + project `work/voice-requirements.md` |
-| Flow 6 lifecycle/output contract | `kits/voice-production-kit/README.md` + `docs/foundation/06-elevenlabs-script-production.md` |
-| Flow 6 canonical Voice Asset Production | project `work/voice-production.md` |
-| Eleven v3 performance craft | `kits/voice-production-kit/SOUNDMAKER.md` |
-| default human/operator Voice presentation | shared `output/v<document.version>/prd.html → 04 Production Assets → matching gameplay moment → AUDIO` |
-| optional DOCX presentation | `kits/voice-production-kit/DOCX-FORMAT.md` |
+| Reusable Voice semantic judgment | `.agents/skills/voice-production/SKILL.md` |
+| Flow 5 durable policy | `docs/foundation/05-voice-requirement-extraction.md` |
+| Flow 5 detailed extraction procedure | `kits/voice-production-kit/VOICE-EXTRACTION.md` |
+| Flow 6 durable policy | `docs/foundation/06-elevenlabs-script-production.md` |
+| Voice kit end-to-end Production Execution procedure | `kits/voice-production-kit/SKILL.md` |
+| Eleven v3 performance-writing craft | `kits/voice-production-kit/SOUNDMAKER.md` |
+| Flow 7 durable policy | `docs/foundation/07-voice-validation-delivery.md` |
+| Flow 7 detailed validation/evidence procedure | `kits/voice-production-kit/VOICE-VALIDATION.md` |
+| Voice kit module/file routing | `kits/voice-production-kit/AGENTS.md` |
+| optional DOCX presentation contract | `kits/voice-production-kit/DOCX-FORMAT.md` |
 | optional DOCX builder | `kits/voice-production-kit/builder/build_docx.py` |
-| Flow 7 Voice validation | `kits/voice-production-kit/VOICE-VALIDATION.md` + `validator/validate.py` |
+| Voice mechanical validation | `kits/voice-production-kit/validator/validate.py` |
 | Voice semantic/validator regressions | `tests/test_voice_contracts.py` |
-| same-HTML Production Assets/Voice composition regression | `tests/test_prd_voice_assets.py` |
+| mixed Voice/non-Voice 04 composition regression | `tests/test_prd_voice_assets.py` |
 
-The former duplicate `kits/voice-production-kit/SCRIPT-PRODUCTION.md` owner is retired and must not be used for current routing.
+## Project package owners
 
-## Shared HTML ownership rule
+| Boundary | Owner |
+|---|---|
+| source/provenance + requirement state | project `state/` owners |
+| canonical PRD-core meaning | project `work/content.md` |
+| derived PRD-core projection | project `work/render-data.json` |
+| canonical non-Voice 04 requirements when present | project `work/asset-requirements.md` under `PRODUCTION-ASSETS.md` |
+| PRD acceptance | project `work/acceptance.md` |
+| PRD handoff state | project `state/handoff-state.yaml` |
+| canonical Voice requirements | project `work/voice-requirements.md` |
+| canonical Voice production | project `work/voice-production.md` |
+| Voice acceptance/state | project `work/voice-acceptance.md` + `state/voice-state.yaml` |
+| stable handoff/resume navigator | project `output/README.md` |
+| human-facing project document | project `output/v<document.version>/prd.html` |
+| AI development-context projection | project `output/v<document.version>/context.md` |
+| compact AI navigation/line-range index | project `output/v<document.version>/index.json` |
 
-`output/v<document.version>/prd.html` is one derived human-facing project document with separate canonical owners behind it:
+Derived delivery artifacts are never manually patched to reconcile owners; fix the canonical owner and regenerate.
 
-```text
-PRD core 01–03
-← work/content.md + work/render-data.json
-
-04 Production Assets — non-Voice
-← optional work/asset-requirements.md
-
-04 Production Assets — Voice
-← work/voice-production.md
-   with Flow 5 requirement/context kept in Voice owners
-```
-
-Production Asset needs are recovered from the same source/discussion + approved project model as 01–03. The canonical non-Voice file is materialized after approval; generated 01–03 is not the normal discovery source for 04.
-
-04 extends the accepted PRD sidebar. Gameplay/objective navigation stays under `03 Development`; `04 Production Assets` is additive and does not renumber accepted PRD page identity.
-
-The 04 sidebar is objective-first. The page body is moment-first. Visible resource types are:
+## Ownership questions vs contract questions
 
 ```text
-MODEL
-ITEM
-UI / TEXT
-AUDIO
-PARTICLE
+Who owns this?
+→ ownership.md
+
+What exactly must this owner produce/accept?
+→ open the owner named here
+
+Which source/state outranks another?
+→ source-authority.md
 ```
 
-The current parser still recognizes these internal source-group headings for backward compatibility:
+Do not copy exact resource fields, presentation schemas, Golden checklists, Voice line formats, or validation matrices into this ownership map.
 
-```text
-3D Models
-UI & Information
-Audio
-Visual Effects & Presentation
-```
+## New-owner rule
 
-Those headings are **internal markdown/parser organization only**. They are not the visible 04 taxonomy/dashboard and must not be treated as reader-facing categories by authoring or verification.
-
-Visual resources use `Function` + literal `Visual Brief` + optional real approved `Size`. UI / TEXT uses `Function` + exact player copy. Non-dialogue AUDIO uses `Function` + `Audio Brief`. Canonical Voice is merged as AUDIO with Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt. Generic visible metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, `Build Specs`, Flow 5 Context, line-count summaries, Primary Speaker, or separate Speaker rows are not part of current reader-first 04 authoring.
-
-The integrated Flow 4 semantic review applies the `PRODUCTION-ASSETS.md` readiness gate whenever 04 exists. This does not create a separate persisted PASS field; 04 readiness is one lens inside `Semantic Readiness`.
-
-A downstream-only change may rerender the current versioned `prd.html` without changing PRD-core semantic ownership/acceptance when PRD canonical sources remain unchanged.
-
-Never patch `prd.html`, `context.md`, or `index.json` manually to reconcile owners; fix the canonical source or delivery owner and regenerate the invalidated projection.
-
-## Golden Ownership
-
-```text
-CONTENT-CONTRACT.md
-→ PRD-core 01–03 semantic + visible-composition authority
-
-PRODUCTION-ASSETS.md
-→ bounded non-Voice 04 Production Asset requirement/writing contract
-
-RENDERING.md
-→ deterministic PRD-core binding + 04 composition contract
-
-template/golden-reference.html
-→ canonical PRD reference bytes
-
-template/runtime-template.html
-→ renderer runtime alias; byte-identical to the reference
-```
-
-04 Production Assets does not modify the Golden template bytes or become part of the PRD-core Golden page family.
-
-## New-Owner Rule
-
-Create a new owner only when an existing owner cannot represent the responsibility without mixing unrelated jobs. Do not create a new map, generic Asset registry/framework, separate asset Flow/Kit, root skill, schema, or compatibility layer solely because a current filename is inconvenient.
+Create a new owner only when an existing owner cannot represent the responsibility without mixing unrelated jobs. Do not create a new map, generic asset registry/framework, Flow/Kit, root skill, schema, compatibility layer, or workflow solely because a current filename is inconvenient.

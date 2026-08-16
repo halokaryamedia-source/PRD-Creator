@@ -2,17 +2,26 @@
 
 Use this note only for durable decisions whose reasons must survive future sessions. Active task status belongs in `next-action.md`.
 
-## Decision Register
+## Current-use guard
 
-This register preserves durable decision history, including entries later refined or superseded. Historical entries explain why a rule existed; they are **not** current routing authority. For current execution use `docs/knowledge/next-action.md`, `docs/knowledge/ownership.md`, `docs/knowledge/source-authority.md`, and the nearest current foundation/kit owner. Never restore a retired path or behavior only because an older decision mentions it.
+This register preserves decision history. A historical entry may contain capture-time paths, terminology, or presentation details that later owners refined. **Do not execute an entry as current instruction merely because it lacks an explicit `Status` line.**
+
+For current execution use `docs/knowledge/next-action.md`, `docs/knowledge/ownership.md`, `docs/knowledge/source-authority.md`, and the nearest current foundation/kit owner.
+
+In particular, current 04/Voice presentation is the reader-first moment-based contract owned by `kits/project-document-generator/PRODUCTION-ASSETS.md` and current Flow 6/7 owners: Voice is presented as normal `AUDIO` inside the matching gameplay moment; the older `Audio → Voice Production` dashboard / visible Flow 5 Context wording below is historical.
+
+Never restore a retired path/behavior or promote an old remediation track solely because an older decision mentions it.
+
+## Decision Register
 
 ### Consolidated Production Assets preserves accepted PRD navigation identity
 
-- **Decision:** downstream Production Assets extends the existing accepted PRD sidebar instead of rebuilding it. Gameplay/objective sections remain nested under `03 Development`; `04 Production Assets` is additive; existing PRD package/page codes are not shifted. Current Voice navigation is objective-first under `04 Production Assets`; each gameplay section keeps its accepted PRD label and Voice appears inside that page under `Audio → Voice Production`, without a separate `VOICE` sidebar category. The existing Flow 5 Trigger may be projected as developer-facing Context without becoming a new Flow 6 field.
+- **Status:** historical/refined by the current moment-first Production Assets contract.
+- **Previous decision:** downstream Production Assets extends the existing accepted PRD sidebar instead of rebuilding it. Gameplay/objective sections remain nested under `03 Development`; `04 Production Assets` is additive; existing PRD package/page codes are not shifted. At capture time, Voice was described as appearing inside that page under `Audio → Voice Production`, and Flow 5 Trigger could be projected as developer-facing Context.
+- **Current replacement:** accepted PRD navigation identity remains protected, but current Voice is a normal `AUDIO` resource inside its matching natural gameplay moment. There is no `Audio → Voice Production` sub-dashboard and no default visible Flow 5 Context/Trigger row.
 - **Reason:** developers need to identify the owning Objective immediately without memorizing order, while a second navigation implementation created hierarchy drift and made downstream Voice presentation alter accepted PRD identity.
-- **Boundary:** this changes presentation/composition only. PRD gameplay meaning, canonical Voice wording, Voice scope, Golden template bytes, and audio evidence are unchanged. DOCX remains optional export; consolidated project HTML is the default Voice operator/developer surface.
-- **Supersedes/refines:** supersedes the 2026-08-10 decision that Flow 7 default delivery is script/DOCX scope and refines the earlier DOCX-centric acceptance wording below.
-- **Owners:** `CONTEXT.md`, `kits/project-document-generator/RENDERING.md`, `kits/voice-production-kit/`, `docs/foundation/06-elevenlabs-script-production.md`, `docs/foundation/07-voice-validation-delivery.md`.
+- **Boundary:** PRD gameplay meaning, canonical Voice wording, Voice scope, Golden template bytes, and audio evidence remain unchanged by presentation composition.
+- **Owners:** `kits/project-document-generator/PRODUCTION-ASSETS.md`, `kits/project-document-generator/RENDERING.md`, `docs/foundation/06-elevenlabs-script-production.md`, `docs/foundation/07-voice-validation-delivery.md`.
 - **Date:** 2026-08-13
 
 ### Repository navigation uses explicit domain naming
@@ -57,7 +66,6 @@ This register preserves durable decision history, including entries later refine
 ### Module map, source map, and implementation map have separate jobs
 
 - **Status:** superseded by the 2026-08-13 explicit-domain navigation decision above. Current routing uses `ownership.md` and `source-authority.md`; retired map/module paths must not be restored.
-
 - **Decision:** `module-map.md` routes repository-area ownership, `source-map.md` routes claim/source authority, and `implementation-map.md` points to exact current code/procedure locations.
 - **Reason:** one giant ownership/source document would become another broad state system and duplicate current owners.
 - **Rule:** maps link owners; they do not copy full source content or become higher authority than the owners they reference.
@@ -72,15 +80,16 @@ This register preserves durable decision history, including entries later refine
 
 ### Context boot efficiency is measured by scenarios, not assumed from documentation
 
-- **Decision:** `docs/knowledge/operations/boot-baseline.md` records expected routes and measurement fields, but an unrun scenario stays unverified.
+- **Status:** refined. `docs/knowledge/operations/boot-baseline.md` now owns a small scenario contract rather than ceremonial measurement fields.
+- **Decision:** routing quality is judged by whether real scenarios recover the correct context/owner without unnecessary reading or user re-explanation; documentation alone does not prove behavior.
 - **Reason:** having good routing documents does not prove agents actually reach the correct owner efficiently in real tasks.
 - **Date:** 2026-08-10
 
 ### Production completion and BuildIT-style operating parity are separate milestones
 
-- **Decision:** completing Flow 1–7, real-project integration, and retired-builder migration does not mean PRD-Creator has achieved BuildIT-style agent operating parity.
-- **Reason:** the production pipeline answers how project artifacts are produced; BuildIT-style operating architecture also requires work-mode routing, semantic skill ownership, pre-implementation contracts, root-cause/proof discipline, review/ownership lifecycle, and executable engineering enforcement.
-- **Result:** overall relevant parity remains a separate ordered remediation track.
+- **Status:** historical rationale; there is no active BuildIT-parity remediation program unless current continuation explicitly promotes one.
+- **Decision:** completing Flow 1–7, real-project integration, and retired-builder migration did not by itself prove equivalent operating discipline.
+- **Reason:** the production pipeline and repository operating architecture solve different problems.
 - **Date:** 2026-08-10
 
 ### Root skill architecture is three semantic/product-contract owners after P0.2 re-audit
@@ -117,7 +126,7 @@ This register preserves durable decision history, including entries later refine
 - **Reason:** real Flow 2→7 integration proof passed; every material archive category is mapped to an active owner or intentionally retired; no active runtime dependency remains.
 - **Golden safety:** archived and active approved HTML use identical Git blob `e1dccd77d7a5335213caea7a09d74ba78b2ae8e1`.
 - **Historical access:** Git history remains the recovery mechanism; do not keep a live duplicate solely for archaeology.
-- **Owner:** `docs/knowledge/operations/archived-retirement-audit.md`.
+- **Evidence:** `docs/knowledge/reviews/archived-retirement-audit.md`.
 - **Date:** 2026-08-10
 
 ### Old multi-profile/schema/freeze/packaging architecture is intentionally retired
@@ -131,8 +140,8 @@ This register preserves durable decision history, including entries later refine
 - **Decision:** The Clockwork Vault is the first canonical real-project System Integration Proof for the replacement architecture.
 - **Evidence:** 129 recovered requirements → 29-page PRD render → `handoff_ready` → 21 voice requirements → 21 exact-parity scripts → rebuilt/validated 8-page Voice Production DOCX → `voice_delivery_ready`.
 - **Authority guard:** legacy Voice Production v2 remained generated/reference-only and did not supply upstream facts.
-- **Audio boundary:** `audio_evidence: not_provided`; the proof validates script/DOCX delivery, not generated-audio quality.
-- **Owner:** `docs/knowledge/operations/system-integration-proof.md`.
+- **Audio boundary:** `audio_evidence: not_provided`; the proof validates the captured script/DOCX delivery state, not generated-audio quality.
+- **Evidence owner:** `docs/knowledge/reviews/system-integration-proof.md`.
 - **Date:** 2026-08-10
 
 ### DOCX sections use heading page-break-before, not inserted break paragraphs
@@ -145,7 +154,7 @@ This register preserves durable decision history, including entries later refine
 
 ### Flow 7 delivery readiness is script/DOCX scope by default
 
-- **Status:** superseded by the 2026-08-13 consolidated Production Assets decision above.
+- **Status:** superseded by current consolidated project-HTML delivery policy.
 - **Previous decision:** `voice_delivery_ready` meant the accepted canonical performance script and derived DOCX were ready for downstream production unless the current task explicitly included generated audio.
 - **Reason at the time:** the kit's core deliverable was script/document and audio quality could not be inferred without audio evidence.
 - **Current replacement:** canonical Voice Production + current consolidated project HTML is the default non-audio delivery; DOCX is optional export.
@@ -187,7 +196,9 @@ This register preserves durable decision history, including entries later refine
 
 ### Flow 4 uses one development-readiness gate instead of Content Freeze ceremony
 
-- **Decision:** generated PRD becomes development-ready only after mechanical + four-perspective audit passes with Critical=0 and Major=0.
+- **Status:** refined by current Flow 4 integrated Semantic Readiness + Material Conservation + evidence boundaries.
+- **Previous decision:** generated PRD becomes development-ready only after mechanical + four-perspective audit passes with Critical=0 and Major=0.
+- **Current replacement:** exact current readiness policy is owned by `docs/foundation/04-prd-validation-handoff.md` and `kits/project-document-generator/VALIDATION.md`.
 - **Date:** 2026-08-10
 
 ### `Local` is the permanent development branch

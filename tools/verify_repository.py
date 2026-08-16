@@ -25,6 +25,7 @@ REQUIRED_PATHS = [
     ".github/workflows/prd-verify.yml",
     ".github/workflows/voice-verify.yml",
     "AGENTS.md",
+    "GITHUB_RULES.md",
     "CONTEXT.md",
     "requirements.lock.txt",
     "tests/test_prd_contracts.py",
@@ -60,8 +61,10 @@ REQUIRED_PATHS = [
 
 MARKDOWN_ROOTS = [
     ROOT / "AGENTS.md",
+    ROOT / "GITHUB_RULES.md",
     ROOT / "CONTEXT.md",
     ROOT / "README.md",
+    ROOT / ".agents" / "skills",
     ROOT / "docs" / "foundation",
     ROOT / "docs" / "knowledge",
     ROOT / "kits" / "project-document-generator",
@@ -85,8 +88,6 @@ CURRENT_DELIVERY_OWNER_PATHS = [
     ".agents/skills/project-document-production/SKILL.md",
     ".agents/skills/voice-production/SKILL.md",
     "kits/project-document-generator/SKILL.md",
-    "kits/project-document-generator/WORKFLOW.md",
-    "kits/project-document-generator/RULES.md",
     "kits/project-document-generator/CONTENT-CONTRACT.md",
     "kits/voice-production-kit/SKILL.md",
 ]
@@ -182,6 +183,8 @@ def check_retired_boundaries(errors: list[str]) -> None:
         "docs/knowledge/operations/task-board.md",
         "docs/foundation/validation-report.md",
         "workspace/saved",
+        "kits/project-document-generator/WORKFLOW.md",
+        "kits/project-document-generator/RULES.md",
         "kits/voice-production-kit/REFERENCE",
         "kits/voice-production-kit/INSTRUCTIONS.md",
     ]
@@ -210,7 +213,6 @@ def check_current_delivery_routing(errors: list[str]) -> None:
             "output/v<document.version>/prd.html",
             "output/v<document.version>/context.md",
             "output/v<document.version>/index.json",
-            "Visual Effects & Presentation",
         )
         for marker in required_markers:
             if marker not in text:
@@ -268,7 +270,6 @@ def check_current_delivery_routing(errors: list[str]) -> None:
                 f"stale Voice sidebar category routing in {path.relative_to(ROOT)}",
             )
 
-
     decision_policy = ROOT / "docs" / "knowledge" / "decisions" / "recording-policy.md"
     if decision_policy.is_file():
         policy_text = decision_policy.read_text(encoding="utf-8")
@@ -286,6 +287,8 @@ def check_next_action(errors: list[str]) -> None:
         fail(errors, "next-action.md must contain exactly one '## Next Step'")
     if "## Current Status" not in text:
         fail(errors, "next-action.md is missing '## Current Status'")
+    if "## Active Boundary" not in text:
+        fail(errors, "next-action.md is missing '## Active Boundary'")
 
 
 def check_agent_contract(errors: list[str]) -> None:
@@ -442,7 +445,7 @@ def main() -> int:
     print("- relative navigation: valid")
     print("- dependency lock/direct pins: exact and aligned")
     print("- Python kits/tools/tests: syntax valid")
-    print("- retired builder boundary: preserved")
+    print("- retired builder/routing boundaries: preserved")
     return 0
 
 

@@ -1,151 +1,98 @@
 # Voice Production Kit Agent Rules
 
-Root `AGENTS.md` remains authoritative for work mode, proof, repository continuity, and semantic-vs-technical ownership. This file narrows behavior only inside `kits/voice-production-kit/`.
+Root `AGENTS.md` owns work mode, continuity, authority, proof, and skill budget. Root `voice-production` owns reusable Voice semantic judgment. This file owns **Voice kit routing, file/mechanical ownership, and context economy**.
 
-## Active module structure
+Detailed normal Flow 5–7 Production Execution is `SKILL.md`. Do not duplicate exact Flow/presentation contracts here.
+
+## Active owners
+
+| Need | Owner |
+|---|---|
+| Flow 5 Voice scope/context extraction | `VOICE-EXTRACTION.md` |
+| Flow 6 durable lifecycle/output policy | `docs/foundation/06-elevenlabs-script-production.md` |
+| Flow 6 end-to-end kit procedure | `SKILL.md` |
+| Eleven v3 performance-writing craft | `SOUNDMAKER.md` |
+| Flow 7 validation/evidence | `VOICE-VALIDATION.md` |
+| optional DOCX presentation | `DOCX-FORMAT.md` |
+| package overview/navigation | `README.md` |
+
+Do not broad-read every Voice/reference file by default. Deep Eleven v3 references are opened only when the current writing/evidence question needs them.
+
+## Semantic vs technical boundary
 
 ```text
-kits/voice-production-kit/
-├─ AGENTS.md
-├─ README.md
-├─ SKILL.md
-├─ VOICE-EXTRACTION.md
-├─ SOUNDMAKER.md
-├─ DOCX-FORMAT.md
-├─ VOICE-VALIDATION.md
-├─ builder/
-├─ validator/
-├─ references/
-└─ requirements.txt
+Voice scope / Speaker / Channel / Trigger / Purpose / wording / readiness meaning wrong
+→ root voice-production + smallest semantic owner
+
+Voice semantics correct; builder/validator/presentation mechanics wrong
+→ exact implementation owner below
 ```
 
-Flow 6 lifecycle/output is owned by this kit `README.md` plus `docs/foundation/06-elevenlabs-script-production.md`. The former duplicate `SCRIPT-PRODUCTION.md` owner is retired in v1.11.2.
+A technical file does not automatically require the semantic specialist. A technical change that would alter the required Voice/product contract must return to the semantic owner first.
 
-## Routing
+## Implementation ownership
 
-- Flow 5 → `VOICE-EXTRACTION.md`.
-- Flow 6 lifecycle/static output → kit `README.md` + Flow 6 foundation policy.
-- Flow 6 writing/performance detail → `SOUNDMAKER.md`.
-- Flow 7 → `VOICE-VALIDATION.md`.
-- optional DOCX export → `DOCX-FORMAT.md` + builder.
-- deep Eleven v3 evidence → only the matching reference file when needed.
+- project 04 objective/moment-first composition/navigation → `kits/project-document-generator/renderer/production_assets_objective.py`;
+- Voice-specific 04 parsing/presentation primitives → `kits/project-document-generator/renderer/production_assets.py`;
+- optional DOCX generation/pagination → `builder/build_docx.py`;
+- optional DOCX presentation contract → `DOCX-FORMAT.md`;
+- Voice mechanical parity/derived-output validation → `validator/validate.py`;
+- shared dependency/test/CI → repository-engineering owners.
 
-Do not broad-read every Voice/reference file by default. Recover current project facts before asking the user.
+Exact reader-facing 04 resource fields/layout are owned by `kits/project-document-generator/PRODUCTION-ASSETS.md` plus the current shared compositor contract. Do not maintain another Voice HTML schema here.
 
-## Canonical boundary
+## Canonical source boundary
 
 ```text
 accepted project / PRD meaning
 → work/voice-requirements.md
 → work/voice-production.md
-→ output/v<document.version>/prd.html
-   → 04 Production Assets
-      → matching gameplay moment
-         → AUDIO
-→ work/voice-acceptance.md
-→ state/voice-state.yaml
+→ Voice acceptance/state
 ```
 
-- PRD/project authority owns gameplay/story truth and the fact that a Voice asset is required.
-- Flow 5 owns Voice scope, Speaker/Channel/Trigger/Purpose, required communication, exclusions, and source timing truth when present.
-- `work/voice-production.md` owns canonical production content, Estimated Duration, and selected actor voice when known.
-- `output/v<document.version>/prd.html` is the default derived operator presentation; it is not wording authority.
-- DOCX is optional export only.
+Project HTML and optional DOCX are derived presentation/export surfaces. Never hand-edit them as the source fix.
 
-## Static output contract
+Flow 5 requirements own Voice scope/communication context. `work/voice-production.md` owns canonical production wording/performance. Presentation code may organize that data but may not create new Voice moments, project facts, actor decisions, or wording.
 
-Production Assets extends the existing accepted PRD navigation. It must not rebuild Development or renumber PRD package/page identity.
+## Context economy
+
+- recover current project/Voice canonical state before asking the user;
+- use the smallest current Flow owner rather than loading all Voice docs;
+- open deep Eleven/reference material only for the current evidence/craft question;
+- do not load generated project HTML/DOCX merely to reason about canonical Voice meaning;
+- visual claims require actual render/browser/page evidence;
+- generated-audio claims require actual audio evidence.
+
+## Bounded technical changes
 
 ```text
-03 Development
-   global development pages
-   gameplay/objective sections
-
-04 Production Assets
-   <gameplay section title>
-      <accepted PRD package label>
+observe/reproduce or inspect concrete defect
+→ confirm semantic contract is already correct
+→ exact implementation owner
+→ smallest complete fix
+→ regenerate only invalidated derived output
+→ cheapest relevant proof
+→ stop
 ```
 
-Voice does not own a separate sidebar category and does not create an `Audio → Voice Production` sub-dashboard.
+Voice-only production/mechanical changes do not reopen PRD-core acceptance when upstream PRD meaning is unchanged.
 
-Each canonical line is rendered in its matching natural gameplay moment as:
+## Verification routing
 
-```text
-AUDIO
-<Character> — <Line Title>
+- repository/docs/routing-only changes → `Repository Verify` when owned by its paths;
+- Voice builder/validator/test/dependency changes → `Voice Verify`;
+- shared Project Document 04 compositor changes → `PRD Verify`;
+- project HTML visual PASS → actual browser/render evidence;
+- optional DOCX visual PASS → rendered-page evidence;
+- audio quality → actual audio evidence.
 
-Function
-<communication/story purpose>
-
-Voice Preset
-<selected actor voice>
-
-ElevenLabs Model
-Eleven v3
-
-Estimated Duration
-<duration>
-
-Prompt
-<exact canonical performance payload>
-```
-
-Character identity in the title replaces a separate visible Speaker field. Flow 5 Trigger/Context, line counts, Primary Speaker summaries, Voice Setup blocks, Purpose, `Must communicate`, `Must not add/repeat`, source refs, reasoning, and QA remain outside the visible reader-first 04 resource unless another current owner explicitly needs them.
-
-Performance directions are visually distinct; copied Prompt bytes remain canonical.
-
-## Semantic vs technical ownership
-
-Use the root `voice-production` specialist for semantic/product-contract defects. When semantics are already correct, route mechanics directly:
-
-- objective/moment-first Production Assets composition/navigation → `kits/project-document-generator/renderer/production_assets_objective.py`;
-- Voice-specific Production Assets parsing/presentation primitives → `kits/project-document-generator/renderer/production_assets.py`;
-- optional DOCX generation/pagination → `builder/build_docx.py`;
-- optional DOCX presentation contract → `DOCX-FORMAT.md`;
-- Voice mechanical parity → `validator/validate.py`;
-- shared dependency/test/CI → repository-engineering owners.
-
-## Validator / builder rules
-
-- exact Voice ID, Type, and Speaker parity are fail-closed in canonical sources;
-- when the current versioned `prd.html` exists, validator checks Voice section/prompt identity and exact canonical payload parity;
-- current visible 04 AUDIO field/layout behavior is owned by the Project Document 04 compositor regression, not duplicated as a second Voice HTML schema;
-- when optional DOCX exists, validator checks that export too;
-- builder/validator PASS does not establish semantic or visual quality;
-- never hand-edit `prd.html` or DOCX as the source fix.
-
-## Verification
-
-Run from repository root as applicable:
-
-```text
-python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
-python -m pip check
-python -m unittest tests.test_voice_contracts -v
-python -m compileall -q kits/voice-production-kit tests/test_voice_contracts.py
-```
-
-Consolidated project HTML is generated with the normal PRD command:
-
-```text
-python kits/project-document-generator/renderer/delivery.py \
-  workspace/active/<project>/
-```
-
-Direct Voice validator:
-
-```text
-python kits/voice-production-kit/validator/validate.py \
-  workspace/active/<project>
-```
-
-Use `Voice Verify` for changed Voice semantic/validator contracts and `PRD Verify` when the Production Assets compositor changes.
+Do not run unrelated verification for ceremony.
 
 ## Boundaries
 
-- kit owns Flow 5–7 only;
-- project definition/PRD belongs to Project Document Generator;
-- Production Assets pages are downstream presentation, not a new PRD semantic owner;
-- non-dialogue AUDIO remains owned by the Project Document Production Assets contract, not this Voice kit;
-- DOCX remains optional compatibility/export, not the default operator surface;
-- do not add a second Voice HTML, generic asset framework, or extra workflow layer without a concrete need.
+- kit owns detailed Flow 5–7 procedure/implementation;
+- root `voice-production` owns reusable semantic judgment;
+- Project Document Generator owns shared 04 composition mechanics and non-Voice 04 requirements;
+- upstream project/PRD authority owns gameplay/story truth;
+- DOCX remains optional export;
+- do not add a second Voice HTML, generic asset framework, new root skill, or extra workflow layer without a concrete need.

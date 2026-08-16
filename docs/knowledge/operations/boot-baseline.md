@@ -2,42 +2,76 @@
 
 Updated: 2026-08-17
 
-This baseline checks that a new session reaches the correct owner without unnecessary repository-wide reading.
+This baseline records a small set of routing scenarios that protect context recovery without turning boot into repository-wide reading.
 
-## Expected Boot
+## Scenario A — new chat, observe/recover only
+
+User intent examples: `amati repo ini`, inspect, understand, recover context.
 
 ```text
 AGENTS.md
 → GITHUB_RULES.md Core Rules when GitHub work is material
-→ CONTEXT.md only when stable product/boundary facts matter
-→ docs/knowledge/next-action.md only when active continuation matters
-→ smallest relevant owner
+→ CONTEXT.md
+→ next-action.md
+→ smallest owner needed to explain current state
+→ report understanding
+→ STOP / NO EDIT
 ```
 
-Conditional GitHub surfaces are opened only when the task touches them. Use `skills/activation-matrix.md` only when the correct specialist is genuinely ambiguous.
+Pass when the agent can state what the repository is, current active boundary/next step, relevant constraints, and likely owner **without starting implementation or asking the user to reconstruct recoverable history**.
 
-## Expected Routing
+## Scenario B — non-trivial repository Developing
 
-| Scenario | Mode | Expected route |
-|---|---|---|
-| Create/revise a PRD with the existing system | Production Execution | `project-document-production` → active PRD Flow owner |
-| Create/revise Voice output from an accepted PRD | Production Execution | `voice-production` → active Voice Flow owner |
-| Change PRD-Creator policy/skills/repository structure | Developing | `development-brief` + at most one useful specialist |
-| Fix a concrete bug/regression | Maintenance | first wrong owner → smallest correction |
-| Clean stale docs without changing architecture | Maintenance | current doc owner → link/ownership proof |
-| Decide an ungrounded high-impact architecture change | Plan | inspect authority/ownership before editing |
+```text
+AGENTS.md
+→ GITHUB_RULES.md Core Rules
+→ CONTEXT.md
+→ next-action.md
+→ development-brief
+→ smallest relevant owner/source
+→ implementation only after the task is grounded
+```
 
-Normal project Production Execution does **not** use `development-brief`.
+`CONTEXT.md` and `next-action.md` are mandatory here. Further reads remain bounded.
 
-## Pass Condition
+Pass when the agent preserves stable boundaries and active continuation, does not invent a new task from nearby TODO/audit/history, and uses the smallest owner/proof after bootstrap.
+
+## Scenario C — bounded mechanical Maintenance
+
+Example: an exact broken link or isolated implementation defect whose wider product context cannot change the correction.
+
+```text
+AGENTS.md
+→ GITHUB_RULES.md Core Rules when material GitHub work is involved
+→ exact defect/owner
+→ targeted proof
+→ STOP
+```
+
+`CONTEXT.md` / `next-action.md` may be skipped only when they cannot materially change the decision. This fast path must not be used to bypass Developing continuity.
+
+## Scenario D — normal project Production Execution
+
+```text
+AGENTS.md
+→ current project state/evidence
+→ matching production specialist
+→ smallest active kit Flow owner
+```
+
+Normal production does not invoke `development-brief` merely because files are created or revised.
+
+## Pass conditions
 
 A route passes when:
 
-- the correct owner is reached without broad-reading unrelated docs/projects;
-- `CONTEXT.md` / `next-action.md` are loaded only when their state can change the task;
-- project production is not misclassified as repository development;
-- no redundant skill/state system is activated;
+- the user is not asked to repeat context that the repository can recover;
+- observe/recover requests remain read-only unless implementation is also requested;
+- non-trivial Developing always recovers stable context + active continuation first;
+- bounded work does not broad-read unrelated repository/history;
+- the correct semantic/technical owner is reached without redundant skills;
+- backlog/reviews/old TODOs do not become active work automatically;
 - evidence expectations match the execution channel;
-- known relevant repository context is reused instead of asking the user to reconstruct it.
+- no ceremonial routing telemetry, session log, or extra state system is created.
 
-Add a scenario only after a real routing failure exposes a missing case. Do not maintain ceremonial routing telemetry.
+Add or change a scenario only after a real routing failure exposes a missing case.
