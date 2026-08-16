@@ -2,25 +2,32 @@
 
 ## Current Status
 
-`PRD_04_CONTRACT_AND_REGRESSION_SYNCHRONIZED`
+`GITHUB_EXECUTION_SIMPLIFICATION_ACTIVE`
 
-The existing Project Document Generator now has one consistent active path from discussion/original source through the approved project model into the protected PRD core and justified Production Assets:
+The PRD 01–04 development boundary is considered finished for now. Current development focus is reducing ChatGPT ↔ GitHub execution waste and preventing connector misuse.
+
+Root `AGENTS.md` now owns an explicit tool/channel fit gate before any write:
 
 ```text
-project discussion + original source
-→ complete approved project model
-   ├─ protected PRD core 01–03
-   └─ justified 04 Production Assets
+need current state
+→ direct branch/file fetch
+
+small complete text edit
+→ GitHub Contents API
+
+large/multi-hunk/multi-file/atomic/binary work
+→ Local/Codex-style git workspace
+
+browser/audio/local runtime
+→ actual matching capability
 ```
 
-04 remains an additive capability of the existing PRD system, not a new Flow, Skill, or reread-and-brainstorm pass over generated 01–03. Active foundation/procedure/workspace/routing owners use the same bounded contract: moment-first reader-facing output, `MODEL / ITEM / UI / TEXT / AUDIO / PARTICLE`, humanized production notes, integrated 04 readiness inside Flow 4, and explicit protection of the approved 01–03 Golden/style/renderer behavior.
+The gate also forbids partial-read full replacement, chunked `update_file`, SHA-type confusion, temporary GitHub Actions as a fallback shell, retrying permission/capability denials through Git gymnastics, and changing repository structure merely to make the connector easier to use.
 
-Voice presentation owners are synchronized with the current compositor: canonical Voice is presented in 04 as `AUDIO` with Function, Voice Preset, ElevenLabs Model, Estimated Duration, and exact Prompt. Retired visible line-count / Primary Speaker / Voice Setup / Trigger Context / separate Speaker presentation is no longer the active contract.
+`docs/knowledge/workflows/development.md` now routes Developing work through that root gate instead of treating ChatGPT → GitHub as a universal execution channel.
 
-The existing PRD regression suite now includes a fresh approved-render-model fixture that renders the same project once without downstream assets and once with justified non-Voice + Voice Production Assets. It requires every protected 01–03 section to remain byte-identical while 04 appears additively with moment-first Humanized fields and without retired visible asset metadata/taxonomy.
-
-`docs/knowledge/reviews/current-validation.md` treats older category-dashboard/browser proof as historical and does not overclaim browser visual PASS for the latest humanized 04 layout.
+No new Skill, workflow, validator, framework, or regression suite was added for this change.
 
 ## Next Step
 
-Continue normal Production Execution. Apply the existing 04 readiness gate whenever a project contains justified Production Assets. Collect fresh browser visual evidence only when visual readiness of a specific current 04 project presentation is actually claimed.
+Simplify the remaining validation/commit discipline so normal GitHub work uses the minimum relevant proof and stops without proof-chasing or unnecessary intermediate commits.
