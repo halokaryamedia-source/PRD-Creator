@@ -185,9 +185,28 @@ Canonical root skills remain:
 
 Do not create renderer/validator/Python/DOCX/research/evidence-gate skills merely because those implementation surfaces exist.
 
-## Execution channel
+## Execution channel and tool fit
 
-GitHub/static inspection can prove repository state and static contracts. Local/browser/audio/runtime claims require those capabilities to be actually available. Goal, authority, scope, and acceptance criteria do not change with execution channel; only available proof does.
+Choose the execution channel and GitHub tool **before writing**. Tool availability is a constraint, not a challenge to work around.
+
+Default routing:
+
+- current branch/HEAD/exact file state → direct GitHub fetch with explicit `Local`; use search for discovery, not as authority for current state;
+- small bounded UTF-8 text edit where the complete current file is available → GitHub Contents API / `update_file`; prepare the final file first and use one intentional write per file by default;
+- large file, many precise hunks, multi-file refactor, atomic multi-file requirement, binary edit, or work that needs true patch semantics → Local/Codex-style git workspace; do not emulate patching with repeated full-file replacements;
+- CI diagnosis → workflow run → failing job/step → exact relevant log; do not broad-read logs or retry a failed direction without new evidence;
+- browser, audio, or local runtime proof → use the actual browser/audio/runtime capability only; GitHub Actions is not a fallback execution shell.
+
+Hard stops:
+
+- never full-replace a file from partial file context;
+- never split `update_file` into chunks: it replaces the entire file, it does not append or patch a chunk;
+- keep blob/content SHA, commit SHA, and tree SHA distinct; use the identifier required by the specific operation only;
+- a permission, safety, or capability denial ends that operation immediately; do not retry it through Git gymnastics, helper files, or a temporary workflow unless the user explicitly changes the execution channel or requests a durable capability;
+- do not change repository structure merely to make the current connector easier to use;
+- when the current channel cannot perform the requested change safely, report the required channel instead of forcing completion.
+
+GitHub/static inspection can prove repository state and static contracts. Local/browser/audio/runtime claims require those capabilities to be actually available. Goal, authority, scope, and acceptance criteria do not change with execution channel; only available execution and proof do.
 
 ## User-facing communication
 
