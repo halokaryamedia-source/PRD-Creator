@@ -2,9 +2,21 @@
 
 ## Current Status
 
-`GITHUB_OPERATING_DISCIPLINE_CONSOLIDATED`
+`GITHUB_RULES_PORTABLE_AND_ACTIVE`
 
-The PRD 01–04 development boundary remains finished for now. ChatGPT ↔ GitHub execution rules are now consolidated in root `AGENTS.md` into one canonical sequence:
+The PRD 01–04 development boundary remains finished for now.
+
+ChatGPT ↔ GitHub operating policy is now separated cleanly:
+
+```text
+GITHUB_RULES.md
+→ universal GitHub/AI working discipline
+
+AGENTS.md
+→ PRD-Creator-specific branch, ownership, domain, skill, and communication rules
+```
+
+`GITHUB_RULES.md` is the reusable/copy-safe policy for other GitHub repositories. It owns the common sequence:
 
 ```text
 PIN
@@ -16,12 +28,12 @@ PIN
 → STOP
 ```
 
-The root discipline now covers the recurring failure modes that previously caused slow or noisy repository work: broad reading, wrong-owner fixes, adjacent cleanup, full-file replacement from partial context, chunked `update_file`, SHA-type confusion, Git gymnastics after capability denial, repeated intermediate commits, CI/proof chasing, broad validation for unrelated changes, temporary workflows, verification workflows that mutate the branch, automatic publishing on every push, unchanged reruns, and failure to stop after sufficient proof.
+It also owns the recurring failure prevention rules: minimal reading, first-wrong-owner diagnosis, no partial-read full replacement, no chunked `update_file`, correct SHA use, hard stop on unavailable capabilities, one intentional write per file by default, minimum relevant validation, scoped/read-only GitHub Actions, no automatic publish-on-push, bounded retries, no adjacent cleanup, and an explicit STOP state.
 
-Default efficiency budgets are explicit: 1–3 owner reads, zero history reads by default, zero new workflows/abstractions/files unless justified, one intentional write per file, at most one relevant CI gate, maximum two same-cause retries, zero capability-denial retries, and zero adjacent cleanup.
+Root `AGENTS.md` now points to that file instead of duplicating the GitHub policy. Existing PRD/Voice domain ownership remains unchanged.
 
-No new Skill, workflow, validator, framework, or orchestration layer was added. Existing PRD/Voice domain ownership remains unchanged.
+No Skill, framework, workflow, sync bot, validator, or orchestration layer was added for this policy split.
 
 ## Next Step
 
-Use the consolidated discipline during normal repository work. Change it again only when a concrete recurring execution defect shows that one of these rules is insufficient or incorrect.
+Use `GITHUB_RULES.md` as the portable GitHub rule file when adopting the same working discipline in another repository; preserve that repository's own domain rules in its `AGENTS.md`.
