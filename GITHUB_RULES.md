@@ -76,12 +76,13 @@ derived artifact wrong
 current branch / exact file state
 → direct GitHub fetch
 
-small bounded UTF-8 edit + complete current regular file available
+one small bounded UTF-8 file + one logical delivery + complete current file
 → GitHub Contents API / update_file
 
-large file / many precise hunks / coordinated multi-file refactor /
-atomic multi-file change / binary / Git LFS / true patch semantics
-→ Local or Codex-style git workspace with the required capability
+coherent multi-file logical delivery / commit atomicity matters /
+large file / many precise hunks / coordinated refactor /
+binary / Git LFS / true patch semantics
+→ Local or Codex-style git workspace, or another known-safe atomic Git capability
 
 CI diagnosis
 → run → failing job/step → exact relevant log
@@ -89,6 +90,8 @@ CI diagnosis
 browser / audio / local runtime claim
 → actual matching capability
 ```
+
+Do not choose a per-file Contents API merely because it is available when doing so would turn one logical delivery into several repository commits. If the current channel cannot preserve the required commit atomicity/history quality, use the suitable workspace/channel instead of accepting commit spam.
 
 ### Special files and Contents API
 
@@ -104,7 +107,7 @@ Before treating repository content as ordinary UTF-8 text, distinguish regular f
 - Never split `update_file` into chunks. It replaces the whole file; it does not append or patch.
 - Keep blob/content SHA, commit SHA, tree SHA, tag/ref, workflow-run IDs, and other GitHub identifiers distinct; use only the identifier required by the operation.
 - Low-level Git blob/tree/commit/ref operations are not the default editor. Use them only when the task genuinely requires those semantics and the capability is known to be available.
-- Force-push, history rewrite, destructive reset, or equivalent ref manipulation is never a workaround for stale SHA, CI failure, connector limits, or messy commit history.
+- Force-push, history rewrite, destructive reset, or equivalent ref manipulation is never a workaround for stale SHA, CI failure, connector limits, commit spam, or messy commit history.
 - Permission, safety, or capability denial ends that operation immediately. Do not retry through Git gymnastics, helper files, temporary workflows, or branch switching.
 - Do not use GitHub Actions as a remote shell or as a substitute for missing local/browser/audio/runtime capability.
 - Do not change repository structure merely to make the connector easier to use.
@@ -132,16 +135,84 @@ Classify failures before retrying:
 
 Prepare the intended final state before the first write.
 
-- One intentional write per file is the default.
+- One intentional write per file is the default, but **WRITE ONCE does not mean COMMIT EVERY WRITE**.
 - Same-file and overlapping repository mutations are serial, never parallel.
 - Prefer one coherent logical change over chains of `try`, `rerun`, `trigger`, `sync`, or `final proof` commits.
-- Do not create commits only to trigger CI, align proof, rerun a workflow, clean history, or make tooling easier to operate.
+- Do not create commits only to trigger CI, align proof, rerun a workflow, clean history, save an AI thought step, or make tooling easier to operate.
 - Do not treat intermediate connector commits as independent milestones requiring separate validation.
 - For a coordinated multi-file change, establish the intended complete patch before the first write. If HEAD moves materially during the change, refetch affected state and reassess; do not blindly overwrite, merge, or rebase around concurrent work.
 - Keep one canonical owner for each durable rule/state where practical; do not copy the same contract across many docs and create synchronization cascades.
 - Update status/continuity/release metadata only when the milestone, blocker, next meaningful objective, capability boundary, or actual release state changed—not after every micro-step.
 - Preserve repository-declared lockfiles, runtime/version files, dependency constraints, and action references. Change versions/lockfiles only when dependency/version drift is the actual first wrong owner or the task explicitly requests the upgrade.
 - New files, workflows, abstractions, compatibility layers, fixtures, reports, branches, PRs, issues, comments, labels, releases, and other persistent side effects default to zero unless the current task/repository workflow proves a real need.
+
+### Commit discipline — history must remain meaningful
+
+A repository commit is a **categorized logical delivery**. It is not a file save, tool call, checkpoint, reasoning step, CI trigger, or proof marker.
+
+Default delivery flow:
+
+```text
+prepare the complete logical change
+→ run the cheapest relevant pre-commit proof available
+→ review the final intended diff/state
+→ create one categorized logical commit
+→ push once
+→ observe/run only relevant CI
+→ STOP
+```
+
+Before committing, apply this gate:
+
+```text
+one coherent outcome?
+primary category clear?
+intended file set complete?
+commit message explains the repository outcome?
+change is reviewable/revertable as one logical unit?
+
+any NO
+→ DO NOT COMMIT YET
+```
+
+Default commit message format:
+
+```text
+<type>(<optional-scope>): <concise logical outcome>
+```
+
+Use the primary intent/outcome, not the file extension, folder, or implementation step:
+
+```text
+feat:      new user/repository capability
+fix:       correct wrong behavior or regression
+docs:      documentation/policy-only change
+refactor:  internal restructuring without intended behavior change
+test:      test-contract-only change
+ci:        CI/workflow routing or execution change
+build:     build/dependency/toolchain change
+release:   explicit release/publish state
+chore:     bounded maintenance that genuinely fits none above; use sparingly
+```
+
+Examples:
+
+```text
+fix(sidebar): keep objective pages under development
+docs(repo): define logical commit discipline
+ci: scope repository verification to relevant paths
+```
+
+Rules:
+
+- A `fix:` may include its tests and supporting docs in the **same commit** when they prove/document the same fix. Do not split merely because several file types changed.
+- Split commits only when there are genuinely independent logical deliveries that can be reviewed, reverted, and landed separately.
+- Do not split commits by file, directory, backend/frontend layer, tool call, work order, or because the agent happened to discover the files sequentially.
+- More than one commit for one requested task requires a concrete logical boundary, not convenience.
+- Uncategorized/vague messages such as `update`, `changes`, `fix again`, `sync`, `final`, `try`, or `misc` are not acceptable history.
+- Do not create local checkpoint commits by default; use the working tree/staging area until the logical delivery is ready.
+- If unpublished local commits already exist, they may be consolidated before the first push when safe. Never rewrite published/shared history or force-push merely to make history look cleaner without explicit authority.
+- When one logical change touches multiple files and the active GitHub tool would produce one commit per file, do not accept that history shape. Use a workspace or known-safe atomic Git operation that can produce one commit, or report the required channel.
 
 ## 6. VERIFY MINIMUM — validation follows the claim
 
@@ -243,6 +314,12 @@ new files                 0
 new workflows             0
 new abstractions          0
 intentional writes/file   1
+logical commits/task      1 by default
+uncategorized commits     0
+intermediate commits      0
+CI-trigger commits        0
+proof-only commits        0
+pushes/task               1 by default
 relevant CI               0–1
 same-cause retry          <= 2
 capability-denial retry   0
