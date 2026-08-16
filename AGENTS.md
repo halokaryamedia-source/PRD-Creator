@@ -16,6 +16,174 @@ For every material session, boot with only:
 
 Open `docs/knowledge/skills/activation-matrix.md` only when the correct skill/owner is genuinely ambiguous. Use `docs/knowledge/README.md`, `docs/knowledge/ownership.md`, or `docs/knowledge/source-authority.md` only when direct ownership is unclear. Do not broad-read saved projects, all docs, review history, generated output, or Git history by default.
 
+## GitHub Operating Discipline
+
+For ChatGPT ↔ GitHub work, use this sequence and stop when it is satisfied:
+
+```text
+PIN
+→ READ MINIMUM
+→ DIAGNOSE
+→ TOOL FIT
+→ WRITE ONCE
+→ VERIFY MINIMUM
+→ STOP
+```
+
+This is the canonical repository-working discipline. Domain sections below only narrow it; they do not add extra ceremony.
+
+### 1. PIN — establish current authority
+
+Before a material repository change, know the repository, working branch, current HEAD, and requested scope.
+
+- Use direct branch/file fetches for current state; search is for discovery, not authority.
+- Do not silently fall back to the default branch.
+- Do not repeatedly poll HEAD. Re-check only when concurrent movement is plausible or immediately before a material write that could overwrite newer work.
+
+### 2. READ MINIMUM — load only what can change the decision
+
+- Default read budget: **1–3 owner files, 0 history reads, 0 broad repository scans**.
+- Open history, review archives, secondary routing indexes, generated output, or adjacent owners only when a concrete unresolved question requires them.
+- Current explicit user intent and current authoritative source beat stale stored state.
+- `No change required` is valid.
+
+### 3. DIAGNOSE — find the first wrong owner
+
+Before writing, establish actual vs expected behavior and fix the first owner that is wrong.
+
+```text
+semantic / product meaning wrong
+→ matching semantic owner
+
+semantic contract correct + renderer / validator / builder mechanics wrong
+→ exact implementation owner
+
+implementation correct + test stale
+→ test
+
+implementation/test correct + CI routing wrong
+→ workflow
+
+derived artifact wrong
+→ upstream canonical owner
+```
+
+- Maintenance does not become redesign because adjacent issues are visible.
+- Do not widen scope into compatibility layers, frameworks, refactors, broad cleanup, or documentation synchronization unless they block the requested result.
+- Do not patch downstream generated artifacts to hide an upstream defect.
+- Do not write while the cause is still guesswork; report the missing evidence instead.
+
+### 4. TOOL FIT — use the channel that natively fits the operation
+
+Tool availability is a constraint, not a challenge to work around.
+
+```text
+current branch / exact file state
+→ direct GitHub fetch
+
+small bounded UTF-8 edit + complete current file available
+→ GitHub Contents API / update_file
+
+large file / many precise hunks / coordinated multi-file refactor /
+atomic multi-file requirement / binary work / true patch semantics
+→ Local or Codex-style git workspace
+
+CI diagnosis
+→ run → failing job/step → exact relevant log
+
+browser / audio / local runtime claim
+→ the actual matching capability
+```
+
+Hard stops:
+
+- never full-replace a file from partial file context;
+- never split `update_file` into chunks; it replaces the whole file, it does not append or patch;
+- keep blob/content SHA, commit SHA, and tree SHA distinct;
+- a permission, safety, or capability denial ends that operation immediately; do not retry it through Git gymnastics, helper files, or temporary workflows;
+- do not change repository structure merely to make the connector easier to use;
+- if the current channel cannot do the work safely, report the required channel instead of forcing completion.
+
+### 5. WRITE ONCE — commit meaningful state, not thought steps
+
+Prepare the intended final state before the first write.
+
+- One intentional write per file is the default. Same-file writes are serial, never parallel.
+- Prefer one coherent logical change over chains of `try`, `rerun`, `trigger`, `sync`, or `final proof` commits.
+- Do not create commits only to trigger CI, align proof, rerun a workflow, or make the connector easier to operate.
+- Do not treat intermediate connector commits as independent milestones that each require validation.
+- New files, workflows, abstractions, compatibility layers, fixtures, reports, and persistent state default to **zero** unless the current requirement proves a durable need.
+- Update `next-action.md` only when the active milestone, blocker, pause point, or next meaningful objective actually changes.
+
+### 6. VERIFY MINIMUM — validation follows the claim
+
+Validation is evidence, not ceremony.
+
+- Run the cheapest check that can falsify the changed claim.
+- Targeted checks are the default during iteration. A full suite is for a materially relevant final gate, not every edit.
+- Documentation/routing changes require only the checks that actually own those files.
+- Do not rerun unchanged checks or chase every verifier to green when they cannot falsify the current change.
+- CI failure means `diagnose first`, not `edit first`: inspect the failing job/step and only the relevant error, then identify the first wrong owner.
+- Same-cause retry budget: **maximum 2 attempts**. A permission/capability denial has **0 retries** unless new evidence changes the condition.
+- Regression tests are for material, realistically recurring invariants—not every typo, one-time migration, cosmetic wording change, or temporary state.
+- Do not use exact natural-language prose as a test contract unless the exact string itself is a machine requirement.
+- Historical failures are not active work unless the current system still reproduces their root cause.
+
+### GitHub Actions rules
+
+GitHub Actions is verification infrastructure, not a background development engine.
+
+- Automatic workflows run only on the working branch and paths their checks can actually falsify.
+- Markdown, routing, planning, status, or normal project-production changes do not justify a full domain suite unless a check explicitly owns them.
+- Prefer fail-fast gates when downstream checks are meaningless after an upstream failure.
+- Cancel superseded runs when repeated pushes can overlap.
+- Verification workflows are read-only: they do not commit or push back into the working branch.
+- Publishing/release bundling is an explicit release action, not a side effect of every development push.
+- Do not create temporary/one-shot workflows to repeat existing checks or compensate for a missing local capability.
+- Do not rerun an unchanged failed workflow merely to seek a green badge.
+
+Use evidence labels only when material uncertainty remains:
+
+```text
+CURRENT-PROJECT VERIFIED
+AUTHORITATIVE-SOURCE VERIFIED
+LOCAL PROOF REQUIRED
+UNSUPPORTED
+UNKNOWN
+```
+
+Static inspection cannot upgrade a browser/audio/runtime claim to current-project verified.
+
+### 7. STOP — completion is a valid terminal state
+
+When the requested outcome, relevant acceptance criteria, and minimum relevant proof are satisfied, **stop**.
+
+Do not automatically:
+
+- audit another layer;
+- synchronize unrelated documentation;
+- run another verifier;
+- create proof-of-proof;
+- fix adjacent non-blocking issues;
+- continue because more tooling is available.
+
+### Default efficiency budget
+
+```text
+owner reads               1–3
+history reads             0
+new files                 0
+new workflows             0
+new abstractions          0
+intentional writes/file   1
+relevant CI               0–1
+same-cause retry          <= 2
+capability-denial retry   0
+adjacent cleanup          0
+```
+
+Exceed a budget only because the current task produces concrete evidence that more work is necessary—not because extra work feels safer.
+
 ## Work modes
 
 | Intent | Mode | Front door |
@@ -67,79 +235,6 @@ Use the nearest authoritative owner for each claim:
 
 Material conflicts remain `UNKNOWN` until reconciled. Do not choose silently. A Golden/reference sample never supplies project-specific mechanics, counts, story, scoring, speakers, or other facts unless explicitly approved.
 
-## Smallest-owner rule
-
-Before editing, identify the **first wrong owner**.
-
-```text
-semantic/product meaning wrong
-→ matching semantic owner
-
-semantic contract correct + renderer/validator/builder mechanics wrong
-→ nearest kit AGENTS + exact implementation owner
-
-shared dependency/test/CI wrong
-→ requirements.lock.txt / tests / tools / workflows
-```
-
-Do not keep a semantic specialist loaded merely as a Python/HTML/DOCX wrapper. If a task exposes two independent boundaries, finish/reframe one before switching owner.
-
-## Root-cause and edit gate
-
-Before changing behavior establish:
-
-- what actually happens;
-- what requirement/contract is expected;
-- which owner is first wrong;
-- why the proposed change fixes that cause;
-- what evidence could falsify the fix.
-
-If the cause remains unknown, report `Perlu pemeriksaan` / `Terhenti` with the missing evidence instead of patching symptoms.
-
-Before creating/moving a file, search existing owners first. Reuse/extend before creating. Do not create README/schema/config/fallback/abstraction for hypothetical future use. `No change required` is valid.
-
-## Anti-overdevelopment baseline
-
-- Prefer the minimum complete solution.
-- Every changed line must trace to the declared goal.
-- Do not widen scope because adjacent improvements are visible.
-- Do not add compatibility/fallback layers without a proved need.
-- Do not hide uncertainty behind polished prose or rendering.
-- Do not repeatedly patch downstream symptoms when upstream meaning/code is wrong.
-- Stop the same failed direction after two attempts without new evidence.
-- Do not create tests, screenshots, builds, fixtures, reports, or review notes merely to look rigorous.
-- Never claim approval, runtime behavior, visual/audio quality, or delivery that was not actually obtained.
-
-## Proof economy
-
-Validation is evidence, not ceremony. Use the cheapest check that can disprove the likely failure, then stop when the claimed status has enough support.
-
-- docs/routing → changed owners + link/ownership consistency;
-- PRD content → relevant requirement traceability + role/readiness review;
-- renderer/HTML → focused contract/mechanical validation; visual PASS needs actual rendered/browser evidence;
-- Voice semantics → requirement/script parity + relevant semantic review;
-- DOCX mechanics → focused builder/validator proof; visual PASS still needs rendered-page inspection;
-- shared dependency/test/CI → repository engineering gate exercising the changed contract;
-- generated audio → actual audio must exist and be reviewed.
-
-Do not rerun unchanged checks after they already established the required evidence.
-
-GitHub Actions must follow the same economy:
-
-- `Repository Verify` is for repository/routing/shared-engineering changes, not normal `workspace/active/**` project production or domain Python already owned by PRD/Voice gates;
-- PRD/Voice workflows must be path-scoped to files their tests can actually falsify; a markdown-only change does not justify a full domain test unless an explicit test contracts that markdown;
-- prefer the final relevant automatic gate on the final SHA; do not create a temporary workflow merely to repeat an existing gate, and do not wait for superseded runs when workflow concurrency cancels them.
-
-Use evidence labels only when material uncertainty exists:
-
-- `CURRENT-PROJECT VERIFIED` — current project/environment proof exists;
-- `AUTHORITATIVE-SOURCE VERIFIED` — authoritative source supports the claim but execution may remain unproven;
-- `LOCAL PROOF REQUIRED` — implementation is plausible but local/browser/audio/runtime proof remains;
-- `UNSUPPORTED` — evidence says not to rely on the method/capability;
-- `UNKNOWN` — evidence is insufficient/conflicting.
-
-Static inspection cannot upgrade a browser/audio/runtime claim to current-project verified.
-
 ## Derived-artifact rule
 
 Preserve the authority chain:
@@ -184,29 +279,6 @@ Canonical root skills remain:
 - Plan → no specialist by default.
 
 Do not create renderer/validator/Python/DOCX/research/evidence-gate skills merely because those implementation surfaces exist.
-
-## Execution channel and tool fit
-
-Choose the execution channel and GitHub tool **before writing**. Tool availability is a constraint, not a challenge to work around.
-
-Default routing:
-
-- current branch/HEAD/exact file state → direct GitHub fetch with explicit `Local`; use search for discovery, not as authority for current state;
-- small bounded UTF-8 text edit where the complete current file is available → GitHub Contents API / `update_file`; prepare the final file first and use one intentional write per file by default;
-- large file, many precise hunks, multi-file refactor, atomic multi-file requirement, binary edit, or work that needs true patch semantics → Local/Codex-style git workspace; do not emulate patching with repeated full-file replacements;
-- CI diagnosis → workflow run → failing job/step → exact relevant log; do not broad-read logs or retry a failed direction without new evidence;
-- browser, audio, or local runtime proof → use the actual browser/audio/runtime capability only; GitHub Actions is not a fallback execution shell.
-
-Hard stops:
-
-- never full-replace a file from partial file context;
-- never split `update_file` into chunks: it replaces the entire file, it does not append or patch a chunk;
-- keep blob/content SHA, commit SHA, and tree SHA distinct; use the identifier required by the specific operation only;
-- a permission, safety, or capability denial ends that operation immediately; do not retry it through Git gymnastics, helper files, or a temporary workflow unless the user explicitly changes the execution channel or requests a durable capability;
-- do not change repository structure merely to make the current connector easier to use;
-- when the current channel cannot perform the requested change safely, report the required channel instead of forcing completion.
-
-GitHub/static inspection can prove repository state and static contracts. Local/browser/audio/runtime claims require those capabilities to be actually available. Goal, authority, scope, and acceptance criteria do not change with execution channel; only available execution and proof do.
 
 ## User-facing communication
 
