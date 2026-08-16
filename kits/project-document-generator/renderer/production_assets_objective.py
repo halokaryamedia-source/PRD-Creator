@@ -361,6 +361,11 @@ def _flow_order(section: AssetSection | None, flow: str) -> int:
     return int(match.group(1)) if match else 999
 
 
+def _voice_function_text(value: str) -> str:
+    words = " ".join(value.replace("_", " ").split()).strip()
+    return words[:1].upper() + words[1:] if words else ""
+
+
 def _copy_button(target_id: str, label: str) -> str:
     return (
         f'<button class="pa-copy-button" data-pa-copy="{esc(target_id)}" type="button">'
@@ -388,17 +393,38 @@ def _asset_to_item(entry: AssetEntry, section: AssetSection | None, page_id: str
 
 
 def _voice_to_item(
-    entry: voice.VoiceEntry, doc: voice.VoiceProduction, section: AssetSection | None,
-    page_id: str, flow: str, moment: str, function_text: str, order: int,
+    entry: voice.VoiceEntry,
+    doc: voice.VoiceProduction,
+    page_id: str,
+    function_value: str,
+    order: int,
 ) -> ProductionItem:
+    function_text = _voice_function_text(function_value)
+    if not function_text:
+        raise ValueError(
+            f"Voice requirement Function is required for Production Assets presentation: {entry.voice_id}"
+        )
     return ProductionItem(
-        item_id=f"{page_id}-build-{slug(entry.voice_id)}", title=f"{entry.speaker} — {entry.title}",
-        type_label="AUDIO", create_text="", used="", includes="",
-        function_text=function_text or "Story or character audio for this gameplay moment.", asset_brief="", size="",
-        moment=moment or _plain_flow(flow) or "Gameplay Use", flow=flow, flow_order=_flow_order(section, flow),
-        sort_order=order, content=entry.performance, speaker=entry.speaker,
-        selected_voice=voice._voice_for(doc.cast, entry.speaker), duration=entry.duration, is_voice=True,
+        item_id=f"{page_id}-build-{slug(entry.voice_id)}",
+        title=f"{entry.speaker} — {entry.title}",
+        type_label="AUDIO",
+        create_text="",
+        used="",
+        includes="",
+        function_text=function_text,
+        asset_brief="",
+        size="",
+        moment=entry.title,
+        flow="",
+        flow_order=999,
+        sort_order=order,
+        content=entry.performance,
+        speaker=entry.speaker,
+        selected_voice=voice._voice_for(doc.cast, entry.speaker),
+        duration=entry.duration,
+        is_voice=True,
     )
+
 
 def _item_sort_key(item: ProductionItem) -> tuple[int, int, int, str]:
     return (
@@ -409,11 +435,11 @@ def _item_sort_key(item: ProductionItem) -> tuple[int, int, int, str]:
     )
 
 
-def _moment_sort_key(moment: str, items: list[ProductionItem]) -> tuple[int, int, str]:
-    lowered = moment.casefold()
-    if "throughout" in lowered:
-        return (0, 0, lowered)
-    return (1, min((item.flow_order for item in items), default=999), lowered)
+def _moment_sort_key(moment: str, items: list[ProductionItem]) -> tuple[int, int]:
+    return (
+        min((item.flow_order for item in items), default=999),
+        min((item.sort_order for item in items), default=999),
+    )
 
 
 def _reader_section_title(meta: SectionPresentation) -> str:
@@ -470,15 +496,22 @@ def _build_item_html(item: ProductionItem) -> str:
         f'<div class="pa-build-meta">{meta}</div>{exact}</article>'
     )
 
+
 def _moment_html(items: list[ProductionItem]) -> str:
-    grouped={}
-    for item in items: grouped.setdefault(item.moment,[]).append(item)
-    moments=sorted(grouped,key=lambda m:_moment_sort_key(m,grouped[m])); out=[]
-    for i,m in enumerate(moments,1):
-        out.append('<div class="pa-moment"><div class="pa-moment-head">'
-                   f'<span>{i:02d}</span><h3>{esc(m)}</h3></div><div class="pa-build-list">'
-                   +''.join(_build_item_html(x) for x in sorted(grouped[m],key=_item_sort_key))+'</div></div>')
+    grouped = {}
+    for item in items:
+        grouped.setdefault(item.moment, []).append(item)
+    moments = sorted(grouped, key=lambda moment: _moment_sort_key(moment, grouped[moment]))
+    out = []
+    for index, moment in enumerate(moments, 1):
+        out.append(
+            '<div class="pa-moment"><div class="pa-moment-head">'
+            f'<span>{index:02d}</span><h3>{esc(moment)}</h3></div><div class="pa-build-list">'
+            + ''.join(_build_item_html(item) for item in sorted(grouped[moment], key=_item_sort_key))
+            + '</div></div>'
+        )
     return ''.join(out)
+
 
 def _pages_and_nav(
     render_data: dict[str, Any],
@@ -488,9 +521,7 @@ def _pages_and_nav(
 ) -> tuple[str, str]:
     asset_map = {voice._title_key(section.title): section for section in (assets.sections if assets else [])}
     voice_map = {voice._title_key(section.title): section for section in (voice_doc.sections if voice_doc else [])}
-    voice_flows = _voice_requirement_meta(requirements_path, "Flow")
-    voice_moments = _voice_requirement_meta(requirements_path, "Moment")
-    voice_function = _voice_requirement_meta(requirements_path, "For")
+    voice_function = _voice_requirement_meta(requirements_path, "Function")
 
     brand = render_data["document"].get("brand") or render_data["document"]["title"]
     pages: list[str] = []
@@ -508,15 +539,11 @@ def _pages_and_nav(
         ]
         if voice_section and voice_doc:
             for order, entry in enumerate(voice_section.entries, 1):
-                flow = voice_flows.get(entry.voice_id, "")
                 items.append(
                     _voice_to_item(
                         entry,
                         voice_doc,
-                        asset_section,
                         meta.page_id,
-                        flow,
-                        voice_moments.get(entry.voice_id, ""),
                         voice_function.get(entry.voice_id, ""),
                         order,
                     )

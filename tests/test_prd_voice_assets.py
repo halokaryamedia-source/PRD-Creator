@@ -152,6 +152,10 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn("Eleven v3", intro_page)
         self.assertIn("[calm]", intro_page)
         self.assertIn("Begin the trial.", intro_page)
+        self.assertIn("Briefing", intro_page)
+        self.assertIn("<h3>Welcome</h3>", intro_page)
+        self.assertNotIn("Tell the player to begin the trial.", intro_page)
+        self.assertNotIn("Story or character audio for this gameplay moment.", intro_page)
         self.assertNotIn('class="voice-script-context"', intro_page)
         self.assertNotIn('class="voice-production-block"', intro_page)
         self.assertNotIn("<h3>Audio</h3>", intro_page)
@@ -336,6 +340,60 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn('<span class="pa-type pa-type-audio">AUDIO</span>', intro_page)
         self.assertIn("Narrator — Welcome", intro_page)
         self.assertNotIn('class="voice-script-context"', intro_page)
+
+    def test_voice_rendering_rejects_missing_function(self) -> None:
+        without_function = REQ.replace(
+            "- Function: briefing\n", "", 1
+        )
+        rendered, _ = self.render(
+            self.make_project(requirements_text=without_function)
+        )
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn(
+            "Voice requirement Function is required for Production Assets presentation: VO-INTRO-01",
+            rendered.stderr,
+        )
+
+    def test_moment_order_uses_source_order_not_english_wording(self) -> None:
+        ordered_assets = """# Production Asset Requirements
+
+## 02. Core Trial
+
+### UI & Information
+
+#### Entry Message
+Type: UI / TEXT
+Function: Introduces the trial.
+Moment: Entering the Core Trial
+Content:
+```text
+ENTER
+```
+
+#### Persistent Status
+Type: UI / TEXT
+Function: Shows the active trial status.
+Moment: Throughout the Core Trial
+Content:
+```text
+ACTIVE
+```
+"""
+        rendered, output = self.render(
+            self.make_project(
+                include_voice=False,
+                include_assets=True,
+                asset_text=ordered_assets,
+            )
+        )
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        page = self.production_page(
+            output.read_text(encoding="utf-8"), "production-assets-core"
+        )
+        self.assertLess(
+            page.index("Entering the Core Trial"),
+            page.index("Throughout the Core Trial"),
+        )
 
     def test_prd_without_downstream_assets_keeps_production_assets_absent(self) -> None:
         rendered, output = self.render(
