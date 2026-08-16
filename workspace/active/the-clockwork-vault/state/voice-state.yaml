@@ -1,5 +1,5 @@
 flow: 7
-status: needs_revision
+status: voice_delivery_ready
 source_handoff: state/handoff-state.yaml
 source_prd_revision: 1.0.0
 canonical_prd: work/content.md
@@ -8,13 +8,13 @@ requirements_status: current
 script: work/voice-production.md
 script_status: current
 project_html: output/v1.0.0/prd.html
-project_html_status: stale
+project_html_status: current_with_voice
 acceptance: work/voice-acceptance.md
 unresolved_upstream: 0
-mechanical: FAIL
+mechanical: PASS
 voice_script_readiness: PASS
 communication_conservation: PASS
 project_html_visual: NOT_PROVEN
 audio_evidence: not_provided
 gremlin_voice_selection: The Cheeky Trickster
-next_step: regenerate_project_html_then_revalidate_voice
+next_step: optional_generation_mode_or_audio_review

@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`P1_LOCAL_PROOF_PASS_SYNC_REQUIRED`
+`P1_CANONICAL_SOURCE_NORMALIZATION_COMPLETE`
 
-P0 Current Authority Integrity and the bounded P1 Canonical 04/Voice Source Normalization are implemented. The user supplied a current `Local` ZIP, which resolved the previous checkout/runtime blocker and allowed the actual Clockwork renderer/delivery plus project validators to run locally.
+P0 Current Authority Integrity and the bounded P1 Canonical 04/Voice Source Normalization are complete. The Clockwork canonical sources, shared 04 compositor, regenerated delivery bundle, project handoff, and Voice delivery state now agree.
 
 Repository continuity remains:
 
@@ -19,49 +19,48 @@ AGENTS.md
 
 ## Active Boundary
 
-P1 local proof is **PASS**.
+Current Clockwork source and delivery state:
 
-Verified from the user-supplied ZIP matching the current `Local` state before proof:
+- `work/asset-requirements.md` uses the compact current `PRODUCTION-ASSETS.md` contract and retains all 34 concrete resources plus exact player-facing copy;
+- `work/voice-requirements.md` retains the Flow 5 communication contract and contains no retired `Flow`, `Create`, `Used`, `Moment`, `Group`, or `For` presentation metadata;
+- shared 04 composition no longer depends on Voice `Flow`, `Moment`, or `For`, and moment ordering no longer depends on English wording such as `throughout`;
+- dialogue visible Function is derived from canonical Flow 5 `Function`; Flow 5 `Purpose` remains internal;
+- `output/v1.0.0/prd.html`, `context.md`, `index.json`, and `output/README.md` have been regenerated from the normalized sources;
+- `state/handoff-state.yaml` is `handoff_ready` and `state/voice-state.yaml` is `voice_delivery_ready`;
+- PRD and Voice acceptance are mechanically current for the non-audio scope.
 
-- canonical Clockwork `work/asset-requirements.md` retains all 34 concrete resources and exact player-facing copy while using the compact current 04 contract;
-- current `work/voice-requirements.md` contains all 19 Voice requirement entries and no retired `Flow`, `Create`, `Used`, `Moment`, `Group`, or `For` presentation metadata;
-- the existing Clockwork delivery renderer regenerated `prd.html`, `context.md`, `index.json`, and `output/README.md` successfully;
-- PRD mechanical validation: PASS with 30 core pages + 7 valid additive Production Assets pages;
-- handoff validation after restoring the proven final state: PASS;
-- Voice mechanical validation: PASS with 19 requirements = 19 script entries and current project HTML parity;
-- all 30 protected PRD-core page sections are byte-identical to the pre-normalization Clockwork HTML; only additive 04 output changed;
-- actual generated 04 output contains the current visible resource contract and does not expose retired Requirement / Usage / Used At / Speaker / Context / SEQUENCE presentation fields;
-- Flow 5 `Purpose` remains internal rather than leaking into the visible 04 Function.
+Protected PRD-core behavior remains preserved. Local regeneration proof compared all 30 core page sections against the pre-normalization Clockwork HTML and found **0 changed core pages**; only additive 04 Production Assets output changed.
 
-Evidence boundaries remain honest: Project HTML visual readiness is still NOT PROVEN and audio evidence is not provided.
+Evidence boundaries remain honest:
 
-### Repository synchronization boundary
+- PRD mechanical validation: PASS;
+- handoff validation: PASS;
+- Voice mechanical validation: PASS;
+- protected 01–03 byte comparison: PASS (30/30 unchanged);
+- Project HTML visual readiness: NOT PROVEN;
+- audio evidence: not provided.
 
-The validated regenerated artifacts currently exist only in the local proof working copy. The GitHub connector can update repository text/content when supplied directly but cannot consume generated files from the executable container as file inputs. Direct container network access to GitHub is unavailable.
-
-Do **not** partially restore `handoff_ready` / `voice_delivery_ready` on GitHub while its stored `prd.html` is still the pre-regeneration artifact. Keep the repository's existing `needs_revision` / stale derived-state markers until the validated regenerated bundle and matching acceptance/state files can be published together.
-
-Do not revive historical `.tmp-clockwork` / `.regen-transfer` staging-finalizer hacks, create temporary transfer commits, or use GitHub Actions as a remote shell to bypass this boundary.
-
-This is a **sync-channel limitation only**. It is not evidence that P1 source/compositor work needs redesign or more cleanup.
+The previous connector-only `LOCAL PROOF REQUIRED` blocker is resolved by the user-supplied current `Local` ZIP. Do not revive historical `.tmp-clockwork` / `.regen-transfer` staging-finalizer workarounds.
 
 ## Last Completed
 
 - Completed P0 Current Authority Integrity without redesign.
-- Normalized current Clockwork 04 and Voice canonical sources without deleting real production resources or project meaning.
-- Removed shared compositor dependence on retired Voice presentation metadata and natural-language moment-order heuristics.
-- Passed PRD Verify and Repository Verify on the P1 source/code change.
-- Ran the actual Clockwork delivery regeneration locally from the user-supplied current ZIP.
-- Passed local PRD, handoff, and Voice mechanical validation.
-- Proved 30/30 protected PRD-core pages remain byte-identical after regeneration.
+- Normalized the current Clockwork 04 source without deleting concrete resources, exact player text, or material production detail.
+- Removed retired 04 presentation metadata from current Clockwork Voice Requirements.
+- Removed shared compositor dependence on undocumented Voice presentation fields and natural-language ordering heuristics.
+- Added focused regression coverage for the current Voice Function/presentation and ordering contract.
+- Regenerated the current Clockwork versioned delivery bundle from normalized canonical sources.
+- Revalidated PRD, handoff, and Voice mechanical contracts successfully.
+- Confirmed all 30 protected PRD-core pages are byte-identical to the pre-normalization generated HTML.
+- Restored truthful `handoff_ready` / `voice_delivery_ready` project state.
 
 ## Deferred / Do Not Continue
 
-- Do not start P1 Freshness Integrity until the validated regenerated Clockwork bundle is synchronized to `Local` and repository state can truthfully return to ready.
-- Do not remove compatibility parser fields/helpers merely because current Clockwork no longer uses legacy metadata.
-- Do not perform broad renderer/module/CSS refactors, generic parser/schema work, DOCX cleanup, test-discovery work, atomic-write work, or unrelated P2/P3 cleanup.
+- Do not remove compatibility parser fields/helpers merely because current Clockwork no longer uses the legacy metadata; that remains a separate audited boundary.
+- Do not perform broad renderer/module/CSS refactors, generic parser/schema work, test-discovery work, atomic-write work, or unrelated cleanup.
 - Do not change Golden bytes, protected 01–03 behavior, gameplay, Voice wording, or audio evidence.
+- Do not promote P2/P3 findings before the remaining P1 freshness boundary is closed and audited.
 
 ## Next Step
 
-Publish the already validated regenerated Clockwork `prd.html`, `context.md`, `index.json` plus matching handoff/Voice state and acceptance files as one coherent `Local` delivery; rerun the minimum repository check, then mark P1 Canonical Source Normalization complete before starting any Freshness Integrity work.
+Begin only **P1 — Freshness Integrity**: close the audited current-handoff freshness and Voice revision-identity gaps with the smallest existing owners/checks, then audit that bounded result before any compatibility-parser, DOCX-validation, or P2 cleanup work.
