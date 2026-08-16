@@ -280,6 +280,10 @@ Canonical root skills remain:
 
 Do not create renderer/validator/Python/DOCX/research/evidence-gate skills merely because those implementation surfaces exist.
 
+## Execution channel
+
+Execution-channel and GitHub tool-selection rules are owned by **GitHub Operating Discipline → 4. TOOL FIT** above. Do not duplicate a second routing contract here.
+
 ## User-facing communication
 
 Normal Production Execution does not show repository machinery. Default delivery is the requested artifact plus concise material changes/decisions and any real remaining attention item.
