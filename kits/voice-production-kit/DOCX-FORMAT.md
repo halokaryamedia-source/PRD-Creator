@@ -2,7 +2,7 @@
 
 `output/Voice Production.docx` is an **optional derived export** built from `work/voice-production.md`.
 
-The canonical Markdown owns wording/cast. The default human-facing production surface is now `output/final.html → Production Assets → Voice`. DOCX exists only when a portable document is explicitly requested or materially useful.
+The canonical Markdown owns wording/cast. The default human-facing production surface is now `output/v<document.version>/prd.html → Production Assets → Voice`. DOCX exists only when a portable document is explicitly requested or materially useful.
 
 ## Approved reference
 

@@ -4,4 +4,3 @@ status: ready_for_prd
 ready_for_prd: true
 preview_approved: true
 revision_scope: objectives_1_to_4_and_derived_production_assets
-next_step: revise_canonical_prd_from_approved_bounded_model

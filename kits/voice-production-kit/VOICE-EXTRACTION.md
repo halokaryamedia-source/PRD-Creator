@@ -9,7 +9,8 @@ Start only when the current project has:
 - `state/handoff-state.yaml` with `status: handoff_ready`;
 - `accepted_prd_version` matching the current `work/render-data.json → document.version`;
 - accepted `work/content.md` for that same PRD version;
-- `work/acceptance.md` and `output/team-handoff.md` at the recorded handoff paths;
+- `work/acceptance.md` and `output/README.md` at the recorded handoff paths;
+- the current versioned `output/v<accepted_prd_version>/prd.html`, `context.md`, and `index.json` bundle at the recorded handoff paths;
 - no unresolved upstream decision affecting current Voice scope.
 
 Before extraction, run:
@@ -27,8 +28,8 @@ Use this order:
 
 1. accepted `work/content.md` — canonical project meaning;
 2. `state/requirement-register.yaml` — approved requirement traceability;
-3. `output/team-handoff.md` — navigation/scope aid;
-4. `output/final.html` — presentation aid;
+3. `output/README.md` — navigation/scope aid;
+4. `output/v<accepted_prd_version>/prd.html` — presentation aid;
 5. approved Voice Production reference — structure/quality evidence only.
 
 Reference projects never supply new project facts, speakers, channels, triggers, or Voice moments.
