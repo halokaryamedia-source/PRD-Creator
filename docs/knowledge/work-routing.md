@@ -1,6 +1,6 @@
 # Work Routing
 
-Updated: 2026-08-16
+Updated: 2026-08-17
 
 Use this note as the single **agent work-routing map**. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
 
@@ -8,7 +8,7 @@ Use this note as the single **agent work-routing map**. It is separate from the 
 
 ```mermaid
 flowchart TD
-    A[User request] --> B[Boot repository memory<br/>AGENTS → CONTEXT → next-action]
+    A[User request] --> B[Boot minimally<br/>AGENTS → only applicable state/owner]
     B --> C{Work mode}
 
     C -->|Plan| P[Ground problem / inspect owner<br/>No edit until method/scope is clear]
@@ -48,6 +48,26 @@ flowchart TD
     F -- Yes --> OK[Selesai]
     OK --> U[Update only canonical state/decision/review/owner that changed]
 ```
+
+## Minimal Boot
+
+Start from root `AGENTS.md`, then load only state that can change the task:
+
+```text
+material GitHub work
+→ GITHUB_RULES.md Core Rules
+
+stable product/boundary facts matter
+→ CONTEXT.md
+
+continuing/changing active milestone or blocker
+→ next-action.md
+
+implementation/semantic decision
+→ smallest relevant owner
+```
+
+Do not open `CONTEXT.md` and `next-action.md` merely because a session is material. Conditional GitHub surfaces, review history, decisions, activation matrix, and secondary indexes are opened only when their information can change the decision.
 
 ## Mode Boundary
 
@@ -185,7 +205,13 @@ When a material claim cannot be proven in the active execution channel, use root
 
 New session:
 
-`AGENTS.md` → `CONTEXT.md` → `next-action.md`
+```text
+AGENTS.md
+→ GITHUB_RULES.md Core Rules when GitHub work is material
+→ CONTEXT.md only when stable facts matter
+→ next-action.md only when active continuation matters
+→ smallest relevant owner
+```
 
 Open the activation matrix **only when the correct owner/skill is genuinely ambiguous**. Do not load every review, decision, or kit during normal boot unless the active boundary requires it.
 

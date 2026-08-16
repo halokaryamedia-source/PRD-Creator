@@ -1,6 +1,6 @@
 # Development Workflow
 
-Updated: 2026-08-16
+Updated: 2026-08-17
 
 This is the end-to-end path for **repository/system Developing** work in PRD-Creator.
 
@@ -70,29 +70,22 @@ If a PRD system change later invalidates Voice behavior, finish the upstream cor
 
 ## Execution Channel
 
-Apply the root `AGENTS.md` **Execution channel and tool fit** gate before any write. This workflow does not authorize connector workarounds when the root gate says the current channel is a mismatch.
+GitHub mechanics, tool fit, commit atomicity/history quality, retries, and GitHub proof boundaries are canonical in [`GITHUB_RULES.md`](../../../GITHUB_RULES.md). Do not restate or fork those mechanics here.
 
-### ChatGPT → GitHub
+This workflow adds only the Developing-specific selection rule:
 
-Use this channel for bounded repository reads, small complete text-file edits, and static/CI inspection that the connector supports natively.
+```text
+bounded static repository change that fits GITHUB_RULES
+→ GitHub-capable channel
 
-- Use direct branch/file fetches for current state; use search only for discovery.
-- A safe `update_file` requires the complete current file and represents one full-file replacement. Do not chunk it or reconstruct a large file from partial reads.
-- Large/multi-hunk refactors, atomic multi-file changes, binary edits, or tasks that need real patch semantics belong in a Local/Codex-style git workspace instead of repeated SHA-chained replacements.
-- Browser/audio/local runtime work requires the corresponding real capability. Do not create a temporary GitHub Action as a fallback shell.
-- Permission/safety/capability denial is a hard stop for that operation unless the user explicitly changes channel or asks for a durable capability.
+coordinated multi-file / patch-semantic / local build-runtime need
+→ Local or Codex-style workspace with the required capability
 
-Do not claim:
+browser / audio / local runtime acceptance claim
+→ actual matching capability
+```
 
-- browser interaction success without browser proof;
-- generated-audio quality without actual audio;
-- local runtime success without the corresponding runtime check.
-
-When a material claim remains unproven, leave the exact local proof required.
-
-### Local / Codex-style
-
-Use the same brief and acceptance criteria. Prefer this channel when work needs real patch semantics, coordinated multi-file edits, local build/runtime tools, or other capabilities that GitHub connector does not safely provide. Run the smallest local check that can prove/disprove the remaining claim. Do not restart planning or run broad suites merely because a shell is available.
+Use the same development brief and acceptance criteria across channels. Do not restart planning, broaden validation, or create a workaround merely because another tool exists. When a material claim cannot be proved in the active channel, leave the exact proof requirement instead of upgrading the claim.
 
 ## Implementation
 

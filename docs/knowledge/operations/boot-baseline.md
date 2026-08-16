@@ -1,6 +1,6 @@
 # Boot and Routing Baseline
 
-Updated: 2026-08-13
+Updated: 2026-08-17
 
 This baseline checks that a new session reaches the correct owner without unnecessary repository-wide reading.
 
@@ -8,12 +8,13 @@ This baseline checks that a new session reaches the correct owner without unnece
 
 ```text
 AGENTS.md
-→ CONTEXT.md
-→ docs/knowledge/next-action.md
+→ GITHUB_RULES.md Core Rules when GitHub work is material
+→ CONTEXT.md only when stable product/boundary facts matter
+→ docs/knowledge/next-action.md only when active continuation matters
 → smallest relevant owner
 ```
 
-Use `skills/activation-matrix.md` only when the correct specialist is genuinely ambiguous.
+Conditional GitHub surfaces are opened only when the task touches them. Use `skills/activation-matrix.md` only when the correct specialist is genuinely ambiguous.
 
 ## Expected Routing
 
@@ -33,9 +34,10 @@ Normal project Production Execution does **not** use `development-brief`.
 A route passes when:
 
 - the correct owner is reached without broad-reading unrelated docs/projects;
+- `CONTEXT.md` / `next-action.md` are loaded only when their state can change the task;
 - project production is not misclassified as repository development;
 - no redundant skill/state system is activated;
 - evidence expectations match the execution channel;
-- known repository context is reused instead of asking the user to reconstruct it.
+- known relevant repository context is reused instead of asking the user to reconstruct it.
 
 Add a scenario only after a real routing failure exposes a missing case. Do not maintain ceremonial routing telemetry.

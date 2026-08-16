@@ -1,6 +1,6 @@
 # Maintenance Workflow
 
-Updated: 2026-08-10
+Updated: 2026-08-17
 
 Use Maintenance for bugs, regressions, review/cleanup, stale documentation, broken routing, and behavior-preserving refactors.
 
@@ -25,7 +25,7 @@ User reports bug/review/cleanup
 - **Small refactor** — preserve behavior; prefer deletion/simplification over new abstraction.
 - **Cross-owner refactor** — pause and define a durable change contract only when multiple semantic owners must change together.
 - **Documentation cleanup** — edit the current owner, remove stale/duplicate routing, verify affected links.
-- **Historical review cleanup** — do not rewrite old evidence as if newly observed; update `reviews/review-graph.md` instead.
+- **Historical review cleanup** — preserve review bodies as capture-time evidence; update the current meaning/routing in [`reviews/README.md`](../reviews/README.md) only when needed.
 
 ## Owner Routing
 

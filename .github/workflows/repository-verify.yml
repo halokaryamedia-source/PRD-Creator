@@ -6,6 +6,7 @@ on:
       - Local
     paths:
       - "AGENTS.md"
+      - "GITHUB_RULES.md"
       - "CONTEXT.md"
       - "README.md"
       - ".agents/skills/**"
@@ -25,6 +26,7 @@ on:
       - main
     paths:
       - "AGENTS.md"
+      - "GITHUB_RULES.md"
       - "CONTEXT.md"
       - "README.md"
       - ".agents/skills/**"

@@ -8,19 +8,18 @@ This repository is project memory. Current repository/project sources are author
 - Work directly on `Local`; do not create routine task branches/PRs.
 - `main` changes only when the user explicitly requests it.
 
-For every material session, boot with only:
+Start with this file, then load only state that can materially change the current decision:
 
-1. `CONTEXT.md` — stable product/boundary facts;
-2. `docs/knowledge/next-action.md` — current status + one next step;
-3. the smallest owner required by the task.
+1. [GITHUB_RULES.md](GITHUB_RULES.md) **Core Rules** for material GitHub work; use its conditional surface only when the task touches that surface;
+2. `CONTEXT.md` only when stable product/boundary facts matter;
+3. `docs/knowledge/next-action.md` only when continuing, pausing, or changing the active milestone/status;
+4. the smallest owner required by the task.
 
-Open `docs/knowledge/skills/activation-matrix.md` only when the correct skill/owner is genuinely ambiguous. Use `docs/knowledge/README.md`, `docs/knowledge/ownership.md`, or `docs/knowledge/source-authority.md` only when direct ownership is unclear. Do not broad-read saved projects, all docs, review history, generated output, or Git history by default.
+Do not open `CONTEXT.md` or `next-action.md` by ritual for a bounded repository/docs/mechanical task when neither can change the decision. Open `docs/knowledge/skills/activation-matrix.md` only when the correct skill/owner is genuinely ambiguous. Use `docs/knowledge/README.md`, `docs/knowledge/ownership.md`, or `docs/knowledge/source-authority.md` only when direct ownership is unclear. Do not broad-read saved projects, all docs, review history, generated output, or Git history by default.
 
 ## GitHub work
 
-For any material GitHub read/write, read and follow [GITHUB_RULES.md](GITHUB_RULES.md) before editing.
-
-`GITHUB_RULES.md` is the canonical ChatGPT ↔ GitHub operating policy. Repository-specific rules here may narrow domain behavior, but they do not duplicate or weaken its safety, tool-fit, validation, retry, or STOP rules.
+`GITHUB_RULES.md` is the canonical ChatGPT ↔ GitHub operating policy. Repository-specific rules here may narrow domain behavior, but they do not duplicate or weaken its safety, history-quality, tool-fit, validation, retry, or STOP rules.
 
 ## Work modes
 
