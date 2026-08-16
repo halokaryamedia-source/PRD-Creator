@@ -2,32 +2,26 @@
 
 ## Current Status
 
-`GITHUB_EXECUTION_SIMPLIFICATION_ACTIVE`
+`GITHUB_OPERATING_DISCIPLINE_CONSOLIDATED`
 
-The PRD 01–04 development boundary is considered finished for now. Current development focus is reducing ChatGPT ↔ GitHub execution waste and preventing connector misuse.
-
-Root `AGENTS.md` now owns an explicit tool/channel fit gate before any write:
+The PRD 01–04 development boundary remains finished for now. ChatGPT ↔ GitHub execution rules are now consolidated in root `AGENTS.md` into one canonical sequence:
 
 ```text
-need current state
-→ direct branch/file fetch
-
-small complete text edit
-→ GitHub Contents API
-
-large/multi-hunk/multi-file/atomic/binary work
-→ Local/Codex-style git workspace
-
-browser/audio/local runtime
-→ actual matching capability
+PIN
+→ READ MINIMUM
+→ DIAGNOSE
+→ TOOL FIT
+→ WRITE ONCE
+→ VERIFY MINIMUM
+→ STOP
 ```
 
-The gate also forbids partial-read full replacement, chunked `update_file`, SHA-type confusion, temporary GitHub Actions as a fallback shell, retrying permission/capability denials through Git gymnastics, and changing repository structure merely to make the connector easier to use.
+The root discipline now covers the recurring failure modes that previously caused slow or noisy repository work: broad reading, wrong-owner fixes, adjacent cleanup, full-file replacement from partial context, chunked `update_file`, SHA-type confusion, Git gymnastics after capability denial, repeated intermediate commits, CI/proof chasing, broad validation for unrelated changes, temporary workflows, verification workflows that mutate the branch, automatic publishing on every push, unchanged reruns, and failure to stop after sufficient proof.
 
-`docs/knowledge/workflows/development.md` now routes Developing work through that root gate instead of treating ChatGPT → GitHub as a universal execution channel.
+Default efficiency budgets are explicit: 1–3 owner reads, zero history reads by default, zero new workflows/abstractions/files unless justified, one intentional write per file, at most one relevant CI gate, maximum two same-cause retries, zero capability-denial retries, and zero adjacent cleanup.
 
-No new Skill, workflow, validator, framework, or regression suite was added for this change.
+No new Skill, workflow, validator, framework, or orchestration layer was added. Existing PRD/Voice domain ownership remains unchanged.
 
 ## Next Step
 
-Simplify the remaining validation/commit discipline so normal GitHub work uses the minimum relevant proof and stops without proof-chasing or unnecessary intermediate commits.
+Use the consolidated discipline during normal repository work. Change it again only when a concrete recurring execution defect shows that one of these rules is insufficient or incorrect.
