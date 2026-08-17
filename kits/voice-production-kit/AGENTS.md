@@ -13,7 +13,6 @@ Detailed normal Flow 5–7 Production Execution is `SKILL.md`. Do not duplicate 
 | Flow 6 end-to-end kit procedure | `SKILL.md` |
 | Eleven v3 performance-writing craft | `SOUNDMAKER.md` |
 | Flow 7 validation/evidence | `VOICE-VALIDATION.md` |
-| optional DOCX presentation | `DOCX-FORMAT.md` |
 | package overview/navigation | `README.md` |
 
 Do not broad-read every Voice/reference file by default. Deep Eleven v3 references are opened only when the current writing/evidence question needs them.
@@ -24,7 +23,7 @@ Do not broad-read every Voice/reference file by default. Deep Eleven v3 referenc
 Voice scope / Speaker / Channel / Trigger / Purpose / wording / readiness meaning wrong
 → root voice-production + smallest semantic owner
 
-Voice semantics correct; builder/validator/presentation mechanics wrong
+Voice semantics correct; validator/presentation mechanics wrong
 → exact implementation owner below
 ```
 
@@ -34,9 +33,7 @@ A technical file does not automatically require the semantic specialist. A techn
 
 - project 04 objective/moment-first composition/navigation → `kits/project-document-generator/renderer/production_assets_objective.py`;
 - Voice-specific 04 parsing/presentation primitives → `kits/project-document-generator/renderer/production_assets.py`;
-- optional DOCX generation/pagination → `builder/build_docx.py`;
-- optional DOCX presentation contract → `DOCX-FORMAT.md`;
-- Voice mechanical parity/derived-output validation → `validator/validate.py`;
+- Voice mechanical parity/project-HTML validation → `validator/validate.py`;
 - shared dependency/test/CI → repository-engineering owners.
 
 Exact reader-facing 04 resource fields/layout are owned by `kits/project-document-generator/PRODUCTION-ASSETS.md` plus the current shared compositor contract. Do not maintain another Voice HTML schema here.
@@ -50,7 +47,7 @@ accepted project / PRD meaning
 → Voice acceptance/state
 ```
 
-Project HTML and optional DOCX are derived presentation/export surfaces. Never hand-edit them as the source fix.
+Project HTML is derived presentation. Never hand-edit it as the source fix.
 
 Flow 5 requirements own Voice scope/communication context. `work/voice-production.md` owns canonical production wording/performance. Presentation code may organize that data but may not create new Voice moments, project facts, actor decisions, or wording.
 
@@ -59,7 +56,7 @@ Flow 5 requirements own Voice scope/communication context. `work/voice-productio
 - recover current project/Voice canonical state before asking the user;
 - use the smallest current Flow owner rather than loading all Voice docs;
 - open deep Eleven/reference material only for the current evidence/craft question;
-- do not load generated project HTML/DOCX merely to reason about canonical Voice meaning;
+- do not load generated project HTML merely to reason about canonical Voice meaning;
 - visual claims require actual render/browser/page evidence;
 - generated-audio claims require actual audio evidence.
 
@@ -80,10 +77,9 @@ Voice-only production/mechanical changes do not reopen PRD-core acceptance when 
 ## Verification routing
 
 - repository/docs/routing-only changes → `Repository Verify` when owned by its paths;
-- Voice builder/validator/test/dependency changes → `Voice Verify`;
+- Voice validator/test/dependency changes → `Voice Verify`;
 - shared Project Document 04 compositor changes → `PRD Verify`;
 - project HTML visual PASS → actual browser/render evidence;
-- optional DOCX visual PASS → rendered-page evidence;
 - audio quality → actual audio evidence.
 
 Do not run unrelated verification for ceremony.
@@ -94,5 +90,5 @@ Do not run unrelated verification for ceremony.
 - root `voice-production` owns reusable semantic judgment;
 - Project Document Generator owns shared 04 composition mechanics and non-Voice 04 requirements;
 - upstream project/PRD authority owns gameplay/story truth;
-- DOCX remains optional export;
+- the former Voice DOCX export path is retired and must not be reintroduced without a new explicit product requirement;
 - do not add a second Voice HTML, generic asset framework, new root skill, or extra workflow layer without a concrete need.

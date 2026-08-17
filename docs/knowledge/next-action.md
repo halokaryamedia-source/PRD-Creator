@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`P2_MECHANICAL_CLEANUP_COMPLETE`
+`P1_3_VOICE_DOCX_PATH_RETIRED`
 
-P0 Current Authority Integrity and both bounded P1 remediations remain complete. P2 Mechanical Cleanup is complete after the reproduced Production Assets / Voice residue was removed and F16 duplicated parsing was re-triaged against the post-F15 implementation.
+P0 Current Authority Integrity, the bounded P1 freshness/source remediations, and P2 mechanical cleanup remain complete. The historical P1.3 DOCX integrity branch has now been reconciled with the current product architecture by retiring DOCX instead of hardening an unused optional export.
 
 Repository continuity remains:
 
@@ -19,51 +19,48 @@ AGENTS.md
 
 ## Active Boundary
 
-### F15 / legacy compositor residue
+Current Voice delivery has one canonical production source and one normal human-facing derived presentation:
 
-Closed in the previous bounded deliveries:
+```text
+accepted PRD / handoff
+→ work/voice-requirements.md
+→ exact revision + SHA-bound work/voice-production.md
+→ output/v<document.version>/prd.html → 04 Production Assets → AUDIO
+→ work/voice-acceptance.md + state/voice-state.yaml
+```
 
-- retired Voice compositor helpers removed;
-- legacy Voice dashboard/card/setup CSS removed;
-- dead `data-voice-copy` JavaScript payload removed;
-- current `data-pa-copy` / `OBJECTIVE_COPY_SCRIPT` remains the single active 04 copy path.
+The former DOCX export was not referenced by the current Clockwork Voice state and was not required by the default Voice delivery gate. Keeping a builder, validator branch, dependency chain, tests, and documentation solely for that unused optional path added maintenance surface without current product value.
 
-The intentionally empty `VOICE_COPY_SCRIPT` compatibility symbol/callsite remains harmless and should not receive a separate cleanup commit.
+The retirement therefore removes the active DOCX path instead of implementing the historical DOCX per-entry hardening item:
 
-### F16 / duplicated Voice parsing
+- `kits/voice-production-kit/builder/build_docx.py` removed;
+- `kits/voice-production-kit/DOCX-FORMAT.md` removed;
+- Voice validator no longer imports `python-docx`, looks for `Voice Production.docx`, validates DOCX, or reports DOCX status;
+- Voice regression coverage now validates the canonical Requirements → Script → project-HTML chain directly and preserves controlled empty-section failure without the retired builder;
+- `python-docx` and its lock-only support dependencies are removed from the active verification environment;
+- `kits/voice-production-kit/requirements.txt` is removed because the Voice kit has no current direct third-party Python dependency;
+- current Flow/ownership/workspace/routing docs no longer advertise DOCX as a supported or optional delivery surface;
+- repository verification records the former DOCX owner paths as retired boundaries so they do not silently return.
 
-Re-check found that a cross-kit canonical parser is **not worthwhile** under the current contracts:
+Historical CHANGELOG/review/audit evidence may still mention past DOCX work. Those files are historical evidence, not current routing or product authority, and are not rewritten merely to erase history.
 
-- the PRD renderer needs presentation data only: cast, section, Speaker, duration, and performance payload;
-- the Voice validator additionally owns Type parity, revision identity, validation errors, project-HTML/DOCX gates, and stricter mechanical checks;
-- the optional DOCX builder additionally owns document title/version/source metadata and export-specific structure;
-- forcing those owners through one shared parser would add a cross-kit dependency/model and more moving parts than it removes.
-
-Within the renderer helper, legacy `Flow` and `For` Voice Requirement scanners had no production caller or active contract and are removed. `parse_voice_requirement_triggers()` is retained as the existing compatibility primitive because the current PRD regression contract explicitly protects it; CI proved removing it would change that contract. No test was rewritten merely to justify cleanup.
-
-No generic Markdown/parser framework was created. The remaining parser separation is intentional and recorded as **not worthwhile**, not as an open defect.
+No Golden bytes, protected PRD 01–03 behavior, gameplay, Voice requirements, canonical Voice wording/performance, Clockwork state, acceptance result, or current project HTML are changed by this retirement.
 
 ## Proof
 
-- `tests.test_prd_voice_assets`: PASS (`12/12`);
-- PRD core/content/delivery regression batch: PASS (`22/22`);
-- Flow 2 / Golden / handoff / hierarchy regression batch: PASS (`20/20`);
-- Repository Verify: PASS;
-- current Voice `Function` rendering and missing-Function failure behavior remain covered by existing 04 regressions;
-- protected-core additive 04 behavior remains PASS.
-
-No Golden bytes, protected 01–03 behavior, gameplay, Production Asset resource meaning, Voice wording/performance, project state, acceptance result, or evidence/readiness claim changed.
+- focused Voice validator regression: PASS (`12/12`) without `python-docx`;
+- empty Voice section still fails in a controlled way through the current validator;
+- current revision identity, Voice ID/Type/Speaker parity, Source Voice Requirements SHA binding, and project-HTML prompt parity remain covered;
+- Voice/Repository CI must pass on the final `Local` delivery before this status is considered fully proven.
 
 ## Deferred / Do Not Continue
 
-- Do not create a shared/generic Markdown parser framework for renderer + validator + DOCX builder.
-- Do not remove `parse_voice_requirement_triggers()` merely for symmetry while the current regression contract protects it.
-- Do not create a separate commit merely to remove the empty `VOICE_COPY_SCRIPT` compatibility symbol/callsite.
-- Do not refactor `_engine.STORAGE_PREFIX_TOKEN` or other conditional concurrency/reentrancy concerns without a reproduced failure.
-- Do not add test-discovery, atomic-write, registry, manifest, schema, or workflow frameworks without a concrete defect.
-- Do not clean `.regen-transfer`, supersession history, DOCX internals, unrelated CSS, or dense functions merely for aesthetics.
+- Do not replace DOCX with another export format, PDF generator, portable-document framework, or second Voice HTML.
+- Do not reintroduce `python-docx`, a DOCX builder, or DOCX validation without a new explicit product requirement.
+- Do not rewrite historical audits/CHANGELOG entries solely because they record former DOCX evidence.
+- Do not advance to P1.5 test-discovery or other historical TODOs automatically; the user explicitly limited this work to P1.3.
 - Do not change Golden bytes, gameplay, Voice wording, or evidence/readiness claims.
 
 ## Next Step
 
-Stop automatic audit/cleanup work. Resume only from a new concrete user-approved product/document requirement or a reproduced defect; diagnose its first wrong owner and apply the smallest relevant fix rather than promoting deferred P3/theoretical cleanup.
+Stop P1.3 after final Voice Verify and Repository Verify pass. Resume only from a new explicit user-approved requirement or reproduced defect; do not automatically continue to P1.5.

@@ -2,7 +2,7 @@
 
 Flow 7 validates the exact current Voice revision and decides whether the requested production scope is ready.
 
-The default human-facing presentation is the same `output/v<document.version>/prd.html` project document used by the PRD. DOCX is optional export only.
+The default human-facing presentation is the same `output/v<document.version>/prd.html` project document used by the PRD.
 
 ## Entry
 
@@ -20,8 +20,6 @@ python kits/voice-production-kit/validator/validate.py \
 Mechanical validation always checks current Voice ID/Type/Speaker parity and canonical script structure. It also checks that the current accepted PRD handoff, `voice-state.yaml.source_prd_revision`, `render-data.document.version`, the Flow 5 `Source PRD revision`, and the Flow 6 source revision agree. The `Source Voice Requirements` SHA-256 in `voice-production.md` must match the exact current `work/voice-requirements.md` bytes.
 
 When `output/v<document.version>/prd.html` exists, it also checks Voice section/prompt identity and exact canonical payload parity. The Project Document 04 regression owns the current visible AUDIO field/layout contract; do not duplicate that compositor contract inside the Voice validator.
-
-DOCX is checked only when that optional export exists.
 
 Mechanical PASS does not prove semantic or visual quality.
 
@@ -70,9 +68,9 @@ Project HTML Visual: PASS | FAIL | NOT PROVEN
 
 Static inspection cannot establish visual PASS without actual rendered/browser evidence.
 
-## Optional scopes
+## Optional scope
 
-DOCX is reviewed only when that export exists/is claimed. Audio evidence is separate from non-audio script/project-HTML readiness and must be reported honestly.
+Audio evidence is separate from non-audio script/project-HTML readiness and must be reported honestly.
 
 ## First wrong owner
 
@@ -81,7 +79,6 @@ project/gameplay/story fact → PRD authority
 Voice scope/context → Flow 5
 canonical Voice wording/duration → Flow 6
 correct canonical data + wrong Production Assets HTML → PRD renderer compositor
-optional DOCX-only issue → Voice DOCX builder
 ```
 
 ## Acceptance record
@@ -96,7 +93,6 @@ Voice Script Readiness: PASS | FAIL
 Communication Conservation: PASS | FAIL
 Project HTML Visual: PASS | FAIL | NOT PROVEN
 Audio Evidence: not_provided | partial_review | reviewed_passed | reviewed_with_findings
-DOCX Visual: PASS | FAIL | NOT PROVEN   # only when DOCX exists/is claimed
 Findings: <only when findings exist>
 Critical: N
 Major: N

@@ -31,7 +31,7 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | `docs/foundation/` | durable Flow 1–7 production policy |
 | `docs/knowledge/` | continuity, routing, ownership, decisions, evidence, backlog |
 | `kits/project-document-generator/` | Flow 2–4 + bounded non-Voice 04 procedure/implementation |
-| `kits/voice-production-kit/` | Flow 5–7 procedure/implementation + optional DOCX |
+| `kits/voice-production-kit/` | Flow 5–7 procedure/implementation |
 | `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering / repeatable verification |
 | `workspace/active/` | current project packages |
 | `workspace/archive/` | inactive retained project packages |
@@ -81,8 +81,6 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | Flow 7 durable policy | `docs/foundation/07-voice-validation-delivery.md` |
 | Flow 7 detailed validation/evidence procedure | `kits/voice-production-kit/VOICE-VALIDATION.md` |
 | Voice kit module/file routing | `kits/voice-production-kit/AGENTS.md` |
-| optional DOCX presentation contract | `kits/voice-production-kit/DOCX-FORMAT.md` |
-| optional DOCX builder | `kits/voice-production-kit/builder/build_docx.py` |
 | Voice mechanical validation | `kits/voice-production-kit/validator/validate.py` |
 | Voice semantic/validator regressions | `tests/test_voice_contracts.py` |
 | mixed Voice/non-Voice 04 composition regression | `tests/test_prd_voice_assets.py` |

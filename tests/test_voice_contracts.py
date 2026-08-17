@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import hashlib
-import html
 import json
 import subprocess
 import sys
@@ -9,10 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from docx import Document
-
 ROOT = Path(__file__).resolve().parents[1]
-BUILDER = ROOT / "kits" / "voice-production-kit" / "builder" / "build_docx.py"
 VALIDATOR = ROOT / "kits" / "voice-production-kit" / "validator" / "validate.py"
 
 
@@ -168,38 +164,13 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         return project
 
-    def build(self, project: Path) -> subprocess.CompletedProcess[str]:
-        return run_cli(
-            BUILDER,
-            project / "work/voice-production.md",
-            project / "output/Voice Production.docx",
-            "--requirements",
-            project / "work/voice-requirements.md",
-        )
-
-    def test_builder_and_validator_happy_path_preserves_section_break_contract(self) -> None:
+    def test_validator_happy_path_needs_no_docx_export(self) -> None:
         project = self.make_project()
-
-        built = self.build(project)
-        self.assertEqual(built.returncode, 0, built.stderr or built.stdout)
-
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         self.assertIn("VOICE VALIDATION PASS", validated.stdout)
-
-        doc = Document(project / "output/Voice Production.docx")
-        full_text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
-        self.assertIn("Speaker: Narrator", full_text)
-        self.assertIn("Speaker: Guide", full_text)
-
-        headings = [
-            paragraph
-            for paragraph in doc.paragraphs
-            if paragraph.style.name == "Heading 1"
-        ]
-        self.assertEqual([paragraph.text for paragraph in headings], ["Intro", "Ending"])
-        self.assertIsNot(headings[0].paragraph_format.page_break_before, True)
-        self.assertIs(headings[1].paragraph_format.page_break_before, True)
+        self.assertIn("project_html=not_provided", validated.stdout)
+        self.assertNotIn("docx=", validated.stdout.casefold())
 
     def test_validator_accepts_current_project_html_objective_contract(self) -> None:
         project = self.make_project()
@@ -264,44 +235,32 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("Upstream PRD handoff status is 'needs_revision'", validated.stdout)
 
-    def test_builder_rejects_missing_voice_id_parity(self) -> None:
+    def test_validator_rejects_missing_voice_id_parity(self) -> None:
         project = self.make_project(requirements(extra_id=True))
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Script missing Voice IDs: VO-EXTRA-01", validated.stdout)
 
-        built = self.build(project)
-        self.assertEqual(built.returncode, 2)
-        self.assertIn("Voice requirement parity failed", built.stderr)
-        self.assertIn("missing script IDs: VO-EXTRA-01", built.stderr)
-
-    def test_builder_rejects_type_mismatch(self) -> None:
+    def test_validator_rejects_type_mismatch(self) -> None:
         project = self.make_project(requirements(type_override="Direct NPC Dialogue"))
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Type mismatch for VO-INTRO-01", validated.stdout)
 
-        built = self.build(project)
-        self.assertEqual(built.returncode, 2)
-        self.assertIn(
-            "Voice Type differs from Flow 5 requirement for: VO-INTRO-01",
-            built.stderr,
-        )
-
-    def test_builder_rejects_speaker_mismatch(self) -> None:
+    def test_validator_rejects_speaker_mismatch(self) -> None:
         script = SCRIPT.replace("Speaker: Narrator", "Speaker: Guide", 1)
         project = self.make_project(script_text=script)
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Speaker mismatch for VO-INTRO-01", validated.stdout)
 
-        built = self.build(project)
-        self.assertEqual(built.returncode, 2)
-        self.assertIn(
-            "Voice Speaker differs from Flow 5 requirement for: VO-INTRO-01",
-            built.stderr,
-        )
-
-    def test_builder_rejects_empty_section_without_traceback(self) -> None:
+    def test_validator_rejects_empty_section_without_traceback(self) -> None:
         script = SCRIPT.replace("## Ending", "## Empty Section\n\n## Ending", 1)
         project = self.make_project(script_text=script)
-
-        built = self.build(project)
-        self.assertEqual(built.returncode, 2)
-        self.assertNotIn("Traceback", built.stderr)
-        self.assertIn("Voice section has no entries: Empty Section", built.stderr)
-        self.assertFalse((project / "output/Voice Production.docx").exists())
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 2)
+        self.assertNotIn("Traceback", validated.stderr)
+        self.assertIn("Voice section has no entries: Empty Section", validated.stderr)
 
     def test_validator_rejects_voice_without_initial_performance_tag(self) -> None:
         script = SCRIPT.replace("[calm]\nBegin the trial.", "Begin the trial.", 1)
@@ -313,6 +272,12 @@ class VoiceProductionContracts(unittest.TestCase):
             "VO-INTRO-01 performance must begin with at least one initial [performance direction] tag",
             validated.stderr,
         )
+
+    def test_validator_has_no_docx_runtime_path(self) -> None:
+        source = VALIDATOR.read_text(encoding="utf-8")
+        self.assertNotIn("from docx import", source)
+        self.assertNotIn("def validate_docx(", source)
+        self.assertNotIn("Voice Production.docx", source)
 
 
 if __name__ == "__main__":

@@ -23,8 +23,7 @@ accepted project / PRD meaning
 - `voice-requirements.md` owns Voice asset scope, communication intent/context, and authoritative timing truth when one exists;
 - `SOUNDMAKER.md` owns Eleven v3 preparation/generation procedure;
 - `voice-production.md` owns selected actor voice when known, Estimated Duration, and exact performance wording;
-- project HTML is derived presentation only;
-- DOCX is optional export.
+- project HTML is derived presentation only.
 
 # Flow 5 → Flow 6 interface
 
@@ -152,10 +151,6 @@ Performance-direction tags remain visually distinct without changing copied byte
 
 No separate Voice HTML is created by default.
 
-# Optional DOCX
-
-`Voice Production.docx` remains available only when explicitly requested or materially useful as a portable export. It is not a normal Flow 6 readiness requirement.
-
 # Generation Mode
 
 Used only when actual ElevenLabs output is requested.
@@ -182,7 +177,6 @@ project fact → PRD authority
 Voice scope/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
 wording/performance/Estimated Duration/actor selection → Flow 6
 correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
-optional DOCX-only defect → Voice DOCX builder
 audio-only defect → Generation Mode
 ```
 

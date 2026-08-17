@@ -50,10 +50,10 @@ current user instruction
 → accepted PRD / handoff
 → optional Voice requirements
 → canonical Voice Production
-→ derived HTML / optional DOCX / evidence
+→ derived project HTML / evidence
 ```
 
-Authority decreases downstream. Generated HTML, DOCX, render projections, reviews, and other derived artifacts do not repair or outrank their canonical source.
+Authority decreases downstream. Generated HTML, render projections, reviews, and other derived artifacts do not repair or outrank their canonical source.
 
 When a downstream step exposes missing or contradictory upstream meaning, return only the affected decision to the correct upstream owner. Do not hide the gap with polished prose, renderer defaults, or invented asset/script detail.
 
@@ -86,8 +86,7 @@ Owns Flow 5–7:
 
 - extracting justified Voice requirements from accepted project/PRD meaning;
 - canonical Eleven v3 production wording/performance;
-- Voice validation and delivery evidence;
-- optional DOCX export when requested/useful.
+- Voice validation and delivery evidence.
 
 Voice presentation may appear as `AUDIO` inside the shared 04 Production Assets surface, but exact project-HTML presentation remains a derived view and does not become Voice semantic authority.
 

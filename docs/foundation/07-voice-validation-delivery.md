@@ -6,14 +6,14 @@ Status: active Flow 7 policy
 
 Flow 7 decides whether the current `voice_script_ready` revision is safe to deliver for the requested Voice Production scope.
 
-Default non-audio delivery is the **same project HTML** containing PRD core + `04 Production Assets → matching gameplay moment → AUDIO`. DOCX and audio are optional scopes.
+Default non-audio delivery is the **same project HTML** containing PRD core + `04 Production Assets → matching gameplay moment → AUDIO`. Audio is a separate optional evidence scope.
 
 ## Canonical sequence
 
 ```text
 voice_script_ready
 ↓
-mechanical Voice ID / Type / Speaker + derived-output parity
+mechanical Voice ID / Type / Speaker + project-HTML parity
 ↓
 Communication Conservation
 ↓
@@ -21,7 +21,7 @@ one integrated Voice Script Readiness review
 ↓
 Project HTML visual QA when claimed
 ↓
-optional DOCX / audio evidence
+optional audio evidence
 ↓
 voice_delivery_ready | needs_revision | blocked
 ```
@@ -38,8 +38,6 @@ python kits/voice-production-kit/validator/validate.py \
 Mechanical validation always checks canonical requirements/script parity. It also proves current revision identity: `voice-state.yaml.source_prd_revision`, the current accepted PRD handoff, `render-data.document.version`, `voice-requirements.md` `Source PRD revision`, and the source revision declared by `voice-production.md` must agree. The canonical script's `Source Voice Requirements` SHA-256 must match the exact current `work/voice-requirements.md` bytes.
 
 When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/prompt identity and exact canonical performance text. Current visible AUDIO-field/layout behavior is owned by the Project Document 04 compositor regression rather than duplicated as another Voice HTML schema.
-
-When optional DOCX exists, it validates that export too.
 
 Mechanical PASS cannot establish semantic readiness or visual quality.
 
@@ -90,10 +88,6 @@ Project HTML Visual: PASS | FAIL | NOT PROVEN
 
 Static inspection can prove structure/text parity but cannot establish visual PASS without actual rendered/browser evidence.
 
-## Optional DOCX
-
-DOCX is not a default delivery gate. When it exists/is claimed, verify it as an optional derived export.
-
 ## Audio evidence
 
 Default non-audio delivery may use:
@@ -111,7 +105,6 @@ project/gameplay/story fact → PRD authority
 Voice moment/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
 wording/performance/Estimated Duration/production selection → Flow 6
 correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
-optional DOCX-only issue → Voice DOCX builder
 audio-only issue → audio evidence scope
 ```
 
@@ -127,7 +120,6 @@ Voice Script Readiness: PASS | FAIL
 Communication Conservation: PASS | FAIL
 Project HTML Visual: PASS | FAIL | NOT PROVEN
 Audio Evidence: not_provided | partial_review | reviewed_passed | reviewed_with_findings
-DOCX Visual: PASS | FAIL | NOT PROVEN   # only when DOCX exists/is claimed
 Findings: <only when findings exist>
 Critical: N
 Major: N
@@ -144,7 +136,7 @@ project_html: output/v<document.version>/prd.html
 delivery_scope: project_html
 ```
 
-Existing compatibility summary fields may remain. Existing projects may retain `docx`/`docx_visual` when that optional export exists; do not create migration work merely to remove harmless historical metadata.
+Historical project metadata from retired export paths may remain in archived evidence. Do not create migration work for inactive historical state unless it affects current delivery.
 
 ## Bounded revision
 

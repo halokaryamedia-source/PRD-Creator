@@ -3,11 +3,9 @@ from __future__ import annotations
 import argparse, hashlib, html, json, re, sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from docx import Document
 
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
-VOICE_ID_RE = re.compile(r"\bVO-[A-Z0-9][A-Z0-9-]*\b")
 STATUS_RE = re.compile(r"^\s*status:\s*([A-Za-z0-9_-]+)\s*$", re.M)
 PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -35,10 +33,6 @@ class ScriptEntry:
     duration: str = ""
     performance: str = ""
     section: str = ""
-
-
-def norm(s: str) -> str:
-    return " ".join(s.split())
 
 
 def scalar_values(text: str, key: str) -> list[str]:
@@ -235,6 +229,9 @@ def parse_script(path: Path) -> tuple[list[str], dict[str, ScriptEntry]]:
             )
         out[vid]=e
     if not out: raise ValueError("No Voice IDs found in script")
+    empty = [section for section in sections if not any(entry.section == section for entry in out.values())]
+    if empty:
+        raise ValueError("Voice section has no entries: " + ", ".join(empty))
     return sections,out
 
 
@@ -285,39 +282,8 @@ def validate_project_html(
     return issues
 
 
-def validate_docx(path: Path, sections: list[str], script: dict[str, ScriptEntry]) -> list[str]:
-    doc=Document(path)
-    paras=[p.text for p in doc.paragraphs]
-    full="\n".join(paras)
-    flat=norm(full)
-    issues=[]
-    for section in sections:
-        if section and norm(section) not in flat:
-            issues.append(f"DOCX missing section heading: {section}")
-    expected=set(script)
-    actual=set(VOICE_ID_RE.findall(full))
-    if actual != expected:
-        missing=sorted(expected-actual); extra=sorted(actual-expected)
-        if missing: issues.append("DOCX missing Voice IDs: "+", ".join(missing))
-        if extra: issues.append("DOCX has extra Voice IDs: "+", ".join(extra))
-    for vid,e in script.items():
-        if full.count(vid) != 1:
-            issues.append(f"DOCX must contain {vid} exactly once")
-        if f"Speaker: {e.speaker}" not in full:
-            issues.append(f"DOCX missing speaker for {vid}: {e.speaker}")
-        if e.duration not in full:
-            issues.append(f"DOCX missing duration for {vid}: {e.duration}")
-        if norm(e.performance) not in flat:
-            issues.append(f"DOCX performance text differs/missing for {vid}")
-    sec=doc.sections[0]
-    w=round(sec.page_width.inches,2); h=round(sec.page_height.inches,2)
-    if (w,h)!=(8.5,11.0): issues.append(f"DOCX page size expected Letter 8.5x11, got {w}x{h}")
-    if not doc.paragraphs: issues.append("DOCX contains no paragraphs")
-    return issues
-
-
 def main() -> int:
-    ap=argparse.ArgumentParser(description="Mechanically validate current Voice requirements/script and any derived project HTML/DOCX presentation.")
+    ap=argparse.ArgumentParser(description="Mechanically validate current Voice requirements/script and derived project HTML presentation.")
     ap.add_argument("project",type=Path, help="workspace/active/<project> directory")
     args=ap.parse_args(); p=args.project
     req=p/"work/voice-requirements.md"; scr=p/"work/voice-production.md"; state=p/"state/voice-state.yaml"
@@ -325,7 +291,6 @@ def main() -> int:
     html_match=re.search(r"(?m)^\s*project_html:\s*(.*?)\s*$", state_text)
     html_ref=html_match.group(1).strip() if html_match else ""
     html_path=(p/html_ref) if html_ref else None
-    docx=p/"output/Voice Production.docx"
     missing=[str(x.relative_to(p)) for x in (req,scr,state) if not x.is_file()]
     if missing:
         print("VOICE VALIDATION FAILED: missing files: "+", ".join(missing),file=sys.stderr); return 2
@@ -345,8 +310,6 @@ def main() -> int:
                 issues.append(f"Speaker mismatch for {vid}")
         if html_path is not None and html_path.is_file():
             issues.extend(validate_project_html(html_path,sections,script,requirements))
-        if docx.is_file():
-            issues.extend(validate_docx(docx,sections,script))
         if issues:
             print("VOICE VALIDATION FAILED")
             for x in issues: print("- "+x)
@@ -354,7 +317,6 @@ def main() -> int:
         print("VOICE VALIDATION PASS")
         print(f"requirements={len(requirements)} script_entries={len(script)} sections={len(sections)}")
         print("project_html="+("passed" if html_path is not None and html_path.is_file() else "not_provided"))
-        print("docx="+("passed" if docx.is_file() else "optional_not_provided"))
         print("semantic_and_visual_review=required")
         return 0
     except (OSError,ValueError) as e:

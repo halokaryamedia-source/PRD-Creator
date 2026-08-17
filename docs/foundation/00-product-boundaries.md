@@ -25,15 +25,13 @@ It does not own downstream Voice wording.
 
 - final spoken wording and performance notation for accepted Voice IDs;
 - Estimated Duration as an estimate;
-- canonical `work/voice-production.md` production content;
-- optional `Voice Production.docx` export when requested or materially useful.
+- canonical `work/voice-production.md` production content.
 
 ### Flow 7
 
-- exact-revision Voice ID/Type/Speaker and derived-output integrity validation;
+- exact-revision Voice ID/Type/Speaker and project-HTML integrity validation;
 - Communication Conservation and integrated Voice Script Readiness;
 - current consolidated project-HTML visual QA when claimed;
-- optional DOCX QA when that export exists;
 - truthful delivery state and evidence boundaries.
 
 ## Voice Production Does Not Own
@@ -41,13 +39,13 @@ It does not own downstream Voice wording.
 - repairing unresolved project/PRD decisions by invention;
 - adding new Voice moments during script polishing or final audit;
 - rebuilding or renumbering accepted PRD navigation/page identity;
-- treating derived HTML or DOCX as higher authority than canonical script/requirements.
+- treating derived HTML as higher authority than canonical script/requirements.
 
 ## Default Delivery Scope
 
 The normal non-audio Voice deliverable is the accepted **canonical Voice Production script + current consolidated project HTML (`output/v<document.version>/prd.html`)**.
 
-`Voice Production.docx` is an optional portable export, not a default readiness requirement. Audio remains a separate evidence/delivery scope when explicitly in scope.
+Audio remains a separate evidence/delivery scope when explicitly in scope.
 
 ## Shared Boundary Rule
 

@@ -11,10 +11,10 @@ Root `AGENTS.md` owns work-mode routing and skill budget. This matrix only resol
 | Source recovery, PRD-core meaning, non-Voice 04 requirement meaning, Golden representation requirement, PRD readiness/handoff meaning | `project-document-production` |
 | Voice scope, Speaker/Channel/Trigger/Purpose meaning, canonical Voice wording/performance meaning, Voice readiness/delivery meaning | `voice-production` |
 | PRD/04 semantics correct; renderer/template/validator/compositor mechanics wrong | `kits/project-document-generator/AGENTS.md` → exact implementation owner |
-| Voice semantics correct; DOCX builder/validator mechanics wrong | `kits/voice-production-kit/AGENTS.md` → exact implementation owner |
+| Voice semantics correct; Voice validator/project-HTML integration mechanics wrong | `kits/voice-production-kit/AGENTS.md` → exact implementation owner |
 | Shared dependency / test / CI mechanics wrong | repository engineering owner |
 
-Do **not** select a semantic specialist merely because HTML, Python, DOCX, ElevenLabs, renderer, validator, or another implementation technology appears in the task.
+Do **not** select a semantic specialist merely because HTML, Python, ElevenLabs, renderer, validator, or another implementation technology appears in the task.
 
 ## Developing front door
 
@@ -53,6 +53,6 @@ If the owner is already obvious, stop here and use it directly.
 
 ## New-skill guard
 
-Do not add renderer, validator, Production Asset, DOCX-builder, Python-tooling, artifact-engineering, research, or evidence-gate root skills merely because those surfaces exist.
+Do not add renderer, validator, Production Asset, Python-tooling, artifact-engineering, research, or evidence-gate root skills merely because those surfaces exist.
 
 A new/split/renamed root skill requires repeated evidence of a distinct reusable semantic ownership/procedure gap that cannot be represented by root policy, foundation policy, nearest kit procedure/AGENTS, repository engineering, or one existing specialist.

@@ -19,8 +19,8 @@ Flow 7  Voice Validation & Delivery
 - **Flow 3** — turn preview-approved `ready_for_prd` meaning into canonical PRD-core content and deterministic **01–03 Golden hierarchy/page-composition HTML** without adding new project meaning.
 - **Flow 4** — distinguish generated output from development-ready output and create current acceptance/handoff evidence; when 04 exists, its Production Asset readiness is one lens inside the same integrated Semantic Readiness review. Missed or newly exposed product/design meaning returns only the affected slice to Flow 2.
 - **Flow 5** — derive justified Voice requirements from accepted project/PRD meaning without inventing upstream facts.
-- **Flow 6** — create canonical Eleven v3 performance wording and publish its derived AUDIO resources into matching 04 gameplay moments while preserving Voice scope; DOCX remains optional export.
-- **Flow 7** — validate the current Voice Requirements → Script → consolidated project-HTML chain; optional DOCX and actual audio are reviewed only when present/in scope.
+- **Flow 6** — create canonical Eleven v3 performance wording and publish its derived AUDIO resources into matching 04 gameplay moments while preserving Voice scope.
+- **Flow 7** — validate the current Voice Requirements → Script → consolidated project-HTML chain; actual audio is reviewed only when present/in scope.
 
 There is no canonical Flow 8. The Simple Chat Preview is the final user-facing checkpoint **inside Flow 2**, not a new flow or new artifact.
 

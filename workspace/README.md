@@ -161,14 +161,6 @@ Prompt
 
 Flow 5 Trigger/Purpose/source refs remain in Voice owners and are not visible Production Asset metadata.
 
-## Optional derived exports
-
-```text
-output/Voice Production.docx
-```
-
-DOCX is produced only when a portable Voice export is requested or useful. It does not replace canonical Voice Production or the versioned project delivery bundle.
-
 ## Typical package
 
 A project may eventually contain:
@@ -192,11 +184,10 @@ workspace/active/<project>/
 │   └── voice-acceptance.md       # only when Voice is used
 └── output/
     ├── README.md
-    ├── v<document.version>/
-    │   ├── prd.html
-    │   ├── context.md
-    │   └── index.json
-    └── Voice Production.docx     # optional
+    └── v<document.version>/
+        ├── prd.html
+        ├── context.md
+        └── index.json
 ```
 
 This is an eventual example, not a bootstrap checklist.
@@ -214,4 +205,4 @@ source evidence + current user instruction + approved decisions
 → downstream acceptance/state where applicable
 ```
 
-Derived delivery artifacts may be regenerated. Never patch `prd.html`, `context.md`, `index.json`, or DOCX as a source of truth; fix the canonical owner and regenerate the affected projection.
+Derived delivery artifacts may be regenerated. Never patch `prd.html`, `context.md`, or `index.json` as a source of truth; fix the canonical owner and regenerate the affected projection.

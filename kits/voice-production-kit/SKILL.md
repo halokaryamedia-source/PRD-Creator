@@ -14,7 +14,7 @@ Use for normal Voice **Production Execution** after accepted project/PRD meaning
 2. **Flow 6 — Voice Production**: Voice Requirements → canonical `work/voice-production.md` → matching `AUDIO` resources in the same project HTML.
 3. **Flow 7 — Voice Validation & Delivery**: current Voice revision → compact acceptance + delivery state.
 
-DOCX and generated audio remain optional downstream scopes.
+Generated audio remains an optional downstream scope.
 
 ## Active owners
 
@@ -24,7 +24,6 @@ DOCX and generated audio remain optional downstream scopes.
 - Flow 6 Eleven v3 performance-writing craft → `SOUNDMAKER.md`.
 - Flow 7 durable policy → `docs/foundation/07-voice-validation-delivery.md`.
 - Flow 7 detailed validation/evidence → `VOICE-VALIDATION.md`.
-- optional DOCX → `DOCX-FORMAT.md` + builder.
 - kit file/mechanical routing → `AGENTS.md`.
 
 `README.md` is package orientation/navigation only. The former duplicate `SCRIPT-PRODUCTION.md` lifecycle owner remains retired.
@@ -47,7 +46,6 @@ accepted project / PRD meaning
 - Flow 6 owns canonical production wording/performance, Estimated Duration, and actor selection when known.
 - Flow 7 owns Voice readiness/evidence.
 - project HTML is derived presentation only.
-- DOCX is optional export only.
 
 ## Flow 5 → Flow 6 interface
 
@@ -77,10 +75,6 @@ Shared composition mechanics are owned by the Project Document Generator rendere
 
 This presentation boundary must not change canonical Voice wording, Speaker/Type/Trigger authority, or performance payloads.
 
-## Optional DOCX
-
-`output/Voice Production.docx` may be generated when specifically useful. It remains a derived export, not normal canonical Voice authority or a default readiness requirement.
-
 ## Preparation vs Generation Mode
 
 ### Preparation Mode
@@ -108,9 +102,6 @@ canonical wording / performance / Estimated Duration / actor selection
 correct canonical Voice + wrong shared 04 presentation
 → Project Document Generator compositor / Production Assets owner
 
-optional DOCX-only defect
-→ Voice DOCX owner/builder
-
 audio-only defect
 → Generation Mode / audio evidence scope
 ```
@@ -126,7 +117,6 @@ Mechanical
 + Communication Conservation
 + integrated Voice Script Readiness
 + Project HTML Visual when claimed
-+ optional DOCX Visual when in scope
 + optional Audio Evidence when in scope
 ```
 
@@ -140,6 +130,7 @@ Static HTML parity is not visual proof; visual PASS requires actual rendered/bro
 - Voice scope cannot change silently after Flow 5.
 - downstream performance/presentation cannot create project facts, Speakers, Channels, Triggers, mechanics, rewards, outcomes, or source timing truth.
 - exact canonical production content remains owned by `work/voice-production.md`.
-- derived project HTML / DOCX are not source truth.
+- derived project HTML is not source truth.
+- the retired DOCX export path must not be reintroduced without a new explicit product requirement.
 - do not create separate Voice HTML, asset manifest, settings database, score system, or extra approval/workflow layer without a concrete defect.
 - stop when the current requested scope is ready and sufficiently proven.

@@ -3,7 +3,7 @@
 
 This gate checks stable repository invariants that are useful on every commit.
 It does not replace production contract execution, project semantic validation,
-HTML/DOCX visual QA, or generated-audio review.
+HTML visual QA, or generated-audio review.
 """
 from __future__ import annotations
 
@@ -53,7 +53,6 @@ REQUIRED_PATHS = [
     "kits/project-document-generator/renderer/delivery.py",
     "kits/voice-production-kit/AGENTS.md",
     "kits/voice-production-kit/SKILL.md",
-    "kits/voice-production-kit/requirements.txt",
     "kits/voice-production-kit/references/aftershock/README.md",
     "workspace/README.md",
     "workspace/archive/README.md",
@@ -84,7 +83,6 @@ CURRENT_DELIVERY_OWNER_PATHS = [
     "kits/voice-production-kit/AGENTS.md",
     "kits/voice-production-kit/VOICE-EXTRACTION.md",
     "kits/voice-production-kit/VOICE-VALIDATION.md",
-    "kits/voice-production-kit/DOCX-FORMAT.md",
     "workspace/README.md",
     "docs/knowledge/decisions/recording-policy.md",
     ".agents/skills/project-document-production/SKILL.md",
@@ -189,6 +187,9 @@ def check_retired_boundaries(errors: list[str]) -> None:
         "kits/project-document-generator/RULES.md",
         "kits/voice-production-kit/REFERENCE",
         "kits/voice-production-kit/INSTRUCTIONS.md",
+        "kits/voice-production-kit/DOCX-FORMAT.md",
+        "kits/voice-production-kit/builder/build_docx.py",
+        "kits/voice-production-kit/requirements.txt",
     ]
     for rel in retired:
         if (ROOT / rel).exists():
@@ -348,23 +349,10 @@ def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
 
 
 def check_dependency_lock(errors: list[str]) -> None:
-    lock = requirement_pins(ROOT / "requirements.lock.txt", errors)
-    direct = requirement_pins(
-        ROOT / "kits" / "voice-production-kit" / "requirements.txt", errors
-    )
-    if not lock:
-        fail(errors, "requirements.lock.txt must contain exact dependency pins")
-        return
-    if not direct:
-        fail(errors, "Voice requirements.txt must contain at least one exact direct pin")
-        return
-    for name, version in direct.items():
-        if lock.get(name) != version:
-            fail(
-                errors,
-                "direct dependency must match lock exactly: "
-                f"{name}=={version}, lock has {lock.get(name)!r}",
-            )
+    requirement_pins(ROOT / "requirements.lock.txt", errors)
+    retired_direct = ROOT / "kits" / "voice-production-kit" / "requirements.txt"
+    if retired_direct.exists():
+        fail(errors, "retired Voice requirements.txt must not return")
 
 
 def normalize_link_target(source: Path, raw: str) -> Path | None:
@@ -445,7 +433,7 @@ def main() -> int:
     print("- current versioned delivery routing: aligned")
     print("- workspace/current-validation delivery routing: aligned")
     print("- relative navigation: valid")
-    print("- dependency lock/direct pins: exact and aligned")
+    print("- dependency lock format: valid")
     print("- Python kits/tools/tests: syntax valid")
     print("- retired builder/routing boundaries: preserved")
     return 0

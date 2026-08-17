@@ -1,6 +1,6 @@
 ---
 name: voice-production
-description: Reusable semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when accepted PRD → Voice scope, Flow 5 communication intent, canonical Voice production meaning, communication conservation, or Voice readiness/delivery semantics are the actual problem. Do not use as a generic DOCX/HTML/builder/validator wrapper when semantics are already correct.
+description: Reusable semantic/product-contract specialist for PRD-Creator Flow 5–7. Use when accepted PRD → Voice scope, Flow 5 communication intent, canonical Voice production meaning, communication conservation, or Voice readiness/delivery semantics are the actual problem. Do not use as a generic HTML/validator wrapper when semantics are already correct.
 ---
 
 # Voice Production
@@ -18,7 +18,7 @@ accepted project / PRD meaning
 
 Project/PRD authority owns gameplay/story truth. Voice work may interpret approved communication/performance needs but may not invent upstream project facts.
 
-Derived project HTML and optional DOCX are presentation only, not Voice wording authority.
+Derived project HTML is presentation only, not Voice wording authority.
 
 ## Use this specialist when
 
@@ -28,10 +28,10 @@ The actual question requires reusable judgment about:
 - whether Flow 5 communication intent/context is complete enough for production;
 - whether Flow 6 wording/performance preserves required communication without changing upstream meaning;
 - whether Voice scope/Speaker/Channel/Trigger/Purpose has changed or must be reopened;
-- whether a downstream presentation problem is semantic or purely compositor/builder mechanics;
+- whether a downstream presentation problem is semantic or purely compositor mechanics;
 - whether Flow 7 evidence truthfully supports Voice readiness/delivery.
 
-Do not load this skill solely because a task mentions ElevenLabs, AUDIO, HTML, DOCX, Python, builder, or validator.
+Do not load this skill solely because a task mentions ElevenLabs, AUDIO, HTML, Python, or validator.
 
 ## Canonical detailed owners
 
@@ -92,9 +92,6 @@ When semantics are correct:
 Voice-specific 04 parsing/presentation primitive defect
 → Project Document kit implementation owner
 
-optional DOCX builder/pagination defect
-→ Voice kit AGENTS + builder
-
 Voice mechanical validator defect
 → Voice kit AGENTS + validator
 
@@ -115,4 +112,4 @@ If a technical change alters what Voice is required to represent/accept, reopen 
 
 ## Boundary
 
-This skill owns Voice Flow 5–7 **semantic judgment** only. Detailed production procedure stays in the Voice kit; pure builder/validator/presentation mechanics stay with exact implementation owners; upstream project truth stays with the PRD/project authority.
+This skill owns Voice Flow 5–7 **semantic judgment** only. Detailed production procedure stays in the Voice kit; pure validator/presentation mechanics stay with exact implementation owners; upstream project truth stays with the PRD/project authority.

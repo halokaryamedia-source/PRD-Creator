@@ -15,7 +15,7 @@ accepted project / PRD meaning
 → state/voice-state.yaml
 ```
 
-DOCX and generated audio are optional downstream scopes.
+Generated audio is an optional downstream scope.
 
 ## Active owners
 
@@ -24,7 +24,6 @@ VOICE-EXTRACTION.md    Flow 5 scope/context extraction
 SKILL.md               end-to-end Flow 5–7 Production Execution
 SOUNDMAKER.md          Eleven v3 performance-writing craft
 VOICE-VALIDATION.md    Flow 7 validation/evidence
-DOCX-FORMAT.md         optional portable DOCX presentation
 AGENTS.md              kit file/mechanical routing
 ```
 
@@ -35,7 +34,6 @@ Durable Flow policy lives in `docs/foundation/05-voice-requirement-extraction.md
 - `work/voice-requirements.md` owns Voice scope/communication requirements.
 - `work/voice-production.md` owns canonical production wording/performance.
 - project HTML is derived operator/developer presentation.
-- `output/Voice Production.docx` is optional portable export.
 - generated audio quality requires actual audio evidence.
 
 Voice content is not duplicated into generic non-Voice `work/asset-requirements.md`.
@@ -56,6 +54,7 @@ The shared compositor mechanics are owned by the Project Document Generator. Thi
 
 - Voice Production is downstream from accepted project/PRD meaning;
 - Flow 6 cannot silently change Flow 5 scope;
-- derived HTML/DOCX cannot become canonical Voice authority;
+- derived HTML cannot become canonical Voice authority;
+- the former DOCX export path is retired;
 - PRD/shared 04 presentation defects route to their Project Document owners when canonical Voice is already correct;
 - do not create another Voice HTML, asset framework, settings database, or workflow layer without a concrete need.
