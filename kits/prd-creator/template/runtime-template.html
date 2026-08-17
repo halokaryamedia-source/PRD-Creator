@@ -159,6 +159,14 @@
   @media(max-width:760px){.narrative-beat{grid-template-columns:38px 1fr;gap:11px}}
   @media print{.narrative-beat,.narrative-response,.narrative-translation{break-inside:avoid}}
 
+  @media(min-width:761px) and (max-width:1100px){
+    .journey{grid-template-columns:repeat(3,1fr)}
+    .journey article+article{border-left:0}
+    .journey article:nth-child(3n+2),
+    .journey article:nth-child(3n+3){border-left:1px solid var(--line)}
+    .journey article:nth-child(n+4){border-top:1px solid var(--line)}
+  }
+
   @media(max-width:760px){
     .toolbar{align-items:flex-start;flex-direction:column;gap:5px}.toolbar nav{width:100%}
     main{padding:18px 8px 50px}.sheet{min-height:0;padding:34px 25px 56px}.page-foot{left:25px;right:25px}
