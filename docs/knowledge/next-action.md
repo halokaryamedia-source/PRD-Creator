@@ -2,15 +2,66 @@
 
 ## Current Status
 
-`CLOCKWORK_BROWSER_VISUAL_QA_COMPLETE`
+`CONTENT_QUALITY_AUDIT_ACTIVE`
 
-The unified `kits/prd-creator/` migration is complete, the bounded Clockwork Overview responsive defect is fixed source-first, and the final human-facing project HTML has current browser acceptance evidence.
+The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded phase focused on improving **document content quality** by studying representative sample content before changing the production system.
 
 ## Active Boundary
 
-The approved Clockwork browser-visual task is complete. No implementation work is active. Current continuation is intentionally `STOP` unless the user approves a new requirement or a reproducible current defect establishes a new first wrong owner.
+This phase is **Content Audit / Content Quality Research**, not immediate renderer or contract implementation.
 
-## Current accepted identities
+The user will provide one or more sample documents/content pieces. Treat those samples as reference evidence for content quality, organization, writing, hierarchy, information density, and production usefulness. Do not treat sample-specific facts as project authority for Clockwork or any other project.
+
+Until the audit identifies and the user approves concrete improvements:
+
+- do not change gameplay/project meaning;
+- do not change Voice requirements or production wording;
+- do not change Golden/template/renderer merely to imitate a sample;
+- do not redesign repository architecture;
+- do not alter current accepted Clockwork output;
+- do not promote conditional backlog items.
+
+## Audit Goal
+
+Determine what makes the supplied sample content produce a stronger professional document, then translate only justified patterns into a clear improvement proposal for PRD-Creator.
+
+Audit dimensions include, as supported by the samples:
+
+```text
+information hierarchy
+section purpose and ordering
+content completeness
+clarity and specificity
+writing density / concision
+rule and requirement readability
+separation of overview vs actionable detail
+use of tables, lists, callouts, and prose
+terminology consistency
+reader orientation / scanability
+handoff usefulness for builders, developers, designers, and production teams
+repetition vs necessary reinforcement
+content that feels generic, vague, inflated, or AI-written
+```
+
+The audit should distinguish:
+
+```text
+sample fact
+→ belongs only to that sample
+
+sample presentation/content pattern
+→ candidate reusable principle
+
+current PRD-Creator weakness
+→ must be proven by comparison with current owners/output
+
+recommended improvement
+→ proposal until explicitly approved
+```
+
+## Existing Accepted Baseline
+
+The previous visual acceptance remains valid and is not reopened by this audit:
 
 ```text
 Golden/runtime template Git blob
@@ -19,35 +70,25 @@ Golden/runtime template Git blob
 Clockwork prd.html Git blob
 3267b2f97e7335418a43edd6b0e81f6077aeeb51
 
-Clockwork context.md
-003cc0068505339b8406b445601b7350bffa70a5
-
-Clockwork index.json
-c205422dc0d639b5d0bf9081364321c318e23d22
-```
-
-`golden-reference.html` and `runtime-template.html` remain byte-identical.
-
-## Acceptance evidence
-
-Actual Chromium 144.0.7559.96 proof on the exact current Clockwork HTML at `1500×1000` and `1000×1000` established:
-
-```text
 Project HTML Visual: PASS
 ```
 
-The previously reproduced `Complete Gameplay Journey` clipping is resolved at 1000px (`scrollWidth=566`, `clientWidth=566`). Representative Overview, Gameplay Flow, Development, sidebar/page navigation, all seven 04 Production Assets pages, and Voice AUDIO production fields passed the bounded visual checks with no viewport/internal overflow or page/console error.
+Content audit may later recommend changes to content generation/contract behavior, but only after the sample comparison establishes a concrete quality gap and the user approves the direction.
 
-Clockwork provides real browser samples for `MODEL`, `ITEM`, `UI / TEXT`, and `AUDIO`; it has no current `PARTICLE` row, so no real-project PARTICLE browser claim is made.
+## Expected Audit Output
 
-The exact source-first candidate also passed the Clockwork PRD validator, PRD→Voice handoff validator, and Voice validator before publication. `context.md` and `index.json` did not change.
+After enough samples are provided, produce a structured audit covering:
 
-## Boundary
+1. what each sample does well;
+2. recurring high-quality content patterns across samples;
+3. weak/irrelevant patterns that should **not** be copied;
+4. comparison against current PRD-Creator content behavior;
+5. prioritized content-quality gaps;
+6. proposed improvement principles and exact owner(s) that would need changes;
+7. implementation scope only after user approval.
 
-This visual fix does not change project/gameplay meaning, Voice requirements/wording/performance, 04 Production Assets semantics, page identities/navigation hierarchy, unified package architecture, export formats, or conditional backlog items.
-
-Do not promote additional renderer/parser/Golden cleanup without a new explicit requirement or a reproducible current defect.
+Do not implement during the observation pass unless the user explicitly moves from audit to implementation.
 
 ## Next Step
 
-**STOP.** Resume only for a new user-approved requirement or a reproducible current defect.
+**Receive and study the user-provided sample content. Audit the content itself first—structure, hierarchy, clarity, completeness, density, specificity, scanability, and handoff usefulness—without changing PRD-Creator yet. Accumulate evidence across samples, then present the reusable quality patterns and gaps for user approval before implementation.**
