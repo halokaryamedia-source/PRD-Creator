@@ -444,7 +444,7 @@ ACTIVE
         source = (
             Path(__file__).resolve().parents[1]
             / "kits"
-            / "project-document-generator"
+            / "prd-creator"
             / "renderer"
             / "production_assets.py"
         ).read_text(encoding="utf-8")
