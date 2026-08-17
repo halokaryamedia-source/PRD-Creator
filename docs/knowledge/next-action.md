@@ -6,6 +6,10 @@
 
 The unified `kits/prd-creator/` migration is complete, the bounded Clockwork Overview responsive defect is fixed source-first, and the final human-facing project HTML has current browser acceptance evidence.
 
+## Active Boundary
+
+The approved Clockwork browser-visual task is complete. No implementation work is active. Current continuation is intentionally `STOP` unless the user approves a new requirement or a reproducible current defect establishes a new first wrong owner.
+
 ## Current accepted identities
 
 ```text
