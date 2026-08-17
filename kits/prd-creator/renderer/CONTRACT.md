@@ -91,7 +91,7 @@ template/runtime-template.html
 byte-identical to the approved Golden artifact. Current approved Git blob:
 
 ```text
-e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
+2050b965768489feda98373c2920bbee8c7093b3
 ```
 
 Do not replace either path with a cleaned, reconstructed, or generic interpretation.

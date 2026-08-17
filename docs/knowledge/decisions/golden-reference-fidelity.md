@@ -31,12 +31,12 @@ template/runtime-template.html
 Current approved Git blob:
 
 ```text
-e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
+2050b965768489feda98373c2920bbee8c7093b3
 ```
 
 A cleaned, normalized, reconstructed, or generic alternative is not an acceptable replacement for either path.
 
-The renderer may make only non-visual project-specific changes in a temporary copy during generation: sample identity metadata removal, localStorage namespacing, project metadata binding, navigation replacement, page-content replacement, glossary-data replacement, and render revision binding. The checked-in Golden CSS/runtime/DOM vocabulary remains unchanged.
+The renderer may make only non-visual project-specific changes in a temporary copy during generation: sample identity metadata removal, localStorage namespacing, project metadata binding, navigation replacement, page-content replacement, glossary-data replacement, and render revision binding. The checked-in Golden CSS/runtime/DOM vocabulary remains unchanged except when actual browser evidence proves a bounded presentation defect and the user approves the matching Golden correction.
 
 The Golden Sample remains **presentation/structure authority only**. It never supplies project-specific mechanics, story, scoring, counts, or implementation facts.
 
@@ -72,6 +72,12 @@ Page-count and component-presence checks can prove a shell while missing destruc
 
 For every independent source rule recovered in Flow 2, Flow 3 must retain one owned readable representation. Structured multi-rule content stays structured rather than being flattened into a single summary sentence for convenience.
 
+## Responsive refinement
+
+Actual Chromium QA of the current Clockwork delivery exposed one bounded Golden presentation defect at `1000×1000`: the six-column `Complete Gameplay Journey` overflowed its readable area. The approved correction changes only the intermediate-width Golden CSS so `761–1100px` renders that journey as three columns × two rows. Widths above `1100px` keep six columns and the existing `<=760px` mobile rule remains unchanged.
+
+This refinement does not change page identities, DOM vocabulary, project meaning, gameplay, Voice content, or the 04 Production Assets contract. Both Golden template paths remain byte-identical and the regenerated project HTML is derived source-first.
+
 ## Supersedes / refines
 
 This decision supersedes:
@@ -88,4 +94,4 @@ It refines “Golden Samples are references, not project requirements”:
 
 Repository and PRD CI prove exact artifact retention, Golden DOM projection contracts, material-conservation handoff gating, and deterministic generation behavior.
 
-A freshly regenerated real AFTERSHOCK document still requires an actual browser/visual comparison before representative visual parity can be claimed. Static checks do not claim that proof.
+Browser-level visual claims require actual browser evidence for the exact artifact under review. The current Clockwork responsive acceptance is recorded in `docs/knowledge/reviews/current-validation.md`.

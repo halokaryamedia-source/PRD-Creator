@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "kits" / "prd-creator"
 GOLDEN = KIT / "template" / "golden-reference.html"
 RUNTIME = KIT / "template" / "runtime-template.html"
-APPROVED_GIT_BLOB = "e1dccd77d7a5335213caea7a09d74ba78b2ae8e1"
+APPROVED_GIT_BLOB = "2050b965768489feda98373c2920bbee8c7093b3"
 PACKAGES = ("docks", "quarry", "ascent", "beacon", "relay", "ending")
 GLOBAL_PAGES = ("development-overview", "shared-systems", "shared-data-reset", "phase-development")
 
