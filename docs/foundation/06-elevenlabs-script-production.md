@@ -78,6 +78,16 @@ An unselected actor voice may remain pending during Preparation Mode when a clea
 
 Never invent a commercial voice to make preparation look complete.
 
+# Canonical source binding
+
+`voice-production.md` binds itself directly to the exact current Flow 5 source without creating a revision registry:
+
+```text
+Source Voice Requirements: <accepted PRD revision> / work/voice-requirements.md | sha256:<current file SHA-256>
+```
+
+The revision must match the current accepted PRD handoff and `voice-requirements.md` `Source PRD revision`. The SHA-256 binds the script to the exact current requirement bytes so a same-version requirement edit cannot silently leave an older script mechanically valid.
+
 # Canonical entry
 
 Every Voice entry contains:

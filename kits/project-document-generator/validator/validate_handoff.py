@@ -8,6 +8,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+import _engine
+
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 ACCEPTANCE_REQUIRED = {
     "Status": {"handoff_ready"},
@@ -105,6 +107,17 @@ def validate(project: Path) -> dict[str, Any]:
         "handoff_status_ready",
         status == "handoff_ready",
         "handoff_ready" if status == "handoff_ready" else f"status is {status!r}, expected 'handoff_ready'",
+    )
+
+    current_prd = _engine.validate(project)
+    current_prd_ok = current_prd.get("status") == "pass"
+    current_prd_errors = [str(item) for item in current_prd.get("errors", [])]
+    check(
+        "current_prd_mechanical_freshness",
+        current_prd_ok,
+        "current PRD mechanical/freshness gate passes against current canonical bytes and derived HTML"
+        if current_prd_ok
+        else "; ".join(current_prd_errors[:5]) or "current PRD mechanical/freshness gate failed",
     )
 
     try:

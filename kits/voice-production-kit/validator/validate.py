@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, html, re, sys
+import argparse, hashlib, html, json, re, sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from docx import Document
@@ -10,6 +10,11 @@ ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 VOICE_ID_RE = re.compile(r"\bVO-[A-Z0-9][A-Z0-9-]*\b")
 STATUS_RE = re.compile(r"^\s*status:\s*([A-Za-z0-9_-]+)\s*$", re.M)
 PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+SOURCE_PRD_REVISION_RE = re.compile(r"(?mi)^\s*Source PRD revision:\s*(\S+)\s*$")
+SOURCE_REQUIREMENTS_RE = re.compile(
+    r"(?mi)^\s*Source Voice Requirements:\s*(\S+)\s*/\s*(.+?)\s*\|\s*sha256:([0-9a-f]{64})\s*$"
+)
 
 @dataclass
 class Requirement:
@@ -34,6 +39,98 @@ class ScriptEntry:
 
 def norm(s: str) -> str:
     return " ".join(s.split())
+
+
+def scalar_values(text: str, key: str) -> list[str]:
+    pattern = re.compile(rf"(?m)^\s*{re.escape(key)}:\s*(.*?)\s*(?:#.*)?$")
+    values=[]
+    for raw in pattern.findall(text):
+        value=raw.strip()
+        if len(value)>=2 and value[0]==value[-1] and value[0] in {"'", '"'}:
+            value=value[1:-1].strip()
+        values.append(value)
+    return values
+
+
+def one_scalar(text: str, key: str, owner: str) -> str:
+    values=scalar_values(text,key)
+    if len(values)!=1 or not values[0]:
+        raise ValueError(f"{owner} must define exactly one non-empty {key}")
+    return values[0]
+
+
+def validate_revision_identity(project: Path, req: Path, scr: Path, state: Path) -> list[str]:
+    issues: list[str] = []
+    state_text=state.read_text(encoding="utf-8")
+    source_handoff=one_scalar(state_text,"source_handoff","voice-state.yaml")
+    source_prd_revision=one_scalar(state_text,"source_prd_revision","voice-state.yaml")
+    project_html=one_scalar(state_text,"project_html","voice-state.yaml")
+
+    handoff_path=project/source_handoff
+    if not handoff_path.is_file():
+        return [f"Voice source_handoff does not exist: {source_handoff}"]
+    handoff_text=handoff_path.read_text(encoding="utf-8")
+    handoff_status=one_scalar(handoff_text,"status","handoff-state.yaml")
+    accepted_revision=one_scalar(handoff_text,"accepted_prd_version","handoff-state.yaml")
+    if handoff_status!="handoff_ready":
+        issues.append(f"Upstream PRD handoff status is {handoff_status!r}, expected 'handoff_ready'")
+
+    render_data_path=project/"work/render-data.json"
+    if not render_data_path.is_file():
+        issues.append("Current render-data.json is missing for Voice revision identity")
+        current_revision=""
+    else:
+        try:
+            data=json.loads(render_data_path.read_text(encoding="utf-8"))
+            document=data.get("document") if isinstance(data,dict) else None
+            current_revision=str(document.get("version") or "").strip() if isinstance(document,dict) else ""
+        except json.JSONDecodeError as exc:
+            issues.append(f"Current render-data.json is invalid: {exc}")
+            current_revision=""
+
+    req_text=req.read_text(encoding="utf-8")
+    req_revisions=SOURCE_PRD_REVISION_RE.findall(req_text)
+    if len(req_revisions)!=1:
+        issues.append("voice-requirements.md must define exactly one Source PRD revision")
+        requirements_revision=""
+    else:
+        requirements_revision=req_revisions[0].strip()
+
+    script_text=scr.read_text(encoding="utf-8")
+    source_matches=SOURCE_REQUIREMENTS_RE.findall(script_text)
+    if len(source_matches)!=1:
+        issues.append(
+            "voice-production.md must define exactly one Source Voice Requirements binding with revision, canonical path, and sha256"
+        )
+        script_revision=script_path=script_sha=""
+    else:
+        script_revision,script_path,script_sha=(part.strip() for part in source_matches[0])
+
+    expected_revision=accepted_revision
+    identities={
+        "voice-state source_prd_revision": source_prd_revision,
+        "voice-requirements Source PRD revision": requirements_revision,
+        "voice-production Source Voice Requirements revision": script_revision,
+        "current render-data document.version": current_revision,
+    }
+    for label,value in identities.items():
+        if value!=expected_revision:
+            issues.append(f"{label}={value!r}, expected current accepted PRD revision {expected_revision!r}")
+
+    if script_path and script_path!="work/voice-requirements.md":
+        issues.append(
+            f"voice-production Source Voice Requirements path={script_path!r}, expected 'work/voice-requirements.md'"
+        )
+    actual_req_sha=hashlib.sha256(req.read_bytes()).hexdigest()
+    if script_sha and (SHA256_RE.fullmatch(script_sha) is None or script_sha!=actual_req_sha):
+        issues.append(
+            "voice-production Source Voice Requirements sha256 does not match current work/voice-requirements.md bytes"
+        )
+
+    expected_html=f"output/v{expected_revision}/prd.html"
+    if project_html!=expected_html:
+        issues.append(f"voice-state project_html={project_html!r}, expected {expected_html!r}")
+    return issues
 
 
 def has_initial_performance_tag(performance: str) -> bool:
@@ -236,7 +333,7 @@ def main() -> int:
         validate_state(state)
         requirements=parse_requirements(req)
         sections,script=parse_script(scr)
-        issues=[]
+        issues=validate_revision_identity(p,req,scr,state)
         if set(requirements)!=set(script):
             mi=sorted(set(requirements)-set(script)); ex=sorted(set(script)-set(requirements))
             if mi: issues.append("Script missing Voice IDs: "+", ".join(mi))

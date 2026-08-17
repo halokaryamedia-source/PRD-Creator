@@ -1,6 +1,6 @@
 # The Clockwork Vault Voice Production
 Version: 1.5.0
-Source Voice Requirements: 1.0.0 / work/voice-requirements.md
+Source Voice Requirements: 1.0.0 / work/voice-requirements.md | sha256:825a6648116b5b3d3847edf257a0e8e1b4e5e7311f9c99f62fd6120535a4a840
 
 Voice Cast:
 - Custodian Vex: William Shanks - Rich and Deep

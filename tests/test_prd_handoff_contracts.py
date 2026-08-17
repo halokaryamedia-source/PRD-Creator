@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -7,8 +8,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.test_prd_contracts import render_data as canonical_render_data
+
 ROOT = Path(__file__).resolve().parents[1]
 HANDOFF_VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate_handoff.py"
+RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
@@ -38,14 +42,34 @@ class PrdHandoffContracts(unittest.TestCase):
         version_dir.mkdir(parents=True)
 
         accepted = accepted_version if accepted_version is not None else current_version
-        (project / "work" / "content.md").write_text("# Contract PRD\n", encoding="utf-8")
-        (project / "work" / "render-data.json").write_text(
-            json.dumps({"document": {"version": current_version}}, indent=2) + "\n",
+        (project / "state" / "intake-state.yaml").write_text(
+            "status: ready_for_prd\nready_for_prd: true\n", encoding="utf-8"
+        )
+        (project / "state" / "source-inventory.yaml").write_text(
+            "sources:\n  - id: SRC-001\n    inspection: full\n", encoding="utf-8"
+        )
+        (project / "state" / "requirement-register.yaml").write_text(
+            "requirements:\n  - id: REQ-001\n    approval_status: approved\n", encoding="utf-8"
+        )
+        content_path = project / "work" / "content.md"
+        content_path.write_text(
+            "# Contract PRD\n\nCanonical fixture content with no unresolved placeholders.\n",
             encoding="utf-8",
         )
-        (version_dir / "prd.html").write_text(
-            "<!doctype html><title>Contract</title>\n", encoding="utf-8"
+        data = canonical_render_data()
+        data["document"]["version"] = current_version
+        data["canonical_content_sha256"] = hashlib.sha256(content_path.read_bytes()).hexdigest()
+        (project / "work" / "render-data.json").write_text(
+            json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
         )
+        rendered = run_cli(
+            RENDERER,
+            project / "work" / "render-data.json",
+            version_dir / "prd.html",
+        )
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+
         (version_dir / "context.md").write_text(
             f"# Contract — Development Context\n\nPRD Version: v{current_version}\n", encoding="utf-8"
         )
@@ -86,6 +110,19 @@ class PrdHandoffContracts(unittest.TestCase):
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         self.assertEqual(json.loads(validated.stdout)["status"], "pass")
+
+    def test_same_version_stale_prd_bytes_cannot_authorize_flow5(self) -> None:
+        project = self.make_project()
+        (project / "work" / "content.md").write_text(
+            "# Contract PRD\n\nChanged after acceptance without regeneration.\n",
+            encoding="utf-8",
+        )
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn(
+            "current_prd_mechanical_freshness",
+            "\n".join(json.loads(validated.stdout)["errors"]),
+        )
 
     def test_pending_review_cannot_authorize_flow5(self) -> None:
         project = self.make_project(status="pending_review")

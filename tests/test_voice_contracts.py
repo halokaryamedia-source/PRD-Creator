@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import html
+import json
 import subprocess
 import sys
 import tempfile
@@ -27,6 +29,8 @@ def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
 def requirements(extra_id: bool = False, type_override: str | None = None) -> str:
     intro_type = type_override or "Main Story"
     text = f"""# Contract Fixture Voice Requirements
+
+Source PRD revision: 1.0.0
 
 ## Intro
 
@@ -90,7 +94,7 @@ def requirements(extra_id: bool = False, type_override: str | None = None) -> st
 
 SCRIPT = """# Contract Fixture Voice Production
 Version: 1.0
-Source Voice Requirements: work/voice-requirements.md
+Source Voice Requirements: 1.0.0 / work/voice-requirements.md | sha256:{requirements_sha}
 
 Voice Cast:
 - Narrator: William Shanks - Rich and Deep
@@ -140,13 +144,26 @@ class VoiceProductionContracts(unittest.TestCase):
         (project / "output").mkdir(parents=True)
         (project / "output" / "v1.0.0").mkdir(parents=True)
         (project / "state").mkdir(parents=True)
-        (project / "work" / "voice-requirements.md").write_text(
-            requirements_text if requirements_text is not None else requirements(),
+        req_text = requirements_text if requirements_text is not None else requirements()
+        req_path = project / "work" / "voice-requirements.md"
+        req_path.write_text(req_text, encoding="utf-8")
+        bound_script = script_text.replace(
+            "{requirements_sha}", hashlib.sha256(req_path.read_bytes()).hexdigest()
+        )
+        (project / "work" / "voice-production.md").write_text(bound_script, encoding="utf-8")
+        (project / "work" / "render-data.json").write_text(
+            json.dumps({"document": {"version": "1.0.0"}}, indent=2) + "\n",
             encoding="utf-8",
         )
-        (project / "work" / "voice-production.md").write_text(script_text, encoding="utf-8")
+        (project / "state" / "handoff-state.yaml").write_text(
+            "status: handoff_ready\naccepted_prd_version: 1.0.0\n",
+            encoding="utf-8",
+        )
         (project / "state" / "voice-state.yaml").write_text(
-            "status: voice_script_ready\nrevision: contract-1\nproject_html: output/v1.0.0/prd.html\n",
+            "status: voice_script_ready\n"
+            "source_handoff: state/handoff-state.yaml\n"
+            "source_prd_revision: 1.0.0\n"
+            "project_html: output/v1.0.0/prd.html\n",
             encoding="utf-8",
         )
         return project
@@ -205,6 +222,47 @@ class VoiceProductionContracts(unittest.TestCase):
             "Project HTML must contain exact Voice prompt panel once for VO-INTRO-01",
             validated.stdout,
         )
+
+    def test_validator_rejects_same_revision_requirement_bytes_changed_after_script_binding(self) -> None:
+        project = self.make_project()
+        req = project / "work/voice-requirements.md"
+        req.write_text(
+            req.read_text(encoding="utf-8").replace(
+                "Tell the player to begin the trial.",
+                "Tell the player to begin the trial immediately.",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Source Voice Requirements sha256 does not match", validated.stdout)
+
+    def test_validator_rejects_voice_state_from_stale_prd_revision(self) -> None:
+        project = self.make_project()
+        state = project / "state/voice-state.yaml"
+        state.write_text(
+            state.read_text(encoding="utf-8").replace(
+                "source_prd_revision: 1.0.0", "source_prd_revision: 0.9.0"
+            ),
+            encoding="utf-8",
+        )
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("voice-state source_prd_revision='0.9.0'", validated.stdout)
+
+    def test_validator_rejects_nonready_upstream_handoff(self) -> None:
+        project = self.make_project()
+        handoff = project / "state/handoff-state.yaml"
+        handoff.write_text(
+            handoff.read_text(encoding="utf-8").replace(
+                "status: handoff_ready", "status: needs_revision"
+            ),
+            encoding="utf-8",
+        )
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Upstream PRD handoff status is 'needs_revision'", validated.stdout)
 
     def test_builder_rejects_missing_voice_id_parity(self) -> None:
         project = self.make_project(requirements(extra_id=True))
