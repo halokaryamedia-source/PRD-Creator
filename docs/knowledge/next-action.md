@@ -39,7 +39,7 @@ Re-check found that a cross-kit canonical parser is **not worthwhile** under the
 - the optional DOCX builder additionally owns document title/version/source metadata and export-specific structure;
 - forcing those owners through one shared parser would add a cross-kit dependency/model and more moving parts than it removes.
 
-One small residue was still objectively removable without introducing a shared parser: `production_assets.py` retained three field-specific Voice Requirement scanners for legacy `Trigger`, `Flow`, and `For` metadata. Repository reference inspection found no production caller; current objective-first rendering reads `Function` through its own bounded `_voice_requirement_meta()` owner. The three orphan scanners are removed.
+Within the renderer helper, legacy `Flow` and `For` Voice Requirement scanners had no production caller or active contract and are removed. `parse_voice_requirement_triggers()` is retained as the existing compatibility primitive because the current PRD regression contract explicitly protects it; CI proved removing it would change that contract. No test was rewritten merely to justify cleanup.
 
 No generic Markdown/parser framework was created. The remaining parser separation is intentional and recorded as **not worthwhile**, not as an open defect.
 
@@ -57,6 +57,7 @@ No Golden bytes, protected 01–03 behavior, gameplay, Production Asset resource
 ## Deferred / Do Not Continue
 
 - Do not create a shared/generic Markdown parser framework for renderer + validator + DOCX builder.
+- Do not remove `parse_voice_requirement_triggers()` merely for symmetry while the current regression contract protects it.
 - Do not create a separate commit merely to remove the empty `VOICE_COPY_SCRIPT` compatibility symbol/callsite.
 - Do not refactor `_engine.STORAGE_PREFIX_TOKEN` or other conditional concurrency/reentrancy concerns without a reproduced failure.
 - Do not add test-discovery, atomic-write, registry, manifest, schema, or workflow frameworks without a concrete defect.
