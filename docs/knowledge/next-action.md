@@ -2,13 +2,13 @@
 
 ## Current Status
 
-`CONTENT_QUALITY_AUDIT_WAITING_FOR_READABLE_SAMPLES`
+`MAP_COMPOSITION_AUDIT_WAITING_FOR_READABLE_SAMPLES`
 
-The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded phase focused on improving **document content quality** by studying representative sample content before changing the production system.
+The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded audit phase focused on understanding the **professional composition of a finished/developed map** from representative real development samples before changing PRD-Creator.
 
 ## Active Boundary
 
-This phase is **Content Audit / Content Quality Research**, not immediate renderer or contract implementation.
+This phase is **Map Composition Audit / Content Audit**, not immediate renderer, Golden, contract, or architecture implementation.
 
 The official sample set for this audit is the user upload:
 
@@ -19,54 +19,95 @@ ChoosenSamples (2).zip
 
 The earlier mistakenly uploaded Clockwork responsive-fix ZIP is explicitly excluded from the audit.
 
-Current tool evidence can see the official ZIP as an intact attachment, but the Files layer does not expose or index the archive members as readable documents, and the current local/container runtime cannot unpack the ZIP. Therefore the sample contents have **not yet been audited**. Do not infer quality findings from the archive name, file size, or prior unrelated files.
-
-Until the actual sample documents are readable and audited:
-
-- do not change gameplay/project meaning;
-- do not change Voice requirements or production wording;
-- do not change Golden/template/renderer merely to imitate a sample;
-- do not redesign repository architecture;
-- do not alter current accepted Clockwork output;
-- do not promote conditional backlog items.
+Current tool evidence can see the official ZIP as an intact attachment, but the Files layer does not expose or index the archive members as readable documents, and the current local/container runtime cannot unpack the ZIP. Therefore the actual development contents have **not yet been audited**. Do not infer findings from the archive name, size, or unrelated prior files.
 
 ## Audit Goal
 
-Determine what makes the supplied sample content produce a stronger professional document, then translate only justified patterns into a clear improvement proposal for PRD-Creator.
+Determine, from the actual development samples, **what concrete components together make the map a finished playable product** and what information a professional production document should represent so another team can understand, build, implement, test, maintain, or hand off that map.
 
-Audit dimensions include, as supported by the samples:
+The audit is not limited to prose/document quality. It should inspect every relevant development artifact and recover the real production anatomy of the map, including only categories actually supported by the samples.
+
+Potential categories to test against the evidence include:
 
 ```text
-information hierarchy
-section purpose and ordering
-content completeness
-clarity and specificity
-writing density / concision
-rule and requirement readability
-separation of overview vs actionable detail
-use of tables, lists, callouts, and prose
-terminology consistency
-reader orientation / scanability
-handoff usefulness for builders, developers, designers, and production teams
-repetition vs necessary reinforcement
-content that feels generic, vague, inflated, or AI-written
+project / map identity and scope
+player experience and intended flow
+gameplay rules and objective progression
+level / environment design
+coordinates, zones, checkpoints, spawn and teleport points
+logic / scripting / state machines / triggers
+entities, NPCs, mobs and behavior
+items, blocks, structures and interactables
+UI, text, hints, tutorials and feedback
+audio, voice, music and sound effects
+visual effects / particles / animation / camera
+resource-pack / behavior-pack / data dependencies
+models, textures and other production assets
+scoring, timers, rewards, progression and persistence
+multiplayer/session/arena behavior when present
+reset, retry, fail, recovery and edge-case behavior
+configuration / tuning values
+testing / QA / known issues / acceptance evidence
+build/developer handoff information
+packaging / delivery / versioning where present
 ```
 
-The audit should distinguish:
+These are **audit hypotheses**, not assumed requirements. A category becomes part of the professional map model only when the sample evidence supports it or when a later explicit product decision approves it.
+
+## Audit Method
+
+For each sample:
+
+```text
+inventory actual files/artifacts
+→ identify what each artifact contributes to the map
+→ map dependencies between artifacts
+→ reconstruct the player-facing flow
+→ reconstruct the implementation-facing flow
+→ identify data/configuration needed to reproduce behavior
+→ identify QA/proof needed to know the map is actually complete
+```
+
+Then compare across samples:
+
+```text
+sample-specific content
+vs
+recurring professional map component
+vs
+optional/specialized component
+vs
+redundant/noisy development artifact
+```
+
+The audit must distinguish:
 
 ```text
 sample fact
-→ belongs only to that sample
+→ directly evidenced by supplied development output
 
-sample presentation/content pattern
-→ candidate reusable principle
+inference
+→ derived from relationships between supplied artifacts
 
-current PRD-Creator weakness
-→ must be proven by comparison with current owners/output
+professional synthesis
+→ reusable model proposed from recurring evidence
 
-recommended improvement
-→ proposal until explicitly approved
+PRD-Creator requirement
+→ remains a proposal until explicitly approved
 ```
+
+## Expected Audit Output
+
+After the development samples are readable, produce:
+
+1. an inventory of what each sample actually contains;
+2. a professional **Map Anatomy / Map Production Model** showing the components that make a map complete;
+3. which components are core vs optional/specialized;
+4. the dependency chain between design, implementation, assets, runtime logic, and QA;
+5. what information a professional PRD/handoff should capture for each component;
+6. which current PRD-Creator sections already cover those needs;
+7. which information is currently missing, too vague, duplicated, or stored in the wrong place;
+8. prioritized improvement proposals, without implementation until user approval.
 
 ## Existing Accepted Baseline
 
@@ -82,20 +123,18 @@ Clockwork prd.html Git blob
 Project HTML Visual: PASS
 ```
 
-## Expected Audit Output
+## Protected Boundary
 
-After the sample documents are readable, produce a structured audit covering:
+Until the actual sample artifacts are readable and audited:
 
-1. what each sample does well;
-2. recurring high-quality content patterns across samples;
-3. weak/irrelevant patterns that should **not** be copied;
-4. comparison against current PRD-Creator content behavior;
-5. prioritized content-quality gaps;
-6. proposed improvement principles and exact owner(s) that would need changes;
-7. implementation scope only after user approval.
-
-Do not implement during the observation pass unless the user explicitly moves from audit to implementation.
+- do not change gameplay/project meaning;
+- do not change Voice requirements or wording;
+- do not change Golden/template/renderer to imitate assumptions;
+- do not redesign repository architecture;
+- do not change accepted Clockwork output;
+- do not promote conditional backlog items;
+- do not turn theoretical categories above into mandatory schema/requirements.
 
 ## Next Step
 
-**Obtain the chosen sample documents in a directly readable form (individual files or an archive that the current runtime can unpack), then audit their actual content before making any PRD-Creator quality recommendation or implementation change.**
+**Read/unpack the official chosen development sample set, inventory every relevant artifact, and reconstruct what concrete design, implementation, asset, runtime, and QA components together make each map a finished product. Do not modify PRD-Creator until the evidence has been synthesized and the user approves the resulting improvement proposal.**
