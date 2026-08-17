@@ -254,25 +254,6 @@ VOICE_STYLE = r'''<style id="production-assets-style">
 .voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
 </style>'''
 
-VOICE_COPY_SCRIPT = r'''<script id="production-assets-copy-script">(function(){
-  function fallbackCopy(text){
-    var area=document.createElement('textarea');
-    area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';
-    document.body.appendChild(area);area.select();
-    try{document.execCommand('copy');}finally{document.body.removeChild(area);}
-  }
-  document.addEventListener('click',function(event){
-    var button=event.target.closest('[data-voice-copy]');if(!button)return;
-    var source=document.getElementById(button.getAttribute('data-voice-copy'));if(!source)return;
-    var text=source.textContent||'';
-    var label=button.querySelector('.voice-copy-label');
-    var original=label?label.textContent:'Copy Prompt';
-    var done=function(){
-      button.classList.add('is-copied');
-      if(label)label.textContent='Copied ✓';else button.textContent='Copied ✓';
-      setTimeout(function(){button.classList.remove('is-copied');if(label)label.textContent=original;else button.textContent=original;},1400);
-    };
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallbackCopy(text);done();});}
-    else{fallbackCopy(text);done();}
-  });
-})();</script>'''
+# Current 04 copy controls use data-pa-copy via OBJECTIVE_COPY_SCRIPT.
+# Kept as an empty compatibility payload because the objective compositor still appends this symbol.
+VOICE_COPY_SCRIPT = ""

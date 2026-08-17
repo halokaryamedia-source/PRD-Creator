@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`P2_F15_RETIRED_VOICE_HELPER_CSS_COMPLETE`
+`P2_LEGACY_COPY_PAYLOAD_REMOVED`
 
-P0 Current Authority Integrity and both bounded P1 remediations remain complete. P2 Mechanical Cleanup has started with one reproduced defect only: the F15 retired Voice helper/CSS residue.
+P0 and both bounded P1 remediations remain complete. P2 has now closed the reproduced F15 retired Voice helper/CSS residue and the immediately adjacent legacy Voice copy-script payload without expanding into parser consolidation or broader cleanup.
 
 Repository continuity remains:
 
@@ -19,35 +19,32 @@ AGENTS.md
 
 ## Active Boundary
 
-F15 reproduced on current `Local` before this cleanup:
+The legacy Voice copy handler was re-checked against the current objective-first 04 compositor before changing code.
 
-- `production_assets.py` still contained retired `_section_speakers()`, `_section_setup_html()`, and `_entry_html()` compositor helpers with no production caller;
-- `tests/test_prd_voice_assets.py` explicitly required `_section_setup_html()` and `_entry_html()` to remain;
-- the `VOICE_STYLE` payload still carried the old Voice dashboard/card/setup selector set even though current 04 rendering is owned by `production_assets_objective.py`.
+Current truth:
 
-The bounded cleanup now:
+- current Voice and non-Voice copy buttons are emitted by `_copy_button()` as `data-pa-copy` controls;
+- `OBJECTIVE_COPY_SCRIPT` is the active shared copy handler and listens to `[data-pa-copy]`;
+- current objective-first rendering emits no `data-voice-copy` controls;
+- the former `VOICE_COPY_SCRIPT` listened only to `[data-voice-copy]`, so its JavaScript payload was unreachable runtime code.
 
-- removes the unused retired helper functions and their now-unused imports;
-- keeps the current Voice parsing/presentation primitives used by the objective-first compositor;
-- reduces `VOICE_STYLE` to only the four shared rules still consumed by current 04 output: Production Assets nav wrapping plus performance-cue grouping;
-- updates the regression test so retired compositor helpers must stay absent while current primitives remain present;
-- proves generated Voice pages contain no retired `voice-script-card` or `voice-page-setup` markup.
+The bounded cleanup therefore removes the legacy JavaScript payload while keeping `VOICE_COPY_SCRIPT` as an intentionally empty compatibility symbol because the current objective compositor still appends that attribute. Do not spend a separate refactor solely deleting the empty symbol/callsite unless an already-needed change touches that owner.
 
-No Golden bytes, protected 01–03 behavior, gameplay, Production Asset resource meaning, Voice wording, Voice state, handoff state, or generated Clockwork bundle changed. This is source-only mechanical cleanup; the next normal render uses the reduced CSS payload.
+Fresh-render proof from the current renderer boundary:
 
-The existing legacy `VOICE_COPY_SCRIPT` remains a separate small residue because current objective code still references it. It is not bundled into this F15 helper/CSS delivery.
-
-## Proof
-
+- current Voice prompt control is present as `data-pa-copy="voice-prompt-vo-intro-01"`;
+- `production-assets-flow-copy-script` remains present;
+- retired `production-assets-copy-script` is absent;
+- retired `data-voice-copy` markup is absent;
 - `tests.test_prd_voice_assets`: PASS (`12/12`);
-- Project Document contract/content/delivery regressions exercised for the changed renderer boundary: PASS;
-- handoff / Flow 2 / hierarchy / Golden regressions: PASS (`20/20` final batch);
-- repository verification: PASS;
-- protected-core additive 04 regression remains PASS.
+- PRD contract/delivery/Golden regression batch: PASS (`23/23`);
+- Repository Verify: PASS.
+
+No Golden bytes, protected 01–03 behavior, gameplay, Production Asset meaning, Voice wording, readiness/evidence state, or accepted Clockwork source changed. The checked-in Clockwork HTML is not regenerated for this source-only runtime cleanup; the next normal render will omit the dead legacy payload.
 
 ## Deferred / Do Not Continue
 
-- Do not bundle F16 parser consolidation into this delivery.
+- Do not create a separate commit merely to remove the empty `VOICE_COPY_SCRIPT` compatibility symbol/callsite.
 - Do not refactor `_engine.STORAGE_PREFIX_TOKEN` or other conditional concurrency/reentrancy concerns without a reproduced failure.
 - Do not add test-discovery, atomic-write, generic parser/schema, registry, manifest, or workflow frameworks.
 - Do not clean `.regen-transfer`, supersession history, DOCX, unrelated CSS, or dense functions merely for aesthetics.
@@ -55,4 +52,4 @@ The existing legacy `VOICE_COPY_SCRIPT` remains a separate small residue because
 
 ## Next Step
 
-Continue only **P2 — smallest remaining mechanical residue triage**: first verify whether the legacy `VOICE_COPY_SCRIPT` is truly unreferenced by current generated controls; remove it only if current `data-pa-copy` handling fully replaces it. If that closes cleanly, then re-check F16 parser duplication and consolidate only when one tiny existing-owner parser produces a real net simplification.
+Re-check only **P2 / F16 — duplicated Voice parsing** against the current post-F15 implementation. Consolidate only if one small existing-owner parser can replace duplicated parsing with fewer moving parts and unchanged contracts; otherwise record F16 as not worthwhile and stop P2 rather than inventing a parser framework.
