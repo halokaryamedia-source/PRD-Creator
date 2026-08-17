@@ -160,68 +160,6 @@ def parse_voice_production(path: Path) -> VoiceProduction:
     return VoiceProduction(cast=cast, sections=sections)
 
 
-def parse_voice_requirement_triggers(path: Path) -> dict[str, str]:
-    if not path.is_file():
-        raise ValueError("Voice Production requires current work/voice-requirements.md for operator context.")
-
-    triggers: dict[str, str] = {}
-    current_id: str | None = None
-
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        line = raw.rstrip()
-        match = ENTRY_RE.match(line)
-        if match:
-            current_id = match.group(1)
-            continue
-        if current_id and line.startswith("- Trigger:"):
-            trigger = line.split(":", 1)[1].strip()
-            if not trigger:
-                raise ValueError(f"Voice requirement Trigger is empty for: {current_id}")
-            triggers[current_id] = trigger
-
-    if not triggers:
-        raise ValueError("No Voice requirement Trigger values were found.")
-    return triggers
-
-
-
-def parse_voice_requirement_flows(path: Path) -> dict[str, str]:
-    if not path.is_file():
-        return {}
-
-    flows: dict[str, str] = {}
-    current_id: str | None = None
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        line = raw.rstrip()
-        match = ENTRY_RE.match(line)
-        if match:
-            current_id = match.group(1)
-            continue
-        if current_id and line.startswith("- Flow:"):
-            flow = line.split(":", 1)[1].strip()
-            if not flow:
-                raise ValueError(f"Voice requirement Flow is empty for: {current_id}")
-            flows[current_id] = flow
-    return flows
-
-
-def parse_voice_requirement_for(path: Path) -> dict[str, str]:
-    if not path.is_file():
-        return {}
-    values: dict[str, str] = {}
-    current_id: str | None = None
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        line = raw.rstrip()
-        match = ENTRY_RE.match(line)
-        if match:
-            current_id = match.group(1)
-            continue
-        if current_id and line.startswith("- For:"):
-            value = line.split(":", 1)[1].strip()
-            if value:
-                values[current_id] = value
-    return values
-
 def _voice_for(cast: dict[str, str], speaker: str) -> str:
     speaker_key = speaker.casefold()
     for cast_speaker, voice in cast.items():
@@ -247,6 +185,7 @@ def _performance_html(performance: str) -> str:
         parts.append(f'<div class="voice-script-line">{esc(raw)}</div>')
     return "".join(parts)
 
+
 VOICE_STYLE = r'''<style id="production-assets-style">
 .production-assets-nav .nav-submenu a{min-width:0;white-space:normal;overflow-wrap:anywhere}
 .production-assets-nav .nav-submenu a small{display:block;margin-top:2px;white-space:normal;overflow-wrap:anywhere}
@@ -254,6 +193,4 @@ VOICE_STYLE = r'''<style id="production-assets-style">
 .voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
 </style>'''
 
-# Current 04 copy controls use data-pa-copy via OBJECTIVE_COPY_SCRIPT.
-# Kept as an empty compatibility payload because the objective compositor still appends this symbol.
 VOICE_COPY_SCRIPT = ""
