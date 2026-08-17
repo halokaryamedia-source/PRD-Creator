@@ -2,98 +2,223 @@
 
 ## Current Status
 
-`CLOCKWORK_BROWSER_VISUAL_QA_ACTIVE`
+`CLOCKWORK_OVERVIEW_RESPONSIVE_FIX_READY`
 
-The unified `kits/prd-creator/` migration is complete. The user explicitly approved the next bounded task: prove the final current Clockwork project HTML visually in an actual browser.
+The unified `kits/prd-creator/` migration is complete. The user explicitly approved final browser visual QA of the current Clockwork project HTML. Actual Chromium QA found one reproducible PRD-core responsive defect; the smallest source-first fix has been prepared and proven locally but is not yet committed to the repository.
 
 ## Active Boundary
 
-Target repository/branch:
+Repository/branch:
 
 ```text
 halokaryamedia-source/PRD-Creator
 Local
 ```
 
-Pinned starting HEAD:
-
-```text
-4691af6013d552122e49eacc7ebc97f0469fa19b
-```
-
-Real-project acceptance sample:
+Current committed Clockwork acceptance sample remains:
 
 ```text
 workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
 Git blob: dac955a4a482ad9dc2035f0c5714c87ae4de05c5
 ```
 
-This task is visual QA / acceptance, not a renderer redesign or architecture cleanup.
+Do not mark current Project HTML Visual PASS while that blob remains current.
 
-## Goal
+## Reproduced browser defect
 
-Establish truthful browser evidence for the final humanized Clockwork `prd.html`, especially the current objective-first / moment-first `04 Production Assets` presentation that is currently mechanically covered but browser-level `NOT PROVEN`.
-
-## Browser acceptance scope
-
-Render the exact current Clockwork `prd.html` in Chromium and inspect at minimum:
+Actual browser:
 
 ```text
-1500 × 1000  desktop
-1000 × 1000  laptop / narrower desktop
+Chromium 144.0.7559.96
+1500×1000
+1000×1000
 ```
 
-Check:
+1500×1000 passed the requested representative visual checks.
 
-1. PRD core 01–03 remains visually intact;
-2. sidebar/navigation activation and page switching work;
-3. 04 Production Assets pages are readable and clearly grouped by gameplay moment;
-4. MODEL / ITEM / UI-TEXT / AUDIO / PARTICLE resources remain distinguishable;
-5. typography, spacing, alignment, hierarchy, and information density are usable;
-6. no clipping, overlap, hidden content, broken sticky/sidebar state, or accidental horizontal page overflow;
-7. Voice AUDIO cards remain readable, including Function, Voice Preset, ElevenLabs Model, Estimated Duration, and Prompt;
-8. no visual claim is upgraded from static/CI evidence alone.
-
-## Source-change gate
-
-Do not change renderer, template, canonical PRD, Production Assets requirements, or current Clockwork output merely because visual QA is running.
-
-If browser evidence finds a real defect:
+At 1000×1000, `01 Overview → Complete Gameplay Journey` is materially clipped:
 
 ```text
-reproduce exact defect
-→ identify first wrong owner
-→ smallest complete source fix
-→ regenerate only invalidated derived output
-→ repeat only invalidated browser/mechanical proof
+.journey scrollWidth = 658
+.journey clientWidth = 566
+hidden overflow = 92 px
 ```
 
-Do not hand-patch `prd.html`.
+The sixth journey card is visibly cut by the page boundary.
+
+No equivalent defect was found in current 04 Production Assets:
+
+```text
+7 Production Assets pages inspected
+53 resource rows
+19 Voice AUDIO rows
+viewport overflow = 0
+internal overflow = 0
+page errors = 0
+console warnings/errors = 0
+```
+
+Representative Overview / Gameplay Flow / Development / 04 navigation clicks all reached their intended section and active navigation state at both target viewports.
+
+Current Clockwork contains real `MODEL`, `ITEM`, `UI / TEXT`, and `AUDIO` rows. It contains no current `PARTICLE` row, so do not claim a real-project PARTICLE browser sample from Clockwork.
+
+## First wrong owner
+
+This is a presentation-mechanics defect in the protected PRD-core Golden responsive CSS, not project/gameplay/Voice meaning.
+
+Owner:
+
+```text
+kits/prd-creator/template/golden-reference.html
+kits/prd-creator/template/runtime-template.html
+```
+
+The two template files must remain byte-identical.
+
+Do not fix this in `prd.html`, Production Assets CSS, asset requirements, Voice content, or project data.
+
+## Exact fix candidate
+
+Add only this intermediate-width rule to the Golden CSS before the existing <=760px rule:
+
+```css
+@media(min-width:761px) and (max-width:1100px){
+  .journey{grid-template-columns:repeat(3,1fr)}
+  .journey article+article{border-left:0}
+  .journey article:nth-child(3n+2),
+  .journey article:nth-child(3n+3){border-left:1px solid var(--line)}
+  .journey article:nth-child(n+4){border-top:1px solid var(--line)}
+}
+```
+
+Behavior:
+
+```text
+>=1101 px  → existing six-column journey
+761–1100   → three columns × two rows
+<=760      → existing mobile rule remains unchanged
+```
+
+No content, page identity, DOM vocabulary, gameplay, Production Asset requirement, or Voice wording changes.
+
+## Proven local candidate identity
+
+Source-first local regeneration produced:
+
+```text
+Golden/runtime candidate Git blob
+2050b965768489feda98373c2920bbee8c7093b3
+
+regenerated Clockwork prd.html candidate Git blob
+3267b2f97e7335418a43edd6b0e81f6077aeeb51
+
+context.md unchanged
+003cc0068505339b8406b445601b7350bffa70a5
+
+index.json unchanged
+c205422dc0d639b5d0bf9081364321c318e23d22
+```
+
+The exact candidate was produced by changing the template source and running the canonical renderer/delivery path. The generated `prd.html` was not hand-patched.
+
+## Local candidate proof already completed
+
+At 1500×1000 and 1000×1000 on Chromium 144.0.7559.96:
+
+```text
+document/body horizontal overflow = 0
+1000px journey scrollWidth/clientWidth = 566/566
+representative nav click + active state = PASS
+all seven 04 pages viewport/internal overflow = 0
+Voice AUDIO production fields readable = PASS
+page/console errors = 0
+```
+
+Current Clockwork validation against that regenerated candidate:
+
+```text
+PRD validator = PASS
+PRD → Voice handoff validator = PASS
+Voice validator = PASS
+```
+
+## Files that must change together
+
+One bounded logical delivery must include:
+
+```text
+kits/prd-creator/template/golden-reference.html
+kits/prd-creator/template/runtime-template.html
+kits/prd-creator/renderer/CONTRACT.md
+
+docs/knowledge/decisions/golden-reference-fidelity.md
+
+tests/test_prd_golden_reference.py
+
+workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
+
+docs/knowledge/reviews/current-validation.md
+docs/knowledge/next-action.md
+```
+
+Update current Golden SHA owners/test from:
+
+```text
+e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
+```
+
+to the proven candidate:
+
+```text
+2050b965768489feda98373c2920bbee8c7093b3
+```
+
+Historical review/audit records that truthfully describe the former Golden blob must remain historical and must not be rewritten merely to erase the old hash.
+
+## Required publish/proof sequence
+
+Use a channel with a real local git workspace / safe patch-and-commit capability for the large tracked template/generated HTML files. Do **not** use GitHub Actions as a remote shell and do not full-reconstruct 795 KB/761 KB files through per-file connector replacement.
+
+```text
+pin current Local
+→ apply exact Golden CSS fix to both byte-identical templates
+→ update current Golden SHA owners + exact-Golden test
+→ run canonical Clockwork delivery regeneration
+→ confirm context.md/index.json unchanged
+→ confirm regenerated prd.html Git blob = 3267b2f97e7335418a43edd6b0e81f6077aeeb51
+→ run PRD/hand-off/Voice validation
+→ run browser QA at 1500×1000 + 1000×1000
+→ commit one coherent fix delivery
+→ PRD Verify + Repository Verify
+→ record Project HTML Visual: PASS
+→ STOP
+```
+
+Voice Verify is not required unless the final diff unexpectedly touches Voice executable/canonical owners.
 
 ## Protected boundaries
 
-Do not change during this task unless a reproduced visual defect requires the matching owner:
+Do not use this defect to change:
 
-- gameplay/project meaning;
-- Voice requirement/wording/performance;
-- Golden contract for preference/cosmetic reasons;
+- project/gameplay meaning;
+- Voice requirements/wording/performance;
+- 04 Production Assets presentation that already passed both target viewports;
+- page identities/navigation hierarchy;
 - unified package architecture;
-- tests/tools organization;
-- export formats;
-- conditional backlog items RQ-09/RQ-10/RQ-11/RQ-14.
+- tests/tools organization beyond the exact Golden identity update;
+- RQ-09/RQ-10/RQ-11/RQ-14;
+- export formats.
 
-## Completion rule
+## Recovery
 
-If both target viewports and representative navigation/pages pass without material visual defects, record the current evidence owner as:
+If a new session resumes here:
 
-```text
-Project HTML Visual: PASS
-```
-
-with the exact Clockwork blob/viewport/evidence boundary, then return `next-action.md` to `STOP`.
-
-If a defect is found, keep this task active and record only the reproduced defect + first wrong owner as the next step.
+1. read this file after normal repository boot;
+2. do not repeat the migration or broad visual audit;
+3. current defect is already reproduced;
+4. use the exact CSS and expected Git blobs above;
+5. do not mark PASS until the fixed source + regenerated current output are actually committed and relevant proof is green.
 
 ## Next Step
 
-**Run actual Chromium visual QA on the exact Clockwork `prd.html` blob `dac955a4a482ad9dc2035f0c5714c87ae4de05c5` at 1500×1000 and 1000×1000, including representative PRD 01–03 pages, 04 Production Assets pages, sidebar/page navigation, and overflow/layout checks. Do not edit source unless a concrete browser defect is reproduced.**
+**Apply the proven Golden responsive fix through a safe local/Codex git workspace, regenerate Clockwork from source, and publish the bounded fix only if the committed template/output identities and PRD/browser proof match the candidate above. Then change current browser evidence to `Project HTML Visual: PASS` and STOP.**
