@@ -2,7 +2,7 @@
 
 ## Current Status
 
-`CONTENT_QUALITY_AUDIT_ACTIVE`
+`CONTENT_QUALITY_AUDIT_WAITING_FOR_READABLE_SAMPLES`
 
 The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded phase focused on improving **document content quality** by studying representative sample content before changing the production system.
 
@@ -10,9 +10,18 @@ The unified `kits/prd-creator/` migration and Clockwork browser visual QA are co
 
 This phase is **Content Audit / Content Quality Research**, not immediate renderer or contract implementation.
 
-The user will provide one or more sample documents/content pieces. Treat those samples as reference evidence for content quality, organization, writing, hierarchy, information density, and production usefulness. Do not treat sample-specific facts as project authority for Clockwork or any other project.
+The official sample set for this audit is the user upload:
 
-Until the audit identifies and the user approves concrete improvements:
+```text
+ChoosenSamples (2).zip
+~508 MB
+```
+
+The earlier mistakenly uploaded Clockwork responsive-fix ZIP is explicitly excluded from the audit.
+
+Current tool evidence can see the official ZIP as an intact attachment, but the Files layer does not expose or index the archive members as readable documents, and the current local/container runtime cannot unpack the ZIP. Therefore the sample contents have **not yet been audited**. Do not infer quality findings from the archive name, file size, or prior unrelated files.
+
+Until the actual sample documents are readable and audited:
 
 - do not change gameplay/project meaning;
 - do not change Voice requirements or production wording;
@@ -73,11 +82,9 @@ Clockwork prd.html Git blob
 Project HTML Visual: PASS
 ```
 
-Content audit may later recommend changes to content generation/contract behavior, but only after the sample comparison establishes a concrete quality gap and the user approves the direction.
-
 ## Expected Audit Output
 
-After enough samples are provided, produce a structured audit covering:
+After the sample documents are readable, produce a structured audit covering:
 
 1. what each sample does well;
 2. recurring high-quality content patterns across samples;
@@ -91,4 +98,4 @@ Do not implement during the observation pass unless the user explicitly moves fr
 
 ## Next Step
 
-**Receive and study the user-provided sample content. Audit the content itself first—structure, hierarchy, clarity, completeness, density, specificity, scanability, and handoff usefulness—without changing PRD-Creator yet. Accumulate evidence across samples, then present the reusable quality patterns and gaps for user approval before implementation.**
+**Obtain the chosen sample documents in a directly readable form (individual files or an archive that the current runtime can unpack), then audit their actual content before making any PRD-Creator quality recommendation or implementation change.**
