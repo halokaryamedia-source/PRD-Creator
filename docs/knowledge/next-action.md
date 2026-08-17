@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`P1_FRESHNESS_INTEGRITY_COMPLETE`
+`P2_F15_RETIRED_VOICE_HELPER_CSS_COMPLETE`
 
-P0 Current Authority Integrity and both bounded P1 remediations are complete: Canonical 04/Voice Source Normalization and Freshness Integrity.
+P0 Current Authority Integrity and both bounded P1 remediations remain complete. P2 Mechanical Cleanup has started with one reproduced defect only: the F15 retired Voice helper/CSS residue.
 
 Repository continuity remains:
 
@@ -19,49 +19,40 @@ AGENTS.md
 
 ## Active Boundary
 
-The audited same-version false-PASS gaps are closed without adding a revision registry or new workflow layer.
+F15 reproduced on current `Local` before this cleanup:
 
-Current handoff integrity:
+- `production_assets.py` still contained retired `_section_speakers()`, `_section_setup_html()`, and `_entry_html()` compositor helpers with no production caller;
+- `tests/test_prd_voice_assets.py` explicitly required `_section_setup_html()` and `_entry_html()` to remain;
+- the `VOICE_STYLE` payload still carried the old Voice dashboard/card/setup selector set even though current 04 rendering is owned by `production_assets_objective.py`.
 
-- `validate_handoff.py` reuses the existing Project Document mechanical validator before authorizing Flow 5;
-- `handoff_ready` therefore requires the current canonical content, render projection, current versioned HTML, and current Production Asset source binding to pass the existing mechanical/freshness gate now, not only when acceptance was previously recorded;
-- a same-version edit to canonical PRD bytes without regeneration is mechanically rejected.
+The bounded cleanup now:
 
-Current Voice revision identity:
+- removes the unused retired helper functions and their now-unused imports;
+- keeps the current Voice parsing/presentation primitives used by the objective-first compositor;
+- reduces `VOICE_STYLE` to only the four shared rules still consumed by current 04 output: Production Assets nav wrapping plus performance-cue grouping;
+- updates the regression test so retired compositor helpers must stay absent while current primitives remain present;
+- proves generated Voice pages contain no retired `voice-script-card` or `voice-page-setup` markup.
 
-- `voice-state.yaml.source_handoff` must resolve to a current handoff state;
-- upstream handoff status must be `handoff_ready`;
-- `voice-state.yaml.source_prd_revision`, handoff `accepted_prd_version`, `render-data.document.version`, Flow 5 `Source PRD revision`, and Flow 6 source revision must agree;
-- `voice-production.md` binds directly to the exact current `work/voice-requirements.md` bytes through its existing `Source Voice Requirements` header plus SHA-256;
-- the Voice project HTML path must point to the same accepted PRD revision;
-- a same-ID / same-Type / same-Speaker requirement edit can no longer leave an older Voice script mechanically valid.
+No Golden bytes, protected 01–03 behavior, gameplay, Production Asset resource meaning, Voice wording, Voice state, handoff state, or generated Clockwork bundle changed. This is source-only mechanical cleanup; the next normal render uses the reduced CSS payload.
 
-Clockwork remains current after this change:
+The existing legacy `VOICE_COPY_SCRIPT` remains a separate small residue because current objective code still references it. It is not bundled into this F15 helper/CSS delivery.
 
-- PRD handoff validation: PASS;
-- Voice mechanical validation: PASS (`19` requirements = `19` script entries, consolidated project HTML parity PASS);
-- Project HTML Visual remains `NOT PROVEN` and Audio Evidence remains `not_provided`; those evidence boundaries were not changed or inflated.
+## Proof
 
-No Golden bytes, protected 01–03 output, gameplay, Voice wording/performance payload, generated PRD HTML, acceptance result, or project readiness state changed in this freshness remediation.
-
-## Last Completed
-
-- Completed P0 Current Authority Integrity without redesign.
-- Completed P1 Canonical 04/Voice Source Normalization and regenerated/revalidated the Clockwork delivery bundle.
-- Closed F09 current-handoff freshness by reusing the current Project Document mechanical validator at handoff entry.
-- Added regression proof that same-version stale PRD bytes cannot authorize Flow 5.
-- Closed F10 Voice revision identity by binding current handoff/PRD/requirements/script identity and exact Flow 5 requirement bytes.
-- Added regression proof for stale same-version Voice requirement bytes, stale Voice PRD revision, and non-ready upstream handoff.
-- Revalidated the actual Clockwork handoff and Voice delivery against the new gates.
-- Repository verification remains green locally.
+- `tests.test_prd_voice_assets`: PASS (`12/12`);
+- Project Document contract/content/delivery regressions exercised for the changed renderer boundary: PASS;
+- handoff / Flow 2 / hierarchy / Golden regressions: PASS (`20/20` final batch);
+- repository verification: PASS;
+- protected-core additive 04 regression remains PASS.
 
 ## Deferred / Do Not Continue
 
-- Do not create a generic revision registry, manifest, schema framework, freshness service, or extra workflow layer.
-- Do not remove compatibility parser fields/helpers merely because current Clockwork no longer uses legacy metadata until P2 re-triage proves that cleanup is still worthwhile.
-- Do not broaden DOCX validation, renderer/CSS cleanup, test-discovery work, atomic-write work, or other P2/P3 findings into this completed P1 change.
-- Do not change Golden bytes, protected 01–03 behavior, gameplay, Voice wording, or audio evidence.
+- Do not bundle F16 parser consolidation into this delivery.
+- Do not refactor `_engine.STORAGE_PREFIX_TOKEN` or other conditional concurrency/reentrancy concerns without a reproduced failure.
+- Do not add test-discovery, atomic-write, generic parser/schema, registry, manifest, or workflow frameworks.
+- Do not clean `.regen-transfer`, supersession history, DOCX, unrelated CSS, or dense functions merely for aesthetics.
+- Do not change Golden bytes, gameplay, Voice wording, or evidence/readiness claims.
 
 ## Next Step
 
-Begin only **P2 — Mechanical Cleanup triage**: re-check the promoted P2 findings against the current `Local` implementation, identify which defects still reproduce after P0/P1, and select one smallest worthwhile fix before changing code. Do not bundle compatibility-parser, DOCX, CSS, renderer, or unrelated cleanup into one delivery.
+Continue only **P2 — smallest remaining mechanical residue triage**: first verify whether the legacy `VOICE_COPY_SCRIPT` is truly unreferenced by current generated controls; remove it only if current `data-pa-copy` handling fully replaces it. If that closes cleanly, then re-check F16 parser duplication and consolidate only when one tiny existing-owner parser produces a real net simplification.

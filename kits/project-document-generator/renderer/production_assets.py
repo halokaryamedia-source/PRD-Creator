@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
-from core import bi, esc, i18n, page, txt
+from core import esc
 
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
@@ -232,41 +230,6 @@ def _voice_for(cast: dict[str, str], speaker: str) -> str:
     return "Voice selection pending"
 
 
-def _section_speakers(section: VoiceSection) -> list[str]:
-    speakers: list[str] = []
-    seen: set[str] = set()
-    for entry in section.entries:
-        key = entry.speaker.casefold()
-        if key not in seen:
-            seen.add(key)
-            speakers.append(entry.speaker)
-    return speakers
-
-
-
-
-def _section_setup_html(doc: VoiceProduction, section: VoiceSection) -> str:
-    rows = []
-    for speaker in _section_speakers(section):
-        rows.append(
-            '<div class="voice-page-setup-row">'
-            f'<span class="voice-page-setup-speaker">{esc(speaker)}</span>'
-            '<span aria-hidden="true">·</span>'
-            f'<strong>{esc(_voice_for(doc.cast, speaker))}</strong>'
-            '<span aria-hidden="true">·</span>'
-            '<span class="voice-page-setup-model">Eleven v3</span>'
-            '</div>'
-        )
-    return (
-        '<div class="voice-page-setup">'
-        f'<span class="voice-page-setup-label">{i18n(bi("Voice Setup", "Setup Voice"))}</span>'
-        '<div class="voice-page-setup-rows">' + "".join(rows) + '</div>'
-        '</div>'
-    )
-
-
-
-
 def _performance_html(performance: str) -> str:
     parts: list[str] = []
     for raw in performance.splitlines():
@@ -284,104 +247,11 @@ def _performance_html(performance: str) -> str:
         parts.append(f'<div class="voice-script-line">{esc(raw)}</div>')
     return "".join(parts)
 
-
-def _entry_html(
-    entry: VoiceEntry,
-    sequence_no: int,
-    line_index: int,
-    line_total: int,
-    package_label: Any,
-    trigger_context: str,
-) -> str:
-    prompt_id = f"voice-prompt-{esc(entry.voice_id.lower())}"
-    return (
-        '<article class="voice-script-card">'
-        '<div class="voice-script-card-head">'
-        '<div class="voice-script-identity">'
-        f'<span class="voice-script-index">{sequence_no:02d}</span>'
-        '<div class="voice-script-heading">'
-        f'<h4>{esc(entry.title)}</h4>'
-        f'<div class="voice-script-position">{i18n(package_label)} · {i18n(bi("Voice Line", "Voice Line"))} {line_index}/{line_total}</div>'
-        f'<p class="voice-script-context"><span>{i18n(bi("Context", "Konteks"))}</span>{esc(trigger_context)}</p>'
-        '<div class="voice-script-meta">'
-        f'<span>{esc(entry.speaker)}</span>'
-        '<span aria-hidden="true">·</span>'
-        f'<span>{esc(entry.duration)}</span>'
-        '</div>'
-        '</div>'
-        '</div>'
-        f'<button class="voice-copy-button" data-voice-copy="{prompt_id}" type="button" title="Copy exact ElevenLabs prompt">'
-        f'<span class="voice-copy-label">{i18n(bi("Copy Prompt", "Copy Prompt"))}</span>'
-        '</button>'
-        '</div>'
-        f'<pre class="voice-script-text" id="{prompt_id}">{esc(entry.performance)}</pre>'
-        f'<div class="voice-script-display">{_performance_html(entry.performance)}</div>'
-        '</article>'
-    )
-
-
-
-
 VOICE_STYLE = r'''<style id="production-assets-style">
-.production-assets-page{--voice-panel:#f8fafb;--voice-line:#d8e1e5}
-.voice-objective-shell{margin:0 0 22px}
-.voice-objective-kicker{display:block;margin:0 0 7px;color:var(--blue);font-size:.63rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
-.voice-objective-title{margin:0;color:var(--navy);font-size:1.9rem;line-height:1.12;letter-spacing:-.025em}
-.voice-objective-label{margin:6px 0 18px;color:var(--amber);font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.voice-objective-summary{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(120px,.45fr) minmax(180px,.65fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.voice-objective-summary-item{min-width:0;padding:13px 18px 14px 0}
-.voice-objective-summary-item+.voice-objective-summary-item{padding-left:18px;border-left:1px solid var(--line)}
-.voice-objective-summary-item>span{display:block;margin-bottom:5px;color:var(--muted);font-size:.61rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
-.voice-objective-summary-item p{margin:0;color:#52616a;font-size:.78rem;line-height:1.5}
-.voice-objective-summary-item strong{display:block;color:var(--navy);font-size:.88rem;line-height:1.4}
-.voice-page-setup{display:flex;align-items:center;gap:14px;margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--blue);background:var(--voice-panel)}
-.voice-page-setup-label{flex:0 0 auto;color:var(--blue);font-size:.61rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
-.voice-page-setup-rows{display:flex;min-width:0;flex-wrap:wrap;gap:7px 18px}
-.voice-page-setup-row{display:flex;align-items:center;gap:7px;min-width:0;color:var(--muted);font-size:.7rem}
-.voice-page-setup-row strong{color:var(--navy);font-size:.76rem}
-.voice-page-setup-speaker{color:var(--ink);font-weight:700}
-.voice-page-setup-model{color:var(--blue);font-weight:800}
-.voice-script-list{display:grid;gap:16px;margin-top:4px}
-.voice-script-card{overflow:hidden;border:1px solid var(--voice-line);border-radius:5px;background:var(--paper);break-inside:avoid}
-.voice-script-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:16px 17px 13px}
-.voice-script-identity{display:flex;gap:12px;align-items:flex-start;min-width:0}
-.voice-script-index{min-width:24px;padding-top:2px;color:var(--amber);font-size:.69rem;font-weight:900;letter-spacing:.08em}
-.voice-script-heading{min-width:0;flex:1}
-.voice-script-heading h4{margin:0;color:var(--navy);font-size:.98rem;line-height:1.3;letter-spacing:.005em;text-transform:none}
-.voice-script-position{margin-top:4px;color:var(--blue);font-size:.67rem;font-weight:800;letter-spacing:.02em}
-.voice-script-context{max-width:780px;margin:7px 0 0;color:#52616a;font-size:.76rem;line-height:1.48}
-.voice-script-context span{margin-right:6px;color:var(--muted);font-size:.61rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.voice-script-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:7px;color:var(--muted);font-size:.69rem}
-.voice-script-text{display:none}
-.voice-script-display{padding:17px 18px 20px;border-top:1px solid var(--voice-line);background:#fff}
-.voice-script-line{max-width:74ch;color:var(--ink);font:500 .94rem/1.7 var(--font);overflow-wrap:anywhere}
-.voice-script-gap{height:10px}
-.voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
-.voice-performance-tag{display:inline-flex;align-items:center;min-height:22px;padding:3px 7px;border:0;border-left:2px solid var(--blue);border-radius:2px;background:var(--soft);color:var(--blue);font-size:.64rem;font-weight:800;letter-spacing:.025em;text-transform:uppercase}
-.voice-copy-button{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:9px 13px;border:1px solid var(--navy);border-radius:3px;background:var(--navy);color:#fff;font:800 .65rem/1 var(--font);letter-spacing:.055em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
-.voice-copy-button:hover,.voice-copy-button:focus-visible{border-color:var(--blue);background:var(--blue);outline:0}
-.voice-copy-button.is-copied{border-color:var(--green);background:var(--green);color:#fff}
-.production-assets-category{padding:6px 10px 4px 14px;color:rgba(255,255,255,.46);font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .production-assets-nav .nav-submenu a{min-width:0;white-space:normal;overflow-wrap:anywhere}
 .production-assets-nav .nav-submenu a small{display:block;margin-top:2px;white-space:normal;overflow-wrap:anywhere}
 .production-assets-objective-name{min-width:0;white-space:normal;overflow-wrap:anywhere}
-body.theme-dark .voice-objective-summary-item p,body.theme-dark .voice-script-context{color:#c8d7dc}
-body.theme-dark .voice-page-setup{background:#1d2f37}
-body.theme-dark .voice-script-card{border-color:#405761}
-body.theme-dark .voice-script-display{background:#17262d;border-color:#405761}
-body.theme-dark .voice-script-line{color:#e8eff3}
-@media(max-width:760px){
-.voice-objective-summary{grid-template-columns:1fr}
-.voice-objective-summary-item+.voice-objective-summary-item{padding-left:0;border-left:0;border-top:1px solid var(--line)}
-.voice-page-setup{align-items:flex-start;flex-direction:column;gap:7px}
-.voice-script-card-head{gap:12px;padding:14px}
-.voice-script-display{padding:15px}
-.voice-copy-button{min-height:32px;padding:7px 9px}
-}
-@media print{
-.voice-copy-button{display:none!important}
-.voice-script-card,.voice-objective-shell{break-inside:avoid}
-}
+.voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
 </style>'''
 
 VOICE_COPY_SCRIPT = r'''<script id="production-assets-copy-script">(function(){

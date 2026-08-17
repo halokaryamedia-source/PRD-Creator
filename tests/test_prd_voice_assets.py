@@ -159,6 +159,9 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertNotIn('class="voice-script-context"', intro_page)
         self.assertNotIn('class="voice-production-block"', intro_page)
         self.assertNotIn("<h3>Audio</h3>", intro_page)
+        self.assertIn('id="production-assets-flow-copy-script"', html)
+        self.assertNotIn('class="voice-script-card"', html)
+        self.assertNotIn('class="voice-page-setup"', html)
 
     def test_non_voice_assets_merge_into_the_same_objective_pages(self) -> None:
         rendered, output = self.render(self.make_project(include_assets=True))
@@ -455,12 +458,16 @@ ACTIVE
         for marker in (
             "def parse_voice_production(",
             "def parse_voice_requirement_triggers(",
-            "def _section_setup_html(",
-            "def _entry_html(",
-            "VOICE_STYLE =",
-            "VOICE_COPY_SCRIPT =",
+            "def _voice_for(",
+            "def _performance_html(",
         ):
             self.assertIn(marker, source)
+        for marker in (
+            "def _section_speakers(",
+            "def _section_setup_html(",
+            "def _entry_html(",
+        ):
+            self.assertNotIn(marker, source)
 
 
 if __name__ == "__main__":
