@@ -2,32 +2,64 @@
 
 ## Current Status
 
-`MAP_COMPOSITION_AUDIT_WAITING_FOR_READABLE_SAMPLES`
+`MAP_COMPOSITION_AUDIT_READY_FOR_NEW_SESSION`
 
-The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded audit phase focused on understanding the **professional composition of a finished/developed map** from representative real development samples before changing PRD-Creator.
+The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded audit phase focused on understanding the **professional composition of a finished/developed Minecraft map** from representative real development outputs before changing PRD-Creator.
 
 ## Active Boundary
 
-This phase is **Map Composition Audit / Content Audit**, not immediate renderer, Golden, contract, or architecture implementation.
+This phase is **Map Composition Audit / Content Audit**. It is an evidence-gathering and synthesis phase, not immediate renderer, Golden, contract, architecture, or project implementation work.
 
-The official sample set for this audit is the user upload:
+The purpose is not merely to judge which document looks better. The purpose is to inspect actual developed maps and answer:
+
+> What concrete design, level, runtime, content, asset, configuration, and QA components together make a professional map a finished playable product, and what information should a professional PRD/handoff capture so another team can understand, build, implement, test, maintain, or hand it off?
+
+Do not implement PRD-Creator improvements until the sample evidence has been synthesized and the user explicitly approves the resulting proposal.
+
+## Official Working Sample Set
+
+The earlier combined archive `ChoosenSamples (2).zip` was split by the user into one ZIP per map to make inspection easier. **Use the six per-map ZIPs below as the current working sample set.** The combined ZIP does not need to be used when the six split archives are available.
 
 ```text
-ChoosenSamples (2).zip
-~508 MB
+3#Angry bird.zip          47,250,776 bytes
+6#Avatar_Legends.zip      35,917,220 bytes
+16#Ice Age.zip           221,525,195 bytes
+23#Sherlock Holmes.zip    54,752,510 bytes
+24#Minions DLC.zip       111,197,100 bytes
+29#NinjaWeaponAcademy.zip 36,383,129 bytes
 ```
 
-The earlier mistakenly uploaded Clockwork responsive-fix ZIP is explicitly excluded from the audit.
+The mistakenly uploaded Clockwork responsive-fix ZIP is explicitly excluded from this audit. Do not use prior unrelated Clockwork HTML/review artifacts as substitutes for these samples.
 
-Current tool evidence can see the official ZIP as an intact attachment, but the Files layer does not expose or index the archive members as readable documents, and the current local/container runtime cannot unpack the ZIP. Therefore the actual development contents have **not yet been audited**. Do not infer findings from the archive name, size, or unrelated prior files.
+A new chat should expect the user to upload these same six archives again if conversation attachments are not available across sessions.
+
+## Session Capability Note
+
+The previous chat could see all six ZIP attachments correctly, but its local filesystem runtime failed with `ClientError` for both container and Python file access. Because of that environment failure, **none of the six map archives has been unpacked or audited yet**.
+
+This is not evidence that the ZIPs are corrupt or unsupported.
+
+In a new session:
+
+```text
+read repository boot owners
+→ read this next-action.md
+→ use the six per-map ZIPs as the audit source
+→ attempt direct extraction/inventory with the local/container/Python runtime
+→ if extraction works, continue the audit without asking the user to prepare FILE-TREE.txt or manually filter files
+```
+
+The user explicitly prefers ChatGPT to perform the extraction, inventory, and source selection itself. Do **not** ask the user to understand pack structure, create file lists, or manually select JSON/script files unless the new runtime genuinely cannot access the archives after one direct attempt.
+
+If the new runtime also fails at filesystem access, report that capability blocker clearly rather than pretending the map contents were read.
 
 ## Audit Goal
 
-Determine, from the actual development samples, **what concrete components together make the map a finished playable product** and what information a professional production document should represent so another team can understand, build, implement, test, maintain, or hand off that map.
+Determine from the actual development samples **what concrete components together make each map a finished playable product** and what information a professional production document should represent.
 
-The audit is not limited to prose/document quality. It should inspect every relevant development artifact and recover the real production anatomy of the map, including only categories actually supported by the samples.
+The audit is not limited to prose/document quality. Inspect every relevant development artifact and recover the real production anatomy of the map.
 
-Potential categories to test against the evidence include:
+Potential categories to test against evidence include:
 
 ```text
 project / map identity and scope
@@ -38,17 +70,17 @@ coordinates, zones, checkpoints, spawn and teleport points
 logic / scripting / state machines / triggers
 entities, NPCs, mobs and behavior
 items, blocks, structures and interactables
-UI, text, hints, tutorials and feedback
+UI, text, hints, tutorials and player feedback
 audio, voice, music and sound effects
 visual effects / particles / animation / camera
-resource-pack / behavior-pack / data dependencies
+resource-pack / behavior-pack / world/data dependencies
 models, textures and other production assets
 scoring, timers, rewards, progression and persistence
-multiplayer/session/arena behavior when present
+multiplayer / session / arena behavior when present
 reset, retry, fail, recovery and edge-case behavior
 configuration / tuning values
 testing / QA / known issues / acceptance evidence
-build/developer handoff information
+build / developer handoff information
 packaging / delivery / versioning where present
 ```
 
@@ -56,28 +88,33 @@ These are **audit hypotheses**, not assumed requirements. A category becomes par
 
 ## Audit Method
 
-For each sample:
+For each of the six maps:
 
 ```text
-inventory actual files/artifacts
-→ identify what each artifact contributes to the map
-→ map dependencies between artifacts
-→ reconstruct the player-facing flow
-→ reconstruct the implementation-facing flow
-→ identify data/configuration needed to reproduce behavior
-→ identify QA/proof needed to know the map is actually complete
+1. Inventory actual archive contents and folder/file structure.
+2. Identify the world, Behavior Pack, Resource Pack, scripts/functions, configuration, data, and production assets actually present.
+3. Read relevant text/source artifacts such as manifest, JSON, JS/TS, mcfunction, lang/text/UI/config files, and documentation.
+4. Identify what each artifact contributes to the map instead of classifying by extension alone.
+5. Map dependencies between world/level content, gameplay logic, entities/interactables, assets, UI/audio, configuration, and runtime state.
+6. Reconstruct the player-facing flow: start → objectives/progression → feedback → fail/retry/reset → completion.
+7. Reconstruct the implementation-facing flow: initialization → state/trigger logic → content/assets → persistence/reset → delivery.
+8. Identify what configuration/tuning data is required to reproduce behavior.
+9. Identify what QA/proof is needed to know the map is actually complete.
+10. Record evidence before deciding whether a component is core, optional, or sample-specific.
 ```
 
-Then compare across samples:
+Do not spend audit effort deeply inspecting every heavy binary asset when filenames, manifests, references, and source/config already establish its production role. Inspect binary/media content only when needed to resolve a material question.
+
+Then compare across all six maps:
 
 ```text
 sample-specific content
 vs
 recurring professional map component
 vs
-optional/specialized component
+optional / specialized component
 vs
-redundant/noisy development artifact
+redundant / noisy development artifact
 ```
 
 The audit must distinguish:
@@ -90,7 +127,7 @@ inference
 → derived from relationships between supplied artifacts
 
 professional synthesis
-→ reusable model proposed from recurring evidence
+→ reusable map-production model proposed from recurring evidence
 
 PRD-Creator requirement
 → remains a proposal until explicitly approved
@@ -98,16 +135,20 @@ PRD-Creator requirement
 
 ## Expected Audit Output
 
-After the development samples are readable, produce:
+After the six samples are readable and inspected, produce:
 
-1. an inventory of what each sample actually contains;
-2. a professional **Map Anatomy / Map Production Model** showing the components that make a map complete;
-3. which components are core vs optional/specialized;
-4. the dependency chain between design, implementation, assets, runtime logic, and QA;
-5. what information a professional PRD/handoff should capture for each component;
-6. which current PRD-Creator sections already cover those needs;
-7. which information is currently missing, too vague, duplicated, or stored in the wrong place;
-8. prioritized improvement proposals, without implementation until user approval.
+1. **Per-map inventory** — what each developed map actually contains and what those artifacts do.
+2. **Cross-sample matrix** — which production components occur in which maps.
+3. **Professional Map Anatomy / Map Production Model** — the recurring components that make a map complete.
+4. **Core vs Conditional vs Specialized** — evidence-based classification, not theory-first assumptions.
+5. **Dependency chain** — how design, level/world, runtime logic, assets, player communication, configuration, reset/persistence, and QA depend on each other.
+6. **Professional documentation needs** — what information a PRD/handoff should capture for each component so a builder/developer/designer/production/QA team can act on it.
+7. **PRD-Creator comparison** — what current sections already cover, what is missing, too vague, duplicated, or owned in the wrong place.
+8. **Prioritized improvement proposal** — recommended content/system improvements with exact owner boundaries, without implementation until user approval.
+
+The desired end result is a professional answer to:
+
+> “What is actually inside a finished map, and what must we know/document in advance to build one professionally?”
 
 ## Existing Accepted Baseline
 
@@ -125,7 +166,7 @@ Project HTML Visual: PASS
 
 ## Protected Boundary
 
-Until the actual sample artifacts are readable and audited:
+Until the actual sample artifacts are read and the audit is synthesized:
 
 - do not change gameplay/project meaning;
 - do not change Voice requirements or wording;
@@ -133,8 +174,25 @@ Until the actual sample artifacts are readable and audited:
 - do not redesign repository architecture;
 - do not change accepted Clockwork output;
 - do not promote conditional backlog items;
-- do not turn theoretical categories above into mandatory schema/requirements.
+- do not turn theoretical categories above into mandatory schemas/requirements;
+- do not infer sample contents from file names, IP/theme knowledge, or general Minecraft conventions.
+
+## Recovery for a New Chat
+
+The shortest correct continuation is:
+
+```text
+AGENTS.md
+→ GITHUB_RULES.md Core Rules
+→ CONTEXT.md
+→ this next-action.md
+→ receive/access the six per-map ZIPs
+→ extract and inventory them directly
+→ begin Map Composition Audit
+```
+
+Do not repeat the completed unified-kit migration or Clockwork browser QA. Do not ask the user to restate the audit goal. Do not ask them to manually prepare `FILE-TREE.txt` if direct ZIP extraction works in the new runtime.
 
 ## Next Step
 
-**Read/unpack the official chosen development sample set, inventory every relevant artifact, and reconstruct what concrete design, implementation, asset, runtime, and QA components together make each map a finished product. Do not modify PRD-Creator until the evidence has been synthesized and the user approves the resulting improvement proposal.**
+**In a fresh runtime/session, directly unpack and inventory the six per-map development ZIPs, inspect the relevant source/config/assets relationships, reconstruct each map's real production anatomy, then perform the cross-sample Map Composition Audit. Do not modify PRD-Creator until the evidence-backed improvement proposal is presented to and approved by the user.**
