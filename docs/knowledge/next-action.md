@@ -2,15 +2,19 @@
 
 ## Current Status
 
-`UNIFIED_PRD_CREATOR_KIT_MIGRATION_PLANNED`
+`UNIFIED_PRD_CREATOR_KIT_M0_COMPLETE`
 
-P0 Current Authority Integrity, bounded P1 remediation including DOCX retirement, and P2 mechanical cleanup remain complete. A new user-approved Developing objective is now active: replace the historical two-kit package split with one categorized `kits/prd-creator/` product package without changing product semantics or generated output.
+The user-approved migration from two historical implementation packages to one categorized `kits/prd-creator/` product package remains active.
 
-Canonical migration plan:
+Canonical plan:
 
 `operations/unified-prd-creator-kit-migration.md`
 
-Repository continuity remains:
+Completed M0 evidence / locked decisions:
+
+`operations/unified-prd-creator-kit-m0-inventory.md`
+
+Repository continuity:
 
 ```text
 AGENTS.md
@@ -18,23 +22,14 @@ AGENTS.md
 → CONTEXT.md
 → next-action.md
 → development-brief for non-trivial Developing
-→ operations/unified-prd-creator-kit-migration.md
+→ unified-prd-creator-kit-migration.md
+→ unified-prd-creator-kit-m0-inventory.md
 → smallest relevant current owner/source
 ```
 
 ## Active Boundary
 
-### User-approved architecture direction
-
-Current top-level implementation:
-
-```text
-kits/
-├─ project-document-generator/
-└─ voice-production-kit/
-```
-
-Target top-level implementation:
+### Target architecture
 
 ```text
 kits/
@@ -51,49 +46,82 @@ kits/
    └─ template/
 ```
 
-The migration merges **package ownership**, not semantic domains. Project/PRD and Voice remain distinct responsibilities inside one product package.
+The package merge does not merge semantic domains. Project/PRD judgment and Voice judgment remain distinct responsibilities inside one implementation package.
 
-Root-file rule:
+Root-file contract remains locked:
 
 ```text
 README.md → package map + Requirement Map
-AGENTS.md → technical/file routing
+AGENTS.md → unified technical/file routing
 SKILL.md  → Flow 2–7 Production Execution router
 ```
 
-Detailed contracts/procedures stay under their category folders.
+Detailed domain contracts stay in categorized folders.
 
-### Requirement mapping principle
+### M0 result
 
-Do not create a generic `requirements/` folder. Requirement instances remain project artifacts and their system contracts stay with the domain that owns them:
+M0 pinned the current implementation baseline and inventoried live consumers of:
 
 ```text
-project/gameplay requirement state
-→ state/requirement-register.yaml
-→ intake/SOURCE-INTAKE.md
-
-canonical PRD meaning
-→ work/content.md
-→ document/CONTENT-CONTRACT.md
-
-non-Voice Production Asset requirements
-→ work/asset-requirements.md
-→ production-assets/CONTRACT.md
-
-Voice requirements
-→ work/voice-requirements.md
-→ voice/EXTRACTION.md
-
-canonical Voice production
-→ work/voice-production.md
-→ Flow 6 routing + voice/SOUNDMAKER.md
+kits/project-document-generator/
+kits/voice-production-kit/
 ```
 
-### Migration phase state
+Key finding: current Python runtime code primarily uses sibling-relative topology, not literal old kit-root strings. `renderer/`, PRD `validator/`, and `template/` can therefore be moved with bytes preserved in most cases. The Voice validator is standalone and moves to `validator/validate_voice.py` only to resolve the filename collision.
+
+Path-sensitive work is concentrated in:
+
+- current root/foundation/knowledge routing docs;
+- current package README/AGENTS/SKILL and domain-owner links;
+- CLI examples;
+- test path constants;
+- PRD/Voice/Repository workflow filters and compile targets;
+- `tools/verify_repository.py` architecture/version invariants;
+- workspace guidance.
+
+Historical review/audit/CHANGELOG prose may retain historical package names when it is genuine evidence. Current routing/commands/owners must use the unified package after migration.
+
+M0 also identified a few current stale DOCX references left outside the previous retirement scope (`docs/foundation/README.md`, `docs/knowledge/source-authority.md`). They are current-authority drift and must be removed during M4; DOCX must not be revived or replaced.
+
+### Locked version/collision decisions
+
+Unified package metadata for this behavior-preserving structural migration:
 
 ```text
-M0 Baseline + live path inventory             NEXT
-M1 Build unified package tree                 pending
+name: prd-creator
+version: 1.14.0
+README Version: 1.14.0
+```
+
+Do not create a new release/version bump merely for the path migration. Legacy Voice Kit `1.11.2` remains historical provenance in moved `voice/CHANGELOG.md`, not a separate current package version.
+
+Locked collisions:
+
+```text
+Project README + Voice README → one root README.md
+Project AGENTS + Voice AGENTS → one root AGENTS.md
+Project SKILL + Voice SKILL → one root SKILL.md
+
+PRD validator/validate.py   → validator/validate.py
+Voice validator/validate.py → validator/validate_voice.py
+```
+
+Approved domain renames remain only:
+
+```text
+PRODUCTION-ASSETS.md → production-assets/CONTRACT.md
+RENDERING.md         → renderer/CONTRACT.md
+VOICE-EXTRACTION.md  → voice/EXTRACTION.md
+VOICE-VALIDATION.md  → voice/VALIDATION.md
+```
+
+No additional aesthetic Python/file renames.
+
+### Phase state
+
+```text
+M0 Baseline + live path inventory             COMPLETE
+M1 Build unified package candidate tree       NEXT
 M2 Consolidate root README/AGENTS/SKILL       pending
 M3 Runtime + validator path migration         pending
 M4 Repository routing synchronization         pending
@@ -101,58 +129,57 @@ M5 Retire both old package roots              pending
 M6 Full proof + atomic publish                pending
 ```
 
-The detailed old→new path map, collision rule, proof budget, baseline blob markers, non-goals, commit strategy, and session-recovery procedure are recorded in the migration plan. Do not recreate those decisions from chat memory.
+M1–M5 are construction phases for **one complete migration candidate**. Do not publish intermediate half-migrated package states merely because one phase is internally complete.
 
 ## Safety / Non-Goals
 
-This migration must not change:
+Do not change during this migration:
 
 - Golden/runtime template bytes;
-- PRD 01–03 meaning, hierarchy, or presentation;
-- 04 Production Assets reader-facing contract;
+- PRD 01–03 meaning, hierarchy, presentation, or page identities;
+- 04 reader-facing Production Assets contract;
 - gameplay/project facts;
 - Voice requirements or canonical Voice wording/performance;
 - current Clockwork state/acceptance/generated delivery;
 - root `tests/` organization;
 - root `tools/` organization;
-- the separate PRD Verify and Voice Verify proof surfaces;
-- the separate root semantic specialists `project-document-production` and `voice-production`.
+- separate PRD Verify and Voice Verify proof surfaces;
+- separate semantic root specialists.
 
-Do not create compatibility stub kits, generic requirement/parser/schema/manifest/registry frameworks, a second HTML/export surface, or aesthetic renderer refactors.
+Do not create compatibility stub kits, symlinks, generic requirement/parser/schema/manifest/registry frameworks, another export surface, or aesthetic renderer refactors.
 
-Historical review/CHANGELOG prose may retain historical package names when it is genuine evidence. Current paths, commands, relative links, routing owners, imports, workflows, and runtime references must use the unified package after migration.
+## Baseline / Recovery
 
-## Baseline
-
-User-approved planning baseline:
+M0 evidence was produced from:
 
 ```text
 Local HEAD
-9c55aaf36786ca55c26d4158d8d6c938c8b7a795
+fca07b15c322298163005195302a3c5026603175
 
-Golden/runtime template blob
+tree
+3010617b10218c628d46e80f8e4e8e42cdeb265a
+```
+
+Protected markers remain:
+
+```text
+Golden/runtime template
 e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 
-Clockwork current delivery blobs
+Clockwork delivery
 prd.html    dac955a4a482ad9dc2035f0c5714c87ae4de05c5
 context.md  003cc0068505339b8406b445601b7350bffa70a5
 index.json  c205422dc0d639b5d0bf9081364321c318e23d22
 ```
 
-If `Local` moves before implementation, re-pin and reconcile the new source state with the migration plan before writing.
+If a future session resumes this work:
 
-## Session Recovery
-
-If a session ends during this work:
-
-1. boot from current repository authority, not chat memory;
-2. read this file and `operations/unified-prd-creator-kit-migration.md`;
-3. pin `Local` and compare actual tree state to the recorded phase state;
-4. never assume temporary candidate blobs/trees survived or were published;
-5. do not publish a knowingly half-migrated package merely to preserve progress.
-
-The migration plan and `next-action.md` are the durable recovery point.
+1. pin current `Local`;
+2. read this file + the migration plan + M0 inventory;
+3. if `Local` only advanced by this M0 documentation commit, continue to M1;
+4. if unrelated implementation changed, reconcile only the affected inventory/map before M1;
+5. never assume unpublished candidate blobs/trees survived the prior session.
 
 ## Next Step
 
-**M0 — Baseline + live path inventory.** Pin current `Local`, enumerate every live reference/import/CLI/workflow/test/tool dependency on `kits/project-document-generator` and `kits/voice-production-kit`, classify historical-only references separately, resolve the unified-kit version/collision decisions from current owners, and only then prepare the complete atomic migration candidate. Do not move files before this inventory is complete.
+**M1 — build the complete unified package candidate tree.** Using current `Local` bytes and the locked M0 inventory/path map, construct `kits/prd-creator/` with all categorized domain/runtime/template files in their approved target paths. Preserve bytes for path-only moves, do not retire either old package root yet, do not publish a half-migrated tree, and do not begin unrelated semantic/refactor work. The resulting candidate is input to M2/M3/M4/M5 before one final migration publish.
