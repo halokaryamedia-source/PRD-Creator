@@ -2,9 +2,9 @@
 
 ## Current Status
 
-`UNIFIED_PRD_CREATOR_KIT_M4_ROUTING_READY`
+`UNIFIED_PRD_CREATOR_KIT_M5_ONE_KIT_READY`
 
-The user-approved migration from the two historical implementation packages to one categorized `kits/prd-creator/` package remains active.
+The user-approved migration from the two historical implementation packages to one categorized `kits/prd-creator/` package remains active and is structurally complete in a detached candidate.
 
 Durable migration evidence:
 
@@ -15,6 +15,7 @@ operations/unified-prd-creator-kit-m1-candidate.md
 operations/unified-prd-creator-kit-m2-root-consolidation.md
 operations/unified-prd-creator-kit-m3-runtime-proof.md
 operations/unified-prd-creator-kit-m4-routing-candidate.md
+operations/unified-prd-creator-kit-m5-retirement-candidate.md
 ```
 
 Repository continuity:
@@ -31,25 +32,27 @@ AGENTS.md
 → M2 root consolidation
 → M3 runtime proof
 → M4 routing candidate
+→ M5 retirement candidate
 → smallest relevant current owner/source
 ```
 
 ## Active Boundary
 
-### Target package
+### Final target package
 
 ```text
-kits/prd-creator/
-├─ README.md
-├─ AGENTS.md
-├─ SKILL.md
-├─ intake/
-├─ document/
-├─ production-assets/
-├─ voice/
-├─ renderer/
-├─ validator/
-└─ template/
+kits/
+└─ prd-creator/
+   ├─ README.md
+   ├─ AGENTS.md
+   ├─ SKILL.md
+   ├─ intake/
+   ├─ document/
+   ├─ production-assets/
+   ├─ voice/
+   ├─ renderer/
+   ├─ validator/
+   └─ template/
 ```
 
 Project/PRD and Voice remain separate semantic responsibilities inside one implementation package.
@@ -62,54 +65,85 @@ M1 Build unified package candidate tree       COMPLETE
 M2 Consolidate root README/AGENTS/SKILL       COMPLETE
 M3 Runtime + validator path migration         COMPLETE — no code change required
 M4 Repository routing synchronization         COMPLETE
-M5 Retire both old package roots              NEXT
-M6 Full proof + atomic publish                pending
+M5 Retire both old package roots              COMPLETE
+M6 Full proof + atomic publish                NEXT
 ```
 
-M1–M5 remain detached construction phases. Do not publish a half-migrated architecture.
-
-## Current M4 construction candidate
+## Current M5 structural candidate
 
 Use only:
 
 ```text
 candidate commit
-1ec47764dae410803f1c899462ec364c2c4aa320
+0dc7a244f3871de7933e4ac80705919cbc63ea48
 
 candidate tree
-c3b73337679e56c1194c2ecb84726249ef58b539
+43210aa301610419a2687d12338ceeff540415fc
+
+kits tree
+24f34a02cc8adb571aae7d3d7a003941727cdb2b
 
 kits/prd-creator subtree
 9b14038c6ac6f9b4d3a568856cdaf1a9b512cb3d
 ```
 
-An earlier detached M4 candidate `d4a0412f1493ad30bd370b3ef3ffb4fbde41fa4a` is superseded and must not be used.
+A deletion-only M5 construction commit `545e641acf7bc1f03c581e479700a35fc7ca0bed` is superseded and must not be used.
 
-## M4 result
+## M5 result
 
-Live current routing is synchronized to `kits/prd-creator/` across:
+The detached candidate now has exactly one production kit:
 
 ```text
-root AGENTS / CONTEXT / README
-foundation Flow 2–7 policy
-knowledge ownership / authority / work-routing / skill navigation / current validation
-root Project and Voice semantic specialists
-workspace guidance
-unified package domain procedures/contracts
-PRD and Voice direct-path regression constants
-PRD Verify / Voice Verify / Repository Verify path filters
-repository verifier final-target invariants
+kits/prd-creator/
 ```
 
-Current non-historical DOCX drift found during M0 was removed from current authority/policy. Historical evidence may continue to describe retired DOCX/package artifacts truthfully.
+The following roots are fully absent:
 
-M3's executable result remains unchanged:
+```text
+kits/project-document-generator/
+kits/voice-production-kit/
+```
+
+M4 → M5 changes are limited to:
+
+```text
+36 removed files from the two historical kit roots
+1 modified file: docs/knowledge/decisions/README.md
+```
+
+The decision register modification is a current-memory reconciliation, not a product redesign. It records:
+
+```text
+one implementation package
+→ kits/prd-creator/
+
+separate semantic domains
+→ Project/PRD
+→ Voice
+```
+
+It also updates current Golden/Flow 4/Production Assets owner paths and clearly marks retired DOCX/package decisions as historical where needed. Historical capture-time paths remain when they are explicitly historical evidence.
+
+## Preserved boundaries
+
+M5 changes no:
+
+- renderer/validator Python behavior;
+- Golden/runtime bytes;
+- PRD 01–03 semantics or presentation;
+- Production Assets reader-facing contract;
+- gameplay/project facts;
+- Voice requirements or canonical wording/performance;
+- current Clockwork source/state/acceptance/generated output;
+- root `tests/` or `tools/` organization;
+- separate PRD Verify and Voice Verify workflows;
+- separate root semantic specialists.
+
+M3 result remains:
 
 ```text
 NO EXECUTABLE CODE CHANGE REQUIRED
 ```
-
-Renderer/validator Python blobs in the unified package remain the existing implementation bytes.
 
 Golden/runtime remain:
 
@@ -117,51 +151,32 @@ Golden/runtime remain:
 e1dccd77d7a5335213caea7a09d74ba78b2ae8e1
 ```
 
-Current Clockwork project files/output remain untouched by the M4 compare.
-
-## Why M4 is still not publishable
-
-The detached candidate intentionally still contains:
+Protected Clockwork delivery markers to re-prove in M6:
 
 ```text
-kits/prd-creator/
-kits/project-document-generator/
-kits/voice-production-kit/
+prd.html    dac955a4a482ad9dc2035f0c5714c87ae4de05c5
+context.md  003cc0068505339b8406b445601b7350bffa70a5
+index.json  c205422dc0d639b5d0bf9081364321c318e23d22
 ```
 
-The updated repository verifier already describes the final architecture and treats both old roots as retired. Therefore do not weaken verification or publish M4 merely to make the intermediate state look complete.
+## M6 Scope
 
-M5 owns exactly this remaining structural retirement.
+M6 is **proof + final atomic publication**, not another architecture phase.
 
-## M5 Scope
+Starting from current `Local` plus detached M5 structural source:
 
-Starting from M4 candidate `1ec47764...`:
+1. build one final migration commit on top of current `Local` so M0–M5 continuity notes remain in history/current tree;
+2. apply the complete one-kit architecture atomically;
+3. run the cheapest full proof that can falsify the migration claims;
+4. verify Golden/runtime and current Clockwork delivery identity;
+5. run actual Clockwork PRD, handoff, and Voice validators through the migrated paths;
+6. run PRD regression suite, Voice regression suite, and repository verification;
+7. publish/update `Local` only as one coherent final migration delivery;
+8. confirm PRD Verify, Voice Verify, and Repository Verify on the published HEAD;
+9. if a proof gate fails, fix only the first wrong owner and rerun the invalidated proof;
+10. finish by recording the migration as complete and setting the next action to STOP unless the user supplies a new requirement/defect.
 
-1. remove the complete `kits/project-document-generator/` tree;
-2. remove the complete `kits/voice-production-kit/` tree;
-3. confirm `kits/` exposes only `prd-creator/`;
-4. inspect for accidental **live current** old-path consumers;
-5. preserve historical textual references when they remain truthful;
-6. if deleting the roots breaks an actual historical relative Markdown link, repair only that link or convert it to explicit historical path wording;
-7. do not add compatibility directories, aliases, symlinks, wrappers, or migration shims;
-8. produce one detached final-structure candidate for M6 proof.
-
-### M5 must not change
-
-- renderer/validator behavior;
-- Golden/runtime bytes;
-- PRD 01–03 semantics/presentation;
-- Production Assets reader-facing contract;
-- gameplay/project facts;
-- Voice requirements or canonical wording/performance;
-- current Clockwork project state/output;
-- root tests/tools organization;
-- separate PRD Verify and Voice Verify workflows;
-- separate root semantic specialists.
-
-## M6 reserved proof
-
-Do not claim full migration completion before M6 proves the one-kit candidate with the relevant executable/project gates, including:
+### Required proof claims
 
 ```text
 Python compile
@@ -172,23 +187,38 @@ actual Clockwork PRD validator
 actual Clockwork handoff validator
 actual Clockwork Voice validator
 Golden/runtime identity
-current Clockwork delivery identity
+current Clockwork prd.html/context.md/index.json identity
 PRD Verify
 Voice Verify
 Repository Verify
 ```
+
+Do not use static inspection as browser/audio proof; those are not migration claims here.
+
+## Safety / Non-Goals
+
+Do not during M6:
+
+- add compatibility kit stubs/symlinks/wrappers;
+- create a generic requirement/parser/schema/manifest/registry layer;
+- merge the root semantic specialists;
+- merge PRD Verify and Voice Verify;
+- change Golden/runtime bytes;
+- change gameplay or Voice wording;
+- regenerate Clockwork merely because the package path moved unless a real proof step demonstrates an invalidated derived output;
+- introduce PDF/DOCX/new export replacement;
+- perform unrelated cleanup.
 
 ## Recovery
 
 If a session resumes from here:
 
 1. pin current `Local`;
-2. read this file + migration plan + M0–M4 notes;
-3. do not repeat M0–M4;
-4. use detached candidate `1ec47764dae410803f1c899462ec364c2c4aa320` as the M5 input unless current authoritative source materially changed;
-5. do not publish it directly;
-6. proceed only with M5 retirement.
+2. read this file + migration plan + M0–M5 notes;
+3. do not repeat M0–M5;
+4. use detached M5 candidate `0dc7a244f3871de7933e4ac80705919cbc63ea48` as the structural source;
+5. perform M6 proof/final publication only.
 
 ## Next Step
 
-**M5 — retire the two historical package roots.** Starting from detached M4 candidate `1ec47764dae410803f1c899462ec364c2c4aa320`, remove `kits/project-document-generator/` and `kits/voice-production-kit/` completely, verify that `kits/` contains only `prd-creator/`, and repair only any mechanically broken historical relative Markdown links caused by the deletion. Do not change runtime/product semantics or add compatibility paths. Produce the detached one-kit final-structure candidate for M6 proof; do not publish the migration to `Local` yet.
+**M6 — full proof + atomic publish.** Build the final one-kit migration commit on top of current `Local` using detached M5 candidate `0dc7a244f3871de7933e4ac80705919cbc63ea48` as the structural source, prove repository/PRD/Voice/Clockwork integrity through the migrated paths, verify Golden and current Clockwork delivery identities, then publish the coherent migration to `Local` only if the required gates pass. After final CI succeeds, record the migration complete and STOP unless a new explicit user requirement or reproduced defect exists.
