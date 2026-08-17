@@ -59,7 +59,7 @@ Repository-specific rules here may narrow domain behavior but do not duplicate o
 |---|---|---|
 | Understand/decide/recover context before editing | Plan | inspect evidence + owner; no edit until requested |
 | Create/revise PRD or Voice deliverables with the existing system | Production Execution | matching production owner directly |
-| Change PRD-Creator policy/skills/workflow/renderer/validator/builder/repository mechanics | Developing | `development-brief` + at most one useful specialist |
+| Change PRD-Creator policy/skills/workflow/renderer/validator/repository mechanics | Developing | `development-brief` + at most one useful specialist |
 | Bug/regression/cleanup/stale docs/behavior-preserving correction | Maintenance | concrete failure → first wrong owner |
 
 Creating files during normal project production does **not** make the task Developing.
@@ -69,11 +69,11 @@ Creating files during normal project production does **not** make the task Devel
 ```text
 new/revised PRD
 → project-document-production
-→ kits/project-document-generator/ smallest active Flow owner
+→ kits/prd-creator/ smallest active Project/PRD owner
 
 accepted PRD → Voice production
 → voice-production
-→ kits/voice-production-kit/ smallest active Flow owner
+→ kits/prd-creator/ smallest active Voice owner
 ```
 
 Production Execution rules:
@@ -99,7 +99,7 @@ Use the nearest authoritative owner for each claim:
 5. accepted canonical PRD;
 6. accepted Voice requirements / canonical Voice production for their downstream scope;
 7. durable repository/foundation policy;
-8. active kit procedure;
+8. active `kits/prd-creator/` domain procedure;
 9. Golden/reference material for demonstrated structure/quality only;
 10. generated output, prior review, or chat/history as supporting evidence only.
 
@@ -147,7 +147,7 @@ original source / approved decisions
 → acceptance evidence
 ```
 
-Never patch `prd.html`, DOCX, or another derived artifact to hide an upstream defect. Regenerate only invalidated derived artifacts.
+Never patch `prd.html` or another derived artifact to hide an upstream defect. Regenerate only invalidated derived artifacts.
 
 ## Repository continuity
 
@@ -157,7 +157,7 @@ Canonical current-state owners:
 - active continuation/resume checkpoint → `docs/knowledge/next-action.md`;
 - durable decisions/reasons → `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/`;
 - durable production policy → `docs/foundation/`;
-- detailed production procedure/mechanics → affected `kits/*` owner;
+- detailed production procedure/mechanics → affected `kits/prd-creator/` domain owner;
 - project facts/state/output → current project package;
 - historical reviews → review files / Git history, only when needed.
 
@@ -175,12 +175,12 @@ Canonical root skills remain:
 .agents/skills/voice-production
 ```
 
-- Production Execution → one matching production specialist + smallest active kit procedure.
+- Production Execution → one matching production specialist + smallest active `kits/prd-creator/` procedure.
 - Developing → mandatory `development-brief` + at most one useful specialist.
 - Maintenance → specialist optional; use only if it adds material semantic procedure.
 - Plan → no specialist by default.
 
-Do not create renderer/validator/Python/DOCX/research/evidence-gate skills merely because those implementation surfaces exist.
+Do not create renderer/validator/Python/research/evidence-gate skills merely because those implementation surfaces exist.
 
 ## Execution channel
 
@@ -214,10 +214,10 @@ Use exactly one next step. Explain decisions, not internal machinery, unless the
 
 ## Product boundaries
 
-- Project Document Generator owns Flow 2–4 plus bounded non-Voice 04 Production Assets completion.
-- Voice Production Kit owns Flow 5–7.
-- Root skills own reusable semantic judgment, not detailed kit procedure.
-- Nearest kit `AGENTS.md` owns module/file routing and pure technical Maintenance.
+- `kits/prd-creator/` is the single product package for Flow 2–7 plus bounded 04 Production Assets completion.
+- Project/PRD and Voice remain separate semantic domains inside that package.
+- Root skills own reusable semantic judgment, not detailed package procedure.
+- `kits/prd-creator/AGENTS.md` owns package module/file routing and pure technical Maintenance.
 - Repository engineering owns shared dependency/regression/CI contracts.
 
 Production Flows and agent work modes are separate layers; do not confuse them.

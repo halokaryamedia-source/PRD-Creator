@@ -8,9 +8,9 @@ Separate generated project documentation from production-ready documentation and
 
 ## Canonical owners
 
-- mandatory PRD-core meaning + Golden composition → `kits/project-document-generator/CONTENT-CONTRACT.md`;
-- bounded non-Voice 04 Production Asset requirement/writing contract → `kits/project-document-generator/PRODUCTION-ASSETS.md`;
-- detailed Flow 4 procedure → `kits/project-document-generator/VALIDATION.md`;
+- mandatory PRD-core meaning + Golden composition → `kits/prd-creator/document/CONTENT-CONTRACT.md`;
+- bounded non-Voice 04 Production Asset requirement/writing contract → `kits/prd-creator/production-assets/CONTRACT.md`;
+- detailed Flow 4 procedure → `kits/prd-creator/document/VALIDATION.md`;
 - project handoff state → `state/handoff-state.yaml`;
 - compact document acceptance → `work/acceptance.md`;
 - stable handoff/resume navigator → `output/README.md`;
@@ -47,7 +47,7 @@ Project Consistency
 Golden Placement
 ```
 
-When 04 exists, apply the readiness gate owned by `PRODUCTION-ASSETS.md` inside this same review. Do **not** add a separate Production Assets PASS field, review file, workflow, or approval layer.
+When 04 exists, apply the readiness gate owned by `kits/prd-creator/production-assets/CONTRACT.md` inside this same review. Do **not** add a separate Production Assets PASS field, review file, workflow, or approval layer.
 
 Production Assets readiness asks whether all real required resources are covered once, supported by authority, actionable, assigned to natural gameplay moments, free of disguised behavior/filler, exact where exact facts exist, readable by the production role, and additive without rewriting 01–03.
 
@@ -61,7 +61,7 @@ A production role needing to reopen source to recover a material rule or require
 
 ## Golden proof economy
 
-The approved Golden prototype is already owned by `CONTENT-CONTRACT.md`, `RENDERING.md`, the exact reference bytes, and focused regression coverage.
+The approved Golden prototype is already owned by `kits/prd-creator/document/CONTENT-CONTRACT.md`, `kits/prd-creator/renderer/CONTRACT.md`, the exact reference bytes, and focused regression coverage.
 
 For ordinary content-only or 04-only production, do **not** repeat a full reverse Golden proof when Golden template/CSS/JS/PRD-core visible composition/semantic slot contract is unchanged. Validate the current project against the existing contract and inspect only representative/high-risk rendered pages.
 
@@ -87,9 +87,9 @@ Do not duplicate checksum tables, CI transcripts, role-by-role PASS fields, a se
 
 ## Handoff boundary
 
-Before Flow 5, `validate_handoff.py` confirms that current accepted revision, canonical inputs, acceptance state, `output/README.md`, versioned `prd.html` / `context.md` / `index.json`, handoff state, and `document.version` agree.
+Before Flow 5, `kits/prd-creator/validator/validate_handoff.py` confirms that current accepted revision, canonical inputs, acceptance state, `output/README.md`, versioned `prd.html` / `context.md` / `index.json`, handoff state, and `document.version` agree.
 
-When 04 exists, `handoff_ready` also depends on the integrated Semantic Readiness review having applied the `PRODUCTION-ASSETS.md` readiness gate. Mechanical source freshness alone does not prove that 04 is professionally actionable.
+When 04 exists, `handoff_ready` also depends on the integrated Semantic Readiness review having applied the `kits/prd-creator/production-assets/CONTRACT.md` readiness gate. Mechanical source freshness alone does not prove that 04 is professionally actionable.
 
 `handoff_ready` means only that the accepted project document may be used as the current production reference / downstream Voice input. It does not mean client approval, implementation completion, gameplay QA, release approval, or completed Voice Production.
 

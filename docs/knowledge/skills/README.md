@@ -14,27 +14,43 @@ All repository-wide agent skills live under `.agents/skills/`:
 
 The canonical root set is intentionally small.
 
-## Relationship to production kits
+## Relationship to the unified production package
 
 ```text
 root AGENTS / development-brief
 → decide work mode + semantic vs technical boundary
 → optional one root semantic specialist
-→ nearest kit procedure / kit AGENTS
-→ exact implementation/project owner
+→ kits/prd-creator/SKILL.md or AGENTS.md
+→ smallest categorized domain / implementation owner
 ```
 
-### Project Document Generator
+### Project / PRD domain
 
 `project-document-production` owns reusable PRD/source/04/readiness **semantic judgment**.
 
-`kits/project-document-generator/SKILL.md` owns detailed normal Production Execution procedure. Kit `AGENTS.md` owns module/file routing and pure technical Maintenance. Exact Flow contracts remain in `SOURCE-INTAKE.md`, `CONTENT-CONTRACT.md`, `PRODUCTION-ASSETS.md`, `RENDERING.md`, and `VALIDATION.md`.
+`kits/prd-creator/SKILL.md` routes detailed normal Production Execution. `kits/prd-creator/AGENTS.md` owns module/file routing and pure technical Maintenance. Exact Flow contracts live in:
 
-### Voice Production Kit
+```text
+kits/prd-creator/intake/SOURCE-INTAKE.md
+kits/prd-creator/document/CONTENT-CONTRACT.md
+kits/prd-creator/production-assets/CONTRACT.md
+kits/prd-creator/renderer/CONTRACT.md
+kits/prd-creator/document/VALIDATION.md
+```
+
+### Voice domain
 
 `voice-production` owns reusable Voice **semantic judgment**.
 
-`kits/voice-production-kit/SKILL.md` owns detailed Flow 5–7 Production Execution procedure. Kit `AGENTS.md` owns module/file routing and pure technical Maintenance. Exact craft/validation contracts remain in `VOICE-EXTRACTION.md`, `SOUNDMAKER.md`, `VOICE-VALIDATION.md`, and related current owners.
+The same unified root `SKILL.md` routes Flow 5–7 while exact Voice procedure/craft remains in:
+
+```text
+kits/prd-creator/voice/EXTRACTION.md
+kits/prd-creator/voice/SOUNDMAKER.md
+kits/prd-creator/voice/VALIDATION.md
+```
+
+Project/PRD and Voice are not merged semantically merely because they share one product package.
 
 ## Repository engineering is not a production skill
 
@@ -54,13 +70,13 @@ Dependency, test, CI, and repository-invariant mechanics do not consume the sing
 Do not add/rename/split a root skill because:
 
 - another file format or programming language appears;
-- another renderer/validator/builder exists;
+- another renderer/validator exists;
 - another Production Asset type appears;
 - a project has unique content;
 - a one-off technical bug needs repair;
 - a generic helper would be convenient.
 
-Change the root skill set only when repeated work proves a distinct reusable semantic owner/procedure that existing root policy, foundation, kit procedure/AGENTS, repository engineering, and current specialists cannot represent cleanly.
+Change the root skill set only when repeated work proves a distinct reusable semantic owner/procedure that existing root policy, foundation, `kits/prd-creator/` procedure/AGENTS, repository engineering, and current specialists cannot represent cleanly.
 
 ## Historical rationale
 

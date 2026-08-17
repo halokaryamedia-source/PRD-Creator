@@ -5,12 +5,20 @@ on:
     branches:
       - Local
     paths:
-      - "kits/project-document-generator/renderer/**"
-      - "kits/project-document-generator/validator/**"
-      - "kits/project-document-generator/template/**"
-      - "kits/project-document-generator/SOURCE-INTAKE.md"
-      - "kits/project-document-generator/SKILL.md"
+      - "kits/prd-creator/README.md"
+      - "kits/prd-creator/AGENTS.md"
+      - "kits/prd-creator/SKILL.md"
+      - "kits/prd-creator/intake/**"
+      - "kits/prd-creator/document/**"
+      - "kits/prd-creator/production-assets/**"
+      - "kits/prd-creator/renderer/**"
+      - "kits/prd-creator/template/**"
+      - "kits/prd-creator/validator/_engine.py"
+      - "kits/prd-creator/validator/validate.py"
+      - "kits/prd-creator/validator/validate_handoff.py"
       - "docs/foundation/02-source-intake-recovery.md"
+      - "docs/foundation/03-prd-generation.md"
+      - "docs/foundation/04-prd-validation-handoff.md"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
@@ -19,12 +27,20 @@ on:
       - Local
       - main
     paths:
-      - "kits/project-document-generator/renderer/**"
-      - "kits/project-document-generator/validator/**"
-      - "kits/project-document-generator/template/**"
-      - "kits/project-document-generator/SOURCE-INTAKE.md"
-      - "kits/project-document-generator/SKILL.md"
+      - "kits/prd-creator/README.md"
+      - "kits/prd-creator/AGENTS.md"
+      - "kits/prd-creator/SKILL.md"
+      - "kits/prd-creator/intake/**"
+      - "kits/prd-creator/document/**"
+      - "kits/prd-creator/production-assets/**"
+      - "kits/prd-creator/renderer/**"
+      - "kits/prd-creator/template/**"
+      - "kits/prd-creator/validator/_engine.py"
+      - "kits/prd-creator/validator/validate.py"
+      - "kits/prd-creator/validator/validate_handoff.py"
       - "docs/foundation/02-source-intake-recovery.md"
+      - "docs/foundation/03-prd-generation.md"
+      - "docs/foundation/04-prd-validation-handoff.md"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
@@ -59,7 +75,11 @@ jobs:
       # test_prd_voice_assets includes the additive 04 / protected-core regression.
       - name: Compile PRD sources
         run: |
-          python -m compileall -q kits/project-document-generator \
+          python -m compileall -q \
+            kits/prd-creator/renderer \
+            kits/prd-creator/validator/_engine.py \
+            kits/prd-creator/validator/validate.py \
+            kits/prd-creator/validator/validate_handoff.py \
             tests/test_prd_contracts.py \
             tests/test_prd_content_purity.py \
             tests/test_prd_delivery.py \

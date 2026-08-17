@@ -21,7 +21,7 @@ accepted project / PRD meaning
 
 - accepted project/PRD meaning owns gameplay/story truth;
 - `voice-requirements.md` owns Voice asset scope, communication intent/context, and authoritative timing truth when one exists;
-- `SOUNDMAKER.md` owns Eleven v3 preparation/generation procedure;
+- `kits/prd-creator/voice/SOUNDMAKER.md` owns Eleven v3 preparation/generation procedure;
 - `voice-production.md` owns selected actor voice when known, Estimated Duration, and exact performance wording;
 - project HTML is derived presentation only.
 
@@ -176,7 +176,7 @@ Production interpretation such as sentence splitting, performance shape, landing
 project fact → PRD authority
 Voice scope/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
 wording/performance/Estimated Duration/actor selection → Flow 6
-correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
+correct canonical Voice + wrong Production Assets HTML → kits/prd-creator/ renderer/compositor owner
 audio-only defect → Generation Mode
 ```
 

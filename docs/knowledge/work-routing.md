@@ -14,7 +14,7 @@ flowchart TD
     B -->|No| C{Work mode from AGENTS}
 
     C -->|Plan| P[Ground problem / inspect owner<br/>No edit until requested]
-    C -->|Production Execution| PE[Matching production specialist<br/>+ smallest active kit owner]
+    C -->|Production Execution| PE[Matching production specialist<br/>+ smallest active PRD Creator owner]
     C -->|Developing| D[Recover full Developing continuity<br/>→ development-brief]
     C -->|Maintenance| M[Concrete defect/drift<br/>→ first wrong owner]
 
@@ -80,18 +80,18 @@ Use when the user is using the existing system to create/revise project delivera
 ```text
 PRD / non-Voice 04
 → project-document-production
-→ Project Document Generator active owner
+→ kits/prd-creator/ Project/PRD domain owner
 
 Voice
 → voice-production
-→ Voice Production active Flow owner
+→ kits/prd-creator/ Voice domain owner
 ```
 
 Normal Production Execution bypasses `development-brief`.
 
 ### Developing
 
-Use when changing **PRD-Creator itself**: policy, skills, workflows, renderer/validator/builder contracts, repository structure, or shared tooling.
+Use when changing **PRD-Creator itself**: policy, skills, workflows, renderer/validator contracts, repository structure, or shared tooling.
 
 ```text
 development-brief
@@ -117,8 +117,8 @@ PRD/source/04/readiness meaning wrong
 Voice scope/wording/readiness meaning wrong
 → voice-production
 
-semantic contract correct; renderer/template/validator/builder mechanics wrong
-→ nearest kit AGENTS + exact implementation owner
+semantic contract correct; renderer/template/validator mechanics wrong
+→ kits/prd-creator/AGENTS.md + exact implementation owner
 
 shared dependency / test / CI wrong
 → repository engineering owner

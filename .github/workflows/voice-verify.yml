@@ -5,8 +5,11 @@ on:
     branches:
       - Local
     paths:
-      - "kits/voice-production-kit/validator/**"
-      - "kits/voice-production-kit/*.md"
+      - "kits/prd-creator/README.md"
+      - "kits/prd-creator/AGENTS.md"
+      - "kits/prd-creator/SKILL.md"
+      - "kits/prd-creator/voice/**"
+      - "kits/prd-creator/validator/validate_voice.py"
       - "docs/foundation/05-voice-requirement-extraction.md"
       - "docs/foundation/06-elevenlabs-script-production.md"
       - "docs/foundation/07-voice-validation-delivery.md"
@@ -18,8 +21,11 @@ on:
       - Local
       - main
     paths:
-      - "kits/voice-production-kit/validator/**"
-      - "kits/voice-production-kit/*.md"
+      - "kits/prd-creator/README.md"
+      - "kits/prd-creator/AGENTS.md"
+      - "kits/prd-creator/SKILL.md"
+      - "kits/prd-creator/voice/**"
+      - "kits/prd-creator/validator/validate_voice.py"
       - "docs/foundation/05-voice-requirement-extraction.md"
       - "docs/foundation/06-elevenlabs-script-production.md"
       - "docs/foundation/07-voice-validation-delivery.md"
@@ -56,7 +62,9 @@ jobs:
 
       - name: Compile Voice sources
         run: |
-          python -m compileall -q kits/voice-production-kit tests/test_voice_contracts.py
+          python -m compileall -q \
+            kits/prd-creator/validator/validate_voice.py \
+            tests/test_voice_contracts.py
 
       - name: Voice Production contracts
         run: python -m unittest tests.test_voice_contracts -v

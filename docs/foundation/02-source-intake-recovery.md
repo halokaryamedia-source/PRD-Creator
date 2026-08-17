@@ -6,7 +6,7 @@ Status: active Flow 2 policy
 
 Turn uneven project material into a trustworthy, **complete reviewable project model** before PRD drafting. Flow 2 recovers explicit authority, project structure, exclusions, terminology, necessary production implications, material gaps/conflicts, and practical resolutions; it then presents the complete model through the Simple Chat Preview for user approval.
 
-Detailed procedure lives in `kits/project-document-generator/SOURCE-INTAKE.md`. This foundation page owns only durable policy.
+Detailed procedure lives in `kits/prd-creator/intake/SOURCE-INTAKE.md`. This foundation page owns only durable policy.
 
 ## Canonical sequence
 
@@ -96,7 +96,7 @@ Production Asset coverage is a meaning check, not another Flow or preview artifa
 
 ## Golden-guided completeness
 
-The Reverse-derived Golden fill map in `CONTENT-CONTRACT.md` is the finite guide for what the PRD core must eventually be able to answer.
+The Reverse-derived Golden fill map in `kits/prd-creator/document/CONTENT-CONTRACT.md` is the finite guide for what the PRD core must eventually be able to answer.
 
 Golden supplies **questions, placement, page family, labels, and presentation behavior**. It never supplies another project's mechanics, counts, timings, lore, scoring values, implementation facts, or asset style.
 

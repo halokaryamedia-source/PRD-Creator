@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 import sys
-RENDERER = ROOT / "kits" / "project-document-generator" / "renderer"
+RENDERER = ROOT / "kits" / "prd-creator" / "renderer"
 if str(RENDERER) not in sys.path:
     sys.path.insert(0, str(RENDERER))
 

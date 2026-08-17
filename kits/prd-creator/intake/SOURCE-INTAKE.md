@@ -146,11 +146,11 @@ Only inspect concerns that apply. Optional/decorative detail is not a reason to 
 
 The Production Assets concern is a **meaning check, not a new Flow or artifact**. If accepted gameplay necessarily needs a concrete resource, the model should not leave that production need invisible merely because the source did not name an asset file. Do not invent visual style, lore, dimensions, animations, VFX, sound, or presentation beats simply to fill 04.
 
-If choosing a particular asset form/name/content would materially change gameplay, lore, communication, or scope, use the existing Completion/Proposal rules. Obvious production implications do not require another approval framework. `PRODUCTION-ASSETS.md` later materializes the approved resource needs into the compact reader-first 04 source.
+If choosing a particular asset form/name/content would materially change gameplay, lore, communication, or scope, use the existing Completion/Proposal rules. Obvious production implications do not require another approval framework. `../production-assets/CONTRACT.md` later materializes the approved resource needs into the compact reader-first 04 source.
 
 ### Golden-guided completeness
 
-Use the **Reverse-derived Golden fill map** in `CONTENT-CONTRACT.md` as the finite guide for what the final PRD core must be able to answer.
+Use the **Reverse-derived Golden fill map** in `../document/CONTENT-CONTRACT.md` as the finite guide for what the final PRD core must be able to answer.
 
 Golden supplies **questions, placement, hierarchy, and presentation behavior**. It never supplies project mechanics, counts, lore, timings, scoring values, implementation facts, or asset style for another project.
 

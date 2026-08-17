@@ -1,10 +1,10 @@
 # Production Assets Contract
 
-This owner defines the non-Voice `04 Production Assets` contract. It extends the existing PRD production system; it does not create another Flow, Skill, PRD family, or asset-management framework. Voice keeps its existing Flow 5–7 owners and canonical production source.
+This owner defines the non-Voice `04 Production Assets` contract inside the unified PRD Creator package. It does not create another Flow, Skill, PRD family, or asset-management framework. Voice keeps its Flow 5–7 semantic owners and canonical production source.
 
 ## Purpose
 
-The Project Document Generator must be able to start from project discussion + original source, understand the complete project, and produce both:
+PRD-Creator must be able to start from project discussion + original source, understand the complete project, and produce both:
 
 ```text
 approved project model
@@ -219,7 +219,7 @@ Avoid leaking terms such as checkpoint state, local reset, validated progress, a
 
 ### AUDIO — dialogue
 
-Voice scope and canonical wording remain owned by the Voice Production system. The 04 compositor only presents canonical Voice data.
+Voice scope and canonical wording remain owned by the Voice Production domain. The 04 compositor only presents canonical Voice data.
 
 Visible dialogue form:
 

@@ -26,7 +26,7 @@ There is no canonical Flow 8. The Simple Chat Preview is the final user-facing c
 
 ## Bounded 04 Production Assets completion
 
-04 is a normal capability of the existing Project Document Generator, not another numbered Flow.
+04 is a normal capability of PRD-Creator, not another numbered Flow.
 
 The important authority shape is:
 
@@ -62,4 +62,4 @@ Golden/reference material tells Flow 2 **what questions the complete PRD core mu
 
 Fix the owning boundary instead of using downstream polish to compensate for unresolved upstream meaning. Derived artifacts may organize/represent canonical meaning but never become authority for it. Pending Flow 2 proposals become authority only through user preview approval.
 
-Detailed policy/procedure lives in the matching `docs/foundation/` and `kits/*` owner; this file is only the high-level sequence.
+Detailed policy/procedure lives in the matching `docs/foundation/` and `kits/prd-creator/` domain owner; this file is only the high-level sequence.

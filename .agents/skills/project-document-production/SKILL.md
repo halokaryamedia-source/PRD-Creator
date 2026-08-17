@@ -7,7 +7,7 @@ description: Reusable semantic/product-contract specialist for PRD-Creator Flow 
 
 Own **semantic judgment**, not detailed production procedure or renderer mechanics.
 
-Detailed normal Production Execution lives in `kits/project-document-generator/SKILL.md`. Exact contracts/procedures remain in their nearest owners.
+Detailed normal Production Execution lives in `kits/prd-creator/SKILL.md`. Exact contracts/procedures remain in their nearest categorized owners.
 
 ## Semantic authority shape
 
@@ -34,7 +34,7 @@ The actual question requires reusable judgment about:
 - whether downstream work is trying to invent or repair upstream project truth;
 - whether PRD handoff semantics are actually satisfied.
 
-Do not load this skill solely because a task mentions HTML, JSON, Python, renderer, validator, template, or a file under the PRD kit.
+Do not load this skill solely because a task mentions HTML, JSON, Python, renderer, validator, template, or a file under the PRD Creator package.
 
 ## Canonical detailed owners
 
@@ -42,22 +42,22 @@ Use only the smallest owner required:
 
 ```text
 Flow 2 source recovery / completion / preview
-→ kits/project-document-generator/SOURCE-INTAKE.md
+→ kits/prd-creator/intake/SOURCE-INTAKE.md
 
 PRD core 01–03 exact semantic + visible-composition contract
-→ kits/project-document-generator/CONTENT-CONTRACT.md
+→ kits/prd-creator/document/CONTENT-CONTRACT.md
 
 non-Voice 04 exact resource/writing/readiness contract
-→ kits/project-document-generator/PRODUCTION-ASSETS.md
+→ kits/prd-creator/production-assets/CONTRACT.md
 
 renderer / projection / compositor contract
-→ kits/project-document-generator/RENDERING.md
+→ kits/prd-creator/renderer/CONTRACT.md
 
 Flow 4 validation / handoff procedure
-→ kits/project-document-generator/VALIDATION.md
+→ kits/prd-creator/document/VALIDATION.md
 
 normal end-to-end Production Execution
-→ kits/project-document-generator/SKILL.md
+→ kits/prd-creator/SKILL.md
 ```
 
 Do not recreate those contracts here.
@@ -79,7 +79,7 @@ Material AI-chosen proposals remain pending until represented to and approved/co
 
 ### PRD core
 
-Flow 3 must represent preview-approved project meaning without inventing new product decisions or deleting independently actionable rules for brevity. Exact PRD-core shape/Humanize/Golden contract belongs to `CONTENT-CONTRACT.md`.
+Flow 3 must represent preview-approved project meaning without inventing new product decisions or deleting independently actionable rules for brevity. Exact PRD-core shape/Humanize/Golden contract belongs to `kits/prd-creator/document/CONTENT-CONTRACT.md`.
 
 If authoring exposes missing material meaning, return only that affected slice to Flow 2.
 
@@ -87,13 +87,13 @@ If authoring exposes missing material meaning, return only that affected slice t
 
 Non-Voice 04 requirements come from the **same approved project model** as 01–03. Do not use finished generated 01–03 as a second design pass to brainstorm extra assets.
 
-Only concrete required resources belong in 04. Exact resource types/fields/reader-first writing/readiness are owned by `PRODUCTION-ASSETS.md`; do not duplicate them here.
+Only concrete required resources belong in 04. Exact resource types/fields/reader-first writing/readiness are owned by `kits/prd-creator/production-assets/CONTRACT.md`; do not duplicate them here.
 
 Voice scope/wording/actor/performance semantics remain downstream Voice ownership.
 
 ### Readiness / handoff
 
-Mechanical PASS does not establish semantic completeness or visual quality. Flow 4 semantics follow `VALIDATION.md` and durable Flow 4 policy. A production role needing to reopen source for material meaning that belongs in the accepted document is a readiness defect.
+Mechanical PASS does not establish semantic completeness or visual quality. Flow 4 semantics follow `kits/prd-creator/document/VALIDATION.md` and durable Flow 4 policy. A production role needing to reopen source for material meaning that belongs in the accepted document is a readiness defect.
 
 ## Semantic vs technical handoff
 
@@ -101,7 +101,7 @@ When semantic owners are correct but executable behavior is wrong:
 
 ```text
 renderer/template/validator/compositor defect
-→ kits/project-document-generator/AGENTS.md
+→ kits/prd-creator/AGENTS.md
 → exact implementation owner
 ```
 
@@ -120,4 +120,4 @@ When a technical change would alter what the product/artifact is required to rep
 
 ## Boundary
 
-This skill owns PRD/source/04/readiness **semantic judgment** only. Detailed Flow procedure lives in the Project Document Generator kit; executable mechanics stay with nearest kit implementation owners; Voice stays downstream; derived `prd.html` is never edited as source truth.
+This skill owns PRD/source/04/readiness **semantic judgment** only. Detailed Flow procedure lives in the categorized `kits/prd-creator/` owners; executable mechanics stay with nearest package implementation owners; Voice stays downstream; derived `prd.html` is never edited as source truth.

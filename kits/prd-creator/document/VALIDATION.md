@@ -20,7 +20,7 @@ Do not create separate review passes for New Reader, Level Design, Developer, Co
 Run once after the current projection/render is complete:
 
 ```bash
-python kits/project-document-generator/validator/validate.py \
+python kits/prd-creator/validator/validate.py \
   workspace/active/<project>/
 ```
 
@@ -44,6 +44,8 @@ Review the current revision once. During that pass ask the relevant questions be
 | Golden Placement | project meaning is placed in the matching approved Golden component family without unapproved presentation invention |
 
 Record one result: `Semantic Readiness: PASS | FAIL`.
+
+When 04 exists, include the readiness questions owned by `../production-assets/CONTRACT.md` inside the same integrated review rather than creating another PASS surface.
 
 Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, and terminology corrections stay in the current semantic owner.
 
@@ -108,7 +110,7 @@ Major: N
 Before Flow 5, run:
 
 ```bash
-python kits/project-document-generator/validator/validate_handoff.py \
+python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 

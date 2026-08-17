@@ -8,11 +8,19 @@ This register preserves decision history. A historical entry may contain capture
 
 For current execution use `docs/knowledge/next-action.md`, `docs/knowledge/ownership.md`, `docs/knowledge/source-authority.md`, and the nearest current foundation/kit owner.
 
-In particular, current 04/Voice presentation is the reader-first moment-based contract owned by `kits/project-document-generator/PRODUCTION-ASSETS.md` and current Flow 6/7 owners: Voice is presented as normal `AUDIO` inside the matching gameplay moment; the older `Audio → Voice Production` dashboard / visible Flow 5 Context wording below is historical.
+In particular, current 04/Voice presentation is the reader-first moment-based contract owned by `kits/prd-creator/production-assets/CONTRACT.md` plus the current Voice owners: Voice is presented as normal `AUDIO` inside the matching gameplay moment; the older `Audio → Voice Production` dashboard / visible Flow 5 Context wording below is historical.
 
 Never restore a retired path/behavior or promote an old remediation track solely because an older decision mentions it.
 
 ## Decision Register
+
+### PRD Creator uses one categorized implementation package
+
+- **Decision:** `kits/prd-creator/` is the sole current production implementation package. Project/PRD, non-Voice Production Assets, and Voice remain distinct semantic domains inside that package instead of separate top-level kits.
+- **Reason:** the current product produces one approved project model, one project HTML, and shared Production Assets composition; keeping Project Document Generator and Voice Production as separate package roots created split implementation ownership after their runtime/presentation boundaries had already converged.
+- **Boundary:** semantic root specialists remain separate; `docs/foundation/`, `.agents/skills/`, `tests/`, `tools/`, workflows, and project workspace state remain repository-level owners outside the kit; this decision does not flatten Project/PRD and Voice semantics into one contract.
+- **Supersedes:** the former top-level package split between `kits/project-document-generator/` and `kits/voice-production-kit/` while preserving the semantic separation those packages represented.
+- **Date:** 2026-08-17
 
 ### Consolidated Production Assets preserves accepted PRD navigation identity
 
@@ -21,7 +29,7 @@ Never restore a retired path/behavior or promote an old remediation track solely
 - **Current replacement:** accepted PRD navigation identity remains protected, but current Voice is a normal `AUDIO` resource inside its matching natural gameplay moment. There is no `Audio → Voice Production` sub-dashboard and no default visible Flow 5 Context/Trigger row.
 - **Reason:** developers need to identify the owning Objective immediately without memorizing order, while a second navigation implementation created hierarchy drift and made downstream Voice presentation alter accepted PRD identity.
 - **Boundary:** PRD gameplay meaning, canonical Voice wording, Voice scope, Golden template bytes, and audio evidence remain unchanged by presentation composition.
-- **Owners:** `kits/project-document-generator/PRODUCTION-ASSETS.md`, `kits/project-document-generator/RENDERING.md`, `docs/foundation/06-elevenlabs-script-production.md`, `docs/foundation/07-voice-validation-delivery.md`.
+- **Owners:** `kits/prd-creator/production-assets/CONTRACT.md`, `kits/prd-creator/renderer/CONTRACT.md`, `docs/foundation/06-elevenlabs-script-production.md`, `docs/foundation/07-voice-validation-delivery.md`.
 - **Date:** 2026-08-13
 
 ### Repository navigation uses explicit domain naming
@@ -33,7 +41,7 @@ Never restore a retired path/behavior or promote an old remediation track solely
 
 ### Exact Golden artifact is also the runtime template; material detail is conserved
 
-- **Decision:** keep `kits/project-document-generator/template/golden-reference.html` and `template/runtime-template.html` byte-identical to the exact approved PRD artifact. The renderer may apply project-specific metadata/storage/navigation/content/glossary binding only to a temporary render copy. Flow 3 must conserve every independently actionable material rule; Flow 4 requires `Semantic Readiness: PASS` (including Golden Placement) plus `Material Conservation: PASS` before new handoff, while Visual sanity remains a separate evidence channel.
+- **Decision:** keep `kits/prd-creator/template/golden-reference.html` and `kits/prd-creator/template/runtime-template.html` byte-identical to the exact approved PRD artifact. The renderer may apply project-specific metadata/storage/navigation/content/glossary binding only to a temporary render copy. Flow 3 must conserve every independently actionable material rule; Flow 4 requires `Semantic Readiness: PASS` (including Golden Placement) plus `Material Conservation: PASS` before new handoff, while Visual sanity remains a separate evidence channel.
 - **Reason:** AFTERSHOCK v2.4 proved two separate drift modes: a matching page/CSS shell can still lose dense source meaning, and a cleaned/generic runtime reconstruction can silently rename Golden IDs/classes/components while its own tests certify the reconstruction instead of the Approved document.
 - **Boundary:** Golden remains presentation/structure/runtime-DOM authority only and never supplies project-specific mechanics or facts. Exact Golden names (`flow-start`, `shared-*`, `phase-*`, `quarry-*`, `data-phase`) are representation requirements; temporary project metadata/storage namespacing is non-visual runtime binding.
 - **Supersedes/refines:** supersedes both the old shorthand “Approved PRD template is preserved as a shell” and the initial 2026-08-12 idea that the exact Golden and a separate cleaned runtime shell could coexist. Refines “Golden Samples are references, not project requirements” so it remains true for project facts but not for explicitly approved visible composition/runtime behavior/information-density requirements.
@@ -146,24 +154,25 @@ Never restore a retired path/behavior or promote an old remediation track solely
 
 ### DOCX sections use heading page-break-before, not inserted break paragraphs
 
-- **Decision:** Flow 6 section starts use `Heading 1.paragraph_format.page_break_before = True` rather than an explicit `add_page_break()` paragraph before later sections.
-- **Reason:** real Flow 7 visual QA found that explicit break paragraphs can create a blank page when the prior section naturally ends at a page boundary.
+- **Status:** historical; the DOCX delivery path is retired.
+- **Decision:** Flow 6 section starts used `Heading 1.paragraph_format.page_break_before = True` rather than an explicit `add_page_break()` paragraph before later sections.
+- **Reason:** real Flow 7 visual QA found that explicit break paragraphs could create a blank page when the prior section already ended at a natural page boundary.
 - **Proof:** The Clockwork Vault initially rendered a blank page before Ending; after the root fix, the rebuilt DOCX rendered as 8 nonblank pages and passed full reinspection + mechanical revalidation.
-- **Owner:** `kits/voice-production-kit/builder/build_docx.py`.
+- **Historical owner:** `kits/voice-production-kit/builder/build_docx.py`.
 - **Date:** 2026-08-10
 
 ### Flow 7 delivery readiness is script/DOCX scope by default
 
-- **Status:** superseded by current consolidated project-HTML delivery policy.
+- **Status:** superseded by current consolidated project-HTML delivery policy and DOCX retirement.
 - **Previous decision:** `voice_delivery_ready` meant the accepted canonical performance script and derived DOCX were ready for downstream production unless the current task explicitly included generated audio.
 - **Reason at the time:** the kit's core deliverable was script/document and audio quality could not be inferred without audio evidence.
-- **Current replacement:** canonical Voice Production + current consolidated project HTML is the default non-audio delivery; DOCX is optional export.
+- **Current replacement:** canonical Voice Production + current consolidated project HTML is the default non-audio delivery; the former DOCX export path is retired.
 - **Date:** 2026-08-10
 
 ### Flow 7 uses one final acceptance gate
 
 - **Status:** refined by the current Flow 7 consolidated project-HTML contract.
-- **Decision:** keep one final acceptance gate rather than multiple freeze/release ceremonies. Current gate uses Mechanical + Communication Conservation + integrated Voice Script Readiness + Project HTML Visual when claimed, with optional DOCX/audio evidence only when those scopes exist.
+- **Decision:** keep one final acceptance gate rather than multiple freeze/release ceremonies. Current gate uses Mechanical + Communication Conservation + integrated Voice Script Readiness + Project HTML Visual when claimed, with optional audio evidence only when audio is in scope. DOCX is not a current delivery/evidence surface.
 - **Reason:** mechanical success or attractive presentation alone is insufficient evidence of production correctness, while duplicated review ceremonies add process without value.
 - **Date:** 2026-08-10
 
@@ -175,7 +184,9 @@ Never restore a retired path/behavior or promote an old remediation track solely
 
 ### Flow 6 canonical performance wording stays human-readable; DOCX is derived
 
-- **Decision:** `work/voice-production.md` owns final spoken wording/performance notation; `output/Voice Production.docx` is generated presentation only.
+- **Status:** historical; the DOCX derived-export path is retired.
+- **Previous decision:** `work/voice-production.md` owns final spoken wording/performance notation; `output/Voice Production.docx` was generated presentation only.
+- **Current boundary:** `work/voice-production.md` remains canonical; current derived human presentation is the consolidated project HTML.
 - **Date:** 2026-08-10
 
 ### Flow 6 cannot change Flow 5 voice scope silently
@@ -191,6 +202,7 @@ Never restore a retired path/behavior or promote an old remediation track solely
 
 ### Legacy paired Aftershock Gameplay HTML is not duplicated into active Voice kit
 
+- **Status:** historical package wording; current Voice implementation lives under `kits/prd-creator/voice/`.
 - **Decision:** current accepted project PRD is factual upstream authority; stale paired V1.2 gameplay reference is not duplicated into active Voice implementation.
 - **Date:** 2026-08-10
 
@@ -198,7 +210,7 @@ Never restore a retired path/behavior or promote an old remediation track solely
 
 - **Status:** refined by current Flow 4 integrated Semantic Readiness + Material Conservation + evidence boundaries.
 - **Previous decision:** generated PRD becomes development-ready only after mechanical + four-perspective audit passes with Critical=0 and Major=0.
-- **Current replacement:** exact current readiness policy is owned by `docs/foundation/04-prd-validation-handoff.md` and `kits/project-document-generator/VALIDATION.md`.
+- **Current replacement:** exact current readiness policy is owned by `docs/foundation/04-prd-validation-handoff.md` and `kits/prd-creator/document/VALIDATION.md`.
 - **Date:** 2026-08-10
 
 ### `Local` is the permanent development branch
@@ -213,7 +225,9 @@ Never restore a retired path/behavior or promote an old remediation track solely
 
 ### Project Document Generator and Voice Production remain separate owners
 
-- **Decision:** upstream project definition/PRD work stays separate from downstream voice production.
+- **Status:** superseded at the implementation-package boundary by the unified PRD Creator kit.
+- **Previous decision:** upstream project definition/PRD work stayed separate from downstream Voice production as separate top-level kits.
+- **Current replacement:** Project/PRD and Voice remain separate semantic responsibilities, but both live inside the single categorized `kits/prd-creator/` implementation package.
 - **Date:** 2026-08-10
 
 ### Source intake uses one slim persistent recovery model

@@ -1,6 +1,6 @@
 # Current Validation Status
 
-Updated: 2026-08-16
+Updated: 2026-08-17
 
 This file records the **current evidence state only**. Historical debugging, earlier category-dashboard/browser proof, and superseded review detail remain in historical review files and Git history.
 
@@ -8,7 +8,7 @@ This file records the **current evidence state only**. Historical debugging, ear
 
 Working branch: `Local`.
 
-Project Document Generator remains **v1.14.0**. Voice Production Kit remains **v1.11.2**.
+PRD Creator package remains **v1.14.0**. Voice production scope remains **Eleven v3** inside the unified package.
 
 Current project-document authority shape:
 
@@ -75,7 +75,7 @@ Generic visible `Requirement / Usage / States / Position / Orientation / Reuse /
 
 ## Readiness proof boundary
 
-`PRODUCTION-ASSETS.md` owns one integrated 04 readiness gate covering:
+`kits/prd-creator/production-assets/CONTRACT.md` owns one integrated 04 readiness gate covering:
 
 - coverage;
 - authority;
@@ -87,13 +87,13 @@ Generic visible `Requirement / Usage / States / Position / Orientation / Reuse /
 - duplication/shared-resource economy;
 - PRD-core 01–03 protection.
 
-`VALIDATION.md` applies that gate inside the existing Flow 4 `Semantic Readiness` result. There is no separate Production Assets PASS field, workflow, schema, or approval document.
+`kits/prd-creator/document/VALIDATION.md` applies that gate inside the existing Flow 4 `Semantic Readiness` result. There is no separate Production Assets PASS field, workflow, schema, or approval document.
 
 Mechanical validation/source freshness does not by itself prove that an asset brief is professionally actionable.
 
 ## Current regression evidence
 
-The current Project Document 04 regression covers:
+The current PRD Creator 04 regression covers:
 
 - objective-first navigation;
 - moment-first page bodies;

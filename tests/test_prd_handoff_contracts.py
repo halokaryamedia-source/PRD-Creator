@@ -11,8 +11,8 @@ from pathlib import Path
 from tests.test_prd_contracts import render_data as canonical_render_data
 
 ROOT = Path(__file__).resolve().parents[1]
-HANDOFF_VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate_handoff.py"
-RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
+HANDOFF_VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate_handoff.py"
+RENDERER = ROOT / "kits" / "prd-creator" / "renderer" / "render.py"
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
@@ -142,7 +142,6 @@ class PrdHandoffContracts(unittest.TestCase):
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("handoff_artifact_references_current", "\n".join(json.loads(validated.stdout)["errors"]))
-
 
     def test_stale_delivery_metadata_cannot_authorize_handoff(self) -> None:
         project = self.make_project()

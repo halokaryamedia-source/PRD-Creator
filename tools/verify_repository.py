@@ -20,6 +20,18 @@ CANONICAL_SKILLS = {
     "voice-production",
 }
 
+UNIFIED_KIT = ROOT / "kits" / "prd-creator"
+UNIFIED_KIT_DIRS = {
+    "intake",
+    "document",
+    "production-assets",
+    "voice",
+    "renderer",
+    "validator",
+    "template",
+}
+UNIFIED_ROOT_MARKDOWN = {"README.md", "AGENTS.md", "SKILL.md"}
+
 REQUIRED_PATHS = [
     ".github/workflows/repository-verify.yml",
     ".github/workflows/prd-verify.yml",
@@ -48,12 +60,22 @@ REQUIRED_PATHS = [
     "docs/knowledge/skills/README.md",
     "docs/knowledge/operations/boot-baseline.md",
     "docs/knowledge/operations/backlog.md",
-    "kits/project-document-generator/AGENTS.md",
-    "kits/project-document-generator/SKILL.md",
-    "kits/project-document-generator/renderer/delivery.py",
-    "kits/voice-production-kit/AGENTS.md",
-    "kits/voice-production-kit/SKILL.md",
-    "kits/voice-production-kit/references/aftershock/README.md",
+    "kits/prd-creator/README.md",
+    "kits/prd-creator/AGENTS.md",
+    "kits/prd-creator/SKILL.md",
+    "kits/prd-creator/intake/SOURCE-INTAKE.md",
+    "kits/prd-creator/document/CONTENT-CONTRACT.md",
+    "kits/prd-creator/document/VALIDATION.md",
+    "kits/prd-creator/production-assets/CONTRACT.md",
+    "kits/prd-creator/renderer/CONTRACT.md",
+    "kits/prd-creator/renderer/delivery.py",
+    "kits/prd-creator/validator/validate.py",
+    "kits/prd-creator/validator/validate_handoff.py",
+    "kits/prd-creator/validator/validate_voice.py",
+    "kits/prd-creator/voice/EXTRACTION.md",
+    "kits/prd-creator/voice/SOUNDMAKER.md",
+    "kits/prd-creator/voice/VALIDATION.md",
+    "kits/prd-creator/voice/references/aftershock/README.md",
     "workspace/README.md",
     "workspace/archive/README.md",
 ]
@@ -66,30 +88,33 @@ MARKDOWN_ROOTS = [
     ROOT / ".agents" / "skills",
     ROOT / "docs" / "foundation",
     ROOT / "docs" / "knowledge",
-    ROOT / "kits" / "project-document-generator",
-    ROOT / "kits" / "voice-production-kit",
+    UNIFIED_KIT,
 ]
 
 CURRENT_DELIVERY_OWNER_PATHS = [
     "CONTEXT.md",
     "docs/foundation/03-prd-generation.md",
     "docs/foundation/04-prd-validation-handoff.md",
+    "docs/foundation/05-voice-requirement-extraction.md",
     "docs/foundation/06-elevenlabs-script-production.md",
     "docs/foundation/07-voice-validation-delivery.md",
     "docs/knowledge/ownership.md",
     "docs/knowledge/reviews/current-validation.md",
-    "kits/project-document-generator/AGENTS.md",
-    "kits/project-document-generator/RENDERING.md",
-    "kits/voice-production-kit/AGENTS.md",
-    "kits/voice-production-kit/VOICE-EXTRACTION.md",
-    "kits/voice-production-kit/VOICE-VALIDATION.md",
+    "kits/prd-creator/README.md",
+    "kits/prd-creator/AGENTS.md",
+    "kits/prd-creator/SKILL.md",
+    "kits/prd-creator/intake/SOURCE-INTAKE.md",
+    "kits/prd-creator/document/CONTENT-CONTRACT.md",
+    "kits/prd-creator/document/VALIDATION.md",
+    "kits/prd-creator/production-assets/CONTRACT.md",
+    "kits/prd-creator/renderer/CONTRACT.md",
+    "kits/prd-creator/voice/EXTRACTION.md",
+    "kits/prd-creator/voice/SOUNDMAKER.md",
+    "kits/prd-creator/voice/VALIDATION.md",
     "workspace/README.md",
     "docs/knowledge/decisions/recording-policy.md",
     ".agents/skills/project-document-production/SKILL.md",
     ".agents/skills/voice-production/SKILL.md",
-    "kits/project-document-generator/SKILL.md",
-    "kits/project-document-generator/CONTENT-CONTRACT.md",
-    "kits/voice-production-kit/SKILL.md",
 ]
 
 RETIRED_CURRENT_DELIVERY_TERMS = (
@@ -97,6 +122,10 @@ RETIRED_CURRENT_DELIVERY_TERMS = (
     "final.html",
     "output/team-handoff.md",
     "Cinematic & Presentation",
+    "kits/project-document-generator",
+    "kits/voice-production-kit",
+    "optional DOCX",
+    "optional DOCX /",
 )
 
 AGENT_REQUIRED_HEADINGS = {
@@ -129,6 +158,46 @@ def check_required_paths(errors: list[str]) -> None:
     for rel in REQUIRED_PATHS:
         if not (ROOT / rel).exists():
             fail(errors, f"missing required owner: {rel}")
+
+
+def check_unified_kit_shape(errors: list[str]) -> None:
+    kits_root = ROOT / "kits"
+    if not kits_root.is_dir():
+        fail(errors, "missing kits/ root")
+        return
+
+    actual_kits = {
+        path.name
+        for path in kits_root.iterdir()
+        if path.is_dir() and not path.name.startswith(".")
+    }
+    if actual_kits != {"prd-creator"}:
+        fail(
+            errors,
+            "active production kit set drift: expected ['prd-creator'], "
+            f"got {sorted(actual_kits)}",
+        )
+
+    if not UNIFIED_KIT.is_dir():
+        fail(errors, "missing unified production kit: kits/prd-creator")
+        return
+
+    actual_dirs = {
+        path.name
+        for path in UNIFIED_KIT.iterdir()
+        if path.is_dir() and not path.name.startswith(".")
+    }
+    missing_dirs = sorted(UNIFIED_KIT_DIRS - actual_dirs)
+    if missing_dirs:
+        fail(errors, f"kits/prd-creator missing domain directories: {missing_dirs}")
+
+    actual_root_md = {path.name for path in UNIFIED_KIT.glob("*.md")}
+    if actual_root_md != UNIFIED_ROOT_MARKDOWN:
+        fail(
+            errors,
+            "kits/prd-creator root Markdown owners drift: "
+            f"expected {sorted(UNIFIED_ROOT_MARKDOWN)}, got {sorted(actual_root_md)}",
+        )
 
 
 def check_skill_root(errors: list[str]) -> None:
@@ -183,13 +252,8 @@ def check_retired_boundaries(errors: list[str]) -> None:
         "docs/knowledge/operations/task-board.md",
         "docs/foundation/validation-report.md",
         "workspace/saved",
-        "kits/project-document-generator/WORKFLOW.md",
-        "kits/project-document-generator/RULES.md",
-        "kits/voice-production-kit/REFERENCE",
-        "kits/voice-production-kit/INSTRUCTIONS.md",
-        "kits/voice-production-kit/DOCX-FORMAT.md",
-        "kits/voice-production-kit/builder/build_docx.py",
-        "kits/voice-production-kit/requirements.txt",
+        "kits/project-document-generator",
+        "kits/voice-production-kit",
     ]
     for rel in retired:
         if (ROOT / rel).exists():
@@ -211,7 +275,8 @@ def check_current_delivery_routing(errors: list[str]) -> None:
     if ownership.is_file():
         text = ownership.read_text(encoding="utf-8")
         required_markers = (
-            "renderer/delivery.py",
+            "kits/prd-creator/renderer/delivery.py",
+            "kits/prd-creator/validator/validate_voice.py",
             "output/README.md",
             "output/v<document.version>/prd.html",
             "output/v<document.version>/context.md",
@@ -225,7 +290,8 @@ def check_current_delivery_routing(errors: list[str]) -> None:
     if workspace.is_file():
         text = workspace.read_text(encoding="utf-8")
         required_markers = (
-            "renderer/delivery.py",
+            "kits/prd-creator/renderer/delivery.py",
+            "kits/prd-creator/validator/validate_voice.py",
             "output/README.md",
             "output/v<document.version>/prd.html",
             "output/v<document.version>/context.md",
@@ -236,7 +302,7 @@ def check_current_delivery_routing(errors: list[str]) -> None:
                 fail(errors, f"workspace/README.md missing current delivery marker: {marker}")
 
     current_validation = ROOT / "docs" / "knowledge" / "reviews" / "current-validation.md"
-    skill_path = ROOT / "kits" / "project-document-generator" / "SKILL.md"
+    skill_path = UNIFIED_KIT / "SKILL.md"
     if current_validation.is_file():
         text = current_validation.read_text(encoding="utf-8")
         required_markers = (
@@ -252,26 +318,23 @@ def check_current_delivery_routing(errors: list[str]) -> None:
         if skill_path.is_file():
             version_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
             if version_match:
-                expected = f"Project Document Generator remains **v{version_match.group(1)}**"
+                expected = f"PRD Creator package remains **v{version_match.group(1)}**"
                 if expected not in text:
                     fail(
                         errors,
-                        "current-validation.md Project Document Generator version does not match current SKILL version",
+                        "current-validation.md PRD Creator version does not match current SKILL version",
                     )
 
     voice_docs = [
         ROOT / "docs" / "foundation" / "06-elevenlabs-script-production.md",
         ROOT / "docs" / "foundation" / "07-voice-validation-delivery.md",
-        ROOT / "kits" / "voice-production-kit" / "AGENTS.md",
-        ROOT / "kits" / "voice-production-kit" / "VOICE-VALIDATION.md",
+        UNIFIED_KIT / "AGENTS.md",
+        UNIFIED_KIT / "voice" / "VALIDATION.md",
     ]
     retired_voice_nav = "04 Production Assets\n   VOICE"
     for path in voice_docs:
         if path.is_file() and retired_voice_nav in path.read_text(encoding="utf-8"):
-            fail(
-                errors,
-                f"stale Voice sidebar category routing in {path.relative_to(ROOT)}",
-            )
+            fail(errors, f"stale Voice sidebar category routing in {path.relative_to(ROOT)}")
 
     decision_policy = ROOT / "docs" / "knowledge" / "decisions" / "recording-policy.md"
     if decision_policy.is_file():
@@ -304,24 +367,24 @@ def check_agent_contract(errors: list[str]) -> None:
             fail(errors, f"AGENTS.md missing required section: {heading}")
 
 
-def check_project_document_version(errors: list[str]) -> None:
-    skill_path = ROOT / "kits" / "project-document-generator" / "SKILL.md"
-    readme_path = ROOT / "kits" / "project-document-generator" / "README.md"
+def check_prd_creator_version(errors: list[str]) -> None:
+    skill_path = UNIFIED_KIT / "SKILL.md"
+    readme_path = UNIFIED_KIT / "README.md"
     if not skill_path.is_file() or not readme_path.is_file():
         return
 
     skill_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
     readme_match = README_VERSION_RE.search(readme_path.read_text(encoding="utf-8"))
     if not skill_match:
-        fail(errors, "Project Document SKILL.md is missing version front matter")
+        fail(errors, "PRD Creator SKILL.md is missing version front matter")
         return
     if not readme_match:
-        fail(errors, "Project Document README.md is missing Version")
+        fail(errors, "PRD Creator README.md is missing Version")
         return
     if skill_match.group(1) != readme_match.group(1):
         fail(
             errors,
-            "Project Document version drift: "
+            "PRD Creator version drift: "
             f"SKILL {skill_match.group(1)} != README {readme_match.group(1)}",
         )
 
@@ -350,9 +413,9 @@ def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
 
 def check_dependency_lock(errors: list[str]) -> None:
     requirement_pins(ROOT / "requirements.lock.txt", errors)
-    retired_direct = ROOT / "kits" / "voice-production-kit" / "requirements.txt"
-    if retired_direct.exists():
-        fail(errors, "retired Voice requirements.txt must not return")
+    direct = UNIFIED_KIT / "requirements.txt"
+    if direct.exists():
+        fail(errors, "unexpected direct kit requirements.txt; root requirements.lock.txt owns current Python pins")
 
 
 def normalize_link_target(source: Path, raw: str) -> Path | None:
@@ -409,12 +472,13 @@ def main() -> int:
     errors: list[str] = []
 
     check_required_paths(errors)
+    check_unified_kit_shape(errors)
     check_skill_root(errors)
     check_retired_boundaries(errors)
     check_current_delivery_routing(errors)
     check_next_action(errors)
     check_agent_contract(errors)
-    check_project_document_version(errors)
+    check_prd_creator_version(errors)
     check_dependency_lock(errors)
     check_markdown_links(errors)
     check_python_syntax(errors)
@@ -427,15 +491,16 @@ def main() -> int:
 
     print("REPOSITORY VERIFY PASSED")
     print(f"- canonical skills: {', '.join(sorted(CANONICAL_SKILLS))}")
+    print("- active production kit: prd-creator")
     print(f"- markdown files checked: {len(iter_markdown_files())}")
     print("- root AGENTS contract sections: present")
-    print("- Project Document skill/README version: aligned")
+    print("- PRD Creator skill/README version: aligned")
     print("- current versioned delivery routing: aligned")
     print("- workspace/current-validation delivery routing: aligned")
     print("- relative navigation: valid")
     print("- dependency lock format: valid")
     print("- Python kits/tools/tests: syntax valid")
-    print("- retired builder/routing boundaries: preserved")
+    print("- retired package/builder/routing boundaries: preserved")
     return 0
 
 

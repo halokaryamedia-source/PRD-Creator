@@ -1,6 +1,6 @@
 # Project Workspace
 
-This folder stores project-specific production packages. Reusable behavior belongs under `kits/`; durable workflow policy belongs under `docs/foundation/`.
+This folder stores project-specific production packages. Reusable behavior belongs under `kits/prd-creator/`; durable workflow policy belongs under `docs/foundation/`.
 
 ## Lifecycle
 
@@ -40,7 +40,7 @@ output/v<document.version>/index.json    compact AI navigation + context line ra
 The normal delivery entry point is:
 
 ```bash
-python kits/project-document-generator/renderer/delivery.py \
+python kits/prd-creator/renderer/delivery.py \
   workspace/active/<project>/
 ```
 
@@ -69,7 +69,7 @@ approved project model
 └─ work/asset-requirements.md → non-Voice 04
 ```
 
-Create `work/asset-requirements.md` only when the project has real non-Voice production resources that must be prepared.
+Create `work/asset-requirements.md` only when the project has real non-Voice production resources that must be prepared. The exact contract is `kits/prd-creator/production-assets/CONTRACT.md`.
 
 The current visible 04 resource types are:
 
@@ -137,7 +137,9 @@ work/voice-production.md
 work/voice-acceptance.md
 ```
 
-Voice remains canonical in those files and is not duplicated into `asset-requirements.md`. Its derived 04 presentation appears as an `AUDIO` resource inside the matching gameplay moment:
+Detailed Voice procedure lives under `kits/prd-creator/voice/`; mechanical validation uses `kits/prd-creator/validator/validate_voice.py`.
+
+Voice remains canonical in those project files and is not duplicated into `asset-requirements.md`. Its derived 04 presentation appears as an `AUDIO` resource inside the matching gameplay moment:
 
 ```text
 AUDIO

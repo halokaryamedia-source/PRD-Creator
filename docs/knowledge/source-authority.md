@@ -2,7 +2,7 @@
 
 Use this note only when **source/state precedence for a claim is unclear**. Repository/file ownership lives in `ownership.md`; work-mode routing lives in root `AGENTS.md`.
 
-Detailed Flow 2 source recovery behavior lives in `kits/project-document-generator/SOURCE-INTAKE.md`.
+Detailed Flow 2 source recovery behavior lives in `kits/prd-creator/intake/SOURCE-INTAKE.md`.
 
 ## Project authority chain
 
@@ -17,7 +17,7 @@ current explicit user instruction
    └─ accepted non-Voice 04 Production Asset requirements when present
 → accepted Voice requirements
 → canonical Voice Production wording
-→ derived HTML / optional DOCX / audio / evidence
+→ derived project HTML / audio / evidence
 ```
 
 Authority decreases downstream. Generated/derived artifacts do not repair or outrank upstream meaning.
@@ -64,7 +64,7 @@ canonical PRD-core meaning
 → work/content.md
 
 canonical non-Voice 04 resource requirements when present
-→ work/asset-requirements.md under PRODUCTION-ASSETS.md
+→ work/asset-requirements.md under kits/prd-creator/production-assets/CONTRACT.md
 
 render-data / HTML / AI side projections
 → derived only
@@ -85,7 +85,7 @@ work/voice-requirements.md
 work/voice-production.md
 → canonical Voice production wording/performance
 
-project HTML / optional DOCX
+project HTML
 → derived presentation
 
 voice acceptance/state

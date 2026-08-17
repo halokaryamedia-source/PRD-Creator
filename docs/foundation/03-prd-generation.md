@@ -13,7 +13,7 @@ Flow 3 does not own the 04 Production Assets writing contract. Real Production A
 The gameplay PRD core's mandatory blueprint, mandatory-slot states, Scoring / Result behavior, role completeness, and Humanize rules are owned only by:
 
 ```text
-kits/project-document-generator/CONTENT-CONTRACT.md
+kits/prd-creator/document/CONTENT-CONTRACT.md
 ```
 
 This foundation page does not maintain a second Golden checklist.
@@ -31,7 +31,7 @@ Original Source + Current Instruction + Approved Decisions
 
 Authority decreases downstream. Rendering cannot introduce project meaning.
 
-The same approved project model may also feed `work/asset-requirements.md` through `PRODUCTION-ASSETS.md`; that parallel 04 source does not change `content.md`, Golden bytes, or 01–03 authoring rules.
+The same approved project model may also feed `work/asset-requirements.md` through `kits/prd-creator/production-assets/CONTRACT.md`; that parallel 04 source does not change `content.md`, Golden bytes, or 01–03 authoring rules.
 
 ## Flow 3 work sequence
 
@@ -51,18 +51,18 @@ If drafting exposes a material unresolved project/design decision, return the af
 
 ## Projection boundary
 
-`render-data.json` is a disposable projection of current canonical PRD-core meaning. It must satisfy the deterministic shell rules in `RENDERING.md` but is not a second semantic owner.
+`render-data.json` is a disposable projection of current canonical PRD-core meaning. It must satisfy the deterministic shell rules in `kits/prd-creator/renderer/CONTRACT.md` but is not a second semantic owner.
 
 The renderer may organize approved meaning into the Golden surfaces. It may not decide whether a mandatory concern is applicable, invent project facts, or repair incomplete Flow 2 recovery.
 
-Production Asset briefs do not belong in `render-data.json`; they use the separate bounded 04 source owned by `PRODUCTION-ASSETS.md`.
+Production Asset briefs do not belong in `render-data.json`; they use the separate bounded 04 source owned by `kits/prd-creator/production-assets/CONTRACT.md`.
 
 ## Completion
 
 Flow 3 completes when:
 
 - Flow 2 truthfully remains `ready_for_prd`;
-- `content.md` satisfies `CONTENT-CONTRACT.md`;
+- `content.md` satisfies `kits/prd-creator/document/CONTENT-CONTRACT.md`;
 - no material product decision was silently made during authoring;
 - render data satisfies the deterministic Golden shell;
 - `output/v<document.version>/prd.html` contains the current 01–03 projection;

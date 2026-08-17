@@ -31,13 +31,13 @@ voice_delivery_ready | needs_revision | blocked
 Run:
 
 ```bash
-python kits/voice-production-kit/validator/validate.py \
+python kits/prd-creator/validator/validate_voice.py \
   workspace/active/<project>/
 ```
 
 Mechanical validation always checks canonical requirements/script parity. It also proves current revision identity: `voice-state.yaml.source_prd_revision`, the current accepted PRD handoff, `render-data.document.version`, `voice-requirements.md` `Source PRD revision`, and the source revision declared by `voice-production.md` must agree. The canonical script's `Source Voice Requirements` SHA-256 must match the exact current `work/voice-requirements.md` bytes.
 
-When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/prompt identity and exact canonical performance text. Current visible AUDIO-field/layout behavior is owned by the Project Document 04 compositor regression rather than duplicated as another Voice HTML schema.
+When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/prompt identity and exact canonical performance text. Current visible AUDIO-field/layout behavior is owned by the shared `kits/prd-creator/` 04 compositor regression rather than duplicated as another Voice HTML schema.
 
 Mechanical PASS cannot establish semantic readiness or visual quality.
 
@@ -104,7 +104,7 @@ Do not infer audio quality from script appearance, tags, or Estimated Duration.
 project/gameplay/story fact → PRD authority
 Voice moment/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
 wording/performance/Estimated Duration/production selection → Flow 6
-correct canonical Voice + wrong Production Assets HTML → PRD renderer compositor
+correct canonical Voice + wrong Production Assets HTML → kits/prd-creator/ renderer/compositor owner
 audio-only issue → audio evidence scope
 ```
 

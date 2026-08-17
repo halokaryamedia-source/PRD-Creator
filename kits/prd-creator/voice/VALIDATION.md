@@ -13,13 +13,13 @@ Start from the current Voice state and read only the canonical requirements/scri
 Run:
 
 ```bash
-python kits/voice-production-kit/validator/validate.py \
+python kits/prd-creator/validator/validate_voice.py \
   workspace/active/<project>/
 ```
 
 Mechanical validation always checks current Voice ID/Type/Speaker parity and canonical script structure. It also checks that the current accepted PRD handoff, `voice-state.yaml.source_prd_revision`, `render-data.document.version`, the Flow 5 `Source PRD revision`, and the Flow 6 source revision agree. The `Source Voice Requirements` SHA-256 in `voice-production.md` must match the exact current `work/voice-requirements.md` bytes.
 
-When `output/v<document.version>/prd.html` exists, it also checks Voice section/prompt identity and exact canonical payload parity. The Project Document 04 regression owns the current visible AUDIO field/layout contract; do not duplicate that compositor contract inside the Voice validator.
+When `output/v<document.version>/prd.html` exists, it also checks Voice section/prompt identity and exact canonical payload parity. The shared PRD Creator 04 regression owns the current visible AUDIO field/layout contract; do not duplicate that compositor contract inside the Voice validator.
 
 Mechanical PASS does not prove semantic or visual quality.
 
@@ -78,7 +78,7 @@ Audio evidence is separate from non-audio script/project-HTML readiness and must
 project/gameplay/story fact → PRD authority
 Voice scope/context → Flow 5
 canonical Voice wording/duration → Flow 6
-correct canonical data + wrong Production Assets HTML → PRD renderer compositor
+correct canonical data + wrong Production Assets HTML → kits/prd-creator/ renderer/compositor owner
 ```
 
 ## Acceptance record

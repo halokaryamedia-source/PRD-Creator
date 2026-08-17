@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VALIDATOR = ROOT / "kits" / "voice-production-kit" / "validator" / "validate.py"
+VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate_voice.py"
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:

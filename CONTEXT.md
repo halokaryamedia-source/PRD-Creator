@@ -34,9 +34,9 @@ Flow 6  Eleven v3 Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
-There is no canonical Flow 8. Non-Voice Production Assets are a bounded capability of the Project Document Generator, not another numbered Flow.
+There is no canonical Flow 8. Non-Voice Production Assets are a bounded capability inside the same PRD-Creator product package, not another numbered Flow.
 
-High-level flow policy lives in `docs/foundation/`. Detailed production procedure lives in the matching kit owner.
+High-level flow policy lives in `docs/foundation/`. Detailed production procedure lives in the matching `kits/prd-creator/` domain owner.
 
 ## Stable authority shape
 
@@ -59,36 +59,38 @@ When a downstream step exposes missing or contradictory upstream meaning, return
 
 ## Product boundaries
 
-### Project Document Generator
+### Unified PRD Creator package
 
-Owns Flow 2–4 plus bounded non-Voice `04 Production Assets` completion:
+`kits/prd-creator/` is the single implementation/procedure package for Flow 2–7 plus bounded `04 Production Assets` completion.
 
-- source/requirement recovery and project-model completion;
-- explicit Completion / Proposal / Blocked boundaries for missing material meaning;
-- canonical PRD-core meaning and approved Golden representation;
-- justified non-Voice Production Asset requirements from the same project model;
-- PRD validation/readiness and team handoff;
-- deterministic project-document delivery.
+Its internal domains remain distinct:
+
+```text
+intake/             Flow 2 source + requirement recovery
+document/           PRD core 01–03 contract + Flow 4 validation
+production-assets/  exact non-Voice 04 resource/writing contract
+voice/              Flow 5–7 Voice procedure/craft/evidence
+renderer/           deterministic PRD + shared 04 presentation
+validator/          PRD, handoff, and Voice mechanical gates
+template/           approved Golden/runtime bytes
+```
+
+Project/PRD semantics and Voice semantics remain separate responsibilities even though they live in one product package.
 
 Detailed owners:
 
 ```text
-SOURCE-INTAKE.md       Flow 2 procedure
-CONTENT-CONTRACT.md    exact PRD-core 01–03 contract
-PRODUCTION-ASSETS.md   exact non-Voice 04 resource/writing contract
-RENDERING.md           renderer/compositor contract
-VALIDATION.md          Flow 4 procedure
+intake/SOURCE-INTAKE.md             Flow 2 procedure
+document/CONTENT-CONTRACT.md        exact PRD-core 01–03 contract
+production-assets/CONTRACT.md       exact non-Voice 04 resource/writing contract
+renderer/CONTRACT.md                renderer/compositor contract
+document/VALIDATION.md              Flow 4 procedure
+voice/EXTRACTION.md                 Flow 5 procedure
+voice/SOUNDMAKER.md                 Eleven v3 performance-writing craft
+voice/VALIDATION.md                 Flow 7 procedure/evidence
 ```
 
-### Voice Production Kit
-
-Owns Flow 5–7:
-
-- extracting justified Voice requirements from accepted project/PRD meaning;
-- canonical Eleven v3 production wording/performance;
-- Voice validation and delivery evidence.
-
-Voice presentation may appear as `AUDIO` inside the shared 04 Production Assets surface, but exact project-HTML presentation remains a derived view and does not become Voice semantic authority.
+Voice presentation may appear as `AUDIO` inside the shared 04 Production Assets surface, but project HTML remains a derived view and does not become Voice semantic authority.
 
 ## Golden / reference boundary
 
@@ -133,11 +135,8 @@ docs/knowledge/
 .agents/skills/
 → reusable semantic judgment
 
-kits/project-document-generator/
-→ Flow 2–4 + bounded 04 procedure/implementation
-
-kits/voice-production-kit/
-→ Flow 5–7 procedure/implementation
+kits/prd-creator/
+→ categorized Flow 2–7 + bounded 04 procedure/implementation
 
 workspace/active/
 → current project production packages

@@ -5,7 +5,7 @@ description: Reusable semantic/product-contract specialist for PRD-Creator Flow 
 
 # Voice Production
 
-Own **semantic judgment** around Voice Production Flow 5–7. Detailed Production Execution stays in `kits/voice-production-kit/SKILL.md`; exact craft/validation procedure stays in the nearest Voice owner.
+Own **semantic judgment** around Voice Production Flow 5–7. Detailed Production Execution stays in `kits/prd-creator/SKILL.md`; exact craft/validation procedure stays in the nearest Voice owner.
 
 ## Semantic authority shape
 
@@ -37,22 +37,22 @@ Do not load this skill solely because a task mentions ElevenLabs, AUDIO, HTML, P
 
 ```text
 Flow 5 scope/context extraction
-→ kits/voice-production-kit/VOICE-EXTRACTION.md
+→ kits/prd-creator/voice/EXTRACTION.md
 
 Flow 6 durable policy
 → docs/foundation/06-elevenlabs-script-production.md
 
 Eleven v3 performance-writing craft
-→ kits/voice-production-kit/SOUNDMAKER.md
+→ kits/prd-creator/voice/SOUNDMAKER.md
 
 Flow 7 validation/evidence
-→ kits/voice-production-kit/VOICE-VALIDATION.md
+→ kits/prd-creator/voice/VALIDATION.md
 
 normal end-to-end Voice Production Execution
-→ kits/voice-production-kit/SKILL.md
+→ kits/prd-creator/SKILL.md
 ```
 
-The shared 04 Production Assets exact reader-facing resource contract is owned by `kits/project-document-generator/PRODUCTION-ASSETS.md`; do not duplicate its field schema here.
+The shared 04 Production Assets exact reader-facing resource contract is owned by `kits/prd-creator/production-assets/CONTRACT.md`; do not duplicate its field schema here.
 
 ## Semantic judgment rules
 
@@ -75,7 +75,7 @@ Canonical Voice may be presented as `AUDIO` inside the matching 04 gameplay mome
 If Voice canonical meaning is correct but the 04 HTML is wrong:
 
 ```text
-→ Project Document Generator 04 compositor owner
+→ kits/prd-creator/renderer/ production-assets compositor owner
 ```
 
 Do not redefine Voice semantics merely to fit a presentation defect.
@@ -90,10 +90,10 @@ When semantics are correct:
 
 ```text
 Voice-specific 04 parsing/presentation primitive defect
-→ Project Document kit implementation owner
+→ kits/prd-creator/renderer/ implementation owner
 
 Voice mechanical validator defect
-→ Voice kit AGENTS + validator
+→ kits/prd-creator/AGENTS.md + validator/validate_voice.py
 
 shared dependency/test/CI defect
 → repository engineering
@@ -112,4 +112,4 @@ If a technical change alters what Voice is required to represent/accept, reopen 
 
 ## Boundary
 
-This skill owns Voice Flow 5–7 **semantic judgment** only. Detailed production procedure stays in the Voice kit; pure validator/presentation mechanics stay with exact implementation owners; upstream project truth stays with the PRD/project authority.
+This skill owns Voice Flow 5–7 **semantic judgment** only. Detailed production procedure stays in the categorized `kits/prd-creator/` Voice owners; pure validator/presentation mechanics stay with exact implementation owners; upstream project truth stays with the PRD/project authority.

@@ -16,7 +16,7 @@ Start only when the current project has:
 Before extraction, run:
 
 ```bash
-python kits/project-document-generator/validator/validate_handoff.py \
+python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 

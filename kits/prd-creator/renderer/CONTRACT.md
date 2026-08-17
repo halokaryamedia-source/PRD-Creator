@@ -1,6 +1,6 @@
 # Rendering Contract
 
-`CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. `PRODUCTION-ASSETS.md` owns the bounded non-Voice 04 Production Asset requirement/writing contract. This file owns deterministic projection into the approved PRD composition and the downstream 04 Production Assets extension inside the same project HTML.
+`../document/CONTENT-CONTRACT.md` owns PRD meaning and approved PRD-core composition. `../production-assets/CONTRACT.md` owns the bounded non-Voice 04 Production Asset requirement/writing contract. This file owns deterministic projection into the approved PRD composition and the downstream 04 Production Assets extension inside the same project HTML.
 
 ## Authority chain
 
@@ -45,7 +45,7 @@ Adding or revising 04 Production Assets does not reopen PRD-core acceptance whil
 Normal handoff generation uses one deterministic command:
 
 ```bash
-python kits/project-document-generator/renderer/delivery.py \
+python kits/prd-creator/renderer/delivery.py \
   workspace/active/<project>/
 ```
 
@@ -260,8 +260,8 @@ Rules:
 - Voice appears as `AUDIO` in the matching moment and retains canonical Voice payload while using the approved 04 visible fields: Function, Voice Preset, ElevenLabs Model, Estimated Duration, Prompt;
 - performance-direction tags are visually distinct from spoken dialogue while Copy Prompt copies the exact canonical payload;
 - long sidebar labels wrap naturally; clipping/ellipsis is not the target behavior;
-- non-Voice requirement integrity remains owned by `PRODUCTION-ASSETS.md` + project `work/asset-requirements.md`;
-- Voice semantic/payload integrity remains owned by the Voice Production Kit and its project canonical sources.
+- non-Voice requirement integrity remains owned by `../production-assets/CONTRACT.md` + project `work/asset-requirements.md`;
+- Voice semantic/payload integrity remains owned by the Voice domain and its project canonical sources.
 
 ## Visual language for 04 Production Assets
 

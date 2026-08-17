@@ -30,7 +30,7 @@ all current Voice Requirements
 → per-line SoundMaker preparation
 → project-level readiness review
 → canonical script
-→ optional DOCX / script-level handoff
+→ consolidated project-HTML handoff when in scope
 ```
 
 Preparation Mode:
@@ -406,8 +406,8 @@ wrong Voice moment / Speaker / Channel / Trigger / Purpose / required communicat
 correct requirement but weak wording/performance/Estimated Duration
 → Flow 6 / SoundMaker / voice-production.md
 
-correct canonical script but wrong DOCX presentation
-→ DOCX builder / DOCX-FORMAT.md
+correct canonical script but wrong Production Assets HTML
+→ kits/prd-creator/renderer/ shared 04 compositor owner
 
 correct script but actual generated-audio-only issue
 → Generation Mode evidence/settings/voice

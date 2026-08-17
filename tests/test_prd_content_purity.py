@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
+VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate.py"
 
 
 def load_validator_module():

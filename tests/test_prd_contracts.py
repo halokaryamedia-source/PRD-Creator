@@ -10,11 +10,11 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-RENDERER = ROOT / "kits" / "project-document-generator" / "renderer" / "render.py"
-DELIVERY = ROOT / "kits" / "project-document-generator" / "renderer" / "delivery.py"
-VALIDATOR = ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
-RUNTIME_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "runtime-template.html"
-GOLDEN_TEMPLATE = ROOT / "kits" / "project-document-generator" / "template" / "golden-reference.html"
+RENDERER = ROOT / "kits" / "prd-creator" / "renderer" / "render.py"
+DELIVERY = ROOT / "kits" / "prd-creator" / "renderer" / "delivery.py"
+VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate.py"
+RUNTIME_TEMPLATE = ROOT / "kits" / "prd-creator" / "template" / "runtime-template.html"
+GOLDEN_TEMPLATE = ROOT / "kits" / "prd-creator" / "template" / "golden-reference.html"
 BILINGUAL_SCALAR_FIELDS = {
     "canonical_content_sha256", "id", "key", "code", "version", "brand_mark",
     "languages", "roles", "weight", "step", "no", "number", "formula",
@@ -475,7 +475,6 @@ class ProjectDocumentContracts(unittest.TestCase):
         )
         self.assertIn("valid additive Production Assets pages: 1", page_check["detail"])
 
-
     def test_flow4_rejects_stale_non_voice_asset_requirements(self) -> None:
         project = self.make_project(render_data())
         asset_path = project / "work" / "asset-requirements.md"
@@ -534,13 +533,12 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(check["status"], "fail")
         self.assertIn("binding", check["detail"])
 
-
     def test_current_validator_does_not_monkey_patch_engine(self) -> None:
         wrapper = (
-            ROOT / "kits" / "project-document-generator" / "validator" / "validate.py"
+            ROOT / "kits" / "prd-creator" / "validator" / "validate.py"
         ).read_text(encoding="utf-8")
         engine = (
-            ROOT / "kits" / "project-document-generator" / "validator" / "_engine.py"
+            ROOT / "kits" / "prd-creator" / "validator" / "_engine.py"
         ).read_text(encoding="utf-8")
         for marker in (
             "_engine.flow2_readiness =",
@@ -552,7 +550,6 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertIn("PREVIEW_APPROVED_RE", engine)
         self.assertIn("def _global_page_id(", engine)
         self.assertIn("quarry-overview-table", engine)
-
 
 
 if __name__ == "__main__":

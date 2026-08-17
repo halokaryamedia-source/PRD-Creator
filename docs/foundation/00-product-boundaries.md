@@ -2,7 +2,9 @@
 
 Status: active policy
 
-## Project Document Generator Owns
+## PRD Creator — Project / Document Domain
+
+Inside `kits/prd-creator/`, the Project/PRD domain owns:
 
 - project-source intake, production requirement recovery, and Flow 2 problem solving;
 - safe Clarification/Completion vs Proposal/Blocked decision boundaries;
@@ -13,7 +15,7 @@ Status: active policy
 
 It does not own downstream Voice wording.
 
-## Voice Production Kit Owns
+## PRD Creator — Voice Domain
 
 ### Flow 5
 
@@ -34,7 +36,7 @@ It does not own downstream Voice wording.
 - current consolidated project-HTML visual QA when claimed;
 - truthful delivery state and evidence boundaries.
 
-## Voice Production Does Not Own
+## Voice Domain Does Not Own
 
 - repairing unresolved project/PRD decisions by invention;
 - adding new Voice moments during script polishing or final audit;
@@ -48,5 +50,7 @@ The normal non-audio Voice deliverable is the accepted **canonical Voice Product
 Audio remains a separate evidence/delivery scope when explicitly in scope.
 
 ## Shared Boundary Rule
+
+Project/PRD and Voice are separate semantic domains inside one `kits/prd-creator/` product package.
 
 When downstream work exposes a missing or contradictory upstream decision, reopen the correct owner. Do not hide the decision inside polished PRD/script/audit text or derived presentation output.

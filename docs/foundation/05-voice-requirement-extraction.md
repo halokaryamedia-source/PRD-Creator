@@ -19,7 +19,7 @@ Normal entry requires `state/handoff-state.yaml: handoff_ready` for the same PRD
 Before extraction, run:
 
 ```bash
-python kits/project-document-generator/validator/validate_handoff.py \
+python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
@@ -32,6 +32,8 @@ If accepted PRD meaning changes later, reopen only affected Flow 5 Voice require
 `work/voice-requirements.md` owns Flow 5 Voice meaning.
 
 `state/voice-state.yaml` owns lifecycle status/revision/next step only and must not duplicate the requirement content.
+
+Detailed extraction procedure lives in `kits/prd-creator/voice/EXTRACTION.md`.
 
 ## Extraction principles
 

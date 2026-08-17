@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-KIT = ROOT / "kits" / "project-document-generator"
+KIT = ROOT / "kits" / "prd-creator"
 GOLDEN = KIT / "template" / "golden-reference.html"
 RUNTIME = KIT / "template" / "runtime-template.html"
 APPROVED_GIT_BLOB = "e1dccd77d7a5335213caea7a09d74ba78b2ae8e1"
@@ -163,7 +163,6 @@ class GoldenReferenceArtifactTests(unittest.TestCase):
         self.assertEqual(golden, runtime)
         self.assertNotIn(b"__PRD_STORAGE_PREFIX__", runtime)
 
-        # Git blob SHA-1: sha1("blob <len>\0" + content)
         digest = hashlib.sha1(f"blob {len(golden)}\0".encode("ascii") + golden).hexdigest()
         self.assertEqual(digest, APPROVED_GIT_BLOB)
 

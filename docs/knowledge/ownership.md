@@ -30,11 +30,18 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | `.agents/skills/` | reusable semantic judgment |
 | `docs/foundation/` | durable Flow 1–7 production policy |
 | `docs/knowledge/` | continuity, routing, ownership, decisions, evidence, backlog |
-| `kits/project-document-generator/` | Flow 2–4 + bounded non-Voice 04 procedure/implementation |
-| `kits/voice-production-kit/` | Flow 5–7 procedure/implementation |
+| `kits/prd-creator/` | categorized Flow 2–7 + bounded 04 procedure/implementation |
 | `tests/`, `tools/`, `.github/workflows/`, `requirements.lock.txt` | repository engineering / repeatable verification |
 | `workspace/active/` | current project packages |
 | `workspace/archive/` | inactive retained project packages |
+
+## Unified package root owners
+
+| Boundary | Owner |
+|---|---|
+| Package orientation + Requirement Map | `kits/prd-creator/README.md` |
+| Package technical/file routing | `kits/prd-creator/AGENTS.md` |
+| End-to-end Flow 2–7 Production Execution router | `kits/prd-creator/SKILL.md` |
 
 ## PRD semantic and procedure owners
 
@@ -43,29 +50,27 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | Reusable PRD/source/04/readiness semantic judgment | `.agents/skills/project-document-production/SKILL.md` |
 | End-to-end production sequence | `docs/foundation/01-production-flow.md` |
 | Flow 2 durable policy | `docs/foundation/02-source-intake-recovery.md` |
-| Flow 2 detailed procedure | `kits/project-document-generator/SOURCE-INTAKE.md` |
-| PRD-core 01–03 exact semantic/visible-composition contract | `kits/project-document-generator/CONTENT-CONTRACT.md` |
-| non-Voice 04 exact resource/writing/readiness contract | `kits/project-document-generator/PRODUCTION-ASSETS.md` |
+| Flow 2 detailed procedure | `kits/prd-creator/intake/SOURCE-INTAKE.md` |
+| PRD-core 01–03 exact semantic/visible-composition contract | `kits/prd-creator/document/CONTENT-CONTRACT.md` |
+| non-Voice 04 exact resource/writing/readiness contract | `kits/prd-creator/production-assets/CONTRACT.md` |
 | Flow 4 durable policy | `docs/foundation/04-prd-validation-handoff.md` |
-| Flow 4 detailed validation/handoff procedure | `kits/project-document-generator/VALIDATION.md` |
-| Project Document kit end-to-end Production Execution procedure | `kits/project-document-generator/SKILL.md` |
-| PRD kit module/file routing | `kits/project-document-generator/AGENTS.md` |
+| Flow 4 detailed validation/handoff procedure | `kits/prd-creator/document/VALIDATION.md` |
 
 ## PRD implementation owners
 
 | Boundary | Owner |
 |---|---|
-| PRD-core rendering + shared project HTML composition contract | `kits/project-document-generator/RENDERING.md` |
-| versioned delivery orchestration | `kits/project-document-generator/renderer/delivery.py` |
-| PRD-core page projection | `kits/project-document-generator/renderer/pages.py` |
-| lower-level HTML renderer orchestration | `kits/project-document-generator/renderer/render.py` |
-| reusable renderer primitives | `kits/project-document-generator/renderer/core.py` |
-| objective/moment-first 04 composition | `kits/project-document-generator/renderer/production_assets_objective.py` |
-| Voice-specific 04 parsing/presentation primitives | `kits/project-document-generator/renderer/production_assets.py` |
-| canonical Golden bytes | `kits/project-document-generator/template/golden-reference.html` |
-| runtime Golden alias | `kits/project-document-generator/template/runtime-template.html` |
-| PRD mechanical validation | `kits/project-document-generator/validator/_engine.py` + `validator/validate.py` |
-| PRD → Voice handoff consistency | `kits/project-document-generator/validator/validate_handoff.py` |
+| PRD-core rendering + shared project HTML composition contract | `kits/prd-creator/renderer/CONTRACT.md` |
+| versioned delivery orchestration | `kits/prd-creator/renderer/delivery.py` |
+| PRD-core page projection | `kits/prd-creator/renderer/pages.py` |
+| lower-level HTML renderer orchestration | `kits/prd-creator/renderer/render.py` |
+| reusable renderer primitives | `kits/prd-creator/renderer/core.py` |
+| objective/moment-first 04 composition | `kits/prd-creator/renderer/production_assets_objective.py` |
+| Voice-specific 04 parsing/presentation primitives | `kits/prd-creator/renderer/production_assets.py` |
+| canonical Golden bytes | `kits/prd-creator/template/golden-reference.html` |
+| runtime Golden alias | `kits/prd-creator/template/runtime-template.html` |
+| PRD mechanical validation | `kits/prd-creator/validator/_engine.py` + `kits/prd-creator/validator/validate.py` |
+| PRD → Voice handoff consistency | `kits/prd-creator/validator/validate_handoff.py` |
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
 
 ## Voice owners
@@ -74,14 +79,12 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 |---|---|
 | Reusable Voice semantic judgment | `.agents/skills/voice-production/SKILL.md` |
 | Flow 5 durable policy | `docs/foundation/05-voice-requirement-extraction.md` |
-| Flow 5 detailed extraction procedure | `kits/voice-production-kit/VOICE-EXTRACTION.md` |
+| Flow 5 detailed extraction procedure | `kits/prd-creator/voice/EXTRACTION.md` |
 | Flow 6 durable policy | `docs/foundation/06-elevenlabs-script-production.md` |
-| Voice kit end-to-end Production Execution procedure | `kits/voice-production-kit/SKILL.md` |
-| Eleven v3 performance-writing craft | `kits/voice-production-kit/SOUNDMAKER.md` |
+| Eleven v3 performance-writing craft | `kits/prd-creator/voice/SOUNDMAKER.md` |
 | Flow 7 durable policy | `docs/foundation/07-voice-validation-delivery.md` |
-| Flow 7 detailed validation/evidence procedure | `kits/voice-production-kit/VOICE-VALIDATION.md` |
-| Voice kit module/file routing | `kits/voice-production-kit/AGENTS.md` |
-| Voice mechanical validation | `kits/voice-production-kit/validator/validate.py` |
+| Flow 7 detailed validation/evidence procedure | `kits/prd-creator/voice/VALIDATION.md` |
+| Voice mechanical validation | `kits/prd-creator/validator/validate_voice.py` |
 | Voice semantic/validator regressions | `tests/test_voice_contracts.py` |
 | mixed Voice/non-Voice 04 composition regression | `tests/test_prd_voice_assets.py` |
 
@@ -92,7 +95,7 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | source/provenance + requirement state | project `state/` owners |
 | canonical PRD-core meaning | project `work/content.md` |
 | derived PRD-core projection | project `work/render-data.json` |
-| canonical non-Voice 04 requirements when present | project `work/asset-requirements.md` under `PRODUCTION-ASSETS.md` |
+| canonical non-Voice 04 requirements when present | project `work/asset-requirements.md` under `kits/prd-creator/production-assets/CONTRACT.md` |
 | PRD acceptance | project `work/acceptance.md` |
 | PRD handoff state | project `state/handoff-state.yaml` |
 | canonical Voice requirements | project `work/voice-requirements.md` |
