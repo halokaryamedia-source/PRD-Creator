@@ -28,7 +28,7 @@ Mechanical validation owns deterministic facts: Flow 2 readiness, required curre
 
 Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, or visual readability.
 
-Content-purity checks stay narrow. They may reject concrete observed leakage such as generator/template/page narration, generic `Global Rule N`, or plain note strings that would render as generic `Important Note N`. Do not grow this into a prose score, word-count gate, or broad keyword blacklist.
+Content-purity checks stay narrow. They may reject concrete observed leakage such as generator/template/page narration, generic `Global Rule N`, or plain note strings that would render as generic `Important Note N`. Do not grow this into a prose score, word-count gate, broad keyword blacklist, coordinate detector, or technical-detail classifier.
 
 ## 2. Integrated semantic readiness
 
@@ -37,13 +37,15 @@ Review the current revision once. During that pass ask the relevant questions be
 | Lens | Ready when... |
 |---|---|
 | New Reader | journey, objective, result, setback/recovery, and transition are understandable without reopening source |
-| Level Designer | build-owned areas, objects, relationships, constraints, and gameplay functions are sufficient |
-| Developer | trigger/state/progression/timing/scoring/reset/handoff behavior is sufficient |
+| Level Designer | build-owned areas, objects, relationships, constraints, and gameplay functions are sufficient without depending on final world coordinates or other map-instance locators |
+| Developer | trigger/state/progression/timing/scoring/reset/handoff behavior and explicit approved technical constraints are sufficient without relying on incidental implementation identifiers from a finished source |
 | Content Purity | visible project copy explains the project, not PRD-Creator or document-production mechanics |
 | Project Consistency | terminology, timing, scoring, reset, and package handoff agree across the revision |
 | Golden Placement | project meaning is placed in the matching approved Golden component family without unapproved presentation invention |
 
 Record one result: `Semantic Readiness: PASS | FAIL`.
+
+The scope check above is semantic, not vocabulary-based. Legitimate dimensions, relative/functional placement, spatial constraints, platform requirements, or other approved technical constraints must survive when material. Incidental as-built coordinates, tags, scoreboard names, function paths, runtime IDs, UUIDs, or setup identifiers do not become required PRD content merely because they exist in source evidence.
 
 When 04 exists, include the readiness questions owned by `../production-assets/CONTRACT.md` inside the same integrated review rather than creating another PASS surface.
 
@@ -53,7 +55,7 @@ Return to Flow 2 only for a real unresolved project/design decision or authority
 
 Material conservation remains a separate gate because a document can be clear yet accidentally omit an independent rule.
 
-For changed or regenerated scope, verify that material conditions, values, exceptions, recovery rules, result behavior, and role-owned requirements still have an explicit readable representation. Do not use word count or row count as a proxy.
+For changed or regenerated scope, verify that resolved PRD-scope conditions, values, exceptions, recovery rules, result behavior, explicit technical constraints, and role-owned requirements still have an explicit readable representation. Do not use word count or row count as a proxy, and do not treat intentionally unpromoted implementation/as-built evidence as a conservation failure.
 
 Record one result: `Material Conservation: PASS | FAIL`.
 

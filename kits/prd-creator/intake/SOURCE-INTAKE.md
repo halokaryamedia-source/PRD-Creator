@@ -109,6 +109,34 @@ impact: high
 
 Sparse defaults stay implicit unless a non-default condition matters. Use `affects` only when it materially helps cross-role propagation.
 
+### Requirement meaning vs implementation evidence
+
+Apply the durable PRD-scope boundary from `docs/foundation/02-source-intake-recovery.md` while recovering technical or completed-map sources. Do not assume that a detail belongs in the PRD merely because it is precise, executable, or present in authoritative implementation output.
+
+Use this judgment:
+
+```text
+Does the detail define required gameplay, build, production, or observable system behavior?
+→ recover the requirement.
+
+Is it an explicit approved technical constraint that production must obey?
+→ recover it at PRD abstraction level.
+
+Does it only show how one finished implementation happened to realize the requirement?
+→ retain it as source evidence; recover the underlying production meaning when material;
+  do not promote the incidental identifier/setup itself.
+
+Is it an exact world coordinate or map-instance locator?
+→ do not create a canonical PRD requirement for the locator;
+  preserve the supported spatial intent instead.
+```
+
+Spatial intent is still production meaning. Keep approved dimensions, area relationships, route/boundary requirements, relative or functional placement, visibility/readability, checkpoint role, and gameplay function. `30×30 block arena`, `control machine centered in the chamber`, or `exit visible from the objective area` may be legitimate requirements. A final `X/Y/Z` spawn, teleport, trigger, checkpoint, ticking-area, or authored bounding coordinate is not canonical PRD content.
+
+Likewise, do not treat technical vocabulary as automatically invalid. `Must run in Minecraft Education Edition` or `must reuse the existing shared state interface because another approved system depends on it` can be legitimate constraints. By contrast, a scoreboard name, tag, function path, runtime ID, UUID, or pack/file identifier observed only in an existing implementation stays evidence rather than becoming product meaning.
+
+Do not add a requirement-state taxonomy, keyword blacklist, coordinate detector, or compatibility framework for this distinction. The decision follows authority and meaning. If the user explicitly requests a separate as-built/technical setup artifact, handle that as a different requested deliverable rather than expanding the canonical PRD silently.
+
 ### Topology and terminology
 
 Before preview, the model must be able to explain as applicable:

@@ -53,6 +53,23 @@ Keep a supplied original under `source/originals/` when later direct inspection/
 
 External retention cannot be used to avoid reading material authority or to replace source with generated output.
 
+## Canonical PRD scope boundary
+
+Technical or completed-map material is **evidence**, not automatically canonical PRD meaning. Flow 2 recovers what a competent production team must know to design, build, implement, and verify the intended project; it does not turn a finished implementation into a forensic specification of itself.
+
+Preserve:
+
+- product/gameplay requirements;
+- build and production requirements;
+- approved dimensions, counts, timing, capacities, relative placement, spatial relationships, visibility/readability, route intent, and other design-owned constraints;
+- explicit approved technical constraints when production must obey them.
+
+Do not promote incidental implementation realization or map-instance setup merely because it appears in authoritative technical evidence. Keep that evidence available for provenance, but recover the underlying production meaning when one exists.
+
+**Exact world coordinates and other map-instance locators are outside canonical PRD scope.** This includes final spawn/teleport/checkpoint/trigger/ticking-area coordinates and authored bounding coordinates. Preserve the supported spatial intent instead: which area is involved, how areas relate, required dimensions when approved, relative/functional placement, route/boundary intent, visibility, checkpoint role, and gameplay function.
+
+This is a semantic authority decision, not a keyword blacklist. A non-coordinate technical detail that is explicitly required by the user/client or is necessary because another approved system depends on it remains a legitimate technical constraint at PRD abstraction level. The technical-constraint exception does **not** reopen the coordinate/map-instance-locator boundary; if exact locators are explicitly requested for an already built map, they belong to a separate as-built/technical setup artifact rather than canonical PRD meaning. A tag, scoreboard name, function path, runtime ID, UUID, or other identifier observed only as one finished implementation choice likewise does not become a PRD requirement by default.
+
 ## Completion / Proposal / Blocked
 
 Use the smallest truthful recovery class:

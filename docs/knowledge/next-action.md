@@ -2,197 +2,120 @@
 
 ## Current Status
 
-`MAP_COMPOSITION_AUDIT_READY_FOR_NEW_SESSION`
+`PRD_SCOPE_BOUNDARY_HARDENING_IMPLEMENTED`
 
-The unified `kits/prd-creator/` migration and Clockwork browser visual QA are complete. The user has approved a new bounded audit phase focused on understanding the **professional composition of a finished/developed Minecraft map** from representative real development outputs before changing PRD-Creator.
+The six-map Map Composition Audit is complete and its approved product conclusion has been translated into a bounded PRD-Creator semantic hardening. The work does **not** redesign the Golden document, renderer, Production Assets presentation, Voice, repository architecture, or accepted Clockwork output.
 
-## Active Boundary
+## Evidence Completed
 
-This phase is **Map Composition Audit / Content Audit**. It is an evidence-gathering and synthesis phase, not immediate renderer, Golden, contract, architecture, or project implementation work.
-
-The purpose is not merely to judge which document looks better. The purpose is to inspect actual developed maps and answer:
-
-> What concrete design, level, runtime, content, asset, configuration, and QA components together make a professional map a finished playable product, and what information should a professional PRD/handoff capture so another team can understand, build, implement, test, maintain, or hand it off?
-
-Do not implement PRD-Creator improvements until the sample evidence has been synthesized and the user explicitly approves the resulting proposal.
-
-## Official Working Sample Set
-
-The earlier combined archive `ChoosenSamples (2).zip` was split by the user into one ZIP per map to make inspection easier. **Use the six per-map ZIPs below as the current working sample set.** The combined ZIP does not need to be used when the six split archives are available.
+The official six-map development sample set was successfully extracted and inspected in the 2026-08-18 session:
 
 ```text
-3#Angry bird.zip          47,250,776 bytes
-6#Avatar_Legends.zip      35,917,220 bytes
-16#Ice Age.zip           221,525,195 bytes
-23#Sherlock Holmes.zip    54,752,510 bytes
-24#Minions DLC.zip       111,197,100 bytes
-29#NinjaWeaponAcademy.zip 36,383,129 bytes
+3#Angry bird.zip
+6#Avatar_Legends.zip
+16#Ice Age.zip
+23#Sherlock Holmes.zip
+24#Minions DLC.zip
+29#NinjaWeaponAcademy.zip
 ```
 
-The mistakenly uploaded Clockwork responsive-fix ZIP is explicitly excluded from this audit. Do not use prior unrelated Clockwork HTML/review artifacts as substitutes for these samples.
+The audit compared finished-map world/BP/RP structure, readable functions/scripts/configuration, entities/interactables, assets, UI/audio, progression/state/reset patterns, and world/session configuration where accessible. Ice Age provided valid structural/world/pack evidence, but much of its internal non-manifest pack payload was not readable as normal plaintext; no unsupported gameplay meaning was inferred from filenames or IP/theme knowledge.
 
-A new chat should expect the user to upload these same six archives again if conversation attachments are not available across sessions.
+The audit showed that PRD-Creator already covers most professional map concerns through existing Gameplay, Level Design, Developer, lifecycle, quantitative coherence, known constraints, reset/data, and Production Assets owners. The main reusable gap was narrower: technical/as-built source evidence could be mistaken for canonical PRD meaning unless the PRD scope boundary is explicit.
 
-## Session Capability Note
+## Accepted Product Decision
 
-The previous chat could see all six ZIP attachments correctly, but its local filesystem runtime failed with `ClientError` for both container and Python file access. Because of that environment failure, **none of the six map archives has been unpacked or audited yet**.
+Canonical PRD is a **pre-build production specification**, not a forensic/as-built implementation document.
 
-This is not evidence that the ZIPs are corrupt or unsupported.
+Preserve when material:
 
-In a new session:
+- gameplay/product requirements;
+- build and production requirements;
+- approved dimensions, counts, timing, capacities, spatial relationships, route/boundary intent, relative/functional placement, visibility/readability, and other design-owned constraints;
+- explicit approved technical constraints that production must obey.
+
+Do not promote by default:
+
+- exact world coordinates or map-instance locators, including final spawn/teleport/checkpoint/trigger/ticking-area/bounding coordinates;
+- incidental scoreboard names, tags, function paths, runtime IDs, UUIDs, pack/file identifiers, debug/setup residue, or other details that only describe how one finished implementation happened to realize the requirement.
+
+Source evidence is not deleted. When technical/as-built evidence contains useful meaning, recover the underlying production requirement while retaining the source for provenance.
+
+The boundary is semantic, not vocabulary-based. A technical detail becomes a legitimate PRD constraint when the user/client explicitly requires it or another approved system materially depends on it. Spatial design remains valid even though exact world coordinates are excluded.
+
+## Implementation Boundary
+
+The approved hardening is owned by:
 
 ```text
-read repository boot owners
-→ read this next-action.md
-→ use the six per-map ZIPs as the audit source
-→ attempt direct extraction/inventory with the local/container/Python runtime
-→ if extraction works, continue the audit without asking the user to prepare FILE-TREE.txt or manually filter files
+docs/foundation/02-source-intake-recovery.md
+→ durable canonical PRD-scope policy
+
+kits/prd-creator/intake/SOURCE-INTAKE.md
+→ operational recovery of requirement meaning vs implementation evidence
+
+kits/prd-creator/document/CONTENT-CONTRACT.md
+→ Material Conservation applies to resolved PRD-scope meaning and must not reintroduce excluded as-built residue
+
+kits/prd-creator/document/VALIDATION.md
+→ existing Semantic Readiness / Material Conservation lenses verify the boundary without a new PASS surface
 ```
 
-The user explicitly prefers ChatGPT to perform the extraction, inventory, and source selection itself. Do **not** ask the user to understand pack structure, create file lists, or manually select JSON/script files unless the new runtime genuinely cannot access the archives after one direct attempt.
+No new schema, requirement taxonomy, keyword blacklist, coordinate detector, compatibility framework, validator subsystem, Flow, Skill, visible panel, or acceptance section is introduced.
 
-If the new runtime also fails at filesystem access, report that capability blocker clearly rather than pretending the map contents were read.
-
-## Audit Goal
-
-Determine from the actual development samples **what concrete components together make each map a finished playable product** and what information a professional production document should represent.
-
-The audit is not limited to prose/document quality. Inspect every relevant development artifact and recover the real production anatomy of the map.
-
-Potential categories to test against evidence include:
+## 01–04 Result
 
 ```text
-project / map identity and scope
-player experience and intended flow
-gameplay rules and objective progression
-level / environment design
-coordinates, zones, checkpoints, spawn and teleport points
-logic / scripting / state machines / triggers
-entities, NPCs, mobs and behavior
-items, blocks, structures and interactables
-UI, text, hints, tutorials and player feedback
-audio, voice, music and sound effects
-visual effects / particles / animation / camera
-resource-pack / behavior-pack / world/data dependencies
-models, textures and other production assets
-scoring, timers, rewards, progression and persistence
-multiplayer / session / arena behavior when present
-reset, retry, fail, recovery and edge-case behavior
-configuration / tuning values
-testing / QA / known issues / acceptance evidence
-build / developer handoff information
-packaging / delivery / versioning where present
+01 Overview
+→ no direct contract redesign; receives cleaner upstream project meaning.
+
+02 Gameplay Flow
+→ no direct contract redesign; existing player-readable situation → action → response → recovery → result → transition contract remains authoritative.
+
+03 Development
+→ existing structure remains; Material Conservation is clarified so complete production behavior survives without forcing incidental as-built identifiers/coordinates into the PRD.
+
+04 Production Assets
+→ no contract change required; existing MODEL / ITEM / UI-TEXT / AUDIO / PARTICLE boundary and anti-speculative rules remain authoritative.
 ```
 
-These are **audit hypotheses**, not assumed requirements. A category becomes part of the professional map model only when the sample evidence supports it or when a later explicit product decision approves it.
+## Protected Baseline
 
-## Audit Method
+Do not reopen these as a consequence of this hardening unless new concrete evidence proves a separate defect:
 
-For each of the six maps:
+- Golden/template visible composition;
+- renderer/compositor behavior;
+- PRD page family or labels;
+- `kits/prd-creator/production-assets/CONTRACT.md`;
+- Voice requirements, wording, production, or validation;
+- accepted Clockwork canonical/project output;
+- repository architecture or root Skill set.
+
+Clockwork remains useful regression evidence because its approved requirement state already demonstrates the intended boundary: technical Objective 4 grid coordinates stay outside the PRD while gameplay/spatial production meaning remains documented.
+
+## Review / Proof Standard
+
+Use semantic adversarial cases rather than a keyword blacklist:
 
 ```text
-1. Inventory actual archive contents and folder/file structure.
-2. Identify the world, Behavior Pack, Resource Pack, scripts/functions, configuration, data, and production assets actually present.
-3. Read relevant text/source artifacts such as manifest, JSON, JS/TS, mcfunction, lang/text/UI/config files, and documentation.
-4. Identify what each artifact contributes to the map instead of classifying by extension alone.
-5. Map dependencies between world/level content, gameplay logic, entities/interactables, assets, UI/audio, configuration, and runtime state.
-6. Reconstruct the player-facing flow: start → objectives/progression → feedback → fail/retry/reset → completion.
-7. Reconstruct the implementation-facing flow: initialization → state/trigger logic → content/assets → persistence/reset → delivery.
-8. Identify what configuration/tuning data is required to reproduce behavior.
-9. Identify what QA/proof is needed to know the map is actually complete.
-10. Record evidence before deciding whether a component is core, optional, or sample-specific.
+finished teleport coordinate
+→ preserve transition meaning; do not promote coordinate
+
+approved 30×30 arena size
+→ preserve
+
+machine centered in chamber / visible from entrance
+→ preserve
+
+explicit Minecraft Education compatibility requirement
+→ preserve
+
+observed tag/scoreboard/function identifier only
+→ do not promote unless explicitly required as a technical constraint
 ```
 
-Do not spend audit effort deeply inspecting every heavy binary asset when filenames, manifests, references, and source/config already establish its production role. Inspect binary/media content only when needed to resolve a material question.
-
-Then compare across all six maps:
-
-```text
-sample-specific content
-vs
-recurring professional map component
-vs
-optional / specialized component
-vs
-redundant / noisy development artifact
-```
-
-The audit must distinguish:
-
-```text
-sample fact
-→ directly evidenced by supplied development output
-
-inference
-→ derived from relationships between supplied artifacts
-
-professional synthesis
-→ reusable map-production model proposed from recurring evidence
-
-PRD-Creator requirement
-→ remains a proposal until explicitly approved
-```
-
-## Expected Audit Output
-
-After the six samples are readable and inspected, produce:
-
-1. **Per-map inventory** — what each developed map actually contains and what those artifacts do.
-2. **Cross-sample matrix** — which production components occur in which maps.
-3. **Professional Map Anatomy / Map Production Model** — the recurring components that make a map complete.
-4. **Core vs Conditional vs Specialized** — evidence-based classification, not theory-first assumptions.
-5. **Dependency chain** — how design, level/world, runtime logic, assets, player communication, configuration, reset/persistence, and QA depend on each other.
-6. **Professional documentation needs** — what information a PRD/handoff should capture for each component so a builder/developer/designer/production/QA team can act on it.
-7. **PRD-Creator comparison** — what current sections already cover, what is missing, too vague, duplicated, or owned in the wrong place.
-8. **Prioritized improvement proposal** — recommended content/system improvements with exact owner boundaries, without implementation until user approval.
-
-The desired end result is a professional answer to:
-
-> “What is actually inside a finished map, and what must we know/document in advance to build one professionally?”
-
-## Existing Accepted Baseline
-
-The previous visual acceptance remains valid and is not reopened by this audit:
-
-```text
-Golden/runtime template Git blob
-2050b965768489feda98373c2920bbee8c7093b3
-
-Clockwork prd.html Git blob
-3267b2f97e7335418a43edd6b0e81f6077aeeb51
-
-Project HTML Visual: PASS
-```
-
-## Protected Boundary
-
-Until the actual sample artifacts are read and the audit is synthesized:
-
-- do not change gameplay/project meaning;
-- do not change Voice requirements or wording;
-- do not change Golden/template/renderer to imitate assumptions;
-- do not redesign repository architecture;
-- do not change accepted Clockwork output;
-- do not promote conditional backlog items;
-- do not turn theoretical categories above into mandatory schemas/requirements;
-- do not infer sample contents from file names, IP/theme knowledge, or general Minecraft conventions.
-
-## Recovery for a New Chat
-
-The shortest correct continuation is:
-
-```text
-AGENTS.md
-→ GITHUB_RULES.md Core Rules
-→ CONTEXT.md
-→ this next-action.md
-→ receive/access the six per-map ZIPs
-→ extract and inventory them directly
-→ begin Map Composition Audit
-```
-
-Do not repeat the completed unified-kit migration or Clockwork browser QA. Do not ask the user to restate the audit goal. Do not ask them to manually prepare `FILE-TREE.txt` if direct ZIP extraction works in the new runtime.
+A good existing PRD should remain materially unchanged. The expected effect is better source judgment, not more document sections or more prose.
 
 ## Next Step
 
-**In a fresh runtime/session, directly unpack and inventory the six per-map development ZIPs, inspect the relevant source/config/assets relationships, reconstruct each map's real production anatomy, then perform the cross-sample Map Composition Audit. Do not modify PRD-Creator until the evidence-backed improvement proposal is presented to and approved by the user.**
+**Use the hardened scope boundary on the next real new/revised PRD production and treat only a concrete misclassification/regression as evidence for further bounded change; do not proactively redesign 01–04 or extend this audit into new frameworks.**

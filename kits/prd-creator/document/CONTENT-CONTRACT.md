@@ -40,15 +40,17 @@ Defined | Explicit No | Not Applicable | Blocked
 
 Flow 3 is allowed to rewrite wording. It is **not** allowed to reduce distinct production meaning merely to make the PRD shorter, cleaner, or easier to render.
 
-Treat every independently actionable source rule as conserved material meaning. This includes separate conditions, values, exceptions, recovery behavior, ownership boundaries, timing rules, scoring rules, reset behavior, build constraints, interaction states, and observable results.
+Treat every independently actionable **resolved PRD-scope production rule** from Flow 2 as conserved material meaning. This includes separate conditions, values, exceptions, recovery behavior, ownership boundaries, timing rules, scoring rules, reset behavior, build constraints, interaction states, and observable results.
 
 The conservation rule is:
 
 ```text
-resolved material rule in authority
+resolved PRD-scope material rule
 → one owned canonical representation
 → one matching Golden surface in render-data/current versioned prd.html
 ```
+
+Original source may contain technical or as-built evidence that Flow 2 intentionally did not promote into canonical project meaning. Flow 3 must not reintroduce incidental implementation identifiers, final world coordinates/map-instance locators, debug/setup residue, or other excluded realization details merely to appear complete. Preserve the approved production meaning instead, including legitimate dimensions, spatial relationships, relative/functional placement, observable behavior, and explicit approved technical constraints.
 
 Two rules may be merged only when they are genuinely the same production instruction. A shorter sentence is acceptable; deleting one of two independent requirements is not.
 
@@ -56,7 +58,7 @@ When source meaning naturally contains multiple requirements inside one table ce
 
 `Humanize`, `direct writing`, and `concise summary` apply to **wording and placement**, not to the number of material facts retained.
 
-A generated PRD is incomplete when a Level Designer or Developer would need to reopen the source to recover a rule that was present during Flow 2. For a representative project that is also the Golden reference project, regeneration must preserve all current approved project meaning even when the wording changes.
+A generated PRD is incomplete when a Level Designer or Developer would need to reopen the source to recover a resolved PRD-scope rule that Flow 2 already established. For a representative project that is also the Golden reference project, regeneration must preserve all current approved project meaning even when the wording changes.
 
 ## Stable document version
 
@@ -116,7 +118,7 @@ The approved Golden demonstrates two different kinds of rules. Keep them separat
 
 | Locked by Golden | Filled from project authority |
 |---|---|
-| page family, page order, visible section names and component order | project title, story, mechanics, timings, scoring values and implementation facts |
+| page family, page order, visible section names and component order | project title, story, mechanics, timings, scoring values and approved implementation requirements within PRD scope |
 | Overview has 3 fixed fact slots: Session Model, Target Playtime, Game Structure | the value inside each fact slot |
 | Global Development pages use 4 Development Flow cards and 4 Important Development Notes | the project-specific stage summaries, requirement groups/rows and note text |
 | Gameplay Overview uses 3 context cards, 6 fixed Gameplay Information rows and a 5-beat compact Gameplay Flow | the actual context, objective, result, conditions, scoring meaning and five high-level beats |
@@ -555,7 +557,7 @@ A **Major** finding exists when:
 - a new unapproved visible component is introduced;
 - prose becomes harder to scan than the Golden reference;
 - a role must reopen source for material meaning;
-- independent source rules were collapsed or omitted during Flow 3;
+- independent resolved PRD-scope rules were collapsed or omitted during Flow 3;
 - project facts drift or are invented.
 
 Mechanical presence alone is not acceptance.
@@ -567,7 +569,7 @@ Before render, ask:
 ```text
 Does every page look and read like the matching Golden page prototype?
 Is the information in the same visible place a Golden reader would expect?
-Did every distinct material source rule survive into canonical content?
+Did every distinct resolved PRD-scope material rule survive into canonical content?
 Did structured multi-rule content stay structured instead of becoming one summary sentence?
 Is every summary concise without deleting facts owned elsewhere?
 Did we add any visible UI that Golden does not contain?
