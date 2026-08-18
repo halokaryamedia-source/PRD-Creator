@@ -6,6 +6,12 @@
 
 The six-map Map Composition Audit is complete and its approved product conclusion has been translated into a bounded PRD-Creator semantic hardening. The work does **not** redesign the Golden document, renderer, Production Assets presentation, Voice, repository architecture, or accepted Clockwork output.
 
+## Active Boundary
+
+This hardening is complete. Current continuation is **regression-only**: preserve the approved PRD structure and apply the scope boundary during real production. Do not continue the map-composition audit, redesign 01–04, add implementation-detail frameworks, or reopen protected Golden/04/Voice/Clockwork surfaces unless a concrete future production case proves a separate defect.
+
+Exact world coordinates and map-instance locators remain outside canonical PRD scope. This boundary is not reopened by the general rule that other explicit technical constraints may be valid; requested exact locators for an already built map belong to a separate as-built/technical setup artifact.
+
 ## Evidence Completed
 
 The official six-map development sample set was successfully extracted and inspected in the 2026-08-18 session:
@@ -41,7 +47,7 @@ Do not promote by default:
 
 Source evidence is not deleted. When technical/as-built evidence contains useful meaning, recover the underlying production requirement while retaining the source for provenance.
 
-The boundary is semantic, not vocabulary-based. A technical detail becomes a legitimate PRD constraint when the user/client explicitly requires it or another approved system materially depends on it. Spatial design remains valid even though exact world coordinates are excluded.
+The boundary is semantic, not vocabulary-based. A **non-coordinate** technical detail becomes a legitimate PRD constraint when the user/client explicitly requires it or another approved system materially depends on it. Spatial design remains valid even though exact world coordinates are excluded.
 
 ## Implementation Boundary
 
