@@ -1,0 +1,128 @@
+version: 1.0.0
+project: MIVUBI - Around The Block
+requirements:
+  - id: REQ-001
+    area: global
+    statement: The six gameplay activities are non-linear and are not required to be completed in sequence or all together.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-002
+    area: narrative
+    statement: Every gameplay activity must have NPC narration that explains the premise and leads into the activity.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-003
+    area: narrative
+    statement: NPCs are narration/context delivery only; no complex dialogue tree or branching quest system is required.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-004
+    area: scope
+    statement: The map layout already exists; the PRD must not redesign the map or promote exact as-built coordinates/setup details.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-005
+    area: scope
+    statement: Development detail must stay lightweight and only cover behavior necessary for the gameplay briefing.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-006
+    area: benteng_martello
+    statement: Benteng Martello is an estimated 2–6 player PvP activity beginning with one ship per player.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-007
+    area: benteng_martello
+    statement: Ships can fire cannons at opposing ships and can be destroyed without immediately eliminating the player.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-008
+    area: benteng_martello
+    statement: DeathTime forces the naval phase to end so players cannot remain on ships for the full match.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-009
+    area: benteng_martello
+    statement: Shore cannons can attack ships that remain at sea, and sharks threaten players in the water.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-010
+    area: benteng_martello
+    statement: The match ends as Last Player Standing on the island.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-011
+    area: perkebunan
+    statement: Farming includes Coffee, Cinnamon, and Palm Oil with distinct plant/maintain/harvest/regrowth loops.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-012
+    area: perkebunan
+    statement: Farm harvest can be sold for currency; fertilizer accelerates growth/recovery and currency may be saved.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-013
+    area: egrang
+    statement: Egrang is a reusable rideable mobility toy with no balance meter, falling simulation, timer, scoring, or progression.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-014
+    area: egrang
+    statement: Egrang may be used beyond its starting play area and the player may dismount at any time.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-015
+    area: fishing
+    statement: Fishing uses standard Minecraft fishing behavior and replaces relevant catches with Lele, Tuna, and Hiu.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-016
+    area: fishing
+    statement: Hiu is an intentionally absurd rarer catch; no custom fishing progression system is required.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-017
+    area: tiger
+    statement: Harimau Lepas is a short PvE encounter using roam, detect, chase, attack, defeat, and retry behavior.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-018
+    area: tiger
+    statement: The tiger story is introduced by a Zookeeper eating bakso and completed with the approved recurring-escape joke.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-019
+    area: mining
+    statement: CyberWorld Mining begins from a job recruiter premise and sends the player to an outside-island mining job.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-020
+    area: mining
+    statement: Mining progression uses three mining islands; Island 2 and Island 3 require paid access.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-021
+    area: mining
+    statement: Mining resources are exchanged for currency used for equipment upgrades and access progression.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-022
+    area: economy
+    statement: Farming and CyberWorld Mining may use the same shared currency; other activities do not require economic rewards.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-023
+    area: voice
+    statement: Production must preserve the user-approved Indonesian narrative tone and provide production-ready Voice Commands for each required narrative moment.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-024
+    area: assets
+    statement: Production asset planning must prioritize only models/items necessary for the approved gameplay and must not invent decorative resources.
+    provenance: [SRC-001]
+    impact: high
+  - id: REQ-025
+    area: assets
+    statement: Standard humanoid/NPC bases are acceptable for narrators; custom 3D NPC models are not required by the current easy-implementation scope.
+    provenance: [SRC-001]
+    impact: medium

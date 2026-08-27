@@ -1,0 +1,15 @@
+version: 1.0.0
+project: MIVUBI - Around The Block
+sources:
+  - id: SRC-001
+    role: authoritative
+    type: user_discussion
+    title: Around The Block gameplay and narrative approvals
+    date: 2026-08-27
+    retention: external
+    inspection: full
+    summary: >
+      Authoritative project discussion defining six non-linear optional gameplay activities,
+      their approved narrative premises/dialogue, the light briefing scope, and the explicit
+      request to prioritize Voice Commands and required model/resource lists while avoiding
+      map redesign and unnecessary development detail.

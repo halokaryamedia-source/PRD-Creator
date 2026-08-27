@@ -1,0 +1,15 @@
+version: 1.0.0
+project: MIVUBI - Around The Block
+status: ready_for_prd
+ready_for_prd: true
+preview_approved: true
+current_scope:
+  - six non-linear gameplay activities
+  - approved NPC narrative premise and wording
+  - lightweight gameplay/development briefing
+  - required model/item production list
+  - Voice Command preparation
+notes:
+  - All six gameplay concepts and narrative slices were explicitly approved in the 2026-08-27 project discussion.
+  - The user explicitly excluded map redesign and unnecessary detailed development specification.
+  - Exact as-built coordinates and implementation identifiers remain outside canonical PRD scope.
