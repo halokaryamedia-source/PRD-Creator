@@ -25,7 +25,7 @@ requirements:
     area: scope
     statement: Development detail must stay lightweight and only cover behavior necessary for the gameplay briefing.
     provenance: [SRC-001]
-    impact: medium
+    impact: high
   - id: REQ-006
     area: benteng_martello
     statement: Benteng Martello is an estimated 2–6 player PvP activity beginning with one ship per player.
@@ -124,5 +124,29 @@ requirements:
   - id: REQ-025
     area: assets
     statement: Standard humanoid/NPC bases are acceptable for narrators; custom 3D NPC models are not required by the current easy-implementation scope.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-026
+    area: tiger
+    statement: The Zookeeper's promised bakso is paid off after valid tiger completion as one simple Bakso Treat item; no extra quest or food system is required.
+    recovery_class: completion
+    approval_status: approved
+    resolution: User approved the bakso promise and then requested the reviewed gaps to be corrected; a simple item payoff closes the existing promise without adding mechanics.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-027
+    area: mining
+    statement: Mining production assets must distinguish Tier 1, Tier 2, and Tier 3 progression across the three islands without inventing mineral names or lore.
+    recovery_class: completion
+    approval_status: approved
+    resolution: Three mining islands and increasing resource value are already approved; three readable production tiers are the minimal asset implication.
+    provenance: [SRC-001]
+    impact: medium
+  - id: REQ-028
+    area: benteng_martello
+    statement: The Combat Ship must have a readable active and destroyed/disabled state, and the Colonial Cannon must have a readable firing response.
+    recovery_class: completion
+    approval_status: approved
+    resolution: Ship destruction and cannon firing are approved gameplay states and therefore require readable production states.
     provenance: [SRC-001]
     impact: medium

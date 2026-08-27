@@ -4,7 +4,7 @@ Version: 1.0.0
 
 ## Scope Note
 
-Dokumen ini hanya mencatat resource yang benar-benar dibutuhkan oleh gameplay yang sudah disetujui. Layout map dianggap sudah tersedia. NPC narator dapat menggunakan standard humanoid/NPC base; current scope tidak membutuhkan custom 3D NPC model selama skin/appearance yang sesuai dapat disediakan melalui sistem yang sudah ada.
+Dokumen ini hanya mencatat resource yang benar-benar dibutuhkan oleh gameplay yang sudah disetujui. Layout map dianggap sudah tersedia. NPC narator menggunakan standard humanoid/NPC base dengan appearance/skin yang sesuai; current scope tidak membutuhkan custom 3D NPC model. Tidak ada decorative prop, standalone particle, atau standalone non-dialogue audio yang ditambahkan tanpa kebutuhan gameplay.
 
 ## Required Model Summary
 
@@ -16,7 +16,7 @@ Dokumen ini hanya mencatat resource yang benar-benar dibutuhkan oleh gameplay ya
 6. Palm Oil Tree Set
 7. Egrang Rideable
 8. Tiger
-9. CyberWorld Mining Resource Set
+9. CyberWorld Mining Resource Set — 3 progression tiers
 
 ## Required Item Summary
 
@@ -27,167 +27,208 @@ Dokumen ini hanya mencatat resource yang benar-benar dibutuhkan oleh gameplay ya
 5. Lele Catch Item
 6. Tuna Catch Item
 7. Hiu Catch Item
-8. Mining Tool Upgrade Set
+8. Bakso Treat Item
+9. Mining Tool Upgrade Set — 3 progression tiers
 
 ## Benteng Martello
 
-### Gameplay Moment — Naval Combat
-
-### 3D Models
+### Naval and Shore Combat
 
 #### Combat Ship
-Flow: Benteng Martello — Naval Combat
-Moment: Player Starts the Match
 Type: MODEL
-Function: Kapal individual yang digunakan player selama fase naval PvP.
-Visual Brief: Satu reusable combat ship yang dapat dipakai untuk semua participant. Model harus mendukung posisi player dan penggunaan meriam selama pertempuran; visible damage/destruction state dapat menjadi bagian dari model bila dibutuhkan oleh implementasi.
+
+**Function**  
+Kapal individual yang digunakan player selama Naval Combat.
+
+**Visual Brief**  
+Satu reusable combat ship untuk seluruh participant. Wajib memiliki state aktif dan state destroyed/disabled yang terbaca jelas ketika kapal sudah tidak dapat digunakan lagi. Model tidak perlu variasi dekoratif per-player.
 
 #### Colonial Cannon
-Flow: Benteng Martello — Naval Combat / Shore Combat
-Moment: Ship and Shore Combat
 Type: MODEL
-Function: Meriam yang digunakan untuk menembak kapal lawan dari kapal maupun pinggir pantai.
-Visual Brief: Reusable cannon model dengan bentuk peninggalan era kolonial yang dapat digunakan pada kapal dan pantai. Harus memiliki arah tembak yang terbaca dan state/animation firing bila mechanic memerlukannya.
+
+**Function**  
+Meriam yang digunakan pada kapal dan pinggir pantai untuk menembak kapal lawan.
+
+**Visual Brief**  
+Satu reusable cannon bergaya peninggalan era kolonial. Wajib memiliki arah tembak yang mudah dibaca serta firing response sederhana; tidak membutuhkan mekanisme visual tambahan di luar kebutuhan tembak.
 
 #### Shark Mob
-Flow: Benteng Martello — Water Hazard
-Moment: Player Enters the Water
 Type: MODEL
-Function: Environmental hazard yang menyerang player yang terlalu lama berada di perairan.
-Visual Brief: Shark mob yang dapat berenang mengelilingi pulau dan memiliki animation dasar untuk swim dan attack.
+
+**Function**  
+Environmental hazard bagi player yang berada terlalu lama di air.
+
+**Visual Brief**  
+Shark mob yang dapat berenang mengelilingi area perairan dan memiliki animation dasar swim serta attack.
 
 ## Perkebunan
 
-### Gameplay Moment — Growing and Harvesting Crops
-
-### 3D Models
+### Growing and Harvesting
 
 #### Coffee Plant Set
-Flow: Perkebunan — Kopi
-Moment: Planting, Growing, and Harvesting
 Type: MODEL
-Function: Tanaman kopi yang menunjukkan progression dari ditanam sampai siap dipanen.
-Visual Brief: Coffee plant dengan visual state yang cukup untuk membedakan planted/growing/ready-to-harvest dan state setelah panen bila diperlukan.
+
+**Function**  
+Tanaman kopi untuk loop Plant → Maintain → Grow → Harvest.
+
+**Visual Brief**  
+Coffee plant dengan state yang cukup untuk membedakan planted/growing/ready-to-harvest dan state setelah panen bila dibutuhkan.
 
 #### Cinnamon Plant Set
-Flow: Perkebunan — Kayu Manis
-Moment: Maintaining and Harvesting
 Type: MODEL
-Function: Tanaman/pohon kayu manis yang dapat dipanen lalu kembali melalui regrowth.
-Visual Brief: Cinnamon plant/tree dengan readable harvest-ready dan post-harvest/regrowth state.
+
+**Function**  
+Tanaman/pohon kayu manis untuk loop Maintain → Harvest → Regrowth.
+
+**Visual Brief**  
+Cinnamon plant/tree dengan harvest-ready dan post-harvest/regrowth state yang terbaca.
 
 #### Palm Oil Tree Set
-Flow: Perkebunan — Sawit
-Moment: Fruit Growth and Harvest
 Type: MODEL
-Function: Pohon sawit yang menghasilkan buah untuk dipanen berulang.
-Visual Brief: Palm oil tree dengan visible fruit-ready state dan post-harvest/regrowth state. Satire sawit tidak membutuhkan visual exaggeration tambahan.
 
-### Items
+**Function**  
+Pohon sawit untuk loop Maintain → Fruit Growth → Harvest → Regrowth.
+
+**Visual Brief**  
+Palm oil tree dengan fruit-ready dan post-harvest/regrowth state. Satire sawit tetap berada pada narasi dan tidak membutuhkan visual exaggeration khusus.
 
 #### Coffee Harvest Item
-Flow: Perkebunan — Kopi
-Moment: After Harvest
 Type: ITEM
-Function: Hasil panen kopi yang dapat dijual.
-Visual Brief: Item panen kopi yang mudah dibedakan dari dua komoditas lain.
+
+**Function**  
+Hasil panen kopi yang dapat dijual.
+
+**Visual Brief**  
+Item hasil kopi yang mudah dibedakan dari komoditas lain.
 
 #### Cinnamon Harvest Item
-Flow: Perkebunan — Kayu Manis
-Moment: After Harvest
 Type: ITEM
-Function: Hasil panen kayu manis yang dapat dijual.
-Visual Brief: Item kayu manis yang mewakili hasil harvest.
+
+**Function**  
+Hasil panen kayu manis yang dapat dijual.
+
+**Visual Brief**  
+Item kayu manis yang mewakili hasil harvest.
 
 #### Palm Fruit Harvest Item
-Flow: Perkebunan — Sawit
-Moment: After Harvest
 Type: ITEM
-Function: Hasil buah sawit yang dapat dijual.
-Visual Brief: Item tandan/buah sawit yang mewakili hasil harvest.
+
+**Function**  
+Hasil buah sawit yang dapat dijual.
+
+**Visual Brief**  
+Item tandan/buah sawit yang mewakili hasil harvest.
 
 #### Fertilizer Item
-Flow: Perkebunan — Economy
-Moment: Player Buys Fertilizer
 Type: ITEM
-Function: Item yang digunakan untuk mempercepat growth atau recovery tanaman.
-Visual Brief: Simple fertilizer item yang terbaca sebagai kebutuhan perkebunan tanpa menambahkan jenis pupuk baru.
+
+**Function**  
+Item untuk mempercepat growth atau recovery tanaman.
+
+**Visual Brief**  
+Satu simple fertilizer item. Tidak diperlukan beberapa jenis pupuk.
 
 ## Egrang
 
-### Gameplay Moment — Using the Traditional Mobility Toy
-
-### 3D Models
+### Traditional Mobility Activity
 
 #### Egrang Rideable
-Flow: Egrang
-Moment: Player Uses the Egrang
 Type: MODEL
-Function: Rideable traditional toy yang membuat player bergerak pada posisi lebih tinggi.
-Visual Brief: Sepasang egrang tradisional sebagai satu rideable gameplay asset. Harus mendukung mounted movement dan dismount tanpa membutuhkan balance/falling animation system.
+
+**Function**  
+Rideable traditional toy yang membuat player bergerak pada posisi lebih tinggi.
+
+**Visual Brief**  
+Sepasang egrang tradisional sebagai satu rideable gameplay asset. Harus mendukung mounted movement dan dismount tanpa balance meter, falling simulation, atau animation system yang kompleks.
 
 ## Mancing di Empang
 
-### Gameplay Moment — Catching Fish
-
-### Items
+### Custom Fishing Results
 
 #### Lele Catch Item
-Flow: Mancing di Empang
-Moment: Fishing Reward
 Type: ITEM
-Function: Salah satu custom fishing result dari empang.
-Visual Brief: Item ikan Lele yang langsung terbaca sebagai hasil tangkapan.
+
+**Function**  
+Custom fishing result dari empang.
+
+**Visual Brief**  
+Item ikan Lele yang langsung terbaca sebagai hasil tangkapan.
 
 #### Tuna Catch Item
-Flow: Mancing di Empang
-Moment: Fishing Reward
 Type: ITEM
-Function: Salah satu custom fishing result dari empang.
-Visual Brief: Item ikan Tuna yang dapat dibedakan dari Lele.
+
+**Function**  
+Custom fishing result dari empang.
+
+**Visual Brief**  
+Item ikan Tuna yang dapat dibedakan dari Lele.
 
 #### Hiu Catch Item
-Flow: Mancing di Empang
-Moment: Rare Fishing Reward
 Type: ITEM
-Function: Hasil tangkapan absurd/rare dari empang.
-Visual Brief: Item Hiu yang tetap terbaca sebagai hasil pancing meskipun skalanya dapat disederhanakan agar cocok sebagai inventory item.
+
+**Function**  
+Rare/absurd fishing result dari empang.
+
+**Visual Brief**  
+Item Hiu yang tetap terbaca sebagai hasil pancing dan disederhanakan agar cocok sebagai inventory item.
 
 ## Harimau Lepas
 
-### Gameplay Moment — Basement Encounter
-
-### 3D Models
+### Basement Encounter
 
 #### Tiger
-Flow: Harimau Lepas
-Moment: Roaming, Chase, and Combat
 Type: MODEL
-Function: PvE enemy utama yang berkeliaran di basement lalu mengejar dan menyerang player.
-Visual Brief: Tiger mob dengan animation dasar idle/roam, run/chase, attack, hit reaction, dan defeat yang dibutuhkan encounter. Tidak memerlukan multi-phase boss state.
+
+**Function**  
+PvE enemy utama yang roaming, mengejar, dan menyerang player di basement.
+
+**Visual Brief**  
+Tiger mob dengan animation dasar idle/roam, run/chase, attack, hit reaction, dan defeat. Tidak membutuhkan multi-phase boss state.
+
+#### Bakso Treat Item
+Type: ITEM
+
+**Function**  
+Payoff sederhana untuk janji Zookeeper setelah player berhasil menangani harimau.
+
+**Visual Brief**  
+Satu item Bakso yang dapat diberikan setelah completion. Tidak memerlukan sistem makanan/quest tambahan di luar pemberian item.
 
 ## CyberWorld Mining
 
-### Gameplay Moment — Mining and Career Progression
-
-### 3D Models
+### Three-Tier Mining Progression
 
 #### CyberWorld Mining Resource Set
-Flow: CyberWorld Mining
-Moment: Mining Across the Three Islands
 Type: MODEL
-Function: Resource yang dapat ditambang dan ditukar menjadi currency selama progression.
-Visual Brief: Satu set resource block/deposit yang dapat membedakan progression value antar-tier pulau. Exact resource names dan jumlah jenis tidak ditentukan sampai ada approval tambahan; jangan mengarang lore atau jenis mineral baru.
 
-### Items
+**Function**  
+Resource/deposit yang ditambang dan ditukar menjadi currency sepanjang tiga tingkat pulau.
+
+**Visual Brief**  
+Satu set dengan tiga progression tiers yang terbaca sebagai Tier 1, Tier 2, dan Tier 3. Tier lebih tinggi harus terlihat lebih bernilai tanpa mengarang nama mineral, lore, atau resource family baru.
 
 #### Mining Tool Upgrade Set
-Flow: CyberWorld Mining
-Moment: Equipment Progression
 Type: ITEM
-Function: Mining equipment yang dapat di-upgrade untuk mendukung progression ke resource/tier yang lebih tinggi.
-Visual Brief: Mining tool dengan upgrade variants yang terbaca lebih baik dari tier sebelumnya. Exact number/form mengikuti progression yang dipakai tanpa menambahkan crafting system baru.
+
+**Function**  
+Mining equipment yang meningkat sejalan dengan progression tiga pulau.
+
+**Visual Brief**  
+Tiga progression variants: basic, improved, dan advanced secara fungsi/visual. Penamaan final tidak perlu dipaksakan sebagai nama in-game sampai ada approval tambahan. Tidak ada crafting system baru.
+
+## NPC Appearance Boundary
+
+Enam narrator menggunakan standard humanoid/NPC base dengan appearance berbeda:
+
+- Benteng Martello Guide
+- Plantation Guide
+- Old Man
+- Fisherman
+- Zookeeper
+- Job Recruiter
+
+Appearance/skin diperlukan untuk membedakan karakter, tetapi tidak dihitung sebagai custom 3D model dalam current model scope.
 
 ## Audio Boundary
 
-Semua spoken narrative untuk keenam gameplay dimiliki oleh `work/voice-production.md`. Tidak ada standalone non-dialogue AUDIO atau PARTICLE resource yang diwajibkan oleh current approved scope.
+Semua spoken narrative dimiliki oleh `work/voice-production.md`. Tidak ada standalone non-dialogue AUDIO atau PARTICLE resource yang diwajibkan oleh current approved scope.

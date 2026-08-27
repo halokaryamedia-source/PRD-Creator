@@ -7,742 +7,404 @@
 
 ## 01. Overview
 
-MIVUBI – Around The Block adalah pengalaman open-world non-linear yang menempatkan enam aktivitas tambahan di dalam world yang sudah tersedia. Aktivitas tidak membentuk campaign wajib dan tidak harus diselesaikan seluruhnya. Player bebas menemukan, mencoba, meninggalkan, dan mengulang aktivitas sesuai keinginan. Setiap aktivitas dibuka oleh narasi NPC singkat yang menjelaskan situasi, memberi konteks humor atau satire, lalu mengarahkan player ke gameplay tanpa dialogue tree atau quest system yang kompleks.
+MIVUBI – Around The Block adalah pengalaman open-world non-linear dengan enam aktivitas tambahan yang tersebar di world yang sudah tersedia. Keenam aktivitas tidak membentuk campaign wajib. Player bebas menemukan, mencoba, meninggalkan, dan mengulang aktivitas sesuai keinginan. Setiap gameplay dibuka oleh narasi NPC singkat yang memberi konteks, humor atau satire, lalu mengantar player langsung ke aktivitas tanpa dialogue tree atau quest system kompleks.
 
-- **Session Model:** Open-world non-linear; aktivitas bersifat independen. Benteng Martello PvP ditujukan untuk sekitar 2–6 player.
-- **Target Playtime:** Tidak ada total playtime wajib; setiap aktivitas dapat dimainkan secara opsional dan sebagian dapat diulang.
+- **Session Model:** Open-world non-linear; aktivitas berdiri sendiri. Benteng Martello PvP ditujukan untuk sekitar 2–6 player.
+- **Target Playtime:** Tidak ada total playtime wajib.
 - **Game Structure:** 6 optional gameplay packages tanpa urutan penyelesaian wajib.
 
 ### Complete Gameplay Journey
 
 Urutan berikut adalah daftar aktivitas, bukan progression linear.
 
-1. **Benteng Martello PvP** — Player mengikuti “wisata sejarah” yang ternyata membawa mereka ke simulasi pertempuran kapal, lalu menyelesaikan PvP di pulau sampai tersisa satu pemenang.
-2. **Perkebunan** — Player mencoba tiga aktivitas perkebunan—kopi, kayu manis, dan sawit—memanen hasil, menjualnya, lalu menggunakan atau menyimpan currency.
-3. **Egrang** — Player menggunakan egrang sebagai permainan tradisional sekaligus solusi absurd untuk melewati jalan rusak dan becek tanpa terkena cipratan.
-4. **Mancing di Empang** — Player berhenti sejenak untuk memancing dengan mekanik dasar Minecraft sementara penggusuran berlangsung di sebelah empang; hasil pancing diganti menjadi Lele, Tuna, atau Hiu.
-5. **Harimau Lepas** — Player membantu Zookeeper yang sedang makan bakso dengan menangani harimau lepas di basement parkiran.
-6. **CyberWorld Mining** — Player menerima tawaran kerja di luar pulau, menambang resource, menghasilkan currency, meng-upgrade equipment, dan membayar akses untuk membuka pulau tambang berikutnya.
+1. **Benteng Martello PvP** — Atraksi “wisata sejarah” yang ternyata membawa player ke simulasi pertempuran kapal dan berakhir dengan Last Player Standing di pulau.
+2. **Perkebunan** — Aktivitas Kopi, Kayu Manis, dan Sawit dengan loop rawat/panen, jual hasil, lalu gunakan atau simpan currency.
+3. **Egrang** — Permainan tradisional yang dipakai sebagai solusi absurd untuk jalan rusak, berlubang, dan becek.
+4. **Mancing di Empang** — Fishing dengan mekanik dasar Minecraft dan loot Lele, Tuna, atau Hiu, sementara penggusuran berlangsung di sebelah empang.
+5. **Harimau Lepas** — Short PvE encounter untuk membantu Zookeeper yang memilih makan bakso sementara harimaunya lepas di basement.
+6. **CyberWorld Mining** — Tawaran kerja di luar pulau yang berkembang menjadi mining progression tiga tingkat dengan upgrade dan biaya akses karier.
 
 ### Global Gameplay Direction
 
-- **Non-Linear by Design** — Tidak ada kewajiban menyelesaikan keenam aktivitas atau memainkan urutan tertentu.
-- **Narrative First, Then Play** — Setiap gameplay memiliki NPC narrative yang memberi premise, tone, dan alasan mencoba aktivitas sebelum gameplay berjalan.
-- **Simple NPC Delivery** — NPC berfungsi sebagai narator; tidak diperlukan dialogue tree atau percabangan quest kompleks.
-- **Existing Map Boundary** — Layout map dianggap sudah tersedia. Dokumen ini tidak mendesain ulang map dan hanya menyimpan kebutuhan gameplay yang harus terbaca di area yang sudah ada.
-- **Lightweight Development Scope** — Developer detail dibatasi pada perilaku yang diperlukan untuk membuat briefing gameplay bekerja; detail as-built, koordinat, dan setup teknis tidak termasuk scope PRD.
-- **Shared Economy Where Relevant** — Perkebunan dan CyberWorld Mining dapat menggunakan shared currency. Aktivitas lain tidak diwajibkan memberi reward ekonomi.
-- **Comedy Through Context** — Humor dan satire berasal dari situasi serta narasi, sementara gameplay tetap sederhana dan mudah dipahami.
+- **Non-Linear by Design** — Tidak ada kewajiban menyelesaikan semua aktivitas.
+- **Narrative First, Then Play** — Setiap gameplay memiliki NPC narrative yang wajib hadir sebagai identitas aktivitas.
+- **Narration, Not Tutorial** — Narasi memberi premise dan tone; hanya informasi gameplay yang benar-benar perlu yang disampaikan saat bermain.
+- **Existing Map Boundary** — Layout map sudah tersedia dan tidak didesain ulang oleh PRD ini.
+- **Lightweight Implementation** — Hanya behavior yang diperlukan untuk gameplay yang dicatat; koordinat, setup as-built, dan architecture tambahan berada di luar scope.
+- **Shared Economy Where Relevant** — Perkebunan dan CyberWorld Mining dapat memakai shared currency.
+- **Comedy Through Context** — Satire datang dari situasi dan karakter, bukan mechanic tambahan yang kompleks.
 
 ## 02. Gameplay Flow
 
 ### Around The Block Begins
 
-Player menjelajahi world tanpa jalur objective utama yang memaksa mereka menyelesaikan seluruh aktivitas. Setiap gameplay ditemukan sebagai situasi lokal yang berdiri sendiri. Ketika player mendekati NPC terkait, NPC menyampaikan narasi singkat, lalu player dapat langsung mencoba aktivitas atau melanjutkan eksplorasi.
+Player menjelajahi world dan menemukan aktivitas sebagai situasi lokal yang berdiri sendiri. Ketika player berinteraksi dengan NPC terkait, NPC memberi narasi singkat lalu gameplay dapat langsung dicoba. Selesai atau berhenti dari satu aktivitas tidak mengunci aktivitas lain.
 
-- **Discover an Activity** — Player menemukan NPC atau situasi yang menandai aktivitas opsional.
-- **Hear the Premise** — NPC menjelaskan konteks dengan tone komedi atau satire.
-- **Enter the Gameplay** — Setelah narasi, aktivitas dapat dimainkan tanpa dialog bercabang.
-- **Leave Freely** — Aktivitas non-kompetitif dapat ditinggalkan kapan saja; aktivitas match/encounter mengikuti kondisi akhir lokalnya.
-- **Return to Exploration** — Selesai atau berhenti dari satu aktivitas tidak mengunci aktivitas lain.
-
-**Transition:** Tidak ada transition global antar-objective. Setiap gameplay mengembalikan player ke kebebasan eksplorasi setelah aktivitas lokal selesai atau ditinggalkan.
+**Global Flow:** Explore → Discover NPC/Activity → Hear Narrative → Play → Finish or Leave → Return to Exploration.
 
 ### Benteng Martello PvP
 
-Benteng Martello diperkenalkan sebagai pengalaman untuk “merasakan hidup di zaman kolonial.” Player baru menyadari bentuk pengalaman tersebut ketika mereka ditempatkan pada kapal bersenjata dan diminta menembakkan meriam ke lawan.
+Benteng Martello diperkenalkan sebagai pengalaman untuk “merasakan hidup di zaman kolonial.” Player baru mengetahui bentuk pengalaman tersebut ketika gameplay dimulai dan mereka diminta menggunakan meriam melawan participant lain.
 
-- **Historical Attraction Setup** — NPC mengajak player mencoba pengalaman sejarah dan menyarankan membawa setidaknya satu player lain.
-- **Naval Combat** — Setiap player memulai di kapal masing-masing dan dapat menembaki kapal lawan dengan meriam.
-- **Ship Loss Is a Transition** — Kapal yang hancur tidak langsung mengeliminasi player; player tetap dapat menuju pulau untuk melanjutkan PvP.
-- **Shore Pressure** — Player yang lebih dulu mencapai pulau dapat menggunakan meriam di pinggir pantai untuk menekan kapal yang masih bertahan.
-- **DeathTime** — Naval phase memiliki batas waktu agar match tidak berhenti pada pertempuran kapal tanpa akhir. Kapal yang masih aktif dipaksa keluar dari fase naval.
-- **Island Finish** — Seluruh survivor melanjutkan PvP di arena terbuka sampai tersisa satu player.
-- **Water Hazard** — Hiu berkeliling di perairan dan menjadi ancaman bagi player yang terlalu lama berada di air.
+- Player Count sekitar **2–6 player** sebagai estimasi.
+- Setiap player memulai di kapal masing-masing.
+- Kapal dapat saling menembak dan dapat hancur tanpa langsung mengeliminasi player.
+- Player dari kapal yang hancur masih dapat menuju pulau.
+- Meriam pantai dapat digunakan untuk menekan kapal yang masih bertahan.
+- Hiu menjadi hazard bagi player di air.
+- **DeathTime** memaksa Naval Phase berakhir agar player tidak terus bermain dari kapal.
+- Final combat berlangsung di pulau sampai tersisa **Last Player Standing**.
 
-**Transition:** Last Player Standing dinyatakan sebagai pemenang dan match Benteng Martello selesai.
+**Flow:** Narrative → Naval Combat → Ship Loss / DeathTime → Shore Pressure → Island PvP → Winner.
 
 ### Perkebunan
 
-Perkebunan diperkenalkan oleh NPC yang sangat bangga dengan meningkatnya minat orang terhadap profesi petani, termasuk “wajah-wajah gagah berani” dari latar yang tidak disangka. Satire terutama muncul dari antusiasme berlebihan terhadap sawit, sementara kopi dan kayu manis tetap dimainkan sebagai aktivitas perkebunan normal.
+NPC memperkenalkan tren menjadi petani dengan satire yang sengaja dibuat tersirat. Kopi dan Kayu Manis dimainkan normal, sementara Sawit mendapat antusiasme naratif yang lebih berlebihan.
 
-- **Choose a Commodity** — Player dapat berinteraksi dengan Kopi, Kayu Manis, atau Sawit.
-- **Kopi** — Plant → Maintain → Grow → Harvest.
-- **Kayu Manis** — Maintain → Harvest → Regrowth.
-- **Sawit** — Maintain → Fruit Growth → Harvest → Regrowth.
-- **Sell the Harvest** — Hasil panen dapat dijual untuk memperoleh currency.
-- **Use or Save Currency** — Currency dapat digunakan untuk membeli pupuk yang mempercepat growth/recovery atau disimpan untuk kebutuhan lain.
-- **Repeat Freely** — Tidak ada kondisi “kebun selesai”; aktivitas dapat diulang ketika tanaman kembali siap.
+- **Kopi:** Plant → Maintain → Grow → Harvest.
+- **Kayu Manis:** Maintain → Harvest → Regrowth.
+- **Sawit:** Maintain → Fruit Growth → Harvest → Regrowth.
+- Hasil panen dapat dijual menjadi currency.
+- Currency dapat dipakai membeli pupuk untuk mempercepat growth/recovery atau disimpan.
+- Tidak ada kondisi “kebun selesai”; player dapat kembali kapan saja.
 
-**Transition:** Player dapat meninggalkan perkebunan kapan saja dan kembali ketika ingin memanen atau merawat tanaman lagi.
+**Flow:** Narrative → Choose Commodity → Care/Grow → Harvest → Sell → Fertilize or Save → Repeat/Leave.
 
 ### Egrang
 
-Seorang bapak tua mengomentari jalan yang rusak, berlubang, dan becek. Alih-alih memperbaiki jalan, ia menawarkan permainan masa mudanya—egrang—sebagai cara agar player tidak terkena cipratan sekaligus mendapat “latihan keseimbangan.”
+Seorang bapak tua menawarkan egrang setelah mengomentari jalan yang rusak dan becek. Mainan masa mudanya sekarang dianggap berguna agar tidak terkena cipratan sekaligus menjadi “latihan keseimbangan.”
 
-- **Take the Egrang** — Player mendapatkan akses ke egrang dari area permainan.
-- **Ride and Move** — Egrang digunakan sebagai rideable mobility toy dengan posisi player lebih tinggi dari berjalan biasa.
-- **No Balance Simulation** — Tidak ada balance meter, random falling, damage, atau sistem keseimbangan kompleks.
-- **Use Beyond the Play Area** — Egrang dapat dibawa dan digunakan selama eksplorasi.
-- **Stop Anytime** — Player dapat turun kapan saja dan menggunakan egrang kembali kemudian.
+- Egrang digunakan sebagai **rideable mobility toy**.
+- Posisi player lebih tinggi daripada berjalan normal.
+- Tidak ada balance meter, random falling, damage, timer, leaderboard, atau progression.
+- Egrang dapat digunakan keluar dari area awal.
+- Player dapat dismount kapan saja dan menggunakannya kembali.
 
-**Transition:** Tidak ada win/lose condition. Player cukup berhenti menggunakan egrang dan melanjutkan eksplorasi.
+**Flow:** Narrative → Use Egrang → Ride/Explore → Dismount → Continue Exploration.
 
 ### Mancing di Empang
 
-Di sebelah empang sedang berlangsung penggusuran sebagian pemukiman, tetapi para pemancing tetap fokus pada kegiatan mereka dan menganggap keributan tersebut bukan urusan mereka. Player diajak ikut memancing sebagai aktivitas santai.
+Penggusuran berlangsung di sebelah empang, tetapi para pemancing tetap fokus memancing dan menganggap keributan itu bukan urusan mereka.
 
-- **Use Standard Fishing** — Fishing menggunakan mekanik dasar Minecraft: Cast → Wait → Catch.
-- **Custom Catch Items** — Loot ikan untuk aktivitas ini diganti menjadi Lele, Tuna, dan Hiu.
-- **Absurd Rare Catch** — Hiu menjadi hasil tangkapan yang lebih jarang dan menjadi bagian dari joke aktivitas.
-- **No Extra Progression** — Tidak ada custom timing system, fishing level, leaderboard, atau economy progression khusus.
-- **Stay or Leave** — Player dapat terus memancing atau pergi kapan saja.
+- Fishing menggunakan mekanik dasar Minecraft: **Cast → Wait → Catch**.
+- Hasil tangkapan aktivitas ini adalah **Lele, Tuna, dan Hiu**.
+- Hiu menjadi hasil yang lebih jarang dan sengaja absurd.
+- Tidak ada custom fishing level, leaderboard, economy progression, atau timing system tambahan.
+- Player dapat berhenti kapan saja.
 
-**Transition:** Tidak ada completion wajib; player kembali ke eksplorasi ketika berhenti memancing.
+**Flow:** Narrative → Cast → Wait → Catch → Continue or Leave.
 
 ### Harimau Lepas
 
-Di Jalan Utama, Zookeeper sedang makan bakso setelah mengangkut harimau dari kebun binatang. Harimaunya lepas di basement parkiran gedung sebelah, tetapi Zookeeper meminta player menanganinya karena ia tidak ingin baksonya keburu dingin.
+Zookeeper sedang makan bakso di Jalan Utama setelah mengangkut harimau dari kebun binatang. Harimau tersebut lepas di basement parkiran, tetapi Zookeeper meminta player menangani masalah itu karena baksonya keburu dingin.
 
-- **Receive the Request** — NPC menjelaskan harimau lepas dan meminta player membantu.
-- **Enter the Basement** — Player menuju basement parkiran dan mencari harimau.
-- **Roaming Threat** — Sebelum bertemu player, harimau berkeliaran di area encounter.
-- **Chase and Combat** — Saat mendeteksi player, harimau mengejar dan menyerang seperti hostile mob.
-- **Defeat the Tiger** — Harimau memiliki daya tahan lebih tinggi daripada mob biasa dan harus dikalahkan.
-- **Retry if Needed** — Jika player kalah, encounter dapat dicoba kembali tanpa mengulang seluruh world.
+- Player menuju basement dan mencari harimau.
+- Harimau roaming sebelum mendeteksi player.
+- Setelah aggro, harimau mengejar dan menyerang seperti hostile mob.
+- Harimau lebih tahan daripada mob normal tetapi bukan multi-phase boss.
+- Jika player kalah, encounter dapat dicoba lagi.
+- Setelah defeat valid, player dapat kembali ke Zookeeper untuk completion line dan menerima **Bakso Treat** sebagai payoff dari janji awal.
 
-**Transition:** Setelah harimau ditangani, player dapat kembali menemui Zookeeper untuk line penutup lalu kembali mengeksplorasi kota.
+**Flow:** Narrative → Find Tiger → Detect/Chase → Combat → Defeat → Return to Zookeeper → Bakso Treat.
 
 ### CyberWorld Mining
 
-Di tengah sulitnya mencari pekerjaan, seorang recruiter menawarkan pekerjaan di luar pulau yang terdengar mudah dan bergaji besar. Setelah menerima tawaran, player dibawa ke kawasan pertambangan dengan tiga tingkat pulau dan sistem “jenjang karier” yang mengharuskan player membayar biaya akses untuk naik tingkat.
+Di tengah sulitnya mencari pekerjaan, recruiter menawarkan kerja di luar pulau yang terdengar mudah dan bergaji besar. Setelah tiba, player baru mengetahui bahwa “jenjang karier” memiliki biaya akses.
 
-- **Take the Job** — Player menerima tawaran kerja dan dibawa menuju area pertambangan.
-- **Start at Mining Island 1** — Player menambang resource dasar dan menukarkannya menjadi currency.
-- **Upgrade Equipment** — Currency digunakan untuk meningkatkan mining equipment agar progression terasa meningkat.
-- **Pay for Access** — Akses ke Mining Island 2 dan Mining Island 3 dibuka dengan membayar biaya.
-- **Mine Better Resources** — Pulau dengan tier lebih tinggi menyediakan resource dengan nilai lebih tinggi.
-- **Repeat the Work Loop** — Mine → Collect → Exchange → Earn → Upgrade → Pay Access → Unlock → Repeat.
+- Player memulai dari **Mining Island 1**.
+- Resource ditambang dan ditukar menjadi shared currency.
+- Currency digunakan untuk mining equipment upgrade dan membuka akses berikutnya.
+- **Mining Island 2** dan **Mining Island 3** memerlukan biaya akses.
+- Tiga pulau mewakili tiga progression tier; resource tier lebih tinggi memiliki nilai lebih tinggi.
+- Mining asset tidak membutuhkan nama mineral/lore khusus sampai ada approval tambahan.
+- Tidak ada ending wajib; player dapat melanjutkan progression atau kembali ke world.
 
-**Transition:** Tidak ada ending wajib. Player dapat terus mining untuk progression atau kembali ke aktivitas lain.
+**Flow:** Job Offer → Travel → Island 1 → Mine/Exchange → Upgrade/Pay → Island 2 → Upgrade/Pay → Island 3 → Repeat/Leave.
 
 ## 03. Global Development
 
 ### Development Overview
 
-Implementasi Around The Block harus menjaga enam aktivitas sebagai modul independen di dalam world yang sudah dibangun. Fokus development adalah membuat activation, gameplay loop, narrative delivery, local completion/retry, dan shared economy bekerja tanpa menambahkan architecture atau detail map yang tidak diperlukan oleh briefing.
+Implementasi cukup menjaga keenam aktivitas sebagai modul independen di existing world. Tidak diperlukan campaign framework baru atau sistem global besar di luar kebutuhan narrative, activity state, shared currency, dan repeatability.
 
-#### Development Flow
-
-- **Activity Ready State** — Pastikan setiap aktivitas dapat dimulai dari kondisi lokal yang bersih.
-- **Narrative Delivery** — Mainkan line NPC yang relevan satu kali pada momen yang tepat sebelum atau selama aktivitas.
-- **Run Local Gameplay** — Aktivasi hanya mechanic yang diperlukan oleh aktivitas tersebut.
-- **Return to Exploration** — Setelah selesai atau ditinggalkan, lepaskan state lokal tanpa memengaruhi aktivitas lain.
-
-#### Development Requirements
-
-##### Activity Independence
-- Requirement: Keenam gameplay tidak membentuk progression linear wajib.
-- Requirement: Selesai atau gagal pada satu gameplay tidak boleh mengunci gameplay lain.
-- Result: Player tetap bebas menjelajah dan memilih aktivitas.
-
-##### Narrative Delivery
-- Requirement: Gunakan satu NPC narrator sederhana per gameplay context; tidak diperlukan dialogue tree.
-- Requirement: Voice line harus mempertahankan wording/tone approved dan tidak berubah menjadi tutorial panjang.
-- Result: Premise dan humor terbaca tanpa menambah quest-system complexity.
-
-##### Shared Economy
-- Requirement: Perkebunan dan CyberWorld Mining dapat menggunakan shared currency.
-- Requirement: Egrang, Fishing, Benteng Martello, dan Harimau Lepas tidak wajib menghasilkan currency.
-- Result: Economy menghubungkan aktivitas yang memang membutuhkan progression tanpa memaksa semua gameplay menjadi grind.
-
-##### Existing Map Boundary
-- Requirement: Gunakan layout map yang sudah ada sebagai authority.
-- Requirement: Jangan menambahkan redesign map, exact coordinates, atau as-built setup detail ke PRD.
-- Result: Dokumen tetap menjadi gameplay briefing dan production requirement, bukan forensic implementation document.
-
-#### Important Development Notes
-
-- **Narration Is Context, Not Tutorial** — Voice membuka premise dan tone; instruksi gameplay hanya muncul ketika benar-benar diperlukan.
-- **Local State Only** — Runtime state satu gameplay tidak boleh mengubah gameplay lain secara tidak sengaja.
-- **Reuse Existing Systems Where Possible** — Vanilla fishing dan simple hostile-mob behavior dipertahankan bila sudah cukup.
-- **No Unapproved Complexity** — Jangan menambahkan skill tree, crafting system, custom balance simulation, dialogue branching, atau framework baru tanpa kebutuhan yang sudah disetujui.
+- Satu aktivitas tidak boleh mengunci aktivitas lain.
+- Voice opening tidak boleh spam selama interaction pendek.
+- Competitive/PvE activity memiliki local finish/retry state.
+- Leisure activity dapat ditinggalkan tanpa completion paksa.
 
 ### Game System
 
-Shared system hanya perlu mengetahui aktivitas mana yang sedang aktif untuk player, narrative state yang sudah diputar, shared currency bila digunakan, dan progression lokal yang memang persist.
+Shared system hanya perlu menyimpan state yang benar-benar dipakai.
 
-#### Development Flow
-
-- **Discover** — Player mendekati activity/NPC.
-- **Narrate** — Mainkan narrative yang relevan.
-- **Activate** — Berikan akses ke mechanic atau encounter.
-- **Release** — Selesaikan state lokal dan kembalikan player ke eksplorasi bebas.
-
-#### Development Requirements
-
-##### Narrative State
-- Requirement: Jangan memutar opening narrative berulang-ulang selama satu interaction/session pendek.
-- Requirement: Completion line hanya muncul setelah kondisi lokalnya terpenuhi.
-- Result: Voice terasa disengaja dan tidak spam.
-
-##### Activity State
-- Requirement: Aktivitas repeatable harus dapat kembali ke kondisi playable.
-- Requirement: PvP match dan Tiger encounter memiliki local finish/retry state yang jelas.
-- Result: Aktivitas dapat digunakan kembali tanpa mengubah struktur world.
-
-##### Economy State
-- Requirement: Currency Farming/Mining disimpan secara konsisten ketika player meninggalkan area.
-- Requirement: Pembelian pupuk, equipment upgrade, dan paid access hanya mengurangi currency setelah transaksi valid.
-- Result: Progression ekonomi dapat ditinggalkan dan dilanjutkan.
-
-##### Player Freedom
-- Requirement: Aktivitas leisure/free-play tidak memiliki forced completion.
-- Result: Egrang dan Fishing tetap terasa sebagai aktivitas dunia, bukan objective wajib.
-
-#### Important Development Notes
-
-- **No Global Campaign Gate** — Tidak ada flag “complete all six” yang dibutuhkan untuk bermain.
-- **Narrative Replay Control** — Opening line boleh memiliki cooldown/replay rule sederhana, tetapi tidak perlu dialogue-state graph.
-- **Economy Persistence** — Farming/Mining progression tidak hilang hanya karena player mencoba gameplay lain.
-- **Match Ownership** — Benteng Martello hanya menjalankan match ketika jumlah participant yang dibutuhkan tersedia.
+- **Narrative State:** opening/completion line diputar pada momen yang benar.
+- **Shared Currency:** digunakan oleh Perkebunan dan CyberWorld Mining.
+- **Local Activity State:** match, encounter, crop, fishing, dan rideable tetap bounded pada gameplay masing-masing.
+- **Player Freedom:** tidak ada global “complete all six” gate.
 
 ### Data and Reset
 
-Data dibatasi pada state yang benar-benar dibutuhkan untuk kelanjutan aktivitas. Tidak ada kebutuhan telemetry/scoring platform yang ditetapkan dalam briefing ini.
+Persistensi dibatasi pada progression yang perlu bertahan.
 
-#### Development Flow
-
-- **Store Local Progress** — Simpan currency dan progression yang memang perlu bertahan.
-- **Clear Temporary State** — Bersihkan entity/projectile/temp state setelah match atau encounter selesai.
-- **Restore Repeatable Gameplay** — Kembalikan tanaman, fishing availability, egrang, dan encounter ke state yang dapat dimainkan lagi sesuai mechanic.
-- **Resume Freely** — Player dapat kembali ke aktivitas tanpa menjalankan campaign reset.
-
-#### Development Requirements
-
-##### Persistent State
-- Requirement: Simpan shared currency, mining access, mining equipment progression, dan farming growth/recovery state bila sistem yang dipakai memang membutuhkan persistensi.
-- Result: Aktivitas progression dapat dilanjutkan.
-
-##### Temporary State
-- Requirement: Projectile, match state, combat entity, dan temporary interaction state tidak boleh bocor ke aktivitas lain setelah selesai.
-- Result: World tetap stabil setelah aktivitas berulang.
-
-##### Retry
-- Requirement: Tiger encounter dapat diulang setelah player kalah.
-- Requirement: Benteng Martello memulai match baru dari state kapal/PvP yang bersih.
-- Result: Failure lokal tidak merusak world.
-
-##### No Score Requirement
-- Requirement: Jangan invent scoring system untuk gameplay yang tidak memiliki scoring approved.
-- Result: Briefing tetap sesuai scope.
-
-#### Important Development Notes
-
-- **Persist Only What Matters** — Jangan membuat data layer baru untuk state yang bisa direstore sederhana.
-- **No As-Built Coordinates** — Spawn/trigger exact locator tetap di luar canonical PRD.
-- **Safe Repeatability** — Repeatable activity harus dapat kembali dimainkan tanpa manual world repair.
-- **Do Not Infer Rewards** — Reward ekonomi hanya digunakan ketika sudah disetujui oleh gameplay.
+- Simpan shared currency, mining access/equipment progression, serta farming growth/recovery bila diperlukan sistem yang dipakai.
+- Bersihkan projectile, match state, combat entity, dan temporary interaction setelah aktivitas selesai.
+- Benteng Martello harus dapat memulai match baru dari state bersih.
+- Harimau Lepas harus dapat di-retry tanpa world restart.
+- Jangan membuat scoring system untuk gameplay yang tidak memiliki scoring approved.
 
 ### Gameplay Development
 
-Setiap gameplay mengikuti lifecycle sederhana: narrative → activation → gameplay → local result/retry → return to exploration.
+Setiap gameplay mengikuti lifecycle sederhana:
 
-#### Development Flow
+**Prepare → Narrative → Activate → Play → Local Result/Retry → Return to Exploration.**
 
-- **Prepare** — Pastikan activity state dapat digunakan.
-- **Introduce** — Mainkan NPC narrative.
-- **Play** — Jalankan mechanic inti.
-- **Resolve** — Selesaikan local result lalu lepas player kembali ke world.
-
-#### Development Requirements
-
-##### Activation
-- Requirement: Interaction NPC atau activity entry memicu narrative/activation yang relevan.
-- Result: Player memahami konteks sebelum bermain.
-
-##### Gameplay Ownership
-- Requirement: Hanya mechanic yang disetujui untuk tiap aktivitas yang dijalankan.
-- Result: Scope tidak berkembang menjadi minigame tambahan.
-
-##### Completion / Exit
-- Requirement: Competitive/PvE activity menggunakan local end condition; leisure activity dapat ditinggalkan kapan saja.
-- Result: Setiap activity memiliki exit behavior sesuai identitasnya.
-
-##### Reuse
-- Requirement: Setelah selesai/ditinggalkan, activity kembali ke state yang dapat digunakan lagi sesuai kebutuhan.
-- Result: World mendukung aktivitas optional yang berulang.
-
-#### Important Development Notes
-
-- **Keep It Lightweight** — Implementasi harus memilih mechanic sederhana yang memenuhi experience.
-- **Voice Is Part of Gameplay Identity** — Approved narration tidak boleh dihilangkan ketika gameplay dibuat.
-- **No Map Redesign** — Hanya kebutuhan functional/readability yang boleh memengaruhi existing area.
-- **Scope by Activity** — Setiap gameplay dikembangkan sebagai bounded module.
+Gunakan solusi Minecraft paling sederhana yang memenuhi experience. Vanilla fishing dipertahankan, Egrang tidak membutuhkan fake balance physics, dan Harimau tidak membutuhkan escape AI atau boss framework kompleks.
 
 ## 04. Benteng Martello
 
 ### Gameplay Overview
 
-**Context:** Player menemukan atraksi Benteng Martello yang menawarkan pengalaman “merasakan hidup di zaman kolonial” dan mengajak minimal satu player lain untuk ikut.
+**Context:** Atraksi sejarah yang mengundang player merasakan “zaman kolonial” dan baru mengungkap simulasi perang ketika gameplay dimulai.
 
-**Main Objective:** Bertahan melalui Naval Combat dan Island PvP sampai menjadi Last Player Standing.
+**Main Objective:** Menjadi Last Player Standing setelah Naval Combat berpindah ke Island PvP.
 
-**Result:** Satu player dinyatakan sebagai pemenang Benteng Martello PvP.
+**Result:** Satu winner; kapal hancur hanya mengakhiri keuntungan naval, bukan langsung mengeliminasi player.
 
 #### Gameplay Information
 
-- **Game Purpose:** Memberikan competitive PvP dua fase dengan perpindahan dari pertempuran kapal ke pertarungan pulau.
+- **Game Purpose:** Competitive PvP dua fase.
 - **Gameplay Time:** Naval phase memiliki DeathTime; total match time belum ditetapkan.
-- **Starting Condition:** Sekitar 2–6 participant masuk ke match dan setiap player memulai di kapal masing-masing.
-- **End Condition:** Hanya satu player yang masih bertahan.
-- **Fail Condition:** Player tereliminasi dari PvP; kapal hancur bukan eliminasi langsung.
-- **Scoring Criteria:** Tidak ada scoring formula approved; hasil utama adalah winner/loser match.
+- **Starting Condition:** Sekitar 2–6 participant, satu kapal per player.
+- **End Condition:** Satu player tersisa.
+- **Fail Condition:** Player tereliminasi dari PvP.
+- **Scoring Criteria:** Winner/loser only; tidak ada scoring formula approved.
 
 #### Gameplay Flow
 
-- **Join the Attraction** — Dengarkan premise wisata sejarah dan kumpulkan participant.
-- **Fight from the Ships** — Gunakan meriam kapal untuk menekan atau menghancurkan kapal lawan.
-- **Move Toward the Island** — Kapal hancur atau DeathTime memindahkan fokus dari laut ke darat.
-- **Use Shore Pressure** — Survivor di pulau dapat memakai meriam pantai untuk menyerang kapal yang masih aktif.
-- **Finish the PvP** — Bertarung di arena pulau sampai tersisa satu player.
+1. Hear Historical Invitation.
+2. Start on Individual Ships.
+3. Fight Until Ship Loss or DeathTime.
+4. Move Combat to Shore/Island.
+5. Finish as Last Player Standing.
 
 ### Level Design
 
-Gunakan existing Benteng Martello area tanpa redesign. Kebutuhan build hanya memastikan area yang sudah ada dapat membaca kapal di perairan, jalur menuju pulau, meriam pantai, arena terbuka, dan air sebagai hazard.
-
-#### Design Flow
-
-- **Ship Start** — Area kapal terpisah dan terbaca untuk participant.
-- **Water Transition** — Perairan memungkinkan perpindahan menuju pulau dengan risiko hiu.
-- **Shore Cannon Line** — Meriam pantai menghadap area perairan yang relevan.
-- **Open PvP Arena** — Pulau menyediakan ruang akhir untuk Last Player Standing.
-
-#### Build Requirements
-
-- **Existing Water Combat Area** — Harus cukup untuk beberapa kapal bergerak dan saling menembak.
-- **Island Access** — Player dari kapal yang hancur masih memiliki jalur gameplay menuju pulau.
-- **Shore Cannons** — Posisi meriam memungkinkan tekanan terhadap kapal yang masih aktif.
-- **Open Arena** — Final PvP menggunakan satu arena terbuka tanpa redesign map baru.
-
-#### Important Build Notes
-
-- **Existing Map First** — Tidak ada kebutuhan layout baru.
-- **Water Is Playable Risk** — Air bukan instant-death boundary.
-- **Shark Readability** — Ancaman hiu harus terlihat/terbaca ketika player berada di air.
-- **Two-Phase Readability** — Player harus memahami bahwa match akhirnya berpindah ke pulau.
+Existing map dipertahankan. Tidak ada redesign. Area hanya perlu tetap memungkinkan kapal di perairan, perpindahan menuju pulau, meriam pantai, air sebagai hazard, dan satu arena PvP terbuka.
 
 ### Developer
 
-Implementasikan match 2–6 player (estimasi), kapal/meriam, ship damage, DeathTime, shore cannon, shark hazard, player elimination, dan Last Player Standing tanpa menambah scoring system baru.
+Required behavior saja:
 
-#### Development Flow
-
-- **Match Setup** — Assign participant dan kapal.
-- **Naval Combat** — Jalankan ship movement, cannon fire, dan ship damage.
-- **Forced Transition** — Gunakan ship destruction/DeathTime untuk mengakhiri naval dominance.
-- **Island Resolution** — Track eliminations sampai tersisa satu winner.
-
-#### Development Requirements
-
-- Kapal hancur tidak langsung mengeliminasi player.
-- DeathTime mengakhiri penggunaan kapal yang masih tersisa.
-- Hiu menyerang player yang berada di air.
-- Meriam pantai dapat menargetkan kapal aktif.
-- Match selesai ketika hanya satu player tersisa.
-
-#### Important Development Notes
-
-- **Participant Estimate** — 2–6 masih estimasi dan tidak boleh diperlakukan sebagai platform cap final.
-- **No Ship Camping** — DeathTime wajib mendorong perpindahan fase.
-- **One Winner** — Result utama adalah Last Player Standing.
-- **Clean Match Reset** — Kapal, projectiles, sharks/match state, dan player combat state harus siap untuk match berikutnya.
+- Ship cannon combat dan ship damage/destruction.
+- Ship destruction tidak langsung membunuh player.
+- DeathTime mengakhiri Naval Phase.
+- Shore cannon dapat menyerang kapal aktif.
+- Shark menyerang player di air.
+- Last Player Standing menyelesaikan match.
+- Match dapat di-reset untuk permainan berikutnya.
 
 ## 05. Perkebunan
 
 ### Gameplay Overview
 
-**Context:** Player bertemu NPC perkebunan yang membanggakan tren menjadi petani dan memiliki antusiasme khusus terhadap sawit.
+**Context:** NPC mengajak player ikut tren berkebun dan menunjukkan antusiasme khusus terhadap sawit.
 
-**Main Objective:** Pilih komoditas, rawat/panen, lalu jual hasil untuk memperoleh currency.
+**Main Objective:** Rawat/panen salah satu dari tiga komoditas dan jual hasilnya.
 
-**Result:** Player mendapatkan hasil panen/currency dan dapat menggunakan pupuk atau meninggalkan perkebunan.
+**Result:** Player memperoleh currency dan dapat membeli pupuk atau menyimpan uang.
 
 #### Gameplay Information
 
-- **Game Purpose:** Memberikan farming loop santai dengan tiga komoditas yang memiliki pola interaction berbeda.
-- **Gameplay Time:** Tidak ada batas waktu; growth/recovery berjalan sesuai sistem tanaman.
-- **Starting Condition:** Tanaman berada pada state yang dapat ditanam, dirawat, atau dipanen.
-- **End Condition:** Tidak ada completion wajib; satu loop dapat dianggap selesai setelah hasil dipanen/dijual.
+- **Game Purpose:** Casual farming + light economy.
+- **Gameplay Time:** Tidak ada batas waktu.
+- **Starting Condition:** Komoditas berada pada state yang dapat diinteraksi.
+- **End Condition:** Tidak ada completion wajib.
 - **Fail Condition:** Tidak ada fail state berat.
-- **Scoring Criteria:** Tidak ada score; progression berupa harvest dan currency.
+- **Scoring Criteria:** Tidak ada score; progression melalui harvest/currency.
 
 #### Gameplay Flow
 
-- **Hear the Farming Pitch** — NPC memperkenalkan tren bertani.
-- **Choose a Commodity** — Kopi, Kayu Manis, atau Sawit.
-- **Care and Grow** — Lakukan interaction sesuai komoditas.
-- **Harvest and Sell** — Ambil hasil lalu jual untuk currency.
-- **Invest or Leave** — Beli pupuk untuk growth/recovery lebih cepat atau simpan uang.
+1. Hear Farming Narrative.
+2. Choose Coffee, Cinnamon, or Palm Oil.
+3. Care/Grow.
+4. Harvest and Sell.
+5. Buy Fertilizer, Save Currency, or Leave.
 
 ### Level Design
 
-Existing plantation layout dipertahankan. Hanya perlu memastikan ketiga komoditas, titik interaction, dan area jual/pupuk mudah dikenali.
-
-#### Design Flow
-
-- **Narrative Entry** — NPC terbaca dari jalur player.
-- **Three Commodity Areas** — Kopi, Kayu Manis, dan Sawit dapat dibedakan.
-- **Harvest Readability** — State siap panen terbaca secara visual.
-- **Sell / Fertilizer Access** — Player dapat menemukan fungsi ekonomi tanpa area baru.
-
-#### Build Requirements
-
-- **Coffee Area** — Mendukung plant/growth/harvest states.
-- **Cinnamon Area** — Mendukung maintain/harvest/regrowth states.
-- **Palm Oil Area** — Mendukung maintain/fruit/harvest/regrowth states.
-- **Economy Interaction** — Existing area menyediakan interaction untuk menjual hasil dan membeli pupuk.
-
-#### Important Build Notes
-
-- **No Map Redesign** — Layout perkebunan sudah dianggap final.
-- **Commodity Identity** — Tiga tanaman tidak terasa sebagai interaction yang sama dengan skin berbeda.
-- **Sawit Satire Stays Narrative** — Tidak perlu mechanic khusus untuk satire.
-- **Readable Harvest State** — Player harus tahu kapan tanaman dapat dipanen.
+Layout perkebunan dianggap final. Ketiga komoditas dan state siap panen cukup terbaca dari existing area; tidak diperlukan area baru.
 
 ### Developer
 
-Implementasikan tiga crop loops, harvest item, sale/currency, fertilizer acceleration, dan repeatable regrowth tanpa farming framework tambahan.
+Required behavior saja:
 
-#### Development Flow
-
-- **Initialize Crop State** — Load plant/growth/harvest state.
-- **Run Crop Interaction** — Tangani plant/maintain/harvest sesuai komoditas.
-- **Sell / Spend** — Tukarkan hasil dan proses pembelian pupuk.
-- **Regrow / Persist** — Jalankan recovery/growth dan simpan state yang diperlukan.
-
-#### Development Requirements
-
-- Kopi menggunakan Plant → Maintain → Grow → Harvest.
-- Kayu Manis menggunakan Maintain → Harvest → Regrowth.
-- Sawit menggunakan Maintain → Fruit Growth → Harvest → Regrowth.
-- Pupuk mempercepat growth/recovery.
-- Currency dapat disimpan dan digunakan di luar satu kunjungan ke kebun.
-
-#### Important Development Notes
-
-- **No Forced Completion** — Player dapat hanya melakukan satu interaction lalu pergi.
-- **Shared Currency** — Economy harus konsisten dengan CyberWorld Mining.
-- **No Permanent Crop Loss** — Harvest tidak menghapus akses komoditas secara permanen.
-- **Narrative Is Separate from Crop Logic** — Satire tidak memerlukan logic khusus.
+- Kopi: Plant → Maintain → Grow → Harvest.
+- Kayu Manis: Maintain → Harvest → Regrowth.
+- Sawit: Maintain → Fruit Growth → Harvest → Regrowth.
+- Fertilizer mempercepat growth/recovery.
+- Harvest tidak menghilangkan komoditas secara permanen.
+- Currency konsisten dengan CyberWorld Mining.
 
 ## 06. Egrang
 
 ### Gameplay Overview
 
-**Context:** Bapak tua menawarkan egrang setelah mengomentari jalan yang rusak dan becek.
+**Context:** Bapak tua menawarkan permainan masa mudanya sebagai solusi untuk jalan rusak dan becek.
 
-**Main Objective:** Gunakan egrang sebagai permainan tradisional dan alat mobility bebas.
+**Main Objective:** Gunakan Egrang sebagai free-play mobility toy.
 
-**Result:** Player dapat bergerak dengan egrang lalu turun kapan saja.
+**Result:** Player dapat bergerak lebih tinggi, menjelajah, lalu dismount kapan saja.
 
 #### Gameplay Information
 
-- **Game Purpose:** Memberikan free-play traditional activity yang mudah diimplementasikan.
+- **Game Purpose:** Traditional free-play activity.
 - **Gameplay Time:** Tidak ada batas waktu.
-- **Starting Condition:** Egrang tersedia untuk digunakan.
-- **End Condition:** Tidak ada completion; player berhenti dengan dismount.
+- **Starting Condition:** Egrang tersedia.
+- **End Condition:** Tidak ada completion.
 - **Fail Condition:** Tidak ada fail state.
-- **Scoring Criteria:** Tidak ada score atau currency.
+- **Scoring Criteria:** Tidak ada score/currency.
 
 #### Gameplay Flow
 
-- **Hear the Old Man** — Dapatkan premise jalan rusak.
-- **Take the Egrang** — Aktivasi/ambil egrang.
-- **Ride** — Bergerak pada posisi lebih tinggi.
-- **Explore** — Gunakan di area permainan atau dibawa ke area lain.
-- **Dismount** — Turun dan lanjutkan eksplorasi.
+1. Hear Old Man Narrative.
+2. Use Egrang.
+3. Ride.
+4. Explore Freely.
+5. Dismount.
 
 ### Level Design
 
-Tidak ada obstacle course wajib. Existing jalan rusak dan area permainan cukup menjadi konteks penggunaan egrang.
-
-#### Design Flow
-
-- **Old Man / Egrang Point** — Narasi dan egrang mudah ditemukan.
-- **Broken Road Context** — Jalan rusak terlihat sebagai sumber joke.
-- **Free Movement** — Route tidak mengunci egrang pada satu petak.
-- **Return to Normal Movement** — Dismount dapat dilakukan tanpa area khusus.
-
-#### Build Requirements
-
-- Existing area harus memberi ruang untuk mount/dismount.
-- Jalan rusak/becek tetap terbaca sebagai context.
-- Tidak perlu arena kompetisi atau obstacle mandatory.
-- Egrang dapat dibawa keluar area permainan.
-
-#### Important Build Notes
-
-- **No Balance Mechanic** — Jangan membangun level yang mengandalkan sistem jatuh yang tidak ada.
-- **No Forced Route** — Egrang adalah world toy.
-- **Keep Movement Readable** — Tinggi rider tidak boleh membuat navigasi dasar membingungkan.
-- **Existing Map Only** — Tidak ada redesign.
+Tidak ada obstacle course wajib atau redesign. Existing jalan rusak hanya menjadi narrative/environment context.
 
 ### Developer
 
-Gunakan rideable entity/equipment sederhana untuk egrang; tidak diperlukan simulation keseimbangan.
+Required behavior saja:
 
-#### Development Flow
-
-- **Make Available** — Egrang dapat diakses player.
-- **Mount** — Player masuk ke rideable state.
-- **Move** — Gunakan movement sederhana.
-- **Dismount / Reuse** — Player turun dan egrang dapat dipakai lagi.
-
-#### Development Requirements
-
-- Tidak ada balance meter, random fall, damage, timer, leaderboard, atau progression.
-- Posisi player lebih tinggi daripada walking normal.
-- Egrang dapat digunakan di luar area awal.
+- Reusable rideable Egrang.
+- Rider position lebih tinggi dari walking normal.
+- Tidak ada balance meter/falling simulation.
+- Dapat digunakan di luar area awal.
 - Dismount mengembalikan player ke movement normal.
-
-#### Important Development Notes
-
-- **Implementation Simplicity First**
-- **No Fake Physics Requirement**
-- **Reusable Equipment**
-- **No Economy Dependency**
 
 ## 07. Mancing di Empang
 
 ### Gameplay Overview
 
-**Context:** Penggusuran berlangsung di sebelah empang sementara pemancing memilih tetap fokus pada pancingan.
+**Context:** Pemancing memilih fokus pada pancingan sementara penggusuran berlangsung di sebelah empang.
 
-**Main Objective:** Memancing menggunakan mekanik dasar Minecraft dan mendapatkan Lele, Tuna, atau Hiu.
+**Main Objective:** Memancing dengan mechanic dasar Minecraft untuk mendapatkan Lele, Tuna, atau Hiu.
 
-**Result:** Player menyimpan hasil tangkapan atau berhenti memancing kapan saja.
+**Result:** Player menyimpan hasil tangkapan atau berhenti kapan saja.
 
 #### Gameplay Information
 
-- **Game Purpose:** Memberikan leisure activity dengan joke loot yang absurd.
+- **Game Purpose:** Leisure activity dengan absurd catch joke.
 - **Gameplay Time:** Tidak ada batas waktu.
-- **Starting Condition:** Player memiliki akses ke fishing rod dan empang.
+- **Starting Condition:** Fishing rod/empang dapat digunakan.
 - **End Condition:** Tidak ada completion wajib.
-- **Fail Condition:** Tidak ada fail state berat; fishing mengikuti behavior dasar Minecraft.
-- **Scoring Criteria:** Tidak ada score/progression khusus.
+- **Fail Condition:** Mengikuti vanilla fishing; tidak ada punishment khusus.
+- **Scoring Criteria:** Tidak ada score/progression.
 
 #### Gameplay Flow
 
-- **Hear the Fisherman** — Dapatkan premise empang/penggusuran.
-- **Cast** — Gunakan fishing rod Minecraft biasa.
-- **Wait** — Tunggu bite seperti vanilla fishing.
-- **Catch** — Terima Lele, Tuna, atau Hiu.
-- **Continue or Leave** — Ulangi atau kembali ke eksplorasi.
+1. Hear Fisherman Narrative.
+2. Cast.
+3. Wait.
+4. Catch Lele/Tuna/Hiu.
+5. Continue or Leave.
 
 ### Level Design
 
-Existing empang dan situasi penggusuran menjadi context visual. Tidak diperlukan fishing arena baru.
-
-#### Design Flow
-
-- **Narrative Spot** — Pemancing/NPC terbaca.
-- **Fishing Edge** — Tepi empang dapat digunakan dengan vanilla fishing interaction.
-- **Background Context** — Penggusuran terlihat tanpa menghalangi fishing.
-- **Free Exit** — Player dapat pergi kapan saja.
-
-#### Build Requirements
-
-- Fishing spot mendukung mechanic vanilla.
-- Penggusuran tetap menjadi background story, bukan hazard gameplay.
-- Tidak diperlukan custom obstacle/progression area.
-- Fishing rod tidak perlu custom model bila vanilla rod digunakan.
-
-#### Important Build Notes
-
-- **Vanilla Mechanic First**
-- **Custom Loot Only**
-- **No Economy Requirement**
-- **Satire Is Narrative/Environment**
+Existing empang dipakai apa adanya. Penggusuran tetap background story dan bukan hazard gameplay.
 
 ### Developer
 
-Pertahankan vanilla fishing behavior dan ganti loot relevant menjadi Lele, Tuna, dan Hiu.
+Required behavior saja:
 
-#### Development Flow
-
-- **Enable Fishing**
-- **Detect Valid Catch**
-- **Replace/Select Custom Fish Loot**
-- **Return to Repeatable Fishing State**
-
-#### Development Requirements
-
-- Cast/wait/catch mengikuti mechanic dasar Minecraft.
-- Custom catch set adalah Lele, Tuna, dan Hiu.
-- Hiu lebih jarang daripada tangkapan biasa.
-- Tidak ada fishing level, leaderboard, atau custom timing framework.
-
-#### Important Development Notes
-
-- **Do Not Rebuild Fishing**
-- **Hiu Is Intentional Absurdity**
-- **No Forced Completion**
-- **Loot Reset Must Remain Repeatable**
+- Pertahankan vanilla fishing behavior.
+- Ganti relevant fish catch menjadi Lele, Tuna, dan Hiu.
+- Hiu dibuat lebih jarang.
+- Tidak ada custom fishing framework, level, atau leaderboard.
 
 ## 08. Harimau Lepas
 
 ### Gameplay Overview
 
-**Context:** Zookeeper makan bakso di Jalan Utama sementara harimau yang dibawanya lepas di basement parkiran.
+**Context:** Zookeeper meminta bantuan menangani harimau yang lepas di basement karena ia ingin menyelesaikan baksonya.
 
-**Main Objective:** Temukan dan kalahkan harimau di basement.
+**Main Objective:** Temukan dan kalahkan harimau.
 
-**Result:** Harimau ditangani, line penutup Zookeeper dapat diputar, dan player kembali ke eksplorasi.
+**Result:** Encounter selesai, Zookeeper memberikan completion line, dan janji Bakso Treat dibayar sebagai payoff sederhana.
 
 #### Gameplay Information
 
-- **Game Purpose:** Memberikan short PvE encounter dengan premise komedi.
+- **Game Purpose:** Short PvE encounter dengan premise komedi.
 - **Gameplay Time:** Tidak ada target waktu approved.
-- **Starting Condition:** Encounter belum selesai dan harimau tersedia di basement.
+- **Starting Condition:** Harimau tersedia di basement dan encounter belum selesai.
 - **End Condition:** Harimau dikalahkan.
-- **Fail Condition:** Player kalah dalam combat; encounter dapat dicoba lagi.
-- **Scoring Criteria:** Tidak ada score atau currency reward approved.
+- **Fail Condition:** Player kalah; encounter dapat diulang.
+- **Scoring Criteria:** Tidak ada score/currency reward.
 
 #### Gameplay Flow
 
-- **Meet the Zookeeper** — Dengarkan request.
-- **Find the Tiger** — Masuk basement dan cari target.
-- **Trigger the Chase** — Harimau mendeteksi player.
-- **Fight** — Hindari serangan dan kurangi health harimau.
-- **Resolve** — Kalahkan harimau lalu kembali ke Zookeeper bila diinginkan.
+1. Hear Zookeeper Request.
+2. Find Tiger.
+3. Trigger Chase.
+4. Fight and Defeat.
+5. Return for Completion Line and Bakso Treat.
 
 ### Level Design
 
-Existing basement dipertahankan. Area hanya perlu mendukung roaming, detection, chase, dan combat tanpa redesign.
-
-#### Design Flow
-
-- **Narrative Location** — Zookeeper berada di jalan sebagai entry point.
-- **Basement Entry** — Route ke encounter sudah ada.
-- **Roaming Space** — Harimau dapat bergerak tanpa tersangkut.
-- **Combat Space** — Player memiliki ruang wajar untuk encounter.
-
-#### Build Requirements
-
-- Basement existing dapat menampung roaming/chase.
-- Tidak perlu escape-path puzzle kompleks.
-- Route keluar kota hanya menjadi story stakes, bukan fail-path simulation.
-- Zookeeper tetap terpisah dari combat area.
-
-#### Important Build Notes
-
-- **Short Encounter**
-- **No Boss Multi-Phase**
-- **Readable Tiger Movement**
-- **Retry Without World Restart**
+Basement sudah tersedia. Tidak ada redesign atau escape-path puzzle; area hanya perlu memungkinkan roam, chase, dan combat yang wajar.
 
 ### Developer
 
-Gunakan hostile-mob style behavior: roam → detect → chase → attack → defeat, dengan health/damage yang cukup untuk terasa sebagai encounter khusus.
+Required behavior saja:
 
-#### Development Flow
-
-- **Spawn / Roam**
-- **Detect / Chase**
-- **Combat**
-- **Defeat / Retry Reset**
-
-#### Development Requirements
-
-- Harimau roaming sebelum aggro.
-- Setelah mendeteksi player, harimau mengejar dan menyerang.
-- Harimau lebih tahan daripada mob normal, tanpa multi-phase mechanic.
+- Tiger: roam → detect → chase → attack → defeat.
+- Lebih tahan dari mob normal tanpa multi-phase boss system.
 - Player death tidak menutup encounter permanen.
-- Completion line hanya diputar setelah defeat valid.
-
-#### Important Development Notes
-
-- **No Complex Escape AI**
-- **No Currency Reward Invented**
-- **Narrative Tone Must Stay Calm/Absurd**
-- **Reset Tiger State for Retry**
+- Completion line dan Bakso Treat hanya diberikan setelah defeat valid.
+- Encounter dapat kembali ke state yang bisa dimainkan sesuai kebutuhan.
 
 ## 09. CyberWorld Mining
 
 ### Gameplay Overview
 
-**Context:** Recruiter menawarkan pekerjaan di luar pulau kepada player yang sedang mencari kerja dan menjanjikan pekerjaan mudah dengan gaji besar.
+**Context:** Recruiter menawarkan pekerjaan di luar pulau dengan janji kerja mudah dan gaji besar; progression kemudian mengungkap biaya akses untuk “naik karier.”
 
-**Main Objective:** Menambang resource, menghasilkan currency, upgrade equipment, dan membuka akses ke tiga tier pulau tambang.
+**Main Objective:** Mine resource, dapatkan currency, upgrade equipment, dan buka tiga tingkat pulau tambang.
 
-**Result:** Player meningkatkan mining progression dan dapat melanjutkan kerja atau kembali ke world.
+**Result:** Player meningkatkan mining progression dan dapat terus bekerja atau kembali ke world.
 
 #### Gameplay Information
 
-- **Game Purpose:** Memberikan repeatable economy/progression loop.
+- **Game Purpose:** Repeatable economy/progression activity.
 - **Gameplay Time:** Tidak ada total limit.
-- **Starting Condition:** Player menerima pekerjaan dan memiliki akses ke Mining Island 1.
-- **End Condition:** Tidak ada ending wajib; progression tertinggi adalah akses ke Mining Island 3.
-- **Fail Condition:** Tidak ada fail state utama yang disetujui.
-- **Scoring Criteria:** Tidak ada score; progression dinilai dari currency, equipment, dan access tier.
+- **Starting Condition:** Player menerima pekerjaan dan memiliki akses Island 1.
+- **End Condition:** Tidak ada ending wajib; tier tertinggi adalah Island 3.
+- **Fail Condition:** Tidak ada fail state utama approved.
+- **Scoring Criteria:** Tidak ada score; progression melalui currency, equipment, dan island access.
 
 #### Gameplay Flow
 
-- **Take the Offer** — Dengarkan recruiter dan masuk ke pekerjaan.
-- **Mine Island 1** — Kumpulkan resource dasar.
-- **Earn and Upgrade** — Tukar resource menjadi currency dan tingkatkan equipment.
-- **Pay to Move Up** — Bayar biaya akses untuk Island 2 lalu Island 3.
-- **Repeat at Higher Value** — Tambang resource yang lebih bernilai dan lanjutkan progression.
+1. Hear Job Offer.
+2. Start Mining Island 1.
+3. Mine and Exchange.
+4. Upgrade / Pay Access.
+5. Progress Through Island 2 and Island 3, then Repeat or Leave.
 
 ### Level Design
 
-Tiga island mining dianggap sudah tersedia. PRD hanya membutuhkan perbedaan fungsi/tier agar progression terbaca.
-
-#### Design Flow
-
-- **Recruitment Point**
-- **Mining Island 1 — Entry Tier**
-- **Mining Island 2 — Paid Mid Tier**
-- **Mining Island 3 — Paid High Tier**
-
-#### Build Requirements
-
-- Masing-masing island dapat dibedakan sebagai tier progression.
-- Access ke Island 2/3 dapat dikunci sampai pembayaran valid.
-- Resource yang lebih bernilai tersedia pada tier lebih tinggi.
-- Tidak ada kebutuhan redesign layout island dalam scope ini.
-
-#### Important Build Notes
-
-- **Three Tiers Stay Clear**
-- **Paid Access Is Part of the Joke and Progression**
-- **Existing Map Boundary**
-- **No Extra Skill Tree**
+Tiga mining island sudah tersedia. Tidak ada redesign; yang perlu terbaca hanya perbedaan progression tier dan access state.
 
 ### Developer
 
-Implementasikan mining resource, exchange currency, equipment upgrade, dan paid island access sebagai loop sederhana dan repeatable.
-
-#### Development Flow
-
-- **Mine**
-- **Exchange**
-- **Upgrade / Pay**
-- **Unlock / Repeat**
-
-#### Development Requirements
+Required behavior saja:
 
 - Island 1 tersedia setelah pekerjaan diterima.
-- Resource dapat ditukar menjadi shared currency.
-- Mining equipment dapat di-upgrade.
+- Resource ditukar menjadi shared currency.
+- Mining equipment memiliki tiga progression tiers yang selaras dengan tiga mining islands.
 - Island 2 dan Island 3 memerlukan biaya akses.
-- Higher-tier island memberikan resource bernilai lebih tinggi.
-- Progression dapat ditinggalkan dan dilanjutkan kembali.
-
-#### Important Development Notes
-
-- **Shared Currency with Farming**
-- **No Crafting System Required**
-- **Access Payment Must Be Validated**
-- **Do Not Invent Resource Names Until Approved**
+- Higher-tier resource memberikan nilai lebih tinggi.
+- Progression dapat ditinggalkan dan dilanjutkan.
+- Jangan menambah crafting system, skill tree, atau nama mineral/lore yang belum approved.
