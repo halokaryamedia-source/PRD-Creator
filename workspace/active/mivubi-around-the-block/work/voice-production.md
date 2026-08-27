@@ -7,7 +7,7 @@ Default Stability: Natural
 Default Surface: Speech Synthesis
 Enhance: OFF
 
-> Wording mengikuti dialog yang sudah disetujui. Performance direction dibuat minimal agar karakter tetap natural. Commercial ElevenLabs voices belum dipilih; setiap speaker memakai Target Voice Profile. Formal rendered PRD handoff verification masih pending.
+> Wording mengikuti dialog yang sudah disetujui. Performance direction dan vocal reaction ditempatkan langsung di exact Eleven v3 prompt seperti format The Clockwork Vault. Commercial ElevenLabs voices belum dipilih; setiap speaker memakai Target Voice Profile. Formal rendered PRD handoff verification masih pending.
 
 ## Target Voice Profiles
 
@@ -47,6 +47,7 @@ Nah, sekarang ambil posisi.
 
 Bidikkan meriam ke arah lawanmu...
 
+[shouts]
 Dan jadilah orang terakhir yang masih bertahan!
 ```
 
@@ -65,6 +66,7 @@ Masa kamu enggak tertarik berkebun? Sekarang orang-orang sudah pada antre mau tu
 
 Di sini ada kopi, kayu manis, sama sawit. Kopi bisa ditanam dan dipetik hasilnya. Kayu manis dirawat supaya nanti bisa dipanen lagi.
 
+[chuckles]
 Kalau sawit... nah, yang satu ini memang banyak yang suka. Katanya pohon bagus. Kalau masih ada tempat kosong, rasanya sayang kalau enggak ditanami.
 
 Nanti hasil kebunnya bisa dijual. Uangnya bisa dipakai beli pupuk supaya tanaman lebih cepat tumbuh, atau disimpan kalau kamu punya keperluan lain.
@@ -89,6 +91,7 @@ Daripada repot-repot ngindarin jalan yang begitu, nih... coba pakai egrang.
 
 Mainan zaman saya masih muda dulu. Enggak nyangka sekarang malah kepakai lagi.
 
+[chuckles]
 Yah, walaupun agak pegal... setidaknya enggak kena ciprat.
 
 Lumayan juga buat latihan keseimbangan. Daripada Yoga atau Pilates, sekalian aja pakai egrang.
@@ -115,6 +118,7 @@ Kadang hidup enggak perlu dipikirin semuanya sekaligus. Yang penting kail dilemp
 
 Di empang sini mah ikannya gede-gede. Siapa tahu elu dapat hiu.
 
+[chuckles]
 Jangan nanya yak, gue juga enggak tau kenapa!
 ```
 
@@ -139,6 +143,7 @@ Sayang kalau ditinggal, nanti keburu dingin.
 
 Bisa tolong urusin sebentar, Kak? Jangan sampai dia keburu keluar ke jalan.
 
+[chuckles]
 Tenang aja, harimau sama kucing mah mirip-mirip tingkahnya.
 
 Kalau sudah beres, balik lagi ke sini ya.
@@ -155,6 +160,7 @@ Estimated Duration: 5–7 seconds
 [amused]
 Makasih ya, Kak, udah bantu.
 
+[chuckles]
 Saya sampai bosen, harimau itu mah suka lepas mulu.
 ```
 
@@ -177,6 +183,7 @@ Daripada pusing cari kerja di sini, mending sekalian coba aja.
 
 Kalau tertarik, ikut saya.
 
+[chuckles]
 Siapa tahu pulangnya sudah jadi orang sukses.
 ```
 
@@ -199,5 +206,6 @@ Cuma ya... namanya juga mau naik tingkat, ada sedikit biaya administrasi.
 
 Kerja dulu, kumpulin uangnya, terus bayar buat naik.
 
+[chuckles]
 Begitulah hidup, Kak. Mau sukses ya harus modal dulu.
 ```
