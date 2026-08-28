@@ -10,13 +10,14 @@ Enhance: OFF
 Performance tags remain in English because they are part of the exact Eleven v3 prompt. Spoken dialogue remains Indonesian.
 
 ## Voice Profiles
-- Benteng Martello Guide — Adult Indonesian voice; friendly tour-guide energy, conversational, clear, slightly playful.
-- Plantation Guide — Adult Indonesian voice; warm, proud, persuasive, conversational, stronger enthusiasm around sawit.
-- Old Man — Older Indonesian male voice; relaxed, warm, conversational, nostalgic, natural humor.
-- Fisherman — Adult Indonesian male voice; relaxed but expressive, dry humor, natural small-talk rhythm, spontaneous reactions.
-- Businessman — Adult Indonesian male; santai, percaya diri, sedikit arogan, conversational, transaksional; terasa seperti orang yang terbiasa menyelesaikan sesuatu dengan uang tanpa menjadi villain teatrikal.
-- Job Recruiter — Adult Indonesian voice; friendly, persuasive, optimistic, conversational, lightly sales-like.
-- Dealer NPC — Adult Indonesian male; friendly salesman, confident, persuasive, conversational, sedikit terlalu yakin bahwa sistem pembelian per bagian adalah normal.
+
+- **Benteng Martello Guide** — Adult Indonesian voice; friendly tour-guide energy, conversational, clear, slightly playful.
+- **Plantation Guide** — Adult Indonesian voice; warm, proud, persuasive, conversational, stronger enthusiasm around sawit.
+- **Old Man** — Older Indonesian male voice; relaxed, warm, conversational, nostalgic, natural humor.
+- **Fisherman** — Adult Indonesian male voice; relaxed but expressive, dry humor, natural small-talk rhythm, spontaneous reactions.
+- **Businessman** — Adult Indonesian male; santai, percaya diri, sedikit arogan, conversational, transaksional; terdengar seperti orang yang terbiasa menyelesaikan sesuatu dengan uang tanpa menjadi villain teatrikal.
+- **Job Recruiter** — Adult Indonesian voice; friendly, persuasive, optimistic, conversational, lightly sales-like.
+- **Dealer NPC** — Adult Indonesian male; friendly salesman, confident, persuasive, conversational, sedikit terlalu yakin bahwa sistem pembelian per bagian adalah normal.
 
 ## VO-MAR-01 — Historical Experience Invitation
 Position: Benteng Martello · Voice Line 1/2

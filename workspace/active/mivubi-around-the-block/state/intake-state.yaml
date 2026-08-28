@@ -9,11 +9,11 @@ current_scope:
   - three Singleplayer Motion Tracking venue experiences
   - Multiplayer Shared Systems: NPC Narration and Shared Currency
   - Purchasable Items: Flying Motorcycle, Dealer NPC, and Fuel
-  - 12 current approved Voice prompts
-  - current Production Assets and 9 Map View references
+  - approved Voice Production with 12 current Voice IDs
+  - approved Production Assets and Map View references
 notes:
   - Multiplayer and Singleplayer Motion Tracking are separate systems.
   - Shared Systems apply only to Multiplayer.
   - Motion Interaction remains Experimental until realtime venue testing.
   - Existing map layouts are treated as authored; exact coordinates stay outside the reader-facing gameplay idea.
-  - Current approved baseline is Around The Block 1.0.0 Preview.
+  - Current approved preview is Around-The-Block-Gameplay-Idea-1.0.0-Preview.html.

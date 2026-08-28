@@ -9,8 +9,8 @@ sources:
     retention: external
     inspection: full
     summary: >
-      Defines the original six Multiplayer activities, narrative tone, lightweight briefing scope,
-      Voice requirements, and production-asset direction.
+      Defines the original six Multiplayer gameplay activities, their narrative tone,
+      lightweight briefing scope, Voice requirements, and required production assets.
   - id: SRC-002
     role: authoritative
     type: user_discussion
@@ -22,23 +22,24 @@ sources:
       Defines the final approved preview structure, Businessman rewrite for Macan Lepas,
       split Voice prompts, Mancing Dulu selling loop and Toko Madura, Flying Motorcycle
       Purchasable Items and fuel system, three Singleplayer Motion Tracking venue experiences,
-      Experimental motion status, and reader-first hierarchy.
+      Experimental motion status, and reader-first document hierarchy.
   - id: SRC-003
     role: authoritative
     type: visual_reference
     title: Approved Map View screenshots
     date: 2026-08-28
-    retention: conversation_source
+    retention: embedded
     inspection: full
     summary: >
-      Nine approved Map View screenshots: six Multiplayer views and three Singleplayer Motion Tracking views.
+      Nine Map View screenshots embedded in the approved preview HTML: six Multiplayer views
+      and three Singleplayer Motion Tracking views.
   - id: SRC-004
     role: derived_approved
     type: html_preview
     title: Around The Block Gameplay Idea 1.0.0 Preview
     date: 2026-08-28
-    retention: conversation_artifact
+    retention: repository
     inspection: full
     summary: >
-      User-approved reader-facing preview containing current gameplay details, Map Views,
-      Voice prompts, Purchasable Items, production assets, and Experimental motion notes.
+      User-approved reader-facing preview containing the current hierarchy, gameplay details,
+      Map Views, Voice prompts, Purchasable Items, assets, and Experimental motion notes.

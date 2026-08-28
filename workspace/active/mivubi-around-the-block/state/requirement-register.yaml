@@ -21,14 +21,14 @@ requirements:
     approval_status: approved
   - id: REQ-004
     area: scope
-    statement: Existing map layouts are treated as authored; exact as-built coordinates remain outside the reader-facing gameplay idea.
-    provenance: [SRC-001, SRC-002]
+    statement: Existing map layouts are treated as authored; the gameplay idea does not redesign the world or expose exact as-built coordinates.
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-005
     area: multiplayer_shared
     statement: NPC Narration introduces each Multiplayer activity with short story/context voice.
-    provenance: [SRC-001, SRC-002]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-006
@@ -40,49 +40,49 @@ requirements:
   - id: REQ-007
     area: benteng_martello
     statement: Benteng Martello is an estimated 2–6 player PvP activity beginning with one ship per player.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-008
     area: benteng_martello
     statement: Ships can fire cannons and can be destroyed without immediately eliminating the player.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-009
     area: benteng_martello
     statement: DeathTime forces the naval phase to end; shore cannons can attack active ships and sharks threaten players in water.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-010
     area: benteng_martello
     statement: Benteng Martello ends as Last Player Standing on the island.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-011
     area: perkebunan
     statement: Mari Berkebun includes Coffee, Cinnamon, and Palm Oil with distinct maintain/harvest/regrowth loops.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-012
     area: perkebunan
     statement: Farm harvest can be sold for currency and Fertilizer accelerates growth/recovery.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-013
     area: egrang
     statement: Main Egrang is a reusable rideable mobility activity with no balance meter, random falling, timer, score, or progression.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-014
     area: fishing
     statement: Mancing Dulu uses standard Minecraft fishing behavior with Lele, Tuna, and rarer Hiu catches.
-    provenance: [SRC-001, SRC-002]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-015
@@ -94,12 +94,12 @@ requirements:
   - id: REQ-016
     area: tiger
     statement: Macan Lepas is a short PvE tiger encounter in a basement with roam, detect, chase, attack, defeat, and retry.
-    provenance: [SRC-001, SRC-002]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-017
     area: tiger
-    statement: Macan Lepas is introduced by an arrogant Businessman with a Black Briefcase who calls the tiger only a cat and offers payment to solve the problem.
+    statement: Macan Lepas is introduced by an arrogant Businessman with a Black Briefcase who calls the tiger only a “cat” and offers payment to solve the problem.
     provenance: [SRC-002]
     impact: high
     approval_status: approved
@@ -112,13 +112,13 @@ requirements:
   - id: REQ-019
     area: mining
     statement: Tambang Masa Depan uses three progression tiers; higher tiers require paid access and provide higher-value resources.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-020
     area: mining
     statement: Mining resources exchange into Shared Currency used for tool upgrades and access progression.
-    provenance: [SRC-001]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-021
@@ -135,25 +135,25 @@ requirements:
     approval_status: approved
   - id: REQ-023
     area: purchasable_items
-    statement: Dealer NPC explains that the motorcycle is assembled per part using the approved installment satire.
+    statement: Dealer NPC explains that the motorcycle is purchased/assembled per part using the approved installment satire.
     provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-024
     area: fuel
-    statement: Pertamak has the highest capacity and text description 100% ASLI DIJAMIN.
+    statement: Pertamak has the highest capacity and text description “100% ASLI DIJAMIN.”.
     provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-025
     area: fuel
-    statement: Pertali has standard capacity and text description Bensin Sejuta Umat.
+    statement: Pertali has standard capacity and text description “Bensin Sejuta Umat”.
     provenance: [SRC-002]
     impact: medium
     approval_status: approved
   - id: REQ-026
     area: fuel
-    statement: Okibos has capacity equal to Pertali and text description Energi Masa Depan.
+    statement: Okibos has capacity equal to Pertali and text description “Energi Masa Depan”.
     provenance: [SRC-002]
     impact: medium
     approval_status: approved
@@ -171,7 +171,7 @@ requirements:
     approval_status: approved
   - id: REQ-029
     area: voice
-    statement: Long dialogue may be split into multiple clips for natural delivery, including Mari Berkebun and Mancing Dulu.
+    statement: Long dialogue may be split into multiple clips when needed for natural performance, including Mari Berkebun and Mancing Dulu.
     provenance: [SRC-002]
     impact: medium
     approval_status: approved
@@ -189,19 +189,19 @@ requirements:
     approval_status: approved
   - id: REQ-032
     area: single_pirate
-    statement: Menghalau Bajak Laut is Tower Defense using cannon aim/fire to destroy pirate ships before fortress HP reaches zero.
+    statement: Menghalau Bajak Laut is a Tower Defense experience using cannon aim/fire to destroy pirate ships before fortress HP reaches zero.
     provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-033
     area: single_pirate
     statement: Pirate ships follow the authored path and use three attack points before damaging the fortress.
-    provenance: [SRC-002, SRC-003]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-034
     area: single_plant
-    statement: Menanam Pohon requires digging, planting, watering, and fertilizing in the correct order; wrong order causes retry.
+    statement: Menanam Pohon requires the correct sequence of digging, planting, watering, and fertilizing; wrong order causes retry.
     provenance: [SRC-002]
     impact: high
     approval_status: approved
@@ -219,14 +219,14 @@ requirements:
     approval_status: approved
   - id: REQ-037
     area: map_view
-    statement: Approved preview includes Map View references for all six Multiplayer activities and all three Singleplayer experiences.
-    provenance: [SRC-003, SRC-004]
+    statement: Approved preview includes Map View images for all six Multiplayer activities and all three Singleplayer experiences.
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-038
     area: assets
-    statement: Production asset planning includes only gameplay-required assets and avoids unsupported decorative additions.
-    provenance: [SRC-001, SRC-002]
+    statement: Production asset planning must include only gameplay-required assets and avoid unsupported decorative additions.
+    provenance: [SRC-002]
     impact: high
     approval_status: approved
   - id: REQ-039
@@ -238,6 +238,6 @@ requirements:
   - id: REQ-040
     area: status
     statement: Current document status is 1.0.0 Preview and explicitly approved by the user.
-    provenance: [SRC-004]
+    provenance: [SRC-002]
     impact: high
     approval_status: approved

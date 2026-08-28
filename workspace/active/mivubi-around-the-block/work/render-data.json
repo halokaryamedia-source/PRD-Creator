@@ -4,22 +4,50 @@
     "project": "Around The Block",
     "version": "1.0.0 Preview",
     "status": "approved_preview",
-    "canonical_content": "work/content.md"
+    "language": "Indonesian with professional English production terminology",
+    "canonical_content": "work/content.md",
+    "approved_html": "work/Around-The-Block-Gameplay-Idea-1.0.0-Preview.html",
+    "content_sha256": "0136d6fc5d840fc26d9eb21fd84a05a4a08ec204c312e56efa93f50c78f94f79",
+    "html_sha256": "ac4a33acfe059d5a0d56adb5efadfbd698ec87269922c67ff9cf83e210ecd96b"
   },
   "structure": {
     "overview": true,
     "multiplayer": {
       "overview": true,
-      "shared_systems": ["NPC Narration", "Shared Currency"],
-      "gameplay": ["Benteng Martello", "Mari Berkebun", "Main Egrang", "Mancing Dulu", "Macan Lepas", "Tambang Masa Depan"],
+      "shared_systems": [
+        "NPC Narration",
+        "Shared Currency"
+      ],
+      "gameplay": [
+        "Benteng Martello",
+        "Mari Berkebun",
+        "Main Egrang",
+        "Mancing Dulu",
+        "Macan Lepas",
+        "Tambang Masa Depan"
+      ],
       "purchasable_items": {
         "main_purchase": "Flying Motorcycle",
-        "required_parts": ["Motorcycle Body", "Engine", "Flight Module", "Fuel"],
+        "required_parts": [
+          "Motorcycle Body",
+          "Engine",
+          "Flight Module",
+          "Fuel"
+        ],
         "dealer": "Dealer NPC",
         "fuel": {
-          "Pertamak": {"text": "100% ASLI DIJAMIN.", "capacity": "High"},
-          "Pertali": {"text": "Bensin Sejuta Umat", "capacity": "Standard"},
-          "Okibos": {"text": "Energi Masa Depan", "capacity": "Standard"}
+          "Pertamak": {
+            "text": "100% ASLI DIJAMIN.",
+            "capacity": "High"
+          },
+          "Pertali": {
+            "text": "Bensin Sejuta Umat",
+            "capacity": "Standard"
+          },
+          "Okibos": {
+            "text": "Energi Masa Depan",
+            "capacity": "Standard"
+          }
         },
         "fuel_balance": "Pertamak > Pertali = Okibos"
       }
@@ -27,17 +55,51 @@
     "singleplayer_motion_tracking": {
       "status": "experimental_motion_interaction",
       "venue_realtime": true,
-      "gameplay": ["Menghalau Bajak Laut", "Menanam Pohon", "Memancing Ikan"]
+      "gameplay": [
+        "Menghalau Bajak Laut",
+        "Menanam Pohon",
+        "Memancing Ikan"
+      ]
     }
   },
   "voice": {
     "count": 12,
-    "ids": ["VO-MAR-01", "VO-MAR-02", "VO-FARM-01A", "VO-FARM-01B", "VO-EGR-01", "VO-FISH-01A", "VO-FISH-01B", "VO-TIGER-01", "VO-TIGER-02", "VO-MINE-01", "VO-MINE-02", "VO-DEALER-01"],
+    "ids": [
+      "VO-MAR-01",
+      "VO-MAR-02",
+      "VO-FARM-01A",
+      "VO-FARM-01B",
+      "VO-EGR-01",
+      "VO-FISH-01A",
+      "VO-FISH-01B",
+      "VO-TIGER-01",
+      "VO-TIGER-02",
+      "VO-MINE-01",
+      "VO-MINE-02",
+      "VO-DEALER-01"
+    ],
     "source": "work/voice-production.md"
   },
-  "map_views": {"count": 9, "multiplayer": 6, "singleplayer": 3},
+  "production_assets": {
+    "count": 29,
+    "source": "work/asset-requirements.md"
+  },
+  "map_views": {
+    "embedded_count": 9,
+    "multiplayer": 6,
+    "singleplayer": 3
+  },
+  "source_hashes": {
+    "content.md": "0136d6fc5d840fc26d9eb21fd84a05a4a08ec204c312e56efa93f50c78f94f79",
+    "asset-requirements.md": "4fc3af69e0b6a8d60e7eae9291aa2b44fc91b7dbbe0791ef5a849aa3f57cb4dd",
+    "voice-requirements.md": "37657edcaefabef387c9f7c954e49c704b5f4792efe007a8b1d1e358800214f5",
+    "voice-production.md": "ccdfc6a13ddfb13816e078d593a064d073a5b400d4cd454615dc36bb57dc163b",
+    "intake-state.yaml": "8c257602768a3faf3ef714dfb4ab432280e1ebefca1e92c1155afbadc9dad3f8",
+    "source-inventory.yaml": "ba156a565b3f8e4f4c436e7298567b65cb9b9f969f7f9afb8dc248fd48ce5438",
+    "requirement-register.yaml": "7d5700d17d5d81d9228f681252c65286522f244d38064903808f97db5e83ff23"
+  },
   "notes": [
-    "Current approved-preview projection; not a Golden renderer handoff artifact.",
+    "This file is a current approved-preview projection, not a Golden renderer handoff artifact.",
     "Motion Tracking controls remain Experimental until venue testing."
   ]
 }
