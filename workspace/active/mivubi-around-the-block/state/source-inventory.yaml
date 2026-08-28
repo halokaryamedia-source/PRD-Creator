@@ -1,15 +1,44 @@
 version: 1.0.0
-project: MIVUBI - Around The Block
+project: Around The Block
 sources:
   - id: SRC-001
     role: authoritative
     type: user_discussion
-    title: Around The Block gameplay and narrative approvals
+    title: Around The Block original Multiplayer gameplay and narrative approvals
     date: 2026-08-27
     retention: external
     inspection: full
     summary: >
-      Authoritative project discussion defining six non-linear optional gameplay activities,
-      their approved narrative premises/dialogue, the light briefing scope, and the explicit
-      request to prioritize Voice Commands and required model/resource lists while avoiding
-      map redesign and unnecessary development detail.
+      Defines the original six Multiplayer activities, narrative tone, lightweight briefing scope,
+      Voice requirements, and production-asset direction.
+  - id: SRC-002
+    role: authoritative
+    type: user_discussion
+    title: Around The Block iterative gameplay, story, economy, motion-tracking, and UI approvals
+    date: 2026-08-28
+    retention: external
+    inspection: full
+    summary: >
+      Defines the final approved preview structure, Businessman rewrite for Macan Lepas,
+      split Voice prompts, Mancing Dulu selling loop and Toko Madura, Flying Motorcycle
+      Purchasable Items and fuel system, three Singleplayer Motion Tracking venue experiences,
+      Experimental motion status, and reader-first hierarchy.
+  - id: SRC-003
+    role: authoritative
+    type: visual_reference
+    title: Approved Map View screenshots
+    date: 2026-08-28
+    retention: conversation_source
+    inspection: full
+    summary: >
+      Nine approved Map View screenshots: six Multiplayer views and three Singleplayer Motion Tracking views.
+  - id: SRC-004
+    role: derived_approved
+    type: html_preview
+    title: Around The Block Gameplay Idea 1.0.0 Preview
+    date: 2026-08-28
+    retention: conversation_artifact
+    inspection: full
+    summary: >
+      User-approved reader-facing preview containing current gameplay details, Map Views,
+      Voice prompts, Purchasable Items, production assets, and Experimental motion notes.
