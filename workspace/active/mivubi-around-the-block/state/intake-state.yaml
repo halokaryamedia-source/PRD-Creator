@@ -1,15 +1,19 @@
 version: 1.0.0
-project: MIVUBI - Around The Block
-status: ready_for_prd
+project: Around The Block
+status: approved_preview
 ready_for_prd: true
 preview_approved: true
 current_scope:
-  - six non-linear gameplay activities
-  - approved NPC narrative premise and wording
-  - lightweight gameplay/development briefing
-  - required model/item production list
-  - Voice Command preparation
+  - two gameplay types: Multiplayer Gameplay and Singleplayer Motion Tracking
+  - six non-linear Multiplayer activities
+  - three Singleplayer Motion Tracking venue experiences
+  - Multiplayer Shared Systems: NPC Narration and Shared Currency
+  - Purchasable Items: Flying Motorcycle, Dealer NPC, and Fuel
+  - 12 current approved Voice prompts
+  - current Production Assets and 9 Map View references
 notes:
-  - All six gameplay concepts and narrative slices were explicitly approved in the 2026-08-27 project discussion.
-  - The user explicitly excluded map redesign and unnecessary detailed development specification.
-  - Exact as-built coordinates and implementation identifiers remain outside canonical PRD scope.
+  - Multiplayer and Singleplayer Motion Tracking are separate systems.
+  - Shared Systems apply only to Multiplayer.
+  - Motion Interaction remains Experimental until realtime venue testing.
+  - Existing map layouts are treated as authored; exact coordinates stay outside the reader-facing gameplay idea.
+  - Current approved baseline is Around The Block 1.0.0 Preview.
