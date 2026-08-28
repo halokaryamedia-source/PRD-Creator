@@ -1,234 +1,186 @@
 # Production Asset Requirements
-Project: MIVUBI – Around The Block
-Version: 1.0.0
+Project: Around The Block
+Version: 1.0.0 Preview
+Status: Approved Preview
 
-## Scope Note
+## Scope
+Only gameplay-required resources are included. Existing map layout is not redesigned. NPC characters may use standard humanoid/NPC bases with unique appearances unless a custom model is explicitly required.
 
-Dokumen ini hanya mencatat resource yang benar-benar dibutuhkan oleh gameplay yang sudah disetujui. Layout map dianggap sudah tersedia. NPC narator menggunakan standard humanoid/NPC base dengan appearance/skin yang sesuai; current scope tidak membutuhkan custom 3D NPC model. Tidak ada decorative prop, standalone particle, atau standalone non-dialogue audio yang ditambahkan tanpa kebutuhan gameplay.
+## Multiplayer Assets
 
-## Required Model Summary
-
-1. Combat Ship
-2. Colonial Cannon
-3. Shark Mob
-4. Coffee Plant Set
-5. Cinnamon Plant Set
-6. Palm Oil Tree Set
-7. Egrang Rideable
-8. Tiger
-9. CyberWorld Mining Resource Set — 3 progression tiers
-
-## Required Item Summary
-
-1. Coffee Harvest Item
-2. Cinnamon Harvest Item
-3. Palm Fruit Harvest Item
-4. Fertilizer Item
-5. Lele Catch Item
-6. Tuna Catch Item
-7. Hiu Catch Item
-8. Bakso Treat Item
-9. Mining Tool Upgrade Set — 3 progression tiers
-
-## Benteng Martello
-
-### Naval and Shore Combat
+### Benteng Martello
 
 #### Combat Ship
-Type: MODEL
-
-**Function**  
-Kapal individual yang digunakan player selama Naval Combat.
-
-**Visual Brief**  
-Satu reusable combat ship untuk seluruh participant. Wajib memiliki state aktif dan state destroyed/disabled yang terbaca jelas ketika kapal sudah tidak dapat digunakan lagi. Model tidak perlu variasi dekoratif per-player.
+Type: 3D Model
+**Function:** Kapal individual untuk pertempuran laut.
+**Visual Brief:** Reusable combat ship yang tetap mudah dibaca saat bergerak di laut.
+**Required States:** Active; Destroyed / Disabled.
 
 #### Colonial Cannon
-Type: MODEL
-
-**Function**  
-Meriam yang digunakan pada kapal dan pinggir pantai untuk menembak kapal lawan.
-
-**Visual Brief**  
-Satu reusable cannon bergaya peninggalan era kolonial. Wajib memiliki arah tembak yang mudah dibaca serta firing response sederhana; tidak membutuhkan mekanisme visual tambahan di luar kebutuhan tembak.
+Type: 3D Model
+**Function:** Meriam untuk kapal dan area pantai.
+**Visual Brief:** Reusable cannon bergaya peninggalan kolonial dengan arah tembak jelas.
+**Required States:** Idle; Firing Response.
 
 #### Shark Mob
-Type: MODEL
+Type: 3D Model
+**Function:** Bahaya bagi player di air.
+**Visual Brief:** Hiu sederhana yang mudah terlihat di perairan.
+**Required States:** Swim; Attack.
 
-**Function**  
-Environmental hazard bagi player yang berada terlalu lama di air.
+#### Benteng Martello Guide
+Type: NPC Appearance
+**Function:** Memperkenalkan aktivitas.
+**Visual Brief:** Pemandu sejarah yang ramah dan mudah dikenali.
 
-**Visual Brief**  
-Shark mob yang dapat berenang mengelilingi area perairan dan memiliki animation dasar swim serta attack.
-
-## Perkebunan
-
-### Growing and Harvesting
+### Mari Berkebun
 
 #### Coffee Plant Set
-Type: MODEL
-
-**Function**  
-Tanaman kopi untuk loop Plant → Maintain → Grow → Harvest.
-
-**Visual Brief**  
-Coffee plant dengan state yang cukup untuk membedakan planted/growing/ready-to-harvest dan state setelah panen bila dibutuhkan.
+Type: 3D Model
+**Function:** Tanaman kopi dari tanam sampai panen.
+**Required States:** Planted; Growing; Ready to Harvest; Post-Harvest bila diperlukan.
 
 #### Cinnamon Plant Set
-Type: MODEL
-
-**Function**  
-Tanaman/pohon kayu manis untuk loop Maintain → Harvest → Regrowth.
-
-**Visual Brief**  
-Cinnamon plant/tree dengan harvest-ready dan post-harvest/regrowth state yang terbaca.
+Type: 3D Model
+**Function:** Kayu manis untuk maintain, harvest, dan regrowth.
+**Required States:** Ready to Harvest; Post-Harvest / Regrowth.
 
 #### Palm Oil Tree Set
-Type: MODEL
-
-**Function**  
-Pohon sawit untuk loop Maintain → Fruit Growth → Harvest → Regrowth.
-
-**Visual Brief**  
-Palm oil tree dengan fruit-ready dan post-harvest/regrowth state. Satire sawit tetap berada pada narasi dan tidak membutuhkan visual exaggeration khusus.
+Type: 3D Model
+**Function:** Sawit untuk fruit growth, harvest, dan regrowth.
+**Required States:** Fruit Ready; Post-Harvest / Regrowth.
 
 #### Coffee Harvest Item
 Type: ITEM
-
-**Function**  
-Hasil panen kopi yang dapat dijual.
-
-**Visual Brief**  
-Item hasil kopi yang mudah dibedakan dari komoditas lain.
+**Function:** Hasil kopi yang dapat dijual.
 
 #### Cinnamon Harvest Item
 Type: ITEM
-
-**Function**  
-Hasil panen kayu manis yang dapat dijual.
-
-**Visual Brief**  
-Item kayu manis yang mewakili hasil harvest.
+**Function:** Hasil kayu manis yang dapat dijual.
 
 #### Palm Fruit Harvest Item
 Type: ITEM
-
-**Function**  
-Hasil buah sawit yang dapat dijual.
-
-**Visual Brief**  
-Item tandan/buah sawit yang mewakili hasil harvest.
+**Function:** Hasil buah sawit yang dapat dijual.
 
 #### Fertilizer Item
 Type: ITEM
+**Function:** Mempercepat pertumbuhan/pemulihan tanaman.
 
-**Function**  
-Item untuk mempercepat growth atau recovery tanaman.
+#### Plantation Guide
+Type: NPC Appearance
+**Function:** Memperkenalkan aktivitas berkebun.
+**Visual Brief:** Hangat, antusias, sedikit terlalu bangga pada sawit.
 
-**Visual Brief**  
-Satu simple fertilizer item. Tidak diperlukan beberapa jenis pupuk.
-
-## Egrang
-
-### Traditional Mobility Activity
+### Main Egrang
 
 #### Egrang Rideable
-Type: MODEL
+Type: 3D Model
+**Function:** Rideable traditional toy untuk movement lebih tinggi.
+**Required States:** Mounted; Dismounted.
 
-**Function**  
-Rideable traditional toy yang membuat player bergerak pada posisi lebih tinggi.
+#### Old Man
+Type: NPC Appearance
+**Function:** Memperkenalkan egrang sebagai solusi jalan rusak.
 
-**Visual Brief**  
-Sepasang egrang tradisional sebagai satu rideable gameplay asset. Harus mendukung mounted movement dan dismount tanpa balance meter, falling simulation, atau animation system yang kompleks.
-
-## Mancing di Empang
-
-### Custom Fishing Results
+### Mancing Dulu
 
 #### Lele Catch Item
 Type: ITEM
-
-**Function**  
-Custom fishing result dari empang.
-
-**Visual Brief**  
-Item ikan Lele yang langsung terbaca sebagai hasil tangkapan.
+**Function:** Hasil pancing Lele.
 
 #### Tuna Catch Item
 Type: ITEM
-
-**Function**  
-Custom fishing result dari empang.
-
-**Visual Brief**  
-Item ikan Tuna yang dapat dibedakan dari Lele.
+**Function:** Hasil pancing Tuna.
 
 #### Hiu Catch Item
 Type: ITEM
+**Function:** Rare/absurd fishing result.
 
-**Function**  
-Rare/absurd fishing result dari empang.
+#### Fisherman
+Type: NPC Appearance
+**Function:** Memperkenalkan dan menemani aktivitas memancing.
 
-**Visual Brief**  
-Item Hiu yang tetap terbaca sebagai hasil pancing dan disederhanakan agar cocok sebagai inventory item.
+#### Toko Madura Stall
+Type: 3D Model
+**Function:** Tempat player menjual hasil tangkapan untuk mendapatkan uang.
+**Visual Brief:** Toko kecil dekat area pemancingan yang mudah dikenali sebagai titik penjualan.
 
-## Harimau Lepas
-
-### Basement Encounter
+### Macan Lepas
 
 #### Tiger
-Type: MODEL
+Type: 3D Model
+**Function:** Musuh utama pada encounter di basement.
+**Required States:** Idle / Roam; Run / Chase; Attack; Hit Reaction; Defeat.
 
-**Function**  
-PvE enemy utama yang roaming, mengejar, dan menyerang player di basement.
+#### Black Briefcase
+Type: 3D Model
+**Function:** Properti Businessman dan visual cue untuk imbalan transaksi.
+**Required States:** Closed; Open.
 
-**Visual Brief**  
-Tiger mob dengan animation dasar idle/roam, run/chase, attack, hit reaction, dan defeat. Tidak membutuhkan multi-phase boss state.
+#### Businessman
+Type: NPC Appearance
+**Function:** Menawarkan pekerjaan dan memberikan imbalan setelah completion.
+**Visual Brief:** Pria formal rapi, percaya diri, kaya, sedikit arogan, membawa Black Briefcase.
 
-#### Bakso Treat Item
-Type: ITEM
-
-**Function**  
-Payoff sederhana untuk janji Zookeeper setelah player berhasil menangani harimau.
-
-**Visual Brief**  
-Satu item Bakso yang dapat diberikan setelah completion. Tidak memerlukan sistem makanan/quest tambahan di luar pemberian item.
-
-## CyberWorld Mining
-
-### Three-Tier Mining Progression
+### Tambang Masa Depan
 
 #### CyberWorld Mining Resource Set
-Type: MODEL
-
-**Function**  
-Resource/deposit yang ditambang dan ditukar menjadi currency sepanjang tiga tingkat pulau.
-
-**Visual Brief**  
-Satu set dengan tiga progression tiers yang terbaca sebagai Tier 1, Tier 2, dan Tier 3. Tier lebih tinggi harus terlihat lebih bernilai tanpa mengarang nama mineral, lore, atau resource family baru.
+Type: 3D Model
+**Function:** Resource/deposit yang ditambang dan ditukar menjadi Shared Currency.
+**Required States:** Tier 1; Tier 2; Tier 3.
+**Visual Brief:** Satu keluarga visual dengan tier lebih tinggi terlihat lebih bernilai tanpa mengarang nama mineral/lore.
 
 #### Mining Tool Upgrade Set
 Type: ITEM
+**Function:** Equipment yang meningkat mengikuti progression tiga tingkat.
+**Required States:** Basic; Improved; Advanced.
 
-**Function**  
-Mining equipment yang meningkat sejalan dengan progression tiga pulau.
+#### Job Recruiter
+Type: NPC Appearance
+**Function:** Memperkenalkan tawaran kerja dan progression tambang.
 
-**Visual Brief**  
-Tiga progression variants: basic, improved, dan advanced secara fungsi/visual. Penamaan final tidak perlu dipaksakan sebagai nama in-game sampai ada approval tambahan. Tidak ada crafting system baru.
+## Purchasable Items Assets
 
-## NPC Appearance Boundary
+#### Flying Motorcycle
+Type: 3D Model
+**Function:** Kendaraan utama yang dapat digunakan setelah semua bagian terkumpul.
+**Required States:** Incomplete / Locked; Complete / Ready; Flying; Out of Fuel.
 
-Enam narrator menggunakan standard humanoid/NPC base dengan appearance berbeda:
+#### Flying Motorcycle Part Set
+Type: Item Set
+**Function:** Komponen yang dibeli bertahap sebelum motor siap digunakan.
+**Required Parts:** Motorcycle Body; Engine; Flight Module; Fuel.
 
-- Benteng Martello Guide
-- Plantation Guide
-- Old Man
-- Fisherman
-- Zookeeper
-- Job Recruiter
+#### Dealer NPC
+Type: NPC Appearance
+**Function:** Menjaga dealer dan menjelaskan sistem pembelian motor per bagian.
 
-Appearance/skin diperlukan untuk membedakan karakter, tetapi tidak dihitung sebagai custom 3D model dalam current model scope.
+#### Fuel Set
+Type: Item Set
+**Function:** Fuel untuk menggunakan Flying Motorcycle.
+**Variants:** Pertamak; Pertali; Okibos.
+**Gameplay Balance:** Pertamak > Pertali = Okibos.
+**Player Text:** Pertamak = “100% ASLI DIJAMIN.”; Pertali = “Bensin Sejuta Umat”; Okibos = “Energi Masa Depan”.
 
-## Audio Boundary
+## Singleplayer Motion Tracking — Presentation Requirements
 
-Semua spoken narrative dimiliki oleh `work/voice-production.md`. Tidak ada standalone non-dialogue AUDIO atau PARTICLE resource yang diwajibkan oleh current approved scope.
+Motion Interaction remains **Experimental** until venue testing.
+
+### Menghalau Bajak Laut
+- Fortress Health Bar.
+- Cannon Aim / Fire feedback.
+- Ship path / attack-point readability.
+
+### Menanam Pohon
+- Active tool feedback for sekop, bibit, alat penyiram, pupuk.
+- Sequence success/fail feedback.
+
+### Memancing Ikan
+- Fishing Timing Indicator with Green Zone.
+- Stamina Indicator.
+- Catch / Miss feedback.
+
+## Boundaries
+- Do not add unsupported decorative assets.
+- Motion-control presentation remains provisional until venue testing.
+- Nine approved Map View references belong to the approved preview package and source record.
