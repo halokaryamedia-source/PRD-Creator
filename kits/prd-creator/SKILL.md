@@ -1,7 +1,7 @@
 ---
 name: prd-creator
 description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover and complete project requirements, preview for approval, produce the protected PRD core 01–03, complete 04 Production Assets, extract and produce Voice when required, then validate the current consolidated project delivery without inventing upstream project facts.
-version: 1.14.0
+version: 1.14.1
 ---
 
 # PRD Creator
@@ -45,6 +45,45 @@ Voice is downstream from accepted project/PRD meaning. It is optional by project
 | technical/file routing | `AGENTS.md` |
 
 Open only the smallest owner required for the active boundary.
+
+## Execution gate — preserve quality without replaying unchanged work
+
+Before opening more owners or replaying a Flow, classify the request:
+
+```text
+changes HOW PRD-Creator works
+→ exit Production Execution
+→ root AGENTS.md routes Developing
+
+new / materially uncertain project meaning
+→ enter the smallest affected production Flow
+
+approved bounded project or Voice change
+→ Revision Fast Path
+```
+
+For a bounded revision, determine the **first changed canonical owner** and the **downstream owners actually invalidated by that change** before reading or writing broadly.
+
+Default behavior:
+
+- read only the affected canonical state plus direct dependencies needed to preserve correctness;
+- do not re-inventory unchanged source, replay the complete Simple Chat Preview, reread the Golden artifact, reopen all Voice work, or run broad visual QA merely because a project file changed;
+- batch affected canonical edits before derived output is regenerated;
+- rerender at most once per stable logical revision when derived presentation is invalidated;
+- use the existing validation owner for one mechanical check plus one integrated review of the invalidated scope; broader proof is triggered only by the conditions defined there;
+- run handoff validation only when the revision actually crosses a handoff boundary;
+- reopen Voice only when changed accepted meaning invalidates Voice scope or content, such as Speaker, Channel, Trigger, Purpose, required communication, source timing, or another Voice-owned input;
+- update continuity/status owners only when the active boundary, blocker, deferred boundary, milestone, or next meaningful step actually changes.
+
+Scope reduction must never hide a real dependency. Expand beyond the bounded path only when current evidence proves one of these conditions:
+
+- a shared/global rule affected by the change reaches additional objectives/packages;
+- targeted inspection reveals a material contradiction or stale dependent owner;
+- template/CSS/JS/runtime/page composition changed and therefore broader visual proof is required;
+- accepted project meaning changed in a way that invalidates downstream Voice;
+- the user explicitly requests a broader audit/review.
+
+If none of those triggers exists, do not replay unchanged workflow stages for ceremony.
 
 ## Protected baseline — PRD core 01–03
 
@@ -344,20 +383,25 @@ audio-only defect
 
 # Revision fast paths
 
+Use these only after the Execution Gate identifies a bounded revision. Expand scope only when an expansion trigger above is proven.
+
 ## PRD / project revision
 
 ```text
 approved bounded change
-→ affected requirement/topology/implication checks
+→ identify first changed canonical owner
+→ determine actually invalidated downstream owners
+→ inspect/update affected requirement/topology/implications only
 → affected preview only when interpretation changed
 → affected canonical PRD/04 source
-→ one planned rerender
-→ one mechanical check
-→ targeted semantic/visual review
-→ reopen Voice only when the accepted change invalidates Voice scope/content
+→ one planned rerender when derived presentation changed
+→ one mechanical check + one integrated targeted review
+→ reopen Voice only when accepted Voice-owned inputs changed
+→ handoff validation only when crossing the handoff boundary
+→ stop
 ```
 
-Do not re-inventory unchanged source or replay unrelated objectives.
+Do not re-inventory unchanged source, replay unrelated objectives, reread the Golden artifact, or regenerate unaffected downstream work.
 
 ## Voice-only revision
 
@@ -367,7 +411,7 @@ changed Voice requirement or production decision
 → affected Voice/Speaker scope only
 → Communication Conservation
 → integrated readiness
-→ rerender current project HTML if canonical presentation changed
+→ one rerender only if canonical project presentation changed
 → recheck affected 04 AUDIO presentation
 → stop
 ```
