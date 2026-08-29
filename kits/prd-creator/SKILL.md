@@ -1,7 +1,7 @@
 ---
 name: prd-creator
 description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover and complete project requirements, preview for approval, produce the protected PRD core 01–03, complete 04 Production Assets, extract and produce Voice when required, then validate the current consolidated project delivery without inventing upstream project facts.
-version: 1.14.1
+version: 1.14.0
 ---
 
 # PRD Creator
