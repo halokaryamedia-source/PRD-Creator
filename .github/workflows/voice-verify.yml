@@ -5,14 +5,8 @@ on:
     branches:
       - Local
     paths:
-      - "kits/prd-creator/README.md"
-      - "kits/prd-creator/AGENTS.md"
-      - "kits/prd-creator/SKILL.md"
-      - "kits/prd-creator/voice/**"
+      - "kits/prd-creator/voice/**/*.py"
       - "kits/prd-creator/validator/validate_voice.py"
-      - "docs/foundation/05-voice-requirement-extraction.md"
-      - "docs/foundation/06-elevenlabs-script-production.md"
-      - "docs/foundation/07-voice-validation-delivery.md"
       - "tests/test_voice_contracts.py"
       - "requirements.lock.txt"
       - ".github/workflows/voice-verify.yml"
@@ -21,14 +15,8 @@ on:
       - Local
       - main
     paths:
-      - "kits/prd-creator/README.md"
-      - "kits/prd-creator/AGENTS.md"
-      - "kits/prd-creator/SKILL.md"
-      - "kits/prd-creator/voice/**"
+      - "kits/prd-creator/voice/**/*.py"
       - "kits/prd-creator/validator/validate_voice.py"
-      - "docs/foundation/05-voice-requirement-extraction.md"
-      - "docs/foundation/06-elevenlabs-script-production.md"
-      - "docs/foundation/07-voice-validation-delivery.md"
       - "tests/test_voice_contracts.py"
       - "requirements.lock.txt"
       - ".github/workflows/voice-verify.yml"
@@ -54,6 +42,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.lock.txt
 
       - name: Install locked dependencies
         run: |

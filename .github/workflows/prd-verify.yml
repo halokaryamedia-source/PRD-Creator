@@ -5,20 +5,14 @@ on:
     branches:
       - Local
     paths:
-      - "kits/prd-creator/README.md"
-      - "kits/prd-creator/AGENTS.md"
-      - "kits/prd-creator/SKILL.md"
-      - "kits/prd-creator/intake/**"
-      - "kits/prd-creator/document/**"
-      - "kits/prd-creator/production-assets/**"
-      - "kits/prd-creator/renderer/**"
+      - "kits/prd-creator/intake/**/*.py"
+      - "kits/prd-creator/document/**/*.py"
+      - "kits/prd-creator/production-assets/**/*.py"
+      - "kits/prd-creator/renderer/**/*.py"
       - "kits/prd-creator/template/**"
       - "kits/prd-creator/validator/_engine.py"
       - "kits/prd-creator/validator/validate.py"
       - "kits/prd-creator/validator/validate_handoff.py"
-      - "docs/foundation/02-source-intake-recovery.md"
-      - "docs/foundation/03-prd-generation.md"
-      - "docs/foundation/04-prd-validation-handoff.md"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
@@ -27,20 +21,14 @@ on:
       - Local
       - main
     paths:
-      - "kits/prd-creator/README.md"
-      - "kits/prd-creator/AGENTS.md"
-      - "kits/prd-creator/SKILL.md"
-      - "kits/prd-creator/intake/**"
-      - "kits/prd-creator/document/**"
-      - "kits/prd-creator/production-assets/**"
-      - "kits/prd-creator/renderer/**"
+      - "kits/prd-creator/intake/**/*.py"
+      - "kits/prd-creator/document/**/*.py"
+      - "kits/prd-creator/production-assets/**/*.py"
+      - "kits/prd-creator/renderer/**/*.py"
       - "kits/prd-creator/template/**"
       - "kits/prd-creator/validator/_engine.py"
       - "kits/prd-creator/validator/validate.py"
       - "kits/prd-creator/validator/validate_handoff.py"
-      - "docs/foundation/02-source-intake-recovery.md"
-      - "docs/foundation/03-prd-generation.md"
-      - "docs/foundation/04-prd-validation-handoff.md"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
@@ -66,6 +54,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.lock.txt
 
       - name: Install locked dependencies
         run: |

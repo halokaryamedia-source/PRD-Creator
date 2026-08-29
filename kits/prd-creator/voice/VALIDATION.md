@@ -8,6 +8,8 @@ The default human-facing presentation is the same `output/v<document.version>/pr
 
 Start from the current Voice state and read only the canonical requirements/script plus `output/v<document.version>/prd.html` when consolidated HTML is in scope. Reopen accepted PRD only when a project fact needs verification.
 
+For a requested multi-ID Voice revision/generation batch, enter Flow 7 after the requested canonical Voice state is stable. Do not rerun full project validation or consolidated HTML delivery after each intermediate Voice ID unless the user explicitly requests per-line handoff.
+
 ## Mechanical validation
 
 Run:
@@ -45,20 +47,16 @@ Do not create separate persisted scorecards for these lenses.
 
 ## Production Assets HTML review
 
-When the consolidated project HTML is claimed visually current, verify:
+The exact visible `04 Production Assets` AUDIO presentation contract is owned by `../production-assets/CONTRACT.md` and implemented by the shared renderer/compositor. Flow 7 verifies current Voice parity against that owner; it does not redefine the field schema or layout here.
+
+When the consolidated project HTML is claimed visually current, verify only the Voice-specific delivery invariants:
 
 - the accepted PRD sidebar hierarchy/page identities remain unchanged;
-- gameplay/objective sections remain under `03 Development`;
-- `04 Production Assets` is additive and links matching gameplay/shared pages rather than a separate Voice category;
-- Voice appears as `AUDIO` inside the correct natural gameplay moment;
-- the resource title is `<Character> — <Line Title>`;
-- visible fields are Function, Voice Preset, ElevenLabs Model, Estimated Duration, and Prompt;
-- `ElevenLabs Model` displays `Eleven v3`;
-- the copied Prompt remains exact canonical performance content;
-- performance-direction tags remain visually distinct from spoken dialogue;
-- separate visible Speaker, Flow 5 Context/Trigger, line-count, Primary Speaker, and Voice Setup presentation is absent under the current 04 contract;
-- Flow 5 Purpose/requirements/source refs/reasoning/QA stay out of the visible resource;
-- no clipping/overlap or obvious visual break from the PRD design language exists.
+- Voice appears in the correct accepted gameplay/shared moment under the current 04 AUDIO contract;
+- the rendered Voice resource maps to the correct canonical Voice entry;
+- the rendered/copied Prompt preserves the exact canonical performance payload;
+- Voice-internal Flow 5 requirements, source refs, reasoning, QA, and other non-presentation metadata do not leak into the visible resource;
+- no clipping/overlap or obvious visual break prevents the current 04 AUDIO contract from being read correctly.
 
 Record:
 
