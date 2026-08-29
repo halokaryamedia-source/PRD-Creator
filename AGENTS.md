@@ -116,7 +116,7 @@ detect mismatch
 → inspect the current source/owner
 → identify stale continuity vs stale implementation
 → reconcile the correct owner
-→ continue from actual state
+→ continue from actual current state
 ```
 
 Do not blindly implement a stale next step, and do not ignore `next-action` to pick an unrelated TODO/review finding. Old TODOs, backlog entries, audit findings, comments, and Git history are not active work unless current user intent or `next-action` promotes them.
