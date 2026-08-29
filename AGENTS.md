@@ -4,9 +4,11 @@ This repository is project memory. Current repository/project sources are author
 
 ## Branch and boot
 
-- `Local` is the permanent working authority.
-- Work directly on `Local`; do not create routine task branches/PRs.
-- `main` changes only when the user explicitly requests it.
+- `Local` is the permanent development / working authority.
+- Routine work happens directly on `Local`; do not create routine task branches/PRs.
+- `main` is the stable / release branch and is not a routine development target.
+- Promote `Local` to `main` only when the user explicitly declares a stable/release promotion and the relevant release proof passes.
+- A dedicated `Local` → `main` PR is valid at that release boundary only; it does not change the normal direct-to-`Local` workflow.
 
 Choose the smallest **sufficient** boot for the task. Efficiency must not remove context that prevents wrong work.
 

@@ -2,7 +2,16 @@
 
 PRD-Creator turns project discussion + source material into a development-ready PRD and, when needed, 04 Production Assets plus downstream Voice Production in the same project delivery.
 
-Development authority is the `Local` branch. Repository behavior is routed by [AGENTS.md](AGENTS.md); GitHub execution is governed by [GITHUB_RULES.md](GITHUB_RULES.md). Stable product orientation lives in [CONTEXT.md](CONTEXT.md).
+## Branch Model
+
+```text
+Local  → active development / working authority
+main   → stable / release branch
+```
+
+Routine development happens directly on `Local`; routine task branches and PRs are not required. `main` changes only through an explicit stable/release promotion. A release promotion may use a dedicated `Local` → `main` pull request and must pass the full `Release Verify` gate.
+
+Repository behavior is routed by [AGENTS.md](AGENTS.md); GitHub execution is governed by [GITHUB_RULES.md](GITHUB_RULES.md). Stable product orientation lives in [CONTEXT.md](CONTEXT.md).
 
 ## Developer Quick Start
 
@@ -91,3 +100,7 @@ identify mode
 ```
 
 Generated delivery is never a source of truth. Fix canonical state first, then regenerate.
+
+## License
+
+This repository is **not open source**. It is publicly accessible for development convenience, but use is restricted to personal/internal use by the copyright holder and explicitly authorized collaborators. See [LICENSE](LICENSE).
