@@ -308,6 +308,9 @@ Validation is evidence, not ceremony.
 - Unsupported large/binary transfer retry budget with the same connector/method: 0.
 - Existing-artifact replacement that fails because the connector cannot natively carry the required final payload: 0 workaround retries; use a fitting channel or manual handoff.
 - A malformed request may be corrected once only if the underlying operation still passes TOOL FIT and transfer preflight.
+- If capability is genuinely uncertain, allow at most **one bounded probe** to learn whether the method works. A known mismatch does not receive a probe.
+- For one GitHub transfer method, total trial-and-error is capped at **2 attempts or 2 minutes of active experimentation, whichever comes first**. If one tool call itself exceeds the time ceiling, do not automatically repeat it.
+- The time/attempt ceiling is a maximum, not a target. Stop earlier whenever the failure class is already known or a fitting fallback is clearly faster.
 - Regression tests are for material, realistically recurring invariants—not every typo, one-time migration, cosmetic wording change, or temporary state.
 - Do not use exact natural-language prose as a test contract unless the exact string itself is a machine requirement.
 - Static inspection and CI prove only the contracts they actually exercise. They do not prove browser visuals, audio quality, local runtime behavior, deployment success, or another capability that was not actually executed.
@@ -337,6 +340,9 @@ owner reads                    1–3
 history reads                  0
 broad scans                    0
 artifact transfer preflight    1 when applicable
+transfer capability probe      <= 1 only when genuinely uncertain
+transfer-method attempts       <= 2 total
+transfer-method trial time     <= 2 minutes active experimentation
 new files                      0
 new workflows                  0
 new abstractions               0
@@ -359,7 +365,7 @@ repository side effects        0 unless required
 high-impact mutations          0 unless explicitly authorized
 ```
 
-Exceed a budget only when the current task provides concrete evidence that more work is necessary.
+Exceed a budget only when the current task provides concrete evidence that more work is necessary. The transfer-method time/attempt ceiling is a hard efficiency stop, not a budget to exceed for convenience.
 
 # Conditional GitHub Surfaces
 
@@ -383,6 +389,7 @@ capability mismatch / unsupported payload type or transfer mode → 0 retries; c
 - If a mutating request has an unknown outcome, refetch the target state first. Retry only when the intended mutation is confirmed absent; this prevents duplicate branches, issues, comments, releases, or writes.
 - Do not reinterpret a capability mismatch as a malformed-request debugging exercise. If the tool cannot natively carry the required artifact/package, stop that method.
 - Do not respond to repeated 422/transfer failures by changing repository structure, introducing placeholders/fragments/loaders, or descending into low-level Git object manipulation merely to bypass the connector.
+- When one transfer method reaches **2 attempts or 2 minutes of active experimentation**, stop that method even if another small variation appears possible. Move to the already-defined fallback instead of extending the experiment.
 
 ## Special files, Git LFS, binaries, submodules, generated artifacts, and large transfers
 
