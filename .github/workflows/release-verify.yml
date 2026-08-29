@@ -30,6 +30,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.lock.txt
+          python -m pip check
+
       - name: Verify repository contracts
         run: python tools/verify_repository.py
 
