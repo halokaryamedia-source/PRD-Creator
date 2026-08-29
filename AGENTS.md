@@ -49,7 +49,7 @@ Open `docs/knowledge/skills/activation-matrix.md` only when the correct speciali
 
 ## GitHub work
 
-[GITHUB_RULES.md](GITHUB_RULES.md) is the canonical ChatGPT ↔ GitHub operating policy. It owns GitHub branch/ref authority, tool fit, write/commit/history discipline, CI/API safety, verification economy, retries, and STOP behavior.
+[GITHUB_RULES.md](GITHUB_RULES.md) is the canonical ChatGPT ↔ GitHub operating policy. It owns GitHub branch/ref authority, tool + transfer gate, manual handoff, write/commit/history discipline, verification/failure/recovery policy, CI/API safety, and STOP behavior.
 
 Repository-specific rules here may narrow domain behavior but do not duplicate or weaken that policy.
 
@@ -116,7 +116,7 @@ detect mismatch
 → inspect the current source/owner
 → identify stale continuity vs stale implementation
 → reconcile the correct owner
-→ continue from actual current state
+→ continue from actual state
 ```
 
 Do not blindly implement a stale next step, and do not ignore `next-action` to pick an unrelated TODO/review finding. Old TODOs, backlog entries, audit findings, comments, and Git history are not active work unless current user intent or `next-action` promotes them.
