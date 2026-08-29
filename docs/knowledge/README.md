@@ -1,6 +1,6 @@
 # Repository Knowledge
 
-Updated: 2026-08-17
+Updated: 2026-08-30
 
 This directory is the navigation and operating-memory layer for PRD-Creator. It does **not** define a second boot policy or duplicate the contracts owned by root/foundation/kits.
 
@@ -35,7 +35,7 @@ Do not use this directory index as a reason to broad-read every knowledge file.
 | Maintenance workflow | `workflows/maintenance.md` |
 | Skill inventory | `skills/README.md` |
 | Ambiguous specialist selection | `skills/activation-matrix.md` |
-| Durable decision register | `decisions/README.md` |
+| Durable decision index + current decision records | `decisions/README.md` |
 | Decision-recording threshold | `decisions/recording-policy.md` |
 | Current + historical review evidence | `reviews/README.md` |
 | Future/non-active work | `operations/backlog.md` |
@@ -62,7 +62,8 @@ docs/knowledge/
 ├── decisions/
 │   ├── README.md
 │   ├── recording-policy.md
-│   └── <decision records>.md
+│   ├── <current decision records>.md
+│   └── <historical snapshots>.md
 ├── reviews/
 │   ├── README.md
 │   ├── current-validation.md

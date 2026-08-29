@@ -5,13 +5,15 @@ This folder stores project-specific production packages. Reusable behavior belon
 ## Lifecycle
 
 ```text
-active project → workspace/active/<project>/
-saved project  → workspace/archive/<project>/
+current project  → workspace/active/<project>/
+inactive retained project → workspace/archive/<project>/
 ```
+
+A project moves to `archive/` only when its active production status actually ends. Do not move projects merely to make the repository look smaller.
 
 Project packages grow only when the current production stage needs an artifact. Do not pre-create a full folder tree.
 
-## Core project artifacts
+## Canonical Project Artifacts
 
 ```text
 Flow 2
@@ -20,181 +22,85 @@ state/requirement-register.yaml
 state/intake-state.yaml
 
 Flow 3 — PRD core 01–03
-work/content.md              canonical PRD-core meaning
-work/render-data.json        deterministic PRD-core projection
+work/content.md
+work/render-data.json
 
-Bounded 04 Production Assets, when justified
-work/asset-requirements.md   canonical non-Voice 04 resource requirements
+04 Production Assets, when justified
+work/asset-requirements.md
 
 Flow 4
 work/acceptance.md
 state/handoff-state.yaml
 
+Voice, only when used
+state/voice-state.yaml
+work/voice-requirements.md
+work/voice-production.md
+work/voice-acceptance.md
+
 Versioned delivery
-output/README.md                         stable handoff / resume navigator
-output/v<document.version>/prd.html      human-facing project document
-output/v<document.version>/context.md    AI development context
-output/v<document.version>/index.json    compact AI navigation + context line ranges
+output/README.md
+output/v<document.version>/prd.html
+output/v<document.version>/context.md
+output/v<document.version>/index.json
 ```
 
-The normal delivery entry point is:
+The normal delivery command is:
 
 ```bash
 python kits/prd-creator/renderer/delivery.py \
   workspace/active/<project>/
 ```
 
-`source/originals/`, project-level notes, and other supporting files are conditional. Keep them only when they provide real continuity or production value.
+PRD mechanical validation uses `kits/prd-creator/validator/validate.py`. PRD → Voice handoff uses `kits/prd-creator/validator/validate_handoff.py` only at that boundary. Voice mechanical validation uses `kits/prd-creator/validator/validate_voice.py` only when Voice scope exists.
 
-## Version rule
+Exact PRD, Production Assets, renderer, and Voice contracts remain in their named owners under `kits/prd-creator/`; this workspace guide does not redefine their field schemas.
 
-`document.version` is project/PRD release metadata, not an edit counter. The delivery folder adds the `v` prefix:
+## Retention and Repository Hygiene
+
+Keep files because they preserve current production truth, required evidence, or an intentionally retained deliverable, not because they once existed during processing.
+
+### Keep
+
+- canonical project state and work required to reproduce current accepted meaning;
+- source/originals when direct future inspection materially benefits from retaining the bytes;
+- the current versioned delivery;
+- older delivery versions only when they are intentionally retained milestones or approvals;
+- a project-specific approved preview before formal handoff only while current project state explicitly references it.
+
+### Remove after they are superseded
+
+- transfer fragments, base64 payload chunks, `.regen-transfer/`, temporary loaders, helper manifests, and upload-only files;
+- generated preview/cache files with no current approval or reproduction value;
+- duplicate approval-marker files when canonical project state already records the approval;
+- obsolete generated deliveries that are neither the current version nor an intentionally retained milestone.
+
+Never remove canonical source/state or approval evidence merely to reduce repository size. Never rewrite history to hide old generated files; clean the current tree and let Git history remain history.
+
+Large static originals may remain externally retained when `intake/SOURCE-INTAKE.md` allows it and current production meaning/provenance is safely persisted.
+
+## Version Rule
+
+`document.version` is project/release metadata, not an edit counter.
 
 ```text
 document.version: 1.0.0
 → output/v1.0.0/
 ```
 
-A downstream-only Production Assets refresh may regenerate the current version folder when accepted project/PRD meaning did not change.
+A downstream-only 04 or Voice presentation refresh may regenerate the current version when accepted PRD meaning did not enter a new declared revision.
 
-## 04 Production Assets
+## 04 Production Assets and Voice
 
-Production Asset needs are recovered while the project is understood from discussion/source. They are **not** normally discovered by rereading finished 01–03 and brainstorming extra assets afterward.
+Production Asset needs come from the same approved project model as PRD core 01–03. Do not rediscover them by brainstorming over generated HTML.
 
-The approved project model can feed both:
+- non-Voice 04 contract → `kits/prd-creator/production-assets/CONTRACT.md`
+- Voice extraction/craft/validation → `kits/prd-creator/voice/`
+- consolidated presentation → `kits/prd-creator/renderer/CONTRACT.md`
 
-```text
-approved project model
-├─ work/content.md → 01–03
-└─ work/asset-requirements.md → non-Voice 04
-```
+Voice stays canonical in its Voice project files and is not duplicated into `asset-requirements.md`.
 
-Create `work/asset-requirements.md` only when the project has real non-Voice production resources that must be prepared. The exact contract is `kits/prd-creator/production-assets/CONTRACT.md`.
-
-The current visible 04 resource types are:
-
-```text
-MODEL
-ITEM
-UI / TEXT
-AUDIO
-PARTICLE
-```
-
-Visible authoring is reader-first and moment-first:
-
-- MODEL / ITEM / PARTICLE → `Function` + literal `Visual Brief` + optional real approved numeric/block `Size`;
-- UI / TEXT → `Function` + exact player-facing `Player Text`;
-- standalone non-dialogue AUDIO → `Function` + short `Audio Brief`;
-- dialogue AUDIO → canonical Voice data from the Voice Production owners.
-
-Do not create gameplay logic, reset/route/threshold behavior, generic sequences, empty categories, duplicate shared assets, speculative decoration, placeholder sizes, or generic metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Used At`, or `Build Specs`.
-
-The current parser still accepts internal source-group headings for backward compatibility:
-
-```text
-3D Models
-UI & Information
-Audio
-Visual Effects & Presentation
-```
-
-Those headings are **internal storage only**. They are not the visible 04 taxonomy or page dashboard.
-
-When 04 exists, the normal delivery pass regenerates the same current versioned project document:
-
-```text
-output/v<document.version>/prd.html
-= approved PRD core 01–03
-+ 04 Production Assets
-```
-
-Production Assets navigation is objective-first and page bodies are moment-first:
-
-```text
-04 Production Assets
-   Global / Shared Assets      # only when real shared resources exist
-   <gameplay section title>
-      <accepted PRD label>
-
-page body
-→ 01 · <natural gameplay moment>
-   → TYPE
-   → Resource Name
-   → resource-specific fields
-```
-
-Gameplay/objective PRD sections remain under `03 Development`; downstream composition does not renumber or rewrite accepted 01–03 page identities.
-
-## Downstream Voice
-
-Create Voice artifacts only after entering Voice Flow 5–7:
-
-```text
-state/voice-state.yaml
-work/voice-requirements.md
-work/voice-production.md
-work/voice-acceptance.md
-```
-
-Detailed Voice procedure lives under `kits/prd-creator/voice/`; mechanical validation uses `kits/prd-creator/validator/validate_voice.py`.
-
-Voice remains canonical in those project files and is not duplicated into `asset-requirements.md`. Its derived 04 presentation appears as an `AUDIO` resource inside the matching gameplay moment:
-
-```text
-AUDIO
-<Character> — <Line Title>
-
-Function
-...
-
-Voice Preset
-...
-
-ElevenLabs Model
-Eleven v3
-
-Estimated Duration
-...
-
-Prompt
-<exact canonical performance payload>
-```
-
-Flow 5 Trigger/Purpose/source refs remain in Voice owners and are not visible Production Asset metadata.
-
-## Typical package
-
-A project may eventually contain:
-
-```text
-workspace/active/<project>/
-├── source/originals/             # conditional
-├── state/
-│   ├── source-inventory.yaml
-│   ├── requirement-register.yaml
-│   ├── intake-state.yaml
-│   ├── handoff-state.yaml
-│   └── voice-state.yaml          # only when Voice is used
-├── work/
-│   ├── content.md
-│   ├── render-data.json
-│   ├── acceptance.md
-│   ├── asset-requirements.md     # optional non-Voice Production Assets
-│   ├── voice-requirements.md     # only when Voice is used
-│   ├── voice-production.md       # only when Voice is used
-│   └── voice-acceptance.md       # only when Voice is used
-└── output/
-    ├── README.md
-    └── v<document.version>/
-        ├── prd.html
-        ├── context.md
-        └── index.json
-```
-
-This is an eventual example, not a bootstrap checklist.
-
-## Authority rule
+## Authority Rule
 
 ```text
 source evidence + current user instruction + approved decisions
@@ -203,8 +109,7 @@ source evidence + current user instruction + approved decisions
    └─ optional non-Voice 04 requirements
 → PRD/04 acceptance
 → optional Voice requirements + canonical Voice Production
-→ versioned derived delivery surfaces
-→ downstream acceptance/state where applicable
+→ versioned derived delivery
 ```
 
-Derived delivery artifacts may be regenerated. Never patch `prd.html`, `context.md`, or `index.json` as a source of truth; fix the canonical owner and regenerate the affected projection.
+Derived delivery may be regenerated. Never patch `prd.html`, `context.md`, or `index.json` as source truth; fix the canonical owner and regenerate only the invalidated projection.

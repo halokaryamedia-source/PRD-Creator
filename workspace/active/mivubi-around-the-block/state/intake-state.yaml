@@ -16,4 +16,5 @@ notes:
   - Shared Systems apply only to Multiplayer.
   - Motion Interaction remains Experimental until realtime venue testing.
   - Existing map layouts are treated as authored; exact coordinates stay outside the reader-facing gameplay idea.
-  - Current approved preview is Around-The-Block-Gameplay-Idea-1.0.0-Preview.html.
+  - Current approved project-specific preview artifact is Around-The-Block-Gameplay-Idea-1.0.0-Preview.html and is retained until it is superseded or a formal versioned handoff replaces it.
+  - Approval authority is this state plus the approved requirement register; no separate approval-marker file is required.

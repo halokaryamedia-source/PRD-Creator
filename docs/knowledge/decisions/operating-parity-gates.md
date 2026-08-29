@@ -1,92 +1,68 @@
 # Operating Parity Acceptance Decisions
 
-Updated: 2026-08-10
-Status: accepted durable decision
+Updated: 2026-08-10  
+Current status: **historical/refined by the current unified repository architecture**.
 
-## Context
+This file preserves the Phase 1–3 acceptance rationale. Some captured package names and paths below were later retired. Current execution uses `../ownership.md`, `../next-action.md`, root `AGENTS.md`, and current `kits/prd-creator/` owners.
+
+The durable principle that remains current is narrow: keep one small repository verification gate for stable, repeatable repository invariants. Do not restore retired package paths merely because they appear in this captured decision.
+
+## Captured Context
 
 Phase 3 exercised the BuildIT-style operating architecture added in Phase 1–2. The acceptance run found one real routing defect: Project Document Generator's kit `SKILL.md` forced broad reading across Flow 2–4 even when only one Flow was active.
 
-The repository also depends on stable structural invariants: a frozen root skill set, canonical ownership/source routes, one active next step, executable Python production tools, and permanent retirement of the old builder tree.
+The repository also depended on stable structural invariants: a frozen root skill set, canonical ownership/source routes, one active next step, executable Python production tools, and permanent retirement of the old builder tree.
 
-## Decision 1 — Project Document Generator gets nearest `AGENTS.md`
+## Captured Decision 1 — nearest package routing
 
-Keep `kits/project-document-generator/AGENTS.md` and the Flow-first kit `SKILL.md`.
+At capture time, the decision was to keep `kits/project-document-generator/AGENTS.md` and a Flow-first kit `SKILL.md` so Flow 2, 3, and 4 could route to smaller owners.
 
-Why:
-
-- Flow 2, 3, and 4 have materially different read/owner boundaries;
-- renderer/template/validator work benefits from scoped root-cause rules;
-- nearest rules reduce context load even when a root specialist is not loaded;
-- this fixes an observed routing inconsistency rather than adding symmetry for its own sake.
-
-Voice Production's existing local `AGENTS.md` remains sufficient. Do not add nearest agent files to every directory by default.
+That exact package path is now retired. Its durable intent survives in the current unified `kits/prd-creator/AGENTS.md` + categorized owners: nearest routing should reduce context and should not create agent files everywhere for symmetry.
 
 ## Decision 2 — Keep one small repository verification gate
 
-Canonical gate:
+Current canonical gate:
 
 ```text
 tools/verify_repository.py
 .github/workflows/repository-verify.yml
 ```
 
-The gate fails closed on stable repository contracts only:
+The gate should fail closed only on stable repository contracts that are cheap, deterministic, and repeatable, such as:
 
-- required operating owners;
+- required operating owners and current package shape;
 - exact canonical root skill set;
-- duplicate nested skill roots;
-- retired-builder return;
-- `next-action.md` one-next-step structure;
+- duplicate/retired architecture returning;
+- current continuation structure;
 - broken relative Markdown navigation;
-- Python syntax in production kits.
+- Python syntax in repository-owned code.
+
+Domain-specific executable behavior remains with PRD/Voice regression suites rather than being duplicated into Repository Verify.
 
 ## Why This Gate Is Justified
 
-This is not copied because BuildIT has CI. It is justified because:
-
-1. Phase 3 found actual routing drift after architecture changes;
-2. continuity depends on several linked owner documents;
-3. root skill inventory is explicitly frozen;
-4. production uses executable Python code;
-5. these checks are cheap, deterministic, and meaningful on every commit.
-
-## Execution Proof
-
-The first GitHub Actions execution passed without weakening the gate:
-
-- Workflow: `Repository Verify`
-- Event: push to `Local`
-- Commit: `5970c47c15c8e9e83df185be7c5472e976739062`
-- Run ID: `31367001967`
-- Run number: `1`
-- Conclusion: `success`
-- Completed: `2026-08-10T07:43:21Z`
-
-This satisfies the Phase 3 execution requirement.
-
-## Tradeoffs / Boundaries
-
-Repository Verify is deliberately **not** a universal quality gate.
+The gate exists because real routing drift occurred and repository continuity depends on linked owners and executable Python. It is not a universal quality gate and must not grow merely to imitate another repository.
 
 It does not prove:
 
 - project requirement quality;
 - PRD semantic readiness;
 - rendered HTML visual quality;
-- DOCX visual quality;
-- generated-audio quality.
+- generated-audio quality;
+- runtime behavior outside the code/tests it actually executes.
 
-Those remain owned by Flow-specific validators and actual visual/audio evidence.
+Those remain with their matching production validators and actual evidence channels.
 
-Do not expand this workflow into a large test/packaging framework unless a future real failure demonstrates a missing repeatable invariant.
+## Historical Execution Proof
 
-## Final Decision
+The first Repository Verify GitHub Actions execution passed at capture time:
 
-`OPERATING_PARITY_ACCEPTED`
+- Commit: `5970c47c15c8e9e83df185be7c5472e976739062`
+- Run ID: `31367001967`
+- Conclusion: `success`
 
-Phase 1–3 establish the relevant BuildIT-style operating discipline for PRD-Creator without copying BuildIT's MCP/Blockbench domain architecture.
+This remains provenance only; current workflow health is established by current runs, not this old proof.
 
-## Follow-up
+## Current Boundary
 
-Return to normal project operation. Future operating changes are ordinary Plan / Developing / Maintenance work and are added only when real project evidence or a repeatable invariant failure proves a missing capability.
+Return to normal project/repository operation after the relevant invariant is protected. Future operating changes are Plan / Developing / Maintenance work and are added only when current evidence proves a missing repeatable capability.

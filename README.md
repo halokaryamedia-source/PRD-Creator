@@ -1,53 +1,93 @@
 # PRD-Creator
 
-PRD-Creator turns project discussion + source material into a development-ready PRD and, when needed, 04 Production Assets in the same project HTML.
+PRD-Creator turns project discussion + source material into a development-ready PRD and, when needed, 04 Production Assets plus downstream Voice Production in the same project delivery.
 
-Current package: **PRD Creator v1.14.0**. Voice scope remains **Eleven v3**. Development continues on `Local`.
+Development authority is the `Local` branch. Repository behavior is routed by [AGENTS.md](AGENTS.md); GitHub execution is governed by [GITHUB_RULES.md](GITHUB_RULES.md). Stable product orientation lives in [CONTEXT.md](CONTEXT.md).
+
+## Developer Quick Start
+
+Prerequisite: **Python 3.11**. The current verification environment has no third-party Python dependencies.
+
+Repository contract check:
+
+```bash
+python tools/verify_repository.py
+```
+
+PRD regression suite:
+
+```bash
+python -m unittest \
+  tests.test_prd_contracts \
+  tests.test_prd_content_purity \
+  tests.test_prd_delivery \
+  tests.test_prd_voice_assets \
+  tests.test_prd_handoff_contracts \
+  tests.test_prd_flow2_state_contracts \
+  tests.test_prd_hierarchy_contracts \
+  tests.test_prd_golden_reference
+```
+
+Voice regression suite:
+
+```bash
+python -m unittest tests.test_voice_contracts
+```
+
+Generate the current versioned delivery for a project:
+
+```bash
+python kits/prd-creator/renderer/delivery.py \
+  workspace/active/<project>/
+```
+
+Validate a project revision:
+
+```bash
+python kits/prd-creator/validator/validate.py \
+  workspace/active/<project>/
+```
+
+Use `validate_handoff.py` only when crossing the PRD handoff boundary and `validate_voice.py` only for current Voice scope. Current package version is owned by [kits/prd-creator/README.md](kits/prd-creator/README.md), not duplicated here.
 
 ## Output
 
 ```text
 output/
-├── README.md                  # navigator / resume entry point
+├── README.md                  # stable handoff / resume navigator
 └── v<document.version>/
-    ├── prd.html               # human review
+    ├── prd.html               # human-facing project document
     ├── context.md             # AI semantic/development context
-    └── index.json             # compact AI navigation + context line ranges
+    └── index.json             # compact AI navigation + context ranges
 ```
 
-`prd.html` keeps the approved 01–03 PRD-core presentation. `context.md` and `index.json` are derived side documents from the same accepted project truth; they are not a second PRD authority.
+`prd.html` keeps the approved PRD-core 01–03 presentation. `04 Production Assets` is additive and is planned from the same approved project model, not from a second design pass over generated 01–03. Voice remains downstream from accepted PRD meaning and is presented as `AUDIO` inside the matching 04 gameplay moment when required.
 
-04 Production Assets is planned from the same approved project model as 01–03 and is presented objective/moment-first. Visible resource types are `MODEL`, `ITEM`, `UI / TEXT`, `AUDIO`, and `PARTICLE`; only real required resources are included.
-
-Optional non-Voice requirements use `work/asset-requirements.md` and are governed by `kits/prd-creator/production-assets/CONTRACT.md`. Voice keeps its Flow 5–7 canonical sources and is merged into the matching 04 moment as `AUDIO`.
-
-The accepted 01–03 hierarchy, PRD page identities, Golden template bytes, and PRD-core style remain unchanged by 04 composition.
-
-## Package map
+## Repository Map
 
 ```text
-kits/prd-creator/
-├─ README.md
-├─ AGENTS.md
-├─ SKILL.md
-├─ intake/
-├─ document/
-├─ production-assets/
-├─ voice/
-├─ renderer/
-├─ validator/
-└─ template/
+.agents/skills/      reusable semantic judgment
+docs/foundation/     durable Flow policy
+docs/knowledge/      continuation, ownership, decisions, evidence
+kits/prd-creator/    Flow 2–7 procedure + implementation
+tests/               executable regression contracts
+tools/               repository verification
+workspace/active/    current project packages
+workspace/archive/   inactive retained project packages
 ```
 
-Project/PRD and Voice remain separate semantic domains inside this one product package.
+Open only the owner required for the current task. Do not broad-read the repository, regenerate unrelated artifacts, or reopen completed workflow stages for ceremony.
 
-Current ownership and continuation:
+## Working Principle
 
 ```text
-kits/prd-creator/README.md
-kits/prd-creator/AGENTS.md
-kits/prd-creator/SKILL.md
-docs/knowledge/ownership.md
-docs/knowledge/next-action.md
-workspace/README.md
+identify mode
+→ find first changed owner
+→ read affected context only
+→ change canonical source
+→ regenerate only invalidated output
+→ run the cheapest relevant proof
+→ stop
 ```
+
+Generated delivery is never a source of truth. Fix canonical state first, then regenerate.
