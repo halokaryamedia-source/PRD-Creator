@@ -13,10 +13,13 @@ PIN
 → READ MINIMUM
 → DIAGNOSE
 → TOOL FIT
+→ TRANSFER PREFLIGHT
 → WRITE ONCE
 → VERIFY MINIMUM
 → STOP
 ```
+
+The transfer preflight is mandatory before the first repository write for generated artifacts, existing-file replacement, binary-heavy output, or coherent multi-file delivery. Its purpose is to prevent a connector limitation from turning a simple delivery into repeated retries, placeholder files, helper structures, commit spam, or low-level Git workarounds.
 
 # Core Rules
 
@@ -47,6 +50,7 @@ broad scans      0
 - Search/list output that is truncated, paginated, partial, or capped is incomplete evidence, not proof that an item does not exist.
 - Continue pagination or narrow a query only when the unseen portion can materially change the decision; do not exhaustively page through data by default.
 - A missing result may mean missing, stale ref, or inaccessible. Verify the exact repository/ref/access once before concluding absence; do not guess alternate branches or paths.
+- When the exact path is already known, prefer direct fetch over repository search. Do not use broad discovery to re-prove a known target.
 
 ## 3. DIAGNOSE — fix the first wrong owner
 
@@ -89,6 +93,14 @@ large file / many precise hunks / coordinated refactor /
 binary / Git LFS / true patch semantics
 → Local or Codex-style git workspace, or another known-safe atomic Git capability
 
+large generated artifact / binary-heavy package /
+difficult existing generated-file replacement /
+active connector cannot transfer the final artifact natively
+→ finish + validate locally
+→ prepare repository-ready file or ZIP
+→ give it to the user in chat with exact destination
+→ user performs the manual upload/replace
+
 CI diagnosis
 → run → failing job/step → exact relevant log
 
@@ -98,17 +110,109 @@ browser / audio / local runtime claim
 
 Do not choose a per-file Contents API merely because it is available when doing so would turn one logical delivery into several repository commits.
 
+### Transfer preflight — decide before the first write
+
+Before uploading, replacing, or committing a generated artifact/package, establish:
+
+```text
+final artifact already exists?          YES / NO
+final content validated?                YES / NO
+exact target repository/ref known?      YES / NO
+exact destination path known?           YES / NO
+file type known?                        YES / NO
+final size known?                       YES / NO
+binary or binary-heavy?                 YES / NO
+existing file replacement?              YES / NO
+multi-file logical delivery?            YES / NO
+active tool accepts payload natively?   YES / NO
+clean logical history can be preserved? YES / NO
+```
+
+Any material `NO` in readiness/capability means **DO NOT START THE REPOSITORY WRITE**. Resolve the missing information, choose a fitting channel, or use manual handoff.
+
+The preflight is not a reason to speculate about arbitrary size thresholds. The question is practical tool fit: can the current capability transfer the final artifact safely, directly, and without distorting repository structure/history?
+
+### Manual handoff is a valid completion path
+
+Manual handoff is not a failure when direct connector transfer would be slower, less reliable, unsafe, or destructive to repository history.
+
+When the active GitHub capability cannot natively perform the final transfer:
+
+1. Stop the GitHub write attempt immediately.
+2. Finish and validate the exact final artifact locally.
+3. Compress images/assets when appropriate without changing approved meaning or necessary readability.
+4. Prepare either the exact replacement file or a repository-ready ZIP that preserves relative paths.
+5. Give the file/ZIP directly to the user in chat.
+6. State the exact repository destination and whether the user should upload, replace, merge, or extract it.
+7. Treat that handoff as the terminal delivery for the blocked GitHub operation unless the user explicitly asks to try a different capable channel.
+
+If the user can perform a simple drag-and-drop/replace faster than the connector can safely transfer the artifact, prefer the user handoff instead of consuming time on connector workarounds.
+
+### Existing generated-artifact replacement
+
+Replacing an existing generated artifact is a hard transfer check, not an invitation to force a full-file text write.
+
+If replacement through the active connector would require a large full-file inline payload, binary conversion, fragmentation, repeated retransmission, or low-level Git gymnastics:
+
+```text
+STOP repository write
+→ generate/validate replacement locally
+→ give replacement file to user
+→ state exact repository path
+```
+
+Do not partially overwrite an existing generated artifact. Do not create the destination early as a placeholder.
+
+### Multi-file logical delivery
+
+Before the first write, know the complete intended file set for one logical delivery.
+
+- One logical package should remain one reviewable/revertable delivery where practical.
+- If the available connector would create one commit per file for a coherent package, use a proper atomic git workspace/capability or manual repository-ready handoff instead.
+- Do not begin by updating easy Markdown files and only later discover that the required final binary/large artifact cannot be transferred. The delivery plan must cover the hardest required artifact before any repository mutation starts.
+- Do not mix Contents API writes, low-level Git object writes, and manual partial delivery for the same logical package merely to force completion. Choose one suitable delivery strategy before writing.
+
+### Connector-workaround prohibition
+
+Connector limitations must not change product/repository architecture.
+
+Do not create any of the following solely to make transfer possible:
+
+- placeholder content at the final destination;
+- temporary loaders or bootstrap files;
+- artificial HTML/content fragments;
+- base64 text files standing in for normal binary assets;
+- temporary branches/workflows;
+- helper manifests with no product/repository purpose;
+- alternate repository structures;
+- blob/tree/commit/ref chains that exist only to bypass the active connector.
+
+A final destination path may be created only when the real intended content for that path is ready.
+
 Hard stops:
 
 - Never full-replace a file from partial file context.
 - Never split `update_file` into chunks. It replaces the whole file; it does not append or patch.
 - Keep blob/content SHA, commit SHA, tree SHA, tag/ref, workflow-run IDs, and other GitHub identifiers distinct; use only the identifier required by the operation.
-- Low-level Git blob/tree/commit/ref operations are not the default editor. Use them only when the task genuinely requires those semantics and the capability is known to be available.
+- Low-level Git blob/tree/commit/ref operations are not the default editor. Use them only when the task genuinely requires those semantics and the capability is known to be available; never use them merely to bypass connector transfer limits.
 - Force-push, history rewrite, destructive reset, or equivalent ref manipulation is never a workaround for stale SHA, CI failure, connector limits, commit spam, or messy history.
-- Permission, safety, or capability denial ends that operation immediately. Do not retry through Git gymnastics, helper files, temporary workflows, or branch switching.
+- Permission, safety, or capability denial ends that operation immediately. Do not retry through Git gymnastics, helper files, temporary workflows, branch switching, payload fragmentation, or repository restructuring.
 - Do not use GitHub Actions as a remote shell or as a substitute for missing local/browser/audio/runtime capability.
 - Do not change repository structure merely to make the connector easier to use.
 - If the current channel cannot perform the change safely or preserve the required history quality, report/use the suitable channel instead of forcing completion.
+
+### Immediate blocker disclosure
+
+When a GitHub capability mismatch is confirmed, tell the user **before** attempting another delivery strategy.
+
+State concisely:
+
+1. what operation is blocked;
+2. why the active capability does not fit;
+3. what fallback will be used;
+4. what the user needs to do, if anything.
+
+Do not silently spend multiple tool calls trying transfer workarounds while the user is waiting for completion.
 
 ## 5. WRITE ONCE — deliver meaningful repository state
 
@@ -117,20 +221,22 @@ Prepare the intended logical result before the first write.
 - One intentional write per file is the default, but **WRITE ONCE does not mean COMMIT EVERY WRITE**.
 - Same-file and overlapping repository mutations are serial, never parallel.
 - A successful mutation response is usable current state. Reuse returned commit/content identifiers and authored state; do not immediately refetch the same file/HEAD/commit merely for reassurance. Refetch only when concurrency or a required proof can materially change the decision.
-- For a coordinated multi-file change, establish the intended complete patch before the first repository commit. If HEAD moves materially, refetch affected state and reassess; do not blindly overwrite, merge, or rebase around concurrent work.
+- For a coordinated multi-file change, establish the intended complete patch and delivery method before the first repository commit. If HEAD moves materially, refetch affected state and reassess; do not blindly overwrite, merge, or rebase around concurrent work.
+- Do not perform partial canonical synchronization when the task requires a complete synchronized baseline. If one required artifact cannot be delivered by the selected method, stop before writing the rest and choose a complete delivery strategy.
 - Keep one canonical owner for each durable rule/state where practical; do not copy the same contract across many docs and create synchronization cascades.
 - Update status/continuity/release metadata only when the milestone, blocker, next meaningful objective, capability boundary, or actual release state changed—not after every micro-step.
 - Preserve repository-declared lockfiles, runtime/version files, dependency constraints, and action references. Change them only when dependency/version drift is the actual first wrong owner or the task explicitly requests it.
-- New files, workflows, abstractions, compatibility layers, fixtures, reports, branches, PRs, issues, comments, labels, releases, and other persistent side effects default to zero unless the current task/repository workflow proves a real need.
+- New files, workflows, abstractions, compatibility layers, fixtures, reports, branches, PRs, issues, comments, labels, releases, transfer helpers, and other persistent side effects default to zero unless the current task/repository workflow proves a real need.
 
 ### Commit discipline — history must remain meaningful
 
-A repository commit is a **categorized logical delivery**. It is not a file save, tool call, checkpoint, reasoning step, CI trigger, or proof marker.
+A repository commit is a **categorized logical delivery**. It is not a file save, tool call, checkpoint, reasoning step, CI trigger, transfer experiment, or proof marker.
 
 Default delivery flow:
 
 ```text
 prepare complete logical change
+→ transfer preflight
 → cheapest relevant pre-commit proof available
 → review final intended diff/state
 → one categorized logical commit
@@ -145,6 +251,7 @@ Commit gate:
 one coherent outcome?
 primary category clear?
 intended file set complete?
+transfer strategy covers hardest required artifact?
 message explains repository outcome?
 reviewable/revertable as one logical unit?
 
@@ -176,12 +283,12 @@ Rules:
 
 - A `fix:` may include its tests and supporting docs in the same commit when they prove/document the same fix.
 - Split commits only for genuinely independent logical deliveries that can be reviewed, reverted, and landed separately.
-- Do not split by file, directory, backend/frontend layer, tool call, work order, or discovery order.
+- Do not split by file, directory, backend/frontend layer, tool call, work order, discovery order, or transfer limitation.
 - More than one commit for one requested task requires a concrete logical boundary, not convenience.
 - Vague messages such as `update`, `changes`, `fix again`, `sync`, `final`, `try`, or `misc` are not acceptable history.
 - Do not create local checkpoint commits by default; use working tree/staging until the logical delivery is ready.
 - If unpublished local commits already exist, they may be consolidated before first push when safe. Never rewrite published/shared history or force-push merely to make history prettier without explicit authority.
-- When one logical change touches multiple files and the active tool would produce one commit per file, use a workspace/known-safe atomic Git operation or report the required channel instead of accepting commit spam.
+- When one logical change touches multiple files and the active tool would produce one commit per file, use a workspace/known-safe atomic Git operation or manual repository-ready handoff instead of accepting commit spam.
 
 ## 6. VERIFY MINIMUM — validation follows the claim
 
@@ -196,11 +303,15 @@ Validation is evidence, not ceremony.
 - Do not rerun unchanged checks or chase every verifier to green when they cannot falsify the current change.
 - On CI failure, inspect the failing job/step and only the relevant error before editing.
 - Do not weaken, delete, bypass, or broaden a valid test/workflow merely to obtain a green result. Change it only when evidence shows it is itself the first wrong owner.
-- Same-cause retry budget: maximum 2 attempts.
+- Same-cause retry budget: maximum 2 attempts only when the operation remains valid and new evidence can plausibly change the outcome.
 - Permission/capability denial retry budget: 0 unless new evidence changes the condition.
+- Unsupported large/binary transfer retry budget with the same connector/method: 0.
+- Existing-artifact replacement that fails because the connector cannot natively carry the required final payload: 0 workaround retries; use a fitting channel or manual handoff.
+- A malformed request may be corrected once only if the underlying operation still passes TOOL FIT and transfer preflight.
 - Regression tests are for material, realistically recurring invariants—not every typo, one-time migration, cosmetic wording change, or temporary state.
 - Do not use exact natural-language prose as a test contract unless the exact string itself is a machine requirement.
 - Static inspection and CI prove only the contracts they actually exercise. They do not prove browser visuals, audio quality, local runtime behavior, deployment success, or another capability that was not actually executed.
+- For manual handoff, proof means the local artifact/package was validated and the repository destination is exact. Do not falsely claim the repository contains it until the user or a capable tool actually uploads it.
 
 ## 7. STOP — completion is a valid terminal state
 
@@ -214,30 +325,38 @@ Do not automatically:
 - create proof-of-proof;
 - fix adjacent non-blocking issues;
 - create branches/PRs/issues/comments merely to document work already completed;
-- continue because more tooling is available.
+- continue because more tooling is available;
+- keep trying GitHub after a valid manual handoff has been selected for a connector-blocked transfer.
+
+A confirmed capability mismatch is also a valid STOP boundary for that operation. Stop the unsupported write, disclose the blocker, and deliver through the chosen fallback.
 
 ## Default efficiency budget
 
 ```text
-owner reads               1–3
-history reads             0
-broad scans               0
-new files                 0
-new workflows             0
-new abstractions          0
-intentional writes/file   1
-logical commits/task      1 by default
-uncategorized commits     0
-intermediate commits      0
-CI-trigger commits        0
-proof-only commits        0
-pushes/task               1 by default
-relevant CI               0–1
-same-cause retry          <= 2
-capability-denial retry   0
-adjacent cleanup          0
-repository side effects   0 unless required
-high-impact mutations     0 unless explicitly authorized
+owner reads                    1–3
+history reads                  0
+broad scans                    0
+artifact transfer preflight    1 when applicable
+new files                      0
+new workflows                  0
+new abstractions               0
+transfer-only helper files     0
+placeholder writes             0
+intentional writes/file        1
+logical commits/task           1 by default
+uncategorized commits          0
+intermediate commits           0
+CI-trigger commits             0
+proof-only commits             0
+pushes/task                    1 by default
+relevant CI                    0–1
+same-cause retry               <= 2 when operation remains valid
+capability-denial retry        0
+unsupported-transfer retry     0
+connector-workaround retry     0
+adjacent cleanup               0
+repository side effects        0 unless required
+high-impact mutations          0 unless explicitly authorized
 ```
 
 Exceed a budget only when the current task provides concrete evidence that more work is necessary.
@@ -249,26 +368,33 @@ Apply only the sections relevant to the current task. These are not extra boot r
 ## API failures, pagination, rate limits, and ambiguous mutations
 
 ```text
-401        authentication problem
+401        authentication problem → stop until credentials/access change
 403        permission / policy / rate-limit investigation
-404        missing OR inaccessible / stale target
-409        conflict / stale state → refetch relevant state
-422        invalid request / policy failure → fix request, do not repeat blindly
+404        missing OR inaccessible / stale target → verify exact target once
+409        conflict / stale state → refetch relevant state once
+422        invalid request / policy failure → correct once only if operation still fits
 429        rate limited → respect Retry-After/reset before another request
 5xx/timeout mutation outcome may be unknown → inspect current state before retry
+capability mismatch / unsupported payload type or transfer mode → 0 retries; choose fallback
 ```
 
 - Do not create request storms or parallel mutation bursts.
 - Respect retry/rate-limit signals instead of repeatedly probing.
 - If a mutating request has an unknown outcome, refetch the target state first. Retry only when the intended mutation is confirmed absent; this prevents duplicate branches, issues, comments, releases, or writes.
+- Do not reinterpret a capability mismatch as a malformed-request debugging exercise. If the tool cannot natively carry the required artifact/package, stop that method.
+- Do not respond to repeated 422/transfer failures by changing repository structure, introducing placeholders/fragments/loaders, or descending into low-level Git object manipulation merely to bypass the connector.
 
-## Special files, Git LFS, binaries, submodules, and generated artifacts
+## Special files, Git LFS, binaries, submodules, generated artifacts, and large transfers
 
-Before treating repository content as ordinary UTF-8 text, distinguish regular files from symlinks, submodules, Git LFS pointers, generated artifacts, binaries, and files outside the practical limits of the active tool.
+Before treating repository content as ordinary UTF-8 text, distinguish regular files from symlinks, submodules, Git LFS pointers, generated artifacts, binaries, binary-heavy documents, and files outside the practical limits of the active tool.
 
 - Never hand-edit a Git LFS pointer as though it were the large-file content.
 - Do not rewrite a symlink/submodule/binary through a plain text replacement path unless that representation is explicitly the intended source.
 - Generated/derived artifacts follow their canonical source; fix the source and regenerate unless repository policy explicitly defines the artifact as authored source.
+- Compress generated image-heavy artifacts before delivery when doing so preserves required readability/quality.
+- A compressed artifact can still be a capability mismatch. Smaller size does not justify forcing a connector that still lacks native file/binary/replacement support.
+- When local final files exist but the active GitHub action accepts only inline text rather than a local-file parameter, treat that as a transfer-capability constraint, not as permission to encode/split/restructure the artifact.
+- For a binary-heavy or generated package that the active connector cannot transfer safely, prepare a repository-ready ZIP/file and hand it to the user with the exact destination instead of converting repository architecture around the connector.
 
 ## Pull requests, branch protection, rulesets, reviews, and merge queues
 
@@ -294,7 +420,7 @@ GitHub Actions is verification/deployment infrastructure, not a background devel
 - Cancel superseded runs when older results are no longer useful.
 - Verification workflows are read-only by default; they do not commit or push back into the working branch.
 - Publishing/release bundling is explicit release work, not a side effect of every development push.
-- Do not create temporary/one-shot workflows to compensate for a missing capability.
+- Do not create temporary/one-shot workflows to compensate for a missing capability or transfer limitation.
 - Do not rerun an unchanged failed workflow merely to seek a green badge.
 - Do not assume automation-created events will always retrigger—or never retrigger—another workflow. Understand the event and credential semantics first.
 - Use least-privilege workflow/token permissions. Do not widen permissions, expose secrets, or switch credentials merely to make CI pass.
