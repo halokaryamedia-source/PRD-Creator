@@ -144,7 +144,22 @@ When the active GitHub capability cannot natively perform the final transfer:
 4. Prepare either the exact replacement file or a repository-ready ZIP that preserves relative paths.
 5. Give the file/ZIP directly to the user in chat.
 6. State the exact repository destination and whether the user should upload, replace, merge, or extract it.
-7. Treat that handoff as the terminal delivery for the blocked GitHub operation unless the user explicitly asks to try a different capable channel.
+7. State what is already present in GitHub, if anything, so the user does not unknowingly duplicate or overwrite unrelated work.
+8. Treat that handoff as the terminal delivery for the blocked GitHub operation unless the user explicitly asks to try a different capable channel.
+
+Every manual handoff must include a compact placement contract:
+
+```text
+repository:        owner/repo
+branch/ref:        exact intended ref
+repo root:         where the user should start
+destination:       exact relative path
+action:            upload | replace | merge | extract
+expected result:   key final path(s) that should exist afterward
+repo state:        unchanged | partially changed (list exact changed paths)
+```
+
+Do not give only vague instructions such as “put this in the repo.” For a repository-ready ZIP, make the archive root intentional so the user can drag/drop or extract from the stated repo root without hunting through individual files.
 
 If the user can perform a simple drag-and-drop/replace faster than the connector can safely transfer the artifact, prefer the user handoff instead of consuming time on connector workarounds.
 
@@ -171,6 +186,44 @@ Before the first write, know the complete intended file set for one logical deli
 - If the available connector would create one commit per file for a coherent package, use a proper atomic git workspace/capability or manual repository-ready handoff instead.
 - Do not begin by updating easy Markdown files and only later discover that the required final binary/large artifact cannot be transferred. The delivery plan must cover the hardest required artifact before any repository mutation starts.
 - Do not mix Contents API writes, low-level Git object writes, and manual partial delivery for the same logical package merely to force completion. Choose one suitable delivery strategy before writing.
+
+### Strategy switching and global delivery ceiling
+
+A new tool/endpoint counts as a new transfer strategy only when it **natively removes the root limitation** of the previous strategy.
+
+Examples of valid strategy changes:
+
+```text
+inline-text-only connector
+→ real local-file/binary upload capability
+
+per-file Contents API causing commit fragmentation
+→ proper atomic git workspace
+```
+
+Examples that are **not** a new valid strategy:
+
+```text
+update_file
+→ create_blob/tree/commit/ref to carry the same unsupported payload
+
+large inline HTML
+→ split HTML fragments / loader files / base64 text assets
+
+binary upload unsupported
+→ encode the same binary as repository text solely for transfer
+```
+
+For one logical artifact/package delivery:
+
+- maximum **2 transfer strategies total**;
+- maximum **3 minutes of active transfer experimentation total across all strategies**;
+- switching tools, endpoints, or encodings does not reset the global clock or attempt budget;
+- a second strategy is allowed only when there is concrete evidence that it removes the first strategy's root limitation;
+- if a confirmed capability mismatch applies equally to the candidate second strategy, do not try it;
+- once manual handoff is clearly the faster fitting path, select it immediately rather than consuming the remaining budget.
+
+The per-method ceiling and the global ceiling both apply. Whichever stops the work first wins.
 
 ### Connector-workaround prohibition
 
@@ -200,6 +253,23 @@ Hard stops:
 - Do not use GitHub Actions as a remote shell or as a substitute for missing local/browser/audio/runtime capability.
 - Do not change repository structure merely to make the connector easier to use.
 - If the current channel cannot perform the change safely or preserve the required history quality, report/use the suitable channel instead of forcing completion.
+
+### Interrupted or partial-delivery recovery
+
+If repository writes already happened before a delivery becomes blocked, do not continue experimenting on top of a half-finished state.
+
+Use one bounded recovery pass:
+
+1. Stop new transfer experiments.
+2. Identify the exact paths and commits created or changed by the current task.
+3. Separate intended durable changes from accidental placeholders, fragments, loaders, or transfer-only helpers.
+4. Remove or correct only accidental current-task artifacts when that cleanup is safe, directly supported, and does not require history rewrite or another transfer architecture.
+5. Preserve legitimate already-written canonical changes unless the task requires all-or-nothing consistency and they would leave the repository materially misleading.
+6. If safe cleanup cannot produce a coherent state quickly, stop and disclose the exact remaining repository state instead of layering on more fixes.
+7. Build any manual handoff package against the actual resulting repository state, not against an assumed clean baseline.
+8. Tell the user exactly what is already in GitHub and what still must be uploaded/replaced manually.
+
+Do not force-push or rewrite published/shared history merely to hide an interrupted delivery. Recovery is bounded state repair, not history beautification.
 
 ### Immediate blocker disclosure
 
@@ -311,6 +381,8 @@ Validation is evidence, not ceremony.
 - If capability is genuinely uncertain, allow at most **one bounded probe** to learn whether the method works. A known mismatch does not receive a probe.
 - For one GitHub transfer method, total trial-and-error is capped at **2 attempts or 2 minutes of active experimentation, whichever comes first**. If one tool call itself exceeds the time ceiling, do not automatically repeat it.
 - The time/attempt ceiling is a maximum, not a target. Stop earlier whenever the failure class is already known or a fitting fallback is clearly faster.
+- Across the full logical delivery, allow at most **2 transfer strategies or 3 minutes of active transfer experimentation total, whichever comes first**.
+- Switching tools/endpoints does not reset that global ceiling. A second strategy must natively remove the identified root limitation or it is prohibited as a workaround.
 - Regression tests are for material, realistically recurring invariants—not every typo, one-time migration, cosmetic wording change, or temporary state.
 - Do not use exact natural-language prose as a test contract unless the exact string itself is a machine requirement.
 - Static inspection and CI prove only the contracts they actually exercise. They do not prove browser visuals, audio quality, local runtime behavior, deployment success, or another capability that was not actually executed.
@@ -331,7 +403,7 @@ Do not automatically:
 - continue because more tooling is available;
 - keep trying GitHub after a valid manual handoff has been selected for a connector-blocked transfer.
 
-A confirmed capability mismatch is also a valid STOP boundary for that operation. Stop the unsupported write, disclose the blocker, and deliver through the chosen fallback.
+A confirmed capability mismatch is also a valid STOP boundary for that operation. Stop the unsupported write, disclose the blocker, perform at most one bounded partial-delivery recovery pass if prior writes occurred, and deliver through the chosen fallback.
 
 ## Default efficiency budget
 
@@ -343,6 +415,10 @@ artifact transfer preflight    1 when applicable
 transfer capability probe      <= 1 only when genuinely uncertain
 transfer-method attempts       <= 2 total
 transfer-method trial time     <= 2 minutes active experimentation
+transfer strategies/delivery   <= 2 total
+global transfer trial time     <= 3 minutes active experimentation
+strategy switch                <= 1 and only if root limitation is removed
+partial-delivery recovery      <= 1 bounded pass when needed
 new files                      0
 new workflows                  0
 new abstractions               0
@@ -365,7 +441,7 @@ repository side effects        0 unless required
 high-impact mutations          0 unless explicitly authorized
 ```
 
-Exceed a budget only when the current task provides concrete evidence that more work is necessary. The transfer-method time/attempt ceiling is a hard efficiency stop, not a budget to exceed for convenience.
+Exceed a budget only when the current task provides concrete evidence that more work is necessary. Transfer ceilings are hard efficiency stops: neither the per-method ceiling nor the global delivery ceiling may be reset by switching tools, encodings, endpoints, or helper structures.
 
 # Conditional GitHub Surfaces
 
@@ -389,7 +465,10 @@ capability mismatch / unsupported payload type or transfer mode → 0 retries; c
 - If a mutating request has an unknown outcome, refetch the target state first. Retry only when the intended mutation is confirmed absent; this prevents duplicate branches, issues, comments, releases, or writes.
 - Do not reinterpret a capability mismatch as a malformed-request debugging exercise. If the tool cannot natively carry the required artifact/package, stop that method.
 - Do not respond to repeated 422/transfer failures by changing repository structure, introducing placeholders/fragments/loaders, or descending into low-level Git object manipulation merely to bypass the connector.
-- When one transfer method reaches **2 attempts or 2 minutes of active experimentation**, stop that method even if another small variation appears possible. Move to the already-defined fallback instead of extending the experiment.
+- When one transfer method reaches **2 attempts or 2 minutes of active experimentation**, stop that method even if another small variation appears possible.
+- Across the whole logical delivery, stop transfer experimentation after **2 strategies or 3 minutes total**, whichever comes first.
+- Do not call an equivalent endpoint/tool a “new strategy” unless it natively removes the diagnosed root limitation.
+- When the global ceiling is reached, move to the defined fallback immediately; do not start a third strategy.
 
 ## Special files, Git LFS, binaries, submodules, generated artifacts, and large transfers
 
