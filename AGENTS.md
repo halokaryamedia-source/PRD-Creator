@@ -29,7 +29,7 @@ AGENTS.md
 
 This is read-only Plan behavior. Do **not** edit, advance `next-action`, promote backlog work, run CI, or start the recorded next step unless the user also asks to continue/implement.
 
-### Non-trivial Developing
+### Non-trivial Development
 
 Before changing PRD-Creator itself, read:
 
@@ -46,7 +46,7 @@ AGENTS.md
 
 ### Bounded Maintenance / mechanical work
 
-A clearly bounded defect may use a smaller boot when stable product context and active continuation cannot change the decision. Start from the exact defect/owner; do not turn this exception into broad context skipping for Developing work.
+A clearly bounded defect may use a smaller boot when stable product context and active continuation cannot change the decision. Start from the exact defect/owner; do not turn this exception into broad context skipping for Development work.
 
 Open `docs/knowledge/skills/activation-matrix.md` only when the correct specialist is genuinely ambiguous. Use `docs/knowledge/ownership.md` or `docs/knowledge/source-authority.md` only when direct ownership/authority is unclear. Do not broad-read saved projects, reviews, decisions, generated output, or Git history by default.
 
@@ -74,10 +74,10 @@ This narrows the general verification policy for the repository branch model; it
 |---|---|---|
 | Understand/decide/recover context before editing | Plan | inspect evidence + owner; no edit until requested |
 | Create/revise PRD or Voice deliverables with the existing system | Production Execution | matching production owner directly |
-| Change PRD-Creator policy/skills/workflow/renderer/validator/repository mechanics | Developing | `development-brief` + at most one useful specialist |
+| Change PRD-Creator policy/skills/workflow/renderer/validator/repository mechanics | Development | `development-brief` + at most one useful specialist |
 | Bug/regression/cleanup/stale docs/behavior-preserving correction | Maintenance | concrete failure → first wrong owner |
 
-Creating files during normal project production does **not** make the task Developing.
+Creating files during normal project production does **not** make the task Development.
 
 ## Production front doors
 
@@ -193,7 +193,7 @@ Canonical current-state owners:
 - project facts/state/output → current project package;
 - historical reviews → review files / Git history, only when needed.
 
-Read `next-action.md` for Developing/context recovery, but write it only when status, active boundary, blocker, deferred boundary, or the next meaningful step actually changes.
+Read `next-action.md` for Development/context recovery, but write it only when status, active boundary, blocker, deferred boundary, or the next meaningful step actually changes.
 
 Before ending material work, update only the canonical owner whose current state actually changed. Current user intent wins over stale stored state, but reconcile the conflict explicitly.
 
@@ -208,7 +208,7 @@ Canonical root skills remain:
 ```
 
 - Production Execution → one matching production specialist + smallest active `kits/prd-creator/` procedure.
-- Developing → mandatory `development-brief` + at most one useful specialist.
+- Development → mandatory `development-brief` + at most one useful specialist.
 - Maintenance → specialist optional; use only if it adds material semantic procedure.
 - Plan → no specialist by default.
 
@@ -222,7 +222,7 @@ GitHub execution/tool-selection rules are owned by [GITHUB_RULES.md](GITHUB_RULE
 
 Normal Production Execution does not show repository machinery. Default delivery is the requested artifact plus concise material changes/decisions and any real remaining attention item.
 
-For repository/system Developing work use a compact brief when useful:
+For repository/system Development work use a compact brief when useful:
 
 ```text
 Tujuan:

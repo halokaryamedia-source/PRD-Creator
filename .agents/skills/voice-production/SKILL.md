@@ -43,7 +43,7 @@ Flow 6 durable policy
 → docs/foundation/06-elevenlabs-script-production.md
 
 Eleven v3 performance-writing craft
-→ kits/prd-creator/voice/SOUNDMAKER.md
+→ kits/prd-creator/voice/PERFORMANCE-WRITING.md
 
 Flow 7 validation/evidence
 → kits/prd-creator/voice/VALIDATION.md

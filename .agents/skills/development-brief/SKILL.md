@@ -1,6 +1,6 @@
 ---
 name: development-brief
-description: Mandatory front door for non-trivial repository/system Developing in PRD-Creator. Recover stable repository context and active continuation, ground the real goal in current evidence, separate suggested method/reference from the requirement, decide whether development is needed, choose Build/Acceptance POVs, define minimal scope with 2–5 provable criteria and a proof budget, then use at most one semantic specialist. Do not use for normal Flow 2–7 project production.
+description: Mandatory front door for non-trivial repository/system Development in PRD-Creator. Recover stable repository context and active continuation, ground the real goal in current evidence, separate suggested method/reference from the requirement, decide whether development is needed, choose Build/Acceptance POVs, define minimal scope with 2–5 provable criteria and a proof budget, then use at most one semantic specialist. Do not use for normal Flow 2–7 project production.
 ---
 
 # Development Brief
@@ -13,7 +13,7 @@ Root `AGENTS.md` owns boot, work-mode, continuity, authority, evidence, and skil
 
 Use `development-brief` only when the user asks to change or extend **how PRD-Creator itself works**, for example policy, skills, workflow, renderer/validator/builder contract, repository structure, or shared tooling.
 
-Normal project production is **Production Execution**, not Developing.
+Normal project production is **Production Execution**, not Development.
 
 Examples:
 
@@ -28,14 +28,14 @@ Examples:
 → voice-production / active Voice owner
 
 "Change how incomplete project sources are recovered before PRD creation."
-→ Developing → development-brief
+→ Development → development-brief
 ```
 
 A read-only `amati / inspect / understand / recover repo context` request does not enter implementation. Recover context, report, and stop unless the user also asks to continue/change something.
 
-## Mandatory Developing continuity
+## Mandatory Development continuity
 
-Before non-trivial Developing, recover:
+Before non-trivial Development, recover:
 
 ```text
 AGENTS.md
@@ -84,7 +84,7 @@ Omit fields that do not apply. Execution-channel/tool mechanics follow `GITHUB_R
 ## Procedure
 
 1. **Recover context and ground the goal**
-   - Use the mandatory Developing continuity above.
+   - Use the mandatory Development continuity above.
    - Read only the smallest additional owner/source that can change the decision.
    - Separate current fact, approved decision, assumption/proposal, derived artifact, historical evidence, and unknown.
    - Treat the user-proposed solution as a method, not automatically as the requirement.
@@ -122,7 +122,7 @@ Omit fields that do not apply. Execution-channel/tool mechanics follow `GITHUB_R
 
 ## User-facing brief
 
-For non-trivial repository Developing, a compact visible brief is enough when useful:
+For non-trivial repository Development, a compact visible brief is enough when useful:
 
 ```text
 Tujuan:

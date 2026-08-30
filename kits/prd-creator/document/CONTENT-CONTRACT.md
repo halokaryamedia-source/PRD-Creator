@@ -6,9 +6,9 @@ This file is the **single semantic and visible-composition owner** for the gamep
 
 ## Core rule
 
-The approved Golden Sample is not merely inspiration or a minimum quality floor.
+The approved Golden Reference is not merely inspiration or a minimum quality floor.
 
-> **The Golden Sample is the canonical page prototype. Generated PRDs must use the same visible page structure, labels, component order, reading pattern, and comparable information density.**
+> **The Golden Reference is the canonical page prototype. Generated PRDs must use the same visible page structure, labels, component order, reading pattern, and comparable information density.**
 
 Project facts are dynamic. Package count is dynamic. The visible document design is not.
 
@@ -24,7 +24,7 @@ Project meaning follows:
 2. approved project decisions;
 3. current authoritative project source;
 4. normalized requirement state;
-5. Golden Sample for **document structure/presentation only**.
+5. Golden Reference for **document structure/presentation only**.
 
 Golden example mechanics are never copied as project facts.
 
@@ -237,13 +237,13 @@ Golden fidelity is checked in two directions:
 
 ```text
 Reference → Fill Map
-Does the exact approved sample actually demonstrate the fixed pattern we claim?
+Does the exact Golden Reference actually demonstrate the fixed pattern we claim?
 
 Project Authority → Filled Golden
 Does the generated PRD fill that same pattern with complete current-project meaning?
 ```
 
-The first direction prevents the contract from drifting away from the real Sample. The second prevents a generator from satisfying the Sample mechanically while omitting or relocating project meaning.
+The first direction prevents the contract from drifting away from the real Golden Reference. The second prevents a generator from satisfying the Golden Reference mechanically while omitting or relocating project meaning.
 
 Reference-specific words are not compared literally for unrelated projects. Literal content parity is relevant only when regenerating the same reference project from its current approved authority.
 
@@ -476,7 +476,7 @@ Reset remains a Developer requirement. State both the reset/recovery action and 
 
 Package acceptance criteria are still mandatory project meaning, but they are reviewed in Flow 4 and recorded in `work/acceptance.md`.
 
-Do not render a new Acceptance block inside the PRD unless the Golden Sample itself is intentionally revised by the user.
+Do not render a new Acceptance block inside the PRD unless the Golden Reference itself is intentionally revised by the user.
 
 ## Glossary / Terms Used
 

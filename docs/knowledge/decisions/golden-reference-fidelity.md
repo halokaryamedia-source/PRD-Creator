@@ -38,7 +38,7 @@ A cleaned, normalized, reconstructed, or generic alternative is not an acceptabl
 
 The renderer may make only non-visual project-specific changes in a temporary copy during generation: sample identity metadata removal, localStorage namespacing, project metadata binding, navigation replacement, page-content replacement, glossary-data replacement, and render revision binding. The checked-in Golden CSS/runtime/DOM vocabulary remains unchanged except when actual browser evidence proves a bounded presentation defect and the user approves the matching Golden correction.
 
-The Golden Sample remains **presentation/structure authority only**. It never supplies project-specific mechanics, story, scoring, counts, or implementation facts.
+The Golden Reference remains **presentation/structure authority only**. It never supplies project-specific mechanics, story, scoring, counts, or implementation facts.
 
 Flow 3 must separately conserve every independently actionable material rule recovered from project authority. Humanize/concise writing may shorten wording, but may not delete or flatten distinct conditions, values, exceptions, recovery behavior, scoring/reset rules, build constraints, glossary meaning, or observable results.
 
@@ -62,9 +62,9 @@ The earlier idea of keeping a separate “maintainable runtime shell” was stil
 - `phase-context-grid` and `quarry-*` component names into generic grids/tables;
 - package glossary coverage into role-filtered subsets.
 
-Those changes were not harmless internals because the Approved CSS/JS targets those exact names and because they changed what the sample actually demonstrated.
+Those changes were not harmless internals because the Approved CSS/JS targets those exact names and because they changed what the Golden Reference actually demonstrated.
 
-Using the exact Golden bytes as the runtime source avoids a second presentation implementation. Project facts remain safely dynamic because the renderer replaces only project-owned surfaces (`<main>`, navigation, glossary data, document metadata) rather than treating sample facts as authority.
+Using the exact Golden bytes as the runtime source avoids a second presentation implementation. Project facts remain safely dynamic because the renderer replaces only project-owned surfaces (`<main>`, navigation, glossary data, document metadata) rather than treating reference-project facts as authority.
 
 ## Material-detail conservation
 
@@ -85,7 +85,7 @@ This decision supersedes:
 - the shorthand that the “approved PRD template is preserved as a shell” when that wording permits a reduced reconstruction;
 - the initial 2026-08-12 split where the file then named `golden-sample.html` (now `golden-reference.html`) was exact but `approved-document.html` (now `runtime-template.html`) could remain a separate cleaned runtime interpretation.
 
-It refines “Golden Samples are references, not project requirements”:
+It refines “Golden References are references, not project requirements”:
 
 - still true for project facts/mechanics;
 - **not** true for the explicitly approved visible document composition, runtime DOM vocabulary, interaction behavior, and demonstrated information-density standard.

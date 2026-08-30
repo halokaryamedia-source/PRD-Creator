@@ -21,7 +21,7 @@ This file owns **unified kit file/mechanical routing and context economy**. Deta
 | render/projection/compositor/delivery contract | `renderer/CONTRACT.md` |
 | Flow 5 Voice scope/context extraction | `voice/EXTRACTION.md` |
 | Flow 6 durable lifecycle/output policy | `docs/foundation/06-elevenlabs-script-production.md` |
-| Eleven v3 performance-writing craft | `voice/SOUNDMAKER.md` |
+| Eleven v3 performance-writing craft | `voice/PERFORMANCE-WRITING.md` |
 | Flow 7 Voice validation/evidence | `voice/VALIDATION.md` |
 | end-to-end normal Flow 2–7 Production Execution | `SKILL.md` |
 | package orientation / Requirement Map | `README.md` |

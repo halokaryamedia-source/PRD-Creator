@@ -40,7 +40,7 @@ Voice is downstream from accepted `handoff_ready` project/PRD meaning. It is opt
 | renderer/compositor/delivery mechanics | `renderer/CONTRACT.md` |
 | Flow 5 Voice extraction | `voice/EXTRACTION.md` |
 | Flow 6 lifecycle/output policy | `docs/foundation/06-elevenlabs-script-production.md` |
-| Eleven v3 performance-writing craft | `voice/SOUNDMAKER.md` |
+| Eleven v3 performance-writing craft | `voice/PERFORMANCE-WRITING.md` |
 | Flow 7 Voice validation/evidence | `voice/VALIDATION.md` |
 | technical/file routing | `AGENTS.md` |
 
@@ -53,7 +53,7 @@ Before opening more owners or replaying a Flow, classify the request:
 ```text
 changes HOW PRD-Creator works
 → exit Production Execution
-→ root AGENTS.md routes Developing
+→ root AGENTS.md routes Development
 
 new / materially uncertain project meaning
 → enter the smallest affected production Flow
@@ -302,7 +302,7 @@ Rules:
 
 # Flow 6 — Canonical Voice Production
 
-Owners: `docs/foundation/06-elevenlabs-script-production.md` + `voice/SOUNDMAKER.md`.
+Owners: `docs/foundation/06-elevenlabs-script-production.md` + `voice/PERFORMANCE-WRITING.md`.
 
 ```text
 voice_requirements_ready

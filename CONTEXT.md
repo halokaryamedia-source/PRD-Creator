@@ -3,7 +3,7 @@
 Status: active production repository  
 Working branch: `Local`
 
-This file is the stable orientation layer for new sessions and repository Developing. It explains **what PRD-Creator is, how its major boundaries fit together, and where detailed authority lives**. It intentionally does not duplicate exact field schemas, rendering contracts, or detailed Flow procedures owned elsewhere.
+This file is the stable orientation layer for new sessions and repository Development. It explains **what PRD-Creator is, how its major boundaries fit together, and where detailed authority lives**. It intentionally does not duplicate exact field schemas, rendering contracts, or detailed Flow procedures owned elsewhere.
 
 ## Product
 
@@ -86,7 +86,7 @@ production-assets/CONTRACT.md       exact non-Voice 04 resource/writing contract
 renderer/CONTRACT.md                renderer/compositor contract
 document/VALIDATION.md              Flow 4 procedure
 voice/EXTRACTION.md                 Flow 5 procedure
-voice/SOUNDMAKER.md                 Eleven v3 performance-writing craft
+voice/PERFORMANCE-WRITING.md        Eleven v3 performance-writing craft
 voice/VALIDATION.md                 Flow 7 procedure/evidence
 ```
 
@@ -169,6 +169,6 @@ output/v<document.version>/index.json
 
 ## Continuation
 
-For new-chat context recovery and non-trivial Developing, read `docs/knowledge/next-action.md` after this file.
+For new-chat context recovery and non-trivial Development, read `docs/knowledge/next-action.md` after this file.
 
 `next-action.md` owns the active continuation boundary; current source/state owns actual implementation truth. If they disagree, reconcile the stale owner before continuing instead of repeating old work or inventing a new task.

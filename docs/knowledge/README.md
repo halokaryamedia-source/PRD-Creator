@@ -14,7 +14,7 @@ Key distinction:
 observe / recover repository context
 → read-only recovery + report
 
-non-trivial Developing
+non-trivial Development
 → full continuity recovery before edit
 
 bounded mechanical Maintenance
@@ -31,7 +31,7 @@ Do not use this directory index as a reason to broad-read every knowledge file.
 | Detailed work-routing explanation | `work-routing.md` |
 | Repository/code/procedure ownership | `ownership.md` |
 | Source/state authority | `source-authority.md` |
-| Developing lifecycle overview | `work-modes/development.md` |
+| Development lifecycle overview | `work-modes/development.md` |
 | Maintenance workflow | `work-modes/maintenance.md` |
 | Skill inventory | `skills/README.md` |
 | Ambiguous specialist selection | `skills/activation-matrix.md` |

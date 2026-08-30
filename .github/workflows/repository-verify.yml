@@ -34,7 +34,7 @@ on:
       - "kits/prd-creator/production-assets/CONTRACT.md"
       - "kits/prd-creator/renderer/CONTRACT.md"
       - "kits/prd-creator/voice/EXTRACTION.md"
-      - "kits/prd-creator/voice/SOUNDMAKER.md"
+      - "kits/prd-creator/voice/PERFORMANCE-WRITING.md"
       - "kits/prd-creator/voice/VALIDATION.md"
       - "workspace/README.md"
       - "workspace/archive/README.md"

@@ -1,14 +1,14 @@
 # Development Workflow
 
-Updated: 2026-08-17
+Updated: 2026-08-30
 
-This file is the human-readable lifecycle overview for **repository/system Developing**. The canonical implementation procedure is `.agents/skills/development-brief/SKILL.md`; do not duplicate that procedure here.
+This file is the human-readable lifecycle overview for **repository/system Development**. The canonical implementation procedure is `.agents/skills/development-brief/SKILL.md`; do not duplicate that procedure here.
 
 Normal project Production Execution does **not** use this workflow.
 
 ## Entry
 
-Non-trivial Developing begins only after repository continuity is recovered:
+Non-trivial Development begins only after repository continuity is recovered:
 
 ```text
 AGENTS.md
@@ -18,7 +18,7 @@ AGENTS.md
 → development-brief
 ```
 
-`CONTEXT.md` protects stable repository/product boundaries. `next-action.md` protects cross-session continuation. They are mandatory for non-trivial Developing even though later investigation should remain read-minimal.
+`CONTEXT.md` protects stable repository/product boundaries. `next-action.md` protects cross-session continuation. They are mandatory for non-trivial Development even though later investigation should remain read-minimal.
 
 A read-only `amati / inspect / understand / recover context` request stops after context recovery/reporting and does not enter implementation.
 
@@ -63,7 +63,7 @@ If investigation reveals a second independent problem, finish/reframe the first 
 
 GitHub mechanics, commit/history quality, retries, and GitHub proof boundaries are canonical in root `GITHUB_RULES.md`.
 
-This workflow only adds the Developing selection principle:
+This workflow only adds the Development selection principle:
 
 ```text
 bounded repository change fitting current GitHub capability

@@ -1,6 +1,6 @@
 # Work Routing
 
-Updated: 2026-08-17
+Updated: 2026-08-30
 
 Root `AGENTS.md` is the canonical top-level work-mode/boot authority. This file is the **detailed explanation** used only when the route or boundary needs more context. It is separate from the product production sequence in `docs/foundation/01-production-flow.md`.
 
@@ -15,7 +15,7 @@ flowchart TD
 
     C -->|Plan| P[Ground problem / inspect owner<br/>No edit until requested]
     C -->|Production Execution| PE[Matching production specialist<br/>+ smallest active PRD Creator owner]
-    C -->|Developing| D[Recover full Developing continuity<br/>→ development-brief]
+    C -->|Development| D[Recover full Development continuity<br/>→ development-brief]
     C -->|Maintenance| M[Concrete defect/drift<br/>→ first wrong owner]
 
     D --> N{Development needed?}
@@ -48,11 +48,11 @@ AGENTS.md
 → STOP
 ```
 
-Do not execute the recorded next step merely because it was discovered. Do not promote backlog/audit/TODO items. If the user says `amati ... lalu lanjutkan next step`, finish context recovery first, then enter Developing/Production/Maintenance as appropriate.
+Do not execute the recorded next step merely because it was discovered. Do not promote backlog/audit/TODO items. If the user says `amati ... lalu lanjutkan next step`, finish context recovery first, then enter Development/Production/Maintenance as appropriate.
 
-## Non-trivial Developing continuity
+## Non-trivial Development continuity
 
-Repository/system Developing must survive session limits. Before editing:
+Repository/system Development must survive session limits. Before editing:
 
 ```text
 AGENTS.md
@@ -89,7 +89,7 @@ Voice
 
 Normal Production Execution bypasses `development-brief`.
 
-### Developing
+### Development
 
 Use when changing **PRD-Creator itself**: policy, skills, workflows, renderer/validator contracts, repository structure, or shared tooling.
 
@@ -131,12 +131,12 @@ Use `skills/activation-matrix.md` only when this remains genuinely ambiguous.
 Agent work mode answers **how to approach the task**. Product Flow answers **which production stage owns the artifact**.
 
 ```text
-Plan / Production Execution / Developing / Maintenance
+Plan / Production Execution / Development / Maintenance
 → semantic/implementation owner
 → Flow 2 → Flow 3 → Flow 4 → Flow 5 → Flow 6 → Flow 7 as applicable
 ```
 
-A Maintenance task may repair Flow 6 without restarting Flow 2. A repository Developing task may change the 04 system without producing a project.
+A Maintenance task may repair Flow 6 without restarting Flow 2. A repository Development task may change the 04 system without producing a project.
 
 ## Ownership / source ambiguity
 
@@ -155,7 +155,7 @@ future/non-active work
 → operations/backlog.md
 
 historical evidence
-→ reviews/
+→ reviews/history/
 
 durable rationale
 → decisions/

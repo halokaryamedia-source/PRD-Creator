@@ -11,7 +11,7 @@ Flow 6 turns `voice_requirements_ready` into canonical Eleven v3 production word
 ```text
 accepted project / PRD meaning
 → work/voice-requirements.md
-→ Flow 6 / SoundMaker v3
+→ Flow 6 performance writing
 → work/voice-production.md
 → output/v<document.version>/prd.html
    → 04 Production Assets
@@ -21,7 +21,7 @@ accepted project / PRD meaning
 
 - accepted project/PRD meaning owns gameplay/story truth;
 - `voice-requirements.md` owns Voice asset scope, communication intent/context, and authoritative timing truth when one exists;
-- `kits/prd-creator/voice/SOUNDMAKER.md` owns Eleven v3 preparation/generation procedure;
+- `kits/prd-creator/voice/PERFORMANCE-WRITING.md` owns Eleven v3 preparation/generation procedure;
 - `voice-production.md` owns selected actor voice when known, Estimated Duration, and exact performance wording;
 - project HTML is derived presentation only.
 
@@ -53,7 +53,7 @@ Default when audio generation is not requested.
 Voice Requirements
 → Voice Intent Completeness
 → internal Performance Fill Map
-→ SoundMaker writing
+→ performance writing
 → Communication Conservation
 → integrated Voice Script Readiness
 → canonical voice-production.md
@@ -145,7 +145,7 @@ Prompt
 <exact canonical performance payload>
 ```
 
-Character identity in the title means 04 does not need a separate visible Speaker row. Flow 5 Trigger/Context, line counts, Primary Speaker, Voice Setup, Purpose, `Must communicate`, `Must not add/repeat`, source refs, SoundMaker reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the reader-first 04 resource.
+Character identity in the title means 04 does not need a separate visible Speaker row. Flow 5 Trigger/Context, line counts, Primary Speaker, Voice Setup, Purpose, `Must communicate`, `Must not add/repeat`, source refs, performance-writing reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the reader-first 04 resource.
 
 Performance-direction tags remain visually distinct without changing copied bytes. `Copy Prompt` copies only the exact canonical performance block.
 
@@ -168,7 +168,7 @@ one active Voice ID
 
 Flow 6 may refine delivery but may not silently change Voice scope, Speaker/Channel/Trigger/Purpose, gameplay/lore/mechanics/rewards/outcomes, required communication, or authoritative timing truth.
 
-Production interpretation such as sentence splitting, performance shape, landing, punctuation, CAPS, tags, pacing, Estimated Duration, and actor selection may be decided by SoundMaker inside approved Voice/project boundaries.
+Production interpretation such as sentence splitting, performance shape, landing, punctuation, CAPS, tags, pacing, Estimated Duration, and actor selection may be decided during performance writing inside approved Voice/project boundaries.
 
 # First wrong owner / bounded revision
 

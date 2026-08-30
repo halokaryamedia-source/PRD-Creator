@@ -1,6 +1,6 @@
 # Maintenance Workflow
 
-Updated: 2026-08-17
+Updated: 2026-08-30
 
 Use Maintenance for bugs, regressions, review/cleanup, stale documentation, broken routing, and behavior-preserving refactors.
 
@@ -21,7 +21,7 @@ User reports bug/review/cleanup
 ## Categories
 
 - **Bug** — observe/reproduce, diagnose cause, correct the smallest owner, add only useful regression proof.
-- **Artifact defect** — determine whether cause is canonical content, projection/script, renderer/builder, validator, template, or evidence before editing.
+- **Artifact defect** — determine whether cause is canonical content, projection/script, renderer/compositor, validator, template, or evidence before editing.
 - **Small refactor** — preserve behavior; prefer deletion/simplification over new abstraction.
 - **Cross-owner refactor** — pause and define a durable change contract only when multiple semantic owners must change together.
 - **Documentation cleanup** — edit the current owner, remove stale/duplicate routing, verify affected links.
@@ -30,10 +30,10 @@ User reports bug/review/cleanup
 ## Owner Routing
 
 ```text
-source / requirement / PRD / HTML / PRD validator defect
+source / requirement / PRD / project HTML / PRD validator defect
 → project-document-production owner
 
-Voice requirement / script / DOCX / Voice validator defect
+Voice requirement / canonical Voice production / Voice validator defect
 → voice-production owner
 
 repository routing / ownership / review / decision-memory defect
@@ -56,17 +56,17 @@ Do not patch a derived artifact when its canonical owner is wrong.
 Examples:
 
 ```text
-wrong project fact in final.html
-→ inspect content/projection first
-→ do not hand-edit final.html
+wrong project fact in output/v<document.version>/prd.html
+→ inspect canonical content/projection first
+→ do not hand-edit generated prd.html
 
-blank page in Voice Production.docx
-→ inspect builder/layout owner
-→ do not patch DOCX binary
+Voice wording is wrong but the 04 AUDIO presentation matches it exactly
+→ inspect voice-requirements.md / voice-production.md
+→ do not change the compositor to hide a semantic defect
 
-acceptance report says PASS but canonical script is wrong
-→ fix/reopen script owner
-→ do not edit evidence to hide defect
+acceptance record says PASS but canonical content is wrong
+→ fix/reopen the canonical owner
+→ do not edit evidence to hide the defect
 ```
 
 ## Validation Economy
@@ -75,9 +75,9 @@ Run only proof invalidated by the change.
 
 - docs/routing → exact path/link/owner check;
 - canonical content → affected requirement/semantic acceptance;
-- renderer → targeted structural render check; browser claims need browser evidence;
-- Voice script → exact requirement/script parity + semantic check;
-- DOCX builder → rebuild + mechanical validation + rendered-page inspection when visual behavior changed;
+- renderer/compositor → targeted structural render check; browser claims need browser evidence;
+- Voice production → exact requirement/production parity + semantic check;
+- project HTML presentation → regenerate from canonical sources + targeted validation/browser proof when visual behavior changed;
 - audio behavior → actual audio evidence.
 
 Do not rerun full unrelated production flows for a local maintenance fix.

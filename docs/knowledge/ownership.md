@@ -13,8 +13,8 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | Stable product/repository orientation | `CONTEXT.md` |
 | Active continuation / resume checkpoint | `docs/knowledge/next-action.md` |
 | Detailed work-routing explanation | `docs/knowledge/work-routing.md` |
-| Developing lifecycle overview | `docs/knowledge/work-modes/development.md` |
-| Canonical non-trivial Developing procedure | `.agents/skills/development-brief/SKILL.md` |
+| Development lifecycle overview | `docs/knowledge/work-modes/development.md` |
+| Canonical non-trivial Development procedure | `.agents/skills/development-brief/SKILL.md` |
 | Maintenance procedure | `docs/knowledge/work-modes/maintenance.md` |
 | Ambiguous specialist selection | `docs/knowledge/skills/activation-matrix.md` |
 | Source/state precedence | `docs/knowledge/source-authority.md` |
@@ -83,7 +83,7 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | Flow 5 durable policy | `docs/foundation/05-voice-requirement-extraction.md` |
 | Flow 5 detailed extraction procedure | `kits/prd-creator/voice/EXTRACTION.md` |
 | Flow 6 durable policy | `docs/foundation/06-elevenlabs-script-production.md` |
-| Eleven v3 performance-writing craft | `kits/prd-creator/voice/SOUNDMAKER.md` |
+| Eleven v3 performance-writing craft | `kits/prd-creator/voice/PERFORMANCE-WRITING.md` |
 | Flow 7 durable policy | `docs/foundation/07-voice-validation-delivery.md` |
 | Flow 7 detailed validation/evidence procedure | `kits/prd-creator/voice/VALIDATION.md` |
 | Voice mechanical validation | `kits/prd-creator/validator/validate_voice.py` |

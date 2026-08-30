@@ -8,7 +8,7 @@ All repository-wide agent skills live under `.agents/skills/`:
 
 | Skill | Function |
 |---|---|
-| `development-brief` | mandatory front door for non-trivial repository/system Developing; grounds goal, authority, minimal scope, acceptance criteria and proof budget |
+| `development-brief` | mandatory front door for non-trivial repository/system Development; grounds goal, authority, minimal scope, acceptance criteria and proof budget |
 | `project-document-production` | reusable semantic/product-contract judgment for Flow 2–4 plus bounded non-Voice 04 completion |
 | `voice-production` | reusable semantic/product-contract judgment for Flow 5–7 |
 
@@ -46,7 +46,7 @@ The same unified root `SKILL.md` routes Flow 5–7 while exact Voice procedure/c
 
 ```text
 kits/prd-creator/voice/EXTRACTION.md
-kits/prd-creator/voice/SOUNDMAKER.md
+kits/prd-creator/voice/PERFORMANCE-WRITING.md
 kits/prd-creator/voice/VALIDATION.md
 ```
 

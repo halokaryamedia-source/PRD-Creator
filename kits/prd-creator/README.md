@@ -71,7 +71,7 @@ Open only the domain that owns the current task. Detailed contracts stay in thos
 | PRD render projection | `work/render-data.json` | `renderer/CONTRACT.md` |
 | Non-Voice Production Asset requirements | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
 | Voice requirements | `work/voice-requirements.md` | `voice/EXTRACTION.md` |
-| Canonical Voice production | `work/voice-production.md` | Flow 6 policy + `voice/SOUNDMAKER.md` |
+| Canonical Voice production | `work/voice-production.md` | Flow 6 policy + `voice/PERFORMANCE-WRITING.md` |
 | PRD acceptance / handoff | `work/acceptance.md` + `state/handoff-state.yaml` | `document/VALIDATION.md` + validators |
 | Voice acceptance / state | `work/voice-acceptance.md` + `state/voice-state.yaml` | `voice/VALIDATION.md` + `validator/validate_voice.py` |
 
@@ -95,7 +95,7 @@ production-assets/CONTRACT.md
 voice/EXTRACTION.md
 → Flow 5 Voice scope/context extraction
 
-voice/SOUNDMAKER.md
+voice/PERFORMANCE-WRITING.md
 → Eleven v3 performance-writing craft
 
 voice/VALIDATION.md

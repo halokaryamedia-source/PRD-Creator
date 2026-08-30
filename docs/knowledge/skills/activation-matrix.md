@@ -16,9 +16,9 @@ Root `AGENTS.md` owns work-mode routing and skill budget. This matrix only resol
 
 Do **not** select a semantic specialist merely because HTML, Python, ElevenLabs, renderer, validator, or another implementation technology appears in the task.
 
-## Developing front door
+## Development front door
 
-For non-trivial repository/system Developing:
+For non-trivial repository/system Development:
 
 ```text
 development-brief
