@@ -68,10 +68,10 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | lower-level HTML renderer orchestration | `kits/prd-creator/renderer/render.py` |
 | reusable renderer primitives | `kits/prd-creator/renderer/core.py` |
 | shared objective/moment-first 04 compositor | `kits/prd-creator/renderer/production_assets_compositor.py` |
-| Voice-specific 04 parsing/presentation primitives | `kits/prd-creator/renderer/voice_assets.py` |
+| Voice-specific 04 parsing/presentation primitives | `kits/prd-creator/renderer/production_assets.py` |
 | canonical Golden bytes | `kits/prd-creator/template/golden-reference.html` |
 | runtime Golden alias | `kits/prd-creator/template/runtime-template.html` |
-| PRD mechanical validation | `kits/prd-creator/validator/_engine.py` + `kits/prd-creator/validator/validate_prd.py` |
+| PRD mechanical validation | `kits/prd-creator/validator/_engine.py` + `kits/prd-creator/validator/validate.py` |
 | PRD → Voice handoff consistency | `kits/prd-creator/validator/validate_handoff.py` |
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
 

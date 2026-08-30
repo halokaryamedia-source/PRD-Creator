@@ -52,7 +52,7 @@ A technical file does not automatically require a semantic specialist. Conversel
 - `renderer/render.py` → lower-level deterministic HTML render + downstream composition orchestration;
 - `renderer/delivery.py` → versioned delivery bundle + AI reading projections;
 - `renderer/production_assets_compositor.py` → objective/moment-first mixed 04 composition;
-- `renderer/voice_assets.py` → Voice-specific parsing/presentation primitives reused by the shared 04 compositor;
+- `renderer/production_assets.py` → Voice-specific parsing/presentation primitives reused by the shared 04 compositor;
 - `renderer/_engine.py` → lower-level PRD rendering engine used by the renderer family.
 
 ### Template
@@ -62,7 +62,7 @@ A technical file does not automatically require a semantic specialist. Conversel
 
 ### Validators
 
-- `validator/_engine.py` + `validator/validate_prd.py` → PRD mechanical validation;
+- `validator/_engine.py` + `validator/validate.py` → PRD mechanical validation;
 - `validator/validate_handoff.py` → Flow 4 → Flow 5 handoff consistency;
 - `validator/validate_voice.py` → Voice revision/parity/project-HTML mechanical validation.
 
