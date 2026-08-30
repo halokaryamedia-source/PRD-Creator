@@ -1,16 +1,17 @@
 # Current Validation Status
 
-Updated: 2026-08-30
+Updated: 2026-08-31
 
-This file records the current evidence state after the clean-history migration of `develop`, `Local`, and `main`.
+This file records the current repository evidence state after the clean-history migration, branch-governance hardening, and first stable repository release.
 
 ## Current system state
 
 Working branch: `develop`.  
 Verified integration baseline: `Local`.  
-Stable/release branch: `main`.
+Stable/release branch: `main`.  
+First stable repository release: `v0.1`.
 
-PRD Creator package remains **v1.14.0**. The history-model migration does not change PRD/Voice product semantics, Golden design, or package behavior.
+PRD Creator package remains **v1.14.0**. Repository release versioning is separate from the product/package version rule; governance-only changes do not change PRD/Voice product semantics, Golden design, or package behavior.
 
 Current project-document authority shape remains:
 
@@ -40,12 +41,25 @@ Local
 
 main
 → clean stable/release history
-→ receives explicit Local release promotions
+→ receives explicit Local release promotions through normal merge commits
 ```
 
 After each successful `develop` → `Local` squash promotion, `develop` is synchronized/reset to the resulting `Local` HEAD before new development starts.
 
 A `Local` → `main` release uses the Stable release gate and a normal merge commit. That release merge commit remains on `main`; `Local` continues its clean milestone sequence independently.
+
+## Current governance evidence
+
+Repository rules currently establish:
+
+- `Local` is protected from deletion and non-fast-forward updates, requires linear history, requires a pull request, permits **squash only**, and requires `Local promotion gate`;
+- `main` is protected from deletion and non-fast-forward updates, requires a pull request, permits **merge only**, and requires `Stable release gate`;
+- tags matching `refs/tags/v*` are protected from deletion and update;
+- no configured ruleset bypass actor is present for these protected boundaries.
+
+Repository release `v0.1` points to the first explicit `main` release merge boundary.
+
+One server-side alignment remains before this governance phase is fully closed: the `main-stable` required-status-check policy must not require `Local` to be up to date with prior main-only release-marker commits. The repository-side `Release Verify` workflow validates GitHub's pull-request merge candidate instead, so the intended release topology does not require merging `main` back into `Local`.
 
 ## Baseline evidence
 
@@ -62,7 +76,7 @@ The root commit has no parent and was created from the verified prepared reposit
 - `python tools/verify_repository.py`;
 - full `python -m unittest discover -s tests -p "test_*.py" -v` regression suite.
 
-`Local` and `main` were then reset to that same root through explicit one-time user-authorized migrations. `develop` began from the same root and now carries normal post-baseline working commits.
+`Local` and `main` were then reset to that same root through explicit one-time user-authorized migrations. `develop` began from the same root and follows the normal working-history model from that baseline.
 
 Legacy recovery references are retained separately:
 
@@ -75,7 +89,7 @@ The active branch lineage does not depend on those legacy histories.
 
 ## Product evidence boundary
 
-Earlier browser/real-project evidence remains historical evidence for the exact project bytes tested before live project packages were removed from the tracked public system tree. This history migration does not claim new browser, audio, or project QA.
+Earlier browser/real-project evidence remains historical evidence for the exact project bytes tested before live project packages were removed from the tracked public system tree. This repository-governance work does not claim new browser, audio, or project QA.
 
 RQ-09 remains closed: Golden marker adaptation happens in a temporary template passed to the existing engine instead of mutating `_engine.STORAGE_PREFIX_TOKEN` at module scope.
 

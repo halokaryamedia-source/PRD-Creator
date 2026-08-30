@@ -6,7 +6,7 @@ Describe the one logical outcome this pull request delivers.
 
 - [ ] `develop` work / review only
 - [ ] `develop` → `Local` verified integration promotion
-- [ ] `main` migration/release work explicitly requested
+- [ ] `Local` → `main` stable release promotion
 
 ## Scope
 
@@ -21,6 +21,7 @@ Describe the one logical outcome this pull request delivers.
 - [ ] PRD Verify when applicable
 - [ ] Voice Verify when applicable
 - [ ] Local promotion gate for `develop` → `Local`
+- [ ] Stable release gate for `Local` → `main`
 
 Evidence / relevant result:
 
@@ -42,4 +43,13 @@ For `develop` → `Local` promotion:
 
 Do not continue development from the pre-squash commit chain after promotion.
 
-`main` remains outside the current clean-history lineage until an explicit main migration/release decision says otherwise.
+## Stable release contract
+
+For `Local` → `main` promotion:
+
+- [ ] Source branch is `Local`
+- [ ] `Stable release gate` passes on the pull-request merge candidate
+- [ ] Merge method will be a normal **merge commit**
+- [ ] The resulting `main` release marker will not be synchronized back into `Local` or `develop`
+
+`Local` intentionally does not absorb `main`-only release-marker commits merely to satisfy ancestry. Stable release verification must validate the merge candidate instead.
