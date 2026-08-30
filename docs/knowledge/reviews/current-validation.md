@@ -2,7 +2,7 @@
 
 Updated: 2026-08-31
 
-This file records the current repository evidence state after the clean-history migration, branch-governance hardening, and first stable repository release.
+This file records the current repository evidence state after the clean-history migration, branch-governance hardening, release-routing alignment, and first stable repository release.
 
 ## Current system state
 
@@ -52,14 +52,14 @@ A `Local` → `main` release uses the Stable release gate and a normal merge com
 
 Repository rules currently establish:
 
-- `Local` is protected from deletion and non-fast-forward updates, requires linear history, requires a pull request, permits **squash only**, and requires `Local promotion gate`;
+- `Local` is protected from deletion and non-fast-forward updates, requires linear history, requires a pull request, permits **squash only**, requires `Local promotion gate`, and uses strict up-to-date status checks;
 - `main` is protected from deletion and non-fast-forward updates, requires a pull request, permits **merge only**, and requires `Stable release gate`;
+- `main` intentionally uses non-strict required status checks, so `Local` is not forced to absorb prior main-only release-marker commits before a release PR can merge;
+- `Release Verify` validates GitHub's pull-request merge candidate against the current `main` base;
 - tags matching `refs/tags/v*` are protected from deletion and update;
 - no configured ruleset bypass actor is present for these protected boundaries.
 
-Repository release `v0.1` points to the first explicit `main` release merge boundary.
-
-One server-side alignment remains before this governance phase is fully closed: the `main-stable` required-status-check policy must not require `Local` to be up to date with prior main-only release-marker commits. The repository-side `Release Verify` workflow validates GitHub's pull-request merge candidate instead, so the intended release topology does not require merging `main` back into `Local`.
+Repository release `v0.1` points to the first explicit `main` release merge boundary. The server-side governance state now matches the durable branch/release decision, so repository professionalization is considered complete.
 
 ## Baseline evidence
 
