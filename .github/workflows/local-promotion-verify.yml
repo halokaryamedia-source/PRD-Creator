@@ -1,0 +1,60 @@
+name: Local Promotion Verify
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - Local
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Local promotion gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Require develop promotion source
+        if: github.event_name == 'pull_request'
+        run: |
+          test "${{ github.head_ref }}" = "develop" || {
+            echo "Local promotion must come from develop." >&2
+            exit 1
+          }
+
+      - name: Checkout candidate head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip check
+
+      - name: Verify repository contracts
+        run: python tools/verify_repository.py
+
+      - name: Run full regression suite
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: Promotion policy reminder
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Required merge method: squash."
+          echo "One approved develop -> Local promotion must create exactly one new Local commit."
+          echo "After merge, synchronize develop to the resulting Local HEAD before new development."

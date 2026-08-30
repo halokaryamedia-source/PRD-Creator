@@ -1,0 +1,4 @@
+# Keep GitHub language statistics focused on authored source/tooling.
+kits/prd-creator/template/*.html linguist-generated=true
+workspace/**/output/**/*.html linguist-generated=true
+workspace/**/work/*Preview*.html linguist-generated=true
