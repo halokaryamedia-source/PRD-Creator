@@ -18,6 +18,8 @@ Routine work happens directly on `Local`. Do not create routine task branches or
 
 A release promotion may use a dedicated pull request from `Local` to `main`. This is a release boundary only; it does not change the normal direct-to-`Local` workflow.
 
+A successful verified merge to `main` is the stable promotion. Creating a Git tag or GitHub Release is a separate explicit publishing action and is never automatic.
+
 ## Before committing
 
 Run only the checks relevant to the change during normal development. At minimum, repository-level changes should pass:

@@ -4,6 +4,30 @@
 
 PRD Creator is the single production kit for turning project discussion/source into one approved project model, a development-ready PRD, required Production Assets, and optional downstream Voice Production in the same project delivery.
 
+## Package version rule
+
+The package version follows semantic product/contract change, not repository edit count.
+
+```text
+PATCH
+→ backward-compatible bug fix in existing PRD-Creator behavior/contract
+
+MINOR
+→ approved additive capability or backward-compatible product/contract expansion
+
+MAJOR
+→ incompatible product/contract architecture change
+
+NO BUMP
+→ project-specific production/revision
+→ documentation clarification
+→ CI/routing/repository hygiene
+→ historical cleanup
+→ test-only change that does not change the product contract
+```
+
+Do not bump the package merely because a file, policy wording, workflow, or project artifact changed. When a real package bump is justified, keep `SKILL.md`, this README, and current validation metadata aligned in the same logical change.
+
 ## Product flow
 
 ```text
@@ -11,10 +35,11 @@ source + current instruction + approved decisions
 → requirement recovery / approved project model
 → PRD core 01–03
 → 04 Production Assets when required
+→ PRD/04 acceptance + handoff
 → Voice requirements when required
 → canonical Voice Production
 → one versioned project HTML
-→ acceptance / delivery evidence
+→ delivery evidence
 ```
 
 The kit is one package, but its domains remain separate. Project/PRD meaning, Production Asset requirements, and Voice meaning keep their own owners.

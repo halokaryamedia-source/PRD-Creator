@@ -17,17 +17,17 @@ source / approved change
 → Flow 2 UNDERSTAND + COMPLETE
 → SIMPLE CHAT PREVIEW
 → Flow 3 BUILD PRD CORE 01–03
-→ Flow 4 REVIEW + HANDOFF
 → materialize required non-Voice 04 Production Assets
+→ Flow 4 REVIEW + HANDOFF
 → Flow 5 Voice Requirements when justified
 → Flow 6 canonical Voice Production
 → Flow 7 Voice validation/delivery
 → one current versioned project HTML
 ```
 
-Production Asset needs are recovered from the same source/discussion and approved project model during Flow 2. They are not discovered later by rereading finished 01–03 and brainstorming extra assets.
+Production Asset needs are recovered from the same source/discussion and approved project model during Flow 2. They are not discovered later by rereading finished 01–03 and brainstorming extra assets. When non-Voice 04 is required, its canonical source is materialized after Flow 3 and before Flow 4 acceptance.
 
-Voice is downstream from accepted project/PRD meaning. It is optional by project need and never becomes another source-intake authority.
+Voice is downstream from accepted `handoff_ready` project/PRD meaning. It is optional by project need and never becomes another source-intake authority.
 
 ## Owner routing
 
@@ -35,8 +35,8 @@ Voice is downstream from accepted project/PRD meaning. It is optional by project
 |---|---|
 | Flow 2 source recovery/completion + preview procedure | `intake/SOURCE-INTAKE.md` |
 | PRD core 01–03 exact contract | `document/CONTENT-CONTRACT.md` |
-| Flow 4 validation/handoff procedure | `document/VALIDATION.md` |
 | non-Voice 04 resource contract | `production-assets/CONTRACT.md` |
+| Flow 4 validation/handoff procedure | `document/VALIDATION.md` |
 | renderer/compositor/delivery mechanics | `renderer/CONTRACT.md` |
 | Flow 5 Voice extraction | `voice/EXTRACTION.md` |
 | Flow 6 lifecycle/output policy | `docs/foundation/06-elevenlabs-script-production.md` |
@@ -211,26 +211,6 @@ Ensure:
 - independently actionable requirements are readable as distinct items;
 - terminology remains consistent.
 
-# Flow 4 — Review + Handoff
-
-Owner: `document/VALIDATION.md`.
-
-```text
-current canonical PRD + current 04 source when present + current derived HTML
-→ one mechanical validation
-→ one integrated semantic-readiness review
-→ Material Conservation
-→ targeted visual sanity when the claim requires it
-→ fix first wrong owner
-→ development_ready / handoff_ready
-```
-
-Mechanical PASS does not prove semantic completeness or visual quality.
-
-For ordinary content-only changes, review only the invalidated scope and representative/high-risk rendered pages. Broader visual proof is required only when template/CSS/runtime/page-composition changed, a finding suggests a global defect, or the user explicitly asks.
-
-Before Flow 5, the handoff validator must confirm that the accepted current PRD revision and versioned delivery agree.
-
 # 04 Production Assets — bounded extension, no new Flow
 
 Owner: `production-assets/CONTRACT.md`.
@@ -241,10 +221,13 @@ Use the same approved project model that produced 01–03:
 approved project model
 → real required non-Voice resources
 → work/asset-requirements.md
-→ optional canonical Voice Production
+→ Flow 4 validates PRD + non-Voice 04 together
+→ optional canonical Voice Production after formal handoff
 → objective/moment-first compositor
 → same output/v<document.version>/prd.html → 04 Production Assets
 ```
+
+When real non-Voice resources are required for the current scope, `work/asset-requirements.md` must be materialized before Flow 4 acceptance.
 
 Do not use:
 
@@ -270,11 +253,33 @@ Rules:
 
 If 04 authoring exposes an unapproved material project decision, return only that decision to the existing Flow 2 proposal/approval boundary.
 
+# Flow 4 — Review + Handoff
+
+Owner: `document/VALIDATION.md`.
+
+```text
+current canonical PRD + current required non-Voice 04 source when present + current derived HTML
+→ one mechanical validation
+→ one integrated semantic-readiness review
+→ Material Conservation
+→ targeted visual sanity when the claim requires it
+→ fix first wrong owner
+→ development_ready / handoff_ready
+```
+
+Mechanical PASS does not prove semantic completeness or visual quality.
+
+`development_ready` means the current PRD/required non-Voice 04 revision is accepted for implementation but is not claiming formal downstream handoff. `handoff_ready` additionally binds the accepted revision to the current versioned handoff bundle and is required before Flow 5. Exact status requirements remain owned by `document/VALIDATION.md`.
+
+For ordinary content-only changes, review only the invalidated scope and representative/high-risk rendered pages. Broader visual proof is required only when template/CSS/runtime/page-composition changed, a finding suggests a global defect, or the user explicitly asks.
+
+Before Flow 5, the handoff validator must confirm that the accepted current PRD revision and versioned delivery agree.
+
 # Flow 5 — Voice Requirement Extraction
 
 Owner: `voice/EXTRACTION.md`.
 
-Entry condition: current PRD handoff is accepted for the same revision.
+Entry condition: current PRD handoff is `handoff_ready` and accepted for the same revision.
 
 ```text
 accepted project / PRD meaning

@@ -9,6 +9,7 @@ This repository is project memory. Current repository/project sources are author
 - `main` is the stable / release branch and is not a routine development target.
 - Promote `Local` to `main` only when the user explicitly declares a stable/release promotion and the relevant release proof passes.
 - A dedicated `Local` → `main` PR is valid at that release boundary only; it does not change the normal direct-to-`Local` workflow.
+- A verified merge into `main` is the stable promotion. Git tags and GitHub Releases are separate publishing actions and must never be created automatically without an explicit user request.
 
 Choose the smallest **sufficient** boot for the task. Efficiency must not remove context that prevents wrong work.
 
@@ -55,6 +56,18 @@ Open `docs/knowledge/skills/activation-matrix.md` only when the correct speciali
 
 Repository-specific rules here may narrow domain behavior but do not duplicate or weaken that policy.
 
+### Local CI narrowing
+
+For this repository, CI on `Local` is an asynchronous regression safety net, not a blocking permission gate for ordinary development.
+
+- Use the cheapest relevant proof before the logical commit.
+- After a normal `Local` commit, do not poll or wait for `queued` / `in_progress` CI before continuing or reporting the completed change.
+- Diagnose only a failure on the current relevant `Local` HEAD. Cancelled or superseded runs do not need recovery.
+- `Repository Verify`, `PRD Verify`, and `Voice Verify` remain targeted by their workflow paths and may run in the background.
+- `Release Verify` on the explicit `Local` → `main` release PR is blocking and must complete successfully before merge.
+
+This narrows the general verification policy for the repository branch model; it does not convert incomplete CI into PASS or weaken the `main` release gate.
+
 ## Work modes
 
 | Intent | Mode | Front door |
@@ -77,6 +90,23 @@ accepted PRD → Voice production
 → voice-production
 → kits/prd-creator/ smallest active Voice owner
 ```
+
+### Active project resolution
+
+Multiple packages may legitimately remain under `workspace/active/` at the same time.
+
+```text
+user names a project
+→ use that exact project package
+
+current conversation unambiguously establishes one project
+→ continue that project
+
+multiple active projects + request is ambiguous
+→ ask which project before changing project state
+```
+
+Never infer the active project from directory order, filename order, repository recency, or whichever package happens to be easiest to open.
 
 Production Execution rules:
 

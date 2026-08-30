@@ -17,8 +17,8 @@ Flow 7  Voice Validation & Delivery
 - **Flow 1** — resume current repository/project state without asking the user to reconstruct it.
 - **Flow 2** — preserve/triage source, recover production meaning, use the Golden fill map to identify required PRD-core detail, recover real Production Asset needs from the same project model, complete missing/conflicting material meaning with explicit AI proposals, then show one complete objective-by-objective Chat Preview and obtain user approval/corrections before `ready_for_prd`.
 - **Flow 3** — turn preview-approved `ready_for_prd` meaning into canonical PRD-core content and deterministic **01–03 Golden hierarchy/page-composition HTML** without adding new project meaning.
-- **Flow 4** — distinguish generated output from development-ready output and create current acceptance/handoff evidence; when 04 exists, its Production Asset readiness is one lens inside the same integrated Semantic Readiness review. Missed or newly exposed product/design meaning returns only the affected slice to Flow 2.
-- **Flow 5** — derive justified Voice requirements from accepted project/PRD meaning without inventing upstream facts.
+- **Flow 4** — validate the current PRD plus any required materialized non-Voice 04 source as one accepted revision, then create development-ready or formal handoff evidence. Missed or newly exposed product/design meaning returns only the affected slice to Flow 2.
+- **Flow 5** — derive justified Voice requirements from accepted `handoff_ready` project/PRD meaning without inventing upstream facts.
 - **Flow 6** — create canonical Eleven v3 performance wording and publish its derived AUDIO resources into matching 04 gameplay moments while preserving Voice scope.
 - **Flow 7** — validate the current Voice Requirements → Script → consolidated project-HTML chain; actual audio is reviewed only when present/in scope.
 
@@ -37,7 +37,18 @@ project discussion + original source + approved decisions
    └─ 04 Production Assets
 ```
 
-Concrete Production Asset needs are recovered during the same Flow 2 understanding/completion pass. After approval, the system may materialize the non-Voice 04 source in `work/asset-requirements.md` and merge canonical Voice data when it exists.
+Concrete Production Asset needs are recovered during the same Flow 2 understanding/completion pass. After approval, the system materializes the non-Voice 04 source in `work/asset-requirements.md` when real resources exist and merges canonical Voice data later when Voice exists.
+
+Operational order when non-Voice 04 is required:
+
+```text
+Flow 2 approved project model
+→ Flow 3 materialize PRD core 01–03
+→ materialize work/asset-requirements.md from the same approved model
+→ Flow 4 validate PRD + non-Voice 04 together
+→ development_ready OR handoff_ready
+→ Flow 5 only from handoff_ready when Voice is required
+```
 
 Do **not** use this as the normal design path:
 
@@ -48,7 +59,7 @@ finished 01–03
 → invent 04
 ```
 
-The artifact may be written after PRD-core materialization, but its meaning comes from the same approved project model.
+The 04 artifact may be written after PRD-core materialization, but its meaning comes from the same approved project model and must be present before Flow 4 acceptance when it is required for the current project scope.
 
 ## Proposal boundary
 

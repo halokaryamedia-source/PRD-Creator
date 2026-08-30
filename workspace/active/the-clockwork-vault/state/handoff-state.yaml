@@ -14,7 +14,5 @@ index: output/v1.0.0/index.json
 index_status: current
 acceptance: work/acceptance.md
 handoff: output/README.md
-revision_review: work/review.md
-revision_review_status: approved
 asset_requirements: work/asset-requirements.md
 asset_requirements_status: current
