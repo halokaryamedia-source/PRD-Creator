@@ -14,8 +14,7 @@ Local
 → exactly one commit per approved promoted update
 
 main
-→ existing stable / release branch
-→ unchanged until an explicit main-history migration/release decision
+→ clean stable / release history
 ```
 
 Routine repository work happens on `develop`.
@@ -33,20 +32,24 @@ The PR must:
 - represent one approved logical update;
 - be merged with **squash merge** so the complete update becomes exactly one new commit on `Local`.
 
-After squash merge, reset/synchronize `develop` to the resulting `Local` HEAD before starting the next development cycle. The pre-squash working commit chain is development history, not permanent Local milestone history.
-
-This invariant is intentional:
+After squash merge, reset/synchronize `develop` to the resulting `Local` HEAD before starting the next development cycle.
 
 ```text
 one approved develop → Local promotion
 = exactly +1 commit on Local
 ```
 
-### `main` boundary
+### Promote `Local` → `main`
 
-`main` retains its existing history for now and is outside the clean-history migration of `Local`/`develop`.
+Use a dedicated release pull request only for an explicitly approved stable/release promotion.
 
-Do not attempt a normal `Local` → `main` promotion while the two lineages are unrelated. A future explicit main migration/release decision must define how `main` adopts the clean lineage before release promotion resumes.
+The PR must:
+
+- come from `Local`;
+- pass `Stable release gate`;
+- be merged with a normal merge commit so `main` records the release boundary explicitly.
+
+Do not reset `Local` to the resulting `main` merge commit. `Local` remains the clean milestone sequence; `main` may contain release merge commits in addition to those milestones.
 
 Creating a Git tag or GitHub Release is a separate explicit publishing action and is never automatic.
 
@@ -60,7 +63,7 @@ Repository-level changes:
 python tools/verify_repository.py
 ```
 
-PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. Promotion gates run the broader suites required at integration boundaries.
+PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. Promotion gates run the broader suites required at integration/release boundaries.
 
 ## CI behavior
 
@@ -71,7 +74,7 @@ CI on `develop` is the active asynchronous regression safety net.
 - Diagnose only a failure on the current relevant HEAD.
 - `Repository Verify`, `PRD Verify`, and `Voice Verify` remain path-targeted.
 - `Local promotion gate` is the full integration boundary for `develop` → `Local`.
-- Stable release work against `main` remains deferred until the explicit main-history migration decision.
+- `Stable release gate` is the full release boundary for `Local` → `main`.
 
 ## Commit discipline
 
@@ -89,7 +92,7 @@ release:   explicit stable/release state
 chore:     bounded maintenance when no better category fits
 ```
 
-`Local` is different: it is milestone history. One approved promotion equals one squash commit. Do not preserve development checkpoint noise in `Local`.
+`Local` is milestone history: one approved promotion equals one squash commit. `main` is release history: release promotions may add merge commits that mark explicit stable boundaries.
 
 Do not use transfer experiments, placeholder files, generated fragments, or temporary helper architecture as permanent repository history.
 
@@ -99,19 +102,13 @@ The public PRD-Creator repository tracks the production **system**, not live pro
 
 Project-specific packages under `workspace/active/<project>/` and `workspace/archive/<project>/` are ignored by Git and must be retained locally or in a separate authorized/private location.
 
-Do not add:
-
-- credentials or secrets;
-- private client/source data;
-- live project requirement registers or source inventories;
-- project outputs containing material not approved for public visibility;
-- temporary transfer payloads.
+Do not add credentials, private client/source data, live project requirement registers, project outputs containing material not approved for public visibility, or temporary transfer payloads.
 
 See `SECURITY.md` and `workspace/README.md`.
 
 ## Pull requests
 
-Use `.github/PULL_REQUEST_TEMPLATE.md` and keep the PR scoped to one logical delivery. A `develop` → `Local` promotion PR must state the verification evidence and must be squash-merged.
+Use `.github/PULL_REQUEST_TEMPLATE.md` and keep the PR scoped to one logical delivery. A `develop` → `Local` promotion PR must be squash-merged. A `Local` → `main` release PR must pass the stable release gate.
 
 ## License
 

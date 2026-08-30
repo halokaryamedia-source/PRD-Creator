@@ -2,35 +2,28 @@
 
 ## Current Status
 
-`CLEAN_LOCAL_DEVELOP_BASELINE_ESTABLISHED`
+`CLEAN_HISTORY_BASELINE_ESTABLISHED`
 
-PRD-Creator uses a clean active history model:
+The repository history reset is complete for the active branch lineage.
 
-- `develop` → active repository Development; working commits may be numerous;
-- `Local` → verified integration / stable working baseline; exactly one squash commit per approved promoted update;
-- `main` → existing stable/release lineage, intentionally unchanged until a separate explicit migration/release decision.
+Current branch roles:
 
-The clean baseline preserves the current approved repository tree while starting `Local` and `develop` from one root milestone commit. Previous shared history is retained only through the explicit legacy safety reference created for this migration.
+- `develop` → active repository Development;
+- `Local` → clean milestone / verified integration history;
+- `main` → clean stable/release history.
 
-PRD-Creator product semantics and Golden design remain unchanged at package v1.14.0.
+All three active branches share the same professional root baseline. Legacy history is retained only through the dedicated `legacy/pre-clean-local-2026-08-30` and `legacy/pre-clean-main-2026-08-30` safety branches.
 
 ## Active Boundary
 
-Normal repository Development starts on `develop`.
+Normal Development happens on `develop`.
 
-A coherent approved update moves `develop` → `Local` only after `Local Promotion Verify` passes and must use **squash merge**:
+A coherent approved update is promoted `develop` → `Local` using **Squash and merge**, so one approved promotion adds exactly one commit to `Local`.
 
-```text
-one approved promotion
-= exactly +1 Local commit
-```
+A stable/release promotion is `Local` → `main` after the Stable release gate passes. Do not rewrite `Local` or `main` during normal work.
 
-After promotion, synchronize/reset `develop` to the resulting `Local` HEAD before starting the next development cycle.
-
-`main` is outside this clean-history migration. Do not attempt normal `Local` → `main` promotion until an explicit main-history migration/release decision establishes the intended relationship.
-
-Do not reopen PRD-core composition, Production Assets semantics, Voice semantics, Golden cardinality, parser architecture, or historical project-data cleanup unless a concrete current requirement separately justifies that work.
+Do not reopen historical cleanup merely to make legacy refs prettier. The active history is already clean.
 
 ## Next Step
 
-**Continue with the next actual requested repository/product task on `develop`; keep `Local` as squash-only milestone history and leave `main` unchanged until its explicit migration decision.**
+**Continue the next actual requested repository/product task on `develop`.**
