@@ -9,11 +9,12 @@ on:
       - "GITHUB_RULES.md"
       - "CONTEXT.md"
       - "README.md"
+      - "CONTRIBUTING.md"
+      - "LICENSE"
       - ".agents/skills/**"
       - "docs/foundation/**"
       - "docs/knowledge/**"
       - "kits/prd-creator/**/*.md"
-      - "kits/prd-creator/voice/LICENSE"
       - "workspace/README.md"
       - "workspace/archive/README.md"
       - "requirements.lock.txt"
@@ -22,17 +23,17 @@ on:
   pull_request:
     branches:
       - Local
-      - main
     paths:
       - "AGENTS.md"
       - "GITHUB_RULES.md"
       - "CONTEXT.md"
       - "README.md"
+      - "CONTRIBUTING.md"
+      - "LICENSE"
       - ".agents/skills/**"
       - "docs/foundation/**"
       - "docs/knowledge/**"
       - "kits/prd-creator/**/*.md"
-      - "kits/prd-creator/voice/LICENSE"
       - "workspace/README.md"
       - "workspace/archive/README.md"
       - "requirements.lock.txt"

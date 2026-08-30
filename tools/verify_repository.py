@@ -36,9 +36,12 @@ REQUIRED_PATHS = [
     ".github/workflows/repository-verify.yml",
     ".github/workflows/prd-verify.yml",
     ".github/workflows/voice-verify.yml",
+    ".github/workflows/release-verify.yml",
     "AGENTS.md",
     "GITHUB_RULES.md",
     "CONTEXT.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
     "requirements.lock.txt",
     "tests/test_prd_contracts.py",
     "tests/test_prd_content_purity.py",
@@ -85,6 +88,7 @@ MARKDOWN_ROOTS = [
     ROOT / "GITHUB_RULES.md",
     ROOT / "CONTEXT.md",
     ROOT / "README.md",
+    ROOT / "CONTRIBUTING.md",
     ROOT / ".agents" / "skills",
     ROOT / "docs" / "foundation",
     ROOT / "docs" / "knowledge",
@@ -254,10 +258,21 @@ def check_retired_boundaries(errors: list[str]) -> None:
         "workspace/saved",
         "kits/project-document-generator",
         "kits/voice-production-kit",
+        "kits/prd-creator/voice/LICENSE",
+        "kits/prd-creator/voice/CHANGELOG.md",
     ]
     for rel in retired:
         if (ROOT / rel).exists():
             fail(errors, f"retired repository path must not return: {rel}")
+
+    operations = ROOT / "docs" / "knowledge" / "operations"
+    if operations.is_dir():
+        for path in sorted(operations.glob("unified-prd-creator-kit-*.md")):
+            fail(
+                errors,
+                "completed unified-kit migration artifact must not remain in live operations: "
+                f"{path.relative_to(ROOT)}",
+            )
 
 
 def check_current_delivery_routing(errors: list[str]) -> None:
@@ -500,7 +515,7 @@ def main() -> int:
     print("- relative navigation: valid")
     print("- dependency lock format: valid")
     print("- Python kits/tools/tests: syntax valid")
-    print("- retired package/builder/routing boundaries: preserved")
+    print("- retired package/migration/license/routing boundaries: preserved")
     return 0
 
 

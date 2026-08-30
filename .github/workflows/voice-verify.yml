@@ -13,7 +13,6 @@ on:
   pull_request:
     branches:
       - Local
-      - main
     paths:
       - "kits/prd-creator/voice/**/*.py"
       - "kits/prd-creator/validator/validate_voice.py"

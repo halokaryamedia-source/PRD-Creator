@@ -19,7 +19,6 @@ on:
   pull_request:
     branches:
       - Local
-      - main
     paths:
       - "kits/prd-creator/intake/**/*.py"
       - "kits/prd-creator/document/**/*.py"

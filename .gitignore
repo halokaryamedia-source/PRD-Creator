@@ -1,4 +1,21 @@
+# Python
 __pycache__/
 *.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local environment / logs
+.env
+.env.*
+!.env.example
+*.log
+
+# OS / transfer residue
 .DS_Store
 **/.regen-transfer/
