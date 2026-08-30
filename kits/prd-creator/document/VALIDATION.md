@@ -5,7 +5,7 @@
 ## Default sequence
 
 ```text
-current PRD revision + required current non-Voice 04 source when present
+current PRD revision
 → one mechanical validation
 → one integrated semantic-readiness review
 → targeted desktop visual sanity when needed
@@ -13,30 +13,31 @@ current PRD revision + required current non-Voice 04 source when present
 → development_ready | handoff_ready
 ```
 
-Status meaning:
+Do not create separate review passes for New Reader, Level Design, Developer, Content Purity, Project Consistency, Acceptance, or Golden Fidelity. They are lenses inside one review, not independent workflow gates.
+
+## Readiness states
+
+`development_ready` and `handoff_ready` are distinct acceptance states:
 
 ```text
 development_ready
-→ current PRD + required non-Voice 04 scope is accepted for implementation
-→ formal downstream PRD handoff is not being claimed
-→ Flow 5 must not start from this status
+→ current PRD / required non-Voice 04 is mechanically and semantically usable for implementation
+→ formal downstream PRD handoff is not yet declared
 
 handoff_ready
-→ development-ready revision is also bound to the current versioned delivery
-→ work/acceptance.md + state/handoff-state.yaml + output/README.md + matching versioned bundle agree
-→ this is the required PRD state before Flow 5
+→ development_ready requirements are satisfied
+→ current acceptance + handoff-state + versioned output bundle agree on the same revision
+→ eligible to cross the formal PRD → Voice handoff boundary
 ```
 
-Use `development_ready` when the requested outcome stops at a development-ready PRD/package. Promote to `handoff_ready` only when the current revision is intentionally crossing the downstream handoff boundary; do not treat the two statuses as synonyms.
-
-Do not create separate review passes for New Reader, Level Design, Developer, Content Purity, Project Consistency, Acceptance, or Golden Fidelity. They are lenses inside one review, not independent workflow gates.
+`development_ready` must not be interpreted as automatic Flow 5 authorization. Flow 5 requires the current revision to be `handoff_ready` and pass `validate_handoff.py`.
 
 ## 1. Mechanical validation
 
 Run once after the current projection/render is complete:
 
 ```bash
-python kits/prd-creator/validator/validate.py \
+python kits/prd-creator/validator/validate_prd.py \
   workspace/active/<project>/
 ```
 
@@ -63,7 +64,7 @@ Record one result: `Semantic Readiness: PASS | FAIL`.
 
 The scope check above is semantic, not vocabulary-based. Legitimate dimensions, relative/functional placement, spatial constraints, platform requirements, or other approved technical constraints must survive when material. Incidental as-built coordinates, tags, scoreboard names, function paths, runtime IDs, UUIDs, or setup identifiers do not become required PRD content merely because they exist in source evidence.
 
-When 04 exists, include the readiness questions owned by `../production-assets/CONTRACT.md` inside the same integrated review rather than creating another PASS surface. Required non-Voice 04 must already be materialized before Flow 4 acceptance; Flow 4 does not approve a PRD first and then discover or create missing 04 scope afterward.
+When 04 exists, include the readiness questions owned by `../production-assets/CONTRACT.md` inside the same integrated review rather than creating another PASS surface.
 
 Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, and terminology corrections stay in the current semantic owner.
 
@@ -125,7 +126,7 @@ Major: N
 
 ## 7. Handoff
 
-Only `handoff_ready` crosses into Flow 5. Before Flow 5, run:
+Before Flow 5, run:
 
 ```bash
 python kits/prd-creator/validator/validate_handoff.py \

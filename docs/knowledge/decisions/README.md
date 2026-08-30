@@ -19,9 +19,8 @@ This directory stores durable repository/product decisions whose reasons must su
 
 - [buildit-parity-reassessment.md](buildit-parity-reassessment.md) records a former parity-remediation phase. It is not active work unless `next-action.md` explicitly reopens it.
 - [operating-parity-gates.md](operating-parity-gates.md) contains captured Phase 1–3 terminology and paths. Current routing/verification owners override stale captured paths.
-- [history-2026-08-29.md](history-2026-08-29.md) preserves the previous long-form Decision Register exactly as a historical snapshot. Do not use it as current routing authority.
 
-Git history remains the recovery mechanism for older deleted/retired architecture. Do not keep live compatibility files solely for archaeology.
+Git history is the recovery mechanism for retired long-form decision registers and older architecture. Do not keep live snapshot files or compatibility paths solely for archaeology.
 
 ## How to Read Decisions
 
@@ -39,7 +38,7 @@ Need why a durable current boundary exists?
 → this index → matching decision file
 
 Need old rationale/provenance only?
-→ historical decision/review/Git history
+→ historical review / Git history
 ```
 
 A historical decision may be true for the boundary it proved while still containing old names, paths, or delivery surfaces. Current owners always win for execution.

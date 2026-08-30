@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-08-17
+Updated: 2026-08-30
 
 Use this file only to answer **who owns what**. It maps responsibilities to current owners/paths; it does not duplicate the detailed contracts inside those owners.
 
@@ -13,12 +13,14 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | Stable product/repository orientation | `CONTEXT.md` |
 | Active continuation / resume checkpoint | `docs/knowledge/next-action.md` |
 | Detailed work-routing explanation | `docs/knowledge/work-routing.md` |
-| Developing lifecycle overview | `docs/knowledge/workflows/development.md` |
+| Developing lifecycle overview | `docs/knowledge/work-modes/development.md` |
 | Canonical non-trivial Developing procedure | `.agents/skills/development-brief/SKILL.md` |
-| Maintenance procedure | `docs/knowledge/workflows/maintenance.md` |
+| Maintenance procedure | `docs/knowledge/work-modes/maintenance.md` |
 | Ambiguous specialist selection | `docs/knowledge/skills/activation-matrix.md` |
 | Source/state precedence | `docs/knowledge/source-authority.md` |
 | Review/evidence current interpretation | `docs/knowledge/reviews/README.md` |
+| Current validation evidence | `docs/knowledge/reviews/current-validation.md` |
+| Historical review evidence | `docs/knowledge/reviews/history/` |
 | Durable decisions/rationale | `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/` |
 | Decision-recording threshold | `docs/knowledge/decisions/recording-policy.md` |
 | Future/non-active work | `docs/knowledge/operations/backlog.md` |
@@ -65,11 +67,11 @@ Use this file only to answer **who owns what**. It maps responsibilities to curr
 | PRD-core page projection | `kits/prd-creator/renderer/pages.py` |
 | lower-level HTML renderer orchestration | `kits/prd-creator/renderer/render.py` |
 | reusable renderer primitives | `kits/prd-creator/renderer/core.py` |
-| objective/moment-first 04 composition | `kits/prd-creator/renderer/production_assets_objective.py` |
-| Voice-specific 04 parsing/presentation primitives | `kits/prd-creator/renderer/production_assets.py` |
+| shared objective/moment-first 04 compositor | `kits/prd-creator/renderer/production_assets_compositor.py` |
+| Voice-specific 04 parsing/presentation primitives | `kits/prd-creator/renderer/voice_assets.py` |
 | canonical Golden bytes | `kits/prd-creator/template/golden-reference.html` |
 | runtime Golden alias | `kits/prd-creator/template/runtime-template.html` |
-| PRD mechanical validation | `kits/prd-creator/validator/_engine.py` + `kits/prd-creator/validator/validate.py` |
+| PRD mechanical validation | `kits/prd-creator/validator/_engine.py` + `kits/prd-creator/validator/validate_prd.py` |
 | PRD → Voice handoff consistency | `kits/prd-creator/validator/validate_handoff.py` |
 | PRD/render/delivery/compositor regressions | `tests/test_prd_*` |
 

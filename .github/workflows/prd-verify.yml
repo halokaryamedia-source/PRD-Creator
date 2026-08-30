@@ -11,7 +11,7 @@ on:
       - "kits/prd-creator/renderer/**/*.py"
       - "kits/prd-creator/template/**"
       - "kits/prd-creator/validator/_engine.py"
-      - "kits/prd-creator/validator/validate.py"
+      - "kits/prd-creator/validator/validate_prd.py"
       - "kits/prd-creator/validator/validate_handoff.py"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
@@ -50,7 +50,7 @@ jobs:
           python -m compileall -q \
             kits/prd-creator/renderer \
             kits/prd-creator/validator/_engine.py \
-            kits/prd-creator/validator/validate.py \
+            kits/prd-creator/validator/validate_prd.py \
             kits/prd-creator/validator/validate_handoff.py \
             tests/test_prd_contracts.py \
             tests/test_prd_content_purity.py \

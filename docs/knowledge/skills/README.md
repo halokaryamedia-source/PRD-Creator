@@ -83,7 +83,7 @@ Change the root skill set only when repeated work proves a distinct reusable sem
 Current three-skill architecture and semantic-vs-technical separation are preserved in:
 
 - `../decisions/technical-ownership-boundary.md`
-- `../reviews/technical-ownership-refinement-audit.md`
+- `../reviews/history/technical-ownership-refinement-audit.md`
 
 Those records explain **why** the architecture exists. They are not required boot material.
 

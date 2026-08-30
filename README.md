@@ -53,7 +53,7 @@ python kits/prd-creator/renderer/delivery.py \
 Validate a project revision:
 
 ```bash
-python kits/prd-creator/validator/validate.py \
+python kits/prd-creator/validator/validate_prd.py \
   workspace/active/<project>/
 ```
 

@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from core import bi, esc, i18n, page, slug, txt
-import production_assets as voice
+import voice_assets as voice
 
 ASSET_CATEGORIES = ("3D Models", "UI & Information", "Audio", "Visual Effects & Presentation")
 SHARED_SECTION = "Global / Shared Assets"

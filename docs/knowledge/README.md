@@ -31,13 +31,15 @@ Do not use this directory index as a reason to broad-read every knowledge file.
 | Detailed work-routing explanation | `work-routing.md` |
 | Repository/code/procedure ownership | `ownership.md` |
 | Source/state authority | `source-authority.md` |
-| Developing lifecycle overview | `workflows/development.md` |
-| Maintenance workflow | `workflows/maintenance.md` |
+| Developing lifecycle overview | `work-modes/development.md` |
+| Maintenance workflow | `work-modes/maintenance.md` |
 | Skill inventory | `skills/README.md` |
 | Ambiguous specialist selection | `skills/activation-matrix.md` |
 | Durable decision index + current decision records | `decisions/README.md` |
 | Decision-recording threshold | `decisions/recording-policy.md` |
-| Current + historical review evidence | `reviews/README.md` |
+| Current review/evidence interpretation | `reviews/README.md` |
+| Current validation evidence | `reviews/current-validation.md` |
+| Historical review evidence | `reviews/history/` |
 | Future/non-active work | `operations/backlog.md` |
 | Boot/routing regression scenarios | `operations/boot-baseline.md` |
 
@@ -52,7 +54,7 @@ docs/knowledge/
 ├── work-routing.md
 ├── ownership.md
 ├── source-authority.md
-├── workflows/
+├── work-modes/
 │   ├── development.md
 │   ├── maintenance.md
 │   └── maintenance-note-template.md
@@ -62,13 +64,13 @@ docs/knowledge/
 ├── decisions/
 │   ├── README.md
 │   ├── recording-policy.md
-│   ├── <current decision records>.md
-│   └── <historical snapshots>.md
+│   └── <durable decision records>.md
 ├── reviews/
 │   ├── README.md
 │   ├── current-validation.md
-│   ├── template.md
-│   └── <historical evidence>.md
+│   ├── audit-template.md
+│   └── history/
+│       └── <historical review evidence>.md
 └── operations/
     ├── boot-baseline.md
     └── backlog.md
@@ -79,7 +81,8 @@ docs/knowledge/
 ```text
 active continuation       → next-action.md
 durable choice/reason     → decisions/
-current/historical proof  → reviews/
+current proof             → reviews/current-validation.md
+historical proof          → reviews/history/
 future/non-active work    → operations/backlog.md
 production policy         → ../foundation/
 project-specific state    → ../../workspace/

@@ -98,13 +98,13 @@ development-brief
 + at most one semantic specialist when it adds real value
 ```
 
-Detailed procedure: `workflows/development.md` → canonical `development-brief` skill.
+Detailed procedure: `work-modes/development.md` → canonical `development-brief` skill.
 
 ### Maintenance
 
 Use for bugs, regressions, cleanup, stale routing/docs, and behavior-preserving corrections. Begin from concrete defect/drift and the first wrong owner. Maintenance does not automatically invoke `development-brief`.
 
-Detailed procedure: `workflows/maintenance.md`.
+Detailed procedure: `work-modes/maintenance.md`.
 
 ## Semantic vs technical routing
 
@@ -165,8 +165,8 @@ Old TODOs, review findings, decisions, and backlog items are not active work by 
 
 ## Related
 
-- [Development Workflow](workflows/development.md)
-- [Maintenance Workflow](workflows/maintenance.md)
+- [Development Workflow](work-modes/development.md)
+- [Maintenance Workflow](work-modes/maintenance.md)
 - [Skill Activation Matrix](skills/activation-matrix.md)
 - [Repository Ownership](ownership.md)
 - [Source Authority](source-authority.md)

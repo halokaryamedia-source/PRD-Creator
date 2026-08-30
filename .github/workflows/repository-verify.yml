@@ -18,7 +18,7 @@ on:
       - "docs/knowledge/work-routing.md"
       - "docs/knowledge/ownership.md"
       - "docs/knowledge/source-authority.md"
-      - "docs/knowledge/workflows/**"
+      - "docs/knowledge/work-modes/**"
       - "docs/knowledge/skills/**"
       - "docs/knowledge/decisions/README.md"
       - "docs/knowledge/decisions/recording-policy.md"
