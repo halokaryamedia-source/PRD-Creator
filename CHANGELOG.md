@@ -9,14 +9,22 @@ Repository hygiene, CI, governance, and documentation changes can therefore ship
 
 ## Unreleased
 
+No repository release changes are currently queued beyond the `v0.2` candidate below.
+
+## Repository v0.2 — 2026-08-31
+
+Governance alignment and development-safety hardening for the professional branch model.
+
 ### Governance synchronization
 
 - align stable release verification with the intentional `Local` / `main` release-marker topology;
 - validate the GitHub pull-request merge candidate for `Local` → `main` releases;
 - align the pull-request template and durable governance documentation with the completed clean-history migration;
-- record protected `v*` stable-tag policy and the separation between repository release versioning and package versioning.
+- record protected `v*` stable-tag policy and the separation between repository release versioning and package versioning;
+- add lightweight CI checks so required governance surfaces cannot disappear silently;
+- document safe local `develop` resynchronization after squash promotion without adding a new development gate.
 
-No PRD-Creator product-contract version bump is implied by this repository-only tranche.
+Repository release `v0.2` does not change the PRD-Creator product/package contract version.
 
 ## Repository v0.1 — 2026-08-30
 
