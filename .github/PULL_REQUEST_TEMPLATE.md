@@ -6,7 +6,7 @@ Describe the one logical outcome this pull request delivers.
 
 - [ ] `develop` work / review only
 - [ ] `develop` → `Local` verified integration promotion
-- [ ] `Local` → `main` stable release promotion
+- [ ] `Local` → `main` stable promotion
 
 ## Scope
 
@@ -43,13 +43,15 @@ For `develop` → `Local` promotion:
 
 Do not continue development from the pre-squash commit chain after promotion.
 
-## Stable release contract
+## Stable main promotion contract
 
 For `Local` → `main` promotion:
 
 - [ ] Source branch is `Local`
 - [ ] `Stable release gate` passes on the pull-request merge candidate
 - [ ] Merge method will be a normal **merge commit**
-- [ ] The resulting `main` release marker will not be synchronized back into `Local` or `develop`
+- [ ] The resulting `main` stable marker will not be synchronized back into `Local` or `develop`
 
-`Local` intentionally does not absorb `main`-only release-marker commits merely to satisfy ancestry. Stable release verification must validate the merge candidate instead.
+`Local` intentionally does not absorb main-only stable-marker commits merely to satisfy ancestry. Stable verification must validate the merge candidate instead.
+
+Publishing rule: a new protected `v*` tag and GitHub Release is created only when this stable state includes an approved PRD-Creator feature/capability change. Governance, CI, ruleset, documentation, and maintenance-only promotions remain untagged.

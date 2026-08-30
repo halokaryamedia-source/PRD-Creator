@@ -3,7 +3,7 @@
 Status: active production system  
 Development branch: `develop`  
 Verified integration baseline: `Local`  
-Stable release branch: `main`
+Stable branch: `main`
 
 This file is the stable orientation layer for new sessions and repository Development. It explains what PRD-Creator is, its major authority boundaries, and where detailed owners live.
 
@@ -52,8 +52,9 @@ Local
 → exactly one squash commit per approved update
 
 main
-→ stable release history
-→ receives explicit Local release promotions
+→ stable repository history
+→ receives explicit Local stable promotions
+→ protected `v*` tags mark feature-bearing published releases
 ```
 
 Promotion contract:
@@ -67,11 +68,13 @@ develop working commits
 
 Local approved milestones
 → Stable release gate
-→ merge release PR to main
-→ main records explicit release boundary
+→ merge stable PR to main
+→ main records explicit stable boundary
 ```
 
-Do not continue development from a pre-squash `develop` chain after promotion. Do not reset `Local` to a `main` release merge commit; `Local` remains the clean milestone sequence while `main` records release boundaries.
+A `main` stable boundary is not automatically a versioned release. A new `v*` tag/GitHub Release is published only when an approved PRD-Creator feature/capability changes. Governance, CI, ruleset, documentation, and other maintenance-only stable updates remain untagged.
+
+Do not continue development from a pre-squash `develop` chain after promotion. Do not reset `Local` to a `main` stable merge commit; `Local` remains the clean milestone sequence while `main` records stable boundaries.
 
 Detailed GitHub execution remains owned by `GITHUB_RULES.md`; the durable branch decision is recorded under `docs/knowledge/decisions/clean-local-squash-history.md`.
 
