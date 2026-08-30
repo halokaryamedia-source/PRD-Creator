@@ -10,15 +10,6 @@ on:
       - "tests/test_voice_contracts.py"
       - "requirements.lock.txt"
       - ".github/workflows/voice-verify.yml"
-  pull_request:
-    branches:
-      - Local
-    paths:
-      - "kits/prd-creator/voice/**/*.py"
-      - "kits/prd-creator/validator/validate_voice.py"
-      - "tests/test_voice_contracts.py"
-      - "requirements.lock.txt"
-      - ".github/workflows/voice-verify.yml"
   workflow_dispatch:
 
 concurrency:

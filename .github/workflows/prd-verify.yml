@@ -16,21 +16,6 @@ on:
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - ".github/workflows/prd-verify.yml"
-  pull_request:
-    branches:
-      - Local
-    paths:
-      - "kits/prd-creator/intake/**/*.py"
-      - "kits/prd-creator/document/**/*.py"
-      - "kits/prd-creator/production-assets/**/*.py"
-      - "kits/prd-creator/renderer/**/*.py"
-      - "kits/prd-creator/template/**"
-      - "kits/prd-creator/validator/_engine.py"
-      - "kits/prd-creator/validator/validate.py"
-      - "kits/prd-creator/validator/validate_handoff.py"
-      - "tests/test_prd_*.py"
-      - "requirements.lock.txt"
-      - ".github/workflows/prd-verify.yml"
   workflow_dispatch:
 
 concurrency:

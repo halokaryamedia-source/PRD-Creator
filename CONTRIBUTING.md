@@ -28,6 +28,17 @@ python tools/verify_repository.py
 
 PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. A promotion to `main` uses the full `Release Verify` workflow.
 
+## CI behavior
+
+CI on `Local` is an asynchronous regression safety net, not a blocking permission gate for normal development.
+
+- Use the cheapest relevant proof before committing.
+- After a normal `Local` commit, continue work without polling or waiting for queued/in-progress CI.
+- Only a failure on the current relevant `Local` HEAD needs diagnosis; cancelled or superseded runs can be ignored.
+- Repository Verify is reserved for current repository/routing owners, not ordinary project artifacts or historical notes.
+- PRD Verify and Voice Verify run only for their executable/test surfaces.
+- `Release Verify` on a `Local` → `main` release pull request is blocking and must pass before merge.
+
 ## Commit discipline
 
 Use one logical commit per coherent outcome where practical:
