@@ -4,22 +4,21 @@
 
 `REPOSITORY_PROFESSIONALIZATION_PROMOTED_TO_LOCAL`
 
-The repository-professionalization tranche is complete and has been promoted through PR #3 into `Local`.
+The repository-professionalization tranche is complete and promoted into `Local`.
 
-Current branch state:
+Current branch roles:
 
-- `Local` is the verified integration baseline at `4b6c5be255712a438551d61d4021ea15aead6833`;
-- `develop` has been synchronized to that promoted ancestry and remains the branch for subsequent repository Development;
-- `main` remains unchanged and is still the stable/release branch;
-- live project packages are excluded from the tracked public system tree going forward;
-- the renderer RQ-09 global-mutation debt remains closed;
-- PRD-Creator product semantics and Golden design remain unchanged at package v1.14.0.
+- `develop` → active repository Development;
+- `Local` → verified integration / stable working baseline;
+- `main` → stable/release branch, unchanged by this tranche.
+
+Live project packages are excluded from the tracked public system tree going forward. The renderer RQ-09 global-mutation debt remains closed. PRD-Creator product semantics and Golden design remain unchanged at package v1.14.0.
 
 ## Active Boundary
 
 There is no active repository-professionalization implementation task.
 
-Normal repository Development now starts on `develop`. `Local` changes only through a verified `develop` → `Local` promotion. `main` changes only through an explicit `Local` → `main` stable/release promotion.
+Normal repository Development starts on `develop`. `Local` changes only through a verified `develop` → `Local` promotion. `main` changes only through an explicit `Local` → `main` stable/release promotion.
 
 Do not reopen PRD-core composition, Production Assets semantics, Voice semantics, Golden cardinality, parser architecture, or historical project-data cleanup unless a concrete current requirement separately justifies that work.
 

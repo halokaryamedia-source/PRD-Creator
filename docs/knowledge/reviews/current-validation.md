@@ -7,7 +7,7 @@ This file records the current evidence state after repository professionalizatio
 ## Current system state
 
 Working branch: `develop`.  
-Verified integration baseline: `Local` at `4b6c5be255712a438551d61d4021ea15aead6833`.  
+Verified integration baseline: `Local`.  
 Stable/release branch: `main` (unchanged by this tranche).
 
 PRD Creator package remains **v1.14.0**. Repository professionalization did not change PRD/Voice product semantics or Golden design and therefore did not require a package-version bump.
@@ -54,22 +54,30 @@ Voice Verify            PASS  run 33303387832
 Local Promotion Verify  PASS  run 33303387925
 ```
 
-Final pre-promotion `develop` HEAD `90c2ead1e63dc6a0d503c39dfb434ab71229c34b` also passed Repository Verify and Local Promotion Verify after the verification record was committed.
+Final pre-promotion `develop` HEAD `90c2ead1e63dc6a0d503c39dfb434ab71229c34b` also passed Repository Verify and Local Promotion Verify.
 
-PR #3 (`develop` → `Local`) then ran the pull-request-triggered Local Promotion Verify and passed as run `33304624764`. The PR was merged using a merge commit to preserve promotion ancestry:
+Promotion evidence:
 
 ```text
-Local integration commit
-4b6c5be255712a438551d61d4021ea15aead6833
+PR #3 develop → Local
+PR-triggered Local Promotion Verify: PASS  run 33304624764
+promotion merge: 4b6c5be255712a438551d61d4021ea15aead6833
+
+PR #4 post-promotion state reconciliation
+Local Promotion Verify: PASS  run 33304742892
+reconciliation merge: 82e0a0e9bd932c010f082af4e75571aae5d38572
 ```
+
+These commit IDs are historical promotion evidence, not a self-referential declaration of the current branch HEAD.
 
 ## Branch ancestry evidence
 
-After promotion:
+After promotion and synchronization:
 
 ```text
 develop
-→ synchronized to promoted Local ancestry
+→ active development branch
+→ synchronized from promoted Local ancestry before new work begins
 
 Local
 → verified integration baseline
@@ -83,7 +91,7 @@ No stable/release promotion to `main` is claimed.
 
 ## Project-data boundary evidence
 
-The promoted tree tracks only workspace guidance under `workspace/active/` and `workspace/archive/`; live project-package subdirectories were removed from the current public system tree and are ignored going forward.
+The promoted tree tracks only workspace guidance under `workspace/active/` and `workspace/archive/`; live project-package subdirectories are excluded from the current public system tree and ignored going forward.
 
 Prior project-package bytes remain available in Git history. This tranche intentionally did not rewrite shared history or claim historical data removal.
 
