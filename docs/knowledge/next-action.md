@@ -2,31 +2,30 @@
 
 ## Current Status
 
-`REPOSITORY_PROFESSIONALIZATION_IMPLEMENTED_PENDING_VERIFICATION`
+`REPOSITORY_PROFESSIONALIZATION_VERIFIED_ON_DEVELOP`
 
-A professionalization candidate is being assembled on `develop`. `Local` remains unchanged as the pre-change verified working baseline.
+The repository-professionalization candidate is implemented and verified on `develop`.
 
-The candidate introduces:
+Verified result:
 
-- `develop → Local → main` promotion boundaries;
-- project-package data isolation from the public tracked tree;
-- CI coverage for `develop` plus a full Local promotion gate;
-- public security/contribution/ownership surfaces;
-- renderer removal of module-global Golden-token mutation;
-- simplified repository onboarding.
-
-No PRD/Voice semantic contract or Golden design change is part of this tranche.
+- active repository Development is isolated on `develop`;
+- `Local` remains the unchanged pre-promotion stable working baseline;
+- `main` remains unchanged;
+- `develop` contains both current `Local` and current `main` ancestry;
+- live project packages are no longer tracked in the public candidate tree;
+- Repository, PRD, Voice, and Local promotion verification passed on the implementation candidate;
+- RQ-09 renderer global mutation is closed without changing Golden bytes or product semantics.
 
 ## Active Boundary
 
-This is repository engineering only.
+The candidate is ready for review but is **not promoted**.
 
-Do not reopen PRD-core composition, Production Assets semantics, Voice semantics, project gameplay content, or Golden cardinality merely because repository structure changed.
+Do not modify or merge into `Local` merely because verification passed. Promotion is a separate explicit repository boundary.
 
-`Local` and `main` must remain untouched until the `develop` candidate is verified and explicitly promoted.
+Do not reopen PRD-core composition, Production Assets semantics, Voice semantics, Golden cardinality, parser architecture, or historical project-data cleanup unless a concrete current requirement separately justifies that work.
 
-Live project packages are no longer intended to be tracked on `develop`; project history on `Local`/older commits is not rewritten by this change.
+Historical project-package bytes remain available on `Local`/Git history; the current `develop` boundary prevents new tracking but does not rewrite shared history.
 
 ## Next Step
 
-**Run the repository, PRD, Voice, and Local promotion verification applicable to the current `develop` HEAD; if the candidate passes, record that evidence and leave promotion to `Local` as a separate explicit review/merge action.**
+**Review the verified `develop` candidate and, only when explicitly approved, open a `develop` → `Local` promotion pull request; do not merge or promote automatically.**
