@@ -27,10 +27,9 @@ jobs:
             exit 1
           }
 
-      - name: Checkout candidate head
+      - name: Checkout release candidate
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -48,3 +47,11 @@ jobs:
 
       - name: Run full regression suite
         run: python -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: Release policy reminder
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Release source: Local."
+          echo "Required merge method: merge commit."
+          echo "This gate validates GitHub's pull-request merge candidate."
+          echo "Do not merge main release-marker commits back into Local merely to satisfy ancestry."

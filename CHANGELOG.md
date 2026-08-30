@@ -1,12 +1,30 @@
 # Changelog
 
-PRD-Creator package versioning follows the product/contract version rule in `kits/prd-creator/README.md`. Repository hygiene, CI, governance, and documentation changes can appear here without changing the package version.
+PRD-Creator tracks two separate version domains:
+
+- repository stable releases use Git tags such as `v0.1` on `main`;
+- the PRD-Creator product/package version is owned by `kits/prd-creator/README.md` and follows product/contract semantics.
+
+Repository hygiene, CI, governance, and documentation changes can therefore ship without changing the package version.
 
 ## Unreleased
 
+### Governance synchronization
+
+- align stable release verification with the intentional `Local` / `main` release-marker topology;
+- validate the GitHub pull-request merge candidate for `Local` → `main` releases;
+- align the pull-request template and durable governance documentation with the completed clean-history migration;
+- record protected `v*` stable-tag policy and the separation between repository release versioning and package versioning.
+
+No PRD-Creator product-contract version bump is implied by this repository-only tranche.
+
+## Repository v0.1 — 2026-08-30
+
+First stable repository baseline of the professionalized PRD-Creator workflow.
+
 ### Repository professionalization
 
-- introduce the three-tier `develop → Local → main` promotion model;
+- establish the three-tier `develop → Local → main` promotion model;
 - isolate active repository development from the verified `Local` baseline;
 - prevent live project-package subdirectories from being tracked in the public system repository;
 - add explicit project-data/security guidance;
@@ -15,8 +33,8 @@ PRD-Creator package versioning follows the product/contract version rule in `kit
 - remove renderer module-global mutation while preserving Golden rendering behavior;
 - simplify the public README/front-door orientation.
 
-No PRD-Creator product-contract version bump is implied by this repository-only tranche.
+Repository release `v0.1` does not change the PRD-Creator product/package contract version.
 
-## 1.14.0
+## Package 1.14.0
 
-Current PRD-Creator package baseline. Exact product-contract history before this changelog remains recoverable from the package owners, durable decisions, audits, and Git history.
+Current PRD-Creator product/package baseline. Exact product-contract history before this changelog remains recoverable from the package owners, durable decisions, audits, and Git history.
