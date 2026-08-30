@@ -3,9 +3,9 @@
 Status: active production system  
 Development branch: `develop`  
 Verified integration baseline: `Local`  
-Stable release branch: `main` (legacy lineage pending explicit migration)
+Stable release branch: `main`
 
-This file is the stable orientation layer for new sessions and repository Development. It explains what PRD-Creator is, its major authority boundaries, and where detailed owners live. It intentionally does not duplicate field schemas, rendering contracts, or detailed Flow procedures.
+This file is the stable orientation layer for new sessions and repository Development. It explains what PRD-Creator is, its major authority boundaries, and where detailed owners live.
 
 ## Product
 
@@ -38,9 +38,9 @@ Flow 7  Voice Validation & Delivery
 
 There is no canonical Flow 8. Non-Voice Production Assets are a bounded capability inside the same PRD-Creator package.
 
-High-level policy lives in `docs/foundation/`. Detailed production procedure lives in the matching `kits/prd-creator/` domain owner.
-
 ## Branch authority
+
+All active branches share the same clean professional root baseline.
 
 ```text
 develop
@@ -49,14 +49,14 @@ develop
 
 Local
 → verified integration / stable working baseline
-→ exactly one squash commit per approved promoted update
+→ exactly one squash commit per approved update
 
 main
-→ existing stable/release lineage
-→ intentionally unchanged until explicit main-history migration
+→ stable release history
+→ receives explicit Local release promotions
 ```
 
-Current promotion contract:
+Promotion contract:
 
 ```text
 develop working commits
@@ -64,11 +64,14 @@ develop working commits
 → squash merge
 → exactly +1 Local commit
 → synchronize/reset develop to resulting Local HEAD
+
+Local approved milestones
+→ Stable release gate
+→ merge release PR to main
+→ main records explicit release boundary
 ```
 
-Do not continue development from the pre-squash `develop` chain after promotion.
-
-`main` is outside the current clean-history migration. The new clean `Local`/`develop` lineage is intentionally not required to contain `main` ancestry. Normal `Local` → `main` promotion remains paused until an explicit main migration/release decision defines the relationship.
+Do not continue development from a pre-squash `develop` chain after promotion. Do not reset `Local` to a `main` release merge commit; `Local` remains the clean milestone sequence while `main` records release boundaries.
 
 Detailed GitHub execution remains owned by `GITHUB_RULES.md`; the durable branch decision is recorded under `docs/knowledge/decisions/clean-local-squash-history.md`.
 
@@ -113,15 +116,11 @@ The public PRD-Creator repository owns the **system**, not live project/client p
 
 `workspace/active/` and `workspace/archive/` are local/external mount conventions. Their project subdirectories are ignored by Git; only workspace guidance is tracked.
 
-Project packages may live:
-
-- locally under the ignored workspace paths;
-- in a separate private/authorized repository;
-- in another approved storage location.
+Project packages may live locally under ignored workspace paths, in a separate private/authorized repository, or in another approved storage location.
 
 Do not commit credentials, private client/source material, live requirement registers, project outputs, or other project-specific production state into this public system repository unless an explicit visibility decision authorizes it.
 
-This boundary prevents new exposure. It does not erase material already present in retained legacy history; destructive history migration must always be explicit.
+The active branch history is clean. Legacy pre-reset history is retained only through dedicated safety branches for recovery/audit.
 
 ## Golden / reference boundary
 
@@ -143,32 +142,16 @@ The approved Golden PRD artifact is binding for the PRD-core representation cont
 ## Repository map
 
 ```text
-AGENTS.md
-→ top-level repository routing / continuity rules
-
-GITHUB_RULES.md
-→ GitHub execution, commit/history, CI/API/safety discipline
-
-CONTEXT.md
-→ stable product/repository orientation
-
-docs/foundation/
-→ durable Flow 1–7 production policy
-
-docs/knowledge/
-→ continuation, routing, ownership, decisions, evidence, backlog
-
-.agents/skills/
-→ reusable semantic judgment
-
-kits/prd-creator/
-→ categorized Flow 2–7 + bounded 04 procedure/implementation
-
-workspace/
-→ ignored local/external project-package mount points
-
-tests/ + tools/ + .github/
-→ repository engineering / repeatable verification / promotion gates
+AGENTS.md            top-level repository routing / continuity rules
+GITHUB_RULES.md      GitHub execution, commit/history, CI/API/safety discipline
+CONTEXT.md           stable product/repository orientation
+docs/foundation/     durable Flow 1–7 production policy
+docs/knowledge/      continuation, routing, ownership, decisions, evidence, backlog
+.agents/skills/      reusable semantic judgment
+kits/prd-creator/    categorized Flow 2–7 + bounded 04 procedure/implementation
+workspace/           ignored local/external project-package mount points
+tests/ + tools/      repository engineering / repeatable verification
+.github/             CI and promotion gates
 ```
 
 ## Project package principle
