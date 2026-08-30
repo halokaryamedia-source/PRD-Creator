@@ -2,15 +2,15 @@
 
 Updated: 2026-08-30
 
-This file records the current evidence state for the verified repository-development candidate.
+This file records the current evidence state after repository professionalization was promoted into the verified integration baseline.
 
 ## Current system state
 
 Working branch: `develop`.  
-Verified pre-change integration baseline: `Local`.  
-Candidate commit: `3727817a2af95091cb7df31162b63281e62df6cb`.
+Verified integration baseline: `Local` at `4b6c5be255712a438551d61d4021ea15aead6833`.  
+Stable/release branch: `main` (unchanged by this tranche).
 
-PRD Creator package remains **v1.14.0**. This repository-professionalization tranche does not change PRD/Voice product semantics or require a package-version bump.
+PRD Creator package remains **v1.14.0**. Repository professionalization did not change PRD/Voice product semantics or Golden design and therefore did not require a package-version bump.
 
 Current project-document authority shape remains:
 
@@ -33,11 +33,11 @@ Project package contents are treated as local/external production data rather th
 
 ## Repository professionalization result
 
-Verified candidate changes:
+Promoted changes include:
 
 - three-tier `develop → Local → main` branch model;
 - explicit Local integration and stable release gates;
-- current `develop` ancestry contains both the prior `Local` baseline and current `main` ancestry;
+- integration ancestry containing the prior `Local` baseline and current `main` ancestry;
 - project-package Git ignore / current-tree separation;
 - `SECURITY.md`, `CODEOWNERS`, pull-request template, and changelog surfaces;
 - simplified root onboarding;
@@ -45,7 +45,7 @@ Verified candidate changes:
 
 ## Verification evidence
 
-All checks below completed successfully on exact candidate commit `3727817a2af95091cb7df31162b63281e62df6cb`:
+Implementation candidate `3727817a2af95091cb7df31162b63281e62df6cb` passed:
 
 ```text
 Repository Verify       PASS  run 33303387805
@@ -54,41 +54,48 @@ Voice Verify            PASS  run 33303387832
 Local Promotion Verify  PASS  run 33303387925
 ```
 
-The Local promotion gate includes repository verification, the full `test_*.py` regression discovery, and the current-main ancestry check.
+Final pre-promotion `develop` HEAD `90c2ead1e63dc6a0d503c39dfb434ab71229c34b` also passed Repository Verify and Local Promotion Verify after the verification record was committed.
+
+PR #3 (`develop` → `Local`) then ran the pull-request-triggered Local Promotion Verify and passed as run `33304624764`. The PR was merged using a merge commit to preserve promotion ancestry:
+
+```text
+Local integration commit
+4b6c5be255712a438551d61d4021ea15aead6833
+```
 
 ## Branch ancestry evidence
 
-At the verified candidate:
+After promotion:
 
 ```text
-Local → develop
-status: ahead-only
-behind: 0
+develop
+→ synchronized to promoted Local ancestry
 
-main → develop
-status: ahead-only
-behind: 0
+Local
+→ verified integration baseline
+→ contains current main ancestry
+
+main
+→ unchanged stable/release branch
 ```
 
-The candidate therefore no longer carries the former `Local` state of being three commits behind `main`.
-
-`Local` and `main` themselves remain unchanged; no promotion or merge into those branches is claimed here.
+No stable/release promotion to `main` is claimed.
 
 ## Project-data boundary evidence
 
-Current `develop` tracks only the workspace guidance under `workspace/active/` and `workspace/archive/`; live project-package subdirectories were removed from the candidate tree and are ignored going forward.
+The promoted tree tracks only workspace guidance under `workspace/active/` and `workspace/archive/`; live project-package subdirectories were removed from the current public system tree and are ignored going forward.
 
-The prior project packages remain preserved on `Local` and in Git history. This change intentionally does not rewrite shared history or claim historical data removal.
+Prior project-package bytes remain available in Git history. This tranche intentionally did not rewrite shared history or claim historical data removal.
 
 ## Renderer evidence
 
-RQ-09 is closed for the current implementation: Golden marker adaptation now happens in a temporary template passed to the existing engine instead of mutating `_engine.STORAGE_PREFIX_TOKEN` at module scope.
+RQ-09 remains closed: Golden marker adaptation happens in a temporary template passed to the existing engine instead of mutating `_engine.STORAGE_PREFIX_TOKEN` at module scope.
 
-Golden/runtime template bytes were not changed by this tranche. PRD Verify and the full Local promotion regression both passed after the renderer change.
+Golden/runtime template bytes were not changed. PRD Verify and the full Local-promotion regression passed after the renderer change.
 
 ## Browser / project evidence boundary
 
-Earlier Clockwork browser/real-project evidence remains historical evidence for the exact bytes tested on the prior `Local` baseline. It is not re-labeled as current `develop` browser evidence because live project packages are intentionally no longer tracked in the public candidate tree and this repository tranche does not claim new browser QA.
+Earlier Clockwork browser/real-project evidence remains historical evidence for the exact bytes tested before project packages were removed from the current public system tree. This repository tranche does not claim new browser QA.
 
 ## Current continuation
 
