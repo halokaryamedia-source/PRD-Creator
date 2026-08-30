@@ -29,7 +29,7 @@ Generated delivery is never source of truth. Fix canonical project state first, 
 ```text
 develop  → active repository development; working commits may be numerous
 Local    → clean approved integration history; one commit per approved update
-main     → clean stable/release history
+main     → stable repository history; tagged releases are feature-bearing publish points
 ```
 
 All three active branches share the same professional root baseline.
@@ -51,7 +51,9 @@ Local #2  approved update
     └─ reset/sync develop to Local #2
 ```
 
-A stable release is promoted from `Local` to `main` through a dedicated pull request after the `Stable release gate` passes. Use a normal merge commit at the release boundary so `main` records explicit release promotions while `Local` keeps its clean milestone sequence.
+An approved stable update is promoted from `Local` to `main` through a dedicated pull request after `Stable release gate` passes. Use a normal merge commit so `main` records the stable boundary while `Local` keeps its clean milestone sequence.
+
+A `main` promotion is not automatically a versioned release. Create a new protected `v*` tag and GitHub Release only when an approved PRD-Creator feature/capability changes. Governance, CI, ruleset, documentation, and other maintenance-only updates remain untagged.
 
 Repository behavior is routed by [AGENTS.md](AGENTS.md). GitHub execution is governed by [GITHUB_RULES.md](GITHUB_RULES.md). Stable product orientation lives in [CONTEXT.md](CONTEXT.md).
 
@@ -130,7 +132,7 @@ identify mode
 
 ## Package Version
 
-The current package version is owned by [kits/prd-creator/README.md](kits/prd-creator/README.md). Repository hygiene, CI, documentation clarification, and branch-governance changes do not bump the package version by themselves.
+The current package version is owned by [kits/prd-creator/README.md](kits/prd-creator/README.md). Repository hygiene, CI, documentation clarification, and branch-governance changes do not bump the package version by themselves and do not create a new repository release unless a feature/capability also changes.
 
 ## License
 

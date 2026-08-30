@@ -14,7 +14,8 @@ Local
 → exactly one commit per approved promoted update
 
 main
-→ clean stable / release history
+→ stable repository history
+→ may include untagged maintenance and tagged feature releases
 ```
 
 Routine repository work happens on `develop`.
@@ -49,21 +50,23 @@ git switch develop
 git reset --hard origin/develop
 ```
 
-Do not use the hard reset while uncommitted work still needs to be recovered. Do not merge or rebase `main` into `develop` merely to obtain release-marker commits; normal development resumes from the synchronized remote `develop` branch.
+Do not use the hard reset while uncommitted work still needs to be recovered. Do not merge or rebase `main` into `develop` merely to obtain main-only stable markers; normal development resumes from the synchronized remote `develop` branch.
 
 ### Promote `Local` → `main`
 
-Use a dedicated release pull request only for an explicitly approved stable/release promotion.
+Use a dedicated stable pull request only when an explicitly approved update needs to become part of the stable repository state.
 
 The PR must:
 
 - come from `Local`;
 - pass `Stable release gate`;
-- be merged with a normal merge commit so `main` records the release boundary explicitly.
+- be merged with a normal merge commit so `main` records the stable boundary explicitly.
 
-Do not reset `Local` to the resulting `main` merge commit. `Local` remains the clean milestone sequence; `main` may contain release merge commits in addition to those milestones.
+Do not reset `Local` to the resulting `main` merge commit. `Local` remains the clean milestone sequence; `main` may contain main-only stable merge commits in addition to those milestones.
 
-Creating a Git tag or GitHub Release is a separate explicit publishing action and is never automatic.
+A `main` promotion does **not** automatically create a new repository version. Create a new protected `v*` tag and GitHub Release only when the stable state includes an approved PRD-Creator feature/capability change. Governance, CI, ruleset, documentation, and other maintenance-only promotions remain untagged.
+
+Creating a Git tag or GitHub Release is always a separate explicit publishing action and is never automatic.
 
 ## Before committing
 
@@ -75,7 +78,7 @@ Repository-level changes:
 python tools/verify_repository.py
 ```
 
-PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. Promotion gates run the broader suites required at integration/release boundaries.
+PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. Promotion gates run the broader suites required at integration/stable boundaries.
 
 ## CI behavior
 
@@ -86,7 +89,7 @@ CI on `develop` is the active asynchronous regression safety net.
 - Diagnose only a failure on the current relevant HEAD.
 - `Repository Verify`, `PRD Verify`, and `Voice Verify` remain path-targeted.
 - `Local promotion gate` is the full integration boundary for `develop` → `Local`.
-- `Stable release gate` is the full release boundary for `Local` → `main`.
+- `Stable release gate` is the full stable-main boundary for `Local` → `main`.
 
 ## Commit discipline
 
@@ -100,11 +103,11 @@ docs:      documentation/policy-only change
 test:      test-only change
 ci:        workflow/CI change
 build:     dependency/toolchain change
-release:   explicit stable/release state
+release:   explicit versioned release/publish state
 chore:     bounded maintenance when no better category fits
 ```
 
-`Local` is milestone history: one approved promotion equals one squash commit. `main` is release history: release promotions may add merge commits that mark explicit stable boundaries.
+`Local` is milestone history: one approved promotion equals one squash commit. `main` is stable history: stable promotions may add merge commits, while protected version tags/GitHub Releases are reserved for feature-bearing publish points.
 
 Do not use transfer experiments, placeholder files, generated fragments, or temporary helper architecture as permanent repository history.
 
@@ -120,7 +123,7 @@ See `SECURITY.md` and `workspace/README.md`.
 
 ## Pull requests
 
-Use `.github/PULL_REQUEST_TEMPLATE.md` and keep the PR scoped to one logical delivery. A `develop` → `Local` promotion PR must be squash-merged. A `Local` → `main` release PR must pass the stable release gate.
+Use `.github/PULL_REQUEST_TEMPLATE.md` and keep the PR scoped to one logical delivery. A `develop` → `Local` promotion PR must be squash-merged. A `Local` → `main` stable PR must pass `Stable release gate` and use a normal merge commit.
 
 ## License
 
