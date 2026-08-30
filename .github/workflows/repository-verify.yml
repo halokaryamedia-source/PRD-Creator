@@ -66,6 +66,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify governance surfaces
+        run: |
+          required=(
+            "README.md"
+            "CONTRIBUTING.md"
+            "CHANGELOG.md"
+            "SECURITY.md"
+            ".gitignore"
+            ".gitattributes"
+            ".github/CODEOWNERS"
+            ".github/PULL_REQUEST_TEMPLATE.md"
+            ".github/workflows/local-promotion-verify.yml"
+            ".github/workflows/release-verify.yml"
+          )
+          for path in "${required[@]}"; do
+            test -f "$path" || {
+              echo "Missing required governance surface: $path" >&2
+              exit 1
+            }
+          done
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
