@@ -1,47 +1,36 @@
 # Project Workspace
 
-This folder stores project-specific production packages. Reusable behavior belongs under `kits/prd-creator/`; durable workflow policy belongs under `docs/foundation/`.
+`workspace/` is a **local/external mount convention** for project-specific production packages. The public PRD-Creator repository tracks the system; it does not track live project/client package contents.
+
+Reusable behavior belongs under `kits/prd-creator/`. Durable workflow policy belongs under `docs/foundation/`.
 
 ## Lifecycle
 
 ```text
-current project          → workspace/active/<project>/
+current project           → workspace/active/<project>/
 inactive retained project → workspace/archive/<project>/
 ```
 
-A project moves to `archive/` only when its active production status actually ends. Do not move projects merely to make the repository look smaller.
+Project subdirectories are ignored by Git. Keep their actual bytes locally or in a separate authorized/private repository or storage location.
 
-Project packages grow only when the current production stage needs an artifact. Do not pre-create a full folder tree.
+A project moves to `archive/` only when its active production status actually ends. Do not archive merely to make the workspace look smaller.
 
-### Selecting an active project
+### Selecting a project
 
-Multiple projects may remain in `workspace/active/` at the same time.
+Multiple project packages may be available locally at the same time.
 
 ```text
 user explicitly names project
-→ use that project
+→ use that exact project package
 
 current conversation clearly establishes one project
 → continue that project
 
-multiple active projects + request is ambiguous
+multiple available projects + request is ambiguous
 → ask which project before changing project state
 ```
 
-Do not infer project focus from directory order, filename order, commit recency, or whichever package was opened most recently by a tool.
-
-### Approved preview exception
-
-`approved_preview` is an intentional **pre-handoff** retained state, not a synonym for `development_ready` or `handoff_ready`.
-
-Use it only when the user explicitly approves a preview-stage deliverable or an existing project state already records that exception.
-
-- `state/intake-state.yaml` must explicitly record the preview status/approval and identify the retained preview artifact when one exists.
-- A preview package may retain canonical `state/` + `work/` material and the approved preview artifact without the formal versioned `output/` bundle or `state/handoff-state.yaml`.
-- Existing project-specific preview packages may also retain explicitly approved supporting production/Voice notes created for that preview. Those files do **not** establish formal Flow 5 handoff by themselves.
-- `approved_preview` never authorizes Flow 5 automatically. Formal downstream Voice handoff requires the normal `handoff_ready` state.
-- New projects should follow the normal lifecycle unless the user explicitly requests a preview-only milestone.
-- When a preview is formalized, create the normal acceptance/handoff/versioned-delivery artifacts and remove the old preview artifact only after it is genuinely superseded.
+Do not infer project focus from directory order, filename order, commit recency, or whichever package a tool opened most recently.
 
 ## Canonical Project Artifacts
 
@@ -75,7 +64,7 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-The normal delivery command is:
+Normal delivery:
 
 ```bash
 python kits/prd-creator/renderer/delivery.py \
@@ -84,30 +73,31 @@ python kits/prd-creator/renderer/delivery.py \
 
 PRD mechanical validation uses `kits/prd-creator/validator/validate.py`. PRD → Voice handoff uses `kits/prd-creator/validator/validate_handoff.py` only at that boundary. Voice mechanical validation uses `kits/prd-creator/validator/validate_voice.py` only when Voice scope exists.
 
-Exact PRD, Production Assets, renderer, and Voice contracts remain in their named owners under `kits/prd-creator/`; this workspace guide does not redefine their field schemas.
+## Approved preview exception
 
-## Retention and Repository Hygiene
+`approved_preview` is an intentional pre-handoff retained state, not a synonym for `development_ready` or `handoff_ready`.
 
-Keep files because they preserve current production truth, required evidence, or an intentionally retained deliverable, not because they once existed during processing.
+- `state/intake-state.yaml` must explicitly record the preview status/approval.
+- A preview package may retain canonical `state/` + `work/` material and the approved preview artifact without the formal versioned `output/` bundle or `state/handoff-state.yaml`.
+- `approved_preview` never authorizes Flow 5 automatically.
+- Formal downstream Voice handoff still requires `handoff_ready`.
 
-### Keep
+## Retention and security
 
-- canonical project state and work required to reproduce current accepted meaning;
-- source/originals when direct future inspection materially benefits from retaining the bytes;
-- the current versioned delivery;
-- older delivery versions only when they are intentionally retained milestones or approvals;
-- a project-specific approved preview before formal handoff only while current project state explicitly references it.
+Keep project files because they preserve current production truth, required evidence, or an intentionally retained deliverable—not because they once existed during processing.
 
-### Remove after they are superseded
+Do not commit live project packages into this public repository. In particular, treat the following as project data unless explicit visibility approval says otherwise:
 
-- transfer fragments, base64 payload chunks, `.regen-transfer/`, temporary loaders, helper manifests, and upload-only files;
-- generated preview/cache files with no current approval or reproduction value;
-- duplicate approval-marker or review-summary files when canonical project state/work already preserves the accepted meaning;
-- obsolete generated deliveries that are neither the current version nor an intentionally retained milestone.
+- source files and source inventories;
+- requirement registers and project state;
+- client/project decisions;
+- canonical PRD/Voice work;
+- generated project HTML/context/index output;
+- approval/evidence containing project-specific information.
 
-Never remove canonical source/state or approval evidence merely to reduce repository size. Never rewrite history to hide old generated files; clean the current tree and let Git history remain history.
+The Git ignore rules prevent new project subdirectories from being tracked accidentally. They do not erase project material already present in historical commits. History rewriting or repository-visibility changes are separate operations requiring explicit authorization.
 
-Large static originals may remain externally retained when `intake/SOURCE-INTAKE.md` allows it and current production meaning/provenance is safely persisted.
+See `../SECURITY.md` for the public-repository data boundary.
 
 ## Version Rule
 
@@ -119,18 +109,6 @@ document.version: 1.0.0
 ```
 
 A downstream-only 04 or Voice presentation refresh may regenerate the current version when accepted PRD meaning did not enter a new declared revision.
-
-## 04 Production Assets and Voice
-
-Production Asset needs come from the same approved project model as PRD core 01–03. Do not rediscover them by brainstorming over generated HTML.
-
-- non-Voice 04 contract → `kits/prd-creator/production-assets/CONTRACT.md`
-- Voice extraction/craft/validation → `kits/prd-creator/voice/`
-- consolidated presentation → `kits/prd-creator/renderer/CONTRACT.md`
-
-Voice stays canonical in its Voice project files and is not duplicated into `asset-requirements.md`.
-
-When non-Voice 04 is required for the current project, materialize it before Flow 4 acceptance so PRD and 04 readiness are reviewed together. Flow 5 begins only from a formal `handoff_ready` PRD state.
 
 ## Authority Rule
 

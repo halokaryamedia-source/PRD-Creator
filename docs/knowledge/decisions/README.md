@@ -8,6 +8,8 @@ This directory stores durable repository/product decisions whose reasons must su
 
 | Decision | Current status / owner |
 |---|---|
+| Repository development uses `develop → Local → main` with verified promotion boundaries and ancestry synchronization | [three-tier-branch-promotion.md](three-tier-branch-promotion.md) |
+| The public PRD-Creator repository stores the system; live project packages remain ignored/local or external/private | [project-data-boundary.md](project-data-boundary.md) |
 | PRD-Creator uses one categorized implementation package under `kits/prd-creator/` while Project/PRD and Voice semantics remain separate | Current architecture; see [Product Boundaries](../../foundation/00-product-boundaries.md), [Ownership](../ownership.md), and [kit routing](../../../kits/prd-creator/AGENTS.md) |
 | Golden reference is the binding PRD-core representation/runtime prototype; project facts still come only from current project authority | [golden-reference-fidelity.md](golden-reference-fidelity.md) |
 | Root skills remain semantic/product-contract owners; pure renderer/validator mechanics stay with exact implementation owners | [technical-ownership-boundary.md](technical-ownership-boundary.md) |

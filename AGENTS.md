@@ -1,37 +1,42 @@
 # Workspace Agent Routing
 
-This repository is project memory. Current repository/project sources are authority for repository state; chat history is supporting context only.
+This repository is PRD-Creator system memory. Current repository/project sources are authority for repository state; chat history is supporting context only.
 
 ## Branch and boot
 
-- `Local` is the permanent development / working authority.
-- Routine work happens directly on `Local`; do not create routine task branches/PRs.
-- `main` is the stable / release branch and is not a routine development target.
-- Promote `Local` to `main` only when the user explicitly declares a stable/release promotion and the relevant release proof passes.
-- A dedicated `Local` → `main` PR is valid at that release boundary only; it does not change the normal direct-to-`Local` workflow.
-- A verified merge into `main` is the stable promotion. Git tags and GitHub Releases are separate publishing actions and must never be created automatically without an explicit user request.
+```text
+develop  → active repository development
+Local    → verified integration / stable working baseline
+main     → stable release branch
+```
 
-Choose the smallest **sufficient** boot for the task. Efficiency must not remove context that prevents wrong work.
+- Normal repository Development happens on `develop`.
+- `Local` is not a routine edit target. Promote `develop` to `Local` only through the verified integration boundary.
+- `main` is release-only. Promote `Local` to `main` only when the user explicitly requests a stable/release promotion and `Stable release gate` passes.
+- Promotion boundaries use merge commits; after promotion, synchronize the promoted ancestry back down so `develop`, `Local`, and `main` do not evolve as unrelated histories.
+- Tags and GitHub Releases are separate publishing actions and require explicit user instruction.
+
+Choose the smallest sufficient boot for the task.
 
 ### Observe / recover context
 
-When the user only asks to `amati`, inspect, understand, study, or recover repository context:
+When the user only asks to inspect, understand, study, or recover repository context:
 
 ```text
 AGENTS.md
-→ GITHUB_RULES.md Core Rules for material GitHub work
+→ GITHUB_RULES.md Core Rules when GitHub work is material
 → CONTEXT.md
 → docs/knowledge/next-action.md
-→ smallest owner needed to explain the current state
+→ smallest owner needed to explain current state
 → report understanding
 → STOP
 ```
 
-This is read-only Plan behavior. Do **not** edit, advance `next-action`, promote backlog work, run CI, or start the recorded next step unless the user also asks to continue/implement.
+This is read-only Plan behavior. Do not edit, advance `next-action`, promote backlog work, or start the recorded next step unless the user also asks to continue.
 
 ### Non-trivial Development
 
-Before changing PRD-Creator itself, read:
+Before changing PRD-Creator itself:
 
 ```text
 AGENTS.md
@@ -42,83 +47,49 @@ AGENTS.md
 → smallest relevant owner/source
 ```
 
-`CONTEXT.md` and `next-action.md` are mandatory here because repository development must survive new-chat/session boundaries without asking the user to reconstruct prior work.
+### Bounded Maintenance
 
-### Bounded Maintenance / mechanical work
-
-A clearly bounded defect may use a smaller boot when stable product context and active continuation cannot change the decision. Start from the exact defect/owner; do not turn this exception into broad context skipping for Development work.
-
-Open `docs/knowledge/skills/activation-matrix.md` only when the correct specialist is genuinely ambiguous. Use `docs/knowledge/ownership.md` or `docs/knowledge/source-authority.md` only when direct ownership/authority is unclear. Do not broad-read saved projects, reviews, decisions, generated output, or Git history by default.
-
-## GitHub work
-
-[GITHUB_RULES.md](GITHUB_RULES.md) is the canonical ChatGPT ↔ GitHub operating policy. It owns GitHub branch/ref authority, tool + transfer gate, manual handoff, write/commit/history discipline, verification/failure/recovery policy, CI/API safety, and STOP behavior.
-
-Repository-specific rules here may narrow domain behavior but do not duplicate or weaken that policy.
-
-### Local CI narrowing
-
-For this repository, CI on `Local` is an asynchronous regression safety net, not a blocking permission gate for ordinary development.
-
-- Use the cheapest relevant proof before the logical commit.
-- After a normal `Local` commit, do not poll or wait for `queued` / `in_progress` CI before continuing or reporting the completed change.
-- Diagnose only a failure on the current relevant `Local` HEAD. Cancelled or superseded runs do not need recovery.
-- `Repository Verify`, `PRD Verify`, and `Voice Verify` remain targeted by their workflow paths and may run in the background.
-- `Release Verify` on the explicit `Local` → `main` release PR is blocking and must complete successfully before merge.
-
-This narrows the general verification policy for the repository branch model; it does not convert incomplete CI into PASS or weaken the `main` release gate.
+A clearly bounded defect may start from the exact failing owner when wider product context cannot change the decision. Do not turn Maintenance into a repository-wide redesign.
 
 ## Work modes
 
 | Intent | Mode | Front door |
 |---|---|---|
-| Understand/decide/recover context before editing | Plan | inspect evidence + owner; no edit until requested |
-| Create/revise PRD or Voice deliverables with the existing system | Production Execution | matching production owner directly |
-| Change PRD-Creator policy/skills/workflow/renderer/validator/repository mechanics | Development | `development-brief` + at most one useful specialist |
+| Understand/decide/recover before editing | Plan | inspect evidence + owner; no edit until requested |
+| Create/revise project PRD or Voice deliverables | Production Execution | matching production owner |
+| Change PRD-Creator policy/workflow/renderer/validator/repository mechanics | Development | `development-brief` + at most one useful specialist |
 | Bug/regression/cleanup/stale docs/behavior-preserving correction | Maintenance | concrete failure → first wrong owner |
 
-Creating files during normal project production does **not** make the task Development.
+Creating project artifacts during normal production does not make the task Development.
 
 ## Production front doors
 
 ```text
 new/revised PRD
 → project-document-production
-→ kits/prd-creator/ smallest active Project/PRD owner
+→ smallest active Project/PRD owner in kits/prd-creator/
 
 accepted PRD → Voice production
 → voice-production
-→ kits/prd-creator/ smallest active Voice owner
+→ smallest active Voice owner in kits/prd-creator/
 ```
 
-### Active project resolution
+### Project package resolution
 
-Multiple packages may legitimately remain under `workspace/active/` at the same time.
+Project packages are production data, not system-repository content. They may be mounted or copied locally under ignored `workspace/active/<project>/` paths, or retained in a separate authorized repository/location.
 
 ```text
 user names a project
-→ use that exact project package
+→ use that exact package
 
 current conversation unambiguously establishes one project
 → continue that project
 
-multiple active projects + request is ambiguous
+multiple available projects + request is ambiguous
 → ask which project before changing project state
 ```
 
-Never infer the active project from directory order, filename order, repository recency, or whichever package happens to be easiest to open.
-
-Production Execution rules:
-
-- bootstrap project/workspace/internal IDs automatically;
-- inspect repository/project evidence before asking the user;
-- recover existing context before asking the user to repeat it;
-- triage source relevance/authority before deep reading;
-- for Flow 2, solve before asking: existing authority → safe Completion → responsible recommended Proposal or honest tradeoff → Blocked/direct decision;
-- batch only unresolved material decisions after that recovery/problem-solving pass;
-- use bounded revision fast paths instead of replaying unchanged work;
-- keep internal state/evidence internal unless requested or needed to explain a blocker;
-- deliver the requested artifact plus concise material changes/attention items.
+Never infer project focus from directory order, recency, or whichever package is easiest to open.
 
 ## Authority and conflict
 
@@ -129,29 +100,27 @@ Use the nearest authoritative owner for each claim:
 3. authoritative project source;
 4. normalized requirement/project state;
 5. accepted canonical PRD;
-6. accepted Voice requirements / canonical Voice production for their downstream scope;
+6. accepted Voice requirements / canonical Voice production for downstream scope;
 7. durable repository/foundation policy;
 8. active `kits/prd-creator/` domain procedure;
 9. Golden/reference material for demonstrated structure/quality only;
 10. generated output, prior review, or chat/history as supporting evidence only.
 
-Material conflicts remain `UNKNOWN` until reconciled. Do not choose silently. A Golden/reference sample never supplies project-specific mechanics, counts, story, scoring, speakers, or other facts unless explicitly approved.
+Material conflicts remain `UNKNOWN` until reconciled. Golden/reference samples never supply another project's mechanics, counts, story, scoring, speakers, or implementation facts unless explicitly approved.
 
 ### Continuity reconciliation
 
-`next-action.md` owns **active continuation**, while current source/state owns **actual implementation state**.
-
-If they materially disagree:
+`next-action.md` owns active continuation while current source/state owns actual implementation state.
 
 ```text
 detect mismatch
-→ inspect the current source/owner
+→ inspect current source/owner
 → identify stale continuity vs stale implementation
 → reconcile the correct owner
-→ continue from actual current state
+→ continue from actual state
 ```
 
-Do not blindly implement a stale next step, and do not ignore `next-action` to pick an unrelated TODO/review finding. Old TODOs, backlog entries, audit findings, comments, and Git history are not active work unless current user intent or `next-action` promotes them.
+Historical TODOs, audits, backlog entries, and Git history are not active work unless current user intent or `next-action` promotes them.
 
 ## Evidence boundary
 
@@ -179,23 +148,21 @@ original source / approved decisions
 → acceptance evidence
 ```
 
-Never patch `prd.html` or another derived artifact to hide an upstream defect. Regenerate only invalidated derived artifacts.
+Never patch generated `prd.html`, `context.md`, or `index.json` to hide an upstream defect.
 
 ## Repository continuity
 
 Canonical current-state owners:
 
 - stable product/repository orientation → `CONTEXT.md`;
-- active continuation/resume checkpoint → `docs/knowledge/next-action.md`;
-- durable decisions/reasons → `docs/knowledge/decisions/README.md` + `docs/knowledge/decisions/`;
+- active continuation → `docs/knowledge/next-action.md`;
+- durable decisions → `docs/knowledge/decisions/`;
 - durable production policy → `docs/foundation/`;
-- detailed production procedure/mechanics → affected `kits/prd-creator/` domain owner;
-- project facts/state/output → current project package;
-- historical reviews → review files / Git history, only when needed.
+- detailed production procedure/mechanics → affected `kits/prd-creator/` owner;
+- project facts/state/output → current external/local project package;
+- historical reviews → review files / Git history only when needed.
 
-Read `next-action.md` for Development/context recovery, but write it only when status, active boundary, blocker, deferred boundary, or the next meaningful step actually changes.
-
-Before ending material work, update only the canonical owner whose current state actually changed. Current user intent wins over stale stored state, but reconcile the conflict explicitly.
+Update `next-action.md` only when status, active boundary, blocker, deferred boundary, or next meaningful step actually changes.
 
 ## Skill budget
 
@@ -207,22 +174,30 @@ Canonical root skills remain:
 .agents/skills/voice-production
 ```
 
-- Production Execution → one matching production specialist + smallest active `kits/prd-creator/` procedure.
-- Development → mandatory `development-brief` + at most one useful specialist.
-- Maintenance → specialist optional; use only if it adds material semantic procedure.
+- Production Execution → one matching production specialist + smallest kit procedure.
+- Development → mandatory `development-brief` + at most one useful semantic specialist.
+- Maintenance → specialist optional.
 - Plan → no specialist by default.
 
-Do not create renderer/validator/Python/research/evidence-gate skills merely because those implementation surfaces exist.
+Do not create renderer/validator/Python/research/evidence-gate skills merely because those surfaces exist.
 
 ## Execution channel
 
-GitHub execution/tool-selection rules are owned by [GITHUB_RULES.md](GITHUB_RULES.md). GitHub/static inspection proves repository state and static contracts only; browser, audio, and local runtime claims require the actual matching capability.
+[GITHUB_RULES.md](GITHUB_RULES.md) owns GitHub tool selection, transfer safety, write/commit/history discipline, verification, retries, recovery, and STOP behavior.
+
+Repository branch-specific narrowing:
+
+- `develop` CI is the active regression safety net for repository development.
+- `develop` → `Local` requires the Local promotion gate before integration.
+- `Local` → `main` requires the Stable release gate before release.
+- Do not bypass a failed gate by editing another branch directly.
+- Browser, audio, and runtime claims require the actual matching capability; GitHub/static checks prove only repository/static contracts.
 
 ## User-facing communication
 
-Normal Production Execution does not show repository machinery. Default delivery is the requested artifact plus concise material changes/decisions and any real remaining attention item.
+Normal Production Execution should expose the requested artifact, material changes/decisions, and real attention items—not repository machinery.
 
-For repository/system Development work use a compact brief when useful:
+For repository/system Development, a compact brief may use:
 
 ```text
 Tujuan:
@@ -242,7 +217,7 @@ Batasan:
 Next step:
 ```
 
-Use exactly one next step. Explain decisions, not internal machinery, unless the user asks for details.
+Use one next step. Explain decisions rather than internal scratch work.
 
 ## Product boundaries
 
@@ -251,5 +226,5 @@ Use exactly one next step. Explain decisions, not internal machinery, unless the
 - Root skills own reusable semantic judgment, not detailed package procedure.
 - `kits/prd-creator/AGENTS.md` owns package module/file routing and pure technical Maintenance.
 - Repository engineering owns shared dependency/regression/CI contracts.
-
-Production Flows and agent work modes are separate layers; do not confuse them.
+- Live project packages are not tracked in the public PRD-Creator system repository; `workspace/` is a local/external mount convention only.
+- Production Flows and agent work modes are separate layers.

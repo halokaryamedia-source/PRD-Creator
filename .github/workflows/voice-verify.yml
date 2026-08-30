@@ -3,6 +3,7 @@ name: Voice Verify
 on:
   push:
     branches:
+      - develop
       - Local
     paths:
       - "kits/prd-creator/voice/**/*.py"

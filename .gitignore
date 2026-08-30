@@ -16,6 +16,12 @@ htmlcov/
 !.env.example
 *.log
 
+# Project production data
+workspace/active/*
+!workspace/active/README.md
+workspace/archive/*
+!workspace/archive/README.md
+
 # OS / transfer residue
 .DS_Store
 **/.regen-transfer/

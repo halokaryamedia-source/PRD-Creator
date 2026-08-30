@@ -2,22 +2,31 @@
 
 ## Current Status
 
-`PRD_SCOPE_BOUNDARY_HARDENING_IMPLEMENTED`
+`REPOSITORY_PROFESSIONALIZATION_IMPLEMENTED_PENDING_VERIFICATION`
 
-The PRD scope-boundary hardening is complete. Current continuation is **regression-only**; there is no active implementation task from the earlier map-composition audit.
+A professionalization candidate is being assembled on `develop`. `Local` remains unchanged as the pre-change verified working baseline.
+
+The candidate introduces:
+
+- `develop → Local → main` promotion boundaries;
+- project-package data isolation from the public tracked tree;
+- CI coverage for `develop` plus a full Local promotion gate;
+- public security/contribution/ownership surfaces;
+- renderer removal of module-global Golden-token mutation;
+- simplified repository onboarding.
+
+No PRD/Voice semantic contract or Golden design change is part of this tranche.
 
 ## Active Boundary
 
-Canonical PRD remains a **pre-build production specification**, not a forensic/as-built implementation document.
+This is repository engineering only.
 
-Preserve material gameplay, build, production, spatial, quantitative, and explicitly approved technical constraints. Do not promote exact world coordinates/map-instance locators, incidental scoreboard/tag/function/runtime identifiers, UUIDs, pack/file identifiers, debug/setup residue, or other details that only describe one finished implementation.
+Do not reopen PRD-core composition, Production Assets semantics, Voice semantics, project gameplay content, or Golden cardinality merely because repository structure changed.
 
-Exact locators requested for an already built map belong to a separate as-built/technical setup deliverable rather than canonical PRD scope.
+`Local` and `main` must remain untouched until the `develop` candidate is verified and explicitly promoted.
 
-Do not reopen the Golden/template composition, renderer/compositor, 04 Production Assets contract, Voice, repository architecture, accepted Clockwork output, or the completed map-composition audit unless a concrete current production case proves a separate defect.
-
-Historical six-map audit evidence remains available in Git history/review sources and is not part of the default boot context.
+Live project packages are no longer intended to be tracked on `develop`; project history on `Local`/older commits is not rewritten by this change.
 
 ## Next Step
 
-**Apply the hardened scope boundary during the next real new/revised PRD production. Reopen this work only for a concrete current misclassification or regression; otherwise continue with the actual requested production/development task.**
+**Run the repository, PRD, Voice, and Local promotion verification applicable to the current `develop` HEAD; if the candidate passes, record that evidence and leave promotion to `Local` as a separate explicit review/merge action.**

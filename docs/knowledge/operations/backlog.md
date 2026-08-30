@@ -1,15 +1,17 @@
 # Backlog
 
-Updated: 2026-08-14
+Updated: 2026-08-30
 
 This file contains **future/non-active work only**. It never overrides `../next-action.md`.
 
 ## Current Backlog
 
-The complete evidence and rationale are preserved in `../reviews/repository-quality-audit-2026-08-14.md`. Do not execute this as a bulk refactor; promote only one next concrete remediation boundary into `next-action.md`.
+1. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit Golden-design approval plus real-project evidence before changing the representation contract. Do not loosen counts as repository maintenance.
+2. **RQ-11 — duplicated manual parsers (P2):** address only when a concrete parser defect or same-owner change proves the need; prefer one tiny shared reader over schemas/frameworks.
+3. **RQ-14 — page lettering >26 (P3):** add a bounded guard/helper only when a real project can exceed the current range.
 
-1. **RQ-09 + RQ-11 — renderer global mutation and duplicated manual parsers (P2):** address only with a concrete maintenance need or while the same owner is already changing; prefer one tiny shared reader over schemas/frameworks.
-2. **RQ-10 — fixed Golden cardinality vs filler pressure (P2):** requires explicit design approval and real-project evidence before changing the Golden contract. Do not loosen counts as maintenance.
-3. **RQ-14 — page lettering >26 (P3):** add only a bounded guard/helper when a real project can exceed the current range.
+## Recently closed
 
-Closed items RQ-01, RQ-02, RQ-03, RQ-04, RQ-05, RQ-06, RQ-07, RQ-08, RQ-12, RQ-13, RQ-15, and RQ-16 remain documented in the audit and Git history rather than staying in this backlog.
+- **RQ-09 — renderer global mutation:** closed on the `develop` professionalization tranche. Golden rendering now adapts the canonical marker in the temporary template instead of mutating `_engine.STORAGE_PREFIX_TOKEN`.
+
+Closed earlier items remain documented in historical audits and Git history rather than staying in this backlog.
