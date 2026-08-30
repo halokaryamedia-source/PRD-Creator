@@ -1,15 +1,15 @@
-# Clean Milestone and Release History
+# Clean Milestone and Stable History
 
 Status: current
 
 ## Decision
 
-PRD-Creator separates working, approved milestone, and release history:
+PRD-Creator separates working, approved milestone, and stable history:
 
 ```text
 develop  → active development history; may contain many working commits
 Local    → approved milestone history; exactly one commit per approved update
-main     → stable release history; explicit release boundaries
+main     → stable repository history; explicit stable boundaries
 ```
 
 All three active branches originate from the same clean professional root baseline. Pre-reset history is retained only through dedicated legacy safety branches.
@@ -31,28 +31,30 @@ After the squash merge, `develop` must be synchronized/reset to the resulting `L
 
 `Local` may require the promotion source to be up to date because `develop` is intentionally synchronized to each new Local milestone before the next cycle begins.
 
-## Local → main release
+## Local → main stable promotion
 
-A stable release moves from `Local` to `main` only after `Stable release gate` passes and the release is explicitly approved.
+An explicitly approved stable repository update moves from `Local` to `main` only after `Stable release gate` passes.
 
 Use a normal merge commit for this boundary:
 
 ```text
 Local approved milestones
-→ release PR
+→ stable PR
 → Stable release gate on the PR merge candidate
 → merge commit on main
 ```
 
-The release merge commit is a `main`-only release marker. Do not reset or merge `main` back into `Local` or `develop` merely to carry that marker downward. Future Local milestones continue from the clean Local sequence and future release PRs merge those milestones into `main`.
+The resulting merge commit is a `main`-only stable marker. It is **not automatically a versioned release**. Do not reset or merge `main` back into `Local` or `develop` merely to carry that marker downward. Future Local milestones continue from the clean Local sequence and future stable PRs merge those milestones into `main`.
 
-Because this divergence is intentional, `main` must not require `Local` to absorb prior main-only release-marker ancestry before a release PR can merge. Release verification instead validates GitHub's pull-request merge candidate against the current `main` base.
+Because this divergence is intentional, `main` must not require `Local` to absorb prior main-only stable-marker ancestry before a PR can merge. Verification instead validates GitHub's pull-request merge candidate against the current `main` base.
 
-## Stable tags and repository releases
+## Versioned tags and GitHub Releases
 
-Git tags and GitHub Releases remain separate explicit publishing actions.
+Git tags and GitHub Releases are separate explicit publishing actions.
 
-Stable repository tags use the `v*` namespace. Once created, a stable tag must not be moved or deleted. Creating the next tag remains an explicit release action and does not happen automatically after every `Local` or `main` update.
+Stable repository tags use the `v*` namespace. Once created, a stable tag must not be moved or deleted.
+
+Create the next `v*` tag and GitHub Release **only when the stable state contains an approved PRD-Creator feature or capability change**. Governance, CI, ruleset, documentation, repository hygiene, and other maintenance-only changes do not create a new repository version. They may be promoted to `main` when required for stable repository operation, remain untagged, and can be summarized with the next feature-bearing release.
 
 Repository release tags such as `v0.1` are separate from the PRD-Creator product/package version owned by `kits/prd-creator/README.md`.
 
@@ -75,8 +77,10 @@ This decision does not:
 
 - require every development save to become a Local commit;
 - preserve development checkpoint noise in Local history;
-- make release merge commits part of Local milestone history;
-- require `Local` to absorb main-only release markers;
+- make main-only stable markers part of Local milestone history;
+- require `Local` to absorb main-only stable markers;
+- turn every `main` update into a versioned release;
+- create a new release for governance/documentation/CI-only maintenance;
 - change PRD/Voice product semantics;
 - authorize automatic tags or GitHub Releases;
 - make force-push/history rewrite a normal repository maintenance tool.
@@ -84,12 +88,14 @@ This decision does not:
 ## Enforcement
 
 - repository development happens on `develop`;
+- `develop` is protected from deletion but remains writable for normal development and post-squash synchronization;
 - `Local Promotion Verify` is the integration gate;
 - `develop` → `Local` uses squash merge;
 - one approved promotion equals exactly one new `Local` commit;
 - `develop` is synchronized to `Local` after promotion;
 - `Local` retains linear-history, non-fast-forward, deletion, pull-request, squash-only, and required-check protection;
-- `Stable release gate` validates `Local` → `main` release PR merge candidates;
-- `main` uses normal merge commits for release promotions and retains non-fast-forward, deletion, pull-request, and required-check protection;
-- `main` must not use a strict up-to-date requirement that forces prior release-marker ancestry into `Local`;
-- stable tags matching `refs/tags/v*` are protected from update and deletion.
+- `Stable release gate` validates `Local` → `main` stable PR merge candidates;
+- `main` uses normal merge commits for stable promotions and retains non-fast-forward, deletion, pull-request, and required-check protection;
+- `main` must not use a strict up-to-date requirement that forces prior main-only stable-marker ancestry into `Local`;
+- stable tags matching `refs/tags/v*` are protected from update and deletion;
+- a new stable tag/GitHub Release is published only for an approved feature/capability change.

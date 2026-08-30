@@ -7,16 +7,17 @@ This repository is PRD-Creator system memory. Current repository/project sources
 ```text
 develop  → active repository development; working commits may be numerous
 Local    → verified integration / stable working baseline; one commit per approved update
-main     → clean stable release history
+main     → clean stable repository history
 ```
 
 - Normal repository Development happens on `develop`.
 - `Local` is not a routine edit target. Promote `develop` to `Local` only through the verified integration boundary.
 - Every `develop` → `Local` promotion must use **squash merge** so one approved update adds exactly one commit to `Local`.
 - After a squash promotion, synchronize/reset `develop` to the resulting `Local` HEAD before starting the next development cycle.
-- `main` is release-only. Promote `Local` to `main` only through an explicitly approved release PR after `Stable release gate` passes.
-- A `main` release merge commit is a release marker and is not synchronized back into `Local` or `develop`.
-- Tags and GitHub Releases are separate publishing actions and require explicit user instruction.
+- `main` is stable-only. Promote `Local` to `main` only through an explicitly approved stable PR after `Stable release gate` passes.
+- A resulting `main` stable merge commit is a main-only marker and is not synchronized back into `Local` or `develop`.
+- A `main` promotion is not automatically a versioned release. Create a new protected `v*` tag/GitHub Release only when an approved PRD-Creator feature/capability changes.
+- Governance, CI, ruleset, documentation, and maintenance-only stable promotions remain untagged.
 
 Choose the smallest sufficient boot for the task.
 
@@ -193,8 +194,9 @@ Repository branch-specific narrowing:
 - `develop` → `Local` requires the Local promotion gate before integration.
 - A successful `develop` → `Local` promotion uses squash merge and adds exactly one Local commit.
 - After promotion, `develop` must be synchronized/reset to the resulting `Local` HEAD before new development begins.
-- `Local` → `main` requires the Stable release gate and explicit release approval.
-- A resulting `main` release merge commit remains on `main`; do not reset lower branches to it.
+- `Local` → `main` requires `Stable release gate` and explicit stable-promotion approval.
+- A resulting `main` stable merge commit remains on `main`; do not reset lower branches to it.
+- Protected version tags/GitHub Releases are separate publishing actions and are created only for approved feature/capability changes.
 - Do not bypass a failed gate by editing another branch directly.
 - Browser, audio, and runtime claims require the actual matching capability; GitHub/static checks prove only repository/static contracts.
 
