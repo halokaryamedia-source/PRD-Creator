@@ -39,6 +39,18 @@ one approved develop → Local promotion
 = exactly +1 commit on Local
 ```
 
+#### Local clones after a squash promotion
+
+A local clone may still point to the pre-squash `develop` commit chain after the remote branch has been synchronized to the new `Local` milestone. Before continuing work, first commit, stash, or otherwise preserve any local changes that still matter. Then resynchronize the local branch:
+
+```bash
+git fetch origin
+git switch develop
+git reset --hard origin/develop
+```
+
+Do not use the hard reset while uncommitted work still needs to be recovered. Do not merge or rebase `main` into `develop` merely to obtain release-marker commits; normal development resumes from the synchronized remote `develop` branch.
+
 ### Promote `Local` → `main`
 
 Use a dedicated release pull request only for an explicitly approved stable/release promotion.
