@@ -29,8 +29,10 @@ Generated delivery is never source of truth. Fix canonical project state first, 
 ```text
 develop  → active repository development; working commits may be numerous
 Local    → clean approved integration history; one commit per approved update
-main     → existing stable/release branch; unchanged until an explicit main-history migration
+main     → clean stable/release history
 ```
+
+All three active branches share the same professional root baseline.
 
 Normal repository changes happen on `develop`.
 
@@ -49,7 +51,7 @@ Local #2  approved update
     └─ reset/sync develop to Local #2
 ```
 
-`main` is intentionally outside this history reset. Do not promote the new clean `Local` lineage to `main` until an explicit main migration/release decision establishes the intended relationship.
+A stable release is promoted from `Local` to `main` through a dedicated pull request after the `Stable release gate` passes. Use a normal merge commit at the release boundary so `main` records explicit release promotions while `Local` keeps its clean milestone sequence.
 
 Repository behavior is routed by [AGENTS.md](AGENTS.md). GitHub execution is governed by [GITHUB_RULES.md](GITHUB_RULES.md). Stable product orientation lives in [CONTEXT.md](CONTEXT.md).
 

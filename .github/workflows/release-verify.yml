@@ -33,15 +33,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
-      - name: Require current main ancestry
-        if: github.event_name == 'pull_request'
-        run: |
-          git fetch --no-tags origin main
-          git merge-base --is-ancestor origin/main HEAD || {
-            echo "Local must contain current main ancestry before release promotion." >&2
-            exit 1
-          }
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

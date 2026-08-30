@@ -2,13 +2,13 @@
 
 Updated: 2026-08-30
 
-This file records the current evidence state for the clean `Local` / `develop` baseline.
+This file records the current evidence state after the clean-history migration of `develop`, `Local`, and `main`.
 
 ## Current system state
 
 Working branch: `develop`.  
 Verified integration baseline: `Local`.  
-Existing stable/release lineage: `main` (unchanged; explicit migration required before normal release promotion resumes).
+Stable/release branch: `main`.
 
 PRD Creator package remains **v1.14.0**. The history-model migration does not change PRD/Voice product semantics, Golden design, or package behavior.
 
@@ -39,23 +39,39 @@ Local
 → one approved promotion = exactly one squash commit
 
 main
-→ existing legacy stable/release lineage
-→ not rewritten by this migration
+→ clean stable/release history
+→ receives explicit Local release promotions
 ```
 
 After each successful `develop` → `Local` squash promotion, `develop` is synchronized/reset to the resulting `Local` HEAD before new development starts.
 
+A `Local` → `main` release uses the Stable release gate and a normal merge commit. That release merge commit remains on `main`; `Local` continues its clean milestone sequence independently.
+
 ## Baseline evidence
 
-The clean baseline is created from the approved repository tree after repository professionalization. The baseline-construction proof requires all of the following before the root is accepted:
+Clean root baseline:
 
-- root commit has no parent;
-- root tree matches the prepared clean baseline source exactly;
-- `python tools/verify_repository.py` passes;
-- full `python -m unittest discover -s tests -p "test_*.py" -v` passes;
-- `develop` and the clean Local candidate point to the same root commit before the protected `Local` ref is migrated.
+```text
+29aec52a2d78cabfedd3abb771c8a31d67979ce7
+```
 
-Previous history is retained only through an explicit legacy safety reference for recovery/audit. The active clean lineage does not depend on that history.
+The root commit has no parent and was created from the verified prepared repository tree. Before activation, the baseline construction passed:
+
+- root-parent check;
+- exact prepared-tree equality check;
+- `python tools/verify_repository.py`;
+- full `python -m unittest discover -s tests -p "test_*.py" -v` regression suite.
+
+`Local` and `main` were then reset to that same root through explicit one-time user-authorized migrations. `develop` began from the same root and now carries normal post-baseline working commits.
+
+Legacy recovery references are retained separately:
+
+```text
+legacy/pre-clean-local-2026-08-30
+legacy/pre-clean-main-2026-08-30
+```
+
+The active branch lineage does not depend on those legacy histories.
 
 ## Product evidence boundary
 

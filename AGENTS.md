@@ -7,14 +7,15 @@ This repository is PRD-Creator system memory. Current repository/project sources
 ```text
 develop  → active repository development; working commits may be numerous
 Local    → verified integration / stable working baseline; one commit per approved update
-main     → existing stable release branch; unchanged until explicit main-history migration
+main     → clean stable release history
 ```
 
 - Normal repository Development happens on `develop`.
 - `Local` is not a routine edit target. Promote `develop` to `Local` only through the verified integration boundary.
 - Every `develop` → `Local` promotion must use **squash merge** so one approved update adds exactly one commit to `Local`.
 - After a squash promotion, synchronize/reset `develop` to the resulting `Local` HEAD before starting the next development cycle.
-- `main` is intentionally outside the current clean-history migration. Do not attempt normal `Local` → `main` promotion until an explicit main-history migration/release decision establishes the relationship.
+- `main` is release-only. Promote `Local` to `main` only through an explicitly approved release PR after `Stable release gate` passes.
+- A `main` release merge commit is a release marker and is not synchronized back into `Local` or `develop`.
 - Tags and GitHub Releases are separate publishing actions and require explicit user instruction.
 
 Choose the smallest sufficient boot for the task.
@@ -192,7 +193,8 @@ Repository branch-specific narrowing:
 - `develop` → `Local` requires the Local promotion gate before integration.
 - A successful `develop` → `Local` promotion uses squash merge and adds exactly one Local commit.
 - After promotion, `develop` must be synchronized/reset to the resulting `Local` HEAD before new development begins.
-- `main` release promotion is deferred until an explicit main-history migration/release decision.
+- `Local` → `main` requires the Stable release gate and explicit release approval.
+- A resulting `main` release merge commit remains on `main`; do not reset lower branches to it.
 - Do not bypass a failed gate by editing another branch directly.
 - Browser, audio, and runtime claims require the actual matching capability; GitHub/static checks prove only repository/static contracts.
 
