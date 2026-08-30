@@ -1,13 +1,15 @@
 # PRD-Creator Context
 
-Status: active production repository  
-Working branch: `Local`
+Status: active production system  
+Development branch: `develop`  
+Verified integration baseline: `Local`  
+Stable release branch: `main`
 
-This file is the stable orientation layer for new sessions and repository Development. It explains **what PRD-Creator is, how its major boundaries fit together, and where detailed authority lives**. It intentionally does not duplicate exact field schemas, rendering contracts, or detailed Flow procedures owned elsewhere.
+This file is the stable orientation layer for new sessions and repository Development. It explains what PRD-Creator is, its major authority boundaries, and where detailed owners live. It intentionally does not duplicate field schemas, rendering contracts, or detailed Flow procedures.
 
 ## Product
 
-PRD-Creator turns uneven project discussion + source material into one approved project model, then produces development-ready project documentation and the production resources needed to build that same project.
+PRD-Creator turns uneven project discussion and source material into one approved project model, then produces development-ready documentation and production resources needed to build that same project.
 
 The normal human-facing document may contain:
 
@@ -18,9 +20,9 @@ The normal human-facing document may contain:
 04 Production Assets
 ```
 
-01–03 use the approved PRD-core/Golden system. `04 Production Assets` is additive and comes from the **same approved project model**, not from a second AI design pass over finished 01–03.
+01–03 use the approved PRD-core/Golden system. `04 Production Assets` is additive and comes from the same approved project model, not from a second design pass over generated 01–03.
 
-Voice Production is downstream from accepted project/PRD meaning. It does not create a second project/source-intake authority.
+Voice Production is downstream from accepted project/PRD meaning. It does not create a second source-intake authority.
 
 ## Canonical production sequence
 
@@ -34,9 +36,32 @@ Flow 6  Eleven v3 Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
-There is no canonical Flow 8. Non-Voice Production Assets are a bounded capability inside the same PRD-Creator product package, not another numbered Flow.
+There is no canonical Flow 8. Non-Voice Production Assets are a bounded capability inside the same PRD-Creator package.
 
-High-level flow policy lives in `docs/foundation/`. Detailed production procedure lives in the matching `kits/prd-creator/` domain owner.
+High-level policy lives in `docs/foundation/`. Detailed production procedure lives in the matching `kits/prd-creator/` domain owner.
+
+## Branch authority
+
+```text
+develop
+→ active repository Development
+
+Local
+→ verified integration / stable working baseline
+
+main
+→ stable release
+```
+
+Promotion is directional:
+
+```text
+develop → Local → main
+```
+
+Each promotion is reviewed and gated. Use merge ancestry and synchronize the promoted commit back down after integration/release. Do not let `develop`, `Local`, and `main` accumulate independent stable-only changes.
+
+Detailed GitHub execution remains owned by `GITHUB_RULES.md`; the durable branch decision is recorded under `docs/knowledge/decisions/`.
 
 ## Stable authority shape
 
@@ -46,24 +71,20 @@ current user instruction
 + authoritative project source
 → approved project model
    ├─ canonical PRD core 01–03
-   └─ justified non-Voice 04 Production Asset requirements when needed
+   └─ justified non-Voice 04 Production Asset requirements
 → accepted PRD / handoff
 → optional Voice requirements
 → canonical Voice Production
 → derived project HTML / evidence
 ```
 
-Authority decreases downstream. Generated HTML, render projections, reviews, and other derived artifacts do not repair or outrank their canonical source.
+Authority decreases downstream. Generated HTML, render projections, reviews, and other derived artifacts do not repair or outrank canonical source.
 
-When a downstream step exposes missing or contradictory upstream meaning, return only the affected decision to the correct upstream owner. Do not hide the gap with polished prose, renderer defaults, or invented asset/script detail.
+If a downstream step exposes missing or contradictory upstream meaning, return only the affected decision to the correct upstream owner.
 
 ## Product boundaries
 
-### Unified PRD Creator package
-
 `kits/prd-creator/` is the single implementation/procedure package for Flow 2–7 plus bounded `04 Production Assets` completion.
-
-Its internal domains remain distinct:
 
 ```text
 intake/             Flow 2 source + requirement recovery
@@ -77,44 +98,40 @@ template/           approved Golden/runtime bytes
 
 Project/PRD semantics and Voice semantics remain separate responsibilities even though they live in one product package.
 
-Detailed owners:
+## Project-data boundary
 
-```text
-intake/SOURCE-INTAKE.md             Flow 2 procedure
-document/CONTENT-CONTRACT.md        exact PRD-core 01–03 contract
-production-assets/CONTRACT.md       exact non-Voice 04 resource/writing contract
-renderer/CONTRACT.md                renderer/compositor contract
-document/VALIDATION.md              Flow 4 procedure
-voice/EXTRACTION.md                 Flow 5 procedure
-voice/PERFORMANCE-WRITING.md        Eleven v3 performance-writing craft
-voice/VALIDATION.md                 Flow 7 procedure/evidence
-```
+The public PRD-Creator repository owns the **system**, not live project/client production data.
 
-Voice presentation may appear as `AUDIO` inside the shared 04 Production Assets surface, but project HTML remains a derived view and does not become Voice semantic authority.
+`workspace/active/` and `workspace/archive/` are local/external mount conventions. Their project subdirectories are ignored by Git; only workspace guidance is tracked.
+
+Project packages may live:
+
+- locally under the ignored workspace paths;
+- in a separate private/authorized repository;
+- in another approved storage location.
+
+Do not commit credentials, private client/source material, live requirement registers, project outputs, or other project-specific production state into this public system repository unless an explicit visibility decision authorizes it.
+
+This boundary prevents new exposure. It does not erase material already present in historical commits; history cleanup is a separate destructive operation and must never be implied by ordinary repository cleanup.
 
 ## Golden / reference boundary
 
-The approved Golden PRD artifact is binding for the PRD-core representation contract until the user approves a new design. Golden/reference material does **not** supply another project's gameplay facts, counts, timings, lore, scoring, speakers, or implementation decisions.
-
-Reference projects demonstrate structure/quality only within their recorded contract.
+The approved Golden PRD artifact is binding for the PRD-core representation contract until the user approves a new design. Golden/reference material does not supply another project's gameplay facts, counts, timings, lore, scoring, speakers, or implementation decisions.
 
 ## Operating direction
 
 - recover repository/project context before asking the user to repeat it;
-- source is triaged by authority/relevance before deep reading;
+- triage source by authority/relevance before deep reading;
 - solve supported meaning before asking for decisions;
-- surface only unresolved material choices;
-- preserve information completeness; speed is not permission to delete material meaning;
-- bounded revisions touch only invalidated scope;
+- preserve information completeness;
+- use bounded revisions;
 - prefer existing owners before creating files, skills, schemas, workflows, compatibility layers, or frameworks;
 - use the cheapest proof that can falsify the active claim;
-- historical audits/backlog/TODOs are not active work unless current continuation promotes them;
+- historical audits/backlog/TODOs are not active work unless promoted by current continuation;
 - `No change required` is valid;
-- stop when the requested scope is complete and sufficiently proven.
+- stop when requested scope is complete and sufficiently proven.
 
 ## Repository map
-
-Use this map to orient a new chat without scanning the whole repository:
 
 ```text
 AGENTS.md
@@ -124,7 +141,7 @@ GITHUB_RULES.md
 → GitHub execution, commit/history, CI/API/safety discipline
 
 CONTEXT.md
-→ stable product/repository orientation (this file)
+→ stable product/repository orientation
 
 docs/foundation/
 → durable Flow 1–7 production policy
@@ -138,23 +155,16 @@ docs/knowledge/
 kits/prd-creator/
 → categorized Flow 2–7 + bounded 04 procedure/implementation
 
-workspace/active/
-→ current project production packages
+workspace/
+→ ignored local/external project-package mount points
 
-workspace/archive/
-→ inactive retained project packages
-
-tests/ + tools/ + .github/workflows/
-→ repository engineering / repeatable verification
+tests/ + tools/ + .github/
+→ repository engineering / repeatable verification / promotion gates
 ```
-
-Use `docs/knowledge/ownership.md` only when the exact owner is unclear. Use `docs/knowledge/source-authority.md` only when source/state precedence is unclear.
 
 ## Project package principle
 
-Project packages grow only when the current production stage needs an artifact. Canonical work stays upstream; derived delivery can be regenerated.
-
-Normal versioned project delivery is:
+Canonical work stays upstream; derived delivery can be regenerated.
 
 ```text
 output/README.md
@@ -171,4 +181,4 @@ output/v<document.version>/index.json
 
 For new-chat context recovery and non-trivial Development, read `docs/knowledge/next-action.md` after this file.
 
-`next-action.md` owns the active continuation boundary; current source/state owns actual implementation truth. If they disagree, reconcile the stale owner before continuing instead of repeating old work or inventing a new task.
+`next-action.md` owns the active continuation boundary; current source/state owns actual implementation truth. If they disagree, reconcile the stale owner before continuing.

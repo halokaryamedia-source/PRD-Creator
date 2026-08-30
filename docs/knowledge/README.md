@@ -2,13 +2,11 @@
 
 Updated: 2026-08-30
 
-This directory is the navigation and operating-memory layer for PRD-Creator. It does **not** define a second boot policy or duplicate the contracts owned by root/foundation/kits.
+This directory is the navigation and operating-memory layer for PRD-Creator. It does not define a second boot policy or duplicate contracts owned by root/foundation/kits.
 
 ## Boot ownership
 
 Root `../../AGENTS.md` owns how a session boots.
-
-Key distinction:
 
 ```text
 observe / recover repository context
@@ -18,7 +16,7 @@ non-trivial Development
 → full continuity recovery before edit
 
 bounded mechanical Maintenance
-→ smaller boot allowed only when wider context cannot change the decision
+→ smaller boot only when wider context cannot change the decision
 ```
 
 Do not use this directory index as a reason to broad-read every knowledge file.
@@ -35,15 +33,13 @@ Do not use this directory index as a reason to broad-read every knowledge file.
 | Maintenance workflow | `work-modes/maintenance.md` |
 | Skill inventory | `skills/README.md` |
 | Ambiguous specialist selection | `skills/activation-matrix.md` |
-| Durable decision index + current decision records | `decisions/README.md` |
-| Decision-recording threshold | `decisions/recording-policy.md` |
-| Current review/evidence interpretation | `reviews/README.md` |
+| Durable decision index | `decisions/README.md` |
 | Current validation evidence | `reviews/current-validation.md` |
 | Historical review evidence | `reviews/history/` |
 | Future/non-active work | `operations/backlog.md` |
 | Boot/routing regression scenarios | `operations/boot-baseline.md` |
 
-Top-level work modes and session boot remain owned by root `AGENTS.md`. GitHub execution discipline remains owned by root `GITHUB_RULES.md`.
+Top-level work modes/session boot remain owned by root `AGENTS.md`. GitHub execution remains owned by root `GITHUB_RULES.md`.
 
 ## Directory structure
 
@@ -55,25 +51,10 @@ docs/knowledge/
 ├── ownership.md
 ├── source-authority.md
 ├── work-modes/
-│   ├── development.md
-│   ├── maintenance.md
-│   └── maintenance-note-template.md
 ├── skills/
-│   ├── README.md
-│   └── activation-matrix.md
 ├── decisions/
-│   ├── README.md
-│   ├── recording-policy.md
-│   └── <durable decision records>.md
 ├── reviews/
-│   ├── README.md
-│   ├── current-validation.md
-│   ├── audit-template.md
-│   └── history/
-│       └── <historical review evidence>.md
 └── operations/
-    ├── boot-baseline.md
-    └── backlog.md
 ```
 
 ## Separation rule
@@ -85,7 +66,7 @@ current proof             → reviews/current-validation.md
 historical proof          → reviews/history/
 future/non-active work    → operations/backlog.md
 production policy         → ../foundation/
-project-specific state    → ../../workspace/
+project-specific state    → external/local project package, normally mounted under ../../workspace/
 ```
 
 Historical reviews/decisions are evidence and rationale, not automatic current work. Current execution follows root routing plus the nearest current owner.

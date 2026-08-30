@@ -1,9 +1,12 @@
-name: Release Verify
+name: Local Promotion Verify
 
 on:
+  push:
+    branches:
+      - develop
   pull_request:
     branches:
-      - main
+      - Local
   workflow_dispatch:
 
 concurrency:
@@ -15,15 +18,15 @@ permissions:
 
 jobs:
   verify:
-    name: Stable release gate
+    name: Local promotion gate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Require Local release source
+      - name: Require develop promotion source
         if: github.event_name == 'pull_request'
         run: |
-          test "${{ github.head_ref }}" = "Local" || {
-            echo "Stable release promotion must come from Local." >&2
+          test "${{ github.head_ref }}" = "develop" || {
+            echo "Local promotion must come from develop." >&2
             exit 1
           }
 
@@ -34,11 +37,10 @@ jobs:
           fetch-depth: 0
 
       - name: Require current main ancestry
-        if: github.event_name == 'pull_request'
         run: |
           git fetch --no-tags origin main
           git merge-base --is-ancestor origin/main HEAD || {
-            echo "Local must contain current main ancestry before release promotion." >&2
+            echo "develop must contain current main ancestry before Local promotion." >&2
             exit 1
           }
 

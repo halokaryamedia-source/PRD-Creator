@@ -3,6 +3,7 @@ name: Repository Verify
 on:
   push:
     branches:
+      - develop
       - Local
     paths:
       - "AGENTS.md"
@@ -10,7 +11,13 @@ on:
       - "CONTEXT.md"
       - "README.md"
       - "CONTRIBUTING.md"
+      - "CHANGELOG.md"
+      - "SECURITY.md"
       - "LICENSE"
+      - ".gitignore"
+      - ".gitattributes"
+      - ".github/CODEOWNERS"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
       - ".agents/skills/**"
       - "docs/foundation/**"
       - "docs/knowledge/README.md"
@@ -20,11 +27,10 @@ on:
       - "docs/knowledge/source-authority.md"
       - "docs/knowledge/work-modes/**"
       - "docs/knowledge/skills/**"
-      - "docs/knowledge/decisions/README.md"
-      - "docs/knowledge/decisions/recording-policy.md"
+      - "docs/knowledge/decisions/**"
       - "docs/knowledge/reviews/README.md"
       - "docs/knowledge/reviews/current-validation.md"
-      - "docs/knowledge/operations/boot-baseline.md"
+      - "docs/knowledge/operations/**"
       - "kits/prd-creator/README.md"
       - "kits/prd-creator/AGENTS.md"
       - "kits/prd-creator/SKILL.md"
@@ -37,9 +43,11 @@ on:
       - "kits/prd-creator/voice/PERFORMANCE-WRITING.md"
       - "kits/prd-creator/voice/VALIDATION.md"
       - "workspace/README.md"
+      - "workspace/active/README.md"
       - "workspace/archive/README.md"
       - "tools/verify_repository.py"
       - ".github/workflows/repository-verify.yml"
+      - ".github/workflows/local-promotion-verify.yml"
       - ".github/workflows/release-verify.yml"
   workflow_dispatch:
 

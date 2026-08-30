@@ -68,15 +68,13 @@ def render(template: Path, render_data: Path, output: Path) -> None:
             "Approved Golden template must contain exactly one canonical specification marker"
         )
 
-    previous_marker = _engine.STORAGE_PREFIX_TOKEN
-    try:
-        _engine.STORAGE_PREFIX_TOKEN = GOLDEN_SPEC_MARKER
-        with tempfile.TemporaryDirectory(prefix="prd-golden-") as tmp:
-            prepared_path = Path(tmp) / "runtime-template.html"
-            prepared_path.write_text(prepared, encoding="utf-8")
-            _engine.render(prepared_path, render_data, output)
-    finally:
-        _engine.STORAGE_PREFIX_TOKEN = previous_marker
+    # Adapt the approved Golden marker to the renderer's explicit template token
+    # in the temporary source instead of mutating module-global engine state.
+    prepared = prepared.replace(GOLDEN_SPEC_MARKER, _engine.STORAGE_PREFIX_TOKEN, 1)
+    with tempfile.TemporaryDirectory(prefix="prd-golden-") as tmp:
+        prepared_path = Path(tmp) / "runtime-template.html"
+        prepared_path.write_text(prepared, encoding="utf-8")
+        _engine.render(prepared_path, render_data, output)
 
     _augment_production_assets(render_data, output)
 

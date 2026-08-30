@@ -1,16 +1,18 @@
 # Current Validation Status
 
-Updated: 2026-08-18
+Updated: 2026-08-30
 
-This file records the **current evidence state only**. Historical debugging, superseded visual failures, and earlier review detail remain in Git history and historical review files.
+This file records the current evidence state for the verified repository-development candidate.
 
 ## Current system state
 
-Working branch: `Local`.
+Working branch: `develop`.  
+Verified pre-change integration baseline: `Local`.  
+Candidate commit: `3727817a2af95091cb7df31162b63281e62df6cb`.
 
-PRD Creator package remains **v1.14.0**. Voice production scope remains **Eleven v3** inside the unified package.
+PRD Creator package remains **v1.14.0**. This repository-professionalization tranche does not change PRD/Voice product semantics or require a package-version bump.
 
-Current project-document authority shape:
+Current project-document authority shape remains:
 
 ```text
 project discussion + original source + approved decisions
@@ -27,118 +29,66 @@ project discussion + original source + approved decisions
 → output/v<document.version>/index.json
 ```
 
-Production Asset needs are recovered with the same project model during Flow 2. Finished/generated 01–03 is not the normal discovery authority for 04.
+Project package contents are treated as local/external production data rather than tracked public system-repository content.
 
-01–03 remain protected by the Golden/content/renderer contract. The bounded responsive Golden correction recorded below changes presentation mechanics only; it does not change accepted PRD meaning or page identities.
+## Repository professionalization result
 
-## Current 04 contract
+Verified candidate changes:
 
-04 navigation is objective-first and each page body is moment-first.
+- three-tier `develop → Local → main` branch model;
+- explicit Local integration and stable release gates;
+- current `develop` ancestry contains both the prior `Local` baseline and current `main` ancestry;
+- project-package Git ignore / current-tree separation;
+- `SECURITY.md`, `CODEOWNERS`, pull-request template, and changelog surfaces;
+- simplified root onboarding;
+- behavior-preserving renderer change removing module-global Golden marker mutation.
 
-Visible resource types are:
+## Verification evidence
 
-```text
-MODEL
-ITEM
-UI / TEXT
-AUDIO
-PARTICLE
-```
-
-Current reader-first fields:
+All checks below completed successfully on exact candidate commit `3727817a2af95091cb7df31162b63281e62df6cb`:
 
 ```text
-MODEL / ITEM / PARTICLE
-→ Function
-→ Visual Brief
-→ optional real approved Size
-
-UI / TEXT
-→ Function
-→ exact Player Text
-
-standalone non-dialogue AUDIO
-→ Function
-→ Audio Brief
-
-dialogue AUDIO
-→ Function
-→ Voice Preset
-→ ElevenLabs Model = Eleven v3
-→ Estimated Duration
-→ exact Prompt
+Repository Verify       PASS  run 33303387805
+PRD Verify              PASS  run 33303387802
+Voice Verify            PASS  run 33303387832
+Local Promotion Verify  PASS  run 33303387925
 ```
 
-Internal parser headings (`3D Models`, `UI & Information`, `Audio`, `Visual Effects & Presentation`) remain backward-compatibility source grouping only. They are not visible taxonomy/dashboard requirements.
+The Local promotion gate includes repository verification, the full `test_*.py` regression discovery, and the current-main ancestry check.
 
-Generic visible `Requirement / Usage / States / Position / Orientation / Reuse / Used At / Build Specs`, fake gameplay SEQUENCE assets, line-count/Primary-Speaker Voice summaries, Flow 5 Context rows, and separate visible Speaker rows are not part of the current reader-first 04 contract.
+## Branch ancestry evidence
 
-## Readiness proof boundary
-
-`kits/prd-creator/production-assets/CONTRACT.md` owns one integrated 04 readiness gate covering coverage, authority, actionability, correct gameplay moment/context, content purity, exact known facts/copy, reader usability, duplication/shared-resource economy, and PRD-core 01–03 protection.
-
-`kits/prd-creator/document/VALIDATION.md` applies that gate inside the existing Flow 4 `Semantic Readiness` result. There is no separate Production Assets PASS field, workflow, schema, or approval document.
-
-Mechanical validation/source freshness does not by itself prove that an asset brief is professionally actionable.
-
-## Current regression evidence
-
-The current PRD Creator 04 regression covers objective-first navigation, moment-first page bodies, current resource-type rendering, reader-first fields, Voice/non-Voice merge, retired-presentation absence, integrated readiness ownership, and stable semantic 04 page IDs.
-
-Repository-wide and PRD contract verification remain the repeatable mechanical proof owners for repository/04 synchronization. Voice Verify remains the Voice semantic/validator proof owner when those executable contracts change.
-
-## Current browser visual evidence
-
-Actual Chromium QA was run on the exact source-first Clockwork candidate that is now committed byte-for-byte as current repository state:
+At the verified candidate:
 
 ```text
-workspace/active/the-clockwork-vault/output/v1.0.0/prd.html
-Git blob: 3267b2f97e7335418a43edd6b0e81f6077aeeb51
-Golden/runtime Git blob: 2050b965768489feda98373c2920bbee8c7093b3
-Chromium: 144.0.7559.96
-Viewports: 1500×1000 and 1000×1000
+Local → develop
+status: ahead-only
+behind: 0
+
+main → develop
+status: ahead-only
+behind: 0
 ```
 
-Current result:
+The candidate therefore no longer carries the former `Local` state of being three commits behind `main`.
 
-```text
-Project HTML Visual: PASS
-```
+`Local` and `main` themselves remain unchanged; no promotion or merge into those branches is claimed here.
 
-Evidence:
+## Project-data boundary evidence
 
-- document/body horizontal overflow = 0 at both target viewports;
-- at 1000px, `Complete Gameplay Journey` is no longer clipped: `.journey scrollWidth=566`, `clientWidth=566`;
-- representative Overview, Gameplay Flow, Development, sidebar/page navigation, and active-state behavior = PASS;
-- all seven 04 Production Assets pages show zero viewport/internal overflow;
-- 53 production rows and 19 Voice AUDIO rows remain readable;
-- Voice AUDIO fields including Function, Voice Preset, ElevenLabs Model, Estimated Duration, and Prompt remain readable;
-- current Clockwork visibly exercises `MODEL`, `ITEM`, `UI / TEXT`, and `AUDIO`; it contains no current `PARTICLE` row, so this real-project browser proof does not claim a Clockwork PARTICLE sample;
-- Chromium page errors and console warnings/errors = 0.
+Current `develop` tracks only the workspace guidance under `workspace/active/` and `workspace/archive/`; live project-package subdirectories were removed from the candidate tree and are ignored going forward.
 
-The intermediate-width Golden correction is limited to `761–1100px`, where the Overview journey becomes three columns × two rows. Widths above `1100px` retain the existing six-column layout, and the existing `<=760px` mobile rule is unchanged.
+The prior project packages remain preserved on `Local` and in Git history. This change intentionally does not rewrite shared history or claim historical data removal.
 
-The exact regenerated candidate also passed the current Clockwork PRD validator, PRD→Voice handoff validator, and Voice validator before publication. `context.md` and `index.json` remained unchanged:
+## Renderer evidence
 
-```text
-context.md  003cc0068505339b8406b445601b7350bffa70a5
-index.json   c205422dc0d639b5d0bf9081364321c318e23d22
-```
+RQ-09 is closed for the current implementation: Golden marker adaptation now happens in a temporary template passed to the existing engine instead of mutating `_engine.STORAGE_PREFIX_TOKEN` at module scope.
 
-Because the committed Golden/runtime and `prd.html` blobs exactly match that proven candidate, the browser evidence applies to current repository state.
+Golden/runtime template bytes were not changed by this tranche. PRD Verify and the full Local promotion regression both passed after the renderer change.
 
-## Current Voice presentation
+## Browser / project evidence boundary
 
-Voice remains canonical in:
-
-```text
-work/voice-requirements.md
-→ work/voice-production.md
-```
-
-The consolidated project HTML presents each line as an `AUDIO` resource in the matching natural gameplay moment. Flow 5 Trigger/Purpose/source refs remain in Voice owners and are not visible 04 metadata.
-
-Generated-audio quality remains unproven unless actual audio exists and is reviewed.
+Earlier Clockwork browser/real-project evidence remains historical evidence for the exact bytes tested on the prior `Local` baseline. It is not re-labeled as current `develop` browser evidence because live project packages are intentionally no longer tracked in the public candidate tree and this repository tranche does not claim new browser QA.
 
 ## Current continuation
 

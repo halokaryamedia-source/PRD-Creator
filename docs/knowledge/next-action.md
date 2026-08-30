@@ -2,22 +2,30 @@
 
 ## Current Status
 
-`PRD_SCOPE_BOUNDARY_HARDENING_IMPLEMENTED`
+`REPOSITORY_PROFESSIONALIZATION_VERIFIED_ON_DEVELOP`
 
-The PRD scope-boundary hardening is complete. Current continuation is **regression-only**; there is no active implementation task from the earlier map-composition audit.
+The repository-professionalization candidate is implemented and verified on `develop`.
+
+Verified result:
+
+- active repository Development is isolated on `develop`;
+- `Local` remains the unchanged pre-promotion stable working baseline;
+- `main` remains unchanged;
+- `develop` contains both current `Local` and current `main` ancestry;
+- live project packages are no longer tracked in the public candidate tree;
+- Repository, PRD, Voice, and Local promotion verification passed on the implementation candidate;
+- RQ-09 renderer global mutation is closed without changing Golden bytes or product semantics.
 
 ## Active Boundary
 
-Canonical PRD remains a **pre-build production specification**, not a forensic/as-built implementation document.
+The candidate is ready for review but is **not promoted**.
 
-Preserve material gameplay, build, production, spatial, quantitative, and explicitly approved technical constraints. Do not promote exact world coordinates/map-instance locators, incidental scoreboard/tag/function/runtime identifiers, UUIDs, pack/file identifiers, debug/setup residue, or other details that only describe one finished implementation.
+Do not modify or merge into `Local` merely because verification passed. Promotion is a separate explicit repository boundary.
 
-Exact locators requested for an already built map belong to a separate as-built/technical setup deliverable rather than canonical PRD scope.
+Do not reopen PRD-core composition, Production Assets semantics, Voice semantics, Golden cardinality, parser architecture, or historical project-data cleanup unless a concrete current requirement separately justifies that work.
 
-Do not reopen the Golden/template composition, renderer/compositor, 04 Production Assets contract, Voice, repository architecture, accepted Clockwork output, or the completed map-composition audit unless a concrete current production case proves a separate defect.
-
-Historical six-map audit evidence remains available in Git history/review sources and is not part of the default boot context.
+Historical project-package bytes remain available on `Local`/Git history; the current `develop` boundary prevents new tracking but does not rewrite shared history.
 
 ## Next Step
 
-**Apply the hardened scope boundary during the next real new/revised PRD production. Reopen this work only for a concrete current misclassification or regression; otherwise continue with the actual requested production/development task.**
+**Review the verified `develop` candidate and, only when explicitly approved, open a `develop` → `Local` promotion pull request; do not merge or promote automatically.**

@@ -5,41 +5,70 @@ PRD-Creator is currently a personal/internal development repository. Public visi
 ## Branch model
 
 ```text
+develop
+→ active repository development
+
 Local
-→ active development / working authority
+→ verified integration / stable working baseline
 
 main
 → stable / release branch
 ```
 
-Routine work happens directly on `Local`. Do not create routine task branches or pull requests merely for normal development.
+Routine repository work happens on `develop`.
 
-`main` is not a development branch. Promote `Local` to `main` only when the repository owner explicitly declares a stable/release promotion and the release gate passes.
+Do not make routine changes directly on `Local` or `main`.
 
-A release promotion may use a dedicated pull request from `Local` to `main`. This is a release boundary only; it does not change the normal direct-to-`Local` workflow.
+### Promote `develop` → `Local`
 
-A successful verified merge to `main` is the stable promotion. Creating a Git tag or GitHub Release is a separate explicit publishing action and is never automatic.
+Use a dedicated pull request when a coherent development outcome is ready for the stable working baseline.
+
+The PR must:
+
+- come from `develop`;
+- pass `Local promotion gate`;
+- include the current `main` ancestry before promotion;
+- be merged with a merge commit so `develop` remains part of the promoted ancestry.
+
+After merge, fast-forward/synchronize `develop` to the resulting `Local` commit before continuing normal development.
+
+### Promote `Local` → `main`
+
+This is an explicit stable/release boundary only.
+
+The PR must:
+
+- come from `Local`;
+- pass `Stable release gate`;
+- be merged with a merge commit;
+- represent an explicitly approved release/stable promotion.
+
+After release, synchronize the resulting `main` commit back to `Local`, then to `develop`, before new development diverges again.
+
+Creating a Git tag or GitHub Release is a separate explicit publishing action and is never automatic.
 
 ## Before committing
 
-Run only the checks relevant to the change during normal development. At minimum, repository-level changes should pass:
+Run the cheapest relevant proof for the changed claim.
+
+Repository-level changes:
 
 ```bash
 python tools/verify_repository.py
 ```
 
-PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. A promotion to `main` uses the full `Release Verify` workflow.
+PRD executable changes use the PRD regression suite. Voice executable changes use the Voice regression suite. Promotion gates run the broader suites required at integration/release boundaries.
 
 ## CI behavior
 
-CI on `Local` is an asynchronous regression safety net, not a blocking permission gate for normal development.
+CI on `develop` is the active asynchronous regression safety net.
 
 - Use the cheapest relevant proof before committing.
-- After a normal `Local` commit, continue work without polling or waiting for queued/in-progress CI.
-- Only a failure on the current relevant `Local` HEAD needs diagnosis; cancelled or superseded runs can be ignored.
-- Repository Verify is reserved for current repository/routing owners, not ordinary project artifacts or historical notes.
-- PRD Verify and Voice Verify run only for their executable/test surfaces.
-- `Release Verify` on a `Local` → `main` release pull request is blocking and must pass before merge.
+- Do not poll superseded runs.
+- Diagnose only a failure on the current relevant HEAD.
+- `Repository Verify`, `PRD Verify`, and `Voice Verify` remain path-targeted.
+- `Local promotion gate` is the full integration boundary for `develop` → `Local`.
+- `Stable release gate` is the full release boundary for `Local` → `main`.
 
 ## Commit discipline
 
@@ -59,10 +88,26 @@ chore:     bounded maintenance when no better category fits
 
 Do not use transfer experiments, placeholder files, generated fragments, or temporary helper architecture as repository history.
 
-## Repository data
+## Project-data boundary
 
-Do not add credentials, secrets, private client data, or material that is not approved for the current repository visibility. Project artifacts remain subject to their own ownership and third-party rights.
+The public PRD-Creator repository tracks the production **system**, not live project packages.
+
+Project-specific packages under `workspace/active/<project>/` and `workspace/archive/<project>/` are ignored by Git and must be retained locally or in a separate authorized/private location.
+
+Do not add:
+
+- credentials or secrets;
+- private client/source data;
+- live project requirement registers or source inventories;
+- project outputs containing material not approved for public visibility;
+- temporary transfer payloads.
+
+See `SECURITY.md` and `workspace/README.md`.
+
+## Pull requests
+
+Use `.github/PULL_REQUEST_TEMPLATE.md` and keep the PR scoped to one logical delivery. Stable promotion PRs should state the proof run and whether downstream branches need synchronization after merge.
 
 ## License
 
-The repository is not open source. Use is restricted by the root `LICENSE` file. External reuse, redistribution, or commercial use requires prior written permission from the copyright holder.
+The repository is not open source. External reuse, redistribution, or commercial use requires prior written permission from the copyright holder. See `LICENSE`.
