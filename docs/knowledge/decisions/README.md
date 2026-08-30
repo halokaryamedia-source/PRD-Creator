@@ -8,7 +8,7 @@ This directory stores durable repository/product decisions whose reasons must su
 
 | Decision | Current status / owner |
 |---|---|
-| Repository development uses `develop` for working commits and `Local` as clean squash-milestone history with exactly one commit per approved update; `main` migration is separate | [clean-local-squash-history.md](clean-local-squash-history.md) |
+| Repository development uses `develop` for working commits, `Local` as clean squash-milestone history with exactly one commit per approved update, and `main` as explicit merge-commit release history | [clean-local-squash-history.md](clean-local-squash-history.md) |
 | The public PRD-Creator repository stores the system; live project packages remain ignored/local or external/private | [project-data-boundary.md](project-data-boundary.md) |
 | PRD-Creator uses one categorized implementation package under `kits/prd-creator/` while Project/PRD and Voice semantics remain separate | Current architecture; see [Product Boundaries](../../foundation/00-product-boundaries.md), [Ownership](../ownership.md), and [kit routing](../../../kits/prd-creator/AGENTS.md) |
 | Golden reference is the binding PRD-core representation/runtime prototype; project facts still come only from current project authority | [golden-reference-fidelity.md](golden-reference-fidelity.md) |
