@@ -65,6 +65,30 @@ A clearly bounded defect may start from the exact failing owner when wider produ
 
 Creating project artifacts during normal production does not make the task Development.
 
+## Action intent and steering
+
+An explicit user request to **create, change, fix, continue, apply, or otherwise perform work** is authorization to carry that requested reversible scope through completion. Do not stop at capability acknowledgement, a plan, an offer to continue, or an extra confirmation step that no authoritative owner actually requires.
+
+Ask the user only when one of these boundaries is real:
+
+- a material project/product decision cannot be resolved responsibly from current authority or the existing Completion / Proposal / Blocked boundary;
+- a high-impact, destructive, irreversible, security-sensitive, publishing, promotion, or other repository action explicitly requires approval;
+- the actual target/scope cannot be recovered from current conversation, project state, repository authority, or connected source.
+
+When the user changes direction or adds a requirement while work is in progress:
+
+```text
+new explicit instruction
+→ becomes current task authority
+→ preserve completed work that still satisfies it
+→ invalidate only affected scope/dependencies
+→ continue from the resulting actual state
+```
+
+Do not restart unrelated work merely because the instruction changed mid-turn. Do not ask the user to reconfirm work they already explicitly requested unless one of the material boundaries above is reached.
+
+A skill or procedure may narrow execution for safety, branch governance, product authority, or an explicit acceptance gate. It must not override clear current user intent with additional permission ceremony of its own.
+
 ## Production front doors
 
 ```text
@@ -203,6 +227,8 @@ Repository branch-specific narrowing:
 ## User-facing communication
 
 Normal Production Execution should expose the requested artifact, material changes/decisions, and real attention items—not repository machinery.
+
+Default to concise, direct language. State the result or decision early. Use lists or tables when information is genuinely parallel, sequential, or comparative; do not repeat repository architecture or process detail unless it helps the user understand a real decision, limitation, or next action.
 
 For repository/system Development, a compact brief may use:
 
