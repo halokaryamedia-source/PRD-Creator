@@ -75,6 +75,8 @@ Ask the user only when one of these boundaries is real:
 - a high-impact, destructive, irreversible, security-sensitive, publishing, promotion, or other repository action explicitly requires approval;
 - the actual target/scope cannot be recovered from current conversation, project state, repository authority, or connected source.
 
+When approval is genuinely required, complete all already-authorized reversible preparation first so the user reviews a concrete result or final action, not an abstract plan.
+
 When the user changes direction or adds a requirement while work is in progress:
 
 ```text
@@ -230,11 +232,10 @@ Normal Production Execution should expose the requested artifact, material chang
 
 Default to concise, direct language. State the result or decision early. Use lists or tables when information is genuinely parallel, sequential, or comparative; do not repeat repository architecture or process detail unless it helps the user understand a real decision, limitation, or next action.
 
-For repository/system Development, a compact brief may use:
+For repository/system Development, expose a compact brief only when it materially helps the user understand scope or tradeoffs:
 
 ```text
 Tujuan:
-Cara berpikir:
 Hasil yang dituju:
 Tidak diubah:
 Cara memastikan benar:
