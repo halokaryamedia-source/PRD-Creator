@@ -11,7 +11,7 @@ Verified integration baseline: `Local`.
 Stable branch: `main`.  
 Latest published repository release: `v0.1`.
 
-PRD Creator package is **v1.15.0** on `develop`. Repository release versioning is separate from the product/package version rule; the package bump records an additive production-contract capability and does not by itself publish a new repository tag/release.
+PRD Creator package remains **v1.15.0** on `develop`. Repository release versioning is separate from the product/package version rule; the package bump records an additive production-contract capability and does not by itself publish a new repository tag/release.
 
 The current `main` contains later untagged repository-maintenance alignment after `v0.1`. No `v0.2` tag or GitHub Release exists. Historical commit/PR wording does not create a repository version; version publication requires the protected tag/GitHub Release action defined by the durable policy.
 
