@@ -52,23 +52,11 @@ jobs:
             kits/prd-creator/validator/_engine.py \
             kits/prd-creator/validator/validate.py \
             kits/prd-creator/validator/validate_handoff.py \
-            tests/test_prd_contracts.py \
-            tests/test_prd_content_purity.py \
-            tests/test_prd_delivery.py \
-            tests/test_prd_voice_assets.py \
-            tests/test_prd_handoff_contracts.py \
-            tests/test_prd_flow2_state_contracts.py \
-            tests/test_prd_hierarchy_contracts.py \
-            tests/test_prd_golden_reference.py
+            tests
 
       - name: Project Document contracts
         run: |
-          python -m unittest \
-            tests.test_prd_contracts \
-            tests.test_prd_content_purity \
-            tests.test_prd_delivery \
-            tests.test_prd_voice_assets \
-            tests.test_prd_handoff_contracts \
-            tests.test_prd_flow2_state_contracts \
-            tests.test_prd_hierarchy_contracts \
-            tests.test_prd_golden_reference -v
+          python -m unittest discover \
+            -s tests \
+            -p "test_prd_*.py" \
+            -v

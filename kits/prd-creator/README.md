@@ -1,6 +1,6 @@
 # PRD Creator
 
-**Version:** 1.14.0
+**Version:** 1.15.0
 
 PRD Creator is the single production kit for turning project discussion/source into one approved project model, a development-ready PRD, required Production Assets, and optional downstream Voice Production in the same project delivery.
 
@@ -32,9 +32,12 @@ Do not bump the package merely because a file, policy wording, workflow, or proj
 
 ```text
 source + current instruction + approved decisions
-→ requirement recovery / approved project model
+→ requirement recovery
+→ integrated cross-role synthesis
+→ material Proposal review / approved project model
 → PRD core 01–03
 → 04 Production Assets when required
+→ mechanical validation + semantic reconciliation
 → PRD/04 acceptance + handoff
 → Voice requirements when required
 → canonical Voice Production
@@ -43,6 +46,19 @@ source + current instruction + approved decisions
 ```
 
 The kit is one package, but its domains remain separate. Project/PRD meaning, Production Asset requirements, and Voice meaning keep their own owners.
+
+## Model-readiness behavior
+
+The package is intentionally model-agnostic, but current production policy assumes a capable reasoning model can do more than fill isolated fields.
+
+- Start from the smallest authoritative owner/source that can settle the current question.
+- Expand context progressively when material contradictions or cross-cutting dependencies require it; do not impose a fixed file-count budget on genuinely integrated work.
+- Let the model autonomously handle reversible craft choices such as grouping, ordering, decomposition, direct wording, and placement of already-approved meaning.
+- Treat a model choice as a material Proposal only when different answers would change player experience, project scope, build commitment, runtime behavior, scoring/result, timing, transition/handoff, interruption/reset behavior, or another project fact.
+- Before acceptance, reconcile material meaning across approved source/requirements → canonical content → render projection → visible PRD.
+- Keep mechanical validators deterministic; semantic review catches meaning loss/contradiction/invention, while browser/audio claims still require the matching evidence channel.
+
+This raises reasoning quality without weakening source authority, Golden protection, provenance, deterministic rendering, or handoff gates.
 
 ## Package map
 
@@ -81,13 +97,13 @@ Do not create a generic `requirements/` folder merely for naming symmetry. Requi
 
 ```text
 intake/SOURCE-INTAKE.md
-→ Flow 2 source recovery / completion / Simple Chat Preview
+→ Flow 2 source recovery / integrated synthesis / Simple Chat Preview
 
 document/CONTENT-CONTRACT.md
 → exact PRD core 01–03 semantic + visible-composition contract
 
 document/VALIDATION.md
-→ Flow 4 semantic readiness / handoff procedure
+→ Flow 4 semantic readiness / semantic reconciliation / handoff procedure
 
 production-assets/CONTRACT.md
 → exact non-Voice 04 resource/writing/readiness contract

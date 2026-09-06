@@ -1,7 +1,7 @@
 ---
 name: prd-creator
-description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover and complete project requirements, preview for approval, produce the protected PRD core 01–03, complete 04 Production Assets, extract and produce Voice when required, then validate the current consolidated project delivery without inventing upstream project facts.
-version: 1.14.0
+description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover and complete project requirements, preview material decisions for approval, produce the protected PRD core 01–03, complete 04 Production Assets, extract and produce Voice when required, then validate the current consolidated project delivery without inventing upstream project facts.
+version: 1.15.0
 ---
 
 # PRD Creator
@@ -27,17 +27,18 @@ approved bounded project / PRD / 04 / Voice change
 → follow only actually invalidated downstream owners
 ```
 
-Open only the smallest owner that can change the decision.
+Start with the smallest owner that can change the decision. Expand context only when current evidence shows a cross-cutting dependency, contradiction, or unresolved question that the active owner cannot settle responsibly.
 
 ## Canonical production sequence
 
 ```text
 source / current instruction / approved change
 → Flow 2 Source Intake + Requirement Recovery
-→ Simple Chat Preview approval
+→ integrated cross-role synthesis
+→ Simple Chat Preview approval for material AI-chosen decisions
 → Flow 3 PRD core 01–03
 → required non-Voice 04 Production Assets
-→ Flow 4 Review + Acceptance / Handoff
+→ Flow 4 Review + Semantic Reconciliation + Acceptance / Handoff
 → Flow 5 Voice Requirements when justified
 → Flow 6 canonical Voice Production
 → Flow 7 Voice Validation + Delivery
@@ -85,6 +86,12 @@ Derived output never repairs or outranks its canonical owner.
 
 PRD core 01–03 and non-Voice 04 are projections of the **same approved project model**. Do not use finished 01–03 as a second design pass for inventing Production Assets.
 
+### Routine synthesis is not a project decision
+
+The model may autonomously choose reversible representation/craft details needed to produce a coherent reviewable result, for example grouping, ordering, decomposition, direct wording, requirement placement, and obvious derived relationships.
+
+A choice becomes a material Proposal only when different plausible answers would change player experience, project scope, build commitment, runtime behavior, scoring/result, timing, transition/handoff, reset/interruption behavior, or another project fact. Do not ask the user to approve ordinary writing/organization decisions as if they were product decisions.
+
 ### Voice stays downstream
 
 Voice may interpret accepted communication/performance needs but may not create upstream gameplay, story, reward, trigger, speaker/channel, or other project facts.
@@ -97,6 +104,19 @@ The approved PRD-core Golden hierarchy/template/visible composition remains prot
 
 When downstream work exposes missing or contradictory material meaning, return only the affected slice to the first semantic owner that can resolve it. Do not hide the gap in polished wording, renderer defaults, generated HTML, or extra metadata.
 
+### Semantic reconciliation precedes acceptance
+
+Before accepting a current PRD revision, reconcile material meaning across the active authority chain:
+
+```text
+approved source / requirement meaning
+→ canonical content
+→ render projection
+→ visible PRD
+```
+
+The goal is not literal wording equality. The goal is to detect material loss, contradiction, unsupported invention, or role-relevant meaning that became ambiguous during transformation. Exact procedure belongs to `document/VALIDATION.md`.
+
 ### Proof stays truthful
 
 Mechanical checks prove only mechanical contracts. Visual PASS requires rendered/browser evidence. Generated-audio quality requires actual heard audio evidence.
@@ -105,7 +125,9 @@ Mechanical checks prove only mechanical contracts. Visual PASS requires rendered
 
 ### Flow 2 → Flow 3
 
-Flow 2 owns recovery, Completion / Proposal / Blocked judgment, production completeness, and the Simple Chat Preview.
+Flow 2 owns recovery, Completion / Proposal / Blocked judgment, production completeness, integrated cross-role synthesis, and the Simple Chat Preview.
+
+Before preview, reason through the complete project model across Gameplay, Level Design, Developer, Production Assets, lifecycle, quantities, and transitions deeply enough to expose contradictions that would otherwise appear only during PRD authoring. This is a reasoning pass, not another persisted artifact.
 
 `ready_for_prd` requires:
 
@@ -115,7 +137,7 @@ Flow 2 owns recovery, Completion / Proposal / Blocked judgment, production compl
 - every material AI-chosen Proposal represented and approved/corrected;
 - `preview_approved: true`.
 
-The Simple Chat Preview is chat output, not another persistent artifact.
+The Simple Chat Preview is chat output, not another persistent artifact. It approves material project choices and the coherent recovered model; it does not require separate approval of routine wording, grouping, ordering, or other reversible craft decisions.
 
 ### Flow 3 → Flow 4
 
@@ -139,6 +161,7 @@ Flow 4 owns the minimum acceptance proof:
 ```text
 one mechanical validation
 → one integrated semantic-readiness review
+→ semantic reconciliation of material meaning
 → Material Conservation
 → visual evidence only where the claim requires it
 → development_ready | handoff_ready
@@ -207,6 +230,7 @@ identify first changed canonical owner
 → preview only when interpretation introduced/changed a material Proposal
 → regenerate derived output once after canonical state is stable
 → run the smallest relevant mechanical + semantic proof
+→ reconcile changed material meaning through affected projections
 → cross handoff/Voice boundaries only when their inputs changed
 → stop
 ```
@@ -215,6 +239,7 @@ Expand beyond the bounded path only when evidence shows a real dependency, for e
 
 - a changed shared/global rule affects additional packages;
 - targeted inspection finds a material contradiction or stale dependent owner;
+- the active owner cannot settle an uncertainty without another authoritative source/domain;
 - template/CSS/JS/runtime/page composition changed and broader visual proof is needed;
 - accepted meaning changed a Voice-owned input;
 - the user explicitly requests a broader audit/review.
@@ -256,16 +281,26 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-Do not create parallel schemas, registries, dashboards, approval files, or alternate HTML exports merely to make the workflow look more complete.
+Do not create parallel schemas, registries, dashboards, approval files, semantic scorecards, or alternate HTML exports merely to make the workflow look more complete.
 
 ## Context and proof economy
 
-- Read the active owner and only dependencies that can change the decision.
+Use **progressive context expansion**:
+
+```text
+start with the active owner + current evidence
+→ unresolved material uncertainty or cross-cutting dependency?
+   no  → continue
+   yes → open the smallest additional owner/source that can settle it
+→ stop expanding when the decision is grounded
+```
+
+- Do not impose a fixed file-count/context-count target when the task genuinely crosses owners.
 - Do not load the large Golden HTML unless the Golden/template/DOM/runtime claim itself needs evidence.
 - Batch canonical edits before regeneration.
 - Rerender at most once per stable logical revision unless new evidence invalidates it.
 - Use the cheapest check that can falsify the changed claim.
-- Do not turn semantic review into word-count, similarity, scorecard, or proof-of-proof machinery.
+- Do not turn semantic review into word-count, similarity, numeric scorecard, or proof-of-proof machinery.
 - Do not ask the user to repeat recoverable approved/current project state.
 
 ## Default user-facing delivery

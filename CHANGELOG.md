@@ -19,7 +19,26 @@ A new repository tag/GitHub Release is created only when an approved PRD-Creator
 - document safe local `develop` resynchronization after squash promotion without adding a new development gate;
 - add deletion-only protection for `develop` while preserving direct push and post-squash synchronization.
 
-These maintenance changes do **not** create a new repository version. The latest published repository release remains `v0.1` until an approved feature/capability change justifies the next release.
+These maintenance changes do **not** create a new repository version. The latest published repository release remains `v0.1` until an approved feature/capability change is promoted and published.
+
+## Package 1.15.0 — 2026-09-07
+
+Model-readiness and semantic-quality improvement for stronger reasoning models while preserving the current Golden renderer/output contract.
+
+### Semantic production quality
+
+- add integrated provisional cross-role synthesis in Flow 2 before the Simple Chat Preview so hidden lifecycle, quantitative, and role contradictions can surface earlier;
+- distinguish routine reversible AI craft decisions from material project Proposals, reducing unnecessary approval ceremony without weakening project authority;
+- add progressive context expansion so integrated work may open the smallest additional source/owner when a real cross-cutting dependency requires it;
+- add explicit Flow 4 semantic reconciliation across approved source/requirements → canonical content → render projection → visible PRD;
+- strengthen semantic readiness around source fidelity, decision completeness, role actionability, quantitative/lifecycle coherence, and cross-role consistency;
+- preserve Material Conservation as a separate omission gate and avoid numeric semantic scorecards or requirement-to-sentence proof machinery.
+
+### Verification quality
+
+- make PRD CI compile the test package and discover every canonical `tests/test_prd_*.py` contract module automatically instead of maintaining an explicit test-module list.
+
+Golden/runtime template bytes, visible PRD-core composition, deterministic renderer behavior, project-data boundaries, and Voice downstream authority remain unchanged in this package update.
 
 ## Repository v0.1 — 2026-08-30
 
@@ -40,4 +59,4 @@ Repository release `v0.1` does not change the PRD-Creator product/package contra
 
 ## Package 1.14.0
 
-Current PRD-Creator product/package baseline. Exact product-contract history before this changelog remains recoverable from the package owners, durable decisions, audits, and Git history.
+Previous PRD-Creator product/package baseline before the 1.15.0 semantic-quality/model-readiness expansion. Exact earlier product-contract history remains recoverable from the package owners, durable decisions, audits, and Git history.

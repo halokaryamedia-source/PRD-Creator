@@ -8,6 +8,7 @@
 current PRD revision + required current non-Voice 04 source when present
 → one mechanical validation
 → one integrated semantic-readiness review
+→ semantic reconciliation of material meaning
 → targeted desktop visual sanity when needed
 → fix the first wrong owner
 → development_ready | handoff_ready
@@ -29,7 +30,7 @@ handoff_ready
 
 Use `development_ready` when the requested outcome stops at a development-ready PRD/package. Promote to `handoff_ready` only when the current revision is intentionally crossing the downstream handoff boundary; do not treat the two statuses as synonyms.
 
-Do not create separate review passes for New Reader, Level Design, Developer, Content Purity, Project Consistency, Acceptance, or Golden Fidelity. They are lenses inside one review, not independent workflow gates.
+Do not create separate review passes, persisted scorecards, or PASS fields for every lens below. They are questions inside one integrated review, not independent workflow gates.
 
 ## 1. Mechanical validation
 
@@ -42,21 +43,24 @@ python kits/prd-creator/validator/validate.py \
 
 Mechanical validation owns deterministic facts: Flow 2 readiness, required current artifacts, canonical/projection/render bindings, non-Voice Production Asset source freshness when that source exists, page order/IDs/navigation, scoring arithmetic, required Golden markers, and the narrow observed content-purity regression set.
 
-Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, or visual readability.
+Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, role actionability, or visual readability.
 
 Content-purity checks stay narrow. They may reject concrete observed leakage such as generator/template/page narration, generic `Global Rule N`, or plain note strings that would render as generic `Important Note N`. Do not grow this into a prose score, word-count gate, broad keyword blacklist, coordinate detector, or technical-detail classifier.
 
 ## 2. Integrated semantic readiness
 
-Review the current revision once. During that pass ask the relevant questions below; do not persist a PASS field for every lens.
+Review the current revision once. During that pass use only the lenses that can expose a material defect in current scope.
 
 | Lens | Ready when... |
 |---|---|
+| Source Fidelity | material project facts, exclusions, quantities, lifecycle rules, and approved constraints are represented without unsupported invention or contradiction |
+| Decision Completeness | a competent implementation team is not forced to invent a product/design decision that Flow 2 should already have resolved or surfaced as an approved Proposal |
 | New Reader | journey, objective, result, setback/recovery, and transition are understandable without reopening source |
-| Level Designer | build-owned areas, objects, relationships, constraints, and gameplay functions are sufficient without depending on final world coordinates or other map-instance locators |
+| Level Designer | build-owned areas, objects, relationships, constraints, readability, and gameplay functions are sufficient without depending on final world coordinates or other map-instance locators |
 | Developer | trigger/state/progression/timing/scoring/reset/handoff behavior and explicit approved technical constraints are sufficient without relying on incidental implementation identifiers from a finished source |
+| Quantitative & Lifecycle Coherence | related timings, counts, capacities, scoring inputs/weights, state transitions, interruption, retry, completion, and reset rules agree wherever they reappear |
+| Cross-Role Consistency | Gameplay, Level Design, Developer, Production Assets, and shared/global rules describe one compatible experience rather than parallel interpretations |
 | Content Purity | visible project copy explains the project, not PRD-Creator or document-production mechanics |
-| Project Consistency | terminology, timing, scoring, reset, and package handoff agree across the revision |
 | Golden Placement | project meaning is placed in the matching approved Golden component family without unapproved presentation invention |
 
 Record one result: `Semantic Readiness: PASS | FAIL`.
@@ -65,15 +69,68 @@ The scope check above is semantic, not vocabulary-based. Legitimate dimensions, 
 
 When 04 exists, include the readiness questions owned by `../production-assets/CONTRACT.md` inside the same integrated review rather than creating another PASS surface. Required non-Voice 04 must already be materialized before Flow 4 acceptance; Flow 4 does not approve a PRD first and then discover or create missing 04 scope afterward.
 
-Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, and terminology corrections stay in the current semantic owner.
+Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, terminology, and representation corrections stay in the current semantic owner when project meaning is already settled.
+
+### Semantic reconciliation method
+
+After the integrated read, reconcile changed/high-risk material meaning through the active authority chain:
+
+```text
+approved source / requirement meaning
+→ work/content.md
+→ work/render-data.json
+→ current versioned prd.html
+```
+
+This is **meaning reconciliation**, not literal text comparison. Equivalent paraphrase, restructuring, and Golden placement are allowed. Flag only material differences such as:
+
+- a supported condition/value/exception disappeared;
+- a negative rule became ambiguous or positive;
+- a timing/count/score/reset rule changed;
+- a material source fact became a stronger unsupported claim;
+- two sections now imply different lifecycle/state behavior;
+- a production role must guess a fact that was already known upstream;
+- derived presentation exposes meaning not owned by canonical content.
+
+When a finding exists, describe it concretely enough to repair the first wrong owner:
+
+```text
+Source / approved meaning:
+<material meaning>
+
+Current PRD meaning:
+<current representation>
+
+Issue:
+LOSS | CONTRADICTION | UNSUPPORTED | AMBIGUOUS | CROSS-ROLE DRIFT
+
+First wrong owner:
+<Flow 2 | content.md | render projection | renderer/presentation>
+```
+
+Do not persist one entry per requirement when there is no finding. Do not create a numeric semantic score, similarity threshold, requirement-to-sentence matrix, or proof-of-proof artifact. The review exists to catch material meaning defects, not to generate review bureaucracy.
+
+For a bounded revision, reconcile only changed meaning plus dependencies that can actually be invalidated by it. For a fresh full-project generation or a broad user-requested audit, review the complete material model.
 
 ## 3. Material conservation
 
-Material conservation remains a separate gate because a document can be clear yet accidentally omit an independent rule.
+Material conservation remains a separate gate because a document can be clear and internally consistent yet accidentally omit an independent rule.
 
 For changed or regenerated scope, verify that resolved PRD-scope conditions, values, exceptions, recovery rules, result behavior, explicit technical constraints, and role-owned requirements still have an explicit readable representation. Do not use word count or row count as a proxy, and do not treat intentionally unpromoted implementation/as-built evidence as a conservation failure.
 
 Record one result: `Material Conservation: PASS | FAIL`.
+
+Semantic reconciliation and Material Conservation overlap intentionally at the boundary but answer different questions:
+
+```text
+Semantic Reconciliation
+→ did meaning change, contradict, become unsupported, or become ambiguous?
+
+Material Conservation
+→ did an independently actionable approved rule disappear entirely?
+```
+
+Do not merge them into a numeric quality score.
 
 ## 4. Golden reference economy
 
@@ -119,9 +176,9 @@ Critical: N
 Major: N
 ```
 
-`Semantic Readiness` replaces duplicated persisted fields for reader, role, consistency, acceptance, content-purity semantics, and Golden placement. The review still considers those lenses; it simply records one integrated decision.
+`Semantic Readiness` is the single persisted result for source fidelity, decision completeness, reader/role actionability, quantitative/lifecycle coherence, cross-role consistency, content purity, Golden placement, and semantic reconciliation. The review still considers those lenses; it simply records one integrated decision.
 
-`Material Conservation` stays explicit because omission risk is independent from readability. `Visual sanity` stays explicit because browser evidence is a different proof channel.
+`Material Conservation` stays explicit because omission risk is independent from readability/consistency. `Visual sanity` stays explicit because browser evidence is a different proof channel.
 
 ## 7. Handoff
 
@@ -144,7 +201,8 @@ approved change
 → affected projection
 → one full-file rerender
 → one mechanical check
-→ one integrated review of invalidated scope
+→ one integrated semantic review of invalidated scope
+→ semantic reconciliation through affected projections
 → visual check only where changed/high-risk
 → stop
 ```
