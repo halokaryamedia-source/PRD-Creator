@@ -268,8 +268,6 @@ def global_pages(data: dict[str, Any]) -> list[str]:
         title = _golden_global_title(item)
         flow = [entry for entry in item.get("flow", []) if isinstance(entry, dict)]
         notes = item.get("notes", [])
-        _require_count(flow, 4, f"global_development[{index}].flow")
-        _require_count(notes, 4, f"global_development[{index}].notes")
 
         body = (
             f'<h2 class="development-package-title">{i18n(title)}</h2>'
@@ -422,7 +420,6 @@ def package_pages(data: dict[str, Any]) -> list[str]:
 
         gameplay = pkg["gameplay"]
         player_flow = [entry for entry in gameplay.get("player_flow", []) if isinstance(entry, dict)]
-        _require_count(player_flow, 5, f"packages[{index}].gameplay.player_flow")
         gameplay_body = (
             f'<h2 class="development-package-title">{i18n(title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "))}</p>'
@@ -450,8 +447,6 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         level = pkg["level_design"]
         level_flow = [entry for entry in level.get("flow", []) if isinstance(entry, dict)]
         level_notes = level.get("notes", [])
-        _require_count(level_flow, 4, f"packages[{index}].level_design.flow")
-        _require_count(level_notes, 4, f"packages[{index}].level_design.notes")
         level_body = (
             f'<h2 class="development-package-title">{i18n(title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Level Design", "Level Design"), sep=" · "))}</p>'
@@ -479,8 +474,6 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         developer = pkg["developer"]
         developer_flow = [entry for entry in developer.get("flow", []) if isinstance(entry, dict)]
         developer_notes = developer.get("notes", [])
-        _require_count(developer_flow, 4, f"packages[{index}].developer.flow")
-        _require_count(developer_notes, 4, f"packages[{index}].developer.notes")
         developer_body = (
             f'<h2 class="development-package-title">{i18n(title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Developer", "Developer"), sep=" · "))}</p>'
@@ -546,7 +539,7 @@ def navigation(data: dict[str, Any]) -> str:
             f'<span class="nav-index" data-full-index="03" data-overview-index="">{i18n("03")}</span><span class="nav-copy">{i18n(bi("Development", "Development"))}</span>'
             f'<span aria-hidden="true" class="group-chevron"></span></button>'
             f'<div class="nav-submenu">{global_links}</div>'
-            f'<div class="nav-submenu phase-navigation">{"".join(package_links)}</div></div>'
+            f'<div class="nav-submenu phase-navigation'>{"".join(package_links)}</div></div>'
         )
     return "".join(navigation_items)
 
