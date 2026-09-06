@@ -524,7 +524,7 @@ A paragraph should answer one main production question. If it needs several unre
 
 Flow 2 resolves project truth. It does not redesign the document.
 
-If a material decision is unresolved, return `Blocked` / `needs_decision`. Never fill a Golden slot by inventing product meaning.
+If Flow 3 exposes missing or unresolved material meaning, return only the affected slice to Flow 2's existing resolution ladder: current authority → Completion → concrete Proposal → Blocked only when no responsible proposal can be formed. Flow 3 must not invent product meaning merely to fill a Golden slot.
 
 ## Flow 3
 
