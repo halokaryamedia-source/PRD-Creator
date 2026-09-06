@@ -4,72 +4,98 @@ Status: active durable policy
 
 ## Purpose
 
-Turn a Flow 2 project marked `ready_for_prd` into canonical **PRD core 01–03** content and the derived Golden HTML artifact.
+Turn Flow 2 `ready_for_prd` project meaning into canonical **PRD core 01–03** content and a deterministic Golden-based HTML projection.
 
-Flow 3 does not own the 04 Production Assets writing contract. Real Production Asset needs have already been preserved in the approved project model during Flow 2 and are materialized later through the bounded 04 owner without redesigning 01–03.
+Flow 3 does not own 04 Production Assets writing; required asset meaning already exists in the approved project model and is materialized through the separate 04 owner.
 
-## Single content owner
-
-The gameplay PRD core's mandatory blueprint, mandatory-slot states, Scoring / Result behavior, role completeness, and Humanize rules are owned only by:
+## Two contracts, one PRD
 
 ```text
 kits/prd-creator/document/CONTENT-CONTRACT.md
+→ semantic completeness / material conservation
+
+kits/prd-creator/document/DESIGN-CONTRACT.md
+→ approved page/component grammar / Golden presentation
 ```
 
-This foundation page does not maintain a second Golden checklist.
+Do not treat presentation counts from the reference project as project semantics.
 
-## PRD-core authority chain
+## Authority chain
 
 ```text
 Original Source + Current Instruction + Approved Decisions
 → Requirement State / ready_for_prd
-→ work/content.md                 canonical PRD-core meaning
-→ work/render-data.json           derived PRD-core projection
-→ Golden renderer/template
-→ output/v<document.version>/prd.html → 01–03 derived presentation
+→ work/content.md                 canonical PRD meaning
+→ work/render-data.json           derived projection
+→ DESIGN-CONTRACT + Golden runtime
+→ output/v<document.version>/prd.html
 ```
 
 Authority decreases downstream. Rendering cannot introduce project meaning.
 
-The same approved project model may also feed `work/asset-requirements.md` through `kits/prd-creator/production-assets/CONTRACT.md`; that parallel 04 source does not change `content.md`, Golden bytes, or 01–03 authoring rules.
-
-## Flow 3 work sequence
+## Flow 3 sequence
 
 ```text
 read resolved requirement state
-→ fill the fixed Golden mandatory shell
-→ preserve all material role-owned meaning
-→ apply one bounded Humanize pass
+→ author complete semantic PRD content
+→ preserve every material role-owned distinction
+→ choose data-driven cardinality inside approved surfaces
+→ bounded Humanize pass
 → derive render-data once
-→ render 01–03
+→ deterministic render
 → hand current revision to Flow 4
 ```
 
-The target is **minimum complete production detail**, not minimal-looking output.
+The target is **minimum complete production detail**, not minimal-looking output and not sample-count fidelity.
 
-If drafting exposes a material unresolved project/design decision, return the affected requirement to Flow 2. Do not hide the gap with generic prose, guessed values, Golden example facts, renderer-friendly defaults, or downstream asset invention.
+### Adaptive cardinality
+
+Existing approved Flow / Note / Sequence component families may contain however many children current meaning requires.
+
+```text
+three real stages → three rendered stages
+six real stages → six rendered stages
+```
+
+Do not create filler to reach four/five, and do not merge material stages merely to reduce to four/five.
+
+Stable semantic/design questions remain stable where explicitly owned by the contracts—for example Overview facts, Gameplay Context/Main Objective/Result, Gameplay Information rows, table meanings, page family and navigation.
 
 ## Projection boundary
 
-`render-data.json` is a disposable projection of current canonical PRD-core meaning. It must satisfy the deterministic shell rules in `kits/prd-creator/renderer/CONTRACT.md` but is not a second semantic owner.
+`render-data.json` is disposable projection data, not a semantic owner.
 
-The renderer may organize approved meaning into the Golden surfaces. It may not decide whether a mandatory concern is applicable, invent project facts, or repair incomplete Flow 2 recovery.
+The renderer may:
 
-Production Asset briefs do not belong in `render-data.json`; they use the separate bounded 04 source owned by `kits/prd-creator/production-assets/CONTRACT.md`.
+- map semantic content into approved page/component families;
+- preserve data-driven child counts;
+- derive mechanical summaries already implied by canonical meaning.
+
+It may not:
+
+- decide unresolved product behavior;
+- copy Golden sample facts;
+- delete material distinctions for layout convenience;
+- invent new component families without a design-contract change.
+
+If authoring exposes a material unresolved project/design decision, return the affected requirement to Flow 2. If meaning is complete but the approved design cannot represent it clearly, the design/projection layer is the first wrong owner.
+
+Production Asset briefs do not belong in `render-data.json`; they use `production-assets/CONTRACT.md`.
 
 ## Completion
 
 Flow 3 completes when:
 
 - Flow 2 truthfully remains `ready_for_prd`;
-- `content.md` satisfies `kits/prd-creator/document/CONTENT-CONTRACT.md`;
+- `content.md` satisfies `CONTENT-CONTRACT.md`;
+- the projection satisfies `DESIGN-CONTRACT.md` and renderer mechanics;
 - no material product decision was silently made during authoring;
-- render data satisfies the deterministic Golden shell;
-- `output/v<document.version>/prd.html` contains the current 01–03 projection;
+- semantic cardinality is conserved;
+- current 01–03 HTML is rendered;
 - no unresolved placeholder remains.
 
 Flow 4—not renderer success—decides production readiness.
 
 ## Economy
 
-Do not load full Golden HTML during normal authoring, recreate unchanged packages, add duplicate Golden checklists, move 04 rules into the PRD-core contract, or use word/row counts as quality proxies.
+Do not load full Golden HTML during ordinary authoring, recreate unchanged packages, add duplicate Golden checklists, move 04 rules into PRD core, or use word/row/sample-card counts as quality proxies.

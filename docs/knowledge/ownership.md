@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-08-30
+Updated: 2026-09-07
 
 Use this file only to answer **who owns what**. Exact contracts remain in the named owners.
 
@@ -13,11 +13,9 @@ Use this file only to answer **who owns what**. Exact contracts remain in the na
 | Stable product/repository orientation | `CONTEXT.md` |
 | Contribution + branch-promotion procedure | `CONTRIBUTING.md` |
 | Public-repository data handling | `SECURITY.md` |
-| Active continuation / resume checkpoint | `docs/knowledge/next-action.md` |
-| Detailed work-routing explanation | `docs/knowledge/work-routing.md` |
+| Active continuation | `docs/knowledge/next-action.md` |
 | Source/state precedence | `docs/knowledge/source-authority.md` |
 | Current validation evidence | `docs/knowledge/reviews/current-validation.md` |
-| Historical review evidence | `docs/knowledge/reviews/history/` |
 | Durable decisions/rationale | `docs/knowledge/decisions/` |
 | Future/non-active work | `docs/knowledge/operations/backlog.md` |
 
@@ -33,7 +31,7 @@ Use this file only to answer **who owns what**. Exact contracts remain in the na
 | `workspace/active/` | ignored local/external current project-package mount point |
 | `workspace/archive/` | ignored local/external retained project-package mount point |
 
-The public system repository owns workspace **guidance**, not live project-package contents.
+The public system repository owns workspace guidance, not live project-package contents.
 
 ## Unified package root owners
 
@@ -41,9 +39,9 @@ The public system repository owns workspace **guidance**, not live project-packa
 |---|---|
 | Package orientation + Requirement Map | `kits/prd-creator/README.md` |
 | Package technical/file routing | `kits/prd-creator/AGENTS.md` |
-| End-to-end Flow 2–7 Production Execution router | `kits/prd-creator/SKILL.md` |
+| End-to-end Flow 2–7 execution router | `kits/prd-creator/SKILL.md` |
 
-## PRD semantic and procedure owners
+## PRD semantic / design / procedure owners
 
 | Boundary | Owner |
 |---|---|
@@ -51,22 +49,25 @@ The public system repository owns workspace **guidance**, not live project-packa
 | End-to-end production sequence | `docs/foundation/01-production-flow.md` |
 | Flow 2 durable policy | `docs/foundation/02-source-intake-recovery.md` |
 | Flow 2 detailed procedure | `kits/prd-creator/intake/SOURCE-INTAKE.md` |
-| PRD-core 01–03 exact contract | `kits/prd-creator/document/CONTENT-CONTRACT.md` |
+| PRD-core 01–03 semantic completeness + material conservation | `kits/prd-creator/document/CONTENT-CONTRACT.md` |
+| PRD-core 01–03 Golden page/component design grammar | `kits/prd-creator/document/DESIGN-CONTRACT.md` |
 | non-Voice 04 exact contract | `kits/prd-creator/production-assets/CONTRACT.md` |
 | Flow 4 durable policy | `docs/foundation/04-prd-validation-handoff.md` |
-| Flow 4 detailed validation/handoff | `kits/prd-creator/document/VALIDATION.md` |
+| Flow 4 validation/handoff | `kits/prd-creator/document/VALIDATION.md` |
+
+`CONTENT-CONTRACT.md` answers **what meaning must survive**. `DESIGN-CONTRACT.md` answers **where/how accepted meaning is presented**. Sample card/step counts do not become semantic ownership merely because the Golden example contains them.
 
 ## PRD implementation owners
 
 | Boundary | Owner |
 |---|---|
-| PRD-core + shared HTML composition contract | `kits/prd-creator/renderer/CONTRACT.md` |
+| PRD-core + shared HTML projection contract | `kits/prd-creator/renderer/CONTRACT.md` |
 | versioned delivery orchestration | `kits/prd-creator/renderer/delivery.py` |
-| PRD-core page projection | `kits/prd-creator/renderer/pages.py` |
-| lower-level HTML renderer orchestration | `kits/prd-creator/renderer/render.py` |
+| PRD-core page projection / adaptive child cardinality | `kits/prd-creator/renderer/pages.py` |
+| lower-level HTML renderer | `kits/prd-creator/renderer/render.py` + `kits/prd-creator/renderer/_engine.py` |
 | reusable renderer primitives | `kits/prd-creator/renderer/core.py` |
 | shared 04 compositor | `kits/prd-creator/renderer/production_assets_compositor.py` |
-| Voice-specific 04 parsing/presentation primitives | `kits/prd-creator/renderer/production_assets.py` |
+| Voice-specific 04 presentation primitives | `kits/prd-creator/renderer/production_assets.py` |
 | canonical Golden bytes | `kits/prd-creator/template/golden-reference.html` |
 | runtime Golden alias | `kits/prd-creator/template/runtime-template.html` |
 | PRD mechanical validation | `kits/prd-creator/validator/_engine.py` + `kits/prd-creator/validator/validate.py` |
@@ -80,14 +81,14 @@ The public system repository owns workspace **guidance**, not live project-packa
 | Reusable Voice semantic judgment | `.agents/skills/voice-production/SKILL.md` |
 | Flow 5 extraction | `kits/prd-creator/voice/EXTRACTION.md` |
 | Flow 6 durable policy | `docs/foundation/06-elevenlabs-script-production.md` |
-| Eleven v3 performance-writing craft | `kits/prd-creator/voice/PERFORMANCE-WRITING.md` |
+| Eleven v3 performance craft | `kits/prd-creator/voice/PERFORMANCE-WRITING.md` |
 | Flow 7 validation/evidence | `kits/prd-creator/voice/VALIDATION.md` |
 | Voice mechanical validation | `kits/prd-creator/validator/validate_voice.py` |
 | Voice regressions | `tests/test_voice_contracts.py` |
 
 ## Project package owners
 
-The following paths are relative to whichever authorized project package is active locally/externally:
+Paths below are relative to the authorized active project package:
 
 | Boundary | Owner |
 |---|---|
@@ -105,7 +106,7 @@ The following paths are relative to whichever authorized project package is acti
 | AI development-context projection | `output/v<document.version>/context.md` |
 | compact AI navigation/line-range index | `output/v<document.version>/index.json` |
 
-Derived delivery artifacts are never manually patched to reconcile owners; fix the canonical owner and regenerate.
+Derived delivery is never manually patched to reconcile owners; fix the canonical/contract owner and regenerate.
 
 ## Ownership questions vs contract questions
 
@@ -113,8 +114,11 @@ Derived delivery artifacts are never manually patched to reconcile owners; fix t
 Who owns this?
 → ownership.md
 
-What exactly must this owner produce/accept?
-→ open the named owner
+What meaning must be present?
+→ CONTENT-CONTRACT / matching semantic owner
+
+How must it be presented?
+→ DESIGN-CONTRACT / renderer contract
 
 Which source/state outranks another?
 → source-authority.md
@@ -122,4 +126,4 @@ Which source/state outranks another?
 
 ## New-owner rule
 
-Create a new owner only when an existing owner cannot represent the responsibility without mixing unrelated jobs. Do not create a map, registry/framework, Flow/Kit, root skill, schema, compatibility layer, or workflow solely because a filename is inconvenient.
+Create a new owner only when the responsibilities are genuinely different. `DESIGN-CONTRACT.md` exists because semantic completeness and approved presentation grammar require independent change/review boundaries; it is not a second PRD, schema, registry, or workflow.

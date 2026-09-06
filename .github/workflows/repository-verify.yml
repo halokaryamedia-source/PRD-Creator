@@ -36,6 +36,7 @@ on:
       - "kits/prd-creator/SKILL.md"
       - "kits/prd-creator/intake/SOURCE-INTAKE.md"
       - "kits/prd-creator/document/CONTENT-CONTRACT.md"
+      - "kits/prd-creator/document/DESIGN-CONTRACT.md"
       - "kits/prd-creator/document/VALIDATION.md"
       - "kits/prd-creator/production-assets/CONTRACT.md"
       - "kits/prd-creator/renderer/CONTRACT.md"
