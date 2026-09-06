@@ -9,12 +9,6 @@ from pathlib import Path
 from tests.test_prd_contracts import RENDERER, VALIDATOR, render_data, run_cli
 
 
-ROOT = Path(__file__).resolve().parents[1]
-SOURCE_INTAKE = ROOT / "kits" / "prd-creator" / "intake" / "SOURCE-INTAKE.md"
-FOUNDATION_FLOW2 = ROOT / "docs" / "foundation" / "02-source-intake-recovery.md"
-KIT_SKILL = ROOT / "kits" / "prd-creator" / "SKILL.md"
-
-
 class Flow2StateConsistencyContracts(unittest.TestCase):
     def make_project(self) -> Path:
         temp = tempfile.TemporaryDirectory()
@@ -26,6 +20,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         (project / "state" / "intake-state.yaml").write_text(
             "status: ready_for_prd\n"
             "ready_for_prd: true\n"
+            "preview_approved: true\n"
             "next_step: Build canonical PRD content.\n",
             encoding="utf-8",
         )
@@ -71,28 +66,22 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
     def validate(self, project: Path):
         return run_cli(VALIDATOR, project)
 
-    def test_flow2_contract_requires_simple_preview_before_build(self) -> None:
-        source_intake = SOURCE_INTAKE.read_text(encoding="utf-8")
-        foundation = FOUNDATION_FLOW2.read_text(encoding="utf-8")
-        skill = KIT_SKILL.read_text(encoding="utf-8")
+    def test_ready_rejects_missing_preview_approval_evidence(self) -> None:
+        project = self.make_project()
+        state = project / "state" / "intake-state.yaml"
+        state.write_text(
+            state.read_text(encoding="utf-8").replace(
+                "preview_approved: true\n", "", 1
+            ),
+            encoding="utf-8",
+        )
 
-        for marker in (
-            "## 6. Simple Chat Preview and user approval",
-            "Apa yang Player Lakukan",
-            "Perlu Konfirmasi",
-            "preview_approved: true",
-            "do not turn the preview into a second PRD",
-        ):
-            self.assertIn(marker, source_intake)
-
-        self.assertIn("→ SIMPLE CHAT PREVIEW", skill)
-        self.assertIn("→ Flow 3 BUILD PRD CORE 01–03", skill)
-        self.assertIn("relevant Simple Chat Preview has been approved", skill)
-        self.assertIn("The Simple Chat Preview is not another persistent artifact", skill)
-        self.assertIn("material AI-chosen Proposal", source_intake)
-        self.assertIn("required when material AI-chosen Proposals exist", source_intake)
-        self.assertIn("material AI-chosen Proposal", foundation)
-        self.assertIn("one concrete Proposal", skill)
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        joined = "\n".join(result["errors"])
+        self.assertIn("flow2_ready_for_prd", joined)
+        self.assertIn("exactly one preview_approved boolean", joined)
 
     def test_ready_rejects_explicit_preview_not_approved(self) -> None:
         project = self.make_project()

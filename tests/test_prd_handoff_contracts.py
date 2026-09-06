@@ -43,7 +43,7 @@ class PrdHandoffContracts(unittest.TestCase):
 
         accepted = accepted_version if accepted_version is not None else current_version
         (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\nready_for_prd: true\n", encoding="utf-8"
+            "status: ready_for_prd\nready_for_prd: true\npreview_approved: true\n", encoding="utf-8"
         )
         (project / "state" / "source-inventory.yaml").write_text(
             "sources:\n  - id: SRC-001\n    inspection: full\n", encoding="utf-8"

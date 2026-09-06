@@ -120,13 +120,11 @@ def flow2_readiness(path: Path) -> tuple[bool, str]:
     detail = "Flow 2 intake state explicitly reports ready_for_prd"
 
     preview_flags = PREVIEW_APPROVED_RE.findall(text)
-    if len(preview_flags) > 1:
-        return False, "intake-state.yaml must define preview_approved at most once"
-    if preview_flags and preview_flags[0].lower() != "true":
+    if len(preview_flags) != 1:
+        return False, "intake-state.yaml must define exactly one preview_approved boolean before ready_for_prd"
+    if preview_flags[0].lower() != "true":
         return False, "Flow 2 Simple Chat Preview is not approved: preview_approved=false"
-    if preview_flags:
-        return True, detail + "; Simple Chat Preview is approved"
-    return True, detail
+    return True, detail + "; Simple Chat Preview is approved"
 
 
 def _clean_state_scalar(value: str) -> str:

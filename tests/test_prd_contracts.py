@@ -229,7 +229,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         for name in ("state", "work", "output"):
             (project / name).mkdir(parents=True)
         (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\nready_for_prd: true\nnext_step: Build canonical PRD content.\n", encoding="utf-8"
+            "status: ready_for_prd\nready_for_prd: true\npreview_approved: true\nnext_step: Build canonical PRD content.\n", encoding="utf-8"
         )
         (project / "state" / "source-inventory.yaml").write_text(
             "sources:\n  - id: SRC-001\n    type: instruction\n    role: authoritative\n    origin: user\n    summary: Contract fixture source.\n    inspection: full\n", encoding="utf-8"
