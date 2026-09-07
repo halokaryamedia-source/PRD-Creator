@@ -23,11 +23,12 @@ DEFAULT_TYPE = {
     "Visual Effects & Presentation": "PARTICLE",
 }
 ASSET_ID_RE = re.compile(r"^AST-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
+MOMENT_ID_RE = re.compile(r"^MOM-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
 OWNER_RE = re.compile(r"^Owner ID:\s*(\S+)\s*$", re.I)
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
 ALLOWED_FIELDS = {
     "ID",
-    "Flow",
+    "Moment ID",
     "Moment",
     "Type",
     "Function",
@@ -36,7 +37,16 @@ ALLOWED_FIELDS = {
     "Audio Brief",
     "Size",
 }
-RETIRED_FIELDS = {"Create", "Used", "Includes", "Group", "For", "Requirement", "Usage"}
+RETIRED_FIELDS = {
+    "Flow",
+    "Create",
+    "Used",
+    "Includes",
+    "Group",
+    "For",
+    "Requirement",
+    "Usage",
+}
 
 
 @dataclass(frozen=True)
@@ -46,8 +56,8 @@ class AssetEntry:
     category: str
     type_label: str
     function_text: str
+    moment_id: str
     moment: str
-    flow: str = ""
     asset_brief: str = ""
     size: str = ""
     content: str = ""
@@ -59,7 +69,8 @@ class AssetSection:
     owner_id: str
     title: str
     categories: dict[str, list[AssetEntry]] = field(default_factory=dict)
-    flow_order: dict[str, int] = field(default_factory=dict)
+    moment_order: dict[str, int] = field(default_factory=dict)
+    moment_titles: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -106,17 +117,9 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
             continue
 
         if line.startswith("### Gameplay Flow "):
-            _require_section_owner(current_section, "Gameplay Flow metadata")
-            flow_title = line[len("### Gameplay Flow ") :].strip()
-            if not flow_title:
-                raise ValueError("Gameplay Flow title cannot be empty")
-            assert current_section is not None
-            if flow_title in current_section.flow_order:
-                raise ValueError(f"Duplicate Gameplay Flow label in Production Assets: {flow_title}")
-            current_section.flow_order[flow_title] = len(current_section.flow_order) + 1
-            current_category = None
-            i += 1
-            continue
+            raise ValueError(
+                "Gameplay Flow metadata is retired; resource ordering must use stable Moment ID fields"
+            )
 
         if line.startswith("### "):
             _require_section_owner(current_section, "Production Asset category")
@@ -180,6 +183,21 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                 raise ValueError(f"Duplicate Production Asset ID: {asset_id}")
             asset_ids.add(asset_id)
 
+            moment_id = fields.get("Moment ID", "")
+            moment = fields.get("Moment", "")
+            if not MOMENT_ID_RE.fullmatch(moment_id):
+                raise ValueError(f"Production Asset {asset_id} requires stable Moment ID in MOM-... form")
+            if not moment:
+                raise ValueError(f"Production Asset {asset_id} requires Moment")
+            previous_title = current_section.moment_titles.get(moment_id)
+            if previous_title is not None and previous_title != moment:
+                raise ValueError(
+                    f"Moment ID {moment_id} maps to conflicting titles {previous_title!r} and {moment!r}"
+                )
+            if moment_id not in current_section.moment_order:
+                current_section.moment_order[moment_id] = len(current_section.moment_order) + 1
+                current_section.moment_titles[moment_id] = moment
+
             type_label = fields.get("Type") or DEFAULT_TYPE[current_category]
             if type_label not in CATEGORY_TYPE[current_category]:
                 allowed = ", ".join(sorted(CATEGORY_TYPE[current_category]))
@@ -187,16 +205,8 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     f"Production Asset {asset_id} type {type_label!r} is invalid for {current_category}; expected {allowed}"
                 )
             function_text = fields.get("Function", "")
-            moment = fields.get("Moment", "")
             if not function_text:
                 raise ValueError(f"Production Asset {asset_id} requires Function")
-            if not moment:
-                raise ValueError(f"Production Asset {asset_id} requires Moment")
-            flow = fields.get("Flow", "")
-            if flow and current_section.flow_order and flow not in current_section.flow_order:
-                raise ValueError(
-                    f"Production Asset Flow does not match a defined Gameplay Flow: {current_section.owner_id} / {asset_id} / {flow}"
-                )
             brief = fields.get("Asset Brief") or fields.get("Visual Brief") or fields.get("Audio Brief") or ""
             if type_label == "UI / TEXT" and not content:
                 raise ValueError(f"UI / TEXT Production Asset {asset_id} requires exact Content")
@@ -210,8 +220,8 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     category=current_category,
                     type_label=type_label,
                     function_text=function_text,
+                    moment_id=moment_id,
                     moment=moment,
-                    flow=flow,
                     asset_brief=brief,
                     size=fields.get("Size", ""),
                     content=content,
