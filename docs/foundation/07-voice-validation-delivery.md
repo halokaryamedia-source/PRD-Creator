@@ -12,7 +12,9 @@ Detailed operational validation lives in `kits/prd-creator/voice/VALIDATION.md`;
 
 ```text
 voice_script_ready
-→ lifecycle-aware mechanical validation
+→ revalidate current Flow 4 handoff
+→ verify exact Voice source PRD revision + SHA
+→ lifecycle-aware Voice mechanical validation
 → Communication Conservation
 → integrated Voice Script Readiness
 → current consolidated HTML
@@ -24,7 +26,7 @@ voice_script_ready
 
 ## Mechanical chain
 
-`validator/validate_voice.py` proves, as applicable:
+`validator/validate_voice.py` first reruns canonical `validate_handoff.py`. It then proves, as applicable:
 
 ```text
 accepted PRD revision
@@ -32,6 +34,9 @@ accepted PRD revision
 = render-data document.version
 = voice-requirements Source PRD revision
 = voice-production Source Voice Requirements revision
+
+voice-state source_prd_sha256
+= exact current accepted render-data bytes
 
 voice-production Source Voice Requirements SHA
 = exact current requirements bytes
@@ -58,6 +63,7 @@ Flow 7 continues the same state owned by `shared/lifecycle.py`:
 status: voice_validation
 source_handoff: state/handoff-state.yaml
 source_prd_revision: <accepted document.version>
+source_prd_sha256: <sha256 of exact accepted work/render-data.json bytes>
 canonical_prd: work/content.md
 requirements: work/voice-requirements.md
 production: work/voice-production.md
@@ -135,13 +141,13 @@ Accepted Voice Production SHA256: <exact current work/voice-production.md SHA-25
 
 The SHA binding is required for `voice_delivery_ready`. Editing wording, duration, Speaker metadata, section ownership, or Voice Cast after review invalidates the prior acceptance even when the PRD revision is unchanged.
 
-The production source already binds exact Flow 5 requirement bytes, so one production SHA provides the final Voice acceptance freshness boundary without another checksum registry.
+The production source already binds exact Flow 5 requirement bytes, while Voice state binds exact accepted PRD bytes, so the chain has no version-only freshness gap.
 
 ## First wrong owner
 
 ```text
-project/gameplay/story fact
-→ PRD authority
+stale/changed PRD handoff or project/gameplay/story fact
+→ PRD / Flow 4 authority
 
 Voice Owner/Moment identity, scope, Speaker, Channel, Trigger, Purpose, required communication, source timing
 → Flow 5
@@ -160,7 +166,9 @@ generated-audio-only issue
 
 `voice_delivery_ready` requires:
 
-- Mechanical PASS across lifecycle/revision/identity/HTML freshness;
+- current upstream handoff Mechanical PASS;
+- exact current PRD revision + render-data SHA identity;
+- Mechanical PASS across Voice lifecycle/identity/HTML freshness;
 - exact current Voice Acceptance SHA;
 - Voice Cast selection/profile for every represented speaker;
 - Communication Conservation PASS;
@@ -168,7 +176,6 @@ generated-audio-only issue
 - current consolidated project HTML;
 - Project HTML Visual PASS when visual readiness is claimed;
 - Critical = 0 and Major = 0;
-- truthful optional audio evidence;
-- no stale upstream PRD revision.
+- truthful optional audio evidence.
 
 It does not imply audio approval, client sign-off, implementation completion, or release.
