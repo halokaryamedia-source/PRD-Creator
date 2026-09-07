@@ -179,13 +179,13 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
     document = data["document"]
     namespace = slug(title["en"])
+    adapter.replace_token(STORAGE_PREFIX_TOKEN, f"prd-{namespace}-", "storage-prefix template token")
     subtitle = txt(document.get("subtitle") or "Production Specification")["en"]
     page_title = f"{title['en']} — {subtitle}"
     adapter.set_title(page_title)
     description = txt(document.get("description") or data["overview"]["project_context"])["en"]
     adapter.set_description(description)
     adapter.set_specification_version(f"prd-{namespace}-v{document['version']}")
-    adapter.replace_token(STORAGE_PREFIX_TOKEN, f"prd-{namespace}-", "storage-prefix template token")
     adapter.inject_head(f'<meta content="{render_data_sha}" name="render-data-sha256"/>')
 
     if languages == ["en"]:

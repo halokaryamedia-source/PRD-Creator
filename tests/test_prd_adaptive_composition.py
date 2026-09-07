@@ -36,10 +36,6 @@ class AdaptiveSemanticCompositionContracts(unittest.TestCase):
         for name in ("state", "work", "output"):
             (project / name).mkdir(parents=True)
 
-        (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\nready_for_prd: true\npreview_approved: true\n",
-            encoding="utf-8",
-        )
         (project / "state" / "source-inventory.yaml").write_text(
             "sources:\n"
             "  - id: SRC-001\n"
@@ -50,7 +46,8 @@ class AdaptiveSemanticCompositionContracts(unittest.TestCase):
             "    inspection: full\n",
             encoding="utf-8",
         )
-        (project / "state" / "requirement-register.yaml").write_text(
+        requirement_path = project / "state" / "requirement-register.yaml"
+        requirement_path.write_text(
             "requirements:\n"
             "  - id: REQ-001\n"
             "    area: gameplay\n"
@@ -59,12 +56,18 @@ class AdaptiveSemanticCompositionContracts(unittest.TestCase):
             "    impact: high\n",
             encoding="utf-8",
         )
+        requirement_sha = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
+        (project / "state" / "intake-state.yaml").write_text(
+            f"status: ready_for_prd\npreview_approved: true\napproved_requirement_sha256: {requirement_sha}\n",
+            encoding="utf-8",
+        )
         content_path = project / "work" / "content.md"
         content_path.write_text(
             "# Adaptive Composition Fixture\n\n"
             "The semantic sequence cardinality follows project meaning rather than sample counts.\n",
             encoding="utf-8",
         )
+        data["approved_requirement_sha256"] = requirement_sha
         data["canonical_content_sha256"] = hashlib.sha256(content_path.read_bytes()).hexdigest()
         (project / "work" / "render-data.json").write_text(
             json.dumps(data, ensure_ascii=False, indent=2) + "\n",
