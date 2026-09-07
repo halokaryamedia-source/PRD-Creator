@@ -29,9 +29,7 @@ def load_handoff_state(path: Path) -> HandoffState:
     state = load_mapping(path, owner="handoff-state.yaml")
     unknown = sorted(set(state) - HANDOFF_FIELDS)
     if unknown:
-        raise StateError(
-            "handoff-state.yaml contains unsupported field(s): " + ", ".join(unknown)
-        )
+        raise StateError("handoff-state.yaml contains unsupported field(s): " + ", ".join(unknown))
     status = require_scalar(state, "status", owner="handoff-state.yaml")
     version = require_scalar(state, "accepted_prd_version", owner="handoff-state.yaml")
     refs: dict[str, str] = {}
