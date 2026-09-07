@@ -4,55 +4,107 @@ from pathlib import Path
 from typing import Any, Mapping
 
 import yaml
+from yaml.nodes import MappingNode
 
 
 class StateError(ValueError):
-    """Raised when a machine-owned YAML state file violates its contract."""
+    """Raised when a persisted machine-state document violates its YAML contract."""
 
 
-def load_yaml_mapping(path: Path, *, required: bool = True) -> dict[str, Any]:
+class _UniqueKeyLoader(yaml.SafeLoader):
+    """Safe YAML loader that rejects duplicate mapping keys instead of overwriting them."""
+
+
+def _construct_unique_mapping(
+    loader: _UniqueKeyLoader,
+    node: MappingNode,
+    deep: bool = False,
+) -> dict[Any, Any]:
+    mapping: dict[Any, Any] = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        try:
+            duplicate = key in mapping
+        except TypeError as exc:
+            raise StateError("YAML mapping keys must be hashable scalars") from exc
+        if duplicate:
+            raise StateError(f"duplicate YAML mapping key: {key!r}")
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+_UniqueKeyLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+    _construct_unique_mapping,
+)
+
+
+def load_mapping(path: Path, *, owner: str | None = None) -> dict[str, Any]:
+    label = owner or path.name
     if not path.is_file():
-        if required:
-            raise StateError(f"missing state file: {path}")
-        return {}
+        raise StateError(f"missing state file: {path}")
     try:
-        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        value = yaml.load(path.read_text(encoding="utf-8"), Loader=_UniqueKeyLoader)
+    except StateError:
+        raise
     except yaml.YAMLError as exc:
-        raise StateError(f"invalid YAML in {path}: {exc}") from exc
-    if data is None:
+        raise StateError(f"{label} is not valid YAML: {exc}") from exc
+    if value is None:
         return {}
-    if not isinstance(data, dict):
-        raise StateError(f"{path.name} root must be a mapping")
-    return dict(data)
+    if not isinstance(value, dict):
+        raise StateError(f"{label} root must be a mapping")
+    return dict(value)
 
 
-def require_text(mapping: Mapping[str, Any], key: str, *, owner: str) -> str:
+def require_scalar(
+    mapping: Mapping[str, Any],
+    key: str,
+    *,
+    owner: str,
+) -> str:
+    if key not in mapping:
+        raise StateError(f"{owner} must define non-empty {key}")
+    value = mapping[key]
+    if isinstance(value, (dict, list, bool)) or value is None:
+        raise StateError(f"{owner}.{key} must be a scalar")
+    text = str(value).strip()
+    if not text:
+        raise StateError(f"{owner} must define non-empty {key}")
+    return text
+
+
+def optional_scalar(
+    mapping: Mapping[str, Any],
+    key: str,
+    *,
+    default: str = "",
+) -> str:
     value = mapping.get(key)
-    if not isinstance(value, str) or not value.strip():
-        raise StateError(f"{owner}.{key} must be a non-empty string")
-    return value.strip()
+    if value is None:
+        return default
+    if isinstance(value, (dict, list, bool)):
+        raise StateError(f"{key} must be a scalar")
+    return str(value).strip()
 
 
 def require_bool(mapping: Mapping[str, Any], key: str, *, owner: str) -> bool:
-    value = mapping.get(key)
-    if key not in mapping or not isinstance(value, bool):
+    if key not in mapping or not isinstance(mapping[key], bool):
         raise StateError(f"{owner} must define exactly one {key} boolean")
-    return value
+    return bool(mapping[key])
 
 
-def optional_text(mapping: Mapping[str, Any], key: str) -> str:
-    value = mapping.get(key)
-    return value.strip() if isinstance(value, str) else ""
-
-
-def require_list(mapping: Mapping[str, Any], key: str, *, owner: str) -> list[Any]:
+def list_of_mappings(
+    mapping: Mapping[str, Any],
+    key: str,
+    *,
+    owner: str,
+) -> list[dict[str, Any]]:
     value = mapping.get(key)
     if not isinstance(value, list):
         raise StateError(f"{owner}.{key} must be an array")
-    return value
-
-
-def require_mapping(value: Any, *, owner: str) -> dict[str, Any]:
-    if not isinstance(value, dict):
-        raise StateError(f"{owner} must be a mapping")
-    return dict(value)
+    result: list[dict[str, Any]] = []
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            raise StateError(f"{owner}.{key}[{index}] must be a mapping")
+        result.append(dict(item))
+    return result
