@@ -5,6 +5,8 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
+from shared.render_schema import validate_projection_schema
+
 from . import prd_validation_engine as engine
 
 PROCESS_LEAK_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -87,6 +89,19 @@ def content_purity_errors(data: dict[str, Any]) -> list[str]:
     return list(dict.fromkeys(errors))
 
 
+def _append_check(result: dict[str, Any], name: str, errors: list[str], success: str) -> None:
+    result.setdefault("checks", []).append(
+        {
+            "check": name,
+            "status": "fail" if errors else "pass",
+            "detail": "; ".join(errors) if errors else success,
+        }
+    )
+    if errors:
+        result.setdefault("errors", []).append(f"{name}: " + "; ".join(errors))
+        result["status"] = "fail"
+
+
 def validate(project: Path) -> dict[str, Any]:
     """Run the one canonical complete mechanical PRD validation pipeline."""
     result = engine.validate(project)
@@ -100,17 +115,23 @@ def validate(project: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         return result
 
-    purity = content_purity_errors(data)
-    result.setdefault("checks", []).append(
-        {
-            "check": "content_purity",
-            "status": "fail" if purity else "pass",
-            "detail": "; ".join(purity)
-            if purity
-            else "no project/document-process leakage or generic note-card data detected",
-        }
+    projection_errors: list[str] = []
+    try:
+        validate_projection_schema(data)
+    except ValueError as exc:
+        projection_errors.append(str(exc))
+    _append_check(
+        result,
+        "canonical_projection_schema",
+        projection_errors,
+        "render-data uses one canonical field shape with no retired compatibility aliases",
     )
-    if purity:
-        result.setdefault("errors", []).append("content_purity: " + "; ".join(purity))
-        result["status"] = "fail"
+
+    purity = content_purity_errors(data)
+    _append_check(
+        result,
+        "content_purity",
+        purity,
+        "no project/document-process leakage or generic note-card data detected",
+    )
     return result
