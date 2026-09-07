@@ -13,14 +13,22 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 KIT_ROOT = HERE.parent
-if __package__ in (None, ""):
-    if str(KIT_ROOT) not in sys.path:
-        sys.path.insert(0, str(KIT_ROOT))
+if __package__ in (None, "") and str(KIT_ROOT) not in sys.path:
+    sys.path.insert(0, str(KIT_ROOT))
 
+from shared.handoff import load_handoff_state
 from shared.lifecycle import VoiceState, load_voice_state
-from shared.state import StateError, load_mapping, require_scalar
+from shared.paths import ProjectPathError, resolve_project_path
+from shared.state import StateError
 from shared.topology import owner_targets, production_page_id
-from shared.voice import VoiceEntry, VoiceProduction, VoiceRequirement, parse_production, parse_requirements, selected_voice
+from shared.voice import (
+    VoiceEntry,
+    VoiceProduction,
+    VoiceRequirement,
+    parse_production,
+    parse_requirements,
+    selected_voice,
+)
 
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_PRD_REVISION_RE = re.compile(r"(?mi)^\s*Source PRD revision:\s*(\S+)\s*$")
@@ -31,6 +39,16 @@ META_RE_TEMPLATE = r'<meta\s+content="([0-9a-f]{64})"\s+name="{name}"\s*/?>'
 REQUIREMENTS_READY_STATUSES = {"voice_requirements_ready"}
 SCRIPT_STATUSES = {"voice_script_ready", "voice_validation", "needs_revision", "voice_delivery_ready"}
 VALIDATABLE_STATUSES = REQUIREMENTS_READY_STATUSES | SCRIPT_STATUSES | {"no_voice_required"}
+VOICE_ACCEPTANCE_REQUIRED = {
+    "Status": {"voice_delivery_ready"},
+    "Mechanical": {"PASS"},
+    "Voice Script Readiness": {"PASS"},
+    "Communication Conservation": {"PASS"},
+    "Project HTML Visual": {"PASS", "NOT PROVEN"},
+    "Critical": {"0"},
+    "Major": {"0"},
+}
+VOICE_ACCEPTED_SHA_LABEL = "Accepted Voice Production SHA256"
 
 
 def _load_render_data(project: Path) -> tuple[dict[str, Any], str]:
@@ -51,15 +69,19 @@ def _load_render_data(project: Path) -> tuple[dict[str, Any], str]:
 
 def _accepted_revision(project: Path, voice_state: VoiceState) -> tuple[str, list[str]]:
     issues: list[str] = []
-    handoff_path = project / voice_state.source_handoff
-    if not handoff_path.is_file():
-        return "", [f"Voice source_handoff does not exist: {voice_state.source_handoff}"]
-    handoff = load_mapping(handoff_path, owner="handoff-state.yaml")
-    status = require_scalar(handoff, "status", owner="handoff-state.yaml")
-    revision = require_scalar(handoff, "accepted_prd_version", owner="handoff-state.yaml")
-    if status != "handoff_ready":
-        issues.append(f"Upstream PRD handoff status is {status!r}, expected 'handoff_ready'")
-    return revision, issues
+    try:
+        handoff_path = resolve_project_path(
+            project,
+            voice_state.source_handoff,
+            owner="voice-state.yaml.source_handoff",
+            must_exist=True,
+        )
+        handoff = load_handoff_state(handoff_path)
+    except (ProjectPathError, StateError) as exc:
+        return "", [str(exc)]
+    if handoff.status != "handoff_ready":
+        issues.append(f"Upstream PRD handoff status is {handoff.status!r}, expected 'handoff_ready'")
+    return handoff.accepted_prd_version, issues
 
 
 def _state_identity_issues(
@@ -74,14 +96,15 @@ def _state_identity_issues(
     }.items():
         if value != accepted_revision:
             issues.append(f"{label}={value!r}, expected current accepted PRD revision {accepted_revision!r}")
-    if voice_state.canonical_prd != "work/content.md":
-        issues.append(f"voice-state canonical_prd={voice_state.canonical_prd!r}, expected 'work/content.md'")
-    if voice_state.requirements != "work/voice-requirements.md":
-        issues.append(
-            f"voice-state requirements={voice_state.requirements!r}, expected 'work/voice-requirements.md'"
-        )
-    if voice_state.production != "work/voice-production.md":
-        issues.append(f"voice-state production={voice_state.production!r}, expected 'work/voice-production.md'")
+    canonical = {
+        "canonical_prd": "work/content.md",
+        "requirements": "work/voice-requirements.md",
+        "production": "work/voice-production.md",
+    }
+    for field, expected in canonical.items():
+        actual = getattr(voice_state, field)
+        if actual != expected:
+            issues.append(f"voice-state {field}={actual!r}, expected {expected!r}")
     expected_html = f"output/v{accepted_revision}/prd.html"
     if voice_state.project_html and voice_state.project_html != expected_html:
         issues.append(f"voice-state project_html={voice_state.project_html!r}, expected {expected_html!r}")
@@ -92,10 +115,9 @@ def _requirements_revision_issues(path: Path, accepted_revision: str) -> list[st
     revisions = SOURCE_PRD_REVISION_RE.findall(path.read_text(encoding="utf-8"))
     if len(revisions) != 1:
         return ["voice-requirements.md must define exactly one Source PRD revision"]
-    if revisions[0].strip() != accepted_revision:
-        return [
-            f"voice-requirements Source PRD revision={revisions[0].strip()!r}, expected {accepted_revision!r}"
-        ]
+    current = revisions[0].strip()
+    if current != accepted_revision:
+        return [f"voice-requirements Source PRD revision={current!r}, expected {accepted_revision!r}"]
     return []
 
 
@@ -104,13 +126,11 @@ def _requirements_owner_issues(
     requirements: dict[str, VoiceRequirement],
 ) -> list[str]:
     valid_owners = owner_targets(render_data)
-    issues: list[str] = []
-    for requirement in requirements.values():
-        if requirement.owner_id not in valid_owners:
-            issues.append(
-                f"Voice requirement {requirement.voice_id} Owner ID does not match accepted PRD topology: {requirement.owner_id}"
-            )
-    return issues
+    return [
+        f"Voice requirement {requirement.voice_id} Owner ID does not match accepted PRD topology: {requirement.owner_id}"
+        for requirement in requirements.values()
+        if requirement.owner_id not in valid_owners
+    ]
 
 
 def _production_binding_issues(
@@ -191,8 +211,8 @@ def _html_issues(
 ) -> list[str]:
     source = path.read_text(encoding="utf-8")
     issues: list[str] = []
-    if 'id="production-assets-style"' not in source:
-        issues.append("Project HTML missing Production Assets presentation")
+    if 'id="production-assets-style"' not in source or 'id="production-assets-script"' not in source:
+        issues.append("Project HTML missing current Production Assets presentation resources")
     if "Production Assets" not in source or "production-assets-nav" not in source:
         issues.append("Project HTML missing Production Assets Voice navigation")
 
@@ -213,7 +233,11 @@ def _html_issues(
 
     section_blocks = {
         match.group(1): match.group(2)
-        for match in re.finditer(r'<section\b[^>]*\bid="([^"]+)"[^>]*>(.*?)</section>', source, re.S | re.I)
+        for match in re.finditer(
+            r'<section\b[^>]*\bid="([^"]+)"[^>]*>(.*?)</section>',
+            source,
+            re.S | re.I,
+        )
     }
     for voice_id, requirement in requirements.items():
         pair = entries.get(voice_id)
@@ -225,6 +249,8 @@ def _html_issues(
         if not block:
             issues.append(f"Project HTML missing Production Assets page for Voice owner {owner_id}: {page_id}")
             continue
+        if f'data-moment-id="{html.escape(requirement.moment_id, quote=True)}"' not in block:
+            issues.append(f"Project HTML missing canonical Moment ID for {voice_id}: {requirement.moment_id}")
         prompt_id = f"voice-prompt-{voice_id.lower()}"
         matches = re.findall(
             rf'<pre class="voice-script-text" id="{re.escape(prompt_id)}">(.*?)</pre>',
@@ -239,23 +265,48 @@ def _html_issues(
         identity = html.escape(f"{entry.speaker} — {entry.title}", quote=True)
         if identity not in block:
             issues.append(f"Project HTML missing compact Voice identity for {voice_id}")
-        if html.escape(requirement.moment, quote=True) not in block:
-            issues.append(f"Project HTML missing canonical production moment for {voice_id}")
     return issues
 
 
 def _delivery_selection_issues(production: VoiceProduction, state: VoiceState) -> list[str]:
     if state.status != "voice_delivery_ready":
         return []
-    issues: list[str] = []
     speakers = sorted({entry.speaker for section in production.sections for entry in section.entries})
-    for speaker in speakers:
-        if not selected_voice(production.cast, speaker):
-            issues.append(f"voice_delivery_ready requires a Voice Cast selection/profile for speaker: {speaker}")
+    return [
+        f"voice_delivery_ready requires a Voice Cast selection/profile for speaker: {speaker}"
+        for speaker in speakers
+        if not selected_voice(production.cast, speaker)
+    ]
+
+
+def _acceptance_values(text: str, label: str) -> list[str]:
+    pattern = re.compile(rf"(?mi)^\s*{re.escape(label)}:\s*(.*?)\s*$")
+    return [value.strip() for value in pattern.findall(text)]
+
+
+def _voice_acceptance_issues(project: Path, production_path: Path, state: VoiceState) -> list[str]:
+    if state.status != "voice_delivery_ready":
+        return []
+    path = project / "work" / "voice-acceptance.md"
+    if not path.is_file():
+        return ["voice_delivery_ready requires work/voice-acceptance.md"]
+    text = path.read_text(encoding="utf-8")
+    issues: list[str] = []
+    for label, allowed in VOICE_ACCEPTANCE_REQUIRED.items():
+        values = _acceptance_values(text, label)
+        if len(values) != 1 or values[0] not in allowed:
+            issues.append(f"Voice Acceptance {label} must appear exactly once with one of {sorted(allowed)}")
+    values = _acceptance_values(text, VOICE_ACCEPTED_SHA_LABEL)
+    actual_sha = hashlib.sha256(production_path.read_bytes()).hexdigest()
+    if len(values) != 1 or SHA256_RE.fullmatch(values[0]) is None:
+        issues.append(f"{VOICE_ACCEPTED_SHA_LABEL} must appear exactly once as a SHA-256 digest")
+    elif values[0] != actual_sha:
+        issues.append("Voice Acceptance is stale relative to current voice-production.md bytes")
     return issues
 
 
 def validate(project: Path) -> dict[str, Any]:
+    project = project.resolve()
     state_path = project / "state" / "voice-state.yaml"
     voice_state = load_voice_state(state_path)
     if voice_state.status not in VALIDATABLE_STATUSES:
@@ -271,9 +322,12 @@ def validate(project: Path) -> dict[str, Any]:
     if voice_state.status == "no_voice_required":
         return _result(voice_state, issues, 0, 0, 0, "not_applicable")
 
-    requirements_path = project / voice_state.requirements
-    if not requirements_path.is_file():
-        raise ValueError(f"missing Voice requirements: {voice_state.requirements}")
+    requirements_path = resolve_project_path(
+        project,
+        voice_state.requirements,
+        owner="voice-state.yaml.requirements",
+        must_exist=True,
+    )
     requirements = parse_requirements(requirements_path)
     issues.extend(_requirements_revision_issues(requirements_path, accepted_revision))
     issues.extend(_requirements_owner_issues(render_data, requirements))
@@ -281,9 +335,12 @@ def validate(project: Path) -> dict[str, Any]:
     if voice_state.status in REQUIREMENTS_READY_STATUSES:
         return _result(voice_state, issues, len(requirements), 0, 0, "not_required_yet")
 
-    production_path = project / voice_state.production
-    if not production_path.is_file():
-        raise ValueError(f"missing Voice Production: {voice_state.production}")
+    production_path = resolve_project_path(
+        project,
+        voice_state.production,
+        owner="voice-state.yaml.production",
+        must_exist=True,
+    )
     production = parse_production(production_path)
     issues.extend(_production_binding_issues(requirements_path, production_path, accepted_revision))
     issues.extend(_production_parity_issues(render_data, requirements, production))
@@ -291,8 +348,17 @@ def validate(project: Path) -> dict[str, Any]:
 
     html_state = "not_provided"
     if voice_state.project_html:
-        html_path = project / voice_state.project_html
-        if html_path.is_file():
+        try:
+            html_path = resolve_project_path(
+                project,
+                voice_state.project_html,
+                owner="voice-state.yaml.project_html",
+                must_exist=True,
+            )
+        except ProjectPathError as exc:
+            issues.append(str(exc))
+            html_state = "missing"
+        else:
             html_issues = _html_issues(
                 html_path,
                 render_data,
@@ -303,13 +369,11 @@ def validate(project: Path) -> dict[str, Any]:
             )
             issues.extend(html_issues)
             html_state = "passed" if not html_issues else "failed"
-        elif voice_state.status == "voice_delivery_ready":
-            issues.append("voice_delivery_ready requires current consolidated project HTML")
-            html_state = "missing"
     elif voice_state.status == "voice_delivery_ready":
         issues.append("voice_delivery_ready requires project_html in voice-state.yaml")
         html_state = "missing"
 
+    issues.extend(_voice_acceptance_issues(project, production_path, voice_state))
     return _result(
         voice_state,
         issues,
@@ -345,7 +409,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         result = validate(args.project)
-    except (OSError, StateError, ValueError, json.JSONDecodeError) as exc:
+    except (OSError, ProjectPathError, StateError, ValueError, json.JSONDecodeError) as exc:
         print(f"VOICE VALIDATION FAILED: {exc}", file=sys.stderr)
         return 2
     if result["status"] == "fail":
