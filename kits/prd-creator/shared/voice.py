@@ -18,6 +18,7 @@ REQUIREMENT_SCALAR_FIELDS = {
     "Channel",
     "Trigger",
     "Purpose",
+    "Moment",
     "Timing Constraint",
 }
 
@@ -35,6 +36,7 @@ class VoiceRequirement:
     channel: str
     trigger: str
     purpose: str
+    moment: str
     timing_constraint: str
     must_communicate: tuple[str, ...]
     must_not_add_repeat: tuple[str, ...]
@@ -89,6 +91,7 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
     out: dict[str, VoiceRequirement] = {}
     current_section = ""
     current_owner = ""
+    seen_section_owners: dict[str, str] = {}
     current_id: str | None = None
     current_title = ""
     scalar: dict[str, str] = {}
@@ -99,7 +102,16 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
         nonlocal current_id, current_title, scalar, lists, active_list
         if current_id is None:
             return
-        required_scalar = ("Type", "Function", "Necessity", "Speaker", "Channel", "Trigger", "Purpose")
+        required_scalar = (
+            "Type",
+            "Function",
+            "Necessity",
+            "Speaker",
+            "Channel",
+            "Trigger",
+            "Purpose",
+            "Moment",
+        )
         missing = [key for key in required_scalar if not scalar.get(key)]
         if missing:
             raise ValueError(f"{current_id} missing requirement metadata: {', '.join(missing)}")
@@ -124,6 +136,7 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
             channel=scalar["Channel"],
             trigger=scalar["Trigger"],
             purpose=scalar["Purpose"],
+            moment=scalar["Moment"],
             timing_constraint=scalar.get("Timing Constraint", ""),
             must_communicate=tuple(lists["Must communicate"]),
             must_not_add_repeat=tuple(lists["Must not add/repeat"]),
@@ -147,7 +160,14 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
         if current_id is None and current_section and (owner_match := OWNER_RE.match(line)):
             if current_owner:
                 raise ValueError(f"Duplicate Owner ID in Voice requirements section: {current_section}")
-            current_owner = owner_match.group(1).strip()
+            owner_id = owner_match.group(1).strip()
+            previous_section = seen_section_owners.get(owner_id)
+            if previous_section is not None and previous_section != current_section:
+                raise ValueError(
+                    f"Duplicate Voice requirement Owner ID {owner_id} across sections {previous_section!r} and {current_section!r}"
+                )
+            current_owner = owner_id
+            seen_section_owners[owner_id] = current_section
             continue
         match = ENTRY_RE.match(line)
         if match:
@@ -187,15 +207,6 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
 
     if not out:
         raise ValueError("No Voice IDs found in requirements")
-    owners = [requirement.owner_id for requirement in out.values()]
-    section_owner_pairs = {(requirement.section_title, requirement.owner_id) for requirement in out.values()}
-    titles_to_owners: dict[str, set[str]] = {}
-    for title, owner in section_owner_pairs:
-        titles_to_owners.setdefault(title, set()).add(owner)
-    if any(len(values) != 1 for values in titles_to_owners.values()):
-        raise ValueError("One Voice requirement section title maps to multiple Owner IDs")
-    if len(set(owners)) > len(section_owner_pairs):
-        raise ValueError("Duplicate Voice requirement Owner ID exists across multiple sections")
     return out
 
 
@@ -211,6 +222,7 @@ def parse_production(path: Path) -> VoiceProduction:
     current_section: str | None = None
     in_cast = False
     seen_voice_ids: set[str] = set()
+    seen_owners: set[str] = set()
     i = 0
 
     while i < len(lines):
@@ -254,7 +266,10 @@ def parse_production(path: Path) -> VoiceProduction:
                 raise ValueError(f"Owner ID for Voice section {current_section} must appear before Voice entries")
             if section_owner[current_section]:
                 raise ValueError(f"Duplicate Owner ID in Voice section: {current_section}")
+            if owner_id in seen_owners:
+                raise ValueError(f"Duplicate Voice section Owner ID: {owner_id}")
             section_owner[current_section] = owner_id
+            seen_owners.add(owner_id)
             i += 1
             continue
 
@@ -333,12 +348,9 @@ def parse_production(path: Path) -> VoiceProduction:
     empty = [title for title in section_titles if not section_entries[title]]
     if empty:
         raise ValueError("Voice section has no entries: " + ", ".join(empty))
-    owners = [section_owner[title] for title in section_titles]
-    if any(not owner for owner in owners):
-        missing = [title for title in section_titles if not section_owner[title]]
-        raise ValueError("Voice section requires Owner ID: " + ", ".join(missing))
-    if len(owners) != len(set(owners)):
-        raise ValueError("Duplicate Voice section Owner ID exists")
+    missing_owner = [title for title in section_titles if not section_owner[title]]
+    if missing_owner:
+        raise ValueError("Voice section requires Owner ID: " + ", ".join(missing_owner))
     return VoiceProduction(
         cast=cast,
         sections=tuple(
