@@ -224,7 +224,9 @@ def validate_html_contract(
 
     actual_render_data_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
     bindings = facts.render_data_sha256
-    binding_ok = len(bindings) == 1 and SHA256_RE.fullmatch(bindings[0]) is not None and bindings[0] == actual_render_data_sha
+    binding_ok = (
+        len(bindings) == 1 and SHA256_RE.fullmatch(bindings[0]) is not None and bindings[0] == actual_render_data_sha
+    )
     if not bindings:
         detail = "rendered HTML is missing render-data-sha256 revision binding"
     elif len(bindings) != 1:
