@@ -12,12 +12,13 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 KIT_ROOT = HERE.parent
-if str(HERE) not in sys.path:
-    sys.path.insert(0, str(HERE))
-if str(KIT_ROOT) not in sys.path:
-    sys.path.insert(0, str(KIT_ROOT))
+if __package__ in (None, ""):
+    if str(KIT_ROOT) not in sys.path:
+        sys.path.insert(0, str(KIT_ROOT))
+    from validator import api as prd_api
+else:
+    from . import api as prd_api
 
-import api as prd_api
 from shared.state import StateError, load_mapping, require_scalar
 
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
@@ -64,7 +65,10 @@ def validate_acceptance(path: Path, expected_render_sha: str) -> tuple[bool, str
 
     if failures:
         return False, "; ".join(failures)
-    return True, "acceptance.md authorizes this exact render-data revision with all required readiness gates and no Critical/Major blocker"
+    return (
+        True,
+        "acceptance.md authorizes this exact render-data revision with all required readiness gates and no Critical/Major blocker",
+    )
 
 
 def expected_refs(version: str) -> dict[str, str]:
@@ -105,7 +109,11 @@ def validate(project: Path) -> dict[str, Any]:
         errors.append(f"handoff_state: {exc}")
         return {"status": "fail", "errors": errors, "checks": checks}
 
-    check("handoff_status_ready", status == "handoff_ready", "handoff_ready" if status == "handoff_ready" else f"status is {status!r}, expected 'handoff_ready'")
+    check(
+        "handoff_status_ready",
+        status == "handoff_ready",
+        "handoff_ready" if status == "handoff_ready" else f"status is {status!r}, expected 'handoff_ready'",
+    )
 
     current_prd = prd_api.validate(project)
     current_prd_ok = current_prd.get("status") == "pass"
@@ -113,7 +121,7 @@ def validate(project: Path) -> dict[str, Any]:
     check(
         "current_prd_complete_validation",
         current_prd_ok,
-        "canonical PRD validation passes, including content purity and freshness"
+        "canonical PRD validation passes, including projection schema, content purity, and freshness"
         if current_prd_ok
         else "; ".join(current_prd_errors[:5]) or "canonical PRD validation failed",
     )
@@ -128,9 +136,23 @@ def validate(project: Path) -> dict[str, Any]:
     current_render_sha = hashlib.sha256(data_bytes).hexdigest()
     doc = data.get("document") if isinstance(data, dict) else None
     current_version = str(doc.get("version") or "").strip() if isinstance(doc, dict) else ""
-    check("current_prd_version_present", bool(current_version), f"current document.version is {current_version!r}" if current_version else "render-data.document.version is required for handoff")
-    check("current_prd_version_semantic", bool(SEMVER_RE.fullmatch(current_version)), f"current document.version is {current_version!r}; expected X.Y.Z")
-    check("handoff_revision_matches_current_prd", bool(current_version) and accepted_version == current_version, f"accepted_prd_version={accepted_version!r}, current document.version={current_version!r}")
+    check(
+        "current_prd_version_present",
+        bool(current_version),
+        f"current document.version is {current_version!r}"
+        if current_version
+        else "render-data.document.version is required for handoff",
+    )
+    check(
+        "current_prd_version_semantic",
+        bool(SEMVER_RE.fullmatch(current_version)),
+        f"current document.version is {current_version!r}; expected X.Y.Z",
+    )
+    check(
+        "handoff_revision_matches_current_prd",
+        bool(current_version) and accepted_version == current_version,
+        f"accepted_prd_version={accepted_version!r}, current document.version={current_version!r}",
+    )
 
     refs_ok = True
     ref_details: list[str] = []
@@ -153,7 +175,13 @@ def validate(project: Path) -> dict[str, Any]:
             if not (project / expected).is_file():
                 refs_ok = False
                 ref_details.append(f"missing referenced artifact: {expected}")
-    check("handoff_artifact_references_current", refs_ok, "handoff-state points to canonical PRD inputs plus the current versioned prd/context/index bundle" if refs_ok else "; ".join(ref_details))
+    check(
+        "handoff_artifact_references_current",
+        refs_ok,
+        "handoff-state points to canonical PRD inputs plus the current versioned prd/context/index bundle"
+        if refs_ok
+        else "; ".join(ref_details),
+    )
 
     delivery_ok = bool(refs)
     delivery_details: list[str] = []
@@ -163,7 +191,11 @@ def validate(project: Path) -> dict[str, Any]:
             readme_text = (project / refs["handoff"]).read_text(encoding="utf-8")
             index_data = json.loads((project / refs["index"]).read_text(encoding="utf-8"))
             index_project = index_data.get("project") if isinstance(index_data, dict) else None
-            index_version = str(index_project.get("prd_version") or "").strip() if isinstance(index_project, dict) else ""
+            index_version = (
+                str(index_project.get("prd_version") or "").strip()
+                if isinstance(index_project, dict)
+                else ""
+            )
             if f"PRD Version: v{current_version}" not in context_text:
                 delivery_ok = False
                 delivery_details.append("context.md PRD version does not match current document.version")
@@ -172,11 +204,19 @@ def validate(project: Path) -> dict[str, Any]:
                 delivery_details.append("output/README.md current version does not match document.version")
             if index_version != current_version:
                 delivery_ok = False
-                delivery_details.append(f"index.json project.prd_version={index_version!r}, expected {current_version!r}")
+                delivery_details.append(
+                    f"index.json project.prd_version={index_version!r}, expected {current_version!r}"
+                )
         except (OSError, json.JSONDecodeError) as exc:
             delivery_ok = False
             delivery_details.append(f"delivery metadata unreadable: {exc}")
-    check("delivery_revision_matches_current_prd", delivery_ok, "context.md, index.json, and output/README.md identify the current PRD revision" if delivery_ok else "; ".join(delivery_details) or "delivery metadata could not be verified")
+    check(
+        "delivery_revision_matches_current_prd",
+        delivery_ok,
+        "context.md, index.json, and output/README.md identify the current PRD revision"
+        if delivery_ok
+        else "; ".join(delivery_details) or "delivery metadata could not be verified",
+    )
 
     acceptance_ok, acceptance_detail = validate_acceptance(acceptance_path, current_render_sha)
     check("acceptance_allows_handoff", acceptance_ok, acceptance_detail)
