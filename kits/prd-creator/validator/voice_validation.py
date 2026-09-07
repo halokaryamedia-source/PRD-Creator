@@ -432,9 +432,7 @@ def _html_issues(
         )
 
     entries = {
-        entry.voice_id: (section.owner_id, entry)
-        for section in production.sections
-        for entry in section.entries
+        entry.voice_id: (section.owner_id, entry) for section in production.sections for entry in section.entries
     }
     if source.count('class="pa-row pa-row-voice"') != len(entries):
         issues.append(
