@@ -29,6 +29,8 @@ python kits/prd-creator/validator/validate.py \
 
 Mechanical validation owns deterministic facts: Flow 2 readiness, required artifacts, freshness bindings, page order/IDs/navigation, arithmetic, required design-component markers, content-purity regressions, and current output integrity.
 
+`validator/api.py` is the canonical complete PRD validation entrypoint. Handoff validation must call that same entrypoint rather than a lower-level engine so Flow 4 and Flow 5 cannot disagree about whether the current PRD is mechanically valid.
+
 Mechanical PASS does **not** prove source fidelity, semantic completeness, material conservation, adaptive-cardinality quality, or browser readability.
 
 ## 2. Integrated semantic readiness
@@ -120,7 +122,7 @@ Escalate to broader browser testing only when template/CSS/JS/page composition c
 
 ## 7. Acceptance record
 
-Keep `work/acceptance.md` compact:
+Keep `work/acceptance.md` compact and bind it to the exact reviewed projection bytes:
 
 ```text
 # PRD Acceptance
@@ -132,7 +134,10 @@ Visual sanity: PASS | FAIL | NOT PROVEN
 Findings: <only when findings exist>
 Critical: N
 Major: N
+Accepted Render Data SHA256: <sha256 of the exact reviewed work/render-data.json>
 ```
+
+The accepted hash is required for `handoff_ready`. It prevents a same-version rerender or semantic edit from reusing an older acceptance record. `document.version` remains project/release metadata and is not an edit counter.
 
 Do not persist a score per semantic lens.
 
@@ -145,7 +150,7 @@ python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-Handoff must point to current canonical/projection/acceptance state, `output/README.md`, and the matching versioned `prd.html` / `context.md` / `index.json` bundle. Accepted PRD version must use semantic `X.Y.Z` and agree across the bundle.
+Handoff must point to current canonical/projection/acceptance state, `output/README.md`, and the matching versioned `prd.html` / `context.md` / `index.json` bundle. Accepted PRD version must use semantic `X.Y.Z` and agree across the bundle. The acceptance record must also bind the exact current `work/render-data.json` SHA-256.
 
 `output/README.md` is a resume navigator, not a second project-status database.
 

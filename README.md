@@ -32,24 +32,11 @@ Local    → clean approved integration history; one commit per approved update
 main     → stable repository history; tagged releases are feature-bearing publish points
 ```
 
-All three active branches share the same professional root baseline.
-
 Normal repository changes happen on `develop`.
 
 A coherent approved update is promoted from `develop` to `Local` through a dedicated pull request after the Local promotion gate passes. The promotion must use **squash merge**, so all working commits for that approved update become exactly one new commit on `Local`.
 
-After a successful squash promotion, synchronize `develop` back to the resulting `Local` HEAD before starting the next development cycle. Do not continue development from the pre-squash commit chain.
-
-```text
-Local #1 ───────────────┐
-                        ├─ develop: D1 → D2 → D3
-                        │              │
-                        │              └─ squash promotion
-                        ▼
-Local #2  approved update
-    │
-    └─ reset/sync develop to Local #2
-```
+After a successful squash promotion, synchronize `develop` back to the resulting `Local` HEAD before starting the next development cycle.
 
 An approved stable update is promoted from `Local` to `main` through a dedicated pull request after `Stable release gate` passes. Use a normal merge commit so `main` records the stable boundary while `Local` keeps its clean milestone sequence.
 
@@ -59,7 +46,15 @@ Repository behavior is routed by [AGENTS.md](AGENTS.md). GitHub execution is gov
 
 ## Developer Quick Start
 
-Prerequisite: **Python 3.11**. The current verification environment has no third-party Python runtime dependencies.
+Prerequisite: **Python 3.11**.
+
+Install exact runtime + verification dependencies:
+
+```bash
+python -m pip install --no-deps \
+  -r requirements.lock.txt \
+  -r requirements-dev.lock.txt
+```
 
 Repository contract check:
 
@@ -67,24 +62,30 @@ Repository contract check:
 python tools/verify_repository.py
 ```
 
+Static source quality:
+
+```bash
+ruff check \
+  kits/prd-creator/shared \
+  kits/prd-creator/validator \
+  kits/prd-creator/renderer/render.py \
+  kits/prd-creator/renderer/delivery.py \
+  kits/prd-creator/renderer/production_assets.py \
+  kits/prd-creator/renderer/production_assets_compositor.py
+
+mypy kits/prd-creator/shared
+```
+
 PRD regression suite:
 
 ```bash
-python -m unittest \
-  tests.test_prd_contracts \
-  tests.test_prd_content_purity \
-  tests.test_prd_delivery \
-  tests.test_prd_voice_assets \
-  tests.test_prd_handoff_contracts \
-  tests.test_prd_flow2_state_contracts \
-  tests.test_prd_hierarchy_contracts \
-  tests.test_prd_golden_reference
+python -m unittest discover -s tests -p "test_prd_*.py" -v
 ```
 
-Voice regression suite:
+Full regression suite:
 
 ```bash
-python -m unittest tests.test_voice_contracts
+python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
 Generate the current delivery for a project package:
@@ -101,7 +102,22 @@ python kits/prd-creator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Project packages under `workspace/active/` and `workspace/archive/` are **local/external production data and are not tracked by this public system repository**. Only the workspace guides are committed. See [workspace/README.md](workspace/README.md) and [SECURITY.md](SECURITY.md).
+Project packages under `workspace/active/` and `workspace/archive/` are **local/external production data and are not tracked by this public system repository**. Only workspace guides are committed. See [workspace/README.md](workspace/README.md) and [SECURITY.md](SECURITY.md).
+
+## Source Architecture
+
+```text
+kits/prd-creator/
+├─ shared/              typed shared state/Voice parsers
+├─ renderer/            deterministic projection + delivery
+├─ validator/           canonical PRD/handoff/Voice gates
+├─ document/            semantic/design/acceptance contracts
+├─ production-assets/   non-Voice 04 resource contract
+├─ voice/               Flow 5–7 Voice contracts
+└─ template/            approved Golden/runtime bytes
+```
+
+Machine-owned YAML is parsed as real YAML. Production Assets/Voice placement uses stable IDs rather than display-title joins. PRD handoff acceptance binds exact render-data bytes.
 
 ## Repository Map
 

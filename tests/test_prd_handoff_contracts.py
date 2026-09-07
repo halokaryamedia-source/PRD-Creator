@@ -46,7 +46,7 @@ class PrdHandoffContracts(unittest.TestCase):
             "status: ready_for_prd\nready_for_prd: true\npreview_approved: true\n", encoding="utf-8"
         )
         (project / "state" / "source-inventory.yaml").write_text(
-            "sources:\n  - id: SRC-001\n    inspection: full\n", encoding="utf-8"
+            "sources:\n  - id: SRC-001\n    inspection: full\n    note: \"source #1 remains current\"\n", encoding="utf-8"
         )
         (project / "state" / "requirement-register.yaml").write_text(
             "requirements:\n  - id: REQ-001\n    approval_status: approved\n", encoding="utf-8"
@@ -59,15 +59,10 @@ class PrdHandoffContracts(unittest.TestCase):
         data = canonical_render_data()
         data["document"]["version"] = current_version
         data["canonical_content_sha256"] = hashlib.sha256(content_path.read_bytes()).hexdigest()
-        (project / "work" / "render-data.json").write_text(
-            json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        rendered = run_cli(
-            RENDERER,
-            project / "work" / "render-data.json",
-            version_dir / "prd.html",
-        )
+        data_path = project / "work" / "render-data.json"
+        data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        render_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
+        rendered = run_cli(RENDERER, data_path, version_dir / "prd.html")
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
 
         (version_dir / "context.md").write_text(
@@ -88,7 +83,8 @@ class PrdHandoffContracts(unittest.TestCase):
             "Material Conservation: PASS\n"
             "Visual sanity: NOT PROVEN\n"
             "Critical: 0\n"
-            "Major: 0\n",
+            "Major: 0\n"
+            f"Accepted Render Data SHA256: {render_sha}\n",
             encoding="utf-8",
         )
         (project / "state" / "handoff-state.yaml").write_text(
@@ -114,15 +110,43 @@ class PrdHandoffContracts(unittest.TestCase):
     def test_same_version_stale_prd_bytes_cannot_authorize_flow5(self) -> None:
         project = self.make_project()
         (project / "work" / "content.md").write_text(
-            "# Contract PRD\n\nChanged after acceptance without regeneration.\n",
-            encoding="utf-8",
+            "# Contract PRD\n\nChanged after acceptance without regeneration.\n", encoding="utf-8"
         )
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn(
-            "current_prd_mechanical_freshness",
-            "\n".join(json.loads(validated.stdout)["errors"]),
+        self.assertIn("current_prd_complete_validation", "\n".join(json.loads(validated.stdout)["errors"]))
+
+    def test_same_version_regenerated_bytes_require_new_acceptance_binding(self) -> None:
+        project = self.make_project()
+        data_path = project / "work/render-data.json"
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+        data["overview"]["project_context"] = "Changed meaning under the same semantic version."
+        data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        rendered = run_cli(RENDERER, data_path, project / "output/v1.0.0/prd.html")
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("Accepted Render Data SHA256", validated.stdout)
+
+    def test_content_purity_failure_cannot_authorize_handoff(self) -> None:
+        project = self.make_project()
+        data_path = project / "work/render-data.json"
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+        data["overview"]["project_context"] = "Follow the Golden HTML Reference exactly."
+        data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        acceptance = project / "work/acceptance.md"
+        text = acceptance.read_text(encoding="utf-8")
+        new_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
+        text = text.replace(
+            next(line for line in text.splitlines() if line.startswith("Accepted Render Data SHA256:")),
+            f"Accepted Render Data SHA256: {new_sha}",
         )
+        acceptance.write_text(text, encoding="utf-8")
+        rendered = run_cli(RENDERER, data_path, project / "output/v1.0.0/prd.html")
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        validated = run_cli(HANDOFF_VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("content_purity", validated.stdout)
 
     def test_pending_review_cannot_authorize_flow5(self) -> None:
         project = self.make_project(status="pending_review")
@@ -146,23 +170,16 @@ class PrdHandoffContracts(unittest.TestCase):
     def test_stale_delivery_metadata_cannot_authorize_handoff(self) -> None:
         project = self.make_project()
         index_path = project / "output" / "v1.0.0" / "index.json"
-        index_path.write_text(
-            json.dumps({"project": {"prd_version": "0.9.0"}}, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        index_path.write_text(json.dumps({"project": {"prd_version": "0.9.0"}}, indent=2) + "\n", encoding="utf-8")
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn(
-            "delivery_revision_matches_current_prd",
-            "\n".join(json.loads(validated.stdout)["errors"]),
-        )
+        self.assertIn("delivery_revision_matches_current_prd", "\n".join(json.loads(validated.stdout)["errors"]))
 
     def test_nonsemantic_version_cannot_authorize_handoff(self) -> None:
         project = self.make_project(current_version="Final Review")
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        errors = "\n".join(json.loads(validated.stdout)["errors"])
-        self.assertIn("current_prd_version_semantic", errors)
+        self.assertIn("current_prd_version_semantic", "\n".join(json.loads(validated.stdout)["errors"]))
 
     def test_required_acceptance_gates_block_handoff_when_failed(self) -> None:
         variants = {
@@ -179,10 +196,7 @@ class PrdHandoffContracts(unittest.TestCase):
                 project = self.make_project()
                 path = project / "work" / "acceptance.md"
                 lines = path.read_text(encoding="utf-8").splitlines()
-                path.write_text(
-                    "\n".join(f"{label}: {value}" if line.startswith(f"{label}:") else line for line in lines) + "\n",
-                    encoding="utf-8",
-                )
+                path.write_text("\n".join(f"{label}: {value}" if line.startswith(f"{label}:") else line for line in lines) + "\n", encoding="utf-8")
                 validated = run_cli(HANDOFF_VALIDATOR, project)
                 self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
                 self.assertIn("acceptance_allows_handoff", "\n".join(json.loads(validated.stdout)["errors"]))
@@ -190,14 +204,7 @@ class PrdHandoffContracts(unittest.TestCase):
     def test_missing_semantic_readiness_cannot_authorize_flow5(self) -> None:
         project = self.make_project()
         path = project / "work" / "acceptance.md"
-        path.write_text(
-            "\n".join(
-                line
-                for line in path.read_text(encoding="utf-8").splitlines()
-                if not line.startswith("Semantic Readiness:")
-            ) + "\n",
-            encoding="utf-8",
-        )
+        path.write_text("\n".join(line for line in path.read_text(encoding="utf-8").splitlines() if not line.startswith("Semantic Readiness:")) + "\n", encoding="utf-8")
         validated = run_cli(HANDOFF_VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("Semantic Readiness must appear exactly once", validated.stdout)

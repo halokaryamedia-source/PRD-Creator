@@ -1,10 +1,10 @@
 # Production Assets Contract
 
-This owner defines the non-Voice `04 Production Assets` contract inside the unified PRD Creator package. It does not create another Flow, Skill, PRD family, or asset-management framework. Voice keeps its Flow 5–7 semantic owners and canonical production source.
+This owner defines non-Voice `04 Production Assets` inside the unified PRD Creator package. It does not create another Flow, Skill, PRD family, or asset-management framework. Voice keeps its Flow 5–7 semantic owners and canonical production source.
 
-## Purpose
+## Purpose and authority
 
-PRD-Creator must be able to start from project discussion + original source, understand the complete project, and produce both:
+Production Assets come from the **same approved project model** as PRD core 01–03:
 
 ```text
 approved project model
@@ -12,9 +12,7 @@ approved project model
 └─ 04 Production Assets
 ```
 
-Production Assets are therefore planned from the **same approved project model** as 01–03. Do not discover 04 by rereading the finished HTML and brainstorming extra assets afterward.
-
-The artifact may be materialized after approval, but the production need must already be recoverable from the original source, current user direction, approved proposals, and the complete project model.
+Do not discover 04 by rereading finished HTML and brainstorming additions. Keep a resource only when it is explicit in authority, a necessary production implication of approved gameplay, or an approved material choice. Do not create decorative props, VFX, sounds, or presentation beats merely because they may look good.
 
 The final human-facing result remains one project document:
 
@@ -26,33 +24,13 @@ output/v<document.version>/prd.html
    04 Production Assets
 ```
 
-The approved 01–03 Golden structure, style, content contract, and renderer behavior are protected. Work on 04 must not redesign or rewrite them.
+Work on 04 must not redesign or rewrite approved 01–03 meaning or Golden composition.
 
-## Production coverage during project understanding
+## Resource boundary
 
-While Flow 2 recovers Gameplay, Level Design, and Developer meaning, also recover the concrete resources that production will actually need.
+A Production Asset is a concrete resource somebody must prepare.
 
-For each Introduction / Objective / Ending, ask:
-
-> What must the team actually create or prepare so this approved gameplay can exist as described?
-
-Use the original project evidence and approved model, not speculative decoration.
-
-Keep a resource only when at least one of these is true:
-
-1. **Explicit requirement** — the source or approved discussion names it.
-2. **Necessary production implication** — the approved gameplay clearly cannot be produced without it.
-3. **Approved material choice** — a form/content/behavior choice that changes gameplay, story, player communication, or another project fact was resolved through the existing Completion/Proposal process.
-
-Do not create an approval step for obvious production implications. Do not invent decorative props, extra VFX, sounds, or presentation beats simply because they might look good.
-
-The Simple Chat Preview does not need to list every resource. It only needs to expose material AI-chosen decisions that require approval. Production implications can remain in the underlying approved model.
-
-## What counts as a Production Asset
-
-A Production Asset is a concrete resource someone must prepare.
-
-Visible resource types are intentionally small:
+Visible types are intentionally small:
 
 ```text
 MODEL
@@ -64,29 +42,43 @@ PARTICLE
 
 Use them literally:
 
-- **MODEL** — custom character, machine, trap, puzzle object, door, prop, or other model that must be built.
-- **ITEM** — custom held/projectile/inventory item that must be prepared as an item asset.
-- **UI / TEXT** — player-facing HUD, prompt, instruction, warning, objective/result text, hologram text, or other exact readable copy.
-- **AUDIO** — dialogue or a real standalone non-dialogue audio cue.
-- **PARTICLE** — only a genuinely standalone reusable particle/effect resource.
+- **MODEL** — custom character, machine, trap, puzzle object, door, prop, or other model to build;
+- **ITEM** — custom held/projectile/inventory item;
+- **UI / TEXT** — player-facing HUD, prompt, instruction, warning, objective/result text, hologram text, or other exact readable copy;
+- **AUDIO** — dialogue or a real standalone non-dialogue cue;
+- **PARTICLE** — a genuinely standalone reusable effect resource.
 
-Do **not** turn these into Production Assets:
+Do not turn gameplay logic, reset/recovery behavior, thresholds, route switching, checkpoint state, pure sequencing, generic `SEQUENCE` wrappers, or implementation-only camera/fade/transition behavior into assets. Animation/sound/particle that materially belongs to a MODEL or ITEM stays in that resource brief rather than becoming a separate taxonomy item.
 
-- gameplay logic;
-- reset/recovery behavior;
-- percentage/threshold logic;
-- route switching or power recalculation;
-- checkpoint state;
-- pure event sequencing;
-- a generic `SEQUENCE` wrapper;
-- camera/fade/transition behavior that is only part of implementation;
-- animation/sound/particle that belongs to an existing MODEL or ITEM.
+## Stable machine identity
 
-Animation or visible state changes may be mentioned inside a model's Visual Brief when they are required to build that asset. They are not separate taxonomy fields.
+Human-readable titles are presentation, not identity.
+
+Every source section in `work/asset-requirements.md` must define one stable `Owner ID` immediately below the `##` heading:
+
+```text
+Owner ID: shared
+Owner ID: journey:<gameplay_flow.id>
+Owner ID: package:<package.id>
+```
+
+Every non-Voice asset entry must define one globally unique stable `ID`:
+
+```text
+ID: AST-CORE-CONSOLE
+```
+
+Rules:
+
+- Owner IDs map directly to accepted PRD stable IDs; do not infer ownership by matching display titles.
+- Asset IDs remain stable when a resource title is polished or localized.
+- Duplicate Owner IDs and duplicate Asset IDs are invalid.
+- A missing/unknown Owner ID is invalid; the compositor does not guess.
+- New project files do not use title-based compatibility fallback.
 
 ## Reader-first organization
 
-04 follows the project journey and is grouped by **gameplay moment**, not by asset-category dashboard.
+04 follows the project journey and is grouped by natural gameplay moment, not by asset-category dashboard.
 
 ```text
 04 Production Assets
@@ -98,7 +90,7 @@ Animation or visible state changes may be mentioned inside a model's Visual Brie
    Ending
 ```
 
-A page body uses:
+Within a page:
 
 ```text
 Objective N · <Objective Name>
@@ -111,124 +103,57 @@ Objective N · <Objective Name>
     <resource>
 ```
 
-Moment names must read like real project moments, for example:
-
-```text
-Throughout the Warden Halls
-Entering the Warden Halls
-Searching the Chamber
-Gremlin Changes the Route
-Vault Restored
-```
-
-Avoid template wording such as `Objective Start`, `Throughout Objective`, `Objective Complete`, `First Rollback`, or other internal mechanic labels when a normal reader-friendly name is available.
-
-Moment numbering is generated from the order that actually appears: `01`, `02`, `03`, ... . Do not reuse unrelated Gameplay Flow numbering when it creates gaps or duplicates.
+Use project-facing moment names such as `Entering the Warden Halls`, `Searching the Chamber`, or `Vault Restored`; avoid template labels such as `Objective Start` or `Objective Complete` when natural wording exists. Moment numbering is derived from actual presentation order.
 
 ## Resource writing contract
 
 ### MODEL / ITEM / PARTICLE
 
-Show only information that helps someone create the resource:
+Show only production-useful information:
 
 ```text
 TYPE
 Resource Name
 
 Function
-<what it is used for>
+<what it does>
 
 Visual Brief
 <what must be made>
 
 Size
-<only when a real approved numeric/Block size exists>
+<optional approved numeric/block size only>
 ```
 
-Rules:
+Function is one short direct sentence. Visual Brief is one or two literal sentences. Size is optional and must be an approved value; never invent dimensions or use `TBD`, `Large`, or similar placeholders.
 
-- **Function**: one short direct sentence. Explain what the resource does in the project.
-- **Visual Brief**: one or two short literal sentences. Describe the form that must be made. Include required animation or visible change only when it materially belongs to the asset.
-- **Size**: optional. Use only a real approved size/footprint, preferably in Minecraft blocks when relevant. Omit it when unknown.
-
-Never write placeholder or vague size values such as `Large`, `Small`, `TBD`, `[approved size]`, or invented dimensions.
-
-Do not add generic metadata such as:
-
-```text
-States
-Position
-Orientation
-Reuse
-Placement
-Variants
-Build Specs
-Used At
-Create
-Includes
-```
-
-If a sentence can be removed without changing what the artist/modeler must make, remove it.
-
-Example:
-
-```text
-MODEL
-Swinging Axe Trap
-
-Function
-Ceiling trap that swings across the corridor.
-
-Visual Brief
-Large double-sided axe hanging from the ceiling with a left-right swing animation.
-```
-
-Example:
-
-```text
-ITEM
-Echo Pebble
-
-Function
-Thrown at wall sensors and selected hanging stones.
-
-Visual Brief
-Small ordinary stone used as the throwable item.
-```
-
-Do not add visual adjectives or lore that the project did not approve. `ordinary stone` must not become `magical stone`, `arcane stone`, or another invented interpretation.
+Do not add generic metadata such as `States`, `Position`, `Orientation`, `Reuse`, `Placement`, `Variants`, `Build Specs`, `Used At`, `Create`, or `Includes` when it does not change the production task.
 
 ### UI / TEXT
-
-Use:
 
 ```text
 UI / TEXT
 Resource Name
 
 Function
-<why the player needs this information>
+<why the player needs it>
 
 Player Text
 <exact copy>
 ```
 
-Player Text is real player-facing copy. Keep internal implementation language out of it unless the project explicitly uses that language in-game.
-
-Avoid leaking terms such as checkpoint state, local reset, validated progress, authored threshold, rotator count, run state, or internal mechanic names into player-facing text.
+Player Text is real player-facing copy. Keep implementation language out unless the project explicitly uses it in-game.
 
 ### AUDIO — dialogue
 
-Voice scope and canonical wording remain owned by the Voice Production domain. The 04 compositor only presents canonical Voice data.
-
-Visible dialogue form:
+Voice wording remains owned by Voice Production. 04 presents canonical Voice data:
 
 ```text
 AUDIO
 <Character> — <Line Title>
 
 Function
-<what this line does for the player/story>
+<what this line does>
 
 Voice Preset
 <selected ElevenLabs voice>
@@ -243,11 +168,9 @@ Prompt
 <exact canonical performance payload>
 ```
 
-Do not render a separate `Speaker` field when the character is already identified in the title. Performance-direction tags such as `[serious]` or `[mischievous]` must be visually distinguishable from spoken dialogue, while Copy Prompt still copies the exact canonical payload.
+Do not render a redundant Speaker field when the character is already in the title. Copy Prompt must preserve the exact canonical payload.
 
 ### AUDIO — non-dialogue
-
-Use:
 
 ```text
 AUDIO
@@ -260,41 +183,17 @@ Audio Brief
 <short description of the sound to make>
 ```
 
-When there is no speech and ambiguity is possible, say it directly: `No spoken dialogue.`
-
-Do not create a non-dialogue audio asset for every object action. Sound that only belongs to a MODEL/ITEM interaction stays in that asset's brief when it is materially required.
+Do not create a standalone audio asset for every object action; sound that belongs to an existing MODEL/ITEM stays in that asset brief when materially required.
 
 ## Humanize / anti-AI-SLOP gate
 
-04 is a production brief, not design prose.
+04 is a production brief, not design prose. For each sentence ask:
 
-Write as if a lead is handing a task to an artist, modeler, audio producer, or developer who has not memorized the project.
+1. Does it help someone make the resource?
+2. Is it supported by project authority?
+3. Can a new reader act on it without decoding internal terminology?
 
-Use three checks:
-
-1. **Does this sentence help someone make the resource?** If not, delete it.
-2. **Is this detail supported by project authority?** If not, do not invent it.
-3. **Can a new reader tell what to make without decoding internal terminology?** If not, make the wording clearer, not longer.
-
-Avoid filler such as:
-
-- `clearly readable visual language`;
-- `visually recognizable while fitting naturally`;
-- `enhances the player experience`;
-- `supports strong visual feedback`;
-- decorative adjectives that do not change the production task.
-
-Prefer direct wording:
-
-```text
-Wall-mounted mechanical laser emitter with a visible beam.
-```
-
-over:
-
-```text
-A visually readable sensor treatment that clearly communicates the active hazard state to the player.
-```
+Delete filler and unsupported decorative adjectives. Prefer literal production language.
 
 ## Canonical project file
 
@@ -304,7 +203,7 @@ When non-Voice Production Assets exist, store the actionable source in:
 work/asset-requirements.md
 ```
 
-The current parser keeps four internal storage headings for compatibility:
+Internal category headings remain:
 
 ```text
 3D Models
@@ -313,24 +212,25 @@ Audio
 Visual Effects & Presentation
 ```
 
-These are **source grouping only**. They are not the visible 04 navigation or visible resource taxonomy.
+They are source grouping only; they are not the visible 04 navigation or visible resource taxonomy.
 
-New authoring should use only the minimum fields needed by the current compositor:
+New authoring uses the minimum current fields:
 
 ````markdown
 # Production Asset Requirements
 
-## <Global / Shared Assets | accepted gameplay/journey section title>
+## <reader-facing accepted section title>
+Owner ID: <shared | journey:<flow-id> | package:<package-id>>
 
 ### Gameplay Flow 01 — <accepted flow title>
-### Gameplay Flow 02 — <accepted flow title>
 
 ### 3D Models
 
 #### <Resource Name>
+ID: AST-<STABLE-ID>
 Flow: 01 — <accepted flow title>
 Moment: <natural reader-facing moment>
-Type: <MODEL | ITEM>
+Type: MODEL
 Function: <short direct function>
 Visual Brief: <short literal production brief>
 Size: <optional approved size only>
@@ -338,6 +238,7 @@ Size: <optional approved size only>
 ### UI & Information
 
 #### <Resource Name>
+ID: AST-<STABLE-ID>
 Flow: 01 — <accepted flow title>
 Moment: <natural reader-facing moment>
 Type: UI / TEXT
@@ -346,29 +247,9 @@ Content:
 ```text
 <exact player-facing copy>
 ```
-
-### Audio
-
-#### <Resource Name>
-Flow: 02 — <accepted flow title>
-Moment: <natural reader-facing moment>
-Type: AUDIO
-Function: <short direct function>
-Audio Brief: <short non-dialogue sound brief>
-
-### Visual Effects & Presentation
-
-#### <Resource Name>
-Flow: 02 — <accepted flow title>
-Moment: <natural reader-facing moment>
-Type: PARTICLE
-Function: <short direct function>
-Visual Brief: <short literal particle brief>
 ````
 
-Do not generate legacy metadata (`Create`, `Used`, `Includes`, `Group`, `For`, `Requirement`, `Usage`) for new projects unless a concrete compatibility need requires it. Existing project files may retain those fields; the compositor remains backward-compatible.
-
-Every non-shared section must map to an accepted journey/gameplay section. Material choices that change project meaning return to the existing approval model; the asset source or renderer must not invent them.
+Do not generate retired metadata (`Create`, `Used`, `Includes`, `Group`, `For`, `Requirement`, `Usage`) for new projects. The current compositor no longer uses those fields to invent presentation meaning.
 
 ## HTML presentation
 
@@ -380,17 +261,7 @@ The sidebar stays simple:
       <Introduction | Objective N | Ending | accepted label>
 ```
 
-Do not nest moments, types, or individual resources in the sidebar.
-
-The body starts with the reader-facing section identity, for example:
-
-```text
-Objective 3 · Warden Halls
-```
-
-Do not repeat a second `Production Assets` heading inside the body when the page chrome already identifies Section 04.
-
-Inside the page:
+Do not nest moments, types, or resources in the sidebar. Inside a page use:
 
 ```text
 moment
@@ -399,19 +270,14 @@ moment
 → resource-specific fields
 ```
 
-The type label must be visually easy to scan and appear above/before the resource name. 04 uses the same project document typography/layout language but must not modify Golden PRD-core bytes or 01–03 composition.
+The type label must be easy to scan. 04 uses the same project-document language but must not modify Golden PRD-core bytes or 01–03 composition.
 
 ## Scope and stop rules
 
-- no new Production Asset Flow;
-- no new root Skill or separate Production Asset Kit;
-- no generic asset schema/registry/manifest;
-- no asset-category dashboard;
-- no generic `States / Position / Orientation / Reuse` metadata;
-- no component checklist for Model / Texture / Animation / Particle / SFX;
-- no gameplay behavior or `SEQUENCE` disguised as an asset;
+- no new Production Asset Flow, root Skill, separate kit, generic asset registry, or second default HTML;
+- no asset-category dashboard or generic metadata inventory;
+- no behavior/`SEQUENCE` disguised as an asset;
 - no duplicated Voice canonical data inside `asset-requirements.md`;
-- no second default HTML;
-- no decorative/filler asset invented to make 04 look complete;
-- no change to the approved 01–03 style, structure, Golden contract, or PRD-core renderer as part of ordinary 04 authoring;
-- stop when every real required production resource is clear enough to hand off and the consolidated document is readable.
+- no filler asset invented to make 04 look complete;
+- no change to approved 01–03 style/meaning during ordinary 04 authoring;
+- stop when every real required resource is explicit, stable-identified, source-supported, and clear enough to hand off.

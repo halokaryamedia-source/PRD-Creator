@@ -1,30 +1,29 @@
 #!/usr/bin/env python3
-"""Mechanical Flow 4 validation for a repository-backed PRD project."""
+"""Mechanical validation engine for a repository-backed PRD project."""
 from __future__ import annotations
 
-import argparse
 import hashlib
 import html as html_lib
 import json
 import re
+import sys
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
+HERE = Path(__file__).resolve().parent
+KIT_ROOT = HERE.parent
+if str(KIT_ROOT) not in sys.path:
+    sys.path.insert(0, str(KIT_ROOT))
+
+from shared.state import StateError, list_of_mappings, load_mapping, require_bool, require_scalar
+
 OPEN_RE = re.compile(r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]", re.I)
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 WEIGHT_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*%?\s*$")
-INTAKE_STATUS_RE = re.compile(r"(?m)^\s*status:\s*([A-Za-z0-9_-]+)\s*(?:#.*)?$")
-INTAKE_READY_RE = re.compile(r"(?mi)^\s*ready_for_prd:\s*(true|false)\s*(?:#.*)?$")
-PREVIEW_APPROVED_RE = re.compile(r"(?mi)^\s*preview_approved:\s*(true|false)\s*(?:#.*)?$")
-FLOW2_REQUIRED_STATE = {"source-inventory.yaml": "SRC", "requirement-register.yaml": "REQ"}
-FLOW2_EXPLICIT_BLOCKERS = {
-    "requirement-register.yaml": {"approval_status": {"pending"}, "recovery_class": {"blocked"}},
-    "source-inventory.yaml": {"inspection": {"blocked"}},
-}
-
+FLOW2_REQUIRED_STATE = {"source-inventory.yaml": ("sources", "SRC"), "requirement-register.yaml": ("requirements", "REQ")}
 
 GOLDEN_GLOBAL_PAGE_IDS = {
     "development-overview": "development-overview",
@@ -106,88 +105,51 @@ def scoring_weight(value: Any) -> float | None:
 
 
 def flow2_readiness(path: Path) -> tuple[bool, str]:
-    if not path.is_file():
-        return False, f"missing Flow 2 intake state: {path}"
-    text = path.read_text(encoding="utf-8")
-    statuses = INTAKE_STATUS_RE.findall(text)
-    readiness = INTAKE_READY_RE.findall(text)
-    if len(statuses) != 1 or len(readiness) != 1:
-        return False, "intake-state.yaml must define exactly one status and one ready_for_prd boolean"
-    status = statuses[0]
-    ready = readiness[0].lower() == "true"
+    try:
+        state = load_mapping(path, owner="intake-state.yaml")
+        status = require_scalar(state, "status", owner="intake-state.yaml")
+        ready = require_bool(state, "ready_for_prd", owner="intake-state.yaml")
+        preview = require_bool(state, "preview_approved", owner="intake-state.yaml")
+    except StateError as exc:
+        return False, str(exc)
     if status != "ready_for_prd" or not ready:
         return False, f"Flow 2 is not ready: status={status!r}, ready_for_prd={ready}"
-    detail = "Flow 2 intake state explicitly reports ready_for_prd"
-
-    preview_flags = PREVIEW_APPROVED_RE.findall(text)
-    if len(preview_flags) != 1:
-        return False, "intake-state.yaml must define exactly one preview_approved boolean before ready_for_prd"
-    if preview_flags[0].lower() != "true":
+    if not preview:
         return False, "Flow 2 Simple Chat Preview is not approved: preview_approved=false"
-    return True, detail + "; Simple Chat Preview is approved"
-
-
-def _clean_state_scalar(value: str) -> str:
-    value = value.strip()
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
-        value = value[1:-1].strip()
-    return value
-
-
-def _flow2_state_entries(path: Path, prefix: str) -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    current: dict[str, Any] | None = None
-    for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        line = raw.split("#", 1)[0].strip()
-        if not line:
-            continue
-        candidate = line[1:].lstrip() if line.startswith("-") else line
-        if ":" not in candidate:
-            continue
-        key, raw_value = candidate.split(":", 1)
-        key = key.strip()
-        value = _clean_state_scalar(raw_value)
-        if key == "id" and re.fullmatch(rf"{re.escape(prefix)}-\d+", value):
-            current = {"id": value, "line": lineno, "fields": {}}
-            entries.append(current)
-            continue
-        if current is not None:
-            current["fields"][key] = (value, lineno)
-    return entries
+    return True, "Flow 2 intake state explicitly reports ready_for_prd; Simple Chat Preview is approved"
 
 
 def flow2_persisted_state_consistency(project: Path) -> tuple[bool, str]:
     findings: list[str] = []
-    parsed: dict[str, list[dict[str, Any]]] = {}
-    for filename, prefix in FLOW2_REQUIRED_STATE.items():
+    for filename, (collection_key, prefix) in FLOW2_REQUIRED_STATE.items():
         path = project / "state" / filename
-        if not path.is_file():
-            findings.append(f"missing required Flow 2 persisted state: state/{filename}")
-            parsed[filename] = []
+        try:
+            root = load_mapping(path, owner=filename)
+            entries = list_of_mappings(root, collection_key, owner=filename)
+        except StateError as exc:
+            findings.append(str(exc))
             continue
-        entries = _flow2_state_entries(path, prefix)
-        parsed[filename] = entries
         if not entries:
-            findings.append(f"{filename} must contain at least one {prefix}-### entry before ready_for_prd")
-
-    for filename, rules in FLOW2_EXPLICIT_BLOCKERS.items():
-        for entry in parsed.get(filename, []):
-            fields: dict[str, tuple[str, int]] = entry["fields"]
+            findings.append(f"{filename}.{collection_key} must contain at least one {prefix}-### entry before ready_for_prd")
+            continue
+        for index, entry in enumerate(entries):
+            item_id = str(entry.get("id") or "")
+            if not re.fullmatch(rf"{re.escape(prefix)}-\d+", item_id):
+                findings.append(f"{filename}.{collection_key}[{index}].id={item_id!r} is not a valid {prefix}-### id")
+                continue
             if filename == "source-inventory.yaml":
-                source_status = fields.get("status", ("current", entry["line"]))[0].casefold()
-                if source_status == "superseded":
+                if str(entry.get("status") or "current").casefold() == "superseded":
                     continue
-            for key, blocked_values in rules.items():
-                field = fields.get(key)
-                if field is None:
-                    continue
-                value, lineno = field
-                if value.casefold() in blocked_values:
-                    findings.append(f"{filename}:{lineno} {entry['id']} {key}={value!r}")
-
+                if str(entry.get("inspection") or "").casefold() == "blocked":
+                    findings.append(f"{filename} {item_id} inspection='blocked'")
+            else:
+                if str(entry.get("approval_status") or "").casefold() == "pending":
+                    findings.append(f"{filename} {item_id} approval_status='pending'")
+                if str(entry.get("recovery_class") or "").casefold() == "blocked":
+                    findings.append(f"{filename} {item_id} recovery_class='blocked'")
     if findings:
         return False, "Flow 2 persisted-state contradiction(s): " + "; ".join(findings)
-    return True, "required Flow 2 state is present and no unambiguous current blocker contradicts ready_for_prd"
+    return True, "required Flow 2 state is valid YAML, structurally present, and free of current blockers"
 
 
 def _has_text(value: Any) -> bool:
@@ -216,10 +178,7 @@ def _has_narrative_beat(item: dict[str, Any]) -> bool:
         for beat in explicit:
             if isinstance(beat, dict) and (_has_text(beat.get("description")) or _has_text(beat.get("details"))):
                 return True
-    return any(
-        _has_text(item.get(key))
-        for key in ("player_experience", "main_obstacle_or_change", "player_result", "narrative_context")
-    )
+    return any(_has_text(item.get(key)) for key in ("player_experience", "main_obstacle_or_change", "player_result", "narrative_context"))
 
 
 def required_content_errors(data: dict[str, Any]) -> list[str]:
@@ -232,7 +191,6 @@ def required_content_errors(data: dict[str, Any]) -> list[str]:
             failures.append(f"flow-{flow_id}: title is required")
         if not _has_narrative_beat(item):
             failures.append(f"flow-{flow_id}: at least one narrative beat/context is required")
-
     for item in data.get("global_development", []):
         if not isinstance(item, dict) or not isinstance(item.get("id"), str):
             continue
@@ -241,7 +199,6 @@ def required_content_errors(data: dict[str, Any]) -> list[str]:
             failures.append(f"global-{global_id}: overview is required")
         if not _has_requirement_rows(item.get("requirements")):
             failures.append(f"global-{global_id}: at least one Development Requirement row is required")
-
     for pkg in data.get("packages", []):
         if not isinstance(pkg, dict) or not isinstance(pkg.get("id"), str):
             continue
@@ -269,6 +226,7 @@ def required_content_errors(data: dict[str, Any]) -> list[str]:
 def _global_page_id(item: dict[str, Any]) -> str:
     return GOLDEN_GLOBAL_PAGE_IDS.get(item.get("id"), f'global-{item.get("id", "section")}')
 
+
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
     ids = ["summary"]
     for index, item in enumerate(data.get("gameplay_flow", [])):
@@ -276,15 +234,11 @@ def expected_page_ids(data: dict[str, Any]) -> list[str]:
     ids += [_global_page_id(item) for item in data.get("global_development", [])]
     for pkg in data.get("packages", []):
         package_id = pkg["id"]
-        ids += [
-            f"dev-{package_id}-requirement",
-            f"dev-{package_id}-level",
-            f"dev-{package_id}-developer",
-        ]
+        ids += [f"dev-{package_id}-requirement", f"dev-{package_id}-level", f"dev-{package_id}-developer"]
     return ids
 
 
-def document_composition_errors(data: dict[str, Any], facts: Any) -> list[str]:
+def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[str]:
     failures: list[str] = []
     packages = {pkg["id"]: pkg for pkg in data.get("packages", [])}
 
@@ -301,66 +255,13 @@ def document_composition_errors(data: dict[str, Any], facts: Any) -> list[str]:
         if source_terms:
             required.add("quarry-definition-list")
         require(section_id, required)
-
     for item in data.get("global_development", []):
-        require(
-            _global_page_id(item),
-            {
-                "professional-only",
-                "quarry-package-page",
-                "phase-package-page",
-                "global-development-page",
-                "package-tabs",
-                "section-context",
-                "quarry-development-flow",
-                "quarry-dev-table",
-                "quarry-note-grid",
-            },
-        )
-
+        require(_global_page_id(item), {"professional-only", "quarry-package-page", "phase-package-page", "global-development-page", "package-tabs", "section-context", "quarry-development-flow", "quarry-dev-table", "quarry-note-grid"})
     for pkg in data.get("packages", []):
         package_id = pkg["id"]
-        require(
-            f"dev-{package_id}-requirement",
-            {
-                "professional-only",
-                "quarry-package-page",
-                "phase-package-page",
-                "role-gameplay-overview",
-                "package-tabs",
-                "phase-context-grid",
-                "quarry-overview-table",
-                "quarry-sequence",
-            },
-        )
-        require(
-            f"dev-{package_id}-level",
-            {
-                "professional-only",
-                "quarry-package-page",
-                "phase-package-page",
-                "package-tabs",
-                "section-context",
-                "quarry-design-flow",
-                "quarry-build-table",
-                "quarry-note-grid",
-            },
-        )
-        require(
-            f"dev-{package_id}-developer",
-            {
-                "professional-only",
-                "quarry-package-page",
-                "phase-package-page",
-                "package-tabs",
-                "section-context",
-                "quarry-development-flow",
-                "quarry-development-table",
-                "quarry-score-summary",
-                "quarry-note-grid",
-            },
-        )
-
+        require(f"dev-{package_id}-requirement", {"professional-only", "quarry-package-page", "phase-package-page", "role-gameplay-overview", "package-tabs", "phase-context-grid", "quarry-overview-table", "quarry-sequence"})
+        require(f"dev-{package_id}-level", {"professional-only", "quarry-package-page", "phase-package-page", "package-tabs", "section-context", "quarry-design-flow", "quarry-build-table", "quarry-note-grid"})
+        require(f"dev-{package_id}-developer", {"professional-only", "quarry-package-page", "phase-package-page", "package-tabs", "section-context", "quarry-development-flow", "quarry-development-table", "quarry-score-summary", "quarry-note-grid"})
     return failures
 
 
@@ -389,11 +290,7 @@ def validate(project: Path) -> dict[str, Any]:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
     content = content_path.read_text(encoding="utf-8")
-    check(
-        "canonical_content_has_no_open_placeholders",
-        OPEN_RE.search(content) is None,
-        "content.md contains no unresolved placeholder token",
-    )
+    check("canonical_content_has_no_open_placeholders", OPEN_RE.search(content) is None, "content.md contains no unresolved placeholder token")
 
     try:
         data = json.loads(data_path.read_text(encoding="utf-8"))
@@ -405,31 +302,15 @@ def validate(project: Path) -> dict[str, Any]:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
     document_meta = data.get("document")
-    current_version = (
-        text_en(document_meta.get("version")).strip()
-        if isinstance(document_meta, dict)
-        else ""
-    )
-    html_path = (
-        project / "output" / f"v{current_version}" / "prd.html"
-        if current_version
-        else project / "output" / "v<missing-version>" / "prd.html"
-    )
-    check(
-        "rendered_html_exists",
-        bool(current_version) and html_path.is_file(),
-        str(html_path) if current_version else "render-data.document.version is required to resolve the versioned prd.html",
-    )
+    current_version = text_en(document_meta.get("version")).strip() if isinstance(document_meta, dict) else ""
+    html_path = project / "output" / f"v{current_version}" / "prd.html" if current_version else project / "output" / "v<missing-version>" / "prd.html"
+    check("rendered_html_exists", bool(current_version) and html_path.is_file(), str(html_path) if current_version else "render-data.document.version is required to resolve the versioned prd.html")
     if errors:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
     actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
     declared_content_sha = data.get("canonical_content_sha256")
-    binding_valid = (
-        isinstance(declared_content_sha, str)
-        and SHA256_RE.fullmatch(declared_content_sha) is not None
-        and declared_content_sha == actual_content_sha
-    )
+    binding_valid = isinstance(declared_content_sha, str) and SHA256_RE.fullmatch(declared_content_sha) is not None and declared_content_sha == actual_content_sha
     if not isinstance(declared_content_sha, str) or SHA256_RE.fullmatch(declared_content_sha) is None:
         binding_detail = "render-data canonical_content_sha256 is missing or invalid"
     elif declared_content_sha != actual_content_sha:
@@ -493,13 +374,11 @@ def validate(project: Path) -> dict[str, Any]:
             if isinstance(components, list):
                 raw_weights = [item.get("weight") if isinstance(item, dict) else None for item in components]
                 if any(weight not in (None, "") for weight in raw_weights):
-                    parsed = []
+                    parsed: list[float] = []
                     for index, weight in enumerate(raw_weights):
                         current = scoring_weight(weight)
                         if current is None:
-                            errors.append(
-                                f"package_{package_id}: scoring component {index} weight must be numeric or a numeric percentage string"
-                            )
+                            errors.append(f"package_{package_id}: scoring component {index} weight must be numeric or a numeric percentage string")
                         else:
                             parsed.append(current)
                     if len(parsed) == len(raw_weights) and abs(sum(parsed) - 100.0) > 1e-9:
@@ -507,11 +386,7 @@ def validate(project: Path) -> dict[str, Any]:
 
     if structure_ok:
         required_content = required_content_errors(data)
-        check(
-            "required_content",
-            not required_content,
-            "required content slots are populated" if not required_content else "; ".join(required_content),
-        )
+        check("required_content", not required_content, "required content slots are populated" if not required_content else "; ".join(required_content))
     if not structure_ok:
         return {"status": "fail", "errors": errors, "warnings": warnings, "checks": checks}
 
@@ -525,11 +400,7 @@ def validate(project: Path) -> dict[str, Any]:
 
     actual_render_data_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
     bindings = facts.render_data_sha256
-    binding_ok = (
-        len(bindings) == 1
-        and SHA256_RE.fullmatch(bindings[0]) is not None
-        and bindings[0] == actual_render_data_sha
-    )
+    binding_ok = len(bindings) == 1 and SHA256_RE.fullmatch(bindings[0]) is not None and bindings[0] == actual_render_data_sha
     if not bindings:
         html_binding_detail = "rendered HTML is missing render-data-sha256 revision binding"
     elif len(bindings) != 1:
@@ -546,39 +417,21 @@ def validate(project: Path) -> dict[str, Any]:
     asset_bindings = facts.asset_requirements_sha256
     if asset_path.is_file():
         actual_asset_sha = hashlib.sha256(asset_path.read_bytes()).hexdigest()
-        asset_binding_ok = (
-            len(asset_bindings) == 1
-            and SHA256_RE.fullmatch(asset_bindings[0]) is not None
-            and asset_bindings[0] == actual_asset_sha
-        )
+        asset_binding_ok = len(asset_bindings) == 1 and SHA256_RE.fullmatch(asset_bindings[0]) is not None and asset_bindings[0] == actual_asset_sha
         if not asset_bindings:
             asset_binding_detail = "rendered HTML is missing asset-requirements-sha256 binding"
         elif len(asset_bindings) != 1:
-            asset_binding_detail = (
-                "rendered HTML must contain exactly one asset-requirements-sha256 binding; "
-                f"found {len(asset_bindings)}"
-            )
+            asset_binding_detail = f"rendered HTML must contain exactly one asset-requirements-sha256 binding; found {len(asset_bindings)}"
         elif SHA256_RE.fullmatch(asset_bindings[0]) is None:
             asset_binding_detail = "rendered HTML asset-requirements-sha256 binding is invalid"
         elif asset_bindings[0] != actual_asset_sha:
-            asset_binding_detail = (
-                "rendered HTML is stale relative to work/asset-requirements.md; "
-                "rerender the current versioned prd.html"
-            )
+            asset_binding_detail = "rendered HTML is stale relative to work/asset-requirements.md; rerender the current versioned prd.html"
         else:
             asset_binding_detail = "rendered HTML is bound to the current non-Voice Production Asset requirements"
     else:
         asset_binding_ok = not asset_bindings
-        asset_binding_detail = (
-            "no non-Voice Production Asset requirement source or stale binding is present"
-            if asset_binding_ok
-            else "rendered HTML still carries an asset-requirements binding but work/asset-requirements.md is absent; rerender"
-        )
-    check(
-        "html_matches_current_asset_requirements",
-        asset_binding_ok,
-        asset_binding_detail,
-    )
+        asset_binding_detail = "no non-Voice Production Asset requirement source or stale binding is present" if asset_binding_ok else "rendered HTML still carries an asset-requirements binding but work/asset-requirements.md is absent; rerender"
+    check("html_matches_current_asset_requirements", asset_binding_ok, asset_binding_detail)
 
     duplicates = sorted(key for key, count in Counter(facts.ids).items() if count > 1)
     check("html_ids_unique", not duplicates, f"duplicate ids: {duplicates}" if duplicates else "no duplicate HTML ids")
@@ -588,71 +441,24 @@ def validate(project: Path) -> dict[str, Any]:
     core_pages = actual_pages[: len(expected)]
     downstream_pages = actual_pages[len(expected) :]
     core_exact = core_pages == expected
-    invalid_downstream = [
-        section_id
-        for section_id in downstream_pages
-        if "production-assets-page" not in facts.section_classes.get(section_id, set())
-    ]
+    invalid_downstream = [section_id for section_id in downstream_pages if "production-assets-page" not in facts.section_classes.get(section_id, set())]
     page_set_ok = core_exact and not invalid_downstream
     if page_set_ok and downstream_pages:
-        page_detail = (
-            f"PRD core matches expected order/set: {len(expected)} pages; "
-            f"valid additive Production Assets pages: {len(downstream_pages)}"
-        )
+        page_detail = f"PRD core matches expected order/set: {len(expected)} pages; valid additive Production Assets pages: {len(downstream_pages)}"
     elif page_set_ok:
         page_detail = f"PRD core matches expected order/set: {len(expected)} pages; no downstream pages"
     else:
-        page_detail = (
-            f"expected PRD core {expected}; actual prefix {core_pages}; "
-            f"invalid downstream pages {invalid_downstream}; actual pages {actual_pages}"
-        )
-    check(
-        "generated_page_set_matches_current_render_data",
-        page_set_ok,
-        page_detail,
-    )
+        page_detail = f"expected PRD core {expected}; actual prefix {core_pages}; invalid downstream pages {invalid_downstream}; actual pages {actual_pages}"
+    check("generated_page_set_matches_current_render_data", page_set_ok, page_detail)
 
     composition = document_composition_errors(data, facts)
-    check(
-        "document_page_composition",
-        not composition,
-        "required Golden prototype markers are present" if not composition else "; ".join(composition),
-    )
+    check("document_page_composition", not composition, "required Golden prototype markers are present" if not composition else "; ".join(composition))
 
     id_set = set(facts.ids)
     broken = sorted(set(target for target in facts.fragment_hrefs if target not in id_set))
     check("fragment_navigation_reachable", not broken, f"broken targets: {broken}" if broken else "all fragment links resolve")
 
     browser_title = "".join(facts.title_parts).strip()
-    check(
-        "browser_title_matches_project",
-        bool(title) and title.lower() in html_lib.unescape(browser_title).lower(),
-        f"browser title: {browser_title!r}",
-    )
+    check("browser_title_matches_project", bool(title) and title.lower() in html_lib.unescape(browser_title).lower(), f"browser title: {browser_title!r}")
 
-    status = "pass" if not errors else "fail"
-    return {
-        "status": status,
-        "errors": errors,
-        "warnings": warnings,
-        "checks": checks,
-        "expected_pages": expected,
-    }
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("project", type=Path, help="workspace/active/<project> directory")
-    parser.add_argument("--output", type=Path, help="optional JSON result path")
-    args = parser.parse_args()
-    result = validate(args.project)
-    text = json.dumps(result, ensure_ascii=False, indent=2)
-    if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(text + "\n", encoding="utf-8")
-    print(text)
-    return 0 if result["status"] == "pass" else 1
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    return {"status": "pass" if not errors else "fail", "errors": errors, "warnings": warnings, "checks": checks, "expected_pages": expected}

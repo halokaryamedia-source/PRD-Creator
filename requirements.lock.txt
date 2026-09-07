@@ -1,2 +1,2 @@
-# Exact verification environment for Python 3.11.
-# No third-party Python runtime dependencies are currently required.
+# Runtime dependency lock for Python 3.11.
+PyYAML==6.0.3

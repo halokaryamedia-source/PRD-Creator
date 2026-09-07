@@ -13,8 +13,8 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-import _engine  # noqa: E402
-import production_assets_compositor as production_assets  # noqa: E402
+import prd_render_engine as engine
+import production_assets_compositor as production_assets
 
 GOLDEN_SPEC_MARKER = "aftershock-v0.2"
 SAMPLE_META_NAMES = (
@@ -34,8 +34,8 @@ STORAGE_KEYS = {
 def _prepare_golden_template(template: Path, render_data: Path) -> tuple[str, str]:
     source = template.read_text(encoding="utf-8")
     data = json.loads(render_data.read_text(encoding="utf-8"))
-    title = _engine.txt(data.get("document", {}).get("title", ""))["en"]
-    namespace = _engine.slug(title)
+    title = engine.txt(data.get("document", {}).get("title", ""))["en"]
+    namespace = engine.slug(title)
 
     for meta_name in SAMPLE_META_NAMES:
         source = re.sub(
@@ -44,7 +44,6 @@ def _prepare_golden_template(template: Path, render_data: Path) -> tuple[str, st
             source,
             flags=re.I,
         )
-
     for old_key, suffix in STORAGE_KEYS.items():
         source = source.replace(old_key, f"prd-{namespace}-{suffix}")
     return source, namespace
@@ -57,25 +56,19 @@ def _augment_production_assets(render_data: Path, output: Path) -> None:
 
 def render(template: Path, render_data: Path, output: Path) -> None:
     source = template.read_text(encoding="utf-8")
-    if _engine.STORAGE_PREFIX_TOKEN in source:
-        _engine.render(template, render_data, output)
+    if engine.STORAGE_PREFIX_TOKEN in source:
+        engine.render(template, render_data, output)
         _augment_production_assets(render_data, output)
         return
 
     prepared, _namespace = _prepare_golden_template(template, render_data)
     if prepared.count(GOLDEN_SPEC_MARKER) != 1:
-        raise ValueError(
-            "Approved Golden template must contain exactly one canonical specification marker"
-        )
-
-    # Adapt the approved Golden marker to the renderer's explicit template token
-    # in the temporary source instead of mutating module-global engine state.
-    prepared = prepared.replace(GOLDEN_SPEC_MARKER, _engine.STORAGE_PREFIX_TOKEN, 1)
+        raise ValueError("Approved Golden template must contain exactly one canonical specification marker")
+    prepared = prepared.replace(GOLDEN_SPEC_MARKER, engine.STORAGE_PREFIX_TOKEN, 1)
     with tempfile.TemporaryDirectory(prefix="prd-golden-") as tmp:
         prepared_path = Path(tmp) / "runtime-template.html"
         prepared_path.write_text(prepared, encoding="utf-8")
-        _engine.render(prepared_path, render_data, output)
-
+        engine.render(prepared_path, render_data, output)
     _augment_production_assets(render_data, output)
 
 
@@ -95,8 +88,8 @@ def main() -> int:
         return 2
 
 
-validate = _engine.validate
-apply_result_summaries = _engine.apply_result_summaries
+validate = engine.validate
+apply_result_summaries = engine.apply_result_summaries
 
 
 if __name__ == "__main__":

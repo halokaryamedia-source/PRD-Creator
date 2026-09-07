@@ -1,7 +1,7 @@
 ---
 name: prd-creator
 description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover project requirements, synthesize the complete project model, preview material decisions for approval, produce semantic PRD content through the approved Golden design grammar, complete 04 Production Assets, produce Voice when required, then validate the consolidated project delivery without inventing upstream facts.
-version: 1.16.0
+version: 2.0.0
 ---
 
 # PRD Creator
@@ -103,6 +103,18 @@ A project may naturally need 2, 3, 4, 5, 6, 7, or another justified count. Do no
 
 Stable semantic questions—Overview facts, three gameplay context roles, six Gameplay Information rows, requirement-table column meanings, page family/navigation—remain stable.
 
+### Stable machine identity
+
+Package 2.0 removes title-based machine joins from Production Assets/Voice composition.
+
+```text
+Production Assets section → Owner ID: shared | journey:<flow-id> | package:<package-id>
+non-Voice resource        → ID: AST-...
+Voice line                → VO-... ID
+```
+
+Display titles are presentation only. Missing, duplicate, or unknown stable IDs are errors; the renderer does not guess ownership from human-readable titles.
+
 ### Routine synthesis is not a project decision
 
 The model may autonomously choose reversible representation/craft details such as grouping, ordering, decomposition, direct wording, requirement placement and obvious derived relationships.
@@ -139,6 +151,8 @@ Before preview, reason across Gameplay, Level Design, Developer, Production Asse
 - every material AI-chosen Proposal represented and approved/corrected;
 - `preview_approved: true`.
 
+Machine-owned YAML state is parsed as real YAML by implementation; do not rely on line-oriented pseudo-YAML formatting tricks.
+
 Routine wording/grouping/ordering does not need separate approval.
 
 ## Flow 3 → Flow 4
@@ -160,11 +174,12 @@ When approved meaning requires non-Voice resources, materialize `work/asset-requ
 ## Flow 4 acceptance / handoff
 
 ```text
-one mechanical validation
+one canonical mechanical validation
 → one integrated semantic-readiness review
 → semantic reconciliation of material meaning
 → Material Conservation
 → visual evidence only where the claim requires it
+→ acceptance bound to exact render-data SHA-256
 → development_ready | handoff_ready
 ```
 
@@ -179,11 +194,11 @@ approved source / requirements
 
 It looks for material loss, contradiction, unsupported invention, ambiguity and cross-role drift—not literal wording equality or sample-count equality.
 
-Use `handoff_ready` only when the accepted revision intentionally crosses the downstream handoff boundary. Flow 5 must not start from `development_ready`.
+Use `handoff_ready` only when the accepted revision intentionally crosses the downstream handoff boundary. Flow 5 must not start from `development_ready`. `work/acceptance.md` must bind the exact reviewed `work/render-data.json` SHA-256 so a same-version regeneration cannot reuse stale acceptance evidence.
 
 ## Flow 5–7
 
-Flow 5 creates justified player-facing Voice requirements from accepted handoff meaning. Flow 6 owns final Voice wording/performance within that contract. Flow 7 validates current requirement/script/revision parity, Communication Conservation, project-HTML parity when present, and optional audio evidence.
+Flow 5 creates justified player-facing Voice requirements from accepted handoff meaning. Flow 6 owns final Voice wording/performance within that contract. Each canonical Voice section carries a stable Owner ID for 04 placement. Flow 7 validates current requirement/script/revision parity, Communication Conservation, project-HTML parity when present, and optional audio evidence.
 
 Voice-only changes do not reopen PRD-core acceptance when upstream meaning is unchanged.
 
@@ -205,7 +220,7 @@ non-Voice 04 resource meaning
 Voice scope / communication intent
 → Flow 5 / work/voice-requirements.md
 
-Voice wording / performance
+Voice wording / performance / section Owner ID
 → Flow 6 / work/voice-production.md
 
 correct canonical + design contracts; wrong generated presentation
@@ -224,6 +239,7 @@ identify first changed canonical owner
 → preview only when a material Proposal changed
 → regenerate derived output once after canonical state stabilizes
 → smallest relevant mechanical + semantic proof
+→ refresh acceptance hash when accepted projection bytes changed
 → cross handoff/Voice boundaries only when inputs changed
 → stop
 ```

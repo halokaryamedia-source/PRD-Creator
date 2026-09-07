@@ -20,6 +20,36 @@ A new repository tag/GitHub Release is created only when an approved PRD-Creator
 
 These maintenance changes do **not** create a repository version. The latest published repository release remains `v0.1` until an approved feature/capability change is promoted and published.
 
+## Package 2.0.0 — 2026-09-07
+
+Source-code and machine-identity hardening for a stricter professional production boundary.
+
+### Correctness and identity
+
+- make `validator/api.py` the single complete PRD validation entrypoint and route handoff through the same content-purity/freshness checks;
+- bind Flow 4 acceptance to the exact reviewed `work/render-data.json` SHA-256 so same-version regeneration cannot reuse stale acceptance evidence;
+- parse machine-owned YAML through pinned PyYAML instead of regex/line emulation;
+- require stable Production Asset Owner IDs and non-Voice `AST-...` resource IDs;
+- require stable Owner IDs on canonical Voice Production sections and join 04 presentation by those IDs rather than display titles;
+- reject duplicate/missing/unknown identities instead of silently collapsing or guessing them.
+
+### Source architecture
+
+- retire ambiguous renderer/validator `_engine.py` module names in favor of domain-specific engine names;
+- centralize typed Voice requirements/production parsing in `shared/voice.py`;
+- centralize machine-state parsing in `shared/state.py`;
+- reduce semantic fallback behavior in the 04 compositor so renderer code presents owned meaning rather than inventing defaults;
+- stage versioned delivery before replacing current output files.
+
+### Engineering quality
+
+- separate runtime and development dependency locks;
+- add Ruff static lint, mypy checks for shared typed parsers/state, and coverage reporting to active gates;
+- pin GitHub Actions references in active workflows to immutable commit SHAs;
+- strengthen regression coverage for exact acceptance binding, content-purity handoff, quoted YAML, duplicate IDs/owners, and stable asset/Voice identity.
+
+This is a major package contract because existing `asset-requirements.md` / `voice-production.md` internal sources must be regenerated or updated with explicit stable Owner/Asset IDs. Golden/runtime template bytes and accepted PRD semantic/design boundaries remain unchanged.
+
 ## Package 1.16.0 — 2026-09-07
 
 Semantic/design separation and adaptive PRD composition while preserving the exact Golden artifact and deterministic renderer architecture.

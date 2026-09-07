@@ -14,11 +14,8 @@ VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate_voice.py"
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, *(str(arg) for arg in args)],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
+        [sys.executable, *(str(arg) for arg in args)], cwd=ROOT,
+        capture_output=True, text=True, check=False,
     )
 
 
@@ -97,6 +94,7 @@ Voice Cast:
 - Guide: Clara - Calm and Clear
 
 ## Intro
+Owner ID: journey:journey-begins
 
 ### VO-INTRO-01 — Welcome
 Type: Main Story
@@ -108,6 +106,7 @@ Begin the trial.
 ```
 
 ## Ending
+Owner ID: package:core
 
 ### VO-END-01 — Complete
 Type: Direct NPC Dialogue
@@ -143,23 +142,12 @@ class VoiceProductionContracts(unittest.TestCase):
         req_text = requirements_text if requirements_text is not None else requirements()
         req_path = project / "work" / "voice-requirements.md"
         req_path.write_text(req_text, encoding="utf-8")
-        bound_script = script_text.replace(
-            "{requirements_sha}", hashlib.sha256(req_path.read_bytes()).hexdigest()
-        )
+        bound_script = script_text.replace("{requirements_sha}", hashlib.sha256(req_path.read_bytes()).hexdigest())
         (project / "work" / "voice-production.md").write_text(bound_script, encoding="utf-8")
-        (project / "work" / "render-data.json").write_text(
-            json.dumps({"document": {"version": "1.0.0"}}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        (project / "state" / "handoff-state.yaml").write_text(
-            "status: handoff_ready\naccepted_prd_version: 1.0.0\n",
-            encoding="utf-8",
-        )
+        (project / "work" / "render-data.json").write_text(json.dumps({"document": {"version": "1.0.0"}}, indent=2) + "\n", encoding="utf-8")
+        (project / "state" / "handoff-state.yaml").write_text("status: handoff_ready\naccepted_prd_version: 1.0.0\n", encoding="utf-8")
         (project / "state" / "voice-state.yaml").write_text(
-            "status: voice_script_ready\n"
-            "source_handoff: state/handoff-state.yaml\n"
-            "source_prd_revision: 1.0.0\n"
-            "project_html: output/v1.0.0/prd.html\n",
+            "status: voice_script_ready\nsource_handoff: state/handoff-state.yaml\nsource_prd_revision: 1.0.0\nproject_html: output/v1.0.0/prd.html\n",
             encoding="utf-8",
         )
         return project
@@ -175,36 +163,21 @@ class VoiceProductionContracts(unittest.TestCase):
     def test_validator_accepts_current_project_html_objective_contract(self) -> None:
         project = self.make_project()
         (project / "output/v1.0.0/prd.html").write_text(project_html(), encoding="utf-8")
-
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         self.assertIn("project_html=passed", validated.stdout)
 
     def test_validator_rejects_missing_voice_prompt_in_project_html(self) -> None:
         project = self.make_project()
-        (project / "output/v1.0.0/prd.html").write_text(
-            project_html(omit_intro_prompt=True),
-            encoding="utf-8",
-        )
-
+        (project / "output/v1.0.0/prd.html").write_text(project_html(omit_intro_prompt=True), encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1)
-        self.assertIn(
-            "Project HTML must contain exact Voice prompt panel once for VO-INTRO-01",
-            validated.stdout,
-        )
+        self.assertIn("Project HTML must contain exact Voice prompt panel once for VO-INTRO-01", validated.stdout)
 
     def test_validator_rejects_same_revision_requirement_bytes_changed_after_script_binding(self) -> None:
         project = self.make_project()
         req = project / "work/voice-requirements.md"
-        req.write_text(
-            req.read_text(encoding="utf-8").replace(
-                "Tell the player to begin the trial.",
-                "Tell the player to begin the trial immediately.",
-                1,
-            ),
-            encoding="utf-8",
-        )
+        req.write_text(req.read_text(encoding="utf-8").replace("Tell the player to begin the trial.", "Tell the player to begin the trial immediately.", 1), encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("Source Voice Requirements sha256 does not match", validated.stdout)
@@ -212,25 +185,22 @@ class VoiceProductionContracts(unittest.TestCase):
     def test_validator_rejects_voice_state_from_stale_prd_revision(self) -> None:
         project = self.make_project()
         state = project / "state/voice-state.yaml"
-        state.write_text(
-            state.read_text(encoding="utf-8").replace(
-                "source_prd_revision: 1.0.0", "source_prd_revision: 0.9.0"
-            ),
-            encoding="utf-8",
-        )
+        state.write_text(state.read_text(encoding="utf-8").replace("source_prd_revision: 1.0.0", "source_prd_revision: 0.9.0"), encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("voice-state source_prd_revision='0.9.0'", validated.stdout)
 
+    def test_validator_accepts_quoted_yaml_hash_character(self) -> None:
+        project = self.make_project()
+        state = project / "state/voice-state.yaml"
+        state.write_text(state.read_text(encoding="utf-8") + 'note: "voice #1"\n', encoding="utf-8")
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+
     def test_validator_rejects_nonready_upstream_handoff(self) -> None:
         project = self.make_project()
         handoff = project / "state/handoff-state.yaml"
-        handoff.write_text(
-            handoff.read_text(encoding="utf-8").replace(
-                "status: handoff_ready", "status: needs_revision"
-            ),
-            encoding="utf-8",
-        )
+        handoff.write_text(handoff.read_text(encoding="utf-8").replace("status: handoff_ready", "status: needs_revision"), encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("Upstream PRD handoff status is 'needs_revision'", validated.stdout)
@@ -255,23 +225,26 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertIn("Speaker mismatch for VO-INTRO-01", validated.stdout)
 
     def test_validator_rejects_empty_section_without_traceback(self) -> None:
-        script = SCRIPT.replace("## Ending", "## Empty Section\n\n## Ending", 1)
+        script = SCRIPT.replace("## Ending", "## Empty Section\nOwner ID: journey:empty\n\n## Ending", 1)
         project = self.make_project(script_text=script)
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 2)
         self.assertNotIn("Traceback", validated.stderr)
         self.assertIn("Voice section has no entries: Empty Section", validated.stderr)
 
+    def test_validator_rejects_duplicate_owner_id(self) -> None:
+        script = SCRIPT.replace("Owner ID: package:core", "Owner ID: journey:journey-begins", 1)
+        project = self.make_project(script_text=script)
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 2)
+        self.assertIn("Duplicate Voice section Owner ID", validated.stderr)
+
     def test_validator_rejects_voice_without_initial_performance_tag(self) -> None:
         script = SCRIPT.replace("[calm]\nBegin the trial.", "Begin the trial.", 1)
         project = self.make_project(script_text=script)
-
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 2)
-        self.assertIn(
-            "VO-INTRO-01 performance must begin with at least one initial [performance direction] tag",
-            validated.stderr,
-        )
+        self.assertIn("VO-INTRO-01 performance must begin with at least one initial [performance direction] tag", validated.stderr)
 
     def test_validator_has_no_docx_runtime_path(self) -> None:
         source = VALIDATOR.read_text(encoding="utf-8")

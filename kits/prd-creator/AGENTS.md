@@ -41,18 +41,38 @@ Do not change project meaning to work around a presentation defect. Do not chang
 
 ## Implementation ownership
 
+- `shared/state.py` → real YAML parsing and common machine-state scalar/list access;
+- `shared/voice.py` → one typed Voice requirements/production grammar used by renderer and validator;
 - `renderer/core.py` → reusable rendering primitives;
 - `renderer/pages.py` → render-data into approved page/component grammar, including data-driven child cardinality;
-- `renderer/render.py` → deterministic HTML rendering and downstream composition;
-- `renderer/delivery.py` → versioned delivery + AI projections;
-- `renderer/production_assets_compositor.py` → shared 04 composition;
-- `renderer/production_assets.py` → Voice-specific 04 presentation primitives;
-- `renderer/_engine.py` → lower-level render validation/orchestration;
-- `validator/_engine.py` + `validator/validate.py` → PRD mechanical validation;
-- `validator/validate_handoff.py` → Flow 4 → Flow 5 consistency;
-- `validator/validate_voice.py` → Voice mechanical validation.
+- `renderer/render.py` → thin render CLI/orchestration wrapper;
+- `renderer/prd_render_engine.py` → deterministic PRD-core render validation/orchestration;
+- `renderer/delivery.py` → staged/transactional versioned delivery + AI projections;
+- `renderer/production_assets_compositor.py` → stable-ID shared 04 composition;
+- `renderer/production_assets.py` → Voice-specific 04 presentation primitives backed by `shared/voice.py`;
+- `validator/prd_validation_engine.py` → lower-level deterministic PRD checks;
+- `validator/api.py` → canonical complete PRD validation API, including content purity;
+- `validator/validate.py` → thin PRD validation CLI;
+- `validator/validate_handoff.py` → Flow 4 → Flow 5 consistency + exact acceptance revision binding;
+- `validator/validate_voice.py` → Voice mechanical validation using shared typed parsers.
 
-Renderer/validator code may organize or check already-owned information. It may not invent project facts, material asset requirements, Voice moments, or product decisions.
+There is no generic top-level `_engine` module contract. Engine modules use domain-specific names so renderer and validator can coexist in one Python process without import-cache collision.
+
+Renderer/validator code may organize or check already-owned information. It may not invent project facts, material asset requirements, Voice moments, resource ownership, or product decisions.
+
+## Machine data boundary
+
+Machine-owned YAML state must be parsed as YAML through `shared/state.py`; do not reintroduce regex/line-splitting pseudo-YAML parsers.
+
+Production presentation identity is stable-ID based:
+
+```text
+Production Assets section → Owner ID
+non-Voice resource        → Asset ID
+Voice line                → VO-... ID
+```
+
+Display titles are not identity and must not be used as silent join keys.
 
 ## Canonical source boundary
 
@@ -115,9 +135,12 @@ PRD-only mechanics do not reopen Voice. Voice-only mechanics do not reopen accep
 - repository/routing/docs-only changes → Repository Verify;
 - PRD renderer/template/validator/source-contract executable changes → PRD Verify;
 - Voice validator/canonical contract changes → Voice Verify;
-- shared 04 compositor behavior → PRD Verify plus Voice proof only when Voice behavior changes;
+- shared parser/state changes → affected targeted gate + Local promotion full regression;
+- shared 04 compositor behavior → PRD Verify plus Voice proof when Voice behavior changes;
 - visual PASS → actual browser/render evidence;
 - generated-audio quality → actual audio evidence.
+
+Static source quality is enforced by locked dev tooling (`ruff`, `mypy`, `coverage`) in CI. Runtime dependencies stay separately pinned in `requirements.lock.txt`.
 
 ## Anti-overdevelopment
 

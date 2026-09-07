@@ -10,12 +10,13 @@ on:
       - "kits/prd-creator/document/**/*.py"
       - "kits/prd-creator/production-assets/**/*.py"
       - "kits/prd-creator/renderer/**/*.py"
+      - "kits/prd-creator/shared/**/*.py"
       - "kits/prd-creator/template/**"
-      - "kits/prd-creator/validator/_engine.py"
-      - "kits/prd-creator/validator/validate.py"
-      - "kits/prd-creator/validator/validate_handoff.py"
+      - "kits/prd-creator/validator/**/*.py"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
+      - "requirements-dev.lock.txt"
+      - "pyproject.toml"
       - ".github/workflows/prd-verify.yml"
   workflow_dispatch:
 
@@ -33,30 +34,33 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.11"
 
       - name: Install locked dependencies
         run: |
-          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt
+          python -m pip install --disable-pip-version-check --no-deps -r requirements.lock.txt -r requirements-dev.lock.txt
           python -m pip check
 
-      - name: Compile PRD sources
+      - name: Static quality
         run: |
-          python -m compileall -q \
-            kits/prd-creator/renderer \
-            kits/prd-creator/validator/_engine.py \
-            kits/prd-creator/validator/validate.py \
-            kits/prd-creator/validator/validate_handoff.py \
-            tests
+          ruff check \
+            kits/prd-creator/shared \
+            kits/prd-creator/validator \
+            kits/prd-creator/renderer/render.py \
+            kits/prd-creator/renderer/delivery.py \
+            kits/prd-creator/renderer/production_assets.py \
+            kits/prd-creator/renderer/production_assets_compositor.py
+          mypy kits/prd-creator/shared
+
+      - name: Compile PRD sources
+        run: python -m compileall -q kits/prd-creator tests
 
       - name: Project Document contracts
         run: |
-          python -m unittest discover \
-            -s tests \
-            -p "test_prd_*.py" \
-            -v
+          coverage run -m unittest discover -s tests -p "test_prd_*.py" -v
+          coverage report
