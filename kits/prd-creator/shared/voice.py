@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
+VOICE_ID_RE = re.compile(r"^VO-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
+MOMENT_ID_RE = re.compile(r"^MOM-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
 PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
 SECTION_PREFIX_RE = re.compile(r"^\s*\d+\.\s*")
@@ -18,6 +20,7 @@ REQUIREMENT_SCALAR_FIELDS = {
     "Channel",
     "Trigger",
     "Purpose",
+    "Moment ID",
     "Moment",
     "Timing Constraint",
 }
@@ -36,6 +39,7 @@ class VoiceRequirement:
     channel: str
     trigger: str
     purpose: str
+    moment_id: str
     moment: str
     timing_constraint: str
     must_communicate: tuple[str, ...]
@@ -92,6 +96,7 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
     current_section = ""
     current_owner = ""
     seen_section_owners: dict[str, str] = {}
+    moment_titles: dict[tuple[str, str], str] = {}
     current_id: str | None = None
     current_title = ""
     scalar: dict[str, str] = {}
@@ -110,13 +115,26 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
             "Channel",
             "Trigger",
             "Purpose",
+            "Moment ID",
             "Moment",
         )
         missing = [key for key in required_scalar if not scalar.get(key)]
         if missing:
             raise ValueError(f"{current_id} missing requirement metadata: {', '.join(missing)}")
+        if VOICE_ID_RE.fullmatch(current_id) is None:
+            raise ValueError(f"Voice requirement ID must use VO-... stable identity: {current_id}")
         if scalar["Necessity"] not in {"required", "supporting"}:
             raise ValueError(f"{current_id} Necessity must be required or supporting")
+        moment_id = scalar["Moment ID"]
+        if MOMENT_ID_RE.fullmatch(moment_id) is None:
+            raise ValueError(f"{current_id} Moment ID must use MOM-... stable identity")
+        moment_key = (current_owner, moment_id)
+        previous_moment = moment_titles.get(moment_key)
+        if previous_moment is not None and previous_moment != scalar["Moment"]:
+            raise ValueError(
+                f"{current_id} Moment ID {moment_id} conflicts with existing title {previous_moment!r}"
+            )
+        moment_titles[moment_key] = scalar["Moment"]
         for list_field in REQUIREMENT_LIST_FIELDS:
             if not lists[list_field]:
                 raise ValueError(f"{current_id} requires at least one {list_field} item")
@@ -136,6 +154,7 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
             channel=scalar["Channel"],
             trigger=scalar["Trigger"],
             purpose=scalar["Purpose"],
+            moment_id=moment_id,
             moment=scalar["Moment"],
             timing_constraint=scalar.get("Timing Constraint", ""),
             must_communicate=tuple(lists["Must communicate"]),
@@ -280,6 +299,8 @@ def parse_production(path: Path) -> VoiceProduction:
             if not section_owner[current_section]:
                 raise ValueError(f"Voice section {current_section} requires Owner ID before Voice entries")
             voice_id = match.group(1)
+            if VOICE_ID_RE.fullmatch(voice_id) is None:
+                raise ValueError(f"Voice Production ID must use VO-... stable identity: {voice_id}")
             if voice_id in seen_voice_ids:
                 raise ValueError(f"Duplicate Voice ID exists in Voice Production: {voice_id}")
             seen_voice_ids.add(voice_id)
