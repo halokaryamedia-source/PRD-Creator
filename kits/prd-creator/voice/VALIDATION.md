@@ -7,7 +7,9 @@ Flow 7 validates the exact current Voice chain and decides whether the requested
 - Flow 5 fields / Owner ID / Moment ID → `EXTRACTION.md` + `work/voice-requirements.md`;
 - Flow 6 wording/performance/duration/selection → `PERFORMANCE-WRITING.md` + `work/voice-production.md`;
 - 04 presentation → `../production-assets/CONTRACT.md`;
-- lifecycle machine validation → `validator/validate_voice.py`;
+- lifecycle/domain mechanical validation → `../validator/voice_validation.py`;
+- validation CLI/public entrypoint → `../validator/validate_voice.py`;
+- shared acceptance field/SHA parsing → `../shared/acceptance.py`;
 - final Voice acceptance → `work/voice-acceptance.md`.
 
 Do not redefine those schemas here.
