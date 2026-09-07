@@ -7,6 +7,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from shared.assets import ASSET_CATEGORIES, AssetEntry, AssetRequirements, AssetSection, parse_asset_requirements
+from shared.topology import ordered_owner_ids, require_owner
+from shared.voice import VoiceProduction, VoiceRequirement, parse_production, parse_requirements, selected_voice
+
 from .core import bi, esc, i18n, page, slug, txt
 from .production_assets import (
     SCRIPT_MARKER,
@@ -15,9 +19,7 @@ from .production_assets import (
     production_assets_script,
     production_assets_style,
 )
-from shared.assets import ASSET_CATEGORIES, AssetEntry, AssetRequirements, AssetSection, parse_asset_requirements
-from shared.topology import ordered_owner_ids, require_owner
-from shared.voice import VoiceProduction, VoiceRequirement, parse_production, parse_requirements, selected_voice
+from .template_adapter import TemplateAdapter
 
 TYPE_PRIORITY = {"MODEL": 10, "ITEM": 20, "UI / TEXT": 30, "AUDIO": 40, "PARTICLE": 50}
 
@@ -249,10 +251,7 @@ def _pages_and_nav(
         asset_section = asset_map.get(owner_id)
         voice_section = voice_map.get(owner_id)
         registry = _moment_registry(asset_section, requirements, owner_id)
-        items = [
-            _asset_to_item(entry, meta.page_id, registry)
-            for entry in _asset_entries(asset_section)
-        ]
+        items = [_asset_to_item(entry, meta.page_id, registry) for entry in _asset_entries(asset_section)]
         if voice_section and voice_doc:
             section_ids = {entry.voice_id for entry in voice_section.entries}
             expected_ids = requirement_owners.get(owner_id, set())
@@ -266,9 +265,7 @@ def _pages_and_nav(
                 requirement = requirements[entry.voice_id]
                 if requirement.owner_id != owner_id:
                     raise ValueError(f"Voice requirement Owner ID mismatch for {entry.voice_id}")
-                items.append(
-                    _voice_to_item(entry, voice_doc, meta.page_id, requirement, registry, order)
-                )
+                items.append(_voice_to_item(entry, voice_doc, meta.page_id, requirement, registry, order))
         if not items:
             continue
         body = (
@@ -309,12 +306,6 @@ def _pages_and_nav(
     return "".join(pages), nav
 
 
-def _insert(source: str, closing: str, addition: str, label: str) -> str:
-    if source.count(closing) != 1:
-        raise ValueError(f"Rendered HTML requires exactly one {label} closing marker")
-    return source.replace(closing, addition + "\n" + closing, 1)
-
-
 def augment_project_html(render_data_path: Path, output: Path, voice_production_path: Path) -> None:
     work = voice_production_path.parent
     asset_path = work / "asset-requirements.md"
@@ -334,14 +325,9 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
         raise ValueError("Production Assets extension already exists in rendered HTML")
 
     pages, nav = _pages_and_nav(render_data, assets, voice_doc, requirements_path)
-    nav_pattern = re.compile(r'(<nav class="sidebar-nav">)(.*?)(</nav>)', re.S)
-    main_pattern = re.compile(r'(<main class="document-main">.*?)(</main>)', re.S)
-    if len(nav_pattern.findall(source)) != 1:
-        raise ValueError("Rendered HTML requires exactly one sidebar navigation container")
-    if len(main_pattern.findall(source)) != 1:
-        raise ValueError("Rendered HTML requires exactly one document main container")
-    source = nav_pattern.sub(lambda match: match.group(1) + match.group(2) + nav + match.group(3), source, count=1)
-    source = main_pattern.sub(lambda match: match.group(1) + pages + match.group(2), source, count=1)
+    adapter = TemplateAdapter(source)
+    adapter.append_navigation(nav)
+    adapter.append_document_main(pages)
 
     head_additions = production_assets_style()
     if has_assets:
@@ -352,9 +338,10 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
         production_sha = hashlib.sha256(voice_production_path.read_bytes()).hexdigest()
         head_additions += f'\n<meta content="{requirements_sha}" name="voice-requirements-sha256"/>'
         head_additions += f'\n<meta content="{production_sha}" name="voice-production-sha256"/>'
-    source = _insert(source, "</head>", head_additions, "head")
-    source = _insert(source, "</body>", production_assets_script(), "body")
+    adapter.inject_head(head_additions)
+    adapter.inject_body(production_assets_script())
 
+    source = adapter.source
     section_ids = set(re.findall(r'<section\b[^>]*\bid="([^"]+)"', source))
     targets = set(re.findall(r'data-target="([^"]+)"', nav))
     missing = sorted(targets - section_ids)
