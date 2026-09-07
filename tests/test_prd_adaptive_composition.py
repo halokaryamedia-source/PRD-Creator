@@ -37,9 +37,7 @@ class AdaptiveSemanticCompositionContracts(unittest.TestCase):
             (project / name).mkdir(parents=True)
 
         (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\n"
-            "ready_for_prd: true\n"
-            "preview_approved: true\n",
+            "status: ready_for_prd\nready_for_prd: true\npreview_approved: true\n",
             encoding="utf-8",
         )
         (project / "state" / "source-inventory.yaml").write_text(
@@ -81,41 +79,47 @@ class AdaptiveSemanticCompositionContracts(unittest.TestCase):
         data["global_development"][0]["notes"] = data["global_development"][0]["notes"][:2]
 
         gameplay = data["packages"][0]["gameplay"]
-        gameplay["player_flow"].extend([
-            {
-                "step": 6,
-                "title": "Confirm Result",
-                "action": "Read the final completion feedback.",
-                "result": "The player can confirm the accepted result.",
-            },
-            {
-                "step": 7,
-                "title": "Clear Route",
-                "action": "Leave through the final marked route.",
-                "result": "The package exits without hiding the extra semantic step.",
-            },
-        ])
+        gameplay["player_flow"].extend(
+            [
+                {
+                    "step": 6,
+                    "title": "Confirm Result",
+                    "action": "Read the final completion feedback.",
+                    "result": "The player can confirm the accepted result.",
+                },
+                {
+                    "step": 7,
+                    "title": "Clear Route",
+                    "action": "Leave through the final marked route.",
+                    "result": "The package exits without hiding the extra semantic step.",
+                },
+            ]
+        )
 
         level = data["packages"][0]["level_design"]
         level["flow"] = level["flow"][:3]
-        level["notes"].append({
-            "title": "Additional Readability Note",
-            "description": "Keep the final feedback readable from the exit route.",
-        })
+        level["notes"].append(
+            {
+                "title": "Additional Readability Note",
+                "description": "Keep the final feedback readable from the exit route.",
+            }
+        )
 
         developer = data["packages"][0]["developer"]
-        developer["flow"].extend([
-            {
-                "step": 5,
-                "title": "Confirm Cleanup",
-                "description": "Verify transient package state is cleared before reuse.",
-            },
-            {
-                "step": 6,
-                "title": "Release Session",
-                "description": "Release the fixture only after cleanup verification succeeds.",
-            },
-        ])
+        developer["flow"].extend(
+            [
+                {
+                    "step": 5,
+                    "title": "Confirm Cleanup",
+                    "description": "Verify transient package state is cleared before reuse.",
+                },
+                {
+                    "step": 6,
+                    "title": "Release Session",
+                    "description": "Release the fixture only after cleanup verification succeeds.",
+                },
+            ]
+        )
         developer["notes"] = developer["notes"][:2]
 
         project = self.make_project(data)
