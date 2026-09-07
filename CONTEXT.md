@@ -106,12 +106,13 @@ intake/             Flow 2 source + requirement recovery
 document/           PRD core 01–03 contract + Flow 4 validation
 production-assets/  exact non-Voice 04 resource/writing contract
 voice/              Flow 5–7 Voice procedure/craft/evidence
+shared/             strict machine schemas, identity, path, acceptance, localization, issue primitives
 renderer/           deterministic PRD + shared 04 presentation
-validator/          PRD, handoff, and Voice mechanical gates
+validator/          PRD, derived-HTML, handoff, and Voice mechanical gates
 template/           approved Golden/runtime bytes
 ```
 
-Project/PRD semantics and Voice semantics remain separate responsibilities even though they live in one product package.
+`shared/` centralizes machine behavior only; it does not become a new semantic authority. Project/PRD semantics and Voice semantics remain separate responsibilities even though they live in one product package.
 
 ## Project-data boundary
 
