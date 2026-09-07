@@ -75,7 +75,10 @@ def _load_render_data(project: Path) -> tuple[dict[str, Any], str, str]:
 
 def _accepted_revision(project: Path, voice_state: VoiceState) -> tuple[str, list[Issue]]:
     issues: list[Issue] = []
-    upstream = handoff_validator.validate(project)
+    try:
+        upstream = handoff_validator.validate(project)
+    except (OSError, StateError, ProjectPathError, ValueError, json.JSONDecodeError) as exc:
+        upstream = {"status": "fail", "errors": [str(exc)]}
     if upstream.get("status") != "pass":
         detail = "; ".join(str(item) for item in upstream.get("errors", [])[:5]) or "unknown handoff failure"
         issues.append(
@@ -95,7 +98,7 @@ def _accepted_revision(project: Path, voice_state: VoiceState) -> tuple[str, lis
             must_exist=True,
         )
         handoff = load_handoff_state(handoff_path)
-    except (ProjectPathError, StateError) as exc:
+    except (OSError, ProjectPathError, StateError) as exc:
         issues.append(
             _issue(
                 "VOICE_SOURCE_HANDOFF_INVALID",
@@ -638,7 +641,14 @@ def validate(project: Path) -> dict[str, Any]:
     except FileNotFoundError:
         return _result(
             voice_state,
-            [_issue("VOICE_RENDER_DATA_MISSING", "flow3.projection", "Current render-data.json is missing", path="work/render-data.json")],
+            [
+                _issue(
+                    "VOICE_RENDER_DATA_MISSING",
+                    "flow3.projection",
+                    "Current render-data.json is missing",
+                    path="work/render-data.json",
+                )
+            ],
             0,
             0,
             0,
@@ -710,7 +720,18 @@ def validate(project: Path) -> dict[str, Any]:
         )
         return _result(voice_state, issues, 0, 0, 0, "not_required_yet")
 
-    issues.extend(_requirements_revision_issues(requirements_path, accepted_revision))
+    try:
+        issues.extend(_requirements_revision_issues(requirements_path, accepted_revision))
+    except OSError as exc:
+        issues.append(
+            _issue(
+                "VOICE_REQUIREMENTS_UNREADABLE",
+                "flow5.voice_requirement",
+                str(exc),
+                path="work/voice-requirements.md",
+            )
+        )
+        return _result(voice_state, issues, len(requirements), 0, 0, "not_required_yet")
     issues.extend(_requirements_owner_issues(render_data, requirements))
 
     if voice_state.status in REQUIREMENTS_READY_STATUSES:
@@ -738,7 +759,18 @@ def validate(project: Path) -> dict[str, Any]:
         )
         return _result(voice_state, issues, len(requirements), 0, 0, "not_provided")
 
-    issues.extend(_production_binding_issues(requirements_path, production_path, accepted_revision))
+    try:
+        issues.extend(_production_binding_issues(requirements_path, production_path, accepted_revision))
+    except OSError as exc:
+        issues.append(
+            _issue(
+                "VOICE_PRODUCTION_BINDING_UNREADABLE",
+                "flow6.voice_production",
+                str(exc),
+                path="work/voice-production.md",
+                field="Source Voice Requirements",
+            )
+        )
     issues.extend(_production_parity_issues(render_data, requirements, production))
     issues.extend(_delivery_selection_issues(production, voice_state))
 
@@ -751,7 +783,7 @@ def validate(project: Path) -> dict[str, Any]:
                 owner="voice-state.yaml.project_html",
                 must_exist=True,
             )
-        except ProjectPathError as exc:
+        except (OSError, ProjectPathError) as exc:
             issues.append(
                 _issue(
                     "VOICE_HTML_PATH_INVALID",
@@ -763,14 +795,24 @@ def validate(project: Path) -> dict[str, Any]:
             )
             html_state = "missing"
         else:
-            html_issues = _html_issues(
-                html_path,
-                render_data,
-                requirements_path,
-                production_path,
-                requirements,
-                production,
-            )
+            try:
+                html_issues = _html_issues(
+                    html_path,
+                    render_data,
+                    requirements_path,
+                    production_path,
+                    requirements,
+                    production,
+                )
+            except (OSError, ValueError) as exc:
+                html_issues = [
+                    _issue(
+                        "VOICE_HTML_VALIDATION_FAILED",
+                        "flow7.voice_delivery",
+                        str(exc),
+                        path=voice_state.project_html,
+                    )
+                ]
             issues.extend(html_issues)
             html_state = "passed" if not html_issues else "failed"
     elif voice_state.status == "voice_delivery_ready":
@@ -785,7 +827,18 @@ def validate(project: Path) -> dict[str, Any]:
         )
         html_state = "missing"
 
-    issues.extend(_voice_acceptance_issues(project, production_path, voice_state))
+    try:
+        issues.extend(_voice_acceptance_issues(project, production_path, voice_state))
+    except OSError as exc:
+        issues.append(
+            _issue(
+                "VOICE_ACCEPTANCE_UNREADABLE",
+                "flow7.voice_acceptance",
+                str(exc),
+                path="work/voice-acceptance.md",
+            )
+        )
+
     return _result(
         voice_state,
         issues,
