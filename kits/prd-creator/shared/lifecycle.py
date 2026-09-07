@@ -48,9 +48,7 @@ def load_voice_state(path: Path) -> VoiceState:
     state = load_mapping(path, owner="voice-state.yaml")
     unknown = sorted(set(state) - VOICE_STATE_KEYS)
     if unknown:
-        raise StateError(
-            "voice-state.yaml contains retired/unknown lifecycle field(s): " + ", ".join(unknown)
-        )
+        raise StateError("voice-state.yaml contains retired/unknown lifecycle field(s): " + ", ".join(unknown))
     status = require_scalar(state, "status", owner="voice-state.yaml")
     if status not in VOICE_STATUSES:
         raise StateError(f"voice-state.yaml.status={status!r} is not a supported Voice lifecycle status")
@@ -76,9 +74,7 @@ def load_voice_state(path: Path) -> VoiceState:
 def require_voice_state_for(statuses: set[str], path: Path) -> VoiceState:
     state = load_voice_state(path)
     if state.status not in statuses:
-        raise StateError(
-            f"voice-state.yaml.status={state.status!r}, expected one of: {', '.join(sorted(statuses))}"
-        )
+        raise StateError(f"voice-state.yaml.status={state.status!r}, expected one of: {', '.join(sorted(statuses))}")
     return state
 
 
