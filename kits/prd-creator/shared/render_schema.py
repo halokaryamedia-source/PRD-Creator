@@ -178,9 +178,7 @@ def validate_projection_schema(data: dict[str, Any]) -> None:
         _allow_only(result_model, RESULT_MODEL_FIELDS, f"{context}.gameplay.result_model")
         mode = str(_required(result_model, "mode", f"{context}.gameplay.result_model")).strip()
         if mode not in {"scored", "completion_only"}:
-            raise ProjectionError(
-                f"{context}.gameplay.result_model.mode must be 'scored' or 'completion_only'"
-            )
+            raise ProjectionError(f"{context}.gameplay.result_model.mode must be 'scored' or 'completion_only'")
         _required(result_model, "summary", f"{context}.gameplay.result_model")
         _validate_player_flow(
             _list(gameplay, "player_flow", f"{context}.gameplay", nonempty=True),
@@ -254,9 +252,7 @@ def _validate_result_contract(developer: dict[str, Any], mode: str, context: str
         return
 
     if not isinstance(completion, dict) or scoring not in (None, {}):
-        raise ProjectionError(
-            f"{context} must define completion_data only when result_model.mode=completion_only"
-        )
+        raise ProjectionError(f"{context} must define completion_data only when result_model.mode=completion_only")
     _allow_only(completion, COMPLETION_FIELDS, f"{context}.completion_data")
     if completion.get("produces_score") is not False:
         raise ProjectionError(f"{context}.completion_data.produces_score must be false")
