@@ -193,10 +193,7 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         without_function = REQ.replace("- Function: briefing\n", "", 1)
         rendered, _ = self.render(self.make_project(requirements_text=without_function))
         self.assertEqual(rendered.returncode, 2)
-        self.assertIn(
-            "Voice requirement Function is required for Production Assets presentation: VO-INTRO-01",
-            rendered.stderr,
-        )
+        self.assertIn("VO-INTRO-01 missing requirement metadata: Function", rendered.stderr)
 
     def test_moment_order_uses_source_order_not_english_wording(self) -> None:
         ordered_assets = """# Production Asset Requirements
