@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from shared.assets import ASSET_CATEGORIES, AssetEntry, AssetRequirements, AssetSection, parse_asset_requirements
+from shared.lifecycle import load_voice_state
 from shared.topology import ordered_owner_ids, require_owner
 from shared.voice import VoiceProduction, VoiceRequirement, parse_production, parse_requirements, selected_voice
 
@@ -231,6 +232,24 @@ def _requirements_by_owner(requirements: dict[str, VoiceRequirement]) -> dict[st
     return result
 
 
+def _assert_delivery_voice_cast(work: Path, voice_doc: VoiceProduction | None) -> None:
+    if voice_doc is None:
+        return
+    state_path = work.parent / "state" / "voice-state.yaml"
+    if not state_path.is_file():
+        return
+    state = load_voice_state(state_path)
+    if state.status != "voice_delivery_ready":
+        return
+    speakers = sorted({entry.speaker for section in voice_doc.sections for entry in section.entries})
+    missing = [speaker for speaker in speakers if not selected_voice(voice_doc.cast, speaker)]
+    if missing:
+        raise ValueError(
+            "voice_delivery_ready cannot render unresolved Voice Cast selection/profile for: "
+            + ", ".join(missing)
+        )
+
+
 def _pages_and_nav(
     render_data: dict[str, Any],
     assets: AssetRequirements | None,
@@ -320,6 +339,8 @@ def augment_project_html(render_data_path: Path, output: Path, voice_production_
     render_data = json.loads(render_data_path.read_text(encoding="utf-8"))
     assets = parse_asset_requirements(asset_path) if has_assets else None
     voice_doc = parse_production(voice_production_path) if has_voice else None
+    _assert_delivery_voice_cast(work, voice_doc)
+
     source = output.read_text(encoding="utf-8")
     if STYLE_MARKER in source or SCRIPT_MARKER in source:
         raise ValueError("Production Assets extension already exists in rendered HTML")
