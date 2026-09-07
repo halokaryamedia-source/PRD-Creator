@@ -5,6 +5,7 @@ This gate checks stable repository invariants that are useful on every commit.
 It does not replace production contract execution, project semantic validation,
 HTML visual QA, or generated-audio review.
 """
+
 from __future__ import annotations
 
 import py_compile
@@ -180,9 +181,7 @@ LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s=]+)$")
 SKILL_VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
 README_VERSION_RE = re.compile(r"(?m)^\*\*Version:\*\*\s*([^\s]+)\s*$")
-CURRENT_VALIDATION_VERSION_RE = re.compile(
-    r"PRD Creator package (?:candidate is|remains) \*\*v([^*]+)\*\*"
-)
+CURRENT_VALIDATION_VERSION_RE = re.compile(r"PRD Creator package (?:candidate is|remains) \*\*v([^*]+)\*\*")
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -211,27 +210,18 @@ def check_unified_kit_shape(errors: list[str]) -> None:
         fail(errors, "missing kits/ root")
         return
 
-    actual_kits = {
-        path.name
-        for path in kits_root.iterdir()
-        if path.is_dir() and not path.name.startswith(".")
-    }
+    actual_kits = {path.name for path in kits_root.iterdir() if path.is_dir() and not path.name.startswith(".")}
     if actual_kits != {"prd-creator"}:
         fail(
             errors,
-            "active production kit set drift: expected ['prd-creator'], "
-            f"got {sorted(actual_kits)}",
+            f"active production kit set drift: expected ['prd-creator'], got {sorted(actual_kits)}",
         )
 
     if not UNIFIED_KIT.is_dir():
         fail(errors, "missing unified production kit: kits/prd-creator")
         return
 
-    actual_dirs = {
-        path.name
-        for path in UNIFIED_KIT.iterdir()
-        if path.is_dir() and not path.name.startswith(".")
-    }
+    actual_dirs = {path.name for path in UNIFIED_KIT.iterdir() if path.is_dir() and not path.name.startswith(".")}
     missing_dirs = sorted(UNIFIED_KIT_DIRS - actual_dirs)
     if missing_dirs:
         fail(errors, f"kits/prd-creator missing domain directories: {missing_dirs}")
@@ -251,16 +241,11 @@ def check_skill_root(errors: list[str]) -> None:
         fail(errors, "missing canonical .agents/skills root")
         return
 
-    actual = {
-        path.name
-        for path in skill_root.iterdir()
-        if path.is_dir() and not path.name.startswith(".")
-    }
+    actual = {path.name for path in skill_root.iterdir() if path.is_dir() and not path.name.startswith(".")}
     if actual != CANONICAL_SKILLS:
         fail(
             errors,
-            "canonical skill set drift: "
-            f"expected {sorted(CANONICAL_SKILLS)}, got {sorted(actual)}",
+            f"canonical skill set drift: expected {sorted(CANONICAL_SKILLS)}, got {sorted(actual)}",
         )
 
     for skill in sorted(CANONICAL_SKILLS):
@@ -385,8 +370,7 @@ def check_current_delivery_routing(errors: list[str]) -> None:
             version_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
             current_validation_match = CURRENT_VALIDATION_VERSION_RE.search(text)
             if version_match and (
-                not current_validation_match
-                or current_validation_match.group(1) != version_match.group(1)
+                not current_validation_match or current_validation_match.group(1) != version_match.group(1)
             ):
                 fail(errors, "current-validation.md PRD Creator version does not match current SKILL version")
 
@@ -449,8 +433,7 @@ def check_prd_creator_version(errors: list[str]) -> None:
     if skill_match.group(1) != readme_match.group(1):
         fail(
             errors,
-            "PRD Creator version drift: "
-            f"SKILL {skill_match.group(1)} != README {readme_match.group(1)}",
+            f"PRD Creator version drift: SKILL {skill_match.group(1)} != README {readme_match.group(1)}",
         )
 
 
@@ -478,7 +461,10 @@ def check_dependency_lock(errors: list[str]) -> None:
     requirement_pins(ROOT / "requirements-dev.lock.txt", errors)
     direct = UNIFIED_KIT / "requirements.txt"
     if direct.exists():
-        fail(errors, "unexpected direct kit requirements.txt; root requirements.lock.txt owns current runtime Python pins")
+        fail(
+            errors,
+            "unexpected direct kit requirements.txt; root requirements.lock.txt owns current runtime Python pins",
+        )
 
 
 def normalize_link_target(source: Path, raw: str) -> Path | None:
