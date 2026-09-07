@@ -4,48 +4,47 @@ Status: active Flow 5 policy
 
 ## Purpose
 
-Convert one Flow 4 `handoff_ready` PRD revision into a minimal, traceable set of justified Voice moments that Flow 6 can author without inventing project meaning.
+Convert one accepted Flow 4 handoff revision into the minimal traceable Voice scope that Flow 6 can author without inventing project meaning.
+
+Detailed field/state procedure lives in `kits/prd-creator/voice/EXTRACTION.md`; this page owns durable boundaries only.
 
 ## Canonical owners
 
 ```text
 work/voice-requirements.md
-→ Voice scope + communication intent + stable Owner ID + natural production Moment
+→ Voice scope + communication intent + Owner ID + Moment ID
 
 state/voice-state.yaml
-→ lifecycle status + current source/delivery paths + source PRD revision
+→ one Voice lifecycle status + current canonical refs + source PRD revision
 ```
-
-Detailed procedure is `kits/prd-creator/voice/EXTRACTION.md`.
 
 ## Entry
 
-Flow 5 starts only from current `handoff_ready` meaning. Before extraction:
+Flow 5 starts only from current `handoff_ready` meaning. Before extraction run `validator/validate_handoff.py`.
 
-```bash
-python kits/prd-creator/validator/validate_handoff.py \
-  workspace/active/<project>/
-```
-
-If accepted PRD meaning changes, only affected Voice requirements become stale.
+If accepted PRD/04 meaning changes, reopen only affected Voice requirements.
 
 ## Stable placement identity
 
-Flow 5 assigns the 04 owner because placement is project topology, not performance craft:
+Flow 5 defines placement because it is project meaning, not performance craft:
 
 ```text
-journey:<gameplay-flow-id>  → non-package journey node only
-package:<package-id>        → package plus its matching gameplay-flow meaning
+Owner ID
+  ↓
+Moment ID
+  ↓
+Voice ID
 ```
 
-A package must not also use `journey:<package-id>`. Human-readable section titles are not machine identity.
+Owner IDs are `package:<id>` for package-owned meaning and `journey:<id>` only for non-package journey nodes. `Moment ID` uses stable `MOM-...` identity. Display section/moment titles may change without changing those IDs.
 
-## Flow 5 → Flow 6 contract
+## Flow 5 → Flow 6 interface
 
 Every included requirement defines:
 
 ```text
 Owner ID
+Moment ID + Moment
 Type
 Function
 Necessity
@@ -53,37 +52,23 @@ Speaker
 Channel
 Trigger
 Purpose
-Moment
 Must communicate
 Must not add/repeat
 Source refs
 Timing Constraint   # optional authoritative truth only
 ```
 
-Meaning:
-
-- **Owner ID** — stable PRD topology owner for Production Assets placement;
-- **Function** — primary communication job;
-- **Necessity** — `required` or `supporting`;
-- **Trigger** — concrete gameplay/story state, including listener state when material;
-- **Purpose** — what the listener should know/do/understand after the line;
-- **Moment** — natural 04 Production Assets grouping where the Voice resource belongs;
-- **Must communicate** — independently actionable communication payload;
-- **Must not add/repeat** — scope/continuity guards;
-- **Source refs** — enough accepted traceability to verify meaning;
-- **Timing Constraint** — optional hard upstream timing/sync truth, never a production estimate.
-
-Flow 6 still owns final wording, performance tags, punctuation/CAPS, Estimated Duration, actual voice/profile selection, Stability, Surface, and other production interpretation.
+Flow 6 still owns final wording, performance tags, punctuation/CAPS, Estimated Duration, voice/profile selection, Stability, Surface, and other production interpretation.
 
 ## Candidate/readiness rule
 
-Keep a Voice moment only when it is player-facing, supported by accepted meaning, tied to approved Speaker/Channel/Trigger, useful at that moment, and non-duplicative without a distinct reason. A gameplay package may legitimately have zero Voice moments.
+Keep a Voice moment only when it is player-facing, supported by accepted meaning, tied to approved Speaker/Channel/Trigger, useful at that point, and non-duplicative without a distinct reason. A package may legitimately have zero Voice moments.
 
-Return upstream when a material Speaker, Channel, Trigger, Purpose, Moment ownership, required fact, result/reward, terminology/sequence, or authoritative timing rule is unresolved.
+Return upstream when a material Speaker, Channel, Trigger, Purpose, Owner/Moment identity, required fact, result/reward, sequence, or authoritative timing rule is unresolved.
 
-## Canonical Voice state
+## One Voice lifecycle schema
 
-All Voice flows use one state vocabulary:
+All Voice flows use the schema owned by `shared/lifecycle.py`:
 
 ```yaml
 status: voice_requirements_ready
@@ -95,38 +80,17 @@ production: work/voice-production.md
 project_html: output/v<accepted document.version>/prd.html
 ```
 
-Supported lifecycle statuses:
-
-```text
-pending_extraction
-needs_upstream_decision
-voice_requirements_ready
-no_voice_required
-blocked
-voice_script_ready
-voice_validation
-needs_revision
-voice_delivery_ready
-```
-
-Unknown or retired lifecycle fields are invalid. Do not maintain parallel aliases such as `source_revision`, `flow`, `next_step`, `unresolved_upstream`, or `delivery_scope`.
+Persisted refs are normalized project-relative POSIX paths. Unknown/retired lifecycle fields are invalid.
 
 ## Mechanical boundary
 
-At `voice_requirements_ready`, run:
-
-```bash
-python kits/prd-creator/validator/validate_voice.py \
-  workspace/active/<project>/
-```
-
-The same lifecycle-aware validator is reused later for Flow 6/7. At Flow 5 it validates handoff/revision identity, strict requirement fields, and Owner IDs without requiring `voice-production.md` yet.
+`validator/validate_voice.py` is lifecycle-aware. At `voice_requirements_ready` it validates handoff/revision identity, strict Flow 5 requirement fields, and Owner topology without requiring a production script yet.
 
 ## Completion
 
 Flow 5 completes as either:
 
-- `voice_requirements_ready` — requirements mechanically and semantically ready for Flow 6; or
-- `no_voice_required` — accepted upstream meaning supports no Voice for the current scope.
+- `voice_requirements_ready`; or
+- `no_voice_required` when accepted upstream meaning justifies no Voice.
 
 Stop before performance writing.
