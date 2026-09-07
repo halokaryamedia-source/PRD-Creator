@@ -26,7 +26,9 @@ voice_script_ready
 
 ## Mechanical chain
 
-`validator/validate_voice.py` first reruns canonical `validate_handoff.py`. It then proves, as applicable:
+`validator/voice_validation.py` owns the Flow 5–7 domain checks and first reruns canonical `validate_handoff.py`. `validator/validate_voice.py` is the thin CLI/public entrypoint. Shared acceptance label/SHA parsing is owned by `shared/acceptance.py`.
+
+The domain validator proves, as applicable:
 
 ```text
 accepted PRD revision
@@ -51,7 +53,7 @@ HTML Voice requirement/production SHA bindings
 = exact current canonical bytes
 ```
 
-At `voice_delivery_ready`, it additionally proves Voice acceptance binds exact current `voice-production.md` bytes.
+At `voice_delivery_ready`, it additionally proves Voice acceptance binds exact current `voice-production.md` bytes and every represented speaker has a non-empty Voice Cast selection/profile. The renderer enforces the same final-state cast boundary so a delivery-ready render cannot truthfully publish a pending selection.
 
 Mechanical PASS does not establish semantic or visual quality.
 
@@ -94,7 +96,7 @@ Do not persist per-lens scorecards.
 
 When visual readiness is claimed, verify:
 
-- accepted 01–03 page/navigation identity remains intact;
+- accepted 01–03 page/navigation identity remains unchanged;
 - 04 is additive;
 - each Voice resource is on its accepted Owner page and `Moment ID` group;
 - resource title is `<Character> — <Line Title>`;
