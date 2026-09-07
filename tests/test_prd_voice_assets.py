@@ -150,12 +150,8 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
         self.assertIn("voice-prompt-vo-end-01", core_page)
 
     def test_04_does_not_change_protected_core_pages(self) -> None:
-        baseline_result, baseline_output = self.render(
-            self.make_project(include_voice=False, include_assets=False)
-        )
-        completed_result, completed_output = self.render(
-            self.make_project(include_voice=True, include_assets=True)
-        )
+        baseline_result, baseline_output = self.render(self.make_project(include_voice=False, include_assets=False))
+        completed_result, completed_output = self.render(self.make_project(include_voice=True, include_assets=True))
         self.assertEqual(baseline_result.returncode, 0, baseline_result.stderr or baseline_result.stdout)
         self.assertEqual(completed_result.returncode, 0, completed_result.stderr or completed_result.stdout)
         baseline_html = baseline_output.read_text(encoding="utf-8")
@@ -178,9 +174,7 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
             )
 
     def test_asset_only_project_can_publish_production_assets(self) -> None:
-        rendered, output = self.render(
-            self.make_project(include_voice=False, include_assets=True)
-        )
+        rendered, output = self.render(self.make_project(include_voice=False, include_assets=True))
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         html = output.read_text(encoding="utf-8")
         self.assertIn('id="production-assets-style"', html)
@@ -190,25 +184,19 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
 
     def test_renderer_rejects_duplicate_asset_id(self) -> None:
         duplicate = ASSETS.replace("AST-CORE-HOLOGRAM", "AST-CORE-CONSOLE")
-        rendered, _ = self.render(
-            self.make_project(include_voice=False, include_assets=True, asset_text=duplicate)
-        )
+        rendered, _ = self.render(self.make_project(include_voice=False, include_assets=True, asset_text=duplicate))
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("Duplicate Production Asset ID: AST-CORE-CONSOLE", rendered.stderr)
 
     def test_renderer_rejects_duplicate_owner_id(self) -> None:
         duplicate = ASSETS.replace("Owner ID: package:core", "Owner ID: shared")
-        rendered, _ = self.render(
-            self.make_project(include_voice=False, include_assets=True, asset_text=duplicate)
-        )
+        rendered, _ = self.render(self.make_project(include_voice=False, include_assets=True, asset_text=duplicate))
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("Duplicate Production Asset Owner ID: shared", rendered.stderr)
 
     def test_renderer_rejects_missing_asset_id(self) -> None:
         missing = ASSETS.replace("ID: AST-CORE-HOLOGRAM\n", "", 1)
-        rendered, _ = self.render(
-            self.make_project(include_voice=False, include_assets=True, asset_text=missing)
-        )
+        rendered, _ = self.render(self.make_project(include_voice=False, include_assets=True, asset_text=missing))
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("requires stable ID", rendered.stderr)
 
@@ -218,9 +206,7 @@ class ProjectHtmlProductionAssets(unittest.TestCase):
             "Moment ID: MOM-CORE-ENTRY\nMoment: Entering the Core Trial\nFlow: Entering the Core Trial\n",
             1,
         )
-        rendered, _ = self.render(
-            self.make_project(include_voice=False, include_assets=True, asset_text=legacy)
-        )
+        rendered, _ = self.render(self.make_project(include_voice=False, include_assets=True, asset_text=legacy))
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("Retired Production Asset field is not allowed: Flow", rendered.stderr)
 
@@ -279,9 +265,7 @@ ACTIVE
             "Moment ID: MOM-CORE-ENTRY\nMoment: Renamed Different Moment\nType: UI / TEXT",
             1,
         )
-        rendered, _ = self.render(
-            self.make_project(include_voice=False, include_assets=True, asset_text=conflict)
-        )
+        rendered, _ = self.render(self.make_project(include_voice=False, include_assets=True, asset_text=conflict))
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("conflicting titles", rendered.stderr)
 
@@ -303,9 +287,7 @@ ACTIVE
         without_shared, output_without = self.render(
             self.make_project(include_voice=False, include_assets=True, asset_text=core_section)
         )
-        with_shared, output_with = self.render(
-            self.make_project(include_voice=False, include_assets=True)
-        )
+        with_shared, output_with = self.render(self.make_project(include_voice=False, include_assets=True))
         self.assertEqual(without_shared.returncode, 0, without_shared.stderr or without_shared.stdout)
         self.assertEqual(with_shared.returncode, 0, with_shared.stderr or with_shared.stdout)
         self.assertIn('id="production-assets-core"', output_without.read_text(encoding="utf-8"))
@@ -314,12 +296,10 @@ ACTIVE
         self.assertIn('id="production-assets-core"', html_with)
 
     def test_voice_presentation_uses_shared_parser_and_static_resources(self) -> None:
-        source = (
-            ROOT / "kits" / "prd-creator" / "renderer" / "production_assets.py"
-        ).read_text(encoding="utf-8")
-        compositor = (
-            ROOT / "kits" / "prd-creator" / "renderer" / "production_assets_compositor.py"
-        ).read_text(encoding="utf-8")
+        source = (ROOT / "kits" / "prd-creator" / "renderer" / "production_assets.py").read_text(encoding="utf-8")
+        compositor = (ROOT / "kits" / "prd-creator" / "renderer" / "production_assets_compositor.py").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("from shared.voice import", compositor)
         self.assertNotIn("def parse_voice_production(", source)
         self.assertNotIn("<style id=", source)
