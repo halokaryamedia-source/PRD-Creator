@@ -13,7 +13,7 @@ Latest published repository release: `v0.1`.
 
 PRD Creator package candidate is **v3.0.0** on `develop`. Repository release versioning is separate from package versioning; this candidate does not itself publish a repository tag/release.
 
-Final Package 3.0 validation is **pending** until source/contract cleanup is complete and the full repository/static/regression verification is run on the final `develop` state. No promotion to `Local` is part of the current task.
+Package 3.0 **source/contract cleanup is complete on `develop`**. Final Package 3.0 validation is still **pending** until the full repository/static/regression verification is run on the exact final `develop` state. No promotion to `Local` is part of the current task.
 
 ## Current authority and revision chain
 
@@ -72,20 +72,24 @@ The current candidate intentionally makes machine contracts stricter and incompa
 - Production Assets CSS/JavaScript live in `renderer/static/` and are inlined during standalone HTML generation;
 - delivery publishes a complete version directory transactionally and rolls back on publication failure;
 - parsers expose structured issue identity and source-location diagnostics for machine-facing failures;
+- Flow 2 YAML parse failures preserve the exact state-file path and YAML line through structured issue output;
 - machine YAML uses the duplicate-key-safe shared PyYAML loader and reports parse-line location when available;
 - derived PRD HTML validation is isolated in `validator/html_contract.py` instead of mixed into source/projection validation;
+- top-level PRD page tracking is nesting-safe and does not lose page identity when nested sections appear;
 - Flow 5–7 mechanical domain validation is isolated in `validator/voice_validation.py`; `validate_voice.py` is a thin CLI/public entrypoint;
+- `validator/api.py` does not reimplement projection/requirement checks owned by `prd_validation_engine.py`; it only adds content-purity to the canonical engine result;
 - bilingual validation preserves numeric, percentage, stable-ID, recognized unit, dimension, coordinate, and material-negation invariants across `en`/`id`;
 - renderer/validator business engines use package boundaries; CLI wrappers alone may bootstrap the kit path;
 - active GitHub Actions dependencies are pinned to immutable commit SHAs;
-- runtime and verification dependencies are pinned separately;
-- repository verification treats the Package 3 machine/validator owners as required architecture rather than incidental files.
+- runtime and verification dependencies are pinned separately, including current dev-tool transitive dependencies;
+- Repository / PRD / Voice / Local / Release verification now share the same static-quality contract where applicable;
+- repository verification routing covers all Package 3 implementation owners and workflows.
 
 The protected Golden reference/runtime artifact remains unchanged unless a separate approved design-contract change explicitly authorizes it.
 
 ## Final verification still required
 
-No Package 3.0 readiness claim is made yet. After all source/contract cleanup is complete on `develop`, run one final evidence pass on the exact final HEAD:
+No Package 3.0 readiness claim is made yet. The next evidence step, when explicitly requested, is one final pass on the exact final `develop` HEAD:
 
 ```text
 Repository Verify
@@ -115,7 +119,8 @@ It does **not** establish:
 
 ```text
 develop
-→ active Package 3 development and final verification
+→ Package 3 source/contract cleanup complete
+→ final verification pending
 
 Local
 → protected verified integration baseline
@@ -129,4 +134,4 @@ Promotion `develop → Local` is a separate later action and must not happen unt
 
 ## Current continuation
 
-Finish remaining Package 3 source/contract cleanup on `develop`, then run the single final verification pass described above. Do not open or merge a Local promotion as part of the current task.
+Keep Package 3 on `develop`. Run the single final verification pass only as the next explicit verification step; do not open or merge a Local promotion as part of the current task.
