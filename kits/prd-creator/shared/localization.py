@@ -4,6 +4,7 @@ import re
 from typing import Any
 
 BILINGUAL_SCALAR_FIELDS = {
+    "approved_requirement_sha256",
     "canonical_content_sha256",
     "id",
     "key",
