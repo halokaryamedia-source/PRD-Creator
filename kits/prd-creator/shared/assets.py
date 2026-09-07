@@ -86,8 +86,13 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
     text = path.read_text(encoding="utf-8")
     placeholder = PLACEHOLDER_RE.search(text)
     if placeholder:
-        line = text.count("\n", 0, placeholder.start()) + 1
-        raise _error(path, line, "ASSET_PLACEHOLDER", "Production Asset requirements contain an unresolved placeholder")
+        placeholder_line = text.count("\n", 0, placeholder.start()) + 1
+        raise _error(
+            path,
+            placeholder_line,
+            "ASSET_PLACEHOLDER",
+            "Production Asset requirements contain an unresolved placeholder",
+        )
 
     sections: list[AssetSection] = []
     owner_ids: set[str] = set()

@@ -535,7 +535,7 @@ def glossary(data: dict[str, Any]) -> dict[str, dict[str, str]]:
 
 
 def navigation(data: dict[str, Any]) -> str:
-    links = [
+    links: list[tuple[str, str, Any, Any]] = [
         (
             "summary",
             "01",
@@ -577,10 +577,10 @@ def navigation(data: dict[str, Any]) -> str:
                 )
             )
     groups: list[str] = []
-    for target, index, label, small in links:
+    for target, nav_index, label, small in links:
         groups.append(
             f'<a data-target="{esc(target)}" href="#{esc(target)}">'
-            f'<span class="nav-index">{esc(index)}</span>'
+            f'<span class="nav-index">{esc(nav_index)}</span>'
             f'<span class="nav-copy"><strong>{i18n(label)}</strong>'
             f"<small>{i18n(small)}</small></span></a>"
         )

@@ -205,7 +205,10 @@ def build_index(project: Path, title: str, version: str, status: str, context: s
 
 def _version_key(folder: Path) -> tuple[int, int, int] | None:
     match = SEMVER_RE.fullmatch(folder.name)
-    return tuple(int(part) for part in match.groups()) if match else None
+    if not match:
+        return None
+    major, minor, patch = match.groups()
+    return int(major), int(minor), int(patch)
 
 
 def build_readme(output_root: Path, title: str, version: str, status: str) -> str:
@@ -215,7 +218,8 @@ def build_readme(output_root: Path, title: str, version: str, status: str) -> st
             if item.is_dir() and (key := _version_key(item)) is not None:
                 versions.append((key, item.name))
     current_name = f"v{version}"
-    current_key = tuple(int(part) for part in version.split("."))
+    major, minor, patch = version.split(".")
+    current_key = (int(major), int(minor), int(patch))
     if current_name not in {name for _, name in versions}:
         versions.append((current_key, current_name))
     versions.sort(reverse=True)

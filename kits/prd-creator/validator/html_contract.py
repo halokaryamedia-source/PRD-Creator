@@ -103,7 +103,8 @@ def text_en(value: Any) -> str:
 
 
 def _global_page_id(item: dict[str, Any]) -> str:
-    return GOLDEN_GLOBAL_PAGE_IDS.get(item.get("id"), f"global-{item.get('id', 'section')}")
+    item_id = str(item.get("id") or "section")
+    return GOLDEN_GLOBAL_PAGE_IDS.get(item_id, f"global-{item_id}")
 
 
 def expected_page_ids(data: dict[str, Any]) -> list[str]:

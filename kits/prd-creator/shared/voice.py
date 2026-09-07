@@ -97,10 +97,10 @@ def parse_requirements(path: Path) -> dict[str, VoiceRequirement]:
     text = path.read_text(encoding="utf-8")
     placeholder = PLACEHOLDER_RE.search(text)
     if placeholder:
-        line = text.count("\n", 0, placeholder.start()) + 1
+        placeholder_line = text.count("\n", 0, placeholder.start()) + 1
         raise _error(
             path,
-            line,
+            placeholder_line,
             "VOICE_REQUIREMENT_PLACEHOLDER",
             "flow5.voice_requirement",
             "Voice requirements contain unresolved placeholders",
@@ -362,10 +362,10 @@ def parse_production(path: Path) -> VoiceProduction:
     text = path.read_text(encoding="utf-8")
     placeholder = PLACEHOLDER_RE.search(text)
     if placeholder:
-        line = text.count("\n", 0, placeholder.start()) + 1
+        placeholder_line = text.count("\n", 0, placeholder.start()) + 1
         raise _error(
             path,
-            line,
+            placeholder_line,
             "VOICE_PRODUCTION_PLACEHOLDER",
             "flow6.voice_production",
             "Voice Production contains an unresolved placeholder",
