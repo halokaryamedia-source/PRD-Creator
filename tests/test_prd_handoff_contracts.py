@@ -77,14 +77,18 @@ class PrdHandoffContracts(unittest.TestCase):
         )
         acceptance = acceptance_text(project, status=status)
         (project / "work" / "acceptance.md").write_text(acceptance, encoding="utf-8")
-        state_text = handoff_state_text(current_version).replace(
-            "status: handoff_ready",
-            f"status: {status}",
-            1,
-        ).replace(
-            f"accepted_prd_version: {current_version}",
-            f"accepted_prd_version: {accepted}",
-            1,
+        state_text = (
+            handoff_state_text(current_version)
+            .replace(
+                "status: handoff_ready",
+                f"status: {status}",
+                1,
+            )
+            .replace(
+                f"accepted_prd_version: {current_version}",
+                f"accepted_prd_version: {accepted}",
+                1,
+            )
         )
         (project / "state" / "handoff-state.yaml").write_text(state_text, encoding="utf-8")
         return project
@@ -209,11 +213,7 @@ class PrdHandoffContracts(unittest.TestCase):
                 path = project / "work" / "acceptance.md"
                 lines = path.read_text(encoding="utf-8").splitlines()
                 path.write_text(
-                    "\n".join(
-                        f"{label}: {value}" if line.startswith(f"{label}:") else line
-                        for line in lines
-                    )
-                    + "\n",
+                    "\n".join(f"{label}: {value}" if line.startswith(f"{label}:") else line for line in lines) + "\n",
                     encoding="utf-8",
                 )
                 validated = self.validate(project)
