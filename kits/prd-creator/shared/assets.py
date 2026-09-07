@@ -131,7 +131,13 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     field="Owner ID",
                 )
             if owner_id in owner_ids:
-                raise _error(path, line_number, "ASSET_OWNER_DUPLICATE", f"Duplicate Production Asset Owner ID: {owner_id}", field="Owner ID")
+                raise _error(
+                    path,
+                    line_number,
+                    "ASSET_OWNER_DUPLICATE",
+                    f"Duplicate Production Asset Owner ID: {owner_id}",
+                    field="Owner ID",
+                )
             current_section.owner_id = owner_id
             owner_ids.add(owner_id)
             i += 1
@@ -157,7 +163,12 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                 )
             assert current_section is not None
             if category in current_section.categories:
-                raise _error(path, line_number, "ASSET_CATEGORY_DUPLICATE", f"Duplicate Production Asset category in one section: {category}")
+                raise _error(
+                    path,
+                    line_number,
+                    "ASSET_CATEGORY_DUPLICATE",
+                    f"Duplicate Production Asset category in one section: {category}",
+                )
             current_section.categories[category] = []
             current_category = category
             i += 1
@@ -165,7 +176,12 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
 
         if line.startswith("#### "):
             if current_section is None or current_category is None:
-                raise _error(path, line_number, "ASSET_ENTRY_ORPHANED", "Production Asset entry appears before its section/category")
+                raise _error(
+                    path,
+                    line_number,
+                    "ASSET_ENTRY_ORPHANED",
+                    "Production Asset entry appears before its section/category",
+                )
             entry_line = line_number
             title = line[5:].strip()
             if not title:
@@ -181,45 +197,110 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
                     break
                 if meta.strip() == "Content:":
                     if content:
-                        raise _error(path, meta_line, "ASSET_CONTENT_DUPLICATE", f"Duplicate Content block for Production Asset: {title}", field="Content")
+                        raise _error(
+                            path,
+                            meta_line,
+                            "ASSET_CONTENT_DUPLICATE",
+                            f"Duplicate Content block for Production Asset: {title}",
+                            field="Content",
+                        )
                     i += 1
                     if i >= len(lines) or not lines[i].strip().startswith("```"):
-                        raise _error(path, meta_line, "ASSET_CONTENT_FENCE", f"Production Asset Content for {title} must use a fenced text block", field="Content")
+                        raise _error(
+                            path,
+                            meta_line,
+                            "ASSET_CONTENT_FENCE",
+                            f"Production Asset Content for {title} must use a fenced text block",
+                            field="Content",
+                        )
                     i += 1
                     body: list[str] = []
                     while i < len(lines) and lines[i].strip() != "```":
                         body.append(lines[i].rstrip())
                         i += 1
                     if i >= len(lines):
-                        raise _error(path, meta_line, "ASSET_CONTENT_UNCLOSED", f"Unclosed Content block for Production Asset: {title}", field="Content")
+                        raise _error(
+                            path,
+                            meta_line,
+                            "ASSET_CONTENT_UNCLOSED",
+                            f"Unclosed Content block for Production Asset: {title}",
+                            field="Content",
+                        )
                     content = "\n".join(body).strip()
                 elif ":" in meta:
                     key, value = (part.strip() for part in meta.split(":", 1))
                     if key in RETIRED_FIELDS:
-                        raise _error(path, meta_line, "ASSET_FIELD_RETIRED", f"Retired Production Asset field is not allowed: {key}", field=key)
+                        raise _error(
+                            path,
+                            meta_line,
+                            "ASSET_FIELD_RETIRED",
+                            f"Retired Production Asset field is not allowed: {key}",
+                            field=key,
+                        )
                     if key not in ALLOWED_FIELDS:
-                        raise _error(path, meta_line, "ASSET_FIELD_UNSUPPORTED", f"Unsupported Production Asset field: {key}", field=key)
+                        raise _error(
+                            path,
+                            meta_line,
+                            "ASSET_FIELD_UNSUPPORTED",
+                            f"Unsupported Production Asset field: {key}",
+                            field=key,
+                        )
                     if key in fields:
-                        raise _error(path, meta_line, "ASSET_FIELD_DUPLICATE", f"Duplicate Production Asset field {key}: {title}", field=key)
+                        raise _error(
+                            path,
+                            meta_line,
+                            "ASSET_FIELD_DUPLICATE",
+                            f"Duplicate Production Asset field {key}: {title}",
+                            field=key,
+                        )
                     fields[key] = value
                     field_lines[key] = meta_line
                 elif meta.strip():
-                    raise _error(path, meta_line, "ASSET_LINE_UNRECOGNIZED", f"Unrecognized Production Asset line under {title}: {meta.strip()}")
+                    raise _error(
+                        path,
+                        meta_line,
+                        "ASSET_LINE_UNRECOGNIZED",
+                        f"Unrecognized Production Asset line under {title}: {meta.strip()}",
+                    )
                 i += 1
 
             asset_id = fields.get("ID", "")
             if not ASSET_ID_RE.fullmatch(asset_id):
-                raise _error(path, field_lines.get("ID", entry_line), "ASSET_ID_INVALID", f"Production Asset {title} requires stable ID in AST-... form", field="ID")
+                raise _error(
+                    path,
+                    field_lines.get("ID", entry_line),
+                    "ASSET_ID_INVALID",
+                    f"Production Asset {title} requires stable ID in AST-... form",
+                    field="ID",
+                )
             if asset_id in asset_ids:
-                raise _error(path, field_lines.get("ID", entry_line), "ASSET_ID_DUPLICATE", f"Duplicate Production Asset ID: {asset_id}", field="ID")
+                raise _error(
+                    path,
+                    field_lines.get("ID", entry_line),
+                    "ASSET_ID_DUPLICATE",
+                    f"Duplicate Production Asset ID: {asset_id}",
+                    field="ID",
+                )
             asset_ids.add(asset_id)
 
             moment_id = fields.get("Moment ID", "")
             moment = fields.get("Moment", "")
             if not MOMENT_ID_RE.fullmatch(moment_id):
-                raise _error(path, field_lines.get("Moment ID", entry_line), "ASSET_MOMENT_ID_INVALID", f"Production Asset {asset_id} requires stable Moment ID in MOM-... form", field="Moment ID")
+                raise _error(
+                    path,
+                    field_lines.get("Moment ID", entry_line),
+                    "ASSET_MOMENT_ID_INVALID",
+                    f"Production Asset {asset_id} requires stable Moment ID in MOM-... form",
+                    field="Moment ID",
+                )
             if not moment:
-                raise _error(path, field_lines.get("Moment", entry_line), "ASSET_MOMENT_MISSING", f"Production Asset {asset_id} requires Moment", field="Moment")
+                raise _error(
+                    path,
+                    field_lines.get("Moment", entry_line),
+                    "ASSET_MOMENT_MISSING",
+                    f"Production Asset {asset_id} requires Moment",
+                    field="Moment",
+                )
             previous_title = current_section.moment_titles.get(moment_id)
             if previous_title is not None and previous_title != moment:
                 raise _error(
@@ -236,15 +317,35 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
             type_label = fields.get("Type") or DEFAULT_TYPE[current_category]
             if type_label not in CATEGORY_TYPE[current_category]:
                 allowed = ", ".join(sorted(CATEGORY_TYPE[current_category]))
-                raise _error(path, field_lines.get("Type", entry_line), "ASSET_TYPE_INVALID", f"Production Asset {asset_id} type {type_label!r} is invalid for {current_category}; expected {allowed}", field="Type")
+                raise _error(
+                    path,
+                    field_lines.get("Type", entry_line),
+                    "ASSET_TYPE_INVALID",
+                    f"Production Asset {asset_id} type {type_label!r} is invalid for {current_category}; expected {allowed}",
+                    field="Type",
+                )
             function_text = fields.get("Function", "")
             if not function_text:
-                raise _error(path, field_lines.get("Function", entry_line), "ASSET_FUNCTION_MISSING", f"Production Asset {asset_id} requires Function", field="Function")
+                raise _error(
+                    path,
+                    field_lines.get("Function", entry_line),
+                    "ASSET_FUNCTION_MISSING",
+                    f"Production Asset {asset_id} requires Function",
+                    field="Function",
+                )
             brief = fields.get("Asset Brief") or fields.get("Visual Brief") or fields.get("Audio Brief") or ""
             if type_label == "UI / TEXT" and not content:
-                raise _error(path, entry_line, "ASSET_CONTENT_MISSING", f"UI / TEXT Production Asset {asset_id} requires exact Content", field="Content")
+                raise _error(
+                    path,
+                    entry_line,
+                    "ASSET_CONTENT_MISSING",
+                    f"UI / TEXT Production Asset {asset_id} requires exact Content",
+                    field="Content",
+                )
             if type_label in {"MODEL", "ITEM", "PARTICLE", "AUDIO"} and not brief:
-                raise _error(path, entry_line, "ASSET_BRIEF_MISSING", f"Production Asset {asset_id} requires a production brief")
+                raise _error(
+                    path, entry_line, "ASSET_BRIEF_MISSING", f"Production Asset {asset_id} requires a production brief"
+                )
 
             current_section.categories[current_category].append(
                 AssetEntry(
@@ -265,7 +366,13 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
         i += 1
 
     if current_section is not None and not current_section.owner_id:
-        raise _error(path, current_section_line, "ASSET_OWNER_MISSING", f"Production Asset section {current_section.title!r} requires Owner ID", field="Owner ID")
+        raise _error(
+            path,
+            current_section_line,
+            "ASSET_OWNER_MISSING",
+            f"Production Asset section {current_section.title!r} requires Owner ID",
+            field="Owner ID",
+        )
     if not sections:
         raise _error(path, None, "ASSET_SECTION_MISSING", "Production Asset requirements contain no sections")
     if not asset_ids:
@@ -275,4 +382,10 @@ def parse_asset_requirements(path: Path) -> AssetRequirements:
 
 def _require_section_owner(path: Path, section: AssetSection | None, line: int, context: str) -> None:
     if section is None or not section.owner_id:
-        raise _error(path, line, "ASSET_OWNER_MISSING", f"{context} requires a Production Asset section with Owner ID", field="Owner ID")
+        raise _error(
+            path,
+            line,
+            "ASSET_OWNER_MISSING",
+            f"{context} requires a Production Asset section with Owner ID",
+            field="Owner ID",
+        )
