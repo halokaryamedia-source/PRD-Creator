@@ -13,8 +13,12 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 KIT_ROOT = HERE.parent
-if __package__ in (None, "") and str(KIT_ROOT) not in sys.path:
-    sys.path.insert(0, str(KIT_ROOT))
+if __package__ in (None, ""):
+    if str(KIT_ROOT) not in sys.path:
+        sys.path.insert(0, str(KIT_ROOT))
+    from validator import validate_handoff as handoff_validator
+else:
+    from . import validate_handoff as handoff_validator
 
 from shared.handoff import load_handoff_state
 from shared.lifecycle import VoiceState, load_voice_state
@@ -51,11 +55,12 @@ VOICE_ACCEPTANCE_REQUIRED = {
 VOICE_ACCEPTED_SHA_LABEL = "Accepted Voice Production SHA256"
 
 
-def _load_render_data(project: Path) -> tuple[dict[str, Any], str]:
+def _load_render_data(project: Path) -> tuple[dict[str, Any], str, str]:
     path = project / "work" / "render-data.json"
     if not path.is_file():
         raise ValueError("Current render-data.json is missing for Voice revision identity")
-    data = json.loads(path.read_text(encoding="utf-8"))
+    raw = path.read_bytes()
+    data = json.loads(raw.decode("utf-8"))
     if not isinstance(data, dict):
         raise ValueError("Current render-data.json root must be an object")
     document = data.get("document")
@@ -64,11 +69,16 @@ def _load_render_data(project: Path) -> tuple[dict[str, Any], str]:
     revision = str(document.get("version") or "").strip()
     if not revision:
         raise ValueError("Current render-data document.version is required for Voice")
-    return data, revision
+    return data, revision, hashlib.sha256(raw).hexdigest()
 
 
 def _accepted_revision(project: Path, voice_state: VoiceState) -> tuple[str, list[str]]:
     issues: list[str] = []
+    upstream = handoff_validator.validate(project)
+    if upstream.get("status") != "pass":
+        detail = "; ".join(str(item) for item in upstream.get("errors", [])[:5]) or "unknown handoff failure"
+        issues.append("Upstream PRD handoff validation failed: " + detail)
+
     try:
         handoff_path = resolve_project_path(
             project,
@@ -78,7 +88,7 @@ def _accepted_revision(project: Path, voice_state: VoiceState) -> tuple[str, lis
         )
         handoff = load_handoff_state(handoff_path)
     except (ProjectPathError, StateError) as exc:
-        return "", [str(exc)]
+        return "", [*issues, str(exc)]
     if handoff.status != "handoff_ready":
         issues.append(f"Upstream PRD handoff status is {handoff.status!r}, expected 'handoff_ready'")
     return handoff.accepted_prd_version, issues
@@ -88,14 +98,23 @@ def _state_identity_issues(
     voice_state: VoiceState,
     accepted_revision: str,
     current_revision: str,
+    current_render_sha: str,
 ) -> list[str]:
     issues: list[str] = []
+    if voice_state.source_handoff != "state/handoff-state.yaml":
+        issues.append(
+            f"voice-state source_handoff={voice_state.source_handoff!r}, expected 'state/handoff-state.yaml'"
+        )
     for label, value in {
         "voice-state source_prd_revision": voice_state.source_prd_revision,
         "current render-data document.version": current_revision,
     }.items():
         if value != accepted_revision:
             issues.append(f"{label}={value!r}, expected current accepted PRD revision {accepted_revision!r}")
+    if voice_state.source_prd_sha256 != current_render_sha:
+        issues.append(
+            "voice-state source_prd_sha256 does not match current accepted work/render-data.json bytes"
+        )
     canonical = {
         "canonical_prd": "work/content.md",
         "requirements": "work/voice-requirements.md",
@@ -315,9 +334,16 @@ def validate(project: Path) -> dict[str, Any]:
             + ", ".join(sorted(VALIDATABLE_STATUSES))
         )
 
-    render_data, current_revision = _load_render_data(project)
+    render_data, current_revision, current_render_sha = _load_render_data(project)
     accepted_revision, issues = _accepted_revision(project, voice_state)
-    issues.extend(_state_identity_issues(voice_state, accepted_revision, current_revision))
+    issues.extend(
+        _state_identity_issues(
+            voice_state,
+            accepted_revision,
+            current_revision,
+            current_render_sha,
+        )
+    )
 
     if voice_state.status == "no_voice_required":
         return _result(voice_state, issues, 0, 0, 0, "not_applicable")
