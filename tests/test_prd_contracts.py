@@ -302,9 +302,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         payload = json.loads(validated.stdout)
         page_check = next(
-            item
-            for item in payload["checks"]
-            if item["check"] == "generated_page_set_matches_current_render_data"
+            item for item in payload["checks"] if item["check"] == "generated_page_set_matches_current_render_data"
         )
         self.assertIn("additive Production Assets pages: 1", page_check["detail"])
 
@@ -322,11 +320,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         stale = self.validate(project)
         self.assertEqual(stale.returncode, 1)
         payload = json.loads(stale.stdout)
-        check = next(
-            item
-            for item in payload["checks"]
-            if item["check"] == "html_matches_current_asset_requirements"
-        )
+        check = next(item for item in payload["checks"] if item["check"] == "html_matches_current_asset_requirements")
         self.assertIn("stale", check["detail"])
 
     def test_validator_rejects_stale_asset_binding_after_source_removal(self) -> None:
@@ -339,11 +333,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         stale = self.validate(project)
         self.assertEqual(stale.returncode, 1)
         payload = json.loads(stale.stdout)
-        check = next(
-            item
-            for item in payload["checks"]
-            if item["check"] == "html_matches_current_asset_requirements"
-        )
+        check = next(item for item in payload["checks"] if item["check"] == "html_matches_current_asset_requirements")
         self.assertIn("binding", check["detail"])
 
     def test_current_validator_and_renderer_use_named_package_engines(self) -> None:
