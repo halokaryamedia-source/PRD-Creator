@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """CLI for the canonical Voice lifecycle validator."""
+
 from __future__ import annotations
 
 import argparse
