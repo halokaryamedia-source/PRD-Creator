@@ -321,7 +321,8 @@ def _reader_section_title(meta: SectionPresentation) -> str:
     label = txt(meta.package_label)["en"].strip()
     name = meta.title.strip()
     if label.casefold().startswith("objective"):
-        return f"{label} · {re.sub(r'^The\s+', '', name, flags=re.I)}"
+        name = re.sub(r"^The\s+", "", name, flags=re.I)
+        return f"{label} · {name}"
     if label.casefold() == "introduction":
         return f"Introduction · {name}"
     if label.casefold() == "ending":
