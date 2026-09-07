@@ -304,7 +304,8 @@ ACTIVE
         )
         self.assertIn("from shared.voice import", compositor)
         self.assertNotIn("def parse_voice_production(", source)
-        self.assertNotIn("<style id=", source)
+        self.assertIn('_static_text("production-assets.css")', source)
+        self.assertIn('_static_text("production-assets.js")', source)
         self.assertTrue((ROOT / "kits" / "prd-creator" / "renderer" / "static" / "production-assets.css").is_file())
         self.assertTrue((ROOT / "kits" / "prd-creator" / "renderer" / "static" / "production-assets.js").is_file())
 

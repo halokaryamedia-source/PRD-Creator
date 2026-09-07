@@ -46,7 +46,7 @@ class ProjectDocumentContentPurity(unittest.TestCase):
         self.assertIn("document-contract narration", joined)
         self.assertIn("visible page-role narration", joined)
         self.assertIn("generic", joined)
-        self.assertIn("plain note strings render as generic Important Note cards", joined)
+        self.assertIn("must use a semantic title + description", joined)
 
     def test_accepts_project_facing_content_and_semantic_note_titles(self) -> None:
         data = {

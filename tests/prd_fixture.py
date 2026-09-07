@@ -47,6 +47,7 @@ def global_section(section_id: str, title: str, purpose: str) -> dict:
 
 def render_data() -> dict:
     return {
+        "approved_requirement_sha256": "0" * 64,
         "canonical_content_sha256": "0" * 64,
         "document": {
             "title": "Contract Fixture",
@@ -338,6 +339,7 @@ def write_base_project(project: Path, data: dict | None = None) -> dict:
     content_path = project / "work" / "content.md"
     content_path.write_text(content_text(), encoding="utf-8")
     payload = data if data is not None else render_data()
+    payload["approved_requirement_sha256"] = requirement_sha
     payload["canonical_content_sha256"] = hashlib.sha256(content_path.read_bytes()).hexdigest()
     write_render_data(project, payload)
     return payload
