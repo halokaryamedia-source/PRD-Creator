@@ -21,11 +21,22 @@ python kits/prd-creator/validator/validate_voice.py \
   workspace/active/<project>/
 ```
 
+Every validatable Voice state first reruns the canonical PRD handoff validator. Voice cannot remain current when Flow 4 acceptance/delivery is stale.
+
+Voice source identity is exact:
+
+```text
+source_prd_revision
++ source_prd_sha256
+```
+
+`source_prd_sha256` must equal the exact current accepted `work/render-data.json` bytes. This applies to `no_voice_required` as well as Voice-producing states.
+
 The validator is lifecycle-aware:
 
 ```text
 voice_requirements_ready
-→ validate Flow 5 requirement/revision/topology only
+→ validate current upstream handoff + exact PRD bytes + Flow 5 requirement/topology only
 
 voice_script_ready | voice_validation | needs_revision
 → also validate production source binding + Owner/Type/Speaker parity + HTML freshness when provided
@@ -36,7 +47,8 @@ voice_delivery_ready
 
 Mechanical validation proves:
 
-- accepted PRD revision identity is current;
+- canonical PRD handoff still passes in full;
+- accepted PRD version **and exact render-data SHA** remain current;
 - Voice state uses the one strict schema and safe project-relative paths;
 - Flow 5 requirements use valid Owner ID + Moment ID topology;
 - Flow 6 binds exact current requirement bytes;
@@ -107,8 +119,8 @@ The production SHA is required for `voice_delivery_ready`. Any canonical product
 ## First wrong owner
 
 ```text
-project/gameplay/story fact
-→ PRD authority
+project/gameplay/story fact or stale PRD handoff
+→ PRD / Flow 4 authority
 
 Voice scope / Owner ID / Moment ID / Speaker / Channel / Trigger / Purpose / required communication / source timing
 → Flow 5
@@ -127,6 +139,8 @@ generated-audio-only issue
 
 Default non-audio `voice_delivery_ready` requires:
 
+- current upstream handoff Mechanical PASS;
+- exact Voice source PRD revision + render-data SHA match;
 - lifecycle Mechanical PASS;
 - Communication Conservation PASS;
 - Voice Script Readiness PASS;
