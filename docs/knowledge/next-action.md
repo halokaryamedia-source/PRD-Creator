@@ -2,24 +2,23 @@
 
 ## Current Status
 
-`PACKAGE_3_LOCAL_SYNCHRONIZATION_IN_PROGRESS`
+`PACKAGE_3_DEVELOPMENT_IN_PROGRESS`
 
-Repository governance and the published `v0.1` stable release remain intact. The active requested task is a bounded PRD-Creator Package 3.0 contract/source synchronization targeted at `Local`; final verification has not yet been claimed.
+Repository governance and the published `v0.1` stable release remain intact. The active requested task is PRD-Creator Package 3.0 source/contract synchronization on `develop`; final verification has not yet been claimed.
 
 Current relevant branch roles:
 
-- `Local` → protected milestone/integration target for this requested synchronization;
-- `local-*` → temporary bounded candidate branch, permitted only when it contains one candidate commit directly parented on current `Local` at final verification time;
-- `develop` → retained repository Development branch, but not the target of the current requested hardening task;
+- `develop` → active Package 3 development branch for this task;
+- `Local` → protected verified integration baseline; do not modify during the current task;
 - `main` → stable repository history.
 
-`Local` remains protected by PR/squash/linear-history policy and `Local promotion gate`. Do not force-update `Local` or bypass repository rules.
+The previous Local-targeted PR was closed without merge. Do not open or merge a Local promotion until explicitly requested after development and final verification are complete.
 
 ## Active Boundary
 
 Current work is **source/contract professionalization**, not live-project output repair.
 
-The Package 3 candidate is intended to synchronize the whole production chain:
+The Package 3 candidate must synchronize the whole production chain:
 
 ```text
 Flow 2 exact requirement approval
@@ -50,13 +49,12 @@ Do not reintroduce compatibility aliases merely to preserve old internal project
 
 ## Next Step
 
-**Finish the remaining Package 3 source/contract cleanup on the bounded Local candidate.**
+**Finish all remaining Package 3 source/contract cleanup on `develop`.**
 
-Before any merge:
+Before any Local promotion:
 
-1. audit repository/source metadata for stale Package 2 or develop-only continuation language;
-2. ensure repository verification owns all new Package 3 architecture files;
-3. reduce the candidate to exactly one commit whose parent is the current `Local` HEAD;
-4. only then run the single final Repository / static / full regression / PRD / Voice / Local-promotion verification pass;
-5. if a gate fails, fix the first wrong owner and recreate the one-commit candidate before retesting;
-6. do not merge into `Local` until that exact candidate is fully verified.
+1. complete the remaining static audit for stale vocabulary, duplicated ownership, parser diagnostics, and branch-routing metadata;
+2. keep repository verification aligned with all Package 3 architecture owners;
+3. run one final Repository / Ruff / mypy / full regression / PRD / Voice / coverage pass only after source cleanup is complete;
+4. if a gate fails, fix the first wrong owner on `develop` and rerun the final pass;
+5. do not merge or otherwise update `Local` until a later explicit promotion request.
