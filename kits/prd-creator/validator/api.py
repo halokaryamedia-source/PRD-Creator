@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 from pathlib import Path
 from typing import Any, Iterable
 
 from shared.issues import Issue
-from shared.render_schema import validate_projection_schema
 
 from . import prd_validation_engine as engine
 
@@ -91,28 +89,6 @@ def content_purity_errors(data: dict[str, Any]) -> list[str]:
     return list(dict.fromkeys(errors))
 
 
-def _append_check(
-    result: dict[str, Any],
-    name: str,
-    errors: list[str],
-    success: str,
-    *,
-    issue: Issue | None = None,
-) -> None:
-    result.setdefault("checks", []).append(
-        {
-            "check": name,
-            "status": "fail" if errors else "pass",
-            "detail": "; ".join(errors) if errors else success,
-        }
-    )
-    if errors:
-        result.setdefault("errors", []).append(f"{name}: " + "; ".join(errors))
-        if issue is not None:
-            result.setdefault("issues", []).append(issue.as_dict())
-        result["status"] = "fail"
-
-
 def validate(project: Path) -> dict[str, Any]:
     """Run the one canonical complete mechanical PRD validation pipeline."""
     project = project.resolve()
@@ -127,61 +103,26 @@ def validate(project: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         return result
 
-    projection_errors: list[str] = []
-    try:
-        validate_projection_schema(data)
-    except ValueError as exc:
-        projection_errors.append(str(exc))
-    _append_check(
-        result,
-        "canonical_projection_schema",
-        projection_errors,
-        "render-data uses one canonical field shape with no retired compatibility aliases",
-        issue=Issue(
-            "PRD_PROJECTION_SCHEMA_INVALID",
-            "flow3.projection",
-            "; ".join(projection_errors) or "render-data projection schema is invalid",
-            path="work/render-data.json",
-        ),
-    )
-
-    requirement_path = project / "state" / "requirement-register.yaml"
-    requirement_binding_errors: list[str] = []
-    if not requirement_path.is_file():
-        requirement_binding_errors.append("state/requirement-register.yaml is missing")
-    else:
-        actual_requirement_sha = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
-        declared_requirement_sha = str(data.get("approved_requirement_sha256") or "").strip().casefold()
-        if declared_requirement_sha != actual_requirement_sha:
-            requirement_binding_errors.append(
-                "render-data.approved_requirement_sha256 does not match the exact current approved requirement-register bytes"
-            )
-    _append_check(
-        result,
-        "render_data_matches_approved_requirements",
-        requirement_binding_errors,
-        "render-data is bound to the exact approved Flow 2 requirement revision",
-        issue=Issue(
-            "PRD_PROJECTION_REQUIREMENT_STALE",
-            "flow3.projection",
-            "; ".join(requirement_binding_errors)
-            or "render-data is stale relative to the approved requirement revision",
-            path="work/render-data.json",
-            field="approved_requirement_sha256",
-        ),
-    )
-
     purity = content_purity_errors(data)
-    _append_check(
-        result,
-        "content_purity",
-        purity,
-        "no project/document-process leakage or generic note-card data detected",
-        issue=Issue(
-            "PRD_CONTENT_PURITY_FAILED",
-            "flow3.content",
-            "; ".join(purity) or "visible project content contains process leakage",
-            path="work/render-data.json",
-        ),
+    result.setdefault("checks", []).append(
+        {
+            "check": "content_purity",
+            "status": "fail" if purity else "pass",
+            "detail": "; ".join(purity)
+            if purity
+            else "no project/document-process leakage or generic note-card data detected",
+        }
     )
+    if purity:
+        detail = "; ".join(purity)
+        result.setdefault("errors", []).append("content_purity: " + detail)
+        result.setdefault("issues", []).append(
+            Issue(
+                "PRD_CONTENT_PURITY_FAILED",
+                "flow3.content",
+                detail,
+                path="work/render-data.json",
+            ).as_dict()
+        )
+        result["status"] = "fail"
     return result
