@@ -82,6 +82,16 @@ class TemplateAdapter:
         start, end = self._element_range(marker, tag, label)
         self.source = self.source[:start] + inner + self.source[end:]
 
+    def append_inner(self, marker: str, tag: str, addition: str, label: str) -> None:
+        """Append derived content inside one existing Golden container.
+
+        Additive extensions such as 04 Production Assets use this method instead of
+        performing independent regex/string surgery against the rendered document.
+        """
+
+        _start, end = self._element_range(marker, tag, label)
+        self.source = self.source[:end] + addition + self.source[end:]
+
     def set_document_languages(self, languages: list[str]) -> None:
         matches = list(HTML_TAG_RE.finditer(self.source))
         if len(matches) != 1:
@@ -99,8 +109,14 @@ class TemplateAdapter:
     def set_navigation(self, html: str) -> None:
         self.replace_inner('<nav class="sidebar-nav">', "nav", html, "sidebar navigation marker")
 
+    def append_navigation(self, html: str) -> None:
+        self.append_inner('<nav class="sidebar-nav">', "nav", html, "sidebar navigation marker")
+
     def set_document_main(self, html: str) -> None:
         self.replace_inner('<main class="document-main">', "main", html, "document main marker")
+
+    def append_document_main(self, html: str) -> None:
+        self.append_inner('<main class="document-main">', "main", html, "document main marker")
 
     def set_glossary_assignment(self, json_text: str) -> None:
         self.replace_regex_once(
