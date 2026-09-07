@@ -10,6 +10,10 @@ from yaml.nodes import MappingNode
 class StateError(ValueError):
     """Raised when a persisted machine-state document violates its YAML contract."""
 
+    def __init__(self, message: str, *, line: int | None = None) -> None:
+        self.line = line
+        super().__init__(message)
+
 
 class _UniqueKeyLoader(yaml.SafeLoader):
     """Safe YAML loader that rejects duplicate mapping keys instead of overwriting them."""
@@ -23,12 +27,13 @@ def _construct_unique_mapping(
     mapping: dict[Any, Any] = {}
     for key_node, value_node in node.value:
         key = loader.construct_object(key_node, deep=deep)
+        line = key_node.start_mark.line + 1
         try:
             duplicate = key in mapping
         except TypeError as exc:
-            raise StateError("YAML mapping keys must be hashable scalars") from exc
+            raise StateError("YAML mapping keys must be hashable scalars", line=line) from exc
         if duplicate:
-            raise StateError(f"duplicate YAML mapping key: {key!r}")
+            raise StateError(f"duplicate YAML mapping key: {key!r}", line=line)
         mapping[key] = loader.construct_object(value_node, deep=deep)
     return mapping
 
@@ -45,10 +50,15 @@ def load_mapping(path: Path, *, owner: str | None = None) -> dict[str, Any]:
         raise StateError(f"missing state file: {path}")
     try:
         value = yaml.load(path.read_text(encoding="utf-8"), Loader=_UniqueKeyLoader)
-    except StateError:
+    except StateError as exc:
+        if exc.line is not None:
+            raise StateError(f"{label}:{exc.line}: {exc}", line=exc.line) from exc
         raise
     except yaml.YAMLError as exc:
-        raise StateError(f"{label} is not valid YAML: {exc}") from exc
+        mark = getattr(exc, "problem_mark", None)
+        line = mark.line + 1 if mark is not None else None
+        location = f" at line {line}" if line is not None else ""
+        raise StateError(f"{label} is not valid YAML{location}: {exc}", line=line) from exc
     if value is None:
         return {}
     if not isinstance(value, dict):
