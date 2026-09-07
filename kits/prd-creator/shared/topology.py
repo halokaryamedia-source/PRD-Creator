@@ -39,11 +39,7 @@ def owner_targets(render_data: dict[str, Any]) -> dict[str, OwnerTarget]:
         flow_id = str(flow.get("id") or "")
         if not flow_id or flow_id in package_ids:
             continue
-        label = (
-            {"en": "Introduction", "id": "Introduction"}
-            if index == 0
-            else {"en": "Journey", "id": "Journey"}
-        )
+        label = {"en": "Introduction", "id": "Introduction"} if index == 0 else {"en": "Journey", "id": "Journey"}
         targets[f"journey:{flow_id}"] = OwnerTarget(
             f"journey:{flow_id}",
             _text_en(flow.get("title")) or flow_id,
@@ -59,8 +55,7 @@ def owner_targets(render_data: dict[str, Any]) -> dict[str, OwnerTarget]:
         targets[f"package:{package_id}"] = OwnerTarget(
             f"package:{package_id}",
             _text_en(package.get("title")) or package_id,
-            package.get("package_label")
-            or {"en": f"Gameplay {index}", "id": f"Gameplay {index}"},
+            package.get("package_label") or {"en": f"Gameplay {index}", "id": f"Gameplay {index}"},
             "package",
             package_id,
         )
