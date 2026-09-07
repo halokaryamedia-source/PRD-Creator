@@ -2,18 +2,18 @@
 
 Updated: 2026-09-07
 
-This file records the current validation boundary for the PRD-Creator 3.0 synchronization candidate. It must distinguish **implemented source state** from **final verification evidence**.
+This file records the current validation boundary for the PRD-Creator 3.0 synchronization work. It distinguishes implemented source state from final verification evidence.
 
 ## Current system state
 
-Target working milestone: `Local`.  
-Current bounded candidate: `local-sync-hardening` → `Local`.  
+Working branch: `develop`.  
+Verified integration baseline: `Local`.  
 Stable branch: `main`.  
 Latest published repository release: `v0.1`.
 
-PRD Creator package remains **v3.0.0** in the current Local synchronization candidate. Repository release versioning is separate from package versioning; this package candidate does not itself publish a repository tag/release.
+PRD Creator package candidate is **v3.0.0** on `develop`. Repository release versioning is separate from package versioning; this candidate does not itself publish a repository tag/release.
 
-Final Package 3.0 validation is **pending** until source/contract cleanup is complete and the full repository/static/regression/promotion gate is run once on the final one-commit Local candidate.
+Final Package 3.0 validation is **pending** until source/contract cleanup is complete and the full repository/static/regression verification is run on the final `develop` state. No promotion to `Local` is part of the current task.
 
 ## Current authority and revision chain
 
@@ -78,19 +78,20 @@ The protected Golden reference/runtime artifact remains unchanged unless a separ
 
 ## Final verification still required
 
-No Package 3.0 readiness claim is made yet. The final candidate must first be reduced to **one commit whose parent is current `Local`**, then the following evidence must all pass on that exact commit:
+No Package 3.0 readiness claim is made yet. After all source/contract cleanup is complete on `develop`, run one final evidence pass on the exact final HEAD:
 
 ```text
 Repository Verify
-→ static quality across shared + validator + renderer
+→ Ruff format check
+→ Ruff lint/import check
+→ mypy shared + renderer + validator
 → full test_*.py regression suite
 → PRD Verify
 → Voice Verify
-→ Local promotion gate
 → coverage report
 ```
 
-If any gate fails, fix the first wrong owner, recreate the one-commit candidate, and rerun the final verification. Do not weaken a contract merely to recover a green check.
+If any gate fails, fix the first wrong owner on `develop` and rerun the final verification. Do not weaken a contract merely to recover a green check.
 
 ## Evidence boundaries
 
@@ -106,23 +107,19 @@ It does **not** establish:
 ## Branch/history boundary
 
 ```text
-Local
-→ milestone integration target
-→ one approved promotion = one squash commit
-
-local-* candidate
-→ allowed only as a bounded one-commit candidate parented directly on current Local
-
 develop
-→ may be resynchronized from Local when that workflow is needed again
+→ active Package 3 development and final verification
+
+Local
+→ protected verified integration baseline
+→ unchanged during the current task
 
 main
 → stable repository history
-→ explicit Local stable promotion only
 ```
 
-`Local` remains protected; direct force updates are not part of the workflow.
+Promotion `develop → Local` is a separate later action and must not happen until explicitly requested after the development state is accepted.
 
 ## Current continuation
 
-Complete remaining source/contract cleanup on the bounded Local candidate, recreate it as one commit against current `Local`, then run the single final verification pass described above. Do not merge the candidate before that evidence is complete.
+Finish remaining Package 3 source/contract cleanup on `develop`, then run the single final verification pass described above. Do not open or merge a Local promotion as part of the current task.
