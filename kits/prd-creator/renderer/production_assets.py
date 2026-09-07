@@ -3,8 +3,9 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from .core import esc
 from shared.voice import PERFORMANCE_TAG_LINE_RE
+
+from .core import esc
 
 PERFORMANCE_TAG_RE = re.compile(r"\[[^\[\]\r\n]+\]")
 STYLE_MARKER = 'id="production-assets-style"'
@@ -21,8 +22,7 @@ def performance_html(performance: str) -> str:
             continue
         if PERFORMANCE_TAG_LINE_RE.fullmatch(stripped):
             tags = "".join(
-                f'<span class="voice-performance-tag">{esc(tag)}</span>'
-                for tag in PERFORMANCE_TAG_RE.findall(stripped)
+                f'<span class="voice-performance-tag">{esc(tag)}</span>' for tag in PERFORMANCE_TAG_RE.findall(stripped)
             )
             parts.append(f'<div class="voice-performance-cues">{tags}</div>')
             continue
