@@ -4,7 +4,7 @@ Status: active Flow 5 policy
 
 ## Purpose
 
-Convert one accepted Flow 4 handoff revision into the minimal traceable Voice scope that Flow 6 can author without inventing project meaning.
+Convert one accepted Flow 4 handoff into the minimal traceable Voice scope that Flow 6 can author without inventing project meaning.
 
 Detailed field/state procedure lives in `kits/prd-creator/voice/EXTRACTION.md`; this page owns durable boundaries only.
 
@@ -15,12 +15,21 @@ work/voice-requirements.md
 → Voice scope + communication intent + Owner ID + Moment ID
 
 state/voice-state.yaml
-→ one Voice lifecycle status + current canonical refs + source PRD revision
+→ one Voice lifecycle status + canonical refs + exact accepted PRD source identity
 ```
 
 ## Entry
 
-Flow 5 starts only from current `handoff_ready` meaning. Before extraction run `validator/validate_handoff.py`.
+Flow 5 starts only from a **currently valid** `handoff_ready` state. Before extraction run `validator/validate_handoff.py`.
+
+Voice source identity is two-part:
+
+```text
+source_prd_revision
++ source_prd_sha256
+```
+
+The version identifies the accepted PRD revision family; the SHA binds the exact accepted `work/render-data.json` bytes. A same-version PRD/04 revision therefore invalidates stale Voice state unless the current handoff is revalidated and Flow 5 is refreshed as needed.
 
 If accepted PRD/04 meaning changes, reopen only affected Voice requirements.
 
@@ -74,6 +83,7 @@ All Voice flows use the schema owned by `shared/lifecycle.py`:
 status: voice_requirements_ready
 source_handoff: state/handoff-state.yaml
 source_prd_revision: <accepted document.version>
+source_prd_sha256: <sha256 of exact accepted work/render-data.json bytes>
 canonical_prd: work/content.md
 requirements: work/voice-requirements.md
 production: work/voice-production.md
@@ -84,7 +94,9 @@ Persisted refs are normalized project-relative POSIX paths. Unknown/retired life
 
 ## Mechanical boundary
 
-`validator/validate_voice.py` is lifecycle-aware. At `voice_requirements_ready` it validates handoff/revision identity, strict Flow 5 requirement fields, and Owner topology without requiring a production script yet.
+`validator/validate_voice.py` is lifecycle-aware. At every validatable Voice state it reruns canonical PRD handoff validation, checks exact PRD source SHA + revision identity, and then applies the stage-specific Voice checks. `voice_requirements_ready` does not require a production script yet.
+
+`no_voice_required` is also revision-bound; it cannot remain valid after the accepted PRD bytes change merely because `document.version` stayed the same.
 
 ## Completion
 
