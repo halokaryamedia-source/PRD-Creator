@@ -170,7 +170,11 @@ def load_requirement_register(path: Path, sources: tuple[SourceRecord, ...]) -> 
         area = require_scalar(entry, "area", owner=owner)
         statement = require_scalar(entry, "statement", owner=owner)
         raw_provenance = entry.get("provenance")
-        if not isinstance(raw_provenance, list) or not raw_provenance or not all(isinstance(item, str) for item in raw_provenance):
+        if (
+            not isinstance(raw_provenance, list)
+            or not raw_provenance
+            or not all(isinstance(item, str) for item in raw_provenance)
+        ):
             raise StateError(f"{owner}.provenance must be a non-empty array of SRC-### ids")
         provenance = tuple(item.strip() for item in raw_provenance)
         if len(provenance) != len(set(provenance)):
@@ -239,9 +243,7 @@ def validate_flow2_state(project: Path) -> list[Issue]:
         return [_state_issue(exc, path="state/intake-state.yaml")]
 
     current_authoritative_sources = {
-        record.source_id
-        for record in sources
-        if record.status == "current" and record.role == "authoritative"
+        record.source_id for record in sources if record.status == "current" and record.role == "authoritative"
     }
     for source in sources:
         if source.status == "current" and source.inspection == "blocked":
@@ -285,12 +287,8 @@ def validate_flow2_state(project: Path) -> list[Issue]:
                     field=requirement.requirement_id,
                 )
             )
-        approved_proposal = (
-            requirement.recovery_class == "proposal" and requirement.approval_status == "approved"
-        )
-        has_current_authority = any(
-            source_id in current_authoritative_sources for source_id in requirement.provenance
-        )
+        approved_proposal = requirement.recovery_class == "proposal" and requirement.approval_status == "approved"
+        has_current_authority = any(source_id in current_authoritative_sources for source_id in requirement.provenance)
         if not approved_proposal and not has_current_authority:
             issues.append(
                 Issue(
