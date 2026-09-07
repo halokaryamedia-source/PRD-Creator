@@ -214,17 +214,29 @@ def load_intake_state(path: Path) -> IntakeState:
     return IntakeState(status, preview, approved_sha)
 
 
+def _state_issue(exc: Exception, *, path: str) -> Issue:
+    line = exc.line if isinstance(exc, StateError) else None
+    return Issue("FLOW2_STATE_INVALID", "flow2.state", str(exc), path=path, line=line)
+
+
 def validate_flow2_state(project: Path) -> list[Issue]:
     issues: list[Issue] = []
     source_path = project / "state" / "source-inventory.yaml"
     requirement_path = project / "state" / "requirement-register.yaml"
     intake_path = project / "state" / "intake-state.yaml"
+
     try:
         sources = load_source_inventory(source_path, project)
+    except (OSError, StateError) as exc:
+        return [_state_issue(exc, path="state/source-inventory.yaml")]
+    try:
         requirements = load_requirement_register(requirement_path, sources)
+    except (OSError, StateError) as exc:
+        return [_state_issue(exc, path="state/requirement-register.yaml")]
+    try:
         intake = load_intake_state(intake_path)
     except (OSError, StateError) as exc:
-        return [Issue("FLOW2_STATE_INVALID", "flow2.state", str(exc), path="state")]
+        return [_state_issue(exc, path="state/intake-state.yaml")]
 
     current_authoritative_sources = {
         record.source_id
