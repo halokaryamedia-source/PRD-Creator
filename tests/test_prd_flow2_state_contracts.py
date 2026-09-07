@@ -32,9 +32,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         requirement_path = project / "state" / "requirement-register.yaml"
         digest = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
         (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\n"
-            "preview_approved: true\n"
-            f"approved_requirement_sha256: {digest}\n",
+            f"status: ready_for_prd\npreview_approved: true\napproved_requirement_sha256: {digest}\n",
             encoding="utf-8",
         )
 
@@ -71,9 +69,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
     def test_ready_rejects_explicit_preview_not_approved(self) -> None:
         project = self.make_project()
         (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\n"
-            "preview_approved: false\n"
-            "approved_requirement_sha256: " + "0" * 64 + "\n",
+            "status: ready_for_prd\npreview_approved: false\napproved_requirement_sha256: " + "0" * 64 + "\n",
             encoding="utf-8",
         )
         self.assert_flow2_failure(project, "preview_approved")
@@ -110,14 +106,11 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
     def test_ready_rejects_pending_or_blocked_requirement(self) -> None:
         variants = {
             "pending": (
-                "recovery_class: proposal\n"
-                "    approval_status: pending\n"
-                "    resolution: Proposed fixture default.\n",
+                "recovery_class: proposal\n    approval_status: pending\n    resolution: Proposed fixture default.\n",
                 "REQUIREMENT_APPROVAL_PENDING",
             ),
             "blocked": (
-                "recovery_class: blocked\n"
-                "    resolution: Required evidence is unavailable.\n",
+                "recovery_class: blocked\n    resolution: Required evidence is unavailable.\n",
                 "REQUIREMENT_BLOCKED",
             ),
         }
