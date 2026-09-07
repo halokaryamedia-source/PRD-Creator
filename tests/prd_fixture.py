@@ -14,7 +14,10 @@ def four_flow(prefix: str) -> list[dict]:
 
 def four_notes(prefix: str) -> list[dict]:
     return [
-        {"title": f"{prefix} Note {index}", "description": f"Keep {prefix.lower()} rule {index} explicit and consistent."}
+        {
+            "title": f"{prefix} Note {index}",
+            "description": f"Keep {prefix.lower()} rule {index} explicit and consistent.",
+        }
         for index in range(1, 5)
     ]
 
@@ -67,7 +70,10 @@ def render_data() -> dict:
             ],
             "main_systems": [
                 {"title": "Session Ownership", "description": "One player owns one isolated fixture session."},
-                {"title": "Result Handling", "description": "One valid run creates one package result and resets cleanly."},
+                {
+                    "title": "Result Handling",
+                    "description": "One valid run creates one package result and resets cleanly.",
+                },
             ],
         },
         "gameplay_flow": [
@@ -77,8 +83,14 @@ def render_data() -> dict:
                 "eyebrow": "Enter the controlled fixture",
                 "narrative_context": "The player starts outside the trial and can already see the marked destination.",
                 "beats": [
-                    {"title": "Arrival", "description": "The player receives the first clear cue and follows the marked route."},
-                    {"title": "Trial Entrance", "description": "The route ends at the Core Trial entrance with no competing objective."},
+                    {
+                        "title": "Arrival",
+                        "description": "The player receives the first clear cue and follows the marked route.",
+                    },
+                    {
+                        "title": "Trial Entrance",
+                        "description": "The route ends at the Core Trial entrance with no competing objective.",
+                    },
                 ],
                 "next_destination": "Core Trial",
             },
@@ -88,9 +100,18 @@ def render_data() -> dict:
                 "eyebrow": "Complete one controlled interaction",
                 "narrative_context": "The Core Trial is visible as soon as the player enters the isolated arena.",
                 "beats": [
-                    {"title": "Start the Trial", "description": "Entering the marked area activates the objective for the current session."},
-                    {"title": "Complete the Interaction", "description": "The player performs the required interaction and receives immediate completion feedback."},
-                    {"title": "Leave the Trial", "description": "The completed state opens the exit after the result is stored once."},
+                    {
+                        "title": "Start the Trial",
+                        "description": "Entering the marked area activates the objective for the current session.",
+                    },
+                    {
+                        "title": "Complete the Interaction",
+                        "description": "The player performs the required interaction and receives immediate completion feedback.",
+                    },
+                    {
+                        "title": "Leave the Trial",
+                        "description": "The completed state opens the exit after the result is stored once.",
+                    },
                 ],
                 "next_destination": "End of fixture journey",
             },
@@ -126,11 +147,36 @@ def render_data() -> dict:
                         "summary": "Fixture Score uses 100% Completion for a valid run.",
                     },
                     "player_flow": [
-                        {"step": 1, "title": "Enter", "action": "Walk into the marked trial area.", "result": "The trial becomes ready."},
-                        {"step": 2, "title": "Activate", "action": "Cross the approved start boundary.", "result": "The trial activates once."},
-                        {"step": 3, "title": "Interact", "action": "Perform the required Core interaction.", "result": "The interaction is accepted."},
-                        {"step": 4, "title": "Complete", "action": "Finish the valid interaction state.", "result": "The Fixture Score is stored once."},
-                        {"step": 5, "title": "Exit", "action": "Follow the opened exit route.", "result": "The package hands off cleanly."},
+                        {
+                            "step": 1,
+                            "title": "Enter",
+                            "action": "Walk into the marked trial area.",
+                            "result": "The trial becomes ready.",
+                        },
+                        {
+                            "step": 2,
+                            "title": "Activate",
+                            "action": "Cross the approved start boundary.",
+                            "result": "The trial activates once.",
+                        },
+                        {
+                            "step": 3,
+                            "title": "Interact",
+                            "action": "Perform the required Core interaction.",
+                            "result": "The interaction is accepted.",
+                        },
+                        {
+                            "step": 4,
+                            "title": "Complete",
+                            "action": "Finish the valid interaction state.",
+                            "result": "The Fixture Score is stored once.",
+                        },
+                        {
+                            "step": 5,
+                            "title": "Exit",
+                            "action": "Follow the opened exit route.",
+                            "result": "The package hands off cleanly.",
+                        },
                     ],
                 },
                 "level_design": {
@@ -155,10 +201,22 @@ def render_data() -> dict:
                 "developer": {
                     "overview": "Implement activation, result storage, interruption handling, and reset for the Core Trial.",
                     "flow": [
-                        {"step": 1, "title": "Activate", "description": "Start the objective once for the assigned session."},
+                        {
+                            "step": 1,
+                            "title": "Activate",
+                            "description": "Start the objective once for the assigned session.",
+                        },
                         {"step": 2, "title": "Validate", "description": "Accept only the required Core interaction."},
-                        {"step": 3, "title": "Store Result", "description": "Calculate and store one valid Fixture Score."},
-                        {"step": 4, "title": "Handoff", "description": "Open the exit and prepare the package for reset."},
+                        {
+                            "step": 3,
+                            "title": "Store Result",
+                            "description": "Calculate and store one valid Fixture Score.",
+                        },
+                        {
+                            "step": 4,
+                            "title": "Handoff",
+                            "description": "Open the exit and prepare the package for reset.",
+                        },
                     ],
                     "requirements": [
                         {
@@ -177,7 +235,11 @@ def render_data() -> dict:
                         "score_name": "Fixture Score",
                         "scale": "0–100",
                         "components": [
-                            {"name": "Completion", "weight": 100, "rule": "Valid completion contributes the full package score."}
+                            {
+                                "name": "Completion",
+                                "weight": 100,
+                                "rule": "Valid completion contributes the full package score.",
+                            }
                         ],
                         "timer_start": "Trial activation.",
                         "timer_stop": "Valid trial completion.",
@@ -194,8 +256,17 @@ def render_data() -> dict:
                     "notes": four_notes("Development"),
                 },
                 "terms": [
-                    {"key": "core-trial", "label": "Core Trial", "definition": "The complete fixture gameplay package from activation through exit."},
-                    {"key": "fixture-score", "label": "Fixture Score", "definition": "The Objective Score created by valid Core Trial completion.", "roles": ["gameplay", "developer"]},
+                    {
+                        "key": "core-trial",
+                        "label": "Core Trial",
+                        "definition": "The complete fixture gameplay package from activation through exit.",
+                    },
+                    {
+                        "key": "fixture-score",
+                        "label": "Fixture Score",
+                        "definition": "The Objective Score created by valid Core Trial completion.",
+                        "roles": ["gameplay", "developer"],
+                    },
                 ],
             }
         ],
@@ -261,9 +332,7 @@ def write_base_project(project: Path, data: dict | None = None) -> dict:
     requirement_path.write_text(requirements, encoding="utf-8")
     requirement_sha = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
     (project / "state" / "intake-state.yaml").write_text(
-        "status: ready_for_prd\n"
-        "preview_approved: true\n"
-        f"approved_requirement_sha256: {requirement_sha}\n",
+        f"status: ready_for_prd\npreview_approved: true\napproved_requirement_sha256: {requirement_sha}\n",
         encoding="utf-8",
     )
     content_path = project / "work" / "content.md"
