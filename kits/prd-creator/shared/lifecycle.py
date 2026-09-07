@@ -17,6 +17,15 @@ VOICE_STATUSES = {
     "needs_revision",
     "voice_delivery_ready",
 }
+VOICE_STATE_KEYS = {
+    "status",
+    "source_handoff",
+    "source_prd_revision",
+    "canonical_prd",
+    "requirements",
+    "production",
+    "project_html",
+}
 
 
 @dataclass(frozen=True)
@@ -32,6 +41,11 @@ class VoiceState:
 
 def load_voice_state(path: Path) -> VoiceState:
     state = load_mapping(path, owner="voice-state.yaml")
+    unknown = sorted(set(state) - VOICE_STATE_KEYS)
+    if unknown:
+        raise StateError(
+            "voice-state.yaml contains retired/unknown lifecycle field(s): " + ", ".join(unknown)
+        )
     status = require_scalar(state, "status", owner="voice-state.yaml")
     if status not in VOICE_STATUSES:
         raise StateError(f"voice-state.yaml.status={status!r} is not a supported Voice lifecycle status")
@@ -61,4 +75,5 @@ def _optional_path(state: Mapping[str, object], key: str, default: str) -> str:
         return default
     if isinstance(value, (dict, list, bool)):
         raise StateError(f"voice-state.yaml.{key} must be a scalar path")
-    return str(value).strip()
+    text = str(value).strip()
+    return text or default
