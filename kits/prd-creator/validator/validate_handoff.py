@@ -305,7 +305,9 @@ def validate(project: Path) -> dict[str, Any]:
                 resolve_project_path(project, refs["index"], must_exist=True).read_text(encoding="utf-8")
             )
             index_project = index_data.get("project") if isinstance(index_data, dict) else None
-            index_version = str(index_project.get("prd_version") or "").strip() if isinstance(index_project, dict) else ""
+            index_version = (
+                str(index_project.get("prd_version") or "").strip() if isinstance(index_project, dict) else ""
+            )
             if f"PRD Version: v{current_version}" not in context_text:
                 delivery_ok = False
                 delivery_details.append("context.md PRD version does not match current document.version")
