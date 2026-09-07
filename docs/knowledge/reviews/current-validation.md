@@ -23,7 +23,8 @@ project discussion + original source + approved decisions
 → Simple Chat Preview
 → approved_requirement_sha256
 → work/content.md canonical PRD meaning
-→ render-data.canonical_content_sha256
+→ render-data.approved_requirement_sha256
++ render-data.canonical_content_sha256
 → strict render-data projection
 → deterministic PRD core
 → work/asset-requirements.md when non-Voice 04 exists
@@ -54,25 +55,31 @@ The current candidate intentionally makes machine contracts stricter and incompa
 - Flow 2 readiness has one status truth; redundant `ready_for_prd: true` / stale `next_step` aliases are retired;
 - Simple Chat Preview approval is bound to exact current `requirement-register.yaml` bytes;
 - current retained repository sources are path-safe and SHA-bound;
-- requirement provenance must resolve to known current source identity;
+- requirement provenance must resolve to known current authority or an explicitly approved Proposal;
 - all persisted project paths use normalized project-relative POSIX references and cannot escape the workspace;
-- render-data uses one whitelist projection vocabulary and binds exact `content.md` bytes;
-- gameplay result mode is explicit (`scored` or `completion_only`) and must agree with Developer result data;
+- render-data uses one whitelist projection vocabulary and binds both the exact approved Flow 2 requirement revision and exact `content.md` bytes;
+- gameplay result mode is explicit (`scored` or `completion_only`) and must agree with Developer result data and visible result presentation;
 - renderer-side semantic fallback/alias inference is removed from the valid production path;
-- `TemplateAdapter` is the single Golden-shell mutation boundary and retained reference-project vocabulary is quarantined there;
+- `TemplateAdapter` is the single Golden-shell mutation boundary for both PRD core and additive 04 insertion; retained reference-project vocabulary is quarantined there;
 - non-Voice 04 uses stable `Owner ID → Moment ID → AST-...` identity;
 - Voice uses stable `Owner ID → Moment ID → VO-...` identity from Flow 5 through Flow 7;
 - PRD acceptance binds exact current render-data and non-Voice asset-requirements bytes;
 - Voice Production binds exact current Voice Requirements bytes;
 - final Voice acceptance binds exact current voice-production bytes;
+- PRD and Voice acceptance field/SHA parsing share one `shared/acceptance.py` primitive instead of duplicate regex contracts;
 - Production Assets/Voice HTML carries exact source SHA metadata;
+- `voice_delivery_ready` cannot render an unresolved Voice Cast selection/profile, while Preparation Mode may still show a truthful pending selection;
 - Production Assets CSS/JavaScript live in `renderer/static/` and are inlined during standalone HTML generation;
 - delivery publishes a complete version directory transactionally and rolls back on publication failure;
 - parsers expose structured issue identity and source-location diagnostics for machine-facing failures;
-- machine YAML uses the duplicate-key-safe shared PyYAML loader;
+- machine YAML uses the duplicate-key-safe shared PyYAML loader and reports parse-line location when available;
+- derived PRD HTML validation is isolated in `validator/html_contract.py` instead of mixed into source/projection validation;
+- Flow 5–7 mechanical domain validation is isolated in `validator/voice_validation.py`; `validate_voice.py` is a thin CLI/public entrypoint;
+- bilingual validation preserves numeric, percentage, stable-ID, recognized unit, dimension, coordinate, and material-negation invariants across `en`/`id`;
 - renderer/validator business engines use package boundaries; CLI wrappers alone may bootstrap the kit path;
 - active GitHub Actions dependencies are pinned to immutable commit SHAs;
-- runtime and verification dependencies are pinned separately.
+- runtime and verification dependencies are pinned separately;
+- repository verification treats the Package 3 machine/validator owners as required architecture rather than incidental files.
 
 The protected Golden reference/runtime artifact remains unchanged unless a separate approved design-contract change explicitly authorizes it.
 
