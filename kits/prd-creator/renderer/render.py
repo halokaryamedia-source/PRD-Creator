@@ -20,6 +20,8 @@ else:
     from . import prd_render_engine as engine
     from . import production_assets_compositor as production_assets
 
+from shared.render_schema import validate_projection_schema
+
 GOLDEN_SPEC_MARKER = "aftershock-v0.2"
 SAMPLE_META_NAMES = (
     "golden-sample-id",
@@ -35,9 +37,16 @@ STORAGE_KEYS = {
 }
 
 
-def _prepare_golden_template(template: Path, render_data: Path) -> str:
-    source = template.read_text(encoding="utf-8")
+def _load_projection(render_data: Path) -> dict:
     data = json.loads(render_data.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("render-data root must be an object")
+    validate_projection_schema(data)
+    return data
+
+
+def _prepare_golden_template(template: Path, data: dict) -> str:
+    source = template.read_text(encoding="utf-8")
     title = engine.txt(data.get("document", {}).get("title", ""))["en"]
     namespace = engine.slug(title)
 
@@ -62,13 +71,14 @@ def _augment_production_assets(render_data: Path, output: Path) -> None:
 
 
 def render(template: Path, render_data: Path, output: Path) -> None:
+    data = _load_projection(render_data)
     source = template.read_text(encoding="utf-8")
     if engine.STORAGE_PREFIX_TOKEN in source:
         engine.render(template, render_data, output)
         _augment_production_assets(render_data, output)
         return
 
-    prepared = _prepare_golden_template(template, render_data)
+    prepared = _prepare_golden_template(template, data)
     if prepared.count(GOLDEN_SPEC_MARKER) != 1:
         raise ValueError("Approved Golden template must contain exactly one canonical specification marker")
     prepared = prepared.replace(GOLDEN_SPEC_MARKER, engine.STORAGE_PREFIX_TOKEN, 1)
