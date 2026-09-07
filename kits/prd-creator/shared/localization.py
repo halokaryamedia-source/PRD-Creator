@@ -25,9 +25,7 @@ DIMENSION_RE = re.compile(
     r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*[x×]\s*(-?\d+(?:\.\d+)?)(?:\s*[x×]\s*(-?\d+(?:\.\d+)?))?",
     re.I,
 )
-COORDINATE_RE = re.compile(
-    r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?![\w.])"
-)
+COORDINATE_RE = re.compile(r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?![\w.])")
 UNIT_RE = re.compile(
     r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*"
     r"(milliseconds?|millisecond|milidetik|ms|seconds?|second|secs?|sec|detik|s|"
