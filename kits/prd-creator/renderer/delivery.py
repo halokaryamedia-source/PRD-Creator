@@ -13,8 +13,12 @@ from typing import Any, Callable
 
 HERE = Path(__file__).resolve().parent
 KIT_ROOT = HERE.parent
-if str(KIT_ROOT) not in sys.path:
-    sys.path.insert(0, str(KIT_ROOT))
+if __package__ in (None, ""):
+    if str(KIT_ROOT) not in sys.path:
+        sys.path.insert(0, str(KIT_ROOT))
+    from renderer import render as html_renderer_module
+else:
+    from . import render as html_renderer_module
 
 from shared.state import StateError, load_mapping, optional_scalar
 
@@ -170,10 +174,17 @@ def _navigation(markdown: str, max_level: int = 4) -> list[dict[str, Any]]:
 def build_index(project: Path, title: str, version: str, status: str, context: str) -> dict[str, Any]:
     return {
         "project": {"id": project.name, "title": title, "prd_version": version, "status": status or "unknown"},
-        "documents": {"human_prd": "prd.html", "development_context": "context.md", "development_index": "index.json"},
+        "documents": {
+            "human_prd": "prd.html",
+            "development_context": "context.md",
+            "development_index": "index.json",
+        },
         "reading": {
             "primary": "index.json",
-            "instruction": "Locate the affected section here, then read only its line range from context.md. Read broader/global context only when the task actually depends on it.",
+            "instruction": (
+                "Locate the affected section here, then read only its line range from context.md. "
+                "Read broader/global context only when the task actually depends on it."
+            ),
         },
         "navigation": _navigation(context),
     }
@@ -196,22 +207,51 @@ def build_readme(output_root: Path, title: str, version: str, status: str) -> st
         versions.append((current_key, current_name))
     versions.sort(reverse=True)
     version_lines = [f"- `{name}`{' — current' if name == current_name else ''}" for _, name in versions]
-    return "\n".join([
-        f"# {title}", "", f"Current PRD Version: `{current_name}`", f"Status: `{status or 'unknown'}`", "",
-        "## Start Here", "", f"- Human review: `{current_name}/prd.html`", f"- AI/development: open `{current_name}/index.json` first, then read only the relevant line range in `{current_name}/context.md`.", "",
-        "## Resume Method", "", "1. Use `index.json` to locate the affected objective/system and its context range.", "2. Read only that range in `context.md`, plus directly relevant shared/global sections.", "3. Inspect the current implementation for the same scope.", "4. Apply the smallest correct change; preserve unrelated accepted behavior.", "5. If a new product decision is required, surface it instead of inferring it from legacy/template code.", "",
-        "The PRD package describes accepted product/development context. Current code/runtime progress remains owned by the implementation repository.", "", "## Versions", "", *version_lines, "", "Version folders track PRD meaning. Downstream Production Assets may refresh inside the current PRD version when project meaning itself has not changed.", "",
-    ])
+    return "\n".join(
+        [
+            f"# {title}",
+            "",
+            f"Current PRD Version: `{current_name}`",
+            f"Status: `{status or 'unknown'}`",
+            "",
+            "## Start Here",
+            "",
+            f"- Human review: `{current_name}/prd.html`",
+            (
+                f"- AI/development: open `{current_name}/index.json` first, then read only the relevant line "
+                f"range in `{current_name}/context.md`."
+            ),
+            "",
+            "## Resume Method",
+            "",
+            "1. Use `index.json` to locate the affected objective/system and its context range.",
+            "2. Read only that range in `context.md`, plus directly relevant shared/global sections.",
+            "3. Inspect the current implementation for the same scope.",
+            "4. Apply the smallest correct change; preserve unrelated accepted behavior.",
+            "5. If a new product decision is required, surface it instead of inferring it from legacy/template code.",
+            "",
+            (
+                "The PRD package describes accepted product/development context. Current code/runtime progress remains "
+                "owned by the implementation repository."
+            ),
+            "",
+            "## Versions",
+            "",
+            *version_lines,
+            "",
+            (
+                "Version folders track PRD meaning. Downstream Production Assets may refresh inside the current PRD "
+                "version when project meaning itself has not changed."
+            ),
+            "",
+        ]
+    )
 
 
 def _default_html_renderer(template: Path | None, render_data: Path, output: Path) -> None:
-    if str(HERE) not in sys.path:
-        sys.path.insert(0, str(HERE))
-    import render as html_renderer
-
     if template is None:
-        template = HERE.parent / "template" / "runtime-template.html"
-    html_renderer.render(template, render_data, output)
+        template = KIT_ROOT / "template" / "runtime-template.html"
+    html_renderer_module.render(template, render_data, output)
 
 
 def _publish(staged: dict[str, Path], targets: dict[str, Path]) -> None:
@@ -235,7 +275,8 @@ def build_delivery(
     document = data.get("document") if isinstance(data, dict) else None
     if not isinstance(document, dict):
         raise ValueError("render-data.json must contain document metadata")
-    title = str(document.get("title") or "").strip()
+    title_value = document.get("title")
+    title = str(title_value.get("en") if isinstance(title_value, dict) else title_value or "").strip()
     if not title:
         raise ValueError("render-data.document.title is required for delivery")
     version = _semver(document.get("version"))
@@ -263,7 +304,10 @@ def build_delivery(
         renderer(template, render_data_path, staged["prd"])
         context = build_context(project, title, version, status)
         staged["context"].write_text(context, encoding="utf-8")
-        staged["index"].write_text(json.dumps(build_index(project, title, version, status, context), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        staged["index"].write_text(
+            json.dumps(build_index(project, title, version, status, context), ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
         staged["readme"].write_text(build_readme(output_root, title, version, status), encoding="utf-8")
         _publish(staged, targets)
     return targets
