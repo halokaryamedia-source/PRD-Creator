@@ -83,6 +83,26 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         self.assertIn("flow2_ready_for_prd", joined)
         self.assertIn("exactly one preview_approved boolean", joined)
 
+    def test_ready_rejects_duplicate_preview_approval_key(self) -> None:
+        project = self.make_project()
+        state = project / "state" / "intake-state.yaml"
+        state.write_text(
+            state.read_text(encoding="utf-8").replace(
+                "preview_approved: true\n",
+                "preview_approved: true\npreview_approved: false\n",
+                1,
+            ),
+            encoding="utf-8",
+        )
+
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        result = json.loads(validated.stdout)
+        joined = "\n".join(result["errors"])
+        self.assertIn("flow2_ready_for_prd", joined)
+        self.assertIn("duplicate YAML mapping key", joined)
+        self.assertIn("preview_approved", joined)
+
     def test_ready_rejects_explicit_preview_not_approved(self) -> None:
         project = self.make_project()
         (project / "state" / "intake-state.yaml").write_text(
@@ -213,7 +233,8 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
         result = json.loads(validated.stdout)
         consistency = next(
-            check for check in result["checks"]
+            check
+            for check in result["checks"]
             if check["check"] == "flow2_persisted_state_consistent"
         )
         self.assertEqual(consistency["status"], "pass")
