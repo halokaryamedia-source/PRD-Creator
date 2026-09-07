@@ -245,7 +245,9 @@ def _assert_delivery_voice_cast(work: Path, voice_doc: VoiceProduction | None) -
     speakers = sorted({entry.speaker for section in voice_doc.sections for entry in section.entries})
     missing = [speaker for speaker in speakers if not selected_voice(voice_doc.cast, speaker)]
     if missing:
-        raise ValueError("voice_delivery_ready cannot render unresolved Voice Cast selection/profile for: " + ", ".join(missing))
+        raise ValueError(
+            "voice_delivery_ready cannot render unresolved Voice Cast selection/profile for: " + ", ".join(missing)
+        )
 
 
 def _pages_and_nav(
