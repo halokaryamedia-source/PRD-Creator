@@ -20,6 +20,7 @@ else:
     from . import api as prd_api
 
 from shared.handoff import load_handoff_state
+from shared.issues import Issue
 from shared.paths import ProjectPathError, resolve_project_path
 from shared.state import StateError
 
@@ -100,6 +101,19 @@ def expected_refs(version: str) -> dict[str, str]:
     }
 
 
+def _result(
+    errors: list[str],
+    checks: list[dict[str, str]],
+    issues: list[Issue | dict[str, object]],
+) -> dict[str, Any]:
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "checks": checks,
+        "issues": [item.as_dict() if isinstance(item, Issue) else item for item in issues],
+    }
+
+
 def validate(project: Path) -> dict[str, Any]:
     project = project.resolve()
     state_path = project / "state" / "handoff-state.yaml"
@@ -108,22 +122,54 @@ def validate(project: Path) -> dict[str, Any]:
     asset_path = project / "work" / "asset-requirements.md"
     errors: list[str] = []
     checks: list[dict[str, str]] = []
+    issues: list[Issue | dict[str, object]] = []
 
-    def check(name: str, ok: bool, detail: str) -> None:
+    def check(
+        name: str,
+        ok: bool,
+        detail: str,
+        *,
+        code: str,
+        owner: str = "flow4.handoff",
+        path: str = "",
+        field: str = "",
+    ) -> None:
         checks.append({"check": name, "status": "pass" if ok else "fail", "detail": detail})
         if not ok:
             errors.append(f"{name}: {detail}")
+            issues.append(Issue(code, owner, detail, path=path, field=field))
 
-    check("handoff_state_exists", state_path.is_file(), str(state_path))
-    check("render_data_exists", data_path.is_file(), str(data_path))
+    check(
+        "handoff_state_exists",
+        state_path.is_file(),
+        str(state_path),
+        code="HANDOFF_STATE_MISSING",
+        path="state/handoff-state.yaml",
+    )
+    check(
+        "render_data_exists",
+        data_path.is_file(),
+        str(data_path),
+        code="HANDOFF_RENDER_DATA_MISSING",
+        path="work/render-data.json",
+    )
     if errors:
-        return {"status": "fail", "errors": errors, "checks": checks}
+        return _result(errors, checks, issues)
 
     try:
         state = load_handoff_state(state_path)
     except (OSError, StateError) as exc:
-        errors.append(f"handoff_state: {exc}")
-        return {"status": "fail", "errors": errors, "checks": checks}
+        detail = str(exc)
+        errors.append(f"handoff_state: {detail}")
+        issues.append(
+            Issue(
+                "HANDOFF_STATE_INVALID",
+                "flow4.handoff",
+                detail,
+                path="state/handoff-state.yaml",
+            )
+        )
+        return _result(errors, checks, issues)
 
     check(
         "handoff_status_ready",
@@ -131,6 +177,9 @@ def validate(project: Path) -> dict[str, Any]:
         "handoff_ready"
         if state.status == "handoff_ready"
         else f"status is {state.status!r}, expected 'handoff_ready'",
+        code="HANDOFF_STATUS_NOT_READY",
+        path="state/handoff-state.yaml",
+        field="status",
     )
 
     current_prd = prd_api.validate(project)
@@ -142,14 +191,30 @@ def validate(project: Path) -> dict[str, Any]:
         "canonical PRD validation passes, including Flow 2 approval, projection schema, content purity, and freshness"
         if current_prd_ok
         else "; ".join(current_prd_errors[:5]) or "canonical PRD validation failed",
+        code="HANDOFF_UPSTREAM_PRD_INVALID",
+        owner="flow4.validation",
     )
+    if not current_prd_ok:
+        for issue in current_prd.get("issues", []):
+            if isinstance(issue, dict):
+                issues.append(issue)
 
     try:
         data_bytes = data_path.read_bytes()
         data = json.loads(data_bytes.decode("utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        errors.append(f"render_data_json: {exc}")
-        return {"status": "fail", "errors": errors, "checks": checks}
+        detail = str(exc)
+        errors.append(f"render_data_json: {detail}")
+        issues.append(
+            Issue(
+                "HANDOFF_RENDER_DATA_INVALID",
+                "flow4.handoff",
+                detail,
+                path="work/render-data.json",
+                line=exc.lineno if isinstance(exc, json.JSONDecodeError) else None,
+            )
+        )
+        return _result(errors, checks, issues)
 
     current_render_sha = hashlib.sha256(data_bytes).hexdigest()
     current_asset_sha = hashlib.sha256(asset_path.read_bytes()).hexdigest() if asset_path.is_file() else "none"
@@ -161,16 +226,25 @@ def validate(project: Path) -> dict[str, Any]:
         f"current document.version is {current_version!r}"
         if current_version
         else "render-data.document.version is required for handoff",
+        code="HANDOFF_VERSION_MISSING",
+        path="work/render-data.json",
+        field="document.version",
     )
     check(
         "current_prd_version_semantic",
         bool(SEMVER_RE.fullmatch(current_version)),
         f"current document.version is {current_version!r}; expected X.Y.Z",
+        code="HANDOFF_VERSION_INVALID",
+        path="work/render-data.json",
+        field="document.version",
     )
     check(
         "handoff_revision_matches_current_prd",
         bool(current_version) and state.accepted_prd_version == current_version,
         f"accepted_prd_version={state.accepted_prd_version!r}, current document.version={current_version!r}",
+        code="HANDOFF_VERSION_STALE",
+        path="state/handoff-state.yaml",
+        field="accepted_prd_version",
     )
 
     refs_ok = True
@@ -202,6 +276,8 @@ def validate(project: Path) -> dict[str, Any]:
         "handoff-state uses canonical project-relative paths for the current PRD bundle"
         if refs_ok
         else "; ".join(ref_details),
+        code="HANDOFF_REFERENCES_INVALID",
+        path="state/handoff-state.yaml",
     )
 
     delivery_ok = bool(refs)
@@ -239,6 +315,8 @@ def validate(project: Path) -> dict[str, Any]:
         "context.md, index.json, and output/README.md identify the current PRD revision"
         if delivery_ok
         else "; ".join(delivery_details) or "delivery metadata could not be verified",
+        code="HANDOFF_DELIVERY_STALE",
+        owner="flow4.delivery",
     )
 
     acceptance_ok, acceptance_detail = validate_acceptance(
@@ -246,9 +324,16 @@ def validate(project: Path) -> dict[str, Any]:
         current_render_sha,
         current_asset_sha,
     )
-    check("acceptance_allows_handoff", acceptance_ok, acceptance_detail)
+    check(
+        "acceptance_allows_handoff",
+        acceptance_ok,
+        acceptance_detail,
+        code="HANDOFF_ACCEPTANCE_INVALID",
+        owner="flow4.acceptance",
+        path="work/acceptance.md",
+    )
 
-    return {"status": "pass" if not errors else "fail", "errors": errors, "checks": checks}
+    return _result(errors, checks, issues)
 
 
 def main() -> int:
