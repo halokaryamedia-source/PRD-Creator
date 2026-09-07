@@ -194,7 +194,6 @@ class VoiceProductionContracts(unittest.TestCase):
         project = Path(temp.name)
         write_base_project(project, render_data())
 
-        # Flow 5 may start only from a complete, current Flow 4 handoff.
         self.refresh_prd_handoff(project)
 
         req_text = requirements_text if requirements_text is not None else requirements()
@@ -212,7 +211,6 @@ class VoiceProductionContracts(unittest.TestCase):
         )
 
         if include_html:
-            # Flow 6 publication augments the same accepted PRD delivery with Voice 04.
             delivered = run_cli(DELIVERY, project)
             self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
         if include_acceptance:
@@ -259,7 +257,7 @@ class VoiceProductionContracts(unittest.TestCase):
         html_path.write_text(source, encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1)
-        self.assertIn("Project HTML must contain exact Voice prompt panel once for VO-INTRO-01", validated.stdout)
+        self.assertIn("VOICE_HTML_PROMPT_COUNT_INVALID", validated.stdout)
 
     def test_validator_rejects_same_revision_requirement_bytes_changed_after_script_binding(self) -> None:
         project = self.make_project()
@@ -274,7 +272,7 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Source Voice Requirements sha256 does not match", validated.stdout)
+        self.assertIn("VOICE_PRODUCTION_SOURCE_SHA_STALE", validated.stdout)
 
     def test_validator_rejects_voice_state_from_stale_prd_revision(self) -> None:
         project = self.make_project()
@@ -288,7 +286,7 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("voice-state source_prd_revision='0.9.0'", validated.stdout)
+        self.assertIn("VOICE_STATE_REVISION_STALE", validated.stdout)
 
     def test_validator_rejects_same_version_prd_bytes_changed_after_flow5_binding(self) -> None:
         project = self.make_project()
@@ -301,10 +299,11 @@ class VoiceProductionContracts(unittest.TestCase):
 
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("source_prd_sha256 does not match", validated.stdout)
+        self.assertIn("VOICE_STATE_PRD_SHA_STALE", validated.stdout)
 
     def test_no_voice_required_is_bound_to_exact_prd_bytes(self) -> None:
         project = self.make_project(status="no_voice_required")
+        (project / "work" / "voice-production.md").unlink()
         original_state = (project / "state" / "voice-state.yaml").read_text(encoding="utf-8")
         payload = json.loads((project / "work" / "render-data.json").read_text(encoding="utf-8"))
         payload["overview"]["project_context"] = "A same-version revision that may change Voice need."
@@ -314,15 +313,21 @@ class VoiceProductionContracts(unittest.TestCase):
 
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("source_prd_sha256 does not match", validated.stdout)
+        self.assertIn("VOICE_STATE_PRD_SHA_STALE", validated.stdout)
+
+    def test_no_voice_required_rejects_active_production_source(self) -> None:
+        project = self.make_project(status="no_voice_required")
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("VOICE_NO_VOICE_PRODUCTION_PRESENT", validated.stdout)
 
     def test_validator_rejects_unknown_voice_state_field(self) -> None:
         project = self.make_project()
         state = project / "state" / "voice-state.yaml"
         state.write_text(state.read_text(encoding="utf-8") + 'note: "voice #1"\n', encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
-        self.assertEqual(validated.returncode, 2, validated.stderr or validated.stdout)
-        self.assertIn("retired/unknown lifecycle field", validated.stderr)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("VOICE_STATE_INVALID", validated.stdout)
 
     def test_validator_rejects_unsafe_voice_state_path(self) -> None:
         project = self.make_project()
@@ -335,8 +340,8 @@ class VoiceProductionContracts(unittest.TestCase):
             encoding="utf-8",
         )
         validated = run_cli(VALIDATOR, project)
-        self.assertEqual(validated.returncode, 2, validated.stderr or validated.stdout)
-        self.assertIn("non-canonical path segment", validated.stderr)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("VOICE_STATE_INVALID", validated.stdout)
 
     def test_validator_rejects_nonready_upstream_handoff(self) -> None:
         project = self.make_project()
@@ -347,47 +352,47 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Upstream PRD handoff", validated.stdout)
+        self.assertIn("VOICE_UPSTREAM_HANDOFF_INVALID", validated.stdout)
 
     def test_validator_rejects_missing_voice_id_parity(self) -> None:
         project = self.make_project(requirements(extra_id=True))
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Script missing Voice IDs: VO-EXTRA-01", validated.stdout)
+        self.assertIn("VOICE_PRODUCTION_IDS_MISSING", validated.stdout)
 
     def test_validator_rejects_type_mismatch(self) -> None:
         project = self.make_project(requirements(type_override="Direct NPC Dialogue"))
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Type mismatch for VO-INTRO-01", validated.stdout)
+        self.assertIn("VOICE_TYPE_MISMATCH", validated.stdout)
 
     def test_validator_rejects_speaker_mismatch(self) -> None:
         script = SCRIPT.replace("Speaker: Narrator", "Speaker: Guide", 1)
         project = self.make_project(script_text=script)
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Speaker mismatch for VO-INTRO-01", validated.stdout)
+        self.assertIn("VOICE_SPEAKER_MISMATCH", validated.stdout)
 
     def test_validator_rejects_owner_mismatch(self) -> None:
         script = SCRIPT.replace("Owner ID: package:core", "Owner ID: shared", 1)
         project = self.make_project(script_text=script)
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Owner ID mismatch for VO-END-01", validated.stdout)
+        self.assertIn("VOICE_OWNER_MISMATCH", validated.stdout)
 
     def test_validator_rejects_duplicate_owner_id(self) -> None:
         script = SCRIPT.replace("Owner ID: package:core", "Owner ID: journey:journey-begins", 1)
         project = self.make_project(script_text=script)
         validated = run_cli(VALIDATOR, project)
-        self.assertEqual(validated.returncode, 2)
-        self.assertIn("Duplicate Voice section Owner ID", validated.stderr)
+        self.assertEqual(validated.returncode, 1)
+        self.assertIn("VOICE_PRODUCTION_OWNER_DUPLICATE", validated.stdout)
 
     def test_validator_rejects_voice_without_initial_performance_tag(self) -> None:
         script = SCRIPT.replace("[calm]\nBegin the trial.", "Begin the trial.", 1)
         project = self.make_project(script_text=script)
         validated = run_cli(VALIDATOR, project)
-        self.assertEqual(validated.returncode, 2)
-        self.assertIn("performance must begin", validated.stderr)
+        self.assertEqual(validated.returncode, 1)
+        self.assertIn("VOICE_PERFORMANCE_TAG_MISSING", validated.stdout)
 
     def test_voice_delivery_ready_requires_current_acceptance(self) -> None:
         project = self.make_project(
@@ -413,24 +418,48 @@ class VoiceProductionContracts(unittest.TestCase):
             ),
             encoding="utf-8",
         )
-        # Refresh only derived HTML; keep the prior Voice acceptance deliberately stale.
         delivered = run_cli(DELIVERY, project)
         self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Voice Acceptance is stale", validated.stdout)
+        self.assertIn("VOICE_ACCEPTANCE_PRODUCTION_SHA_STALE", validated.stdout)
 
     def test_voice_delivery_ready_requires_cast_selection_for_every_speaker(self) -> None:
         script = SCRIPT.replace("- Guide: Clara - Calm and Clear\n", "", 1)
         project = self.make_project(
             script_text=script,
-            status="voice_delivery_ready",
+            status="voice_script_ready",
             include_html=True,
-            include_acceptance=True,
+        )
+        state = project / "state" / "voice-state.yaml"
+        state.write_text(
+            state.read_text(encoding="utf-8").replace(
+                "status: voice_script_ready",
+                "status: voice_delivery_ready",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        production = project / "work" / "voice-production.md"
+        (project / "work" / "voice-acceptance.md").write_text(
+            voice_acceptance(production),
+            encoding="utf-8",
         )
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("requires a Voice Cast selection/profile for speaker: Guide", validated.stdout)
+        self.assertIn("VOICE_CAST_SELECTION_MISSING", validated.stdout)
+
+    def test_delivery_ready_renderer_rejects_pending_cast_selection(self) -> None:
+        script = SCRIPT.replace("- Guide: Clara - Calm and Clear\n", "", 1)
+        project = self.make_project(script_text=script, status="voice_script_ready")
+        state = project / "state" / "voice-state.yaml"
+        state.write_text(
+            voice_state(project, "voice_delivery_ready", include_html=True),
+            encoding="utf-8",
+        )
+        delivered = run_cli(DELIVERY, project)
+        self.assertNotEqual(delivered.returncode, 0)
+        self.assertIn("cannot render unresolved Voice Cast", delivered.stderr)
 
     def test_validator_has_no_docx_runtime_path(self) -> None:
         source = VALIDATOR.read_text(encoding="utf-8")
