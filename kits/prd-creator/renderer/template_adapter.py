@@ -14,12 +14,58 @@ SPEC_VERSION_META_RE = re.compile(r'<meta\s+content="[^"]*"\s+name="specificatio
 GLOSSARY_ASSIGN_RE = re.compile(r"const glossary = .*?;\n\s*const tooltip =", re.S)
 HTML_TAG_RE = re.compile(r"<html\b[^>]*>", re.I)
 
+# Legacy identifiers are quarantined here because the approved Golden shell is byte-locked.
+# Generic renderer modules must not depend on reference-project vocabulary.
+_REFERENCE_SPEC_MARKER = "aftershock-v0.2"
+_REFERENCE_META_NAMES = (
+    "golden-sample-id",
+    "golden-sample-version",
+    "source-document",
+    "template-extraction-version",
+)
+_REFERENCE_STORAGE_KEYS = {
+    "aftershock-document-theme": "document-theme",
+    "aftershock-document-view": "document-view",
+    "aftershock-document-language": "document-language",
+    "aftershock-sidebar-collapsed": "sidebar-collapsed",
+}
+
 
 class TemplateAdapter:
     """The one mutation boundary for the byte-locked Golden HTML shell."""
 
     def __init__(self, source: str) -> None:
         self.source = source
+
+    @classmethod
+    def prepare_reference_shell(
+        cls,
+        source: str,
+        *,
+        namespace: str,
+        runtime_token: str,
+    ) -> "TemplateAdapter":
+        """Convert the exact historical Golden artifact into the generic runtime shell.
+
+        This is the only location allowed to know the retained reference-project marker
+        and localStorage keys. It changes presentation plumbing only; no project content.
+        """
+
+        for meta_name in _REFERENCE_META_NAMES:
+            source = re.sub(
+                rf'<meta\b[^>]*\bname=["\']{re.escape(meta_name)}["\'][^>]*>\s*',
+                "",
+                source,
+                flags=re.I,
+            )
+        for old_key, suffix in _REFERENCE_STORAGE_KEYS.items():
+            source = source.replace(old_key, f"prd-{namespace}-{suffix}")
+        if source.count(_REFERENCE_SPEC_MARKER) != 1:
+            raise ValueError(
+                "Approved Golden reference must contain exactly one retained specification marker"
+            )
+        source = source.replace(_REFERENCE_SPEC_MARKER, runtime_token, 1)
+        return cls(source)
 
     def require_once(self, marker: str, label: str) -> None:
         count = self.source.count(marker)
