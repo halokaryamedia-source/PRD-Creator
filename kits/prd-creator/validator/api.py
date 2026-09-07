@@ -11,9 +11,15 @@ from . import prd_validation_engine as engine
 
 PROCESS_LEAK_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("Golden HTML/reference language", re.compile(r"\bGolden\s+(?:HTML|Sample|Reference|page structure)\b", re.I)),
-    ("PRD-Creator/internal artifact", re.compile(r"\b(?:PRD-Creator|render-data(?:\.json)?|final\.html|content\.md)\b", re.I)),
+    (
+        "PRD-Creator/internal artifact",
+        re.compile(r"\b(?:PRD-Creator|render-data(?:\.json)?|final\.html|content\.md)\b", re.I),
+    ),
     ("visible page-role narration", re.compile(r"\b(?:Gameplay Overview|Level Design|Developer)\s+page\b", re.I)),
-    ("document-contract narration", re.compile(r"\b(?:three-page contract|document order remains|content lock)\b", re.I)),
+    (
+        "document-contract narration",
+        re.compile(r"\b(?:three-page contract|document order remains|content lock)\b", re.I),
+    ),
     ("role-label dump", re.compile(r"\bGameplay Overview:\s.*\bLevel Design:\s.*\bDeveloper:", re.I | re.S)),
 )
 GENERIC_GLOBAL_RULE_RE = re.compile(r"^\s*Global Rule\s+\d+\s*$", re.I)
