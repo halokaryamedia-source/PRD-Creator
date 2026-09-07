@@ -22,7 +22,7 @@ current explicit user instruction
 → generated/reference material only as bounded evidence
 ```
 
-Reference or generated material never silently becomes project truth.
+`current` and `authoritative` are different properties. A current supporting/reference/generated source remains evidence only; it cannot independently ground a normal requirement. An explicit Proposal becomes authority only after the user approval boundary.
 
 ## Source retention
 
@@ -98,6 +98,8 @@ Flow 3 may start only when:
 
 - current material authority is sufficiently inspected;
 - retained source bytes/provenance are current;
+- each non-Proposal requirement has current authoritative grounding;
+- each approved Proposal crossed the explicit user approval boundary;
 - no material requirement is blocked/pending/rejected-active;
 - topology/lifecycle/quantities/terminology/role ownership are coherent;
 - all material Proposals were represented and approved;
