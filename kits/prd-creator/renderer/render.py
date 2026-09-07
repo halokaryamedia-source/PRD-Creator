@@ -15,21 +15,23 @@ KIT_ROOT = HERE.parent
 if __package__ in (None, ""):
     if str(KIT_ROOT) not in sys.path:
         sys.path.insert(0, str(KIT_ROOT))
+    from shared.intake import load_intake_state
+    from shared.render_schema import validate_projection_schema
+    from shared.state import StateError
+
     from renderer import prd_render_engine as engine
     from renderer import production_assets_compositor as production_assets
     from renderer.core import slug, txt
     from renderer.template_adapter import TemplateAdapter
+else:
     from shared.intake import load_intake_state
     from shared.render_schema import validate_projection_schema
     from shared.state import StateError
-else:
+
     from . import prd_render_engine as engine
     from . import production_assets_compositor as production_assets
     from .core import slug, txt
     from .template_adapter import TemplateAdapter
-    from shared.intake import load_intake_state
-    from shared.render_schema import validate_projection_schema
-    from shared.state import StateError
 
 
 def _load_projection(render_data: Path) -> dict:
