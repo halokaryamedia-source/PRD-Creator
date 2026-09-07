@@ -37,10 +37,7 @@ def join_text(*values: Any, sep: str = " ") -> dict[str, str]:
 
 def i18n(value: Any, tag: str = "span") -> str:
     text = txt(value)
-    return (
-        f'<{tag} class="i18n-text" data-en="{esc(text["en"])}" '
-        f'data-id="{esc(text["id"])}">{esc(text["en"])}</{tag}>'
-    )
+    return f'<{tag} class="i18n-text" data-en="{esc(text["en"])}" data-id="{esc(text["id"])}">{esc(text["en"])}</{tag}>'
 
 
 def slug(value: str) -> str:
@@ -50,11 +47,7 @@ def slug(value: str) -> str:
 def ul(items: list[Any], cls: str = "clean-list") -> str:
     if not items:
         return ""
-    return (
-        f'<ul class="{esc(cls)}">'
-        + "".join(f"<li>{i18n(item)}</li>" for item in items)
-        + "</ul>"
-    )
+    return f'<ul class="{esc(cls)}">' + "".join(f"<li>{i18n(item)}</li>" for item in items) + "</ul>"
 
 
 def cell_html(value: Any) -> str:
@@ -68,14 +61,10 @@ def production_table(headers: list[Any], rows_html: list[str], cls: str) -> str:
         return ""
     head = ""
     if headers:
-        head = (
-            '<thead><tr>'
-            + "".join(f"<th>{i18n(header)}</th>" for header in headers)
-            + "</tr></thead>"
-        )
+        head = "<thead><tr>" + "".join(f"<th>{i18n(header)}</th>" for header in headers) + "</tr></thead>"
     return (
         f'<div class="production-table-wrap"><table class="production-table {esc(cls)}">'
-        f'{head}<tbody>{"".join(rows_html)}</tbody></table></div>'
+        f"{head}<tbody>{''.join(rows_html)}</tbody></table></div>"
     )
 
 
@@ -83,9 +72,7 @@ def terms(items: list[dict[str, Any]], panel_id: str, *, glossary_enabled: bool 
     if not items:
         return ""
     rows = "".join(
-        '<div class="definition-item">'
-        f'<b>{i18n(item["label"])}</b>'
-        f'<p>{i18n(item["definition"])}</p></div>'
+        f'<div class="definition-item"><b>{i18n(item["label"])}</b><p>{i18n(item["definition"])}</p></div>'
         for item in items
     )
     definition_classes = "definition-list quarry-definition-list"
@@ -107,9 +94,7 @@ def terms(items: list[dict[str, Any]], panel_id: str, *, glossary_enabled: bool 
 
 def cards(items: list[tuple[Any, Any]]) -> str:
     body = "".join(
-        f'<article><b>{i18n(label)}</b><p>{i18n(value)}</p></article>'
-        for label, value in items
-        if present(value)
+        f"<article><b>{i18n(label)}</b><p>{i18n(value)}</p></article>" for label, value in items if present(value)
     )
     return f'<div class="phase-context-grid">{body}</div>' if body else ""
 
@@ -117,10 +102,7 @@ def cards(items: list[tuple[Any, Any]]) -> str:
 def context_block(label: Any, value: Any) -> str:
     if not present(value):
         return ""
-    return (
-        f'<div class="context-block section-context"><b>{i18n(label)}</b>'
-        f'<p>{i18n(value)}</p></div>'
-    )
+    return f'<div class="context-block section-context"><b>{i18n(label)}</b><p>{i18n(value)}</p></div>'
 
 
 def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
@@ -128,9 +110,9 @@ def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
     for index, item in enumerate(items, 1):
         step = item.get("step", index)
         body.append(
-            f'<article><b>{i18n(str(step).zfill(2))}</b>'
-            f'<strong>{i18n(item["title"])}</strong>'
-            f'<p>{i18n(item["description"])}</p></article>'
+            f"<article><b>{i18n(str(step).zfill(2))}</b>"
+            f"<strong>{i18n(item['title'])}</strong>"
+            f"<p>{i18n(item['description'])}</p></article>"
         )
     return f'<div class="flow {esc(cls)}">{"".join(body)}</div>' if body else ""
 
@@ -140,8 +122,7 @@ def sequence(items: list[dict[str, Any]]) -> str:
     for item in items:
         text = join_text(item["action"], item["result"], sep=" — ")
         body.append(
-            f'<div class="role-step"><div><strong>{i18n(item["title"])}</strong>'
-            f'<p>{i18n(text)}</p></div></div>'
+            f'<div class="role-step"><div><strong>{i18n(item["title"])}</strong><p>{i18n(text)}</p></div></div>'
         )
     return f'<div class="role-sequence quarry-sequence">{"".join(body)}</div>' if body else ""
 
@@ -149,10 +130,7 @@ def sequence(items: list[dict[str, Any]]) -> str:
 def note_grid(items: list[dict[str, Any]]) -> str:
     if not items:
         return ""
-    body = "".join(
-        f'<article><b>{i18n(item["title"])}</b><p>{i18n(item["description"])}</p></article>'
-        for item in items
-    )
+    body = "".join(f"<article><b>{i18n(item['title'])}</b><p>{i18n(item['description'])}</p></article>" for item in items)
     return f'<div class="outcome quarry-note-grid">{body}</div>'
 
 
@@ -187,7 +165,7 @@ def page(
     footer_copy = footer_title or title
     return (
         f'<section {" ".join(attrs)}><div class="page-head">'
-        f'<strong>{i18n(header_value)}</strong><span>{i18n(context)}</span></div>{body}'
+        f"<strong>{i18n(header_value)}</strong><span>{i18n(context)}</span></div>{body}"
         f'<div class="page-foot"><span class="footer-brand">{i18n(footer_brand)}</span>'
         f'<span class="footer-title">{i18n(footer_copy)}</span>'
         f'<span class="footer-code">{i18n(code)}</span></div></section>'
@@ -209,13 +187,11 @@ def tabs(pid: str, active: str) -> str:
             f'<a aria-label="Open {esc(txt(label)["en"])}" '
             f'class="section-tab section-tab-link{active_class}" '
             f'data-section-target="{esc(target)}" href="#{esc(target)}"{current}>'
-            f'<b>{i18n(code)}</b><span>{i18n(label)}</span></a>'
+            f"<b>{i18n(code)}</b><span>{i18n(label)}</span></a>"
         )
     return (
         '<div aria-label="Current gameplay development section" '
-        'class="section-tabs package-tabs">'
-        + "".join(links)
-        + "</div>"
+        'class="section-tabs package-tabs">' + "".join(links) + "</div>"
     )
 
 
@@ -237,7 +213,7 @@ def _score_table(
     head = "".join(f"<th>{i18n(value)}</th>" for value in headers)
     return (
         f'<div class="{esc(classes)}"><table class="score-table">'
-        f'<thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
+        f"<thead><tr>{head}</tr></thead><tbody>{''.join(rows)}</tbody></table></div>"
     )
 
 
@@ -256,15 +232,15 @@ def score_html(data: dict[str, Any]) -> str:
     components = data.get("components", [])
     summary = f'<div class="quarry-score-summary"><strong>{i18n(data["score_name"])}</strong>'
     if data.get("scale"):
-        summary += f'<span>{i18n(data["scale"])}</span>'
+        summary += f"<span>{i18n(data['scale'])}</span>"
     formula = data.get("formula") or data.get("summary")
     if formula:
-        summary += f'<p>{i18n(formula)}</p>'
+        summary += f"<p>{i18n(formula)}</p>"
     summary += "</div>"
     rows = [
-        f'<tr><td><b>{i18n(item["name"])}</b></td>'
-        f'<td><b>{i18n(weight_text(item["weight"]))}</b></td>'
-        f'<td>{i18n(item["rule"])}</td></tr>'
+        f"<tr><td><b>{i18n(item['name'])}</b></td>"
+        f"<td><b>{i18n(weight_text(item['weight']))}</b></td>"
+        f"<td>{i18n(item['rule'])}</td></tr>"
         for item in components
     ]
     extra = [
@@ -300,9 +276,9 @@ def completion_html(data: dict[str, Any]) -> str:
     summary_text = data.get("summary") or data["handoff_result"]
     summary = (
         f'<div class="quarry-score-summary phase-score-summary">'
-        f'<strong>{i18n(data["completion_name"])}</strong>'
-        f'<span>{i18n(bi("No Objective Score", "Tanpa Objective Score"))}</span>'
-        f'<p>{i18n(summary_text)}</p></div>'
+        f"<strong>{i18n(data['completion_name'])}</strong>"
+        f"<span>{i18n(bi('No Objective Score', 'Tanpa Objective Score'))}</span>"
+        f"<p>{i18n(summary_text)}</p></div>"
     )
     mapping = [
         (
@@ -327,8 +303,7 @@ def completion_html(data: dict[str, Any]) -> str:
         ),
     ]
     rows = [
-        f'<tr><td><b>{i18n(component)}</b></td><td><b>{i18n(status)}</b></td>'
-        f'<td>{i18n(rule)}</td></tr>'
+        f"<tr><td><b>{i18n(component)}</b></td><td><b>{i18n(status)}</b></td><td>{i18n(rule)}</td></tr>"
         for component, status, rule in mapping
     ]
     return (
