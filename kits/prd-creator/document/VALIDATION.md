@@ -2,6 +2,16 @@
 
 `CONTENT-CONTRACT.md` owns semantic completeness. `DESIGN-CONTRACT.md` owns approved page/component grammar. This file owns the proof required to accept one current PRD revision.
 
+Mechanical implementation routing:
+
+- `../validator/api.py` → one complete PRD validation API;
+- `../validator/prd_validation_engine.py` → source/projection/business-check orchestration;
+- `../validator/html_contract.py` → derived HTML freshness/composition/navigation checks;
+- `../shared/acceptance.py` → reusable acceptance label/SHA parsing primitives;
+- `../validator/validate_handoff.py` → Flow 4→5 handoff gate.
+
+These implementation modules do not replace the semantic acceptance policy in this file.
+
 ## Sequence
 
 ```text
@@ -32,6 +42,7 @@ python kits/prd-creator/validator/validate.py \
 Mechanical validation proves deterministic facts including:
 
 - Flow 2 approval hash still matches current requirement-register bytes;
+- `render-data.approved_requirement_sha256` matches that exact approved Flow 2 revision;
 - retained source hashes/provenance remain coherent;
 - `content.md` has no unresolved placeholders;
 - `render-data.json` satisfies the one strict projection schema;
@@ -111,7 +122,7 @@ For ordinary content changes inspect representative/high-risk pages. Broaden vis
 
 ## 6. Acceptance record
 
-`work/acceptance.md` authorizes exact bytes, not merely a version number.
+`work/acceptance.md` authorizes exact bytes, not merely a version number. Machine parsing of the labels/SHA fields is centralized in `shared/acceptance.py`; do not recreate another acceptance regex contract.
 
 ```text
 # PRD Acceptance
