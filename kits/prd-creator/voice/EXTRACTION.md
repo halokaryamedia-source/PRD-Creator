@@ -1,6 +1,6 @@
 # Voice Requirement Extraction
 
-Flow 5 converts one accepted `handoff_ready` PRD revision into justified player-facing Voice requirements. It owns Voice scope, stable placement identity, communication intent, and authoritative timing truth. It does **not** write final performance text.
+Flow 5 converts one accepted `handoff_ready` PRD state into justified player-facing Voice requirements. It owns Voice scope, stable placement identity, communication intent, and authoritative timing truth. It does **not** write final performance text.
 
 ## Entry gate
 
@@ -12,6 +12,15 @@ python kits/prd-creator/validator/validate_handoff.py \
 ```
 
 Start only when the current handoff, exact accepted render-data/04 revision, canonical PRD, and versioned delivery agree.
+
+Capture both accepted PRD identifiers in `voice-state.yaml`:
+
+```text
+source_prd_revision
+source_prd_sha256
+```
+
+The version is human/project revision identity. The SHA is exact `work/render-data.json` byte identity. Both must remain current for every downstream Voice status, including `no_voice_required`.
 
 ## Authority
 
@@ -62,6 +71,7 @@ Moment: <reader-facing moment title>
 
 ```text
 current handoff guard PASS
+→ capture accepted render-data SHA
 → identify player-facing communication system
 → identify justified Voice moments
 → remove UI-only / redundant / unsupported moments
@@ -140,6 +150,7 @@ Do not include final wording, performance tags, Estimated Duration, commercial v
 status: voice_requirements_ready
 source_handoff: state/handoff-state.yaml
 source_prd_revision: <accepted document.version>
+source_prd_sha256: <sha256 of exact accepted work/render-data.json bytes>
 canonical_prd: work/content.md
 requirements: work/voice-requirements.md
 production: work/voice-production.md
@@ -173,9 +184,9 @@ python kits/prd-creator/validator/validate_voice.py \
   workspace/active/<project>/
 ```
 
-At `voice_requirements_ready`, validation proves current handoff/revision identity, strict Flow 5 fields, and Owner IDs against accepted topology. It does not require `voice-production.md` yet.
+At every validatable state, Voice validation reruns canonical PRD handoff validation and checks `source_prd_revision + source_prd_sha256`. At `voice_requirements_ready`, it then validates strict Flow 5 fields and Owner topology without requiring `voice-production.md` yet.
 
-`no_voice_required` is valid only when accepted upstream meaning supports no Voice production.
+`no_voice_required` is valid only for the exact accepted PRD bytes from which that decision was made.
 
 ## Upstream return rule
 
