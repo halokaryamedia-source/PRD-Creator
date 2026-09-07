@@ -46,6 +46,7 @@ class HtmlFacts(HTMLParser):
         self.asset_requirements_sha256: list[str] = []
         self._in_title = False
         self._in_document_main = False
+        self._document_section_depth = 0
         self._current_document_section: str | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -56,11 +57,15 @@ class HtmlFacts(HTMLParser):
             self._in_document_main = True
         if data.get("id"):
             self.ids.append(str(data["id"]))
-        if tag_name == "section" and self._in_document_main and data.get("id"):
-            section_id = str(data["id"])
-            self.document_section_ids.append(section_id)
-            self._current_document_section = section_id
-            self.section_classes.setdefault(section_id, set()).update(classes)
+        if tag_name == "section" and self._in_document_main:
+            self._document_section_depth += 1
+            if self._document_section_depth == 1 and data.get("id"):
+                section_id = str(data["id"])
+                self.document_section_ids.append(section_id)
+                self._current_document_section = section_id
+                self.section_classes.setdefault(section_id, set()).update(classes)
+            elif self._current_document_section:
+                self.section_classes.setdefault(self._current_document_section, set()).update(classes)
         elif self._current_document_section:
             self.section_classes.setdefault(self._current_document_section, set()).update(classes)
         if tag_name == "meta" and str(data.get("name") or "").casefold() == "render-data-sha256":
@@ -77,10 +82,14 @@ class HtmlFacts(HTMLParser):
         tag_name = tag.lower()
         if tag_name == "title":
             self._in_title = False
-        if tag_name == "section" and self._current_document_section:
-            self._current_document_section = None
+        if tag_name == "section" and self._in_document_main and self._document_section_depth:
+            if self._document_section_depth == 1:
+                self._current_document_section = None
+            self._document_section_depth -= 1
         if tag_name == "main" and self._in_document_main:
             self._in_document_main = False
+            self._document_section_depth = 0
+            self._current_document_section = None
 
     def handle_data(self, data: str) -> None:
         if self._in_title:
