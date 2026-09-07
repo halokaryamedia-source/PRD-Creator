@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 from .core import esc
 from shared.voice import PERFORMANCE_TAG_LINE_RE
 
 PERFORMANCE_TAG_RE = re.compile(r"\[[^\[\]\r\n]+\]")
 STYLE_MARKER = 'id="production-assets-style"'
+SCRIPT_MARKER = 'id="production-assets-script"'
+STATIC_ROOT = Path(__file__).resolve().parent / "static"
 
 
 def performance_html(performance: str) -> str:
@@ -27,13 +30,27 @@ def performance_html(performance: str) -> str:
     return "".join(parts)
 
 
-VOICE_STYLE = r'''<style id="production-assets-style">
-.production-assets-nav .nav-submenu a{min-width:0;white-space:normal;overflow-wrap:anywhere}
-.production-assets-nav .nav-submenu a small{display:block;margin-top:2px;white-space:normal;overflow-wrap:anywhere}
-.production-assets-objective-name{min-width:0;white-space:normal;overflow-wrap:anywhere}
-.voice-performance-cues{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
-</style>'''
+def production_assets_style() -> str:
+    css = _static_text("production-assets.css")
+    return f'<style id="production-assets-style">\n{css}</style>'
 
-VOICE_COPY_SCRIPT = ""
 
-__all__ = ["STYLE_MARKER", "performance_html", "VOICE_STYLE", "VOICE_COPY_SCRIPT"]
+def production_assets_script() -> str:
+    script = _static_text("production-assets.js")
+    return f'<script id="production-assets-script">\n{script}</script>'
+
+
+def _static_text(name: str) -> str:
+    path = STATIC_ROOT / name
+    if not path.is_file():
+        raise ValueError(f"missing renderer static resource: {path}")
+    return path.read_text(encoding="utf-8").rstrip() + "\n"
+
+
+__all__ = [
+    "STYLE_MARKER",
+    "SCRIPT_MARKER",
+    "performance_html",
+    "production_assets_style",
+    "production_assets_script",
+]
