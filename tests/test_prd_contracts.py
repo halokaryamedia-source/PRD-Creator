@@ -142,7 +142,7 @@ class ProjectDocumentContracts(unittest.TestCase):
                 project = self.make_project(data)
                 self.assertEqual(self.render(project).returncode, 2)
 
-    def test_non_scored_package_is_explicit_not_omitted(self) -> None:
+    def test_non_scored_package_uses_completion_not_scoring_language(self) -> None:
         data = render_data()
         set_completion_only(data)
         project = self.make_project(data)
@@ -150,6 +150,8 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
         self.assertIn("No Objective Score", html)
+        self.assertIn("Completion Criteria", html)
+        self.assertNotIn(">Scoring Criteria</b><", html)
 
     def test_percentage_string_does_not_render_double_percent(self) -> None:
         data = render_data()
