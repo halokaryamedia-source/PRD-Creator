@@ -6,11 +6,12 @@ import re
 from pathlib import Path
 from typing import Any
 
+from shared.localization import document_languages, validate_bilingual_values
+from shared.render_schema import validate_projection_schema
+
 from .core import esc, i18n, slug, txt
 from .pages import flow_pages, global_pages, glossary, navigation, overview, package_pages
 from .template_adapter import TemplateAdapter
-from shared.localization import document_languages, validate_bilingual_values
-from shared.render_schema import validate_projection_schema
 
 OPEN_RE = re.compile(
     r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]",
@@ -93,9 +94,7 @@ def _validate_design_invariants(data: dict[str, Any]) -> None:
         if result_mode == "scored" and not isinstance(developer.get("scoring"), dict):
             raise ValueError(f"package {package['id']} scored result requires developer.scoring")
         if result_mode == "completion_only" and not isinstance(developer.get("completion_data"), dict):
-            raise ValueError(
-                f"package {package['id']} completion_only result requires developer.completion_data"
-            )
+            raise ValueError(f"package {package['id']} completion_only result requires developer.completion_data")
 
 
 def _validate_terms(data: dict[str, Any]) -> None:
@@ -143,7 +142,7 @@ def single_language_enforcer(namespace: str) -> str:
         "document.querySelectorAll('.i18n-text').forEach(function(node){"
         "if(typeof node.dataset.en==='string'){node.textContent=node.dataset.en;}});"
         f"try{{localStorage.setItem('prd-{namespace}-language','en');}}catch(e){{}}"
-        '})();</script>'
+        "})();</script>"
     )
 
 
@@ -171,7 +170,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         f'<a aria-label="{esc(title["en"])} overview" class="sidebar-brand" href="#summary">'
         f'<span class="brand-mark">{i18n(mark)}</span>'
         f'<span class="brand-copy"><strong>{i18n(title)}</strong>'
-        f'<small>{i18n(data["document"]["document_type"])}</small></span></a>'
+        f"<small>{i18n(data['document']['document_type'])}</small></span></a>"
     )
     adapter.set_sidebar_brand(brand)
     adapter.set_navigation(nav)
@@ -181,7 +180,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
     document = data["document"]
     namespace = slug(title["en"])
     subtitle = txt(document.get("subtitle") or "Production Specification")["en"]
-    page_title = f'{title["en"]} — {subtitle}'
+    page_title = f"{title['en']} — {subtitle}"
     adapter.set_title(page_title)
     description = txt(document.get("description") or data["overview"]["project_context"])["en"]
     adapter.set_description(description)
