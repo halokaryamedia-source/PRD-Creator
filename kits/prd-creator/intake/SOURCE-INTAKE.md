@@ -40,6 +40,15 @@ Supported roles:
 authoritative | supporting | reference | generated
 ```
 
+Role meaning is strict:
+
+- `authoritative` — may ground current project truth;
+- `supporting` — corroborates/explains authority but does not become authority by itself;
+- `reference` — structural/comparative evidence only;
+- `generated` — derived evidence/output only.
+
+A `current` status means the record is current evidence, **not** that its role is authoritative.
+
 Supported source status:
 
 ```text
@@ -92,9 +101,13 @@ Material AI proposal:
     resolution: Recommended preview default that preserves experiment-before-explanation.
 ```
 
-Every requirement must have at least one valid `SRC-###` provenance reference. Dangling provenance is invalid. A requirement must retain at least one `current` provenance source at readiness.
+Every requirement must have at least one valid `SRC-###` provenance reference. Dangling provenance is invalid.
 
-Use `recovery_class: proposal` when the AI chooses among materially different project answers. Proposal requirements require an explicit `approval_status` and remain non-authoritative until preview approval. Use `recovery_class: blocked` only when no responsible answer can be formed; blocked requirements prevent readiness.
+At readiness, a normal source-backed/completion requirement must retain at least one **current authoritative** provenance source. A `supporting`, `reference`, or `generated` source may remain attached as evidence but cannot independently establish project truth.
+
+The one exception is an explicit `recovery_class: proposal` with `approval_status: approved`: user approval is the authority boundary for that proposed material choice. Before approval, it remains non-authoritative.
+
+Use `recovery_class: proposal` when the AI chooses among materially different project answers. Proposal requirements require an explicit `approval_status`. Use `recovery_class: blocked` only when no responsible answer can be formed; blocked requirements prevent readiness.
 
 Optional fields such as `affects` and `evidence_locator` are allowed only when they materially improve propagation or later source verification. Do not create a separate dependency graph.
 
@@ -242,6 +255,8 @@ This prevents blanket approval from surviving a later hidden requirement edit.
 - current material sources are sufficiently inspected;
 - repository-retained source bytes still match recorded hashes;
 - every requirement ID and provenance link is valid;
+- every non-Proposal requirement has current authoritative grounding;
+- every accepted Proposal crossed the explicit approval boundary;
 - no current blocked source/requirement remains;
 - no Proposal remains pending or rejected-active;
 - topology, lifecycle, quantities, terminology, and role ownership are coherent;
