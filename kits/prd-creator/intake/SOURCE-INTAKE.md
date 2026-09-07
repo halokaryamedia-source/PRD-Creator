@@ -1,427 +1,252 @@
 # Source Intake & Requirement Recovery
 
-Flow 2 turns uneven project material into a **complete reviewable project model** before Flow 3 writes the canonical PRD. It recovers supported meaning, notices material gaps/conflicts, forms practical AI proposals when authority does not settle an answer, propagates the chosen model across production roles, preserves real Production Asset needs, and obtains user approval through the Simple Chat Preview.
+Flow 2 converts uneven project evidence into one approved requirement state before Flow 3 writes the canonical PRD. It owns source provenance, material requirement recovery, AI proposals, cross-role coherence, and the Simple Chat Preview approval boundary.
 
-Source-backed meaning and AI-proposed meaning remain distinguishable internally until approval. A Proposal may be concrete; it must never be presented as if it came from the source.
+## Canonical state
 
-## Outcome
-
-Keep only state needed for continuity and current truth:
+Only these files are machine-owned Flow 2 truth:
 
 ```text
 state/source-inventory.yaml
 state/requirement-register.yaml
 state/intake-state.yaml
-work/review.md                 # only when a readable decision summary materially helps
 ```
 
-The Simple Chat Preview is **chat output, not another artifact**. Do not create topology maps, coverage spreadsheets, dependency graphs, preview HTML, asset-inventory previews, semantic scorecards, or extra approval files.
+`work/review.md` is optional human-readable support. The Simple Chat Preview stays in chat and is never another canonical artifact.
 
-## 1. Bootstrap, authority, and source retention
+The machine contract is implemented by `shared/intake.py`. Do not create alternate state fields or compatibility aliases in documentation or generated projects.
 
-```text
-user project name OR strongest authoritative title
-→ derive/reuse stable project workspace
-→ inventory current evidence
-→ inspect by authority/relevance
-```
+## 1. Source inventory
 
-Do not ask the user for internal slugs, folders, IDs, YAML shapes, or renderer files.
-
-Every material source/instruction gets one stable `SRC-###` entry. Roles are:
-
-- `authoritative` — defines current project facts/requirements;
-- `supporting` — supplements authoritative evidence;
-- `reference` — demonstrates structure/quality only unless explicitly adopted;
-- `generated` — prior generated output for continuity/conflict evidence only.
-
-### Retention rule
-
-Repository source copies are **useful evidence, not a ceremonial requirement**.
-
-- Keep a supplied original under `source/originals/` when later direct inspection/reproduction materially benefits from having the bytes in-repo.
-- A large/static source may remain externally retained when duplicating it adds no production value. Record enough exact identity/provenance in `source-inventory.yaml` to avoid ambiguity; for a file source, normally include filename and SHA-256 when available, plus `retention: external`.
-- External retention is valid only after relevant source meaning has been inspected to sufficient depth and current production meaning is persisted through requirement/canonical state. It is not permission to discard unread authority.
-- Never replace source identity with a generated review artifact.
-
-### Reading depth
-
-Read by **material relevance**, not by file count or bytes consumed.
+Every material source/instruction receives one stable `SRC-###` identity.
 
 ```yaml
-inspection: full
+sources:
+  - id: SRC-001
+    type: file
+    role: authoritative
+    status: current
+    origin: client brief
+    summary: Current gameplay design authority.
+    inspection: full
+    retention: repository
+    path: source/originals/design.pdf
+    sha256: <exact current file sha256>
 ```
 
-means no uninspected portion is expected to materially change current scope.
-
-```yaml
-inspection: targeted
-inspection_scope: Objective 2 timing and reset behavior
-```
-
-is valid for bounded work.
-
-Use progressive context expansion rather than a fixed context/file budget:
+Supported roles:
 
 ```text
-start with the strongest active authority
-→ current question is settled?
-   yes → continue
-   no  → open the smallest additional source/owner that can settle it
-→ stop expanding when material meaning is grounded
+authoritative | supporting | reference | generated
 ```
 
-A material user instruction is authoritative even without a file. Persist coherent instruction sets as source entries instead of relying on chat history or creating fake source files.
+Supported source status:
 
-Use source-level `status: superseded` only when the whole source is no longer current. Partial changes are resolved at requirement/claim level.
+```text
+current | superseded
+```
 
-## 2. Recover requirement truth
+Supported inspection:
 
-Recover explicit facts, rules, exclusions, removals, topology, terminology, and necessary production implications before filling gaps.
+```text
+full | targeted | blocked
+```
+
+`targeted` requires `inspection_scope`. A current `blocked` source prevents readiness.
+
+Retention is either:
+
+```text
+repository | external
+```
+
+When `retention: repository`, `path` is project-relative, the retained file must exist, and its current SHA-256 must match the recorded digest. External retention is valid only after the relevant authority has been inspected sufficiently and its production meaning is persisted.
+
+Do not ask the user for SRC IDs, file paths, YAML, or workspace mechanics.
+
+## 2. Requirement register
+
+Create one `REQ-###` for each material production rule, constraint, exclusion, topology rule, conflict resolution, completion, or proposal that must survive into PRD/acceptance.
+
+Source-backed requirement:
+
+```yaml
+requirements:
+  - id: REQ-001
+    area: gameplay
+    statement: Player must cross the bridge before collapse.
+    provenance: [SRC-001]
+    impact: high
+```
+
+Material AI proposal:
+
+```yaml
+  - id: REQ-014
+    area: gameplay
+    statement: The first target appears after 90 seconds of free experimentation.
+    provenance: [SRC-001]
+    impact: high
+    recovery_class: proposal
+    approval_status: pending
+    resolution: Recommended preview default that preserves experiment-before-explanation.
+```
+
+Every requirement must have at least one valid `SRC-###` provenance reference. Dangling provenance is invalid. A requirement must retain at least one `current` provenance source at readiness.
+
+Use `recovery_class: proposal` when the AI chooses among materially different project answers. Proposal requirements require an explicit `approval_status` and remain non-authoritative until preview approval. Use `recovery_class: blocked` only when no responsible answer can be formed; blocked requirements prevent readiness.
+
+Optional fields such as `affects` and `evidence_locator` are allowed only when they materially improve propagation or later source verification. Do not create a separate dependency graph.
+
+## 3. Recover meaning before filling gaps
+
+Recover explicit facts, removals, exclusions, topology, terminology, quantitative rules, lifecycle behavior, and necessary Production Asset implications first.
 
 Negative statements are first-class requirements:
 
 ```text
-remove
-no longer use
-do not use
-only
-must not
-replaced by
+remove | no longer use | do not use | only | must not | replaced by
 ```
 
-Do not broaden them beyond their actual scope.
-
-Create one `REQ-###` per meaningful production rule/constraint/conflict/exclusion/topology rule/proposed decision that must survive into project documentation/acceptance. Do not mirror every source sentence.
-
-Normal source-backed requirement:
-
-```yaml
-id: REQ-001
-area: gameplay
-statement: Player must cross the bridge before collapse.
-provenance: [SRC-001]
-impact: high
-```
-
-Material AI proposal before approval:
-
-```yaml
-id: REQ-014
-area: gameplay
-statement: The first target appears after 90 seconds of free experimentation.
-recovery_class: proposal
-approval_status: pending
-resolution: Recommended preview default; preserves experiment-before-explanation.
-provenance: [SRC-002, SRC-003]
-impact: high
-```
-
-Sparse defaults stay implicit unless a non-default condition matters. Use `affects` only when it materially helps cross-role propagation.
-
-### Optional evidence locator for material requirements
-
-When a large source makes later verification difficult, a material requirement may carry a compact human-readable locator in addition to its `SRC-###` provenance, for example:
-
-```yaml
-evidence_locator: Gameplay Rules > Failure and Retry
-```
-
-or:
-
-```yaml
-evidence_locator: page 14, Objective 3 Timing
-```
-
-Use this only when it materially improves later reconciliation. Do not require page/line metadata for every requirement and do not turn source navigation into another indexing framework.
-
-### Requirement meaning vs implementation evidence
-
-Apply the durable PRD-scope boundary from `docs/foundation/02-source-intake-recovery.md` while recovering technical or completed-map sources. Do not assume that a detail belongs in the PRD merely because it is precise, executable, or present in authoritative implementation output.
-
-Use this judgment:
+Distinguish product meaning from incidental implementation evidence:
 
 ```text
-Does the detail define required gameplay, build, production, or observable system behavior?
-→ recover the requirement.
+required gameplay/build/runtime behavior
+→ canonical requirement
 
-Is it an explicit approved technical constraint that production must obey?
-→ recover it at PRD abstraction level.
+explicit approved technical constraint
+→ canonical requirement at PRD abstraction level
 
-Does it only show how one finished implementation happened to realize the requirement?
-→ retain it as source evidence; recover the underlying production meaning when material;
-  do not promote the incidental identifier/setup itself.
-
-Is it an exact world coordinate or map-instance locator?
-→ do not create a canonical PRD requirement for the locator;
-  preserve the supported spatial intent instead.
+incidental coordinate/tag/UUID/function path/debug setup
+→ evidence only unless explicitly promoted by authority
 ```
 
-Spatial intent is still production meaning. Keep approved dimensions, area relationships, route/boundary requirements, relative or functional placement, visibility/readability, checkpoint role, and gameplay function. `30×30 block arena`, `control machine centered in the chamber`, or `exit visible from the objective area` may be legitimate requirements. A final `X/Y/Z` spawn, teleport, trigger, checkpoint, ticking-area, or authored bounding coordinate is not canonical PRD content.
+Preserve approved spatial intent such as dimensions, relationships, route constraints, readability, and functional placement; do not promote final map-instance coordinates into PRD meaning.
 
-Likewise, do not treat technical vocabulary as automatically invalid. `Must run in Minecraft Education Edition` or `must reuse the existing shared state interface because another approved system depends on it` can be legitimate constraints. By contrast, a scoreboard name, tag, function path, runtime ID, UUID, or pack/file identifier observed only in an existing implementation stays evidence rather than becoming product meaning.
+## 4. Integrated completeness pass
 
-Do not add a requirement-state taxonomy, keyword blacklist, coordinate detector, or compatibility framework for this distinction. The decision follows authority and meaning. If the user explicitly requests a separate as-built/technical setup artifact, handle that as a different requested deliverable rather than expanding the canonical PRD silently.
-
-### Topology and terminology
-
-Before preview, the model must be able to explain as applicable:
-
-```text
-project experience
-├── shared/global rules
-├── ordered gameplay packages/stages
-├── dependencies/transitions
-└── ending/final result or handoff
-```
-
-Store material topology as normal requirements; do not create another topology artifact.
-
-Normalize names when variants may refer to the same concept. Preserve distinctions when they are real; when ambiguity is material and authority cannot settle it, choose a coherent Proposal for preview instead of synonym-cycling.
-
-## 3. One integrated production-completeness pass
-
-After explicit recovery, run **one reasoning pass**, not separate forms/reviews.
-
-| Concern | Must be clear when applicable |
-|---|---|
-| Topology | package order, shared/local ownership, dependencies, transitions, ending/final result |
-| Gameplay | purpose/objective, start, player action/feedback, completion/end, fail/retry/recovery, result |
-| Level Design | required areas/objects/routes, relationships, readability, known spatial constraints, gameplay function |
-| Developer | activation, state/progression, timing/quantities, validation, data/result, interruption/reset, handoff |
-| Production Assets | concrete `MODEL`, `ITEM`, `UI / TEXT`, standalone `AUDIO`, and standalone `PARTICLE` resources that the approved experience actually requires; shared vs local ownership; exact player-facing copy when known |
-| Lifecycle | precondition → trigger → active behavior → success/fail/interruption → result → retry/reset |
-| Quantitative coherence | related timings/counts/capacities/scoring inputs/weights agree |
-| Global/local coherence | shared defaults remain shared; local exceptions are explicit |
-| Known constraints | authoritative platform/production limits do not silently conflict with required behavior |
-| Operational clarity | competent roles should not reasonably build materially different behavior from the approved model |
-
-Only inspect concerns that apply. Optional/decorative detail is not a reason to inflate scope.
-
-The Production Assets concern is a **meaning check, not a new Flow or artifact**. If accepted gameplay necessarily needs a concrete resource, the model should not leave that production need invisible merely because the source did not name an asset file. Do not invent visual style, lore, dimensions, animations, VFX, sound, or presentation beats simply to fill 04.
-
-If choosing a particular asset form/name/content would materially change gameplay, lore, communication, or scope, use the existing Completion/Proposal rules. Obvious production implications do not require another approval framework. `../production-assets/CONTRACT.md` later materializes the approved resource needs into the compact reader-first 04 source.
-
-### Integrated provisional synthesis before preview
-
-After the completeness pass, reason through the recovered model **as if it had to become the final PRD now**, but do not create canonical `work/content.md`, `render-data.json`, or generated HTML yet.
-
-Use this provisional synthesis to test whether the same model remains coherent when viewed as:
+Before preview, reason once across the complete model:
 
 ```text
 player journey
-→ Gameplay responsibilities
-→ Level Design responsibilities
-→ Developer lifecycle/state/data responsibilities
+→ Gameplay
+→ Level Design
+→ Developer lifecycle/state/data
 → Production Asset implications
-→ transition / failure / retry / reset / result
+→ success/fail/interruption/retry/reset/result/handoff
 ```
 
-The purpose is to expose cross-role contradictions, hidden assumptions, missing lifecycle steps, and quantitative drift **before** asking the user to approve the recovered model.
+Check only applicable concerns, especially package/topology order, objective lifecycle, build relationships, runtime state/data/reset, required resources, quantitative consistency, terminology, and role ownership.
 
-Routine reversible synthesis choices are craft, not material Proposals. The model may choose:
+Routine grouping, wording, ordering, and decomposition are downstream craft. Escalate only materially different product/design/runtime/scope choices as Proposals.
 
-- grouping and ordering;
-- direct wording;
-- decomposition of already-approved rules;
-- which existing role surface should explain an approved rule;
-- obvious derived relationships that do not create a new project fact.
+## 5. Resolution ladder
 
-Escalate a choice to Proposal only when different plausible answers would materially change player experience, project scope, build commitment, runtime behavior, scoring/result, timing, transition/handoff, interruption/reset behavior, or another project fact.
-
-Do not persist another draft/schema for this pass. It is reasoning over the existing source/requirement state.
-
-### Golden-guided completeness
-
-Use the **Reverse-derived Golden fill map** in `../document/CONTENT-CONTRACT.md` as the finite guide for what the final PRD core must be able to answer.
-
-Golden supplies **questions, placement, hierarchy, and presentation behavior**. It never supplies project mechanics, counts, lore, timings, scoring values, implementation facts, or asset style for another project.
-
-When authority does not answer a material Golden-required question, do not leave the future slot empty merely because source is incomplete. Resolve it through authority, Completion, concrete Proposal, Explicit No / Not Applicable where truthful, or Blocked as the last resort.
-
-### Mature-source consistency
-
-A polished or `FINAL` source can still contradict itself. Compare only repeated **material** claims across relevant Gameplay Flow / Gameplay Overview / Level Design / Developer surfaces: progression count, triggers/timing, state change, fail/retry/recovery, scoring/result, reward/handoff, interruption/reset, and similarly consequential rules.
-
-If same-authority surfaces materially disagree:
-
-1. record the conflict internally;
-2. preserve constraints/user direction that still hold;
-3. select one coherent recommended preview resolution;
-4. mark it Proposal + pending;
-5. propagate it across the preview model.
-
-Do not silently call the selected side source truth.
-
-## 4. Resolution ladder
-
-For every material gap/conflict:
+For a material gap or conflict:
 
 ```text
-1. Existing authority resolves it
-   → recover.
+existing authority settles it
+→ recover
 
-2. One necessary evidence-backed result exists
-   → Completion.
+one necessary evidence-backed result exists
+→ Completion
 
-3. AI must choose among plausible product/design/development answers
-   → one concrete Proposal that best fits project intent/constraints.
+multiple plausible material answers exist
+→ choose one concrete Proposal for preview
 
-4. Options are genuinely balanced
-   → still choose one reasonable preview default as Proposal;
-      mention an alternative only when it materially helps review.
-
-5. Golden requires a material answer but source is silent
-   → practical project-consistent Proposal at PRD abstraction level.
-
-6. No responsible proposal can be formed
-   → Blocked/direct decision.
+no responsible proposal is possible
+→ Blocked / direct user decision
 ```
 
-### Completion vs Proposal
+Do not minimize AI decisions artificially, but never present a Proposal as source truth.
 
-Use Completion only when the result follows from evidence/necessary implication and does not select among plausible product/design options.
+## 6. Propagation rule
 
-Use Proposal whenever the AI actually chooses a material default, including gameplay behavior, quantities, timings, recovery, scoring behavior, names, objects, build expectations, runtime behavior, implementation rules, or a Production Asset choice that changes project meaning.
-
-Do **not** use Proposal merely because the AI chose a writing, grouping, ordering, formatting, or decomposition approach for already-settled project meaning.
-
-The objective is **not to minimize AI decisions**. The objective is to give the user a coherent complete model to approve/correct without pretending unsupported material choices are source facts or forcing the user to approve routine craft decisions.
-
-### Materiality
-
-A gap is material when leaving it unresolved would force production to choose product behavior/scope or would change player experience, build scope, runtime behavior, scoring/result, timing, transition/handoff, interruption, reset, or another approved project fact.
-
-Optional advisory improvements remain out of the preview by default.
-
-## 5. Propagate meaning once
-
-Every recovered Completion or Proposal must update all actually affected model surfaces:
+Every recovered Completion or Proposal must be coherent across every affected owner:
 
 ```text
 requirement
-→ topology / shared-vs-local ownership
+→ topology
 → Gameplay
 → Level Design
 → Developer
-→ Production Asset implications
-→ timing / quantities / scoring
-→ transition / handoff
-→ retry / interruption / reset
+→ Production Assets
+→ timing/quantity/result
+→ transition/retry/reset
 ```
 
-Production Asset implications remain resource meaning only. Do not move runtime logic from Developer into 04 and do not turn logic into fake SEQUENCE assets.
+Do not compensate for an upstream inconsistency with downstream prose.
 
-Reuse existing REQs + `affects` where useful. Do not build a dependency-graph artifact.
+## 7. Simple Chat Preview
 
-Before approval, Proposal stays pending. After the user approves the relevant preview, promote represented pending proposals to approved project decisions/requirement state unless explicitly corrected/rejected.
-
-## 6. Simple Chat Preview and user approval
-
-After the complete model and provisional synthesis are coherent enough to review, show one objective-based preview before initial readiness.
-
-Default form:
+Use one compact objective-based preview:
 
 ```text
 Project Overview
-<short project/session/journey summary>
 
 Objective N — <Name>
-
 Tujuan
-<what the player must accomplish>
-
 Apa yang Player Lakukan
-- chronological player actions / visible responses
-
 Hasil
-<completion/result/transition>
-
 Level Design
-- material build-owned meaning
-
 Developer
-- material runtime/data/reset meaning
-
-Saran AI                 # required when material AI-chosen Proposals exist
-- each material AI-chosen default once; omit only when none exist
+Saran AI        # only when material Proposals exist
 ```
 
-Use one short Global Rules block only when shared rules materially affect all objectives.
+Show each material AI Proposal once in `Saran AI`. Do not expose SRC/REQ IDs, YAML, Golden internals, or a duplicate full PRD by default.
 
-Do not expose `SRC-###`, `REQ-###`, YAML, provenance jargon, Golden DOM terms, validator detail, or a long Production Asset inventory by default. **Do not turn the preview into a second PRD**; it should remain a compact checkpoint over the complete underlying model.
+Natural-language user approval is sufficient. After approval, promote the represented pending Proposals to approved requirement state unless the user corrected/rejected them.
 
-The preview should let the user judge the **coherent project outcome**, not review internal model mechanics. Show material project choices that need authority; do not ask for approval of sentence wording, grouping, ordering, heading choice, or other reversible representation craft.
+## 8. Revision-bound approval
 
-Every **material AI-chosen Proposal** must be disclosed once in `Saran AI` before approval. This includes chosen timing, quantity, progression, scoring, fail/recovery, reward, build-scope, runtime-behavior defaults, or material Production Asset choices. Source-backed recovery and non-material production implications do not need individual labels. Keep one compact disclosure list rather than a multi-question decision dialog.
-
-`Perlu Konfirmasi` is the exception for a genuinely user/external-only blocker, not the normal response to incomplete design.
-
-### Approval behavior
+`intake-state.yaml` has exactly one readiness truth: `status`.
 
 Before approval:
 
 ```yaml
 status: audit_in_progress
-ready_for_prd: false
 preview_approved: false
-next_step: Present/resolve the complete Simple Chat Preview.
 ```
 
-After approval and proposal promotion:
+After the requirement register has been updated to the exact approved model:
 
 ```yaml
 status: ready_for_prd
-ready_for_prd: true
 preview_approved: true
+approved_requirement_sha256: <sha256 of exact current state/requirement-register.yaml bytes>
 ```
 
-A Flow-2-specific `next_step` may be omitted once another persisted owner (`content.md`, handoff state, or repository `next-action.md`) clearly owns later continuation; do not preserve stale instructions such as “Build canonical PRD content” after handoff is already complete.
-
-Natural-language user approval is sufficient. A material Proposal counts as represented by the preview only when its chosen default appears once in `Saran AI`; do not promote a hidden material AI choice through blanket approval. If the user corrects the preview, persist the correction as higher authority, update only affected proposal/requirements, rerun only invalidated reasoning, and re-preview only the affected slice when needed.
-
-Approval covers the coherent recovered model and represented material Proposals. It does not freeze ordinary downstream wording/decomposition craft so long as Flow 3 preserves the approved meaning.
-
-## 7. Readiness
-
-Statuses remain:
+Do **not** add redundant fields such as:
 
 ```text
-collecting_sources
-audit_in_progress
-needs_decision
-blocked
 ready_for_prd
+next_step
+flow
 ```
+
+The approval hash is mandatory. If `requirement-register.yaml` changes after approval:
+
+```text
+requirement bytes change
+→ SHA changes
+→ prior preview approval is stale
+→ Flow 3 must not start until affected meaning is reviewed/approved again
+```
+
+This prevents blanket approval from surviving a later hidden requirement edit.
+
+## 9. Readiness
 
 `ready_for_prd` requires:
 
-- materially relevant authority inspected to sufficient depth;
-- material user instructions persisted;
-- facts/exclusions/topology/terminology recovered;
-- applicable Gameplay / Level Design / Developer / Production Assets / lifecycle / quantitative / global-local / known-constraint implications resolved;
-- integrated provisional synthesis exposes no unresolved material cross-role contradiction;
-- each material issue passed through the Resolution Ladder;
-- every Proposal represented in the approved preview has been promoted/corrected;
-- no current `approval_status: pending`, `recovery_class: blocked`, or current source `inspection: blocked` affecting scope;
-- the complete initial Simple Chat Preview (or bounded affected slice) is approved.
+- current material sources are sufficiently inspected;
+- repository-retained source bytes still match recorded hashes;
+- every requirement ID and provenance link is valid;
+- no current blocked source/requirement remains;
+- no Proposal remains pending or rejected-active;
+- topology, lifecycle, quantities, terminology, and role ownership are coherent;
+- the Simple Chat Preview represents every material Proposal;
+- the user approved the represented model;
+- `approved_requirement_sha256` matches the exact current requirement-register bytes.
 
-`state/source-inventory.yaml` and `state/requirement-register.yaml` must contain real stable evidence entries before repository-backed validation can trust positive readiness.
-
-## 8. Bounded revision
-
-```text
-approved change
-→ update affected authority/requirement meaning
-→ completeness + provisional synthesis only on invalidated slice/dependencies
-→ new Proposal only if the change opens a material project decision
-→ affected preview only when material interpretation changed
-→ approval/correction
-→ continue downstream revision
-```
-
-If the current user instruction already states the complete bounded result unambiguously, it may serve as approval for that slice. Do not manufacture another confirmation step.
-
-## Stop rule
-
-Stop Flow 2 when the approved model is production-complete for current scope. Do not continue generating optional redesign ideas, extra artifacts, additional proof layers, or speculative hardening after readiness is established.
+Flow 3 consumes this approved requirement revision. It must not create new project meaning to repair an incomplete Flow 2 state.

@@ -4,32 +4,32 @@ Status: active Flow 6 policy
 
 ## Purpose
 
-Flow 6 turns `voice_requirements_ready` into canonical Eleven v3 production wording and publishes it into the **same project HTML** without changing upstream Voice scope or PRD/project meaning.
+Flow 6 turns mechanically ready Flow 5 requirements into canonical Eleven v3 wording without changing upstream project/Voice meaning.
+
+Detailed performance craft lives in `kits/prd-creator/voice/PERFORMANCE-WRITING.md`; this page owns lifecycle and authority boundaries.
 
 ## Ownership
 
 ```text
-accepted project / PRD meaning
+accepted project meaning
 → work/voice-requirements.md
+   → Voice scope + Owner ID + Moment ID/Moment + communication intent + source timing truth
 → Flow 6 performance writing
 → work/voice-production.md
-→ output/v<document.version>/prd.html
-   → 04 Production Assets
-      → matching gameplay moment
-         → AUDIO
+   → exact wording + Estimated Duration + selected voice/profile when known
+→ consolidated project HTML
 ```
 
-- accepted project/PRD meaning owns gameplay/story truth;
-- `voice-requirements.md` owns Voice asset scope, communication intent/context, and authoritative timing truth when one exists;
-- `kits/prd-creator/voice/PERFORMANCE-WRITING.md` owns Eleven v3 preparation/generation procedure;
-- `voice-production.md` owns selected actor voice when known, Estimated Duration, and exact performance wording;
-- project HTML is derived presentation only.
+Flow 6 preserves Flow 5 Owner ID, Moment ID, Type, Speaker, and scope. It does not choose new placement identity.
 
-# Flow 5 → Flow 6 interface
+## Entry gate
 
-Flow 6 consumes the Flow 5 entry as the normal authoring interface:
+Enter only after `voice-state.yaml.status: voice_requirements_ready` and `validator/validate_voice.py` passes the Flow 5 requirement/revision/topology contract.
+
+## Flow 5 → Flow 6 interface
 
 ```text
+Placement           ← Owner ID + Moment ID + Moment
 Communication Job   ← Function + Purpose
 Listener State      ← Trigger + Channel
 Information Payload ← Must communicate
@@ -39,166 +39,121 @@ Hard Timing Truth   ← optional Timing Constraint
 Scope Guardrails    ← Must not add/repeat
 ```
 
-Use accepted PRD context only when the requirement still lacks genuinely necessary delivery-relevant context.
+Flow 6 may decide wording, beat shape, punctuation/CAPS/tags, Estimated Duration, Target Voice Profile or actor selection, Stability, Surface, and other production interpretation inside that boundary.
 
-`Timing Constraint` is optional upstream truth. It is not Flow 6 `Estimated Duration`.
-
-Performance Shape, Landing, final wording, punctuation/CAPS/tags, Target Voice Profile, selected actor voice, Stability, Surface, and production-estimated duration remain Flow 6 decisions unless upstream meaning explicitly constrains them.
-
-# Preparation Mode
-
-Default when audio generation is not requested.
+## Preparation Mode
 
 ```text
-Voice Requirements
+voice_requirements_ready
 → Voice Intent Completeness
-→ internal Performance Fill Map
 → performance writing
 → Communication Conservation
 → integrated Voice Script Readiness
 → canonical voice-production.md
-→ consolidated versioned prd.html
+→ voice_script_ready
+→ rerender consolidated project HTML when in scope
 ```
 
-Preparation Mode may process the full current Voice scope, may use a Target Voice Profile before actual actor selection, and requires no audio test or per-line approval loop.
+No per-line audio approval is required in Preparation Mode.
 
-# Voice Cast
+## Voice Cast
 
-The canonical production script may store actor selection once before gameplay sections:
+Store shared speaker selection/profile once:
 
 ```text
 Voice Cast:
-- <Speaker>: <selected ElevenLabs voice>
+- <Speaker>: <selected ElevenLabs voice or explicit target profile>
 ```
 
-Do not repeat commercial voice names in every canonical line.
+Preparation may use a clear target profile before final commercial voice selection. `voice_delivery_ready` requires a non-empty selection/profile for every represented speaker; actual Generation Mode requires the intended generation voice.
 
-An unselected actor voice may remain pending during Preparation Mode when a clear Target Voice Profile is enough to write responsibly. Actual Generation Mode requires the active Speaker's intended voice to be selected.
+## Exact Flow 5 binding
 
-Never invent a commercial voice to make preparation look complete.
-
-# Canonical source binding
-
-`voice-production.md` binds itself directly to the exact current Flow 5 source without creating a revision registry:
+`voice-production.md` binds exact current requirement bytes:
 
 ```text
-Source Voice Requirements: <accepted PRD revision> / work/voice-requirements.md | sha256:<current file SHA-256>
+Source Voice Requirements: <accepted PRD revision> / work/voice-requirements.md | sha256:<current SHA-256>
 ```
 
-The revision must match the current accepted PRD handoff and `voice-requirements.md` `Source PRD revision`. The SHA-256 binds the script to the exact current requirement bytes so a same-version requirement edit cannot silently leave an older script mechanically valid.
+Same-version requirement edits invalidate the older production script.
 
-# Canonical entry
-
-Every Voice entry contains:
+## Canonical production format
 
 ```text
-Voice ID + Title
-Type
-Speaker
-Estimated Duration
-exact Eleven v3 performance block beginning with at least one initial performance-direction tag
+# Voice Production
+
+Source Voice Requirements: <revision> / work/voice-requirements.md | sha256:<sha>
+
+Voice Cast:
+- <Speaker>: <selection/profile>
+
+## <Gameplay Section>
+Owner ID: <exact Flow 5 Owner ID>
+
+### VO-... — <Line Title>
+Type: <exact Flow 5 Type>
+Speaker: <exact Flow 5 Speaker>
+Estimated Duration: <production estimate>
+
+```performance
+[initial direction]
+<exact Eleven v3 payload>
+```
 ```
 
-`Type` and `Speaker` match Flow 5.
+Moment ID/Moment remain canonical in Flow 5 and are intentionally not duplicated into every Flow 6 line. The compositor joins each Voice ID back to its requirement before 04 rendering.
 
-Do not duplicate Channel, Trigger, Purpose, Timing Constraint, requirement bullets, source refs, Performance Fill Map reasoning, WPM calculations, voice-fit ratings, or QA notes into every canonical entry.
-
-# Consolidated project HTML
-
-After canonical Voice Production exists, the normal renderer publishes it into the same `output/v<document.version>/prd.html` while preserving accepted 01–03 navigation/page identity.
+## Consolidated 04 presentation
 
 ```text
-03 Development
-   global development pages
-   gameplay/objective sections
-
-04 Production Assets
-   <gameplay section title>
-      <accepted PRD package label>
-
-page body
-→ <natural gameplay moment>
-   → AUDIO
+Owner ID       → Production Assets page
+Moment ID      → stable moment grouping
+Moment         → reader-facing moment title
+Function       → visible communication function
+Voice Cast     → visible selection/profile
+Duration       → visible Estimated Duration
+Prompt         → exact performance payload
 ```
 
-Production Assets is additive. It does not promote gameplay packages out of Development and does not renumber PRD package/page codes. Voice does not own a separate sidebar category or an `Audio → Voice Production` dashboard.
+Derived HTML embeds exact SHA bindings for current Voice requirements and production. No separate Voice HTML is created by default.
 
-Each canonical Voice line is rendered as:
+## Scope guard
 
-```text
-AUDIO
-<Character> — <Line Title>
+Flow 6 may not silently change Owner/Moment identity, Voice scope, Speaker/Channel/Trigger/Purpose, required communication/exclusions, gameplay/lore/reward/result, or authoritative timing truth.
 
-Function
-<communication/story purpose for this moment>
+If those are wrong, return to Flow 5/project authority. Wording/performance/Estimated Duration/selection remain Flow 6.
 
-Voice Preset
-<selected actor voice>
+## Flow 6 gate
 
-ElevenLabs Model
-Eleven v3
+Set `voice_script_ready` only when:
 
-Estimated Duration
-<duration>
+- current Flow 5 requirements still validate against accepted PRD meaning;
+- every required Voice ID has one canonical production entry;
+- Owner ID, Type, and Speaker parity are exact;
+- every performance block starts with a deliberate initial direction tag;
+- Estimated Duration is present;
+- authoritative timing constraints remain respected;
+- Communication Conservation and integrated Voice Script Readiness pass;
+- exact Source Voice Requirements SHA binding is current;
+- no unresolved placeholder/upstream contradiction remains.
 
-Prompt
-<exact canonical performance payload>
-```
+Run the lifecycle-aware Voice validator again after setting `voice_script_ready`; it then checks production binding/parity as well.
 
-Character identity in the title means 04 does not need a separate visible Speaker row. Flow 5 Trigger/Context, line counts, Primary Speaker, Voice Setup, Purpose, `Must communicate`, `Must not add/repeat`, source refs, performance-writing reasoning, WPM calculations, QA notes, and other internal production metadata stay out of the reader-first 04 resource.
+## Generation Mode
 
-Performance-direction tags remain visually distinct without changing copied bytes. `Copy Prompt` copies only the exact canonical performance block.
-
-No separate Voice HTML is created by default.
-
-# Generation Mode
-
-Used only when actual ElevenLabs output is requested.
+Actual ElevenLabs generation is entered only when requested:
 
 ```text
 one active Voice ID
 → actual actor voice selected
 → exact reviewed prompt
-→ generate / feedback / approve
+→ generate / hear / revise or approve
 → canonical sync
-→ rerender current versioned prd.html when actor/prompt changed
+→ rerender current project HTML when source changed
 ```
 
-# Scope guard
+Audio quality requires actual audio evidence and remains separate from script readiness.
 
-Flow 6 may refine delivery but may not silently change Voice scope, Speaker/Channel/Trigger/Purpose, gameplay/lore/mechanics/rewards/outcomes, required communication, or authoritative timing truth.
+## Stop rule
 
-Production interpretation such as sentence splitting, performance shape, landing, punctuation, CAPS, tags, pacing, Estimated Duration, and actor selection may be decided during performance writing inside approved Voice/project boundaries.
-
-# First wrong owner / bounded revision
-
-```text
-project fact → PRD authority
-Voice scope/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
-wording/performance/Estimated Duration/actor selection → Flow 6
-correct canonical Voice + wrong Production Assets HTML → kits/prd-creator/ renderer/compositor owner
-audio-only defect → Generation Mode
-```
-
-Reopen only invalidated Voice/Speaker scope plus continuity materially affected by the change. Voice-only production changes do not reopen PRD acceptance when PRD canonical sources are unchanged.
-
-# Flow 6 gate
-
-Set `voice_script_ready` only when:
-
-- current Flow 5 status is `voice_requirements_ready` for the same accepted PRD revision;
-- Flow 5 intent is complete enough to author without product-level guessing;
-- Voice ID, Type, and Speaker parity are intact;
-- authoritative timing constraints are honored when present;
-- every entry has title, Estimated Duration, and canonical performance wording;
-- every performance block begins with at least one deliberate initial direction tag;
-- Voice Intent Completeness is sufficient;
-- Communication Conservation passes;
-- integrated Voice Script Readiness passes;
-- no unresolved placeholder/upstream contradiction remains.
-
-The consolidated project HTML is regenerated when project HTML delivery is current scope. Generated-audio quality is not a prerequisite unless audio is explicitly requested.
-
-# Stop rule
-
-Stop after current Preparation Mode scope is ready and requested output is current. Do not add separate Voice HTML, asset manifests, schemas, scores, settings databases, approval layers, or speculative hardening without a concrete defect.
+Stop when requested preparation/generation scope is current. Do not add parallel Voice HTML, settings databases, manifests, scorecards, or approval layers without a concrete need.

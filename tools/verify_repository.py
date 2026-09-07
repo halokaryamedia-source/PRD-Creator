@@ -26,6 +26,7 @@ UNIFIED_KIT_DIRS = {
     "document",
     "production-assets",
     "voice",
+    "shared",
     "renderer",
     "validator",
     "template",
@@ -33,6 +34,7 @@ UNIFIED_KIT_DIRS = {
 UNIFIED_ROOT_MARKDOWN = {"README.md", "AGENTS.md", "SKILL.md"}
 
 REQUIRED_PATHS = [
+    ".github/workflows/local-promotion-verify.yml",
     ".github/workflows/repository-verify.yml",
     ".github/workflows/prd-verify.yml",
     ".github/workflows/voice-verify.yml",
@@ -42,10 +44,15 @@ REQUIRED_PATHS = [
     "CONTEXT.md",
     "CONTRIBUTING.md",
     "LICENSE",
+    "pyproject.toml",
     "requirements.lock.txt",
+    "requirements-dev.lock.txt",
     "tests/test_prd_contracts.py",
     "tests/test_prd_content_purity.py",
     "tests/test_prd_delivery.py",
+    "tests/test_prd_flow2_state_contracts.py",
+    "tests/test_prd_handoff_contracts.py",
+    "tests/test_prd_voice_assets.py",
     "tests/test_voice_contracts.py",
     "docs/knowledge/README.md",
     "docs/knowledge/next-action.md",
@@ -69,13 +76,37 @@ REQUIRED_PATHS = [
     "kits/prd-creator/SKILL.md",
     "kits/prd-creator/intake/SOURCE-INTAKE.md",
     "kits/prd-creator/document/CONTENT-CONTRACT.md",
+    "kits/prd-creator/document/DESIGN-CONTRACT.md",
+    "kits/prd-creator/document/GLOSSARY.md",
     "kits/prd-creator/document/VALIDATION.md",
     "kits/prd-creator/production-assets/CONTRACT.md",
+    "kits/prd-creator/shared/__init__.py",
+    "kits/prd-creator/shared/state.py",
+    "kits/prd-creator/shared/intake.py",
+    "kits/prd-creator/shared/paths.py",
+    "kits/prd-creator/shared/handoff.py",
+    "kits/prd-creator/shared/lifecycle.py",
+    "kits/prd-creator/shared/render_schema.py",
+    "kits/prd-creator/shared/localization.py",
+    "kits/prd-creator/shared/assets.py",
+    "kits/prd-creator/shared/voice.py",
+    "kits/prd-creator/shared/topology.py",
+    "kits/prd-creator/shared/issues.py",
+    "kits/prd-creator/renderer/__init__.py",
     "kits/prd-creator/renderer/CONTRACT.md",
+    "kits/prd-creator/renderer/template_adapter.py",
+    "kits/prd-creator/renderer/static/production-assets.css",
+    "kits/prd-creator/renderer/static/production-assets.js",
     "kits/prd-creator/renderer/delivery.py",
+    "kits/prd-creator/renderer/prd_render_engine.py",
+    "kits/prd-creator/validator/__init__.py",
+    "kits/prd-creator/validator/api.py",
+    "kits/prd-creator/validator/prd_validation_engine.py",
     "kits/prd-creator/validator/validate.py",
     "kits/prd-creator/validator/validate_handoff.py",
     "kits/prd-creator/validator/validate_voice.py",
+    "kits/prd-creator/template/golden-reference.html",
+    "kits/prd-creator/template/runtime-template.html",
     "kits/prd-creator/voice/EXTRACTION.md",
     "kits/prd-creator/voice/PERFORMANCE-WRITING.md",
     "kits/prd-creator/voice/VALIDATION.md",
@@ -98,6 +129,7 @@ MARKDOWN_ROOTS = [
 
 CURRENT_DELIVERY_OWNER_PATHS = [
     "CONTEXT.md",
+    "docs/foundation/01-production-flow.md",
     "docs/foundation/03-prd-generation.md",
     "docs/foundation/04-prd-validation-handoff.md",
     "docs/foundation/05-voice-requirement-extraction.md",
@@ -229,11 +261,7 @@ def check_skill_root(errors: list[str]) -> None:
         if not (skill_root / skill / "SKILL.md").is_file():
             fail(errors, f"missing SKILL.md for canonical skill: {skill}")
 
-    nested = (
-        list((ROOT / "kits").glob("**/.agents/skills"))
-        if (ROOT / "kits").exists()
-        else []
-    )
+    nested = list((ROOT / "kits").glob("**/.agents/skills")) if (ROOT / "kits").exists() else []
     for path in nested:
         fail(errors, f"unexpected nested repository skill root: {path.relative_to(ROOT)}")
 
@@ -264,6 +292,8 @@ def check_retired_boundaries(errors: list[str]) -> None:
         "workspace/saved",
         "kits/project-document-generator",
         "kits/voice-production-kit",
+        "kits/prd-creator/renderer/_engine.py",
+        "kits/prd-creator/validator/_engine.py",
         "kits/prd-creator/renderer/production_assets_objective.py",
         "kits/prd-creator/renderer/voice_assets.py",
         "kits/prd-creator/voice/SOUNDMAKER.md",
@@ -301,6 +331,8 @@ def check_current_delivery_routing(errors: list[str]) -> None:
         text = ownership.read_text(encoding="utf-8")
         required_markers = (
             "kits/prd-creator/renderer/delivery.py",
+            "kits/prd-creator/renderer/template_adapter.py",
+            "kits/prd-creator/shared/render_schema.py",
             "kits/prd-creator/validator/validate_voice.py",
             "output/README.md",
             "output/v<document.version>/prd.html",
@@ -345,10 +377,7 @@ def check_current_delivery_routing(errors: list[str]) -> None:
             if version_match:
                 expected = f"PRD Creator package remains **v{version_match.group(1)}**"
                 if expected not in text:
-                    fail(
-                        errors,
-                        "current-validation.md PRD Creator version does not match current SKILL version",
-                    )
+                    fail(errors, "current-validation.md PRD Creator version does not match current SKILL version")
 
     voice_docs = [
         ROOT / "docs" / "foundation" / "06-elevenlabs-script-production.md",
@@ -424,10 +453,7 @@ def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
             continue
         match = PIN_RE.fullmatch(line)
         if not match:
-            fail(
-                errors,
-                f"{path.relative_to(ROOT)}:{lineno} must use an exact 'name==version' pin",
-            )
+            fail(errors, f"{path.relative_to(ROOT)}:{lineno} must use an exact 'name==version' pin")
             continue
         name = match.group(1).replace("_", "-").lower()
         if name in pins:
@@ -438,9 +464,10 @@ def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
 
 def check_dependency_lock(errors: list[str]) -> None:
     requirement_pins(ROOT / "requirements.lock.txt", errors)
+    requirement_pins(ROOT / "requirements-dev.lock.txt", errors)
     direct = UNIFIED_KIT / "requirements.txt"
     if direct.exists():
-        fail(errors, "unexpected direct kit requirements.txt; root requirements.lock.txt owns current Python pins")
+        fail(errors, "unexpected direct kit requirements.txt; root requirements.lock.txt owns current runtime Python pins")
 
 
 def normalize_link_target(source: Path, raw: str) -> Path | None:
@@ -520,10 +547,11 @@ def main() -> int:
     print(f"- markdown files checked: {len(iter_markdown_files())}")
     print("- root AGENTS contract sections: present")
     print("- PRD Creator skill/README version: aligned")
+    print("- Package 3 architecture owners: present")
     print("- current versioned delivery routing: aligned")
     print("- workspace/current-validation delivery routing: aligned")
     print("- relative navigation: valid")
-    print("- dependency lock format: valid")
+    print("- runtime/dev dependency lock format: valid")
     print("- Python kits/tools/tests: syntax valid")
     print("- retired package/migration/license/routing boundaries: preserved")
     return 0

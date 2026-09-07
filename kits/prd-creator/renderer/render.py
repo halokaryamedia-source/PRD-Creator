@@ -3,77 +3,76 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
-import re
 import sys
 import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-if str(HERE) not in sys.path:
-    sys.path.insert(0, str(HERE))
+KIT_ROOT = HERE.parent
+if __package__ in (None, ""):
+    if str(KIT_ROOT) not in sys.path:
+        sys.path.insert(0, str(KIT_ROOT))
+    from renderer import prd_render_engine as engine
+    from renderer import production_assets_compositor as production_assets
+    from renderer.core import slug, txt
+    from renderer.template_adapter import TemplateAdapter
+else:
+    from . import prd_render_engine as engine
+    from . import production_assets_compositor as production_assets
+    from .core import slug, txt
+    from .template_adapter import TemplateAdapter
 
-import prd_render_engine as engine
-import production_assets_compositor as production_assets
-
-GOLDEN_SPEC_MARKER = "aftershock-v0.2"
-SAMPLE_META_NAMES = (
-    "golden-sample-id",
-    "golden-sample-version",
-    "source-document",
-    "template-extraction-version",
-)
-STORAGE_KEYS = {
-    "aftershock-document-theme": "document-theme",
-    "aftershock-document-view": "document-view",
-    "aftershock-document-language": "document-language",
-    "aftershock-sidebar-collapsed": "sidebar-collapsed",
-}
+from shared.render_schema import validate_projection_schema
 
 
-def _prepare_golden_template(template: Path, render_data: Path) -> tuple[str, str]:
-    source = template.read_text(encoding="utf-8")
+def _load_projection(render_data: Path) -> dict:
     data = json.loads(render_data.read_text(encoding="utf-8"))
-    title = engine.txt(data.get("document", {}).get("title", ""))["en"]
-    namespace = engine.slug(title)
-
-    for meta_name in SAMPLE_META_NAMES:
-        source = re.sub(
-            rf'<meta\b[^>]*\bname=["\']{re.escape(meta_name)}["\'][^>]*>\s*',
-            "",
-            source,
-            flags=re.I,
-        )
-    for old_key, suffix in STORAGE_KEYS.items():
-        source = source.replace(old_key, f"prd-{namespace}-{suffix}")
-    return source, namespace
+    if not isinstance(data, dict):
+        raise ValueError("render-data root must be an object")
+    validate_projection_schema(data)
+    content_path = render_data.parent / "content.md"
+    if content_path.is_file():
+        actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
+        if data["canonical_content_sha256"] != actual_content_sha:
+            raise ValueError(
+                "render-data canonical_content_sha256 does not match current sibling work/content.md bytes"
+            )
+    return data
 
 
 def _augment_production_assets(render_data: Path, output: Path) -> None:
-    voice_production = render_data.parent / "voice-production.md"
-    production_assets.augment_project_html(render_data, output, voice_production)
+    production_assets.augment_project_html(
+        render_data,
+        output,
+        render_data.parent / "voice-production.md",
+    )
 
 
 def render(template: Path, render_data: Path, output: Path) -> None:
+    data = _load_projection(render_data)
     source = template.read_text(encoding="utf-8")
     if engine.STORAGE_PREFIX_TOKEN in source:
         engine.render(template, render_data, output)
         _augment_production_assets(render_data, output)
         return
 
-    prepared, _namespace = _prepare_golden_template(template, render_data)
-    if prepared.count(GOLDEN_SPEC_MARKER) != 1:
-        raise ValueError("Approved Golden template must contain exactly one canonical specification marker")
-    prepared = prepared.replace(GOLDEN_SPEC_MARKER, engine.STORAGE_PREFIX_TOKEN, 1)
+    namespace = slug(txt(data["document"]["title"])["en"])
+    adapter = TemplateAdapter.prepare_reference_shell(
+        source,
+        namespace=namespace,
+        runtime_token=engine.STORAGE_PREFIX_TOKEN,
+    )
     with tempfile.TemporaryDirectory(prefix="prd-golden-") as tmp:
         prepared_path = Path(tmp) / "runtime-template.html"
-        prepared_path.write_text(prepared, encoding="utf-8")
+        prepared_path.write_text(adapter.source, encoding="utf-8")
         engine.render(prepared_path, render_data, output)
     _augment_production_assets(render_data, output)
 
 
 def main() -> int:
-    default_template = HERE.parent / "template" / "runtime-template.html"
+    default_template = KIT_ROOT / "template" / "runtime-template.html"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("render_data", type=Path)
     parser.add_argument("output", type=Path)
@@ -89,7 +88,6 @@ def main() -> int:
 
 
 validate = engine.validate
-apply_result_summaries = engine.apply_result_summaries
 
 
 if __name__ == "__main__":

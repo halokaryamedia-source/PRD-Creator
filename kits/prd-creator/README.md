@@ -1,165 +1,143 @@
 # PRD Creator
 
-**Version:** 2.0.0
+**Version:** 3.0.0
 
-PRD Creator turns project discussion/source into one approved project model, a development-ready PRD, required Production Assets, and optional downstream Voice Production in the same project delivery.
+PRD Creator turns project evidence/discussion into one revision-bound approved project model, canonical PRD, required Production Assets, and optional Voice Production in one versioned delivery.
 
-## Package version rule
+## Version rule
 
 ```text
-PATCH
-→ backward-compatible bug fix
-
-MINOR
-→ additive capability or backward-compatible contract expansion
-
-MAJOR
-→ incompatible product/contract architecture change
-
-NO BUMP
-→ project-specific revision, documentation clarification, CI/repository hygiene, test-only change
+PATCH  backward-compatible fix
+MINOR  additive backward-compatible capability
+MAJOR  incompatible product/machine contract change
+NO BUMP project-only revision, clarification, CI/repository hygiene, test-only work
 ```
 
-Package 2.0 is a major contract change because machine identity and acceptance evidence are now explicit instead of being inferred from display titles/version labels.
-
-Keep `SKILL.md`, this README, and current validation metadata aligned when a real package bump occurs.
+Package 3.0 is MAJOR because current machine formats intentionally reject older readiness aliases, title-based moment ordering, implicit result modeling, and acceptance records that do not bind all current canonical bytes.
 
 ## Product flow
 
 ```text
-source + current instruction + approved decisions
-→ requirement recovery + integrated cross-role synthesis
-→ material Proposal review / approved project model
-→ canonical PRD semantic content
-→ deterministic projection through approved design grammar
-→ 04 Production Assets when required
-→ canonical mechanical validation + semantic reconciliation
-→ exact-revision PRD/04 acceptance + handoff
-→ Voice requirements / canonical Voice when required
-→ one versioned project HTML + AI reading projections
+sources
+→ strict provenance + requirement recovery
+→ integrated cross-role model
+→ Simple Chat Preview
+→ exact requirement-revision approval
+→ canonical content.md
+→ strict render-data projection + content SHA
+→ deterministic PRD core
+→ non-Voice 04 when required
+→ exact-byte PRD/04 acceptance + handoff
+→ Flow 5 Voice requirements when justified
+→ Flow 6 Voice production
+→ exact-byte Flow 7 acceptance
+→ one current project HTML
 ```
 
-## Model-readiness behavior
-
-The package is model-agnostic but assumes a capable reasoning model can synthesize integrated project meaning rather than fill isolated fields.
-
-- Start from the smallest authoritative owner/source that can settle the question.
-- Expand context progressively when a material cross-cutting dependency requires it.
-- Let the model handle reversible craft choices such as grouping, ordering, wording and decomposition.
-- Material choices that change project behavior/scope remain explicit Proposals until approved.
-- Before acceptance, reconcile meaning across approved source/requirements → canonical content → render projection → visible PRD.
-- Keep mechanical validators deterministic; semantic review handles meaning loss/contradiction/invention.
-
-## Semantic vs design separation
+## Package 3 engineering shape
 
 ```text
-document/CONTENT-CONTRACT.md
-→ WHAT the PRD must communicate
-→ semantic completeness + material conservation
-
-document/DESIGN-CONTRACT.md
-→ WHERE/HOW accepted meaning is presented
-→ Golden page/component grammar + visual boundaries
+single truth
+→ stable identity
+→ strict schema
+→ exact revision binding
+→ deterministic projection
+→ transactional publication
 ```
 
-The approved Golden artifact remains exact. Repeatable flow/note/sequence child counts follow project meaning rather than AFTERSHOCK sample counts.
-
-## Package 2.0 engineering contract
-
-The production system now uses explicit machine boundaries:
+Key contracts:
 
 ```text
-real YAML state
-→ shared/state.py
+Flow 2 approval
+requirement-register bytes → approved_requirement_sha256
 
-Voice requirements + Voice Production grammar
-→ shared/voice.py
-
-complete PRD validation
-→ validator/api.py
-
-Production Assets placement
-→ stable Owner ID
-
-non-Voice resource identity
-→ stable AST-... ID
+PRD projection
+content.md bytes → render-data.canonical_content_sha256
 
 PRD acceptance
-→ exact render-data SHA-256
+Accepted Render Data SHA256
+Accepted Asset Requirements SHA256
+
+04 identity
+Owner ID → Moment ID → AST/VO ID
+
+Voice production
+voice-production → exact Voice Requirements SHA
+
+Voice acceptance
+Accepted Voice Production SHA256
 ```
 
-Display titles are no longer machine join keys. Duplicate/missing/unknown IDs fail early. Handoff uses the same complete PRD validator as the normal validation CLI. Delivery is staged before replacing current output files.
+Persisted state paths are normalized project-relative POSIX refs only.
 
 ## Package map
 
 ```text
 kits/prd-creator/
-├─ README.md
-├─ AGENTS.md
 ├─ SKILL.md
+├─ AGENTS.md
+├─ README.md
 ├─ intake/
 ├─ document/
-│  ├─ CONTENT-CONTRACT.md
-│  ├─ DESIGN-CONTRACT.md
-│  └─ VALIDATION.md
 ├─ production-assets/
 ├─ voice/
-├─ shared/                    typed shared parser/state helpers
+├─ shared/
+│  ├─ intake.py
+│  ├─ state.py
+│  ├─ paths.py
+│  ├─ handoff.py
+│  ├─ render_schema.py
+│  ├─ localization.py
+│  ├─ assets.py
+│  ├─ voice.py
+│  ├─ lifecycle.py
+│  ├─ topology.py
+│  └─ issues.py
 ├─ renderer/
+│  ├─ template_adapter.py
+│  └─ static/
 ├─ validator/
 └─ template/
 ```
 
-## Requirement Map
+## Canonical owners
 
-| Requirement / canonical meaning | Project artifact | System owner |
+| Meaning | Artifact | Owner |
 |---|---|---|
-| Project/gameplay requirement state | `state/requirement-register.yaml` | `intake/SOURCE-INTAKE.md` |
-| Canonical PRD-core meaning | `work/content.md` | `document/CONTENT-CONTRACT.md` |
-| PRD visible/page grammar | derived presentation | `document/DESIGN-CONTRACT.md` |
-| PRD render projection | `work/render-data.json` | `renderer/CONTRACT.md` |
-| Non-Voice Production Asset requirements | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
+| source / requirement approval | `state/source-inventory.yaml`, `requirement-register.yaml`, `intake-state.yaml` | `intake/SOURCE-INTAKE.md` |
+| PRD semantic meaning | `work/content.md` | `document/CONTENT-CONTRACT.md` |
+| strict render projection | `work/render-data.json` | `shared/render_schema.py` + `renderer/CONTRACT.md` |
+| Golden grammar | derived presentation | `document/DESIGN-CONTRACT.md` |
+| non-Voice 04 | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
+| PRD acceptance/handoff | `work/acceptance.md`, `state/handoff-state.yaml` | `document/VALIDATION.md` |
 | Voice requirements | `work/voice-requirements.md` | `voice/EXTRACTION.md` |
-| Canonical Voice production | `work/voice-production.md` | Flow 6 + `voice/PERFORMANCE-WRITING.md` |
-| PRD acceptance / handoff | `work/acceptance.md` + `state/handoff-state.yaml` | `document/VALIDATION.md` + validators |
-| Voice acceptance / state | `work/voice-acceptance.md` + `state/voice-state.yaml` | `voice/VALIDATION.md` + `validator/validate_voice.py` |
+| Voice wording/performance | `work/voice-production.md` | `voice/PERFORMANCE-WRITING.md` |
+| Voice acceptance | `work/voice-acceptance.md`, `state/voice-state.yaml` | `voice/VALIDATION.md` |
 
-Do not create a generic `requirements/` folder merely for naming symmetry.
+Do not create parallel schemas or generic registries for these owners.
 
-## Main domain owners
+## Renderer boundaries
 
-```text
-intake/SOURCE-INTAKE.md
-→ Flow 2 source recovery / integrated synthesis / preview
+- `render-data.json` accepts one field vocabulary; unknown/legacy keys fail.
+- Gameplay result mode is explicit: `scored | completion_only`.
+- Renderer never infers missing semantic meaning from another role.
+- `TemplateAdapter` is the only owner of Golden shell mutation/reference compatibility.
+- Production Assets CSS/JS live in `renderer/static/` and are inlined at render time.
+- 04 joins only through stable Owner/Moment/Resource identity.
+- Delivery publishes complete version directories transactionally with rollback.
 
-document/CONTENT-CONTRACT.md
-→ PRD semantic completeness
+## Model behavior
 
-document/DESIGN-CONTRACT.md
-→ Golden page/component presentation contract
+The package is model-agnostic and expects capable reasoning without forcing unnecessary approval loops.
 
-document/VALIDATION.md
-→ Flow 4 readiness / reconciliation / exact-revision handoff
+- Start from the smallest authoritative owner/source.
+- Expand context only for material dependencies.
+- Let the model choose reversible wording/grouping/decomposition craft.
+- Keep product/design/runtime choices as explicit Proposals until approved.
+- Use strict machine contracts to fail early rather than guess compatibility.
+- Fix the first wrong owner rather than polishing downstream symptoms.
 
-production-assets/CONTRACT.md
-→ non-Voice 04 resource/writing/identity contract
-
-voice/EXTRACTION.md
-→ Flow 5 Voice scope/context extraction
-
-voice/PERFORMANCE-WRITING.md
-→ Eleven v3 craft
-
-voice/VALIDATION.md
-→ Flow 7 Voice identity/validation/evidence
-
-renderer/CONTRACT.md
-→ deterministic projection/compositor/delivery mechanics
-```
-
-## Canonical vs derived
-
-Canonical project/Voice meaning lives under project `work/` and `state/` owners. Normal human-facing derived delivery is:
+## Derived delivery
 
 ```text
 output/README.md
@@ -168,19 +146,15 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-`prd.html` is the single human-facing project document. Generated output never outranks canonical sources and must not be hand-patched to hide an upstream defect.
+`prd.html` is the single human-facing project document. Derived files never outrank canonical `work/`/`state/` sources and should never be hand-patched to hide an upstream defect.
 
 ## Protected boundaries
 
-- Golden/runtime template bytes remain protected and byte-identical.
-- Page family, navigation and approved component vocabulary remain protected by `DESIGN-CONTRACT.md`.
-- Adaptive cardinality applies inside approved flow/note/sequence component families; it does not authorize arbitrary new component types.
-- Production Asset needs come from the approved project model, not a second design pass over generated PRD pages.
-- Voice remains downstream from accepted project/PRD meaning.
-- Machine-owned YAML is parsed as YAML, not line-oriented pseudo-YAML.
-- Renderer/validator engine modules use domain-specific names; generic `_engine` collision paths are retired.
-- Runtime and dev dependencies are separately pinned.
-- The former DOCX export path remains retired.
-- Browser visual claims and generated-audio quality require matching evidence.
+- Golden reference/runtime bytes stay protected and byte-identical unless an explicit design-contract change is approved.
+- Adaptive cardinality is allowed only inside approved component families.
+- Machine YAML uses the shared duplicate-safe YAML loader.
+- Generic `_engine.py` imports and title-based machine joins are retired.
+- Browser visual PASS requires browser evidence.
+- Generated-audio quality requires audio evidence.
 
-For normal production start from `SKILL.md`. For a technical defect start from `AGENTS.md` and the smallest exact implementation owner.
+For production use start from `SKILL.md`. For implementation defects start from `AGENTS.md` and the smallest exact technical owner.

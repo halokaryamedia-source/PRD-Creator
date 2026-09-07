@@ -5,13 +5,14 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
-RENDERER = ROOT / "kits" / "prd-creator" / "renderer"
-if str(RENDERER) not in sys.path:
-    sys.path.insert(0, str(RENDERER))
+KIT_ROOT = ROOT / "kits" / "prd-creator"
+if str(KIT_ROOT) not in sys.path:
+    sys.path.insert(0, str(KIT_ROOT))
 
-import delivery  # noqa: E402
+from renderer import delivery  # noqa: E402
 
 
 class PrdDeliveryContracts(unittest.TestCase):
@@ -38,12 +39,26 @@ class PrdDeliveryContracts(unittest.TestCase):
             encoding="utf-8",
         )
         (project / "work" / "voice-requirements.md").write_text(
-            "# The Clockwork Vault Voice Requirements\n"
-            "## 01. The Broken Gallery\n### VO-GAL-01\n- Trigger: The player enters the Broken Gallery.\n",
+            "# Voice Requirements\nSource PRD revision: 1.2.0\n\n"
+            "## The Broken Gallery\nOwner ID: package:gallery\n\n"
+            "### VO-GAL-01 — Arrival\n"
+            "- Type: Main Story\n"
+            "- Function: arrival\n"
+            "- Necessity: supporting\n"
+            "- Speaker: Guide\n"
+            "- Channel: Radio\n"
+            "- Trigger: The player enters the Broken Gallery.\n"
+            "- Purpose: Acknowledge arrival.\n"
+            "- Moment ID: MOM-GALLERY-ARRIVAL\n"
+            "- Moment: Gallery Arrival\n"
+            "- Must communicate:\n  - The player has reached the gallery.\n"
+            "- Must not add/repeat:\n  - Do not invent a reward.\n"
+            "- Source refs:\n  - REQ-001\n",
             encoding="utf-8",
         )
         (project / "state" / "handoff-state.yaml").write_text(
-            'status: handoff_ready\nnote: "accepted #1"\n', encoding="utf-8"
+            "status: handoff_ready\n",
+            encoding="utf-8",
         )
         return project
 
@@ -108,16 +123,7 @@ class PrdDeliveryContracts(unittest.TestCase):
 
     def test_failed_generation_preserves_last_complete_delivery(self) -> None:
         project = self.make_project()
-        version_dir = project / "output" / "v1.2.0"
-        version_dir.mkdir(parents=True)
-        old = {
-            project / "output" / "README.md": "OLD README\n",
-            version_dir / "prd.html": "OLD HTML\n",
-            version_dir / "context.md": "OLD CONTEXT\n",
-            version_dir / "index.json": "OLD INDEX\n",
-        }
-        for path, value in old.items():
-            path.write_text(value, encoding="utf-8")
+        old = self.seed_old_delivery(project)
 
         def failing_renderer(template: Path | None, render_data: Path, output: Path) -> None:
             del template, render_data
@@ -126,6 +132,41 @@ class PrdDeliveryContracts(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "synthetic render failure"):
             delivery.build_delivery(project, html_renderer=failing_renderer)
+        self.assert_old_delivery(old)
+
+    def test_publish_failure_rolls_back_version_and_readme(self) -> None:
+        project = self.make_project()
+        old = self.seed_old_delivery(project)
+        real_replace = delivery.os.replace
+        calls = 0
+
+        def flaky_replace(source: Path | str, target: Path | str) -> None:
+            nonlocal calls
+            calls += 1
+            if calls == 4:
+                raise OSError("synthetic README publish failure")
+            real_replace(source, target)
+
+        with mock.patch.object(delivery.os, "replace", side_effect=flaky_replace):
+            with self.assertRaisesRegex(OSError, "synthetic README publish failure"):
+                delivery.build_delivery(project, html_renderer=self.fake_html_renderer)
+        self.assert_old_delivery(old)
+
+    @staticmethod
+    def seed_old_delivery(project: Path) -> dict[Path, str]:
+        version_dir = project / "output" / "v1.2.0"
+        version_dir.mkdir(parents=True, exist_ok=True)
+        old = {
+            project / "output" / "README.md": "OLD README\n",
+            version_dir / "prd.html": "OLD HTML\n",
+            version_dir / "context.md": "OLD CONTEXT\n",
+            version_dir / "index.json": "OLD INDEX\n",
+        }
+        for path, value in old.items():
+            path.write_text(value, encoding="utf-8")
+        return old
+
+    def assert_old_delivery(self, old: dict[Path, str]) -> None:
         for path, value in old.items():
             self.assertEqual(path.read_text(encoding="utf-8"), value)
 

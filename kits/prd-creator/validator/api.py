@@ -2,16 +2,12 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 from typing import Any, Iterable
 
-HERE = Path(__file__).resolve().parent
-KIT_ROOT = HERE.parent
-if str(KIT_ROOT) not in sys.path:
-    sys.path.insert(0, str(KIT_ROOT))
+from shared.render_schema import validate_projection_schema
 
-import prd_validation_engine as engine
+from . import prd_validation_engine as engine
 
 PROCESS_LEAK_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("Golden HTML/reference language", re.compile(r"\bGolden\s+(?:HTML|Sample|Reference|page structure)\b", re.I)),
@@ -47,18 +43,14 @@ def _note_errors(items: Any, context: str) -> list[str]:
         return errors
     for index, item in enumerate(items):
         if not isinstance(item, dict):
-            errors.append(
-                f"{context}[{index}] must use a semantic title + description; plain note strings render as generic Important Note cards"
-            )
+            errors.append(f"{context}[{index}] must use a semantic title + description")
             continue
-        title = item.get("title") or item.get("label")
-        description = item.get("description") or item.get("details") or item.get("note")
-        title_text = _localized_text(title)
-        description_text = _localized_text(description)
+        title_text = _localized_text(item.get("title"))
+        description_text = _localized_text(item.get("description"))
         if GENERIC_NOTE_RE.fullmatch(title_text):
             errors.append(f"{context}[{index}].title is generic: {title_text!r}")
         if not title_text or not description_text:
-            errors.append(f"{context}[{index}] requires a semantic title and description")
+            errors.append(f"{context}[{index}] requires canonical title and description")
     return errors
 
 
@@ -85,11 +77,11 @@ def content_purity_errors(data: dict[str, Any]) -> list[str]:
         if isinstance(item, dict):
             errors.extend(_note_errors(item.get("notes"), f"global_development[{index}].notes"))
 
-    for index, pkg in enumerate(data.get("packages", [])):
-        if not isinstance(pkg, dict):
+    for index, package in enumerate(data.get("packages", [])):
+        if not isinstance(package, dict):
             continue
-        level = pkg.get("level_design")
-        developer = pkg.get("developer")
+        level = package.get("level_design")
+        developer = package.get("developer")
         if isinstance(level, dict):
             errors.extend(_note_errors(level.get("notes"), f"packages[{index}].level_design.notes"))
         if isinstance(developer, dict):
@@ -97,8 +89,21 @@ def content_purity_errors(data: dict[str, Any]) -> list[str]:
     return list(dict.fromkeys(errors))
 
 
+def _append_check(result: dict[str, Any], name: str, errors: list[str], success: str) -> None:
+    result.setdefault("checks", []).append(
+        {
+            "check": name,
+            "status": "fail" if errors else "pass",
+            "detail": "; ".join(errors) if errors else success,
+        }
+    )
+    if errors:
+        result.setdefault("errors", []).append(f"{name}: " + "; ".join(errors))
+        result["status"] = "fail"
+
+
 def validate(project: Path) -> dict[str, Any]:
-    """Run the canonical complete mechanical PRD validation pipeline."""
+    """Run the one canonical complete mechanical PRD validation pipeline."""
     result = engine.validate(project)
     data_path = project / "work" / "render-data.json"
     if not data_path.is_file():
@@ -110,17 +115,23 @@ def validate(project: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         return result
 
-    purity = content_purity_errors(data)
-    result.setdefault("checks", []).append(
-        {
-            "check": "content_purity",
-            "status": "fail" if purity else "pass",
-            "detail": "; ".join(purity)
-            if purity
-            else "no project/document-process leakage or generic note-card data detected",
-        }
+    projection_errors: list[str] = []
+    try:
+        validate_projection_schema(data)
+    except ValueError as exc:
+        projection_errors.append(str(exc))
+    _append_check(
+        result,
+        "canonical_projection_schema",
+        projection_errors,
+        "render-data uses one canonical field shape with no retired compatibility aliases",
     )
-    if purity:
-        result.setdefault("errors", []).append("content_purity: " + "; ".join(purity))
-        result["status"] = "fail"
+
+    purity = content_purity_errors(data)
+    _append_check(
+        result,
+        "content_purity",
+        purity,
+        "no project/document-process leakage or generic note-card data detected",
+    )
     return result

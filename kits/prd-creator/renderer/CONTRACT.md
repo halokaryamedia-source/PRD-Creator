@@ -1,76 +1,180 @@
 # Rendering Contract
 
-`../document/CONTENT-CONTRACT.md` owns PRD semantic meaning. `../document/DESIGN-CONTRACT.md` owns approved PRD-core page/component grammar. `../production-assets/CONTRACT.md` owns non-Voice 04 meaning. This file owns deterministic projection, composition, and delivery mechanics.
+`../document/CONTENT-CONTRACT.md` owns PRD meaning. `../document/DESIGN-CONTRACT.md` owns approved page/component grammar. `../production-assets/CONTRACT.md` owns non-Voice 04 meaning. This file owns deterministic projection, Golden-shell adaptation, 04 composition, and delivery publication.
 
 ## Authority chain
 
 ```text
-work/content.md                       semantic truth
-→ work/render-data.json               derived projection
-→ DESIGN-CONTRACT approved grammar
-→ exact Golden runtime template
-→ output/v<document.version>/prd.html
+work/content.md
+→ strict work/render-data.json + canonical_content_sha256
+→ DESIGN-CONTRACT
+→ exact Golden shell through TemplateAdapter
+→ PRD core HTML
+→ optional stable-ID 04 composition
+→ transactional versioned delivery
 ```
 
-Optional downstream extension:
+The renderer may represent accepted data. It may not invent project/resource/Voice meaning.
+
+## Shared machine contracts
+
+Executable schemas live under `../shared/`:
 
 ```text
-approved project model
-→ optional work/asset-requirements.md
-→ optional canonical Voice source
-→ deterministic 04 Production Assets composition
-→ same project HTML
+intake.py         Flow 2 source/requirement/approval state
+state.py          duplicate-safe YAML loading
+paths.py          safe project-relative persisted paths
+handoff.py        strict Flow 4 handoff state
+render_schema.py  one supported render-data field vocabulary
+localization.py   bilingual presence + invariant parity
+assets.py         strict non-Voice Owner/Moment/Asset grammar
+voice.py          strict Voice requirement/production grammar
+lifecycle.py      one Voice state vocabulary
+topology.py       canonical 04 Owner topology
+issues.py         structured validation issue model
 ```
 
-The renderer may represent owned data. It may not invent project meaning, resource requirements, Voice content, ownership, or product decisions.
+Do not duplicate these schemas in renderer modules or prose.
 
-## Implementation boundary
+## Strict projection
 
-Renderer and validator engines use domain-specific module names. Do not reintroduce generic sibling `_engine.py` modules that depend on `sys.path` ordering and can collide in `sys.modules`.
+`work/render-data.json` has one supported vocabulary and must bind exact current `content.md` bytes through `canonical_content_sha256`.
 
-Shared machine parsing lives under `../shared/`:
+Renderer behavior is intentionally narrow:
 
 ```text
-shared/state.py  → YAML state
-shared/voice.py  → typed Voice requirements/production grammar
+validate strict projection
+→ map already-resolved values to approved components
+→ preserve semantic child cardinality
+→ escape/localize
+→ render
 ```
 
-The 04 compositor consumes stable Owner/Asset IDs from canonical sources; display titles are not machine joins.
+No renderer path may:
 
-## Semantic cardinality preservation
+- recover historical aliases;
+- infer a typo from another field;
+- derive Gameplay scoring/completion meaning from Developer data;
+- choose scored vs completion-only behavior;
+- fill missing semantic content;
+- copy reference-project facts.
 
-Projection preserves distinct semantic items when those distinctions matter. Existing Golden component families accept data-driven child counts for Global Development Flow/notes, gameplay compact sequences, Level Design Flow/notes, Developer Flow/notes, Gameplay Flow narrative sections, journey cards, requirement rows/groups, and glossary items.
+`gameplay.result_model` explicitly owns result mode/summary. Developer `scoring` or `completion_data` must match that mode.
+
+## Semantic cardinality
+
+Existing approved component families accept data-driven child counts. Preserve every distinct semantic item without filler or destructive merging.
+
+Stable semantic/page questions remain governed by Content/Design contracts; adaptive child counts do not change Golden grammar.
+
+## Golden shell boundary
+
+`template/golden-reference.html` and `template/runtime-template.html` remain byte-identical to the approved reference artifact unless an explicit Golden contract change is approved.
+
+All shell mutation belongs to:
 
 ```text
-canonical distinct items
-→ same distinct items in render-data
-→ existing approved component family
-→ natural HTML wrapping/layout
+renderer/template_adapter.py
 ```
 
-Do not insert filler to reach a reference count or merge independent items merely to reduce to a reference count.
+`TemplateAdapter` alone may:
 
-Stable semantic/design slots such as Overview facts, Gameplay Context/Main Objective/Result, Gameplay Information rows, table columns, page family, IDs and navigation remain governed by semantic/design contracts.
+- strip retained sample metadata from generated output;
+- quarantine retained reference-project storage/spec markers;
+- namespace localStorage keys;
+- set document language metadata;
+- replace sidebar brand/navigation/main content;
+- replace glossary assignment;
+- bind title/description/specification metadata;
+- inject head/body extensions.
+
+Generic renderer modules do not contain or depend on historical reference-project vocabulary.
+
+## PRD-core identity
+
+Stable global pages:
+
+```text
+development-overview
+shared-systems
+shared-data-reset
+phase-development
+```
+
+Opening flow:
+
+```text
+flow-start
+```
+
+Package pages:
+
+```text
+flow-<package>
+dev-<package>-requirement
+dev-<package>-level
+dev-<package>-developer
+```
+
+For `N` gameplay packages the core remains `6 + 4N` pages. 04 pages are additive.
+
+## 04 Production Assets composition
+
+The compositor consumes strict canonical sources:
+
+```text
+accepted PRD Owner topology
++ optional work/asset-requirements.md
++ optional work/voice-requirements.md
++ optional work/voice-production.md
+→ merge by Owner ID + Moment ID
+→ deterministic resource ordering
+→ additive 04 pages
+```
+
+Identity hierarchy:
+
+```text
+Owner ID
+→ Moment ID
+→ AST-... | VO-...
+```
+
+Display titles never perform machine joins.
+
+The compositor embeds exact source bindings when present:
+
+```text
+asset-requirements-sha256
+voice-requirements-sha256
+voice-production-sha256
+```
+
+Production Assets presentation assets live under:
+
+```text
+renderer/static/production-assets.css
+renderer/static/production-assets.js
+```
+
+They are inlined into the standalone HTML at render time. Large CSS/JS literals do not belong in Python compositor code.
 
 ## One project HTML
 
-`output/v<document.version>/prd.html` is the single human-facing project document.
+`output/v<document.version>/prd.html` remains the single human-facing project document:
 
 ```text
-PRD core 01–03
-= accepted gameplay / level-design / developer truth
-
-04 Production Assets
-= production handoff material
-= non-Voice owner: work/asset-requirements.md
-= Voice owner: work/voice-production.md
+01 Overview
+02 Gameplay Flow
+03 Development
+04 Production Assets   # when canonical downstream sources exist
 ```
 
-Adding/revising 04 does not reopen PRD-core acceptance while PRD semantic meaning is unchanged.
+04 may not rewrite accepted 01–03 meaning/page identity.
 
-## Versioned delivery package
+## Versioned delivery
 
-Normal handoff generation:
+Normal generation:
 
 ```bash
 python kits/prd-creator/renderer/delivery.py \
@@ -81,145 +185,42 @@ produces:
 
 ```text
 output/README.md
-output/v<document.version>/prd.html
-output/v<document.version>/context.md
-output/v<document.version>/index.json
+output/v<version>/prd.html
+output/v<version>/context.md
+output/v<version>/index.json
 ```
 
-Generation is staged. Renderer/context/index/README are built in a temporary delivery directory first; current outputs are replaced only after all staged artifacts are successfully produced. A failed generation must not partially replace the last complete delivery.
-
-- `prd.html` is the human-facing document;
-- `context.md` is a reasoning-friendly projection of accepted meaning plus relevant current downstream requirements;
-- `index.json` is compact navigation/line-range data;
-- `output/README.md` is the stable resume entry point.
-
-Side documents reorganize owned information for reading efficiency; they may not invent project facts, implementation architecture, dependencies, or approval state.
-
-## Exact Golden template identity
-
-The repository keeps:
+Publication is transactional at bundle level:
 
 ```text
-template/golden-reference.html
-template/runtime-template.html
+build complete staged version directory + README
+→ verify required staged files are non-empty
+→ move current version/README to temporary backup
+→ atomically rename staged version directory into place
+→ atomically replace README
+→ rollback both on any publication failure
 ```
 
-byte-identical to approved Golden artifact. Current approved Git blob:
+A failed generation must leave the previous complete delivery intact; mixed old/new version bundles are invalid.
+
+## Bilingual documents
+
+Bilingual projection requires explicit `en` and `id` values. Numeric, percentage, and stable-ID tokens that carry project meaning must remain invariant across languages. Translation may change wording, not counts/values/identity.
+
+## Freshness
+
+Generated HTML binds exact render-data bytes. When non-Voice 04 exists, HTML also binds exact asset requirements bytes. Flow 4 acceptance separately authorizes exact render-data + asset source bytes.
+
+Voice HTML binds exact current requirements + production bytes; final Voice delivery additionally binds exact production bytes in `voice-acceptance.md`.
+
+## Economy
 
 ```text
-2050b965768489feda98373c2920bbee8c7093b3
-```
-
-Do not replace either with a cleaned/reconstructed/generic interpretation. Adaptive cardinality does not modify Golden bytes.
-
-## Runtime binding
-
-Base preprocessing may only perform bounded project binding required for deterministic rendering:
-
-- strip Golden sample identity metadata from generated output;
-- namespace localStorage keys;
-- bind project title/description/version metadata;
-- replace sidebar navigation and document pages;
-- replace glossary data;
-- bind render-data revision metadata;
-- project variable semantic child counts into approved component families.
-
-Template surgery remains bounded to exact known markers. Do not spread new ad hoc HTML mutation paths when an existing adapter/marker can own the change.
-
-## Stable PRD-core identity
-
-Stable global page IDs:
-
-```text
-development-overview
-shared-systems
-shared-data-reset
-phase-development
-```
-
-Stable opening flow ID:
-
-```text
-flow-start
-```
-
-Package IDs remain:
-
-```text
-flow-<package>
-dev-<package>-requirement
-dev-<package>-level
-dev-<package>-developer
-```
-
-Preserve Golden runtime/component vocabulary required by CSS/JS/validation, including `phase-navigation`, package tabs, approved flow/table/sequence/note classes, and score-summary classes.
-
-## Locked page family
-
-```text
-01 Overview
-
-02 Gameplay Flow
-   The Journey Begins
-   one Gameplay Flow page per gameplay package
-
-03 Development
-   Development Overview
-   Game System
-   Data and Reset
-   Gameplay Development
-   gameplay packages
-      Gameplay Overview
-      Level Design
-      Developer
-```
-
-For `N` gameplay packages, PRD-core page count remains `6 + 4N`. 04 pages are additive and excluded from that count.
-
-## Projection is lossless for material structure
-
-- independent requirements remain independently readable;
-- table children are not flattened when independently meaningful;
-- action/response/recovery paragraphs remain distinct when they express distinct rules;
-- scoring/result/reset sub-rules remain readable in Developer hierarchy;
-- glossary terms are not silently removed;
-- variable flow/note/sequence cardinality survives projection.
-
-If the projection cannot represent canonical detail, fix projection/design ownership rather than truncating content.
-
-## 04 Production Assets
-
-After PRD-core rendering, the shared 04 compositor may append only accepted downstream pages and narrowly scoped extension styles/interactions. It may not rebuild or alter 01–03 page composition, navigation identity, project meaning, or Golden template bytes.
-
-04 uses visible types `MODEL`, `ITEM`, `UI / TEXT`, `AUDIO`, `PARTICLE`. Source identity must follow `../production-assets/CONTRACT.md` and `../voice/VALIDATION.md`:
-
-```text
-section placement → stable Owner ID
-non-Voice resource → stable AST-... ID
-Voice resource → stable VO-... ID
-```
-
-The compositor rejects ambiguous/duplicate/missing identity and does not synthesize missing resource Function/Moment/ownership copy.
-
-If no downstream canonical source exists, 04 composition is a no-op.
-
-## Glossary
-
-`packages[].terms` remains the package glossary source. Visible Terms Used follows the design contract: Gameplay Flow and Global Development when terms exist, Gameplay Overview when terms exist, and no glossary panel on Level Design, Developer, or Production Assets pages.
-
-## Version
-
-`document.version` is project/release metadata, not an edit counter. Exact Flow 4 acceptance uses render-data SHA-256 in addition to semantic version identity.
-
-## Render economy
-
-```text
-approved semantic meaning
-→ content.md
-→ render-data.json
+approved meaning
+→ one strict projection
 → one deterministic full-file render
 → optional stable-ID 04 composition
-→ staged delivery publish
+→ one transactional delivery publish
 ```
 
-Do not create a second default HTML, partial-page renderer, page cache, renderer profile, generic asset registry/schema, or speculative preview renderer merely to avoid a cheap deterministic full-file write.
+Do not add page caches, partial renderers, generic registries, compatibility alias layers, second default HTML, or speculative rendering frameworks without a concrete defect.

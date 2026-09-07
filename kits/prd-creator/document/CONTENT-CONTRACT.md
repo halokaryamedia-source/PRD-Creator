@@ -1,43 +1,32 @@
 # PRD Semantic Content Contract
 
-`work/content.md` is the canonical owner of PRD-core meaning. `work/render-data.json` and the generated PRD HTML are derived projections.
+`work/content.md` is the canonical owner of PRD-core meaning. `work/render-data.json` is a strict machine projection of that meaning. Generated HTML is presentation only.
 
-This file owns **what the PRD must communicate**. Visual/page composition is owned separately by [DESIGN-CONTRACT.md](DESIGN-CONTRACT.md).
+This file owns **what the PRD must communicate**. Visual/page composition is owned by [DESIGN-CONTRACT.md](DESIGN-CONTRACT.md). The exact render-data field schema is implemented by `shared/render_schema.py`; do not duplicate that schema in other docs.
 
 ## Authority
 
-Project meaning follows, in descending authority:
+Project meaning follows:
 
 1. current explicit user instruction;
 2. approved project decisions;
-3. current authoritative project source;
-4. normalized approved requirement state;
-5. references only for representation/quality, never another project's facts.
+3. current authoritative source;
+4. the exact preview-approved requirement register;
+5. representation references only for structure/quality.
 
-Every material concern resolves as:
+Every material concern must resolve as:
 
 ```text
 Defined | Explicit No | Not Applicable | Blocked
 ```
 
-`missing` is not a valid accepted state.
+`missing` is not an accepted state.
 
 ## Material conservation
 
-Flow 3 may rewrite wording and choose representation inside approved surfaces. It may not delete independently actionable meaning merely to make the PRD shorter or to match a sample count.
+Flow 3 may rewrite wording and choose representation inside approved surfaces. It may not delete independently actionable meaning for brevity or sample-count fidelity.
 
-Conserve every resolved PRD-scope rule that changes production or observable behavior, including:
-
-- conditions and exceptions;
-- timing, counts, capacities, scoring/result values;
-- success/fail/retry/recovery behavior;
-- interruption/reset behavior;
-- shared/local ownership boundaries;
-- build/spatial constraints;
-- explicit approved technical constraints;
-- required player-visible/system results.
-
-The invariant is:
+Conserve every resolved rule that changes production or observable behavior, including conditions/exceptions, timing/counts, scoring/results, fail/retry/recovery, reset/interruption, shared/local ownership, build/spatial constraints, approved technical constraints, and required player-visible/system results.
 
 ```text
 resolved material rule
@@ -45,9 +34,7 @@ resolved material rule
 → one appropriate visible PRD surface
 ```
 
-Two rules may be merged only when they remain independently understandable. Humanize/concise writing changes wording, not meaning cardinality.
-
-Do not reintroduce incidental as-built evidence that Flow 2 intentionally excluded from canonical project meaning, such as final map coordinates, UUIDs, scoreboard names, function paths, debug/setup residue, or implementation identifiers that are not approved constraints.
+Do not reintroduce incidental as-built evidence intentionally excluded by Flow 2, such as final coordinates, UUIDs, scoreboard names, function paths, or debug/setup residue that are not approved constraints.
 
 ## Semantic document family
 
@@ -72,24 +59,24 @@ The PRD core remains:
    Developer
 ```
 
-For `N` gameplay packages, the PRD core remains `6 + 4N` pages. This is information architecture, not a rule about how many cards or beats must appear inside a page.
+For `N` gameplay packages, the core remains `6 + 4N` pages. Child-card/beat/note counts are data-driven.
 
-## Overview meaning
+## Overview
 
-Overview must establish:
+Overview establishes:
 
-- one readable project/session/journey context;
+- project/session/journey context;
 - **Session Model**;
 - **Target Playtime**;
 - **Game Structure**;
-- one chronological journey summary per gameplay package plus the opening when applicable;
-- project-wide gameplay direction/invariants that materially affect multiple packages.
+- chronological journey summary;
+- project-wide gameplay direction/invariants.
 
-The three named fact slots are stable semantic questions, not arbitrary sample filler.
+The three named facts are fixed semantic questions, not sample filler.
 
-## Gameplay Flow meaning
+## Gameplay Flow
 
-Each Gameplay Flow page is chronological player-facing truth. It must make clear, as applicable:
+Each page communicates chronological player-facing truth:
 
 ```text
 situation
@@ -100,129 +87,134 @@ situation
 → transition
 ```
 
-Narrative sections/paragraphs are **data-driven**. Use as many as the material meaning requires. Do not create filler beats and do not compress distinct conditions merely to imitate the reference project.
+Use only as many beats as the approved meaning needs.
 
-## Global Development meaning
+## Global Development
 
-The four project-wide Development pages have stable responsibilities:
+The four project-wide Development pages have fixed ownership:
 
 | Page | Owns |
 |---|---|
-| Development Overview | project-wide topology, package relationships, shared handoff/result structure |
-| Game System | shared runtime/session ownership, isolation, global player/objective state |
-| Data and Reset | timing/data/result persistence, interruption, recovery/reset and reuse |
+| Development Overview | topology, package relationships, shared handoff/result structure |
+| Game System | shared runtime/session ownership, isolation, global state |
+| Data and Reset | timing/data/result persistence, interruption, recovery/reset/reuse |
 | Gameplay Development | common implementation contract across gameplay packages |
 
-Each page requires:
+Each page needs a clear responsibility overview, useful lifecycle steps, actionable requirements, and genuine risk/invariant notes when applicable.
 
-- a compact overview of responsibility/boundary;
-- one or more useful lifecycle/orientation steps;
-- actionable Development Requirements;
-- one or more genuinely important risk/invariant notes when such notes exist;
-- relevant Terms Used when needed.
+## Gameplay Overview
 
-**Do not force four flow cards or four notes.** Cardinality follows project meaning.
+Stable summary questions:
 
-## Gameplay Overview meaning
+```text
+Gameplay Context
+Main Objective
+Result
+```
 
-The stable summary questions are:
+Stable Gameplay Information questions:
 
-- Gameplay Context;
-- Main Objective;
-- Result.
+```text
+Game Purpose
+Gameplay Time
+Starting Condition
+End Condition
+Fail Condition
+Scoring Criteria / Completion Result
+```
 
-Gameplay Information keeps these six semantic questions:
+The last question is represented in machine projection through one explicit result model:
 
-- Game Purpose;
-- Gameplay Time;
-- Starting Condition;
-- End Condition;
-- Fail Condition;
-- Scoring Criteria.
+```json
+{
+  "result_model": {
+    "mode": "scored | completion_only",
+    "summary": "<player/production-facing result summary>"
+  }
+}
+```
 
-A negative rule remains explicit, e.g. `No Objective Score` or `There is no fail state`.
+`mode: scored` requires Developer `scoring`. `mode: completion_only` requires Developer `completion_data`. The renderer never infers this mode or synthesizes the Gameplay result summary from Developer data.
 
-The compact Gameplay Flow is **data-driven**. Use one or more high-level steps sufficient to communicate the actual sequence. Five steps are valid when the project naturally has five; five is not a universal contract.
+## Level Design
 
-## Level Design meaning
+Level Design communicates spatial/build responsibility, design flow, complete build requirements, and applicable spatial/readability/hazard/recovery constraints.
 
-Level Design must communicate:
-
-- spatial/build responsibility and relationships;
-- one or more useful Design Flow stages/areas;
-- complete Build Requirements;
-- important spatial/readability/hazard/recovery constraints when they exist.
-
-Build Requirements retain the stable semantic columns:
+Stable columns:
 
 ```text
 No. | Object | Area Size | Build and Visual Requirements | Gameplay Function
 ```
 
-Flow-card and note-card counts are data-driven. Requirement row/group counts are data-driven.
+## Developer
 
-## Developer meaning
+Developer communicates runtime responsibility, lifecycle, complete implementation requirements, explicit scored/no-score result handling, interruption/reset/reuse/handoff, and applicable runtime invariants.
 
-Developer must communicate:
-
-- runtime responsibility;
-- one or more useful implementation lifecycle steps;
-- complete Development Requirements;
-- result/scoring or explicit no-score completion behavior;
-- interruption/reset/reuse/handoff behavior;
-- important runtime invariants when they exist.
-
-Development Requirements retain:
+Stable columns:
 
 ```text
 No. | Setup | Development Requirements | Gameplay Function
 ```
 
-Flow-card and note-card counts are data-driven. Requirement row/group counts are data-driven.
+## Adaptive cardinality
 
-## Adaptive cardinality rule
-
-The model must not ask, “How do I make this exactly four cards/five beats?” It must ask, “How many distinct steps are actually needed to communicate the approved meaning clearly?”
-
-Use the smallest cardinality that preserves material distinctions:
+Use the smallest child cardinality that preserves all material distinctions:
 
 ```text
 1+ semantic steps/notes when applicable
-→ no filler to reach a sample count
-→ no destructive merging to reduce to a sample count
+→ no filler for sample counts
+→ no destructive merging for compactness
 ```
 
-The renderer may wrap/reflow variable item counts inside the same approved component family. That is representation, not a new project decision.
+## Strict projection boundary
+
+`render-data.json` is not a tolerant intermediate format. It has exactly one supported field vocabulary.
+
+Required invariants:
+
+```text
+content.md bytes
+→ canonical_content_sha256 in render-data
+→ exact strict projection
+→ deterministic renderer
+```
+
+The projection must:
+
+- bind `canonical_content_sha256` to the exact current `work/content.md` bytes;
+- use only fields accepted by `shared/render_schema.py`;
+- carry resolved `result_model` explicitly;
+- preserve stable package/term IDs;
+- contain no compatibility aliases or unknown keys;
+- contain explicit `en/id` values when bilingual mode is active;
+- preserve numeric, percentage, and stable-ID tokens across bilingual values.
+
+The renderer must not:
+
+- recover historical aliases;
+- reinterpret a typo as another field;
+- infer missing semantic meaning from another role;
+- create scoring/completion meaning;
+- copy Golden sample facts.
+
+If canonical meaning is incomplete, return the affected slice to Flow 2. If canonical meaning is complete but cannot fit the approved presentation grammar, the design/projection layer is the first wrong owner.
 
 ## Humanize and direct writing
 
-Prefer:
+Prefer direct subject/action/result wording, specific project nouns, semantic note titles, chronological flow when chronology matters, and detail in the owning role.
 
-- direct subject/action/result wording;
-- specific project nouns;
-- semantic note titles;
-- compact summaries with detail in the owning requirement surface;
-- chronological flow where chronology matters.
-
-Avoid:
-
-- generator/template narration;
-- generic `Global Rule N` / `Important Note N` visible copy;
-- vague `handle`, `manage`, `support` wording without observable behavior;
-- repeated explanation across Gameplay, Level Design and Developer when ownership differs.
+Avoid generator narration, generic `Global Rule N` / `Important Note N`, vague ownership verbs without observable behavior, and repetitive cross-role restatement.
 
 ## Flow 3 completion
 
-Flow 3 is complete when:
+Flow 3 completes only when:
 
-- Flow 2 truthfully remains `ready_for_prd`;
-- canonical PRD meaning satisfies this semantic contract;
-- no material project decision was silently invented during authoring;
-- all material meaning can be projected through the approved design contract;
+- Flow 2 approval is still bound to the current requirement-register bytes;
+- `content.md` satisfies this semantic contract;
+- `render-data.json` exactly binds current content bytes and satisfies the strict projection schema;
+- no material project decision was silently introduced during authoring;
+- semantic cardinality is conserved;
+- current 01–03 HTML is deterministically rendered;
 - no unresolved placeholder remains.
 
-If a material project/design decision is unresolved, return the affected slice to Flow 2. If the meaning is correct but presentation cannot represent it, the first wrong owner is the design/projection layer—not the project facts.
-
-## Compatibility routing for older instructions
-
-Older procedure text may refer to the “Reverse-derived Golden fill map” in this file. That presentation map now belongs to [DESIGN-CONTRACT.md](DESIGN-CONTRACT.md). The semantic questions remain here; the Golden visual grammar and reference evidence live there.
+Flow 4, not renderer success, decides accepted production readiness.

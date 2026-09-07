@@ -8,10 +8,13 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-if str(HERE) not in sys.path:
-    sys.path.insert(0, str(HERE))
-
-from api import content_purity_errors, validate
+KIT_ROOT = HERE.parent
+if __package__ in (None, ""):
+    if str(KIT_ROOT) not in sys.path:
+        sys.path.insert(0, str(KIT_ROOT))
+    from validator.api import content_purity_errors, validate
+else:
+    from .api import content_purity_errors, validate
 
 __all__ = ["content_purity_errors", "validate"]
 

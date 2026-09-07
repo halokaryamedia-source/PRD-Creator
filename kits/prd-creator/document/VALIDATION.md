@@ -1,22 +1,22 @@
 # PRD Validation & Team Handoff
 
-`CONTENT-CONTRACT.md` owns semantic completeness. `DESIGN-CONTRACT.md` owns approved page/component grammar. This file owns the minimum proof needed to accept the current revision.
+`CONTENT-CONTRACT.md` owns semantic completeness. `DESIGN-CONTRACT.md` owns approved page/component grammar. This file owns the proof required to accept one current PRD revision.
 
-## Default sequence
+## Sequence
 
 ```text
-current PRD revision + required current non-Voice 04 source when present
-→ one mechanical validation
-→ one integrated semantic-readiness + reconciliation review
+current Flow 2 approval
++ content.md
++ strict render-data projection
++ required non-Voice 04 source when present
+→ canonical mechanical validation
+→ integrated semantic reconciliation/readiness
 → Material Conservation
-→ targeted visual sanity when the claim requires it
-→ fix the first wrong owner
+→ targeted visual sanity when claimed
 → development_ready | handoff_ready
 ```
 
-`development_ready` means the current PRD/required 04 scope is accepted for implementation. `handoff_ready` additionally binds the accepted revision to the current versioned delivery and is required before Flow 5.
-
-Do not create separate workflow gates for every reader/role lens. They are questions inside one integrated review.
+`development_ready` means the current PRD/required 04 meaning is accepted for implementation. `handoff_ready` additionally binds that accepted revision to the current versioned delivery and is required before Flow 5.
 
 ## 1. Mechanical validation
 
@@ -27,66 +27,73 @@ python kits/prd-creator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical validation owns deterministic facts: Flow 2 readiness, required artifacts, freshness bindings, page order/IDs/navigation, arithmetic, required design-component markers, content-purity regressions, and current output integrity.
+`validator/api.py` is the one complete PRD validation API. Handoff validation calls the same API.
 
-`validator/api.py` is the canonical complete PRD validation entrypoint. Handoff validation must call that same entrypoint rather than a lower-level engine so Flow 4 and Flow 5 cannot disagree about whether the current PRD is mechanically valid.
+Mechanical validation proves deterministic facts including:
 
-Mechanical PASS does **not** prove source fidelity, semantic completeness, material conservation, adaptive-cardinality quality, or browser readability.
+- Flow 2 approval hash still matches current requirement-register bytes;
+- retained source hashes/provenance remain coherent;
+- `content.md` has no unresolved placeholders;
+- `render-data.json` satisfies the one strict projection schema;
+- `canonical_content_sha256` matches exact current `content.md` bytes;
+- scored/completion result mode is explicit and coherent;
+- non-Voice 04 source is parseable and uses accepted Owner/Moment/Asset identity;
+- generated HTML is bound to exact render-data and asset-requirements bytes;
+- page order/IDs/navigation/component markers remain valid;
+- scoring arithmetic and duplicate HTML IDs remain valid.
+
+Mechanical PASS does not prove semantic fidelity or browser visual quality.
 
 ## 2. Integrated semantic readiness
 
-Review the current revision once using relevant lenses:
+Review once through relevant lenses:
 
 | Lens | Ready when... |
 |---|---|
-| Source Fidelity | material project claims remain supported by approved authority or explicit approved Proposal |
-| Decision Completeness | implementation does not need to invent unresolved product behavior |
-| New Reader | journey, objective, result, setback/recovery and transition are understandable |
-| Level Designer | areas/objects/relationships/constraints/gameplay functions are actionable |
-| Developer | trigger/state/progression/timing/scoring/result/reset/handoff behavior is actionable |
-| Quantitative & Lifecycle Coherence | related timings/counts/capacities/states agree through start → active → result → retry/reset |
-| Cross-role Consistency | Gameplay, Level Design, Developer and required 04 describe the same approved system |
-| Content Purity | visible copy explains the project rather than PRD-Creator mechanics |
-| Design Placement | accepted meaning uses the matching component/page grammar in `DESIGN-CONTRACT.md` |
+| Source Fidelity | material claims remain supported by current authority/approved Proposal |
+| Decision Completeness | implementation needs no new product decision |
+| New Reader | journey/objective/result/recovery/transition are understandable |
+| Level Designer | spaces/objects/relationships/constraints/functions are actionable |
+| Developer | trigger/state/timing/result/reset/handoff behavior is actionable |
+| Quantitative & Lifecycle | related values and lifecycle states agree |
+| Cross-role | Gameplay, Level Design, Developer and required 04 describe one system |
+| Content Purity | visible copy explains the project, not generator mechanics |
+| Design Placement | meaning uses the approved presentation grammar |
 
-Record one result:
+Record only:
 
 ```text
 Semantic Readiness: PASS | FAIL
 ```
 
-Adaptive child count is not itself a failure. A three-step sequence is valid when three semantic steps are sufficient; a seven-step sequence is valid when seven distinctions are material.
+Do not persist per-lens scores.
 
 ## 3. Semantic reconciliation
 
-Before acceptance, reconcile material meaning across:
+Compare material meaning across:
 
 ```text
-approved source / requirement state
-→ canonical work/content.md
-→ work/render-data.json
-→ visible PRD
+approved requirement revision
+→ content.md
+→ strict render-data projection
+→ visible PRD / required 04
 ```
 
 Look for:
 
-- **LOSS** — a material rule/condition/value disappears;
-- **CONTRADICTION** — downstream wording changes the rule;
-- **UNSUPPORTED** — a new material fact appears without authority/approval;
-- **AMBIGUOUS** — representation makes a previously clear rule materially uncertain;
-- **CROSS-ROLE DRIFT** — Gameplay / Level Design / Developer / 04 disagree.
+```text
+LOSS
+CONTRADICTION
+UNSUPPORTED
+AMBIGUOUS
+CROSS-ROLE DRIFT
+```
 
-This is meaning comparison, not literal-string parity, numeric scoring, or a persisted requirement-to-sentence matrix.
-
-When a semantic list is projected into an approved Flow/Note/Sequence component, verify its meaningful children were conserved; do not compare against AFTERSHOCK's sample count.
+This is semantic comparison, not string parity or a requirement-to-sentence matrix.
 
 ## 4. Material Conservation
 
-Material Conservation remains a separate gate because a document can be readable yet omit an independent rule.
-
-For changed/regenerated scope, verify resolved PRD-scope conditions, values, exceptions, recovery rules, result behavior, technical constraints and role-owned requirements retain explicit readable representation.
-
-Do not use word count, row count, or reference-card count as a proxy.
+A readable document may still omit an independent rule. Verify changed/regenerated scope retains explicit representation for every resolved material condition, value, exception, recovery rule, result behavior, technical constraint, and role-owned requirement.
 
 Record:
 
@@ -94,35 +101,17 @@ Record:
 Material Conservation: PASS | FAIL
 ```
 
-## 5. Golden/design economy
+Do not use word/card/row counts as a quality proxy.
 
-The exact Golden artifact and stable page/component grammar are protected by `DESIGN-CONTRACT.md` plus focused regression coverage.
+## 5. Visual sanity
 
-Normal content-only production does not reread/re-prove the full reference artifact. Reopen full Golden evidence only when template bytes, page/component grammar, CSS/runtime behavior, or a real browser defect is under review.
+Visual `PASS` requires actual rendered/browser evidence. Static HTML inspection may only establish structure and freshness.
 
-Adaptive semantic cardinality inside existing approved component families is a normal projection capability and does not by itself reopen Golden design.
+For ordinary content changes inspect representative/high-risk pages. Broaden visual QA only for template/CSS/JS/global composition changes, evidence of global breakage, or explicit user request.
 
-## 6. Targeted visual sanity
+## 6. Acceptance record
 
-Visual PASS requires actual rendered/browser evidence. Static HTML inspection cannot claim it.
-
-For ordinary content work, inspect representative/high-risk pages, normally:
-
-```text
-Overview
-+ one Gameplay Flow
-+ one Gameplay Overview
-+ one Level Design
-+ one dense Developer page
-```
-
-When adaptive cardinality creates unusually dense surfaces, include those pages in browser sanity. Check wrapping/overflow, readable grouping and whether distinct semantic items remain visually separable.
-
-Escalate to broader browser testing only when template/CSS/JS/page composition changed, a targeted defect suggests global impact, or the user asks for broader proof.
-
-## 7. Acceptance record
-
-Keep `work/acceptance.md` compact and bind it to the exact reviewed projection bytes:
+`work/acceptance.md` authorizes exact bytes, not merely a version number.
 
 ```text
 # PRD Acceptance
@@ -134,23 +123,55 @@ Visual sanity: PASS | FAIL | NOT PROVEN
 Findings: <only when findings exist>
 Critical: N
 Major: N
-Accepted Render Data SHA256: <sha256 of the exact reviewed work/render-data.json>
+Accepted Render Data SHA256: <exact current work/render-data.json SHA-256>
+Accepted Asset Requirements SHA256: <exact current work/asset-requirements.md SHA-256 | none>
 ```
 
-The accepted hash is required for `handoff_ready`. It prevents a same-version rerender or semantic edit from reusing an older acceptance record. `document.version` remains project/release metadata and is not an edit counter.
+Both binding lines are required for `handoff_ready`.
 
-Do not persist a score per semantic lens.
+If `asset-requirements.md` is absent, record exactly:
 
-## 8. Handoff
+```text
+Accepted Asset Requirements SHA256: none
+```
 
-Only `handoff_ready` crosses into Flow 5. Before Flow 5 run:
+Any edit to render-data or non-Voice 04 source after review invalidates acceptance even if `document.version` is unchanged.
+
+`document.version` is project/release metadata, not an edit counter.
+
+## 7. Handoff
+
+Only `handoff_ready` crosses into Flow 5.
+
+Run:
 
 ```bash
 python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-Handoff must point to current canonical/projection/acceptance state, `output/README.md`, and the matching versioned `prd.html` / `context.md` / `index.json` bundle. Accepted PRD version must use semantic `X.Y.Z` and agree across the bundle. The acceptance record must also bind the exact current `work/render-data.json` SHA-256.
+`state/handoff-state.yaml` is strict machine state. It contains only:
+
+```yaml
+status: handoff_ready
+accepted_prd_version: <X.Y.Z>
+content: work/content.md
+render_data: work/render-data.json
+html: output/v<X.Y.Z>/prd.html
+context: output/v<X.Y.Z>/context.md
+index: output/v<X.Y.Z>/index.json
+acceptance: work/acceptance.md
+handoff: output/README.md
+```
+
+All refs are canonical project-relative POSIX paths. Absolute paths, `..`, backslashes, aliases, and extra state fields are invalid.
+
+Handoff validation proves:
+
+- the canonical PRD validator still passes;
+- version identity agrees across projection and delivery;
+- all referenced artifacts exist at canonical paths;
+- acceptance binds exact current render-data + asset-requirements bytes.
 
 `output/README.md` is a resume navigator, not a second project-status database.
 
@@ -158,13 +179,14 @@ Handoff must point to current canonical/projection/acceptance state, `output/REA
 
 ```text
 approved change
-→ first affected semantic/design owner
-→ affected projection
-→ one full-file rerender
-→ one mechanical check
-→ one integrated review of invalidated scope
+→ first wrong owner
+→ affected canonical/projection/04 source
+→ full deterministic rerender
+→ mechanical validation
+→ integrated review only for invalidated meaning
 → visual check only where changed/high-risk
+→ new exact-byte acceptance
 → stop
 ```
 
-Do not replay unchanged intake, packages, Voice work, mobile QA, every-page QA, or full Golden review for ceremony.
+Do not replay unaffected intake/packages/Voice/Golden review for ceremony.
