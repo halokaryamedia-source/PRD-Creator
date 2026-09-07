@@ -280,13 +280,19 @@ def global_pages(data: dict[str, Any]) -> list[str]:
 
 def _gameplay_info_rows(package: dict[str, Any]) -> list[str]:
     gameplay = package["gameplay"]
+    result_model = gameplay["result_model"]
+    result_label = (
+        bi("Scoring Criteria", "Kriteria Scoring")
+        if result_model["mode"] == "scored"
+        else bi("Completion Criteria", "Kriteria Penyelesaian")
+    )
     pairs = [
         (bi("Game Purpose", "Tujuan Gameplay"), gameplay["purpose"]),
         (bi("Gameplay Time", "Waktu Gameplay"), gameplay["gameplay_time"]),
         (bi("Starting Condition", "Kondisi Awal"), gameplay["start_condition"]),
         (bi("End Condition", "Kondisi Selesai"), gameplay["end_condition"]),
         (bi("Fail Condition", "Kondisi Gagal"), gameplay["blocked_or_fail_condition"]),
-        (bi("Scoring Criteria", "Kriteria Scoring"), gameplay["result_model"]["summary"]),
+        (result_label, result_model["summary"]),
     ]
     return [
         f'<tr><td><b>{i18n(label)}</b></td><td>{cell_html(value)}</td></tr>'
@@ -360,244 +366,224 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
 
     rows.append(
         f'<tr class="quarry-group-row"><td><b>{group_number}</b></td>'
-        f'<td colspan="3"><b>{i18n(bi("Reset Mechanic", "Reset Mechanic"))}</b></td></tr>'
+        f'<td colspan="3"><b>{i18n(bi("Reset Setup", "Setup Reset"))}</b></td></tr>'
     )
     rows.append(
-        f'<tr><td><b>A</b></td><td><b>{i18n(bi("Reset / Interruption", "Reset / Interupsi"))}</b></td>'
-        f'<td>{cell_html(developer["reset"])}</td><td>{cell_html(developer["reset_result"])}</td></tr>'
+        f'<tr><td><b>A</b></td><td><b>{i18n(bi("Reset", "Reset"))}</b></td>'
+        f'<td>{cell_html(developer["reset"])}</td>'
+        f'<td>{cell_html(developer["reset_result"])}</td></tr>'
     )
     return rows
 
 
 def package_pages(data: dict[str, Any]) -> list[str]:
     pages: list[str] = []
+    packages = data["packages"]
     brand = data["document"].get("brand") or data["document"]["title"]
-
-    for index, package in enumerate(data["packages"]):
+    for package_index, package in enumerate(packages, 1):
         package_id = package["id"]
-        code = 4 + index
         package_label = package["package_label"]
-        title = package["title"]
-        phase = f"dev-{package_id}"
-
+        package_title = package["title"]
         gameplay = package["gameplay"]
+        level = package["level_design"]
+        developer = package["developer"]
+        package_tabs = tabs(package, "gameplay")
+
         gameplay_body = (
-            f'<h2 class="development-package-title">{i18n(title)}</h2>'
-            f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "))}</p>'
-            + tabs(package_id, "requirement")
+            f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
+            + package_tabs
+            + context_block(bi("Gameplay Context", "Konteks Gameplay"), gameplay["context"])
             + cards(
                 [
-                    (bi("Gameplay Context", "Konteks Gameplay"), gameplay["context"]),
                     (bi("Main Objective", "Tujuan Utama"), gameplay["main_objective"]),
                     (bi("Result", "Hasil"), gameplay["result"]),
                 ]
             )
             + heading(bi("Gameplay Information", "Informasi Gameplay"))
-            + production_table([], _gameplay_info_rows(package), "phase-overview-table quarry-overview-table")
-            + heading(bi("Gameplay Flow", "Alur Gameplay"))
-            + sequence(gameplay["player_flow"])
-            + terms(
-                package.get("terms", []),
-                f"dev-{package_id}-requirement-terms-used-details",
-                glossary_enabled=False,
+            + production_table(
+                [bi("Category", "Kategori"), bi("Details", "Detail")],
+                _gameplay_info_rows(package),
+                "quarry-overview-table",
             )
+            + heading(bi("Player Flow", "Alur Player"))
+            + sequence(gameplay["player_flow"])
+            + terms(package.get("terms", []), f"dev-{package_id}-requirement-terms-used-details", glossary_enabled=True)
         )
         pages.append(
             page(
                 f"dev-{package_id}-requirement",
-                f"{code:02d}A",
-                title,
+                f"03{package_index}A",
+                package_label,
                 gameplay_body,
-                context=join_text(title, bi("Gameplay Overview", "Gameplay Overview"), sep=" · "),
-                header=bi("Development — Gameplay", "Development — Gameplay"),
-                footer_title=join_text(
-                    bi("Development", "Development"),
-                    title,
-                    bi("Gameplay Overview", "Gameplay Overview"),
-                    sep=" · ",
-                ),
+                context=package_title,
+                header=bi("03 — Development", "03 — Development"),
+                footer_title=join_text(bi("Gameplay Overview", "Gambaran Gameplay"), package_title, sep=" · "),
                 brand=brand,
-                phase=phase,
-                clean_target="summary",
+                phase=f"dev-{package_id}",
                 role="gameplay-overview",
-                classes="sheet professional-only quarry-package-page phase-package-page role-gameplay-overview",
+                classes="sheet professional-only quarry-package-page phase-package-page role-gameplay-overview glossary-enabled-page",
             )
         )
 
-        level = package["level_design"]
         level_body = (
-            f'<h2 class="development-package-title">{i18n(title)}</h2>'
-            f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Level Design", "Level Design"), sep=" · "))}</p>'
-            + tabs(package_id, "level")
-            + context_block(bi("Level Design Overview", "Level Design Overview"), level["overview"])
-            + heading(bi("Design Flow", "Design Flow"))
+            f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
+            + tabs(package, "level")
+            + context_block(bi("Level Design Context", "Konteks Level Design"), level["overview"])
+            + heading(bi("Level Design Flow", "Alur Level Design"))
             + flow_cards(level["flow"], "quarry-design-flow")
-            + heading(bi("Build Requirements", "Build Requirements"))
+            + heading(bi("Build Requirements", "Kebutuhan Build"))
             + production_table(
                 [
                     bi("No.", "No."),
-                    bi("Object", "Object"),
-                    bi("Area Size", "Area Size"),
-                    bi("Build and Visual Requirements", "Build and Visual Requirements"),
-                    bi("Gameplay Function", "Gameplay Function"),
+                    bi("Object", "Objek"),
+                    bi("Area Size", "Ukuran Area"),
+                    bi("Build and Visual Requirements", "Kebutuhan Build dan Visual"),
+                    bi("Gameplay Function", "Fungsi Gameplay"),
                 ],
                 _level_requirement_rows(level["requirements"]),
                 "quarry-build-table",
             )
-            + heading(bi("Important Build Notes", "Important Build Notes"))
+            + heading(bi("Important Build Notes", "Catatan Build Penting"))
             + note_grid(level.get("notes", []))
+            + terms(package.get("terms", []), f"dev-{package_id}-level-terms-used-details", glossary_enabled=True)
         )
         pages.append(
             page(
                 f"dev-{package_id}-level",
-                f"{code:02d}B",
-                title,
+                f"03{package_index}B",
+                package_label,
                 level_body,
-                context=join_text(title, bi("Level Design", "Level Design"), sep=" · "),
-                header=bi("Development — Gameplay", "Development — Gameplay"),
-                footer_title=join_text(
-                    bi("Development", "Development"),
-                    title,
-                    bi("Level Design", "Level Design"),
-                    sep=" · ",
-                ),
+                context=package_title,
+                header=bi("03 — Development", "03 — Development"),
+                footer_title=join_text(bi("Level Design", "Level Design"), package_title, sep=" · "),
                 brand=brand,
-                phase=phase,
-                clean_target="summary",
-                classes="sheet professional-only quarry-package-page phase-package-page",
+                phase=f"dev-{package_id}",
+                role="level-design",
+                classes="sheet professional-only quarry-package-page phase-package-page glossary-enabled-page",
             )
         )
 
-        developer = package["developer"]
         developer_body = (
-            f'<h2 class="development-package-title">{i18n(title)}</h2>'
-            f'<p class="development-package-subtitle">{i18n(join_text(package_label, bi("Developer", "Developer"), sep=" · "))}</p>'
-            + tabs(package_id, "developer")
-            + context_block(bi("Developer Overview", "Developer Overview"), developer["overview"])
-            + heading(bi("Development Flow", "Development Flow"))
+            f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
+            f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
+            + tabs(package, "developer")
+            + context_block(bi("Developer Context", "Konteks Developer"), developer["overview"])
+            + heading(bi("Development Flow", "Alur Pengembangan"))
             + flow_cards(developer["flow"], "quarry-development-flow")
-            + heading(bi("Development Requirements", "Development Requirements"))
+            + heading(bi("Development Requirements", "Kebutuhan Pengembangan"))
             + production_table(
                 [
                     bi("No.", "No."),
                     bi("Setup", "Setup"),
-                    bi("Development Requirements", "Development Requirements"),
-                    bi("Gameplay Function", "Gameplay Function"),
+                    bi("Development Requirements", "Kebutuhan Pengembangan"),
+                    bi("Gameplay Function", "Fungsi Gameplay"),
                 ],
                 _developer_requirement_rows(developer),
                 "quarry-development-table",
             )
-            + heading(bi("Important Development Notes", "Important Development Notes"))
+            + heading(bi("Important Development Notes", "Catatan Pengembangan Penting"))
             + note_grid(developer.get("notes", []))
+            + terms(package.get("terms", []), f"dev-{package_id}-developer-terms-used-details", glossary_enabled=True)
         )
         pages.append(
             page(
                 f"dev-{package_id}-developer",
-                f"{code:02d}C",
-                title,
+                f"03{package_index}C",
+                package_label,
                 developer_body,
-                context=join_text(title, bi("Developer", "Developer"), sep=" · "),
-                header=bi("Development — Gameplay", "Development — Gameplay"),
-                footer_title=join_text(
-                    bi("Development", "Development"),
-                    title,
-                    bi("Developer", "Developer"),
-                    sep=" · ",
-                ),
+                context=package_title,
+                header=bi("03 — Development", "03 — Development"),
+                footer_title=join_text(bi("Developer", "Developer"), package_title, sep=" · "),
                 brand=brand,
-                phase=phase,
-                clean_target="summary",
-                classes="sheet professional-only quarry-package-page phase-package-page",
+                phase=f"dev-{package_id}",
+                role="developer",
+                classes="sheet professional-only quarry-package-page phase-package-page glossary-enabled-page",
             )
         )
     return pages
 
 
-def navigation(data: dict[str, Any]) -> str:
-    navigation_items = [
-        f'<a class="nav-link" data-target="summary" href="#summary">'
-        f'<span class="nav-index" data-full-index="01" data-overview-index="01">{i18n("01")}</span>'
-        f'<span class="nav-copy">{i18n(bi("Overview", "Gambaran Umum"))}</span></a>'
-    ]
-    flow_links = "".join(
-        f'<a data-target="{esc(flow_page_id(item, index))}" href="#{esc(flow_page_id(item, index))}">'
-        f'{i18n(item["title"])}</a>'
-        for index, item in enumerate(data["gameplay_flow"])
-    )
-    navigation_items.append(
-        '<div class="nav-group is-open"><button aria-expanded="true" class="nav-group-toggle" type="button">'
-        f'<span class="nav-index" data-full-index="02" data-overview-index="02">{i18n("02")}</span>'
-        f'<span class="nav-copy">{i18n(bi("Gameplay Flow", "Alur Gameplay"))}</span>'
-        f'<span aria-hidden="true" class="group-chevron"></span></button><div class="nav-submenu">{flow_links}</div></div>'
-    )
+def glossary(data: dict[str, Any]) -> dict[str, dict[str, str]]:
+    glossary_data: dict[str, dict[str, str]] = {}
+    terms_by_role: dict[str, list[dict[str, Any]]] = {
+        "gameplay": [],
+        "level_design": [],
+        "developer": [],
+    }
+    for item in data["gameplay_flow"]:
+        terms_data = item.get("terms", [])
+        for term in terms_data:
+            terms_by_role["gameplay"].append(term)
+    for package in data["packages"]:
+        for term in package.get("terms", []):
+            roles = term.get("roles") or ["gameplay", "level_design", "developer"]
+            for role in roles:
+                terms_by_role[role].append(term)
 
-    global_links = "".join(
-        f'<a data-target="{esc(global_page_id(item))}" href="#{esc(global_page_id(item))}">'
-        f'{i18n(_golden_global_title(item))}</a>'
-        for item in data["global_development"]
-    )
-    package_links = []
-    for index, package in enumerate(data["packages"]):
-        package_id = package["id"]
-        code = 4 + index
-        subpages = "".join(
-            f'<a class="phase-page-link professional-nav-item" data-phase-page-link="" '
-            f'data-target="dev-{package_id}-{key}" href="#dev-{package_id}-{key}">'
-            f'<span>{i18n(name)}</span></a>'
-            for key, name in (
-                ("requirement", bi("Gameplay Overview", "Gameplay Overview")),
-                ("level", bi("Level Design", "Level Design")),
-                ("developer", bi("Developer", "Developer")),
+    for role, items in terms_by_role.items():
+        for term in _dedupe_terms(items):
+            definition = txt(term["definition"])
+            for language in ("en", "id"):
+                aliases = term.get("aliases", [])
+                if isinstance(aliases, dict):
+                    aliases = aliases.get(language, [])
+                for label in [txt(term["label"])[language], *aliases]:
+                    if not label:
+                        continue
+                    glossary_data.setdefault(language, {})[label] = definition[language]
+    return glossary_data
+
+
+def navigation(data: dict[str, Any]) -> str:
+    brand = data["document"].get("brand") or data["document"]["title"]
+    links = [
+        (
+            "summary",
+            "01",
+            bi("Overview", "Gambaran Umum"),
+            "",
+        )
+    ]
+    for index, item in enumerate(data["gameplay_flow"]):
+        links.append(
+            (
+                flow_page_id(item, index),
+                f'02{chr(65 + index)}',
+                item["title"],
+                bi("Gameplay Flow", "Alur Gameplay"),
             )
         )
-        package_links.append(
-            f'<div class="phase-nav-item" data-phase-nav="dev-{esc(package_id)}">'
-            f'<a class="phase-nav-main" data-phase-link="" data-section-code="{code:02d}" '
-            f'data-target="dev-{package_id}-requirement" href="#dev-{package_id}-requirement">'
-            f'<span>{i18n(package["title"])}</span><small>{i18n(package["package_label"])}</small></a>'
-            f'<div class="phase-page-list">{subpages}</div></div>'
+    for index, item in enumerate(data["global_development"]):
+        links.append(
+            (
+                global_page_id(item),
+                f'03{chr(65 + index)}',
+                _golden_global_title(item),
+                bi("Development", "Development"),
+            )
         )
-    navigation_items.append(
-        '<div class="nav-group is-open professional-nav"><button aria-expanded="true" class="nav-group-toggle" type="button">'
-        f'<span class="nav-index" data-full-index="03" data-overview-index="">{i18n("03")}</span>'
-        f'<span class="nav-copy">{i18n(bi("Development", "Development"))}</span>'
-        '<span aria-hidden="true" class="group-chevron"></span></button>'
-        f'<div class="nav-submenu">{global_links}</div>'
-        f'<div class="nav-submenu phase-navigation">{"".join(package_links)}</div></div>'
-    )
-    return "".join(navigation_items)
-
-
-def _glossary_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    output: list[dict[str, Any]] = []
-    for item in items:
-        label = txt(item["label"])
-        aliases = item.get("aliases")
-        if aliases is None:
-            aliases = {"en": [label["en"]], "id": [label["id"]]}
-        elif isinstance(aliases, list):
-            aliases = {"en": aliases, "id": aliases}
-        output.append(
-            {
-                "key": str(item["key"]),
-                "label": label,
-                "definition": txt(item["definition"]),
-                "aliases": aliases,
-            }
+    for package_index, package in enumerate(data["packages"], 1):
+        for role_suffix, role_label in (
+            ("requirement", bi("Gameplay Overview", "Gambaran Gameplay")),
+            ("level", bi("Level Design", "Level Design")),
+            ("developer", bi("Developer", "Developer")),
+        ):
+            links.append(
+                (
+                    f'dev-{package["id"]}-{role_suffix}',
+                    f"03{package_index}{'ABC'[('requirement', 'level', 'developer').index(role_suffix)]}",
+                    package["package_label"],
+                    role_label,
+                )
+            )
+    groups: list[str] = []
+    for target, index, label, small in links:
+        groups.append(
+            f'<a data-target="{esc(target)}" href="#{esc(target)}">'
+            f'<span class="nav-index">{esc(index)}</span>'
+            f'<span class="nav-copy"><strong>{i18n(label)}</strong>'
+            f'<small>{i18n(small)}</small></span></a>'
         )
-    return output
-
-
-def glossary(data: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
-    output: dict[str, list[dict[str, Any]]] = {}
-    opening_terms = data["gameplay_flow"][0].get("terms", [])
-    if opening_terms:
-        output["flow"] = _glossary_items(_dedupe_terms(opening_terms))
-
-    system_terms = _global_terms(data["global_development"])
-    if system_terms:
-        output["system"] = _glossary_items(system_terms)
-
-    for package in data["packages"]:
-        output[package["id"]] = _glossary_items(_dedupe_terms(package.get("terms", [])))
-    return output
+    return "".join(groups)
