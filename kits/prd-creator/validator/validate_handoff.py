@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Validate that Flow 5 is entering from the current accepted PRD handoff."""
+
 from __future__ import annotations
 
 import argparse
@@ -190,9 +191,7 @@ def validate(project: Path) -> dict[str, Any]:
     check(
         "handoff_status_ready",
         state.status == "handoff_ready",
-        "handoff_ready"
-        if state.status == "handoff_ready"
-        else f"status is {state.status!r}, expected 'handoff_ready'",
+        "handoff_ready" if state.status == "handoff_ready" else f"status is {state.status!r}, expected 'handoff_ready'",
         code="HANDOFF_STATUS_NOT_READY",
         path="state/handoff-state.yaml",
         field="status",
@@ -306,11 +305,7 @@ def validate(project: Path) -> dict[str, Any]:
                 resolve_project_path(project, refs["index"], must_exist=True).read_text(encoding="utf-8")
             )
             index_project = index_data.get("project") if isinstance(index_data, dict) else None
-            index_version = (
-                str(index_project.get("prd_version") or "").strip()
-                if isinstance(index_project, dict)
-                else ""
-            )
+            index_version = str(index_project.get("prd_version") or "").strip() if isinstance(index_project, dict) else ""
             if f"PRD Version: v{current_version}" not in context_text:
                 delivery_ok = False
                 delivery_details.append("context.md PRD version does not match current document.version")
