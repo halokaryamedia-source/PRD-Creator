@@ -14,11 +14,7 @@ class Issue:
     severity: str = "error"
 
     def as_dict(self) -> dict[str, object]:
-        return {
-            key: value
-            for key, value in asdict(self).items()
-            if value not in ("", None)
-        }
+        return {key: value for key, value in asdict(self).items() if value not in ("", None)}
 
     def __str__(self) -> str:
         location = self.path
