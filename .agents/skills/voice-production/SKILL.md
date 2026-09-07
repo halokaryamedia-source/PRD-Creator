@@ -75,7 +75,7 @@ Canonical Voice may be presented as `AUDIO` inside the matching 04 gameplay mome
 If Voice canonical meaning is correct but the 04 HTML is wrong:
 
 ```text
-→ kits/prd-creator/renderer/ production-assets compositor owner
+→ kits/prd-creator/renderer/production_assets_compositor.py
 ```
 
 Do not redefine Voice semantics merely to fit a presentation defect.
@@ -92,8 +92,11 @@ When semantics are correct:
 Voice-specific 04 parsing/presentation primitive defect
 → kits/prd-creator/renderer/ implementation owner
 
-Voice mechanical validator defect
-→ kits/prd-creator/AGENTS.md + validator/validate_voice.py
+Voice mechanical domain-validation defect
+→ kits/prd-creator/validator/voice_validation.py
+
+Voice CLI invocation/output defect
+→ kits/prd-creator/validator/validate_voice.py
 
 shared dependency/test/CI defect
 → repository engineering
