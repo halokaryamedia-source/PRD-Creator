@@ -61,9 +61,7 @@ class TemplateAdapter:
         for old_key, suffix in _REFERENCE_STORAGE_KEYS.items():
             source = source.replace(old_key, f"prd-{namespace}-{suffix}")
         if source.count(_REFERENCE_SPEC_MARKER) != 1:
-            raise ValueError(
-                "Approved Golden reference must contain exactly one retained specification marker"
-            )
+            raise ValueError("Approved Golden reference must contain exactly one retained specification marker")
         source = source.replace(_REFERENCE_SPEC_MARKER, runtime_token, 1)
         return cls(source)
 
