@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Run the canonical complete PRD validation pipeline."""
+
 from __future__ import annotations
 
 import argparse
