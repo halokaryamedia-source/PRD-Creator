@@ -18,6 +18,7 @@ on:
       - ".gitattributes"
       - ".github/CODEOWNERS"
       - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/**"
       - ".agents/skills/**"
       - "docs/foundation/**"
       - "docs/knowledge/README.md"
@@ -34,11 +35,12 @@ on:
       - "kits/prd-creator/README.md"
       - "kits/prd-creator/AGENTS.md"
       - "kits/prd-creator/SKILL.md"
-      - "kits/prd-creator/intake/SOURCE-INTAKE.md"
+      - "kits/prd-creator/intake/**"
       - "kits/prd-creator/document/**"
-      - "kits/prd-creator/production-assets/CONTRACT.md"
-      - "kits/prd-creator/renderer/CONTRACT.md"
+      - "kits/prd-creator/production-assets/**"
+      - "kits/prd-creator/renderer/**"
       - "kits/prd-creator/shared/**"
+      - "kits/prd-creator/validator/**"
       - "kits/prd-creator/voice/**"
       - "workspace/README.md"
       - "workspace/active/README.md"
@@ -47,9 +49,6 @@ on:
       - "requirements.lock.txt"
       - "requirements-dev.lock.txt"
       - "pyproject.toml"
-      - ".github/workflows/repository-verify.yml"
-      - ".github/workflows/local-promotion-verify.yml"
-      - ".github/workflows/release-verify.yml"
   workflow_dispatch:
 
 concurrency:
