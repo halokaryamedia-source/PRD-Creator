@@ -10,11 +10,15 @@ import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-if str(HERE) not in sys.path:
-    sys.path.insert(0, str(HERE))
-
-import prd_render_engine as engine
-import production_assets_compositor as production_assets
+KIT_ROOT = HERE.parent
+if __package__ in (None, ""):
+    if str(KIT_ROOT) not in sys.path:
+        sys.path.insert(0, str(KIT_ROOT))
+    from renderer import prd_render_engine as engine
+    from renderer import production_assets_compositor as production_assets
+else:
+    from . import prd_render_engine as engine
+    from . import production_assets_compositor as production_assets
 
 GOLDEN_SPEC_MARKER = "aftershock-v0.2"
 SAMPLE_META_NAMES = (
@@ -31,7 +35,7 @@ STORAGE_KEYS = {
 }
 
 
-def _prepare_golden_template(template: Path, render_data: Path) -> tuple[str, str]:
+def _prepare_golden_template(template: Path, render_data: Path) -> str:
     source = template.read_text(encoding="utf-8")
     data = json.loads(render_data.read_text(encoding="utf-8"))
     title = engine.txt(data.get("document", {}).get("title", ""))["en"]
@@ -46,12 +50,15 @@ def _prepare_golden_template(template: Path, render_data: Path) -> tuple[str, st
         )
     for old_key, suffix in STORAGE_KEYS.items():
         source = source.replace(old_key, f"prd-{namespace}-{suffix}")
-    return source, namespace
+    return source
 
 
 def _augment_production_assets(render_data: Path, output: Path) -> None:
-    voice_production = render_data.parent / "voice-production.md"
-    production_assets.augment_project_html(render_data, output, voice_production)
+    production_assets.augment_project_html(
+        render_data,
+        output,
+        render_data.parent / "voice-production.md",
+    )
 
 
 def render(template: Path, render_data: Path, output: Path) -> None:
@@ -61,7 +68,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         _augment_production_assets(render_data, output)
         return
 
-    prepared, _namespace = _prepare_golden_template(template, render_data)
+    prepared = _prepare_golden_template(template, render_data)
     if prepared.count(GOLDEN_SPEC_MARKER) != 1:
         raise ValueError("Approved Golden template must contain exactly one canonical specification marker")
     prepared = prepared.replace(GOLDEN_SPEC_MARKER, engine.STORAGE_PREFIX_TOKEN, 1)
@@ -73,7 +80,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
 
 def main() -> int:
-    default_template = HERE.parent / "template" / "runtime-template.html"
+    default_template = KIT_ROOT / "template" / "runtime-template.html"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("render_data", type=Path)
     parser.add_argument("output", type=Path)
@@ -89,7 +96,6 @@ def main() -> int:
 
 
 validate = engine.validate
-apply_result_summaries = engine.apply_result_summaries
 
 
 if __name__ == "__main__":
