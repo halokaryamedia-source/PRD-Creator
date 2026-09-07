@@ -63,17 +63,18 @@ The public repository owns workspace guidance, not live project-package contents
 
 | Boundary | Owner |
 |---|---|
-| duplicate-safe YAML loading | `kits/prd-creator/shared/state.py` |
+| duplicate-safe YAML loading + YAML source-line diagnostics | `kits/prd-creator/shared/state.py` |
 | strict Flow 2 source/requirement/intake state + approval hash | `kits/prd-creator/shared/intake.py` |
 | normalized project-relative path safety | `kits/prd-creator/shared/paths.py` |
 | strict handoff-state shape | `kits/prd-creator/shared/handoff.py` |
 | strict Voice lifecycle-state shape | `kits/prd-creator/shared/lifecycle.py` |
 | canonical render-data whitelist schema | `kits/prd-creator/shared/render_schema.py` |
-| bilingual presence + invariant-token parity | `kits/prd-creator/shared/localization.py` |
+| bilingual presence + numeric/unit/dimension/coordinate/negation parity | `kits/prd-creator/shared/localization.py` |
 | stable non-Voice 04 parsing (`Owner → Moment → AST`) | `kits/prd-creator/shared/assets.py` |
 | stable Voice requirement/production parsing (`Owner → Moment → VO`) | `kits/prd-creator/shared/voice.py` |
 | canonical PRD owner topology | `kits/prd-creator/shared/topology.py` |
 | structured machine issues/source diagnostics | `kits/prd-creator/shared/issues.py` |
+| shared acceptance-field and exact-SHA parsing primitives | `kits/prd-creator/shared/acceptance.py` |
 
 These modules centralize machine behavior only. They never outrank canonical project sources.
 
@@ -87,7 +88,7 @@ These modules centralize machine behavior only. They never outrank canonical pro
 | renderer CLI / orchestration | `kits/prd-creator/renderer/render.py` |
 | lower-level deterministic PRD engine | `kits/prd-creator/renderer/prd_render_engine.py` |
 | reusable HTML primitives | `kits/prd-creator/renderer/core.py` |
-| sole Golden-shell mutation/reference adapter | `kits/prd-creator/renderer/template_adapter.py` |
+| sole Golden-shell mutation/reference adapter, including additive 04 injection | `kits/prd-creator/renderer/template_adapter.py` |
 | stable Owner/Moment/Resource 04 composition | `kits/prd-creator/renderer/production_assets_compositor.py` |
 | Voice presentation formatting | `kits/prd-creator/renderer/production_assets.py` |
 | 04 static presentation resources | `kits/prd-creator/renderer/static/` |
@@ -100,11 +101,13 @@ Reference-project/Golden compatibility vocabulary belongs only in `TemplateAdapt
 
 | Boundary | Owner |
 |---|---|
-| lower-level PRD mechanical checks | `kits/prd-creator/validator/prd_validation_engine.py` |
+| PRD source/projection validation orchestration | `kits/prd-creator/validator/prd_validation_engine.py` |
+| derived PRD HTML freshness/composition/navigation contract | `kits/prd-creator/validator/html_contract.py` |
 | one canonical complete PRD validation API | `kits/prd-creator/validator/api.py` |
 | PRD validation CLI | `kits/prd-creator/validator/validate.py` |
 | PRD → Voice handoff + exact render/asset acceptance bindings | `kits/prd-creator/validator/validate_handoff.py` |
-| Flow 5–7 lifecycle / exact Voice source and acceptance validation | `kits/prd-creator/validator/validate_voice.py` |
+| Flow 5–7 lifecycle / exact Voice source and acceptance domain validation | `kits/prd-creator/validator/voice_validation.py` |
+| Voice validation CLI / public entrypoint | `kits/prd-creator/validator/validate_voice.py` |
 | PRD regressions | `tests/test_prd_*` |
 | Voice regressions | `tests/test_voice_contracts.py` |
 
@@ -120,7 +123,7 @@ Paths below are relative to an authorized project package.
 | recovered/approved requirements | `state/requirement-register.yaml` |
 | Flow 2 status + exact approved requirement SHA | `state/intake-state.yaml` |
 | canonical PRD-core meaning | `work/content.md` |
-| strict derived PRD projection + exact content SHA | `work/render-data.json` |
+| strict derived PRD projection + exact Flow 2/content SHA bindings | `work/render-data.json` |
 | canonical non-Voice 04 `Owner → Moment → AST` resources | `work/asset-requirements.md` |
 | PRD/04 acceptance + exact render-data/asset SHA bindings | `work/acceptance.md` |
 | PRD handoff refs/status | `state/handoff-state.yaml` |
