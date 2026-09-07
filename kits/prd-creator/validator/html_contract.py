@@ -103,13 +103,13 @@ def text_en(value: Any) -> str:
 
 
 def _global_page_id(item: dict[str, Any]) -> str:
-    return GOLDEN_GLOBAL_PAGE_IDS.get(item.get("id"), f'global-{item.get("id", "section")}')
+    return GOLDEN_GLOBAL_PAGE_IDS.get(item.get("id"), f"global-{item.get('id', 'section')}")
 
 
 def expected_page_ids(data: dict[str, Any]) -> list[str]:
     ids = ["summary"]
     for index, item in enumerate(data.get("gameplay_flow", [])):
-        ids.append("flow-start" if index == 0 else f'flow-{item["id"]}')
+        ids.append("flow-start" if index == 0 else f"flow-{item['id']}")
     ids += [_global_page_id(item) for item in data.get("global_development", [])]
     for package in data.get("packages", []):
         package_id = package["id"]
@@ -132,7 +132,7 @@ def document_composition_errors(data: dict[str, Any], facts: HtmlFacts) -> list[
             failures.append(f"{section_id} missing {missing}")
 
     for index, item in enumerate(data.get("gameplay_flow", [])):
-        section_id = "flow-start" if index == 0 else f'flow-{item["id"]}'
+        section_id = "flow-start" if index == 0 else f"flow-{item['id']}"
         required = {"clean-visible", "story-page", "story-flow"}
         source_terms = item.get("terms", []) if index == 0 else packages.get(item["id"], {}).get("terms", [])
         if source_terms:
@@ -224,11 +224,7 @@ def validate_html_contract(
 
     actual_render_data_sha = hashlib.sha256(data_path.read_bytes()).hexdigest()
     bindings = facts.render_data_sha256
-    binding_ok = (
-        len(bindings) == 1
-        and SHA256_RE.fullmatch(bindings[0]) is not None
-        and bindings[0] == actual_render_data_sha
-    )
+    binding_ok = len(bindings) == 1 and SHA256_RE.fullmatch(bindings[0]) is not None and bindings[0] == actual_render_data_sha
     if not bindings:
         detail = "rendered HTML is missing render-data-sha256 revision binding"
     elif len(bindings) != 1:
@@ -244,9 +240,7 @@ def validate_html_contract(
             "html_matches_current_render_data",
             binding_ok,
             detail,
-            None
-            if binding_ok
-            else Issue("PRD_HTML_RENDER_SHA_STALE", "flow3.renderer", detail, path=relative_html),
+            None if binding_ok else Issue("PRD_HTML_RENDER_SHA_STALE", "flow3.renderer", detail, path=relative_html),
         )
     )
 
@@ -358,9 +352,7 @@ def validate_html_contract(
             "browser_title_matches_project",
             title_ok,
             title_detail,
-            None
-            if title_ok
-            else Issue("PRD_HTML_TITLE_MISMATCH", "flow3.renderer", title_detail, path=relative_html),
+            None if title_ok else Issue("PRD_HTML_TITLE_MISMATCH", "flow3.renderer", title_detail, path=relative_html),
         )
     )
     return HtmlContractResult(tuple(checks), tuple(expected))
