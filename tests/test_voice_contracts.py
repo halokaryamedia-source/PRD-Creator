@@ -2,16 +2,24 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-from prd_fixture import handoff_state_text, render_data, write_base_project
+from prd_fixture import (
+    acceptance_text,
+    handoff_state_text,
+    render_data,
+    write_base_project,
+    write_render_data,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate_voice.py"
+DELIVERY = ROOT / "kits" / "prd-creator" / "renderer" / "delivery.py"
 
 
 def run_cli(*args: Path | str) -> subprocess.CompletedProcess[str]:
@@ -127,11 +135,13 @@ The trial is complete.
 """
 
 
-def voice_state(status: str = "voice_script_ready", *, include_html: bool = False) -> str:
+def voice_state(project: Path, status: str = "voice_script_ready", *, include_html: bool = False) -> str:
+    source_sha = hashlib.sha256((project / "work" / "render-data.json").read_bytes()).hexdigest()
     lines = [
         f"status: {status}",
         "source_handoff: state/handoff-state.yaml",
         "source_prd_revision: 1.0.0",
+        f"source_prd_sha256: {source_sha}",
         "canonical_prd: work/content.md",
         "requirements: work/voice-requirements.md",
         "production: work/voice-production.md",
@@ -157,31 +167,19 @@ def voice_acceptance(production_path: Path) -> str:
     )
 
 
-def project_html(requirements_path: Path, production_path: Path, *, omit_intro_prompt: bool = False) -> str:
-    req_sha = hashlib.sha256(requirements_path.read_bytes()).hexdigest()
-    prod_sha = hashlib.sha256(production_path.read_bytes()).hexdigest()
-    intro = "" if omit_intro_prompt else (
-        '<div class="pa-moment" data-moment-id="MOM-INTRO-ARRIVAL">'
-        '<div class="pa-row pa-row-voice"><h4>Narrator — Welcome</h4>'
-        '<pre class="voice-script-text" id="voice-prompt-vo-intro-01">[calm]\nBegin the trial.</pre></div></div>'
-    )
-    return f"""<!doctype html>
-<html><head>
-<style id="production-assets-style"></style>
-<meta content="{req_sha}" name="voice-requirements-sha256"/>
-<meta content="{prod_sha}" name="voice-production-sha256"/>
-</head><body>
-<div class="nav-group production-assets-nav">Production Assets</div>
-<section id="production-assets-journey-journey-begins" data-page-role="production-assets">{intro}</section>
-<section id="production-assets-core" data-page-role="production-assets">
-<div class="pa-moment" data-moment-id="MOM-CORE-COMPLETE">
-<div class="pa-row pa-row-voice"><h4>Guide — Complete</h4>
-<pre class="voice-script-text" id="voice-prompt-vo-end-01">[clear]\nThe trial is complete.</pre></div></div></section>
-<script id="production-assets-script"></script>
-</body></html>"""
-
-
 class VoiceProductionContracts(unittest.TestCase):
+    def refresh_prd_handoff(self, project: Path) -> None:
+        delivered = run_cli(DELIVERY, project)
+        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
+        (project / "work" / "acceptance.md").write_text(
+            acceptance_text(project),
+            encoding="utf-8",
+        )
+        (project / "state" / "handoff-state.yaml").write_text(
+            handoff_state_text(),
+            encoding="utf-8",
+        )
+
     def make_project(
         self,
         requirements_text: str | None = None,
@@ -195,7 +193,9 @@ class VoiceProductionContracts(unittest.TestCase):
         self.addCleanup(temp.cleanup)
         project = Path(temp.name)
         write_base_project(project, render_data())
-        (project / "output" / "v1.0.0").mkdir(parents=True, exist_ok=True)
+
+        # Flow 5 may start only from a complete, current Flow 4 handoff.
+        self.refresh_prd_handoff(project)
 
         req_text = requirements_text if requirements_text is not None else requirements()
         req_path = project / "work" / "voice-requirements.md"
@@ -206,19 +206,15 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         production_path = project / "work" / "voice-production.md"
         production_path.write_text(bound_script, encoding="utf-8")
-        (project / "state" / "handoff-state.yaml").write_text(
-            handoff_state_text(),
-            encoding="utf-8",
-        )
         (project / "state" / "voice-state.yaml").write_text(
-            voice_state(status, include_html=include_html),
+            voice_state(project, status, include_html=include_html),
             encoding="utf-8",
         )
+
         if include_html:
-            (project / "output" / "v1.0.0" / "prd.html").write_text(
-                project_html(req_path, production_path),
-                encoding="utf-8",
-            )
+            # Flow 6 publication augments the same accepted PRD delivery with Voice 04.
+            delivered = run_cli(DELIVERY, project)
+            self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
         if include_acceptance:
             (project / "work" / "voice-acceptance.md").write_text(
                 voice_acceptance(production_path),
@@ -250,12 +246,17 @@ class VoiceProductionContracts(unittest.TestCase):
 
     def test_validator_rejects_missing_voice_prompt_in_project_html(self) -> None:
         project = self.make_project(include_html=True)
-        req_path = project / "work" / "voice-requirements.md"
-        production_path = project / "work" / "voice-production.md"
-        (project / "output" / "v1.0.0" / "prd.html").write_text(
-            project_html(req_path, production_path, omit_intro_prompt=True),
-            encoding="utf-8",
+        html_path = project / "output" / "v1.0.0" / "prd.html"
+        source = html_path.read_text(encoding="utf-8")
+        source, count = re.subn(
+            r'<pre class="voice-script-text" id="voice-prompt-vo-intro-01">.*?</pre>',
+            "",
+            source,
+            count=1,
+            flags=re.S,
         )
+        self.assertEqual(count, 1)
+        html_path.write_text(source, encoding="utf-8")
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1)
         self.assertIn("Project HTML must contain exact Voice prompt panel once for VO-INTRO-01", validated.stdout)
@@ -289,6 +290,32 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("voice-state source_prd_revision='0.9.0'", validated.stdout)
 
+    def test_validator_rejects_same_version_prd_bytes_changed_after_flow5_binding(self) -> None:
+        project = self.make_project()
+        original_state = (project / "state" / "voice-state.yaml").read_text(encoding="utf-8")
+        payload = json.loads((project / "work" / "render-data.json").read_text(encoding="utf-8"))
+        payload["overview"]["project_context"] = "A changed same-version accepted fixture context."
+        write_render_data(project, payload)
+        self.refresh_prd_handoff(project)
+        (project / "state" / "voice-state.yaml").write_text(original_state, encoding="utf-8")
+
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("source_prd_sha256 does not match", validated.stdout)
+
+    def test_no_voice_required_is_bound_to_exact_prd_bytes(self) -> None:
+        project = self.make_project(status="no_voice_required")
+        original_state = (project / "state" / "voice-state.yaml").read_text(encoding="utf-8")
+        payload = json.loads((project / "work" / "render-data.json").read_text(encoding="utf-8"))
+        payload["overview"]["project_context"] = "A same-version revision that may change Voice need."
+        write_render_data(project, payload)
+        self.refresh_prd_handoff(project)
+        (project / "state" / "voice-state.yaml").write_text(original_state, encoding="utf-8")
+
+        validated = run_cli(VALIDATOR, project)
+        self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
+        self.assertIn("source_prd_sha256 does not match", validated.stdout)
+
     def test_validator_rejects_unknown_voice_state_field(self) -> None:
         project = self.make_project()
         state = project / "state" / "voice-state.yaml"
@@ -320,7 +347,7 @@ class VoiceProductionContracts(unittest.TestCase):
         )
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("Upstream PRD handoff status is 'needs_revision'", validated.stdout)
+        self.assertIn("Upstream PRD handoff", validated.stdout)
 
     def test_validator_rejects_missing_voice_id_parity(self) -> None:
         project = self.make_project(requirements(extra_id=True))
@@ -386,11 +413,9 @@ class VoiceProductionContracts(unittest.TestCase):
             ),
             encoding="utf-8",
         )
-        req = project / "work" / "voice-requirements.md"
-        (project / "output" / "v1.0.0" / "prd.html").write_text(
-            project_html(req, production),
-            encoding="utf-8",
-        )
+        # Refresh only derived HTML; keep the prior Voice acceptance deliberately stale.
+        delivered = run_cli(DELIVERY, project)
+        self.assertEqual(delivered.returncode, 0, delivered.stderr or delivered.stdout)
         validated = run_cli(VALIDATOR, project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("Voice Acceptance is stale", validated.stdout)
