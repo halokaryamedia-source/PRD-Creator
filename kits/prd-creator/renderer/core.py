@@ -130,7 +130,9 @@ def sequence(items: list[dict[str, Any]]) -> str:
 def note_grid(items: list[dict[str, Any]]) -> str:
     if not items:
         return ""
-    body = "".join(f"<article><b>{i18n(item['title'])}</b><p>{i18n(item['description'])}</p></article>" for item in items)
+    body = "".join(
+        f"<article><b>{i18n(item['title'])}</b><p>{i18n(item['description'])}</p></article>" for item in items
+    )
     return f'<div class="outcome quarry-note-grid">{body}</div>'
 
 
