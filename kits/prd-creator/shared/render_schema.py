@@ -7,64 +7,80 @@ class ProjectionError(ValueError):
     """Raised when render-data does not match the canonical projection schema."""
 
 
-RETIRED_ALIASES = {
-    "map_type",
-    "display_title",
-    "context_label",
-    "group_title",
-    "objects",
-    "requirement",
-    "requirements",
-    "expected_result",
-    "gameplay_function",
-    "game_purpose",
-    "estimated_time",
-    "duration",
-    "scoring_summary",
-    "size",
-    "dimensions",
-    "number",
-    "build_and_visual",
-    "term",
-    "stage",
-    "trigger",
-    "behavior",
-    "note",
-}
-
-
 def validate_projection_schema(data: dict[str, Any]) -> None:
-    """Reject ambiguity before deterministic rendering.
+    """Validate the one supported render-data field shape.
 
-    The projection contract intentionally chooses one key per semantic meaning. This
-    function is not a full semantic validator; it prevents compatibility aliases and
-    renderer-side inference from becoming an accidental second schema.
+    This is intentionally narrower than the historical renderer helpers. A valid
+    projection must already contain the meaning needed by presentation; renderer-side
+    alias recovery or cross-role semantic synthesis is not part of the contract.
     """
 
     if not isinstance(data, dict):
         raise ProjectionError("render-data root must be an object")
-    _reject_aliases(data, "render_data")
 
     document = _mapping(data, "document", "render_data")
-    _required(document, "title", "document")
-    _required(document, "document_type", "document")
-    _required(document, "version", "document")
+    _reject_keys(document, {"map_type"}, "document")
+    for field in ("title", "document_type", "version"):
+        _required(document, field, "document")
 
     overview = _mapping(data, "overview", "render_data")
     for field in ("project_context", "main_experience", "document_scope", "intended_use"):
         _required(overview, field, "overview")
-    _list(data, "gameplay_flow", "render_data", nonempty=True)
-    _list(data, "global_development", "render_data", nonempty=True)
-    packages = _list(data, "packages", "render_data", nonempty=True)
+    facts = _list(overview, "facts", "overview", nonempty=True)
+    for index, fact in enumerate(facts):
+        current = _as_mapping(fact, f"overview.facts[{index}]")
+        for field in ("key", "label", "value"):
+            _required(current, field, f"overview.facts[{index}]")
+    _validate_simple_flow(_list(overview, "journey", "overview", nonempty=True), "overview.journey")
+    systems = _list(overview, "main_systems", "overview", nonempty=True)
+    _validate_title_description_items(systems, "overview.main_systems")
 
+    gameplay_flow = _list(data, "gameplay_flow", "render_data", nonempty=True)
+    for index, flow in enumerate(gameplay_flow):
+        current = _as_mapping(flow, f"gameplay_flow[{index}]")
+        _reject_keys(current, {"display_title", "context_label"}, f"gameplay_flow[{index}]")
+        for field in ("id", "title", "narrative_context", "next_destination"):
+            _required(current, field, f"gameplay_flow[{index}]")
+        beats = _list(current, "beats", f"gameplay_flow[{index}]", nonempty=True)
+        _validate_title_description_items(beats, f"gameplay_flow[{index}].beats")
+        _validate_terms(current.get("terms", []), f"gameplay_flow[{index}].terms")
+
+    global_development = _list(data, "global_development", "render_data", nonempty=True)
+    for index, section in enumerate(global_development):
+        current = _as_mapping(section, f"global_development[{index}]")
+        for field in ("id", "title", "overview"):
+            _required(current, field, f"global_development[{index}]")
+        _validate_simple_flow(
+            _list(current, "flow", f"global_development[{index}]", nonempty=True),
+            f"global_development[{index}].flow",
+        )
+        _validate_requirement_groups(
+            _list(current, "requirements", f"global_development[{index}]", nonempty=True),
+            f"global_development[{index}].requirements",
+            kind="development",
+        )
+        _validate_notes(current.get("notes", []), f"global_development[{index}].notes")
+        _validate_terms(current.get("terms", []), f"global_development[{index}].terms")
+
+    packages = _list(data, "packages", "render_data", nonempty=True)
+    seen_ids: set[str] = set()
     for package_index, package in enumerate(packages):
-        if not isinstance(package, dict):
-            raise ProjectionError(f"packages[{package_index}] must be an object")
+        current = _as_mapping(package, f"packages[{package_index}]")
         context = f"packages[{package_index}]"
-        _required(package, "id", context)
-        _required(package, "title", context)
-        _required(package, "package_label", context)
-        gameplay = _mapping(package, "gameplay", context)
+        for field in ("id", "title", "package_label"):
+            _required(current, field, context)
+        package_id = str(current["id"])
+        if package_id in seen_ids:
+            raise ProjectionError(f"duplicate package id: {package_id}")
+        seen_ids.add(package_id)
+        _list(current, "acceptance", context, nonempty=True)
+
+        gameplay = _mapping(current, "gameplay", context)
+        _reject_keys(
+            gameplay,
+            {"overview", "game_purpose", "estimated_time", "duration", "scoring_summary"},
+            f"{context}.gameplay",
+        )
         for field in (
             "context",
             "main_objective",
@@ -77,69 +93,138 @@ def validate_projection_schema(data: dict[str, Any]) -> None:
             "scoring_criteria",
         ):
             _required(gameplay, field, f"{context}.gameplay")
-        _list(gameplay, "player_flow", f"{context}.gameplay", nonempty=True)
+        _validate_player_flow(
+            _list(gameplay, "player_flow", f"{context}.gameplay", nonempty=True),
+            f"{context}.gameplay.player_flow",
+        )
 
-        level = _mapping(package, "level_design", context)
+        level = _mapping(current, "level_design", context)
         _required(level, "overview", f"{context}.level_design")
-        _list(level, "flow", f"{context}.level_design", nonempty=True)
-        _list(level, "requirements", f"{context}.level_design", nonempty=True)
+        _validate_simple_flow(
+            _list(level, "flow", f"{context}.level_design", nonempty=True),
+            f"{context}.level_design.flow",
+        )
+        _validate_requirement_groups(
+            _list(level, "requirements", f"{context}.level_design", nonempty=True),
+            f"{context}.level_design.requirements",
+            kind="level",
+        )
+        _validate_notes(level.get("notes", []), f"{context}.level_design.notes")
 
-        developer = _mapping(package, "developer", context)
+        developer = _mapping(current, "developer", context)
         _required(developer, "overview", f"{context}.developer")
-        _list(developer, "flow", f"{context}.developer", nonempty=True)
-        _list(developer, "requirements", f"{context}.developer", nonempty=True)
+        _validate_simple_flow(
+            _list(developer, "flow", f"{context}.developer", nonempty=True),
+            f"{context}.developer.flow",
+        )
+        _validate_requirement_groups(
+            _list(developer, "requirements", f"{context}.developer", nonempty=True),
+            f"{context}.developer.requirements",
+            kind="development",
+        )
         _required(developer, "reset", f"{context}.developer")
         _required(developer, "reset_result", f"{context}.developer")
+        _validate_notes(developer.get("notes", []), f"{context}.developer.notes")
 
-    _validate_requirement_shape(data)
-
-
-def _validate_requirement_shape(data: dict[str, Any]) -> None:
-    for section_index, section in enumerate(data.get("global_development", [])):
-        if not isinstance(section, dict):
-            continue
-        _validate_groups(section.get("requirements"), f"global_development[{section_index}].requirements", "title")
-    for package_index, package in enumerate(data.get("packages", [])):
-        if not isinstance(package, dict):
-            continue
-        level = package.get("level_design")
-        if isinstance(level, dict):
-            _validate_groups(level.get("requirements"), f"packages[{package_index}].level_design.requirements", "object")
-        developer = package.get("developer")
-        if isinstance(developer, dict):
-            _validate_groups(developer.get("requirements"), f"packages[{package_index}].developer.requirements", "title")
+        _validate_terms(current.get("terms", []), f"{context}.terms")
 
 
-def _validate_groups(value: Any, context: str, item_title_key: str) -> None:
+def _validate_simple_flow(items: list[Any], context: str) -> None:
+    for index, item in enumerate(items):
+        current = _as_mapping(item, f"{context}[{index}]")
+        _reject_keys(current, {"stage", "trigger", "details", "action", "behavior"}, f"{context}[{index}]")
+        for field in ("title", "description"):
+            _required(current, field, f"{context}[{index}]")
+
+
+def _validate_player_flow(items: list[Any], context: str) -> None:
+    for index, item in enumerate(items):
+        current = _as_mapping(item, f"{context}[{index}]")
+        _reject_keys(current, {"stage", "description", "details", "behavior"}, f"{context}[{index}]")
+        for field in ("title", "action", "result"):
+            _required(current, field, f"{context}[{index}]")
+
+
+def _validate_title_description_items(items: list[Any], context: str) -> None:
+    for index, item in enumerate(items):
+        current = _as_mapping(item, f"{context}[{index}]")
+        _reject_keys(current, {"label", "details", "note"}, f"{context}[{index}]")
+        for field in ("title", "description"):
+            _required(current, field, f"{context}[{index}]")
+
+
+def _validate_notes(value: Any, context: str) -> None:
+    if value in (None, []):
+        return
     if not isinstance(value, list):
         raise ProjectionError(f"{context} must be an array")
+    _validate_title_description_items(value, context)
+
+
+def _validate_requirement_groups(value: list[Any], context: str, *, kind: str) -> None:
     for group_index, group in enumerate(value):
-        if not isinstance(group, dict):
-            raise ProjectionError(f"{context}[{group_index}] must be an object")
-        _required(group, "title", f"{context}[{group_index}]")
-        items = _list(group, "items", f"{context}[{group_index}]", nonempty=True)
+        current_group = _as_mapping(group, f"{context}[{group_index}]")
+        _reject_keys(current_group, {"group_title", "objects"}, f"{context}[{group_index}]")
+        _required(current_group, "title", f"{context}[{group_index}]")
+        items = _list(current_group, "items", f"{context}[{group_index}]", nonempty=True)
         for item_index, item in enumerate(items):
-            if not isinstance(item, dict):
-                raise ProjectionError(f"{context}[{group_index}].items[{item_index}] must be an object")
+            current = _as_mapping(item, f"{context}[{group_index}].items[{item_index}]")
             item_context = f"{context}[{group_index}].items[{item_index}]"
-            _required(item, item_title_key, item_context)
-            if item_title_key == "object":
-                for field in ("area_size", "build_and_visual_requirements", "gameplay_function"):
-                    _required(item, field, item_context)
+            if kind == "level":
+                _reject_keys(
+                    current,
+                    {"title", "size", "dimensions", "requirements", "details", "result"},
+                    item_context,
+                )
+                for field in ("object", "area_size", "build_and_visual", "gameplay_function"):
+                    _required(current, field, item_context)
+                children = current.get("children", [])
+                if children:
+                    if not isinstance(children, list):
+                        raise ProjectionError(f"{item_context}.children must be an array")
+                    for child_index, child in enumerate(children):
+                        child_map = _as_mapping(child, f"{item_context}.children[{child_index}]")
+                        _reject_keys(
+                            child_map,
+                            {"title", "size", "requirements", "details", "result"},
+                            f"{item_context}.children[{child_index}]",
+                        )
+                        for field in ("object", "area_size", "build_and_visual", "gameplay_function"):
+                            _required(child_map, field, f"{item_context}.children[{child_index}]")
             else:
-                for field in ("details", "result"):
-                    _required(item, field, item_context)
+                _reject_keys(
+                    current,
+                    {"requirement", "requirements", "expected_result", "gameplay_function", "object"},
+                    item_context,
+                )
+                for field in ("title", "details", "result"):
+                    _required(current, field, item_context)
 
 
-def _reject_aliases(value: Any, path: str) -> None:
-    if isinstance(value, dict):
-        for key, child in value.items():
-            if key in RETIRED_ALIASES:
-                raise ProjectionError(f"{path}.{key} is a retired projection alias; use the canonical schema field")
-            _reject_aliases(child, f"{path}.{key}")
-    elif isinstance(value, list):
-        for index, child in enumerate(value):
-            _reject_aliases(child, f"{path}[{index}]")
+def _validate_terms(value: Any, context: str) -> None:
+    if value in (None, []):
+        return
+    if not isinstance(value, list):
+        raise ProjectionError(f"{context} must be an array")
+    for index, item in enumerate(value):
+        current = _as_mapping(item, f"{context}[{index}]")
+        _reject_keys(current, {"term"}, f"{context}[{index}]")
+        for field in ("key", "label", "definition"):
+            _required(current, field, f"{context}[{index}]")
+
+
+def _reject_keys(container: dict[str, Any], keys: set[str], context: str) -> None:
+    found = sorted(keys & set(container))
+    if found:
+        raise ProjectionError(
+            f"{context} uses retired projection field(s) {found}; use the canonical field shape"
+        )
+
+
+def _as_mapping(value: Any, context: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise ProjectionError(f"{context} must be an object")
+    return value
 
 
 def _mapping(container: dict[str, Any], key: str, context: str) -> dict[str, Any]:
