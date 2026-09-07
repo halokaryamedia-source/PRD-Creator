@@ -8,6 +8,7 @@ class ProjectionError(ValueError):
 
 
 TOP_LEVEL_FIELDS = {
+    "approved_requirement_sha256",
     "canonical_content_sha256",
     "document",
     "overview",
@@ -94,6 +95,7 @@ def validate_projection_schema(data: dict[str, Any]) -> None:
     if not isinstance(data, dict):
         raise ProjectionError("render-data root must be an object")
     _allow_only(data, TOP_LEVEL_FIELDS, "render_data")
+    _required_sha(data, "approved_requirement_sha256", "render_data")
     _required_sha(data, "canonical_content_sha256", "render_data")
 
     document = _mapping(data, "document", "render_data")
