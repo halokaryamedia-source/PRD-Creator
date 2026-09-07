@@ -24,7 +24,7 @@ sources
 → Simple Chat Preview
 → exact requirement-revision approval
 → canonical content.md
-→ strict render-data projection + content SHA
+→ strict render-data projection + approved-requirement SHA + content SHA
 → deterministic PRD core
 → non-Voice 04 when required
 → exact-byte PRD/04 acceptance + handoff
@@ -52,6 +52,7 @@ Flow 2 approval
 requirement-register bytes → approved_requirement_sha256
 
 PRD projection
+approved Flow 2 requirement SHA → render-data.approved_requirement_sha256
 content.md bytes → render-data.canonical_content_sha256
 
 PRD acceptance
@@ -86,6 +87,7 @@ kits/prd-creator/
 │  ├─ state.py
 │  ├─ paths.py
 │  ├─ handoff.py
+│  ├─ acceptance.py
 │  ├─ render_schema.py
 │  ├─ localization.py
 │  ├─ assets.py
@@ -97,6 +99,12 @@ kits/prd-creator/
 │  ├─ template_adapter.py
 │  └─ static/
 ├─ validator/
+│  ├─ prd_validation_engine.py
+│  ├─ html_contract.py
+│  ├─ voice_validation.py
+│  ├─ validate.py
+│  ├─ validate_handoff.py
+│  └─ validate_voice.py
 └─ template/
 ```
 
@@ -116,14 +124,24 @@ kits/prd-creator/
 
 Do not create parallel schemas or generic registries for these owners.
 
+## Implementation boundaries
+
+- `shared/acceptance.py` owns reusable acceptance label/SHA parsing primitives; semantic acceptance meaning remains with Flow 4/7 owners.
+- `validator/prd_validation_engine.py` orchestrates PRD source/projection/business checks.
+- `validator/html_contract.py` owns derived HTML freshness/composition/navigation checks.
+- `validator/voice_validation.py` owns Flow 5–7 mechanical domain validation.
+- `validator/validate_voice.py` is only the Voice CLI/public entrypoint.
+
 ## Renderer boundaries
 
 - `render-data.json` accepts one field vocabulary; unknown/legacy keys fail.
+- Projection binds both the exact approved Flow 2 requirement revision and exact current `content.md` bytes.
 - Gameplay result mode is explicit: `scored | completion_only`.
 - Renderer never infers missing semantic meaning from another role.
-- `TemplateAdapter` is the only owner of Golden shell mutation/reference compatibility.
+- `TemplateAdapter` is the only owner of Golden shell mutation/reference compatibility, including additive 04 insertion.
 - Production Assets CSS/JS live in `renderer/static/` and are inlined at render time.
 - 04 joins only through stable Owner/Moment/Resource identity.
+- Preparation Mode may show pending Voice selection; `voice_delivery_ready` may not render unresolved cast selection/profile.
 - Delivery publishes complete version directories transactionally with rollback.
 
 ## Model behavior
@@ -152,7 +170,7 @@ output/v<document.version>/index.json
 
 - Golden reference/runtime bytes stay protected and byte-identical unless an explicit design-contract change is approved.
 - Adaptive cardinality is allowed only inside approved component families.
-- Machine YAML uses the shared duplicate-safe YAML loader.
+- Machine YAML uses the shared duplicate-safe YAML loader and reports parse-line location when available.
 - Generic `_engine.py` imports and title-based machine joins are retired.
 - Browser visual PASS requires browser evidence.
 - Generated-audio quality requires audio evidence.
