@@ -85,6 +85,7 @@ REQUIRED_PATHS = [
     "kits/prd-creator/shared/intake.py",
     "kits/prd-creator/shared/paths.py",
     "kits/prd-creator/shared/handoff.py",
+    "kits/prd-creator/shared/acceptance.py",
     "kits/prd-creator/shared/lifecycle.py",
     "kits/prd-creator/shared/render_schema.py",
     "kits/prd-creator/shared/localization.py",
@@ -102,6 +103,8 @@ REQUIRED_PATHS = [
     "kits/prd-creator/validator/__init__.py",
     "kits/prd-creator/validator/api.py",
     "kits/prd-creator/validator/prd_validation_engine.py",
+    "kits/prd-creator/validator/html_contract.py",
+    "kits/prd-creator/validator/voice_validation.py",
     "kits/prd-creator/validator/validate.py",
     "kits/prd-creator/validator/validate_handoff.py",
     "kits/prd-creator/validator/validate_voice.py",
@@ -177,6 +180,9 @@ LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s=]+)$")
 SKILL_VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
 README_VERSION_RE = re.compile(r"(?m)^\*\*Version:\*\*\s*([^\s]+)\s*$")
+CURRENT_VALIDATION_VERSION_RE = re.compile(
+    r"PRD Creator package (?:candidate is|remains) \*\*v([^*]+)\*\*"
+)
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -332,7 +338,10 @@ def check_current_delivery_routing(errors: list[str]) -> None:
         required_markers = (
             "kits/prd-creator/renderer/delivery.py",
             "kits/prd-creator/renderer/template_adapter.py",
+            "kits/prd-creator/shared/acceptance.py",
             "kits/prd-creator/shared/render_schema.py",
+            "kits/prd-creator/validator/html_contract.py",
+            "kits/prd-creator/validator/voice_validation.py",
             "kits/prd-creator/validator/validate_voice.py",
             "output/README.md",
             "output/v<document.version>/prd.html",
@@ -374,10 +383,12 @@ def check_current_delivery_routing(errors: list[str]) -> None:
 
         if skill_path.is_file():
             version_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
-            if version_match:
-                expected = f"PRD Creator package remains **v{version_match.group(1)}**"
-                if expected not in text:
-                    fail(errors, "current-validation.md PRD Creator version does not match current SKILL version")
+            current_validation_match = CURRENT_VALIDATION_VERSION_RE.search(text)
+            if version_match and (
+                not current_validation_match
+                or current_validation_match.group(1) != version_match.group(1)
+            ):
+                fail(errors, "current-validation.md PRD Creator version does not match current SKILL version")
 
     voice_docs = [
         ROOT / "docs" / "foundation" / "06-elevenlabs-script-production.md",
@@ -546,7 +557,7 @@ def main() -> int:
     print("- active production kit: prd-creator")
     print(f"- markdown files checked: {len(iter_markdown_files())}")
     print("- root AGENTS contract sections: present")
-    print("- PRD Creator skill/README version: aligned")
+    print("- PRD Creator skill/README/current-validation version: aligned")
     print("- Package 3 architecture owners: present")
     print("- current versioned delivery routing: aligned")
     print("- workspace/current-validation delivery routing: aligned")
