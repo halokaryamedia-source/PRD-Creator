@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
+from .paths import ProjectPathError, normalize_project_ref
 from .state import StateError, load_mapping, require_scalar
 
 VOICE_STATUSES = {
@@ -51,8 +52,12 @@ def load_voice_state(path: Path) -> VoiceState:
         raise StateError(f"voice-state.yaml.status={status!r} is not a supported Voice lifecycle status")
     return VoiceState(
         status=status,
-        source_handoff=require_scalar(state, "source_handoff", owner="voice-state.yaml"),
-        source_prd_revision=require_scalar(state, "source_prd_revision", owner="voice-state.yaml"),
+        source_handoff=_required_path(state, "source_handoff"),
+        source_prd_revision=require_scalar(
+            state,
+            "source_prd_revision",
+            owner="voice-state.yaml",
+        ),
         canonical_prd=_optional_path(state, "canonical_prd", "work/content.md"),
         requirements=_optional_path(state, "requirements", "work/voice-requirements.md"),
         production=_optional_path(state, "production", "work/voice-production.md"),
@@ -69,11 +74,25 @@ def require_voice_state_for(statuses: set[str], path: Path) -> VoiceState:
     return state
 
 
+def _required_path(state: Mapping[str, object], key: str) -> str:
+    raw = require_scalar(state, key, owner="voice-state.yaml")
+    try:
+        return normalize_project_ref(raw, owner=f"voice-state.yaml.{key}")
+    except ProjectPathError as exc:
+        raise StateError(str(exc)) from exc
+
+
 def _optional_path(state: Mapping[str, object], key: str, default: str) -> str:
     value = state.get(key)
     if value is None:
-        return default
-    if isinstance(value, (dict, list, bool)):
+        raw = default
+    elif isinstance(value, (dict, list, bool)):
         raise StateError(f"voice-state.yaml.{key} must be a scalar path")
-    text = str(value).strip()
-    return text or default
+    else:
+        raw = str(value).strip() or default
+    if not raw:
+        return ""
+    try:
+        return normalize_project_ref(raw, owner=f"voice-state.yaml.{key}")
+    except ProjectPathError as exc:
+        raise StateError(str(exc)) from exc
