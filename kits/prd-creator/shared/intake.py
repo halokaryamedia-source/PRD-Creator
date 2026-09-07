@@ -226,25 +226,91 @@ def validate_flow2_state(project: Path) -> list[Issue]:
     except (OSError, StateError) as exc:
         return [Issue("FLOW2_STATE_INVALID", "flow2.state", str(exc), path="state")]
 
-    current_sources = {record.source_id for record in sources if record.status == "current"}
+    current_authoritative_sources = {
+        record.source_id
+        for record in sources
+        if record.status == "current" and record.role == "authoritative"
+    }
     for source in sources:
         if source.status == "current" and source.inspection == "blocked":
-            issues.append(Issue("SOURCE_INSPECTION_BLOCKED", "flow2.source", "current source inspection is blocked", path="state/source-inventory.yaml", field=source.source_id))
+            issues.append(
+                Issue(
+                    "SOURCE_INSPECTION_BLOCKED",
+                    "flow2.source",
+                    "current source inspection is blocked",
+                    path="state/source-inventory.yaml",
+                    field=source.source_id,
+                )
+            )
     for requirement in requirements:
         if requirement.recovery_class == "blocked":
-            issues.append(Issue("REQUIREMENT_BLOCKED", "flow2.requirement", "requirement recovery remains blocked", path="state/requirement-register.yaml", field=requirement.requirement_id))
+            issues.append(
+                Issue(
+                    "REQUIREMENT_BLOCKED",
+                    "flow2.requirement",
+                    "requirement recovery remains blocked",
+                    path="state/requirement-register.yaml",
+                    field=requirement.requirement_id,
+                )
+            )
         if requirement.approval_status == "pending":
-            issues.append(Issue("REQUIREMENT_APPROVAL_PENDING", "flow2.requirement", "material proposal approval is still pending", path="state/requirement-register.yaml", field=requirement.requirement_id))
+            issues.append(
+                Issue(
+                    "REQUIREMENT_APPROVAL_PENDING",
+                    "flow2.requirement",
+                    "material proposal approval is still pending",
+                    path="state/requirement-register.yaml",
+                    field=requirement.requirement_id,
+                )
+            )
         if requirement.approval_status == "rejected":
-            issues.append(Issue("REQUIREMENT_REJECTED_ACTIVE", "flow2.requirement", "rejected proposal must be removed or superseded before readiness", path="state/requirement-register.yaml", field=requirement.requirement_id))
-        if not any(source_id in current_sources for source_id in requirement.provenance):
-            issues.append(Issue("REQUIREMENT_NO_CURRENT_PROVENANCE", "flow2.requirement", "requirement has no current supporting source", path="state/requirement-register.yaml", field=requirement.requirement_id))
+            issues.append(
+                Issue(
+                    "REQUIREMENT_REJECTED_ACTIVE",
+                    "flow2.requirement",
+                    "rejected proposal must be removed or superseded before readiness",
+                    path="state/requirement-register.yaml",
+                    field=requirement.requirement_id,
+                )
+            )
+        approved_proposal = (
+            requirement.recovery_class == "proposal" and requirement.approval_status == "approved"
+        )
+        has_current_authority = any(
+            source_id in current_authoritative_sources for source_id in requirement.provenance
+        )
+        if not approved_proposal and not has_current_authority:
+            issues.append(
+                Issue(
+                    "REQUIREMENT_NO_CURRENT_AUTHORITY",
+                    "flow2.requirement",
+                    "requirement is not grounded in a current authoritative source or an approved Proposal",
+                    path="state/requirement-register.yaml",
+                    field=requirement.requirement_id,
+                )
+            )
 
     actual_requirement_sha = sha256_file(requirement_path)
     if intake.status != "ready_for_prd":
-        issues.append(Issue("FLOW2_NOT_READY", "flow2.state", f"status is {intake.status!r}, expected 'ready_for_prd'", path="state/intake-state.yaml", field="status"))
+        issues.append(
+            Issue(
+                "FLOW2_NOT_READY",
+                "flow2.state",
+                f"status is {intake.status!r}, expected 'ready_for_prd'",
+                path="state/intake-state.yaml",
+                field="status",
+            )
+        )
     elif intake.approved_requirement_sha256 != actual_requirement_sha:
-        issues.append(Issue("FLOW2_APPROVAL_STALE", "flow2.approval", "Simple Chat Preview approval does not bind the current requirement-register bytes", path="state/intake-state.yaml", field="approved_requirement_sha256"))
+        issues.append(
+            Issue(
+                "FLOW2_APPROVAL_STALE",
+                "flow2.approval",
+                "Simple Chat Preview approval does not bind the current requirement-register bytes",
+                path="state/intake-state.yaml",
+                field="approved_requirement_sha256",
+            )
+        )
     return issues
 
 
