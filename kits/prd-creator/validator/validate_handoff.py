@@ -19,7 +19,9 @@ if __package__ in (None, ""):
 else:
     from . import api as prd_api
 
-from shared.state import StateError, load_mapping, require_scalar
+from shared.handoff import load_handoff_state
+from shared.paths import ProjectPathError, resolve_project_path
+from shared.state import StateError
 
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -33,6 +35,7 @@ ACCEPTANCE_REQUIRED = {
     "Major": {"0"},
 }
 ACCEPTED_RENDER_LABEL = "Accepted Render Data SHA256"
+ACCEPTED_ASSET_LABEL = "Accepted Asset Requirements SHA256"
 
 
 def acceptance_values(text: str, label: str) -> list[str]:
@@ -40,7 +43,11 @@ def acceptance_values(text: str, label: str) -> list[str]:
     return [value.strip() for value in pattern.findall(text)]
 
 
-def validate_acceptance(path: Path, expected_render_sha: str) -> tuple[bool, str]:
+def validate_acceptance(
+    path: Path,
+    expected_render_sha: str,
+    expected_asset_sha: str,
+) -> tuple[bool, str]:
     if not path.is_file():
         return False, f"missing acceptance artifact: {path}"
 
@@ -51,9 +58,8 @@ def validate_acceptance(path: Path, expected_render_sha: str) -> tuple[bool, str
         if len(values) != 1 or not values[0]:
             failures.append(f"{label} must appear exactly once with a non-empty value")
             continue
-        value = values[0]
-        if value not in allowed:
-            failures.append(f"{label}={value!r}, expected one of {sorted(allowed)}")
+        if values[0] not in allowed:
+            failures.append(f"{label}={values[0]!r}, expected one of {sorted(allowed)}")
 
     render_values = acceptance_values(text, ACCEPTED_RENDER_LABEL)
     if len(render_values) != 1 or SHA256_RE.fullmatch(render_values[0]) is None:
@@ -63,11 +69,21 @@ def validate_acceptance(path: Path, expected_render_sha: str) -> tuple[bool, str
             f"{ACCEPTED_RENDER_LABEL}={render_values[0]!r}, expected current render-data sha256 {expected_render_sha!r}"
         )
 
+    asset_values = acceptance_values(text, ACCEPTED_ASSET_LABEL)
+    if len(asset_values) != 1:
+        failures.append(f"{ACCEPTED_ASSET_LABEL} must appear exactly once")
+    elif asset_values[0] != "none" and SHA256_RE.fullmatch(asset_values[0]) is None:
+        failures.append(f"{ACCEPTED_ASSET_LABEL} must be 'none' or a sha256 hex digest")
+    elif asset_values[0] != expected_asset_sha:
+        failures.append(
+            f"{ACCEPTED_ASSET_LABEL}={asset_values[0]!r}, expected current asset requirements binding {expected_asset_sha!r}"
+        )
+
     if failures:
         return False, "; ".join(failures)
     return (
         True,
-        "acceptance.md authorizes this exact render-data revision with all required readiness gates and no Critical/Major blocker",
+        "acceptance.md authorizes the exact current render-data and non-Voice asset-requirements revisions",
     )
 
 
@@ -85,9 +101,11 @@ def expected_refs(version: str) -> dict[str, str]:
 
 
 def validate(project: Path) -> dict[str, Any]:
+    project = project.resolve()
     state_path = project / "state" / "handoff-state.yaml"
     data_path = project / "work" / "render-data.json"
     acceptance_path = project / "work" / "acceptance.md"
+    asset_path = project / "work" / "asset-requirements.md"
     errors: list[str] = []
     checks: list[dict[str, str]] = []
 
@@ -102,17 +120,17 @@ def validate(project: Path) -> dict[str, Any]:
         return {"status": "fail", "errors": errors, "checks": checks}
 
     try:
-        state = load_mapping(state_path, owner="handoff-state.yaml")
-        status = require_scalar(state, "status", owner="handoff-state.yaml")
-        accepted_version = require_scalar(state, "accepted_prd_version", owner="handoff-state.yaml")
+        state = load_handoff_state(state_path)
     except (OSError, StateError) as exc:
         errors.append(f"handoff_state: {exc}")
         return {"status": "fail", "errors": errors, "checks": checks}
 
     check(
         "handoff_status_ready",
-        status == "handoff_ready",
-        "handoff_ready" if status == "handoff_ready" else f"status is {status!r}, expected 'handoff_ready'",
+        state.status == "handoff_ready",
+        "handoff_ready"
+        if state.status == "handoff_ready"
+        else f"status is {state.status!r}, expected 'handoff_ready'",
     )
 
     current_prd = prd_api.validate(project)
@@ -121,7 +139,7 @@ def validate(project: Path) -> dict[str, Any]:
     check(
         "current_prd_complete_validation",
         current_prd_ok,
-        "canonical PRD validation passes, including projection schema, content purity, and freshness"
+        "canonical PRD validation passes, including Flow 2 approval, projection schema, content purity, and freshness"
         if current_prd_ok
         else "; ".join(current_prd_errors[:5]) or "canonical PRD validation failed",
     )
@@ -134,6 +152,7 @@ def validate(project: Path) -> dict[str, Any]:
         return {"status": "fail", "errors": errors, "checks": checks}
 
     current_render_sha = hashlib.sha256(data_bytes).hexdigest()
+    current_asset_sha = hashlib.sha256(asset_path.read_bytes()).hexdigest() if asset_path.is_file() else "none"
     doc = data.get("document") if isinstance(data, dict) else None
     current_version = str(doc.get("version") or "").strip() if isinstance(doc, dict) else ""
     check(
@@ -150,8 +169,8 @@ def validate(project: Path) -> dict[str, Any]:
     )
     check(
         "handoff_revision_matches_current_prd",
-        bool(current_version) and accepted_version == current_version,
-        f"accepted_prd_version={accepted_version!r}, current document.version={current_version!r}",
+        bool(current_version) and state.accepted_prd_version == current_version,
+        f"accepted_prd_version={state.accepted_prd_version!r}, current document.version={current_version!r}",
     )
 
     refs_ok = True
@@ -162,23 +181,25 @@ def validate(project: Path) -> dict[str, Any]:
         ref_details.append("cannot resolve versioned handoff paths until document.version uses X.Y.Z")
     else:
         for field, expected in refs.items():
-            try:
-                actual = require_scalar(state, field, owner="handoff-state.yaml")
-            except StateError as exc:
-                refs_ok = False
-                ref_details.append(str(exc))
-                continue
+            actual = state.refs.get(field, "")
             if actual != expected:
                 refs_ok = False
                 ref_details.append(f"{field}={actual!r}, expected {expected!r}")
                 continue
-            if not (project / expected).is_file():
+            try:
+                resolve_project_path(
+                    project,
+                    actual,
+                    owner=f"handoff-state.yaml.{field}",
+                    must_exist=True,
+                )
+            except ProjectPathError as exc:
                 refs_ok = False
-                ref_details.append(f"missing referenced artifact: {expected}")
+                ref_details.append(str(exc))
     check(
         "handoff_artifact_references_current",
         refs_ok,
-        "handoff-state points to canonical PRD inputs plus the current versioned prd/context/index bundle"
+        "handoff-state uses canonical project-relative paths for the current PRD bundle"
         if refs_ok
         else "; ".join(ref_details),
     )
@@ -187,9 +208,11 @@ def validate(project: Path) -> dict[str, Any]:
     delivery_details: list[str] = []
     if refs:
         try:
-            context_text = (project / refs["context"]).read_text(encoding="utf-8")
-            readme_text = (project / refs["handoff"]).read_text(encoding="utf-8")
-            index_data = json.loads((project / refs["index"]).read_text(encoding="utf-8"))
+            context_text = resolve_project_path(project, refs["context"], must_exist=True).read_text(encoding="utf-8")
+            readme_text = resolve_project_path(project, refs["handoff"], must_exist=True).read_text(encoding="utf-8")
+            index_data = json.loads(
+                resolve_project_path(project, refs["index"], must_exist=True).read_text(encoding="utf-8")
+            )
             index_project = index_data.get("project") if isinstance(index_data, dict) else None
             index_version = (
                 str(index_project.get("prd_version") or "").strip()
@@ -207,7 +230,7 @@ def validate(project: Path) -> dict[str, Any]:
                 delivery_details.append(
                     f"index.json project.prd_version={index_version!r}, expected {current_version!r}"
                 )
-        except (OSError, json.JSONDecodeError) as exc:
+        except (OSError, ProjectPathError, json.JSONDecodeError) as exc:
             delivery_ok = False
             delivery_details.append(f"delivery metadata unreadable: {exc}")
     check(
@@ -218,7 +241,11 @@ def validate(project: Path) -> dict[str, Any]:
         else "; ".join(delivery_details) or "delivery metadata could not be verified",
     )
 
-    acceptance_ok, acceptance_detail = validate_acceptance(acceptance_path, current_render_sha)
+    acceptance_ok, acceptance_detail = validate_acceptance(
+        acceptance_path,
+        current_render_sha,
+        current_asset_sha,
+    )
     check("acceptance_allows_handoff", acceptance_ok, acceptance_detail)
 
     return {"status": "pass" if not errors else "fail", "errors": errors, "checks": checks}
