@@ -62,8 +62,9 @@ jobs:
 
       - name: Static quality
         run: |
-          ruff check kits/prd-creator/shared kits/prd-creator/validator kits/prd-creator/renderer
-          mypy kits/prd-creator/shared kits/prd-creator/validator/api.py
+          ruff format --check kits/prd-creator tests tools
+          ruff check kits/prd-creator tests tools
+          mypy kits/prd-creator/shared kits/prd-creator/renderer kits/prd-creator/validator
 
       - name: Run full regression suite
         run: |
