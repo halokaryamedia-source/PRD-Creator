@@ -7,8 +7,10 @@ from pathlib import Path
 
 from prd_fixture import render_data, write_base_project
 from test_prd_contracts import RENDERER, run_cli
-from test_voice_contracts import SCRIPT as BASE_SCRIPT, requirements
+from test_voice_contracts import SCRIPT as BASE_SCRIPT
+from test_voice_contracts import requirements
 
+ROOT = Path(__file__).resolve().parents[1]
 REQ = requirements()
 
 

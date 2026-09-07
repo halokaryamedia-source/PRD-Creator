@@ -535,7 +535,6 @@ def glossary(data: dict[str, Any]) -> dict[str, dict[str, str]]:
 
 
 def navigation(data: dict[str, Any]) -> str:
-    brand = data["document"].get("brand") or data["document"]["title"]
     links = [
         (
             "summary",

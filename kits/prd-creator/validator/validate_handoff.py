@@ -16,15 +16,19 @@ KIT_ROOT = HERE.parent
 if __package__ in (None, ""):
     if str(KIT_ROOT) not in sys.path:
         sys.path.insert(0, str(KIT_ROOT))
+    from shared.acceptance import required_value_issues, sha_binding_issues
+    from shared.handoff import load_handoff_state
+    from shared.issues import Issue
+    from shared.paths import ProjectPathError, resolve_project_path
+    from shared.state import StateError
     from validator import api as prd_api
 else:
     from . import api as prd_api
-
-from shared.acceptance import required_value_issues, sha_binding_issues
-from shared.handoff import load_handoff_state
-from shared.issues import Issue
-from shared.paths import ProjectPathError, resolve_project_path
-from shared.state import StateError
+    from shared.acceptance import required_value_issues, sha_binding_issues
+    from shared.handoff import load_handoff_state
+    from shared.issues import Issue
+    from shared.paths import ProjectPathError, resolve_project_path
+    from shared.state import StateError
 
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 ACCEPTANCE_REQUIRED = {

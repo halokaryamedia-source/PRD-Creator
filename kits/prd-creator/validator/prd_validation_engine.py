@@ -13,7 +13,7 @@ from shared.render_schema import ProjectionError, validate_projection_schema
 from shared.state import StateError
 from shared.topology import require_owner
 
-from .html_contract import HtmlFacts, document_composition_errors, expected_page_ids, validate_html_contract
+from .html_contract import validate_html_contract
 
 OPEN_RE = re.compile(r"\b(?:TBD|TODO|FIXME|INSERT\s+(?:TEXT|VALUE)|USE\s+APPROVED\s+AMOUNT)\b|\[OPEN\]", re.I)
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")

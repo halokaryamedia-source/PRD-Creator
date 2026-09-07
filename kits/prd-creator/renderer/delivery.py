@@ -19,10 +19,10 @@ if __package__ in (None, ""):
     if str(KIT_ROOT) not in sys.path:
         sys.path.insert(0, str(KIT_ROOT))
     from renderer import render as html_renderer_module
+    from shared.state import StateError, load_mapping, optional_scalar
 else:
     from . import render as html_renderer_module
-
-from shared.state import StateError, load_mapping, optional_scalar
+    from shared.state import StateError, load_mapping, optional_scalar
 
 SEMVER_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
