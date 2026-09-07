@@ -8,9 +8,6 @@ class ProjectPathError(ValueError):
     """Raised when a persisted project-relative path escapes its workspace."""
 
 
-_WINDOWS_ABSOLUTE_RE = re.compile(r"^[A-Za-z]:[\\/]|")
-
-
 def normalize_project_ref(ref: str, *, owner: str = "project path") -> str:
     value = str(ref or "").strip()
     if not value:
