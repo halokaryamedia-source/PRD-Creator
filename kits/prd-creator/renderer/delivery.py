@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the compact versioned PRD delivery bundle for humans and coding AI."""
+
 from __future__ import annotations
 
 import argparse
@@ -124,9 +125,7 @@ def _navigation(markdown: str, max_level: int = 4) -> list[dict[str, Any]]:
     for line_number, line in enumerate(lines, 1):
         match = HEADING_RE.match(line)
         if match:
-            headings.append(
-                {"level": len(match.group(1)), "title": match.group(2).strip(), "start_line": line_number}
-            )
+            headings.append({"level": len(match.group(1)), "title": match.group(2).strip(), "start_line": line_number})
     for index, heading in enumerate(headings):
         end_line = len(lines)
         for later in headings[index + 1 :]:
@@ -218,10 +217,7 @@ def build_readme(output_root: Path, title: str, version: str, status: str) -> st
     if current_name not in {name for _, name in versions}:
         versions.append((current_key, current_name))
     versions.sort(reverse=True)
-    version_lines = [
-        f"- `{name}`{' — current' if name == current_name else ''}"
-        for _, name in versions
-    ]
+    version_lines = [f"- `{name}`{' — current' if name == current_name else ''}" for _, name in versions]
     return "\n".join(
         [
             f"# {title}",
