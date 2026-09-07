@@ -19,13 +19,13 @@ if __package__ in (None, ""):
 else:
     from . import api as prd_api
 
+from shared.acceptance import required_value_issues, sha_binding_issues
 from shared.handoff import load_handoff_state
 from shared.issues import Issue
 from shared.paths import ProjectPathError, resolve_project_path
 from shared.state import StateError
 
 SEMVER_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
-SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 ACCEPTANCE_REQUIRED = {
     "Status": {"handoff_ready"},
     "Mechanical": {"PASS"},
@@ -39,9 +39,51 @@ ACCEPTED_RENDER_LABEL = "Accepted Render Data SHA256"
 ACCEPTED_ASSET_LABEL = "Accepted Asset Requirements SHA256"
 
 
-def acceptance_values(text: str, label: str) -> list[str]:
-    pattern = re.compile(rf"(?mi)^\s*{re.escape(label)}:\s*(.*?)\s*$")
-    return [value.strip() for value in pattern.findall(text)]
+def acceptance_issues(
+    path: Path,
+    expected_render_sha: str,
+    expected_asset_sha: str,
+) -> list[Issue]:
+    if not path.is_file():
+        return [
+            Issue(
+                "PRD_ACCEPTANCE_MISSING",
+                "flow4.acceptance",
+                "missing acceptance artifact",
+                path="work/acceptance.md",
+            )
+        ]
+
+    text = path.read_text(encoding="utf-8")
+    issues = required_value_issues(
+        text,
+        ACCEPTANCE_REQUIRED,
+        owner="flow4.acceptance",
+        path="work/acceptance.md",
+        code_prefix="PRD_ACCEPTANCE",
+    )
+    issues.extend(
+        sha_binding_issues(
+            text,
+            ACCEPTED_RENDER_LABEL,
+            expected_render_sha,
+            owner="flow4.acceptance",
+            path="work/acceptance.md",
+            code="PRD_ACCEPTANCE_RENDER_SHA",
+        )
+    )
+    issues.extend(
+        sha_binding_issues(
+            text,
+            ACCEPTED_ASSET_LABEL,
+            expected_asset_sha,
+            owner="flow4.acceptance",
+            path="work/acceptance.md",
+            code="PRD_ACCEPTANCE_ASSET_SHA",
+            allow_none=True,
+        )
+    )
+    return issues
 
 
 def validate_acceptance(
@@ -49,39 +91,11 @@ def validate_acceptance(
     expected_render_sha: str,
     expected_asset_sha: str,
 ) -> tuple[bool, str]:
-    if not path.is_file():
-        return False, f"missing acceptance artifact: {path}"
+    """Compatibility helper for callers/tests that need the historical bool/detail API."""
 
-    text = path.read_text(encoding="utf-8")
-    failures: list[str] = []
-    for label, allowed in ACCEPTANCE_REQUIRED.items():
-        values = acceptance_values(text, label)
-        if len(values) != 1 or not values[0]:
-            failures.append(f"{label} must appear exactly once with a non-empty value")
-            continue
-        if values[0] not in allowed:
-            failures.append(f"{label}={values[0]!r}, expected one of {sorted(allowed)}")
-
-    render_values = acceptance_values(text, ACCEPTED_RENDER_LABEL)
-    if len(render_values) != 1 or SHA256_RE.fullmatch(render_values[0]) is None:
-        failures.append(f"{ACCEPTED_RENDER_LABEL} must appear exactly once as a sha256 hex digest")
-    elif render_values[0] != expected_render_sha:
-        failures.append(
-            f"{ACCEPTED_RENDER_LABEL}={render_values[0]!r}, expected current render-data sha256 {expected_render_sha!r}"
-        )
-
-    asset_values = acceptance_values(text, ACCEPTED_ASSET_LABEL)
-    if len(asset_values) != 1:
-        failures.append(f"{ACCEPTED_ASSET_LABEL} must appear exactly once")
-    elif asset_values[0] != "none" and SHA256_RE.fullmatch(asset_values[0]) is None:
-        failures.append(f"{ACCEPTED_ASSET_LABEL} must be 'none' or a sha256 hex digest")
-    elif asset_values[0] != expected_asset_sha:
-        failures.append(
-            f"{ACCEPTED_ASSET_LABEL}={asset_values[0]!r}, expected current asset requirements binding {expected_asset_sha!r}"
-        )
-
-    if failures:
-        return False, "; ".join(failures)
+    findings = acceptance_issues(path, expected_render_sha, expected_asset_sha)
+    if findings:
+        return False, "; ".join(str(issue) for issue in findings)
     return (
         True,
         "acceptance.md authorizes the exact current render-data and non-Voice asset-requirements revisions",
@@ -133,11 +147,13 @@ def validate(project: Path) -> dict[str, Any]:
         owner: str = "flow4.handoff",
         path: str = "",
         field: str = "",
+        record_issue: bool = True,
     ) -> None:
         checks.append({"check": name, "status": "pass" if ok else "fail", "detail": detail})
         if not ok:
             errors.append(f"{name}: {detail}")
-            issues.append(Issue(code, owner, detail, path=path, field=field))
+            if record_issue:
+                issues.append(Issue(code, owner, detail, path=path, field=field))
 
     check(
         "handoff_state_exists",
@@ -319,10 +335,16 @@ def validate(project: Path) -> dict[str, Any]:
         owner="flow4.delivery",
     )
 
-    acceptance_ok, acceptance_detail = validate_acceptance(
+    acceptance_findings = acceptance_issues(
         acceptance_path,
         current_render_sha,
         current_asset_sha,
+    )
+    acceptance_ok = not acceptance_findings
+    acceptance_detail = (
+        "acceptance.md authorizes the exact current render-data and non-Voice asset-requirements revisions"
+        if acceptance_ok
+        else "; ".join(str(issue) for issue in acceptance_findings)
     )
     check(
         "acceptance_allows_handoff",
@@ -331,7 +353,9 @@ def validate(project: Path) -> dict[str, Any]:
         code="HANDOFF_ACCEPTANCE_INVALID",
         owner="flow4.acceptance",
         path="work/acceptance.md",
+        record_issue=False,
     )
+    issues.extend(acceptance_findings)
 
     return _result(errors, checks, issues)
 
