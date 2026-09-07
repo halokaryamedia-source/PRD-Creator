@@ -207,6 +207,7 @@ def validate(project: Path) -> dict[str, Any]:
                 "flow3.projection",
                 str(exc),
                 path="state/intake-state.yaml",
+                line=exc.line if isinstance(exc, StateError) else None,
             ),
         )
     else:
