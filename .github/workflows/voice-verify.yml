@@ -50,17 +50,9 @@ jobs:
 
       - name: Static quality
         run: |
-          ruff check \
-            kits/prd-creator/shared \
-            kits/prd-creator/validator/validate_handoff.py \
-            kits/prd-creator/validator/voice_validation.py \
-            kits/prd-creator/validator/validate_voice.py \
-            kits/prd-creator/renderer/production_assets.py \
-            kits/prd-creator/renderer/production_assets_compositor.py \
-            kits/prd-creator/renderer/template_adapter.py
-          mypy \
-            kits/prd-creator/shared \
-            kits/prd-creator/validator/voice_validation.py
+          ruff format --check kits/prd-creator tests tools
+          ruff check kits/prd-creator tests tools
+          mypy kits/prd-creator/shared kits/prd-creator/renderer kits/prd-creator/validator
 
       - name: Compile Voice sources
         run: |
