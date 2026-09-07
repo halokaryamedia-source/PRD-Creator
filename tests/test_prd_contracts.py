@@ -24,6 +24,7 @@ RUNTIME_TEMPLATE = ROOT / "kits" / "prd-creator" / "template" / "runtime-templat
 GOLDEN_TEMPLATE = ROOT / "kits" / "prd-creator" / "template" / "golden-reference.html"
 
 BILINGUAL_SCALARS = {
+    "approved_requirement_sha256",
     "canonical_content_sha256",
     "id",
     "key",
@@ -180,7 +181,29 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project(data)
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 2)
-        self.assertIn("numeric/percentage/stable-ID", rendered.stderr)
+        self.assertIn("numeric/unit/dimension/coordinate/stable-ID invariants", rendered.stderr)
+
+    def test_bilingual_document_rejects_unit_drift(self) -> None:
+        data = bilingual_render_data()
+        data["packages"][0]["gameplay"]["gameplay_time"] = {
+            "en": "Complete within 10 seconds.",
+            "id": "Selesaikan dalam 12 detik.",
+        }
+        project = self.make_project(data)
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("numeric/unit/dimension/coordinate/stable-ID invariants", rendered.stderr)
+
+    def test_bilingual_document_rejects_material_negation_drift(self) -> None:
+        data = bilingual_render_data()
+        data["packages"][0]["gameplay"]["blocked_or_fail_condition"] = {
+            "en": "The player must not leave the route.",
+            "id": "Pemain meninggalkan rute.",
+        }
+        project = self.make_project(data)
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("material negation count", rendered.stderr)
 
     def test_validator_rejects_stale_html_after_projection_change(self) -> None:
         project = self.make_project()
@@ -201,6 +224,21 @@ class ProjectDocumentContracts(unittest.TestCase):
         rendered = self.render(project)
         self.assertEqual(rendered.returncode, 2)
         self.assertIn("canonical_content_sha256", rendered.stderr)
+
+    def test_renderer_rejects_stale_flow2_approval_hash(self) -> None:
+        project = self.make_project()
+        state = project / "state" / "intake-state.yaml"
+        state.write_text(
+            state.read_text(encoding="utf-8").replace(
+                "approved_requirement_sha256: ",
+                "approved_requirement_sha256: " + ("0" * 64) + " # stale ",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        rendered = self.render(project)
+        self.assertEqual(rendered.returncode, 2)
+        self.assertIn("approved_requirement_sha256", rendered.stderr)
 
     def test_projection_rejects_unknown_compatibility_field(self) -> None:
         data = render_data()
@@ -313,15 +351,20 @@ class ProjectDocumentContracts(unittest.TestCase):
         validator_dir = kit / "validator"
         renderer_dir = kit / "renderer"
         self.assertTrue((validator_dir / "prd_validation_engine.py").is_file())
+        self.assertTrue((validator_dir / "html_contract.py").is_file())
+        self.assertTrue((validator_dir / "voice_validation.py").is_file())
         self.assertTrue((renderer_dir / "prd_render_engine.py").is_file())
         self.assertTrue((renderer_dir / "template_adapter.py").is_file())
         self.assertFalse((validator_dir / "_engine.py").exists())
         self.assertFalse((renderer_dir / "_engine.py").exists())
         validator_source = (validator_dir / "prd_validation_engine.py").read_text(encoding="utf-8")
         renderer_source = (renderer_dir / "prd_render_engine.py").read_text(encoding="utf-8")
+        compositor_source = (renderer_dir / "production_assets_compositor.py").read_text(encoding="utf-8")
         self.assertNotIn("sys.path.insert", validator_source)
         self.assertNotIn("sys.path.insert", renderer_source)
         self.assertNotIn("apply_result_summaries", renderer_source)
+        self.assertIn("TemplateAdapter", compositor_source)
+        self.assertNotIn("def _insert(", compositor_source)
 
 
 if __name__ == "__main__":
