@@ -24,7 +24,9 @@ else:
     from .core import slug, txt
     from .template_adapter import TemplateAdapter
 
+from shared.intake import load_intake_state
 from shared.render_schema import validate_projection_schema
+from shared.state import StateError
 
 
 def _load_projection(render_data: Path) -> dict:
@@ -32,12 +34,26 @@ def _load_projection(render_data: Path) -> dict:
     if not isinstance(data, dict):
         raise ValueError("render-data root must be an object")
     validate_projection_schema(data)
-    content_path = render_data.parent / "content.md"
+
+    work = render_data.parent
+    project = work.parent
+    content_path = work / "content.md"
     if content_path.is_file():
         actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
         if data["canonical_content_sha256"] != actual_content_sha:
             raise ValueError(
                 "render-data canonical_content_sha256 does not match current sibling work/content.md bytes"
+            )
+
+    intake_path = project / "state" / "intake-state.yaml"
+    if intake_path.is_file():
+        try:
+            intake = load_intake_state(intake_path)
+        except StateError as exc:
+            raise ValueError(f"current Flow 2 intake state is invalid: {exc}") from exc
+        if data["approved_requirement_sha256"] != intake.approved_requirement_sha256:
+            raise ValueError(
+                "render-data approved_requirement_sha256 does not match current Flow 2 approval"
             )
     return data
 
