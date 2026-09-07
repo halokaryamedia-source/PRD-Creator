@@ -9,8 +9,13 @@ on:
       - "kits/prd-creator/shared/**/*.py"
       - "kits/prd-creator/voice/**/*.py"
       - "kits/prd-creator/renderer/production_assets.py"
+      - "kits/prd-creator/renderer/production_assets_compositor.py"
+      - "kits/prd-creator/renderer/template_adapter.py"
+      - "kits/prd-creator/validator/validate_handoff.py"
+      - "kits/prd-creator/validator/voice_validation.py"
       - "kits/prd-creator/validator/validate_voice.py"
       - "tests/test_voice_contracts.py"
+      - "tests/test_prd_voice_assets.py"
       - "requirements.lock.txt"
       - "requirements-dev.lock.txt"
       - "pyproject.toml"
@@ -45,11 +50,31 @@ jobs:
 
       - name: Static quality
         run: |
-          ruff check kits/prd-creator/shared kits/prd-creator/validator/validate_voice.py kits/prd-creator/renderer/production_assets.py
-          mypy kits/prd-creator/shared
+          ruff check \
+            kits/prd-creator/shared \
+            kits/prd-creator/validator/validate_handoff.py \
+            kits/prd-creator/validator/voice_validation.py \
+            kits/prd-creator/validator/validate_voice.py \
+            kits/prd-creator/renderer/production_assets.py \
+            kits/prd-creator/renderer/production_assets_compositor.py \
+            kits/prd-creator/renderer/template_adapter.py
+          mypy \
+            kits/prd-creator/shared \
+            kits/prd-creator/validator/voice_validation.py
 
       - name: Compile Voice sources
-        run: python -m compileall -q kits/prd-creator/shared kits/prd-creator/validator/validate_voice.py tests/test_voice_contracts.py
+        run: |
+          python -m compileall -q \
+            kits/prd-creator/shared \
+            kits/prd-creator/validator/validate_handoff.py \
+            kits/prd-creator/validator/voice_validation.py \
+            kits/prd-creator/validator/validate_voice.py \
+            kits/prd-creator/renderer/production_assets.py \
+            kits/prd-creator/renderer/production_assets_compositor.py \
+            kits/prd-creator/renderer/template_adapter.py \
+            tests/test_voice_contracts.py \
+            tests/test_prd_voice_assets.py
 
       - name: Voice Production contracts
-        run: python -m unittest tests.test_voice_contracts -v
+        run: |
+          python -m unittest tests.test_voice_contracts tests.test_prd_voice_assets -v
