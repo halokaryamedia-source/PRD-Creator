@@ -5,12 +5,15 @@
 ## Authority chain
 
 ```text
-work/content.md
-→ strict work/render-data.json + canonical_content_sha256
+approved Flow 2 requirement revision
++ work/content.md
+→ strict work/render-data.json
+   + approved_requirement_sha256
+   + canonical_content_sha256
 → DESIGN-CONTRACT
 → exact Golden shell through TemplateAdapter
 → PRD core HTML
-→ optional stable-ID 04 composition
+→ optional stable-ID 04 composition through the same TemplateAdapter
 → transactional versioned delivery
 ```
 
@@ -22,11 +25,12 @@ Executable schemas live under `../shared/`:
 
 ```text
 intake.py         Flow 2 source/requirement/approval state
-state.py          duplicate-safe YAML loading
+state.py          duplicate-safe YAML loading + parse-line diagnostics
 paths.py          safe project-relative persisted paths
 handoff.py        strict Flow 4 handoff state
+acceptance.py     shared acceptance field/SHA parsing primitives
 render_schema.py  one supported render-data field vocabulary
-localization.py   bilingual presence + invariant parity
+localization.py   bilingual presence + numeric/unit/dimension/coordinate/negation parity
 assets.py         strict non-Voice Owner/Moment/Asset grammar
 voice.py          strict Voice requirement/production grammar
 lifecycle.py      one Voice state vocabulary
@@ -38,7 +42,12 @@ Do not duplicate these schemas in renderer modules or prose.
 
 ## Strict projection
 
-`work/render-data.json` has one supported vocabulary and must bind exact current `content.md` bytes through `canonical_content_sha256`.
+`work/render-data.json` has one supported vocabulary and must bind both current approved Flow 2 requirement bytes and exact current `content.md` bytes through:
+
+```text
+approved_requirement_sha256
+canonical_content_sha256
+```
 
 Renderer behavior is intentionally narrow:
 
@@ -59,7 +68,7 @@ No renderer path may:
 - fill missing semantic content;
 - copy reference-project facts.
 
-`gameplay.result_model` explicitly owns result mode/summary. Developer `scoring` or `completion_data` must match that mode.
+`gameplay.result_model` explicitly owns result mode/summary. Developer `scoring` or `completion_data` must match that mode, and visible Gameplay/Developer presentation must preserve the same mode.
 
 ## Semantic cardinality
 
@@ -84,9 +93,12 @@ renderer/template_adapter.py
 - namespace localStorage keys;
 - set document language metadata;
 - replace sidebar brand/navigation/main content;
+- append additive 04 navigation/pages;
 - replace glossary assignment;
 - bind title/description/specification metadata;
 - inject head/body extensions.
+
+`production_assets_compositor.py` may compute and render 04 content, but it must pass all shell mutation through `TemplateAdapter`; it does not own a second regex/string mutation boundary.
 
 Generic renderer modules do not contain or depend on historical reference-project vocabulary.
 
@@ -150,6 +162,8 @@ voice-requirements-sha256
 voice-production-sha256
 ```
 
+Preparation Mode may present an unresolved Voice selection as `Voice selection pending`. If `state/voice-state.yaml.status=voice_delivery_ready`, rendering must fail instead of publishing any unresolved Voice Cast selection/profile.
+
 Production Assets presentation assets live under:
 
 ```text
@@ -205,7 +219,18 @@ A failed generation must leave the previous complete delivery intact; mixed old/
 
 ## Bilingual documents
 
-Bilingual projection requires explicit `en` and `id` values. Numeric, percentage, and stable-ID tokens that carry project meaning must remain invariant across languages. Translation may change wording, not counts/values/identity.
+Bilingual projection requires explicit `en` and `id` values. The following material invariants must remain mechanically aligned across languages:
+
+```text
+numbers / percentages
+stable IDs
+recognized time and length units
+explicit dimensions
+coordinate triples
+material negation count
+```
+
+Translation may change wording, not values, identity, dimensions, coordinates, or whether a material rule is negated.
 
 ## Freshness
 
