@@ -170,7 +170,7 @@ def _build_item_html(item: ProductionItem) -> str:
             target = "voice-prompt-" + item.item_id.split("-build-")[-1]
             exact = (
                 '<div class="pa-exact pa-audio-prompt"><div class="pa-exact-head">'
-                f'<span>Prompt</span>{_copy_button(target, "Copy Prompt")}</div>'
+                f"<span>Prompt</span>{_copy_button(target, 'Copy Prompt')}</div>"
                 f'<pre class="voice-script-text" id="{esc(target)}">{esc(item.content)}</pre>'
                 f'<div class="voice-script-display">{performance_html(item.content)}</div></div>'
             )
@@ -178,7 +178,7 @@ def _build_item_html(item: ProductionItem) -> str:
             target = f"{item.item_id}-copy"
             exact = (
                 '<div class="pa-exact"><div class="pa-exact-head">'
-                f'<span>Player Text</span>{_copy_button(target, "Copy Text")}</div>'
+                f"<span>Player Text</span>{_copy_button(target, 'Copy Text')}</div>"
                 f'<pre class="pa-content" id="{esc(target)}">{esc(item.content)}</pre></div>'
             )
     meta = '<div class="pa-build-meta-row"><b>Function</b><span>' + esc(item.function_text) + "</span></div>"
@@ -188,7 +188,9 @@ def _build_item_html(item: ProductionItem) -> str:
         meta += '<div class="pa-build-meta-row"><b>Estimated Duration</b><span>' + esc(item.duration) + "</span></div>"
     elif item.asset_brief:
         brief_label = "Audio Brief" if item.type_label == "AUDIO" else "Visual Brief"
-        meta += '<div class="pa-build-meta-row"><b>' + brief_label + "</b><span>" + esc(item.asset_brief) + "</span></div>"
+        meta += (
+            '<div class="pa-build-meta-row"><b>' + brief_label + "</b><span>" + esc(item.asset_brief) + "</span></div>"
+        )
         if item.size:
             meta += '<div class="pa-build-meta-row"><b>Size</b><span>' + esc(item.size) + "</span></div>"
     type_class = "pa-type-" + slug(item.type_label)
@@ -214,9 +216,7 @@ def _moment_html(items: list[ProductionItem]) -> str:
         moment = next(iter(titles))
         children = "".join(_build_item_html(item) for item in sorted(moment_items, key=_item_sort_key))
         out.append(
-            '<div class="pa-moment" data-moment-id="'
-            + esc(moment_id)
-            + '"><div class="pa-moment-head">'
+            '<div class="pa-moment" data-moment-id="' + esc(moment_id) + '"><div class="pa-moment-head">'
             f'<span>{index:02d}</span><h3>{esc(moment)}</h3></div><div class="pa-build-list">{children}</div></div>'
         )
     return "".join(out)
@@ -245,10 +245,7 @@ def _assert_delivery_voice_cast(work: Path, voice_doc: VoiceProduction | None) -
     speakers = sorted({entry.speaker for section in voice_doc.sections for entry in section.entries})
     missing = [speaker for speaker in speakers if not selected_voice(voice_doc.cast, speaker)]
     if missing:
-        raise ValueError(
-            "voice_delivery_ready cannot render unresolved Voice Cast selection/profile for: "
-            + ", ".join(missing)
-        )
+        raise ValueError("voice_delivery_ready cannot render unresolved Voice Cast selection/profile for: " + ", ".join(missing))
 
 
 def _pages_and_nav(
@@ -278,9 +275,7 @@ def _pages_and_nav(
             if section_ids != expected_ids:
                 missing = sorted(expected_ids - section_ids)
                 extra = sorted(section_ids - expected_ids)
-                raise ValueError(
-                    f"Voice Owner ID parity mismatch for {owner_id}; missing={missing}, extra={extra}"
-                )
+                raise ValueError(f"Voice Owner ID parity mismatch for {owner_id}; missing={missing}, extra={extra}")
             for order, entry in enumerate(voice_section.entries, 1):
                 requirement = requirements[entry.voice_id]
                 if requirement.owner_id != owner_id:
@@ -309,7 +304,7 @@ def _pages_and_nav(
         links.append(
             f'<a data-target="{meta.page_id}" href="#{meta.page_id}">'
             f'<span class="production-assets-objective-name">{esc(meta.title)}</span>'
-            f'<small>{i18n(meta.package_label)}</small></a>'
+            f"<small>{i18n(meta.package_label)}</small></a>"
         )
 
     if not pages:
