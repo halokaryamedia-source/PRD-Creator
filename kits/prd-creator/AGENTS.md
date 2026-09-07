@@ -28,7 +28,7 @@ shared/intake.py
 → strict Flow 2 source / requirement / approval state
 
 shared/state.py
-→ duplicate-safe YAML loader and scalar/list primitives
+→ duplicate-safe YAML loader + state source-line diagnostics
 
 shared/paths.py
 → safe project-relative persisted path normalization/resolution
@@ -36,11 +36,14 @@ shared/paths.py
 shared/handoff.py
 → strict Flow 4 handoff state
 
+shared/acceptance.py
+→ shared acceptance field + exact SHA parsing primitives
+
 shared/render_schema.py
 → one supported render-data vocabulary + explicit result model
 
 shared/localization.py
-→ language mode and bilingual semantic invariants
+→ language mode + bilingual numeric/unit/dimension/coordinate/negation invariants
 
 shared/assets.py
 → strict Owner ID / Moment ID / AST resource grammar
@@ -73,7 +76,8 @@ renderer/prd_render_engine.py
 → strict deterministic PRD-core composition
 
 renderer/template_adapter.py
-→ the only Golden shell mutation / retained reference compatibility owner
+→ the only Golden shell mutation / retained reference compatibility owner,
+   including additive 04 navigation/pages/head/body injection
 
 renderer/production_assets_compositor.py
 → merge strict Asset + Voice sources by Owner ID + Moment ID
@@ -95,7 +99,10 @@ renderer/delivery.py
 
 ```text
 validator/prd_validation_engine.py
-→ deterministic PRD freshness/composition checks consuming shared contracts
+→ PRD source/projection/business-check orchestration
+
+validator/html_contract.py
+→ derived HTML freshness/composition/navigation contract
 
 validator/api.py
 → canonical complete PRD validation API + content purity
@@ -106,8 +113,11 @@ validator/validate.py
 validator/validate_handoff.py
 → strict Flow 4→5 state/path/version/exact-acceptance proof
 
+validator/voice_validation.py
+→ lifecycle-aware Flow 5→7 Voice revision/identity/HTML/acceptance domain proof
+
 validator/validate_voice.py
-→ lifecycle-aware Flow 5→7 Voice revision/identity/HTML/acceptance proof
+→ thin Voice CLI / public validation entrypoint
 ```
 
 Generic `_engine.py` sibling modules and path-order-dependent internal imports are retired.
@@ -127,8 +137,10 @@ requirement-register bytes
 ### Projection
 
 ```text
-content.md bytes
-→ render-data.canonical_content_sha256
+intake-state.approved_requirement_sha256
++ content.md bytes
+→ render-data.approved_requirement_sha256
++ render-data.canonical_content_sha256
 → strict render schema
 → renderer
 ```
@@ -145,7 +157,7 @@ gameplay.result_model.mode=completion_only
 ↔ developer.completion_data
 ```
 
-Gameplay summary is explicit upstream; renderer never constructs it from Developer fields.
+Gameplay summary is explicit upstream; renderer never constructs it from Developer fields. Visible Gameplay/Developer presentation must use the same mode.
 
 ### 04 identity
 
@@ -172,7 +184,7 @@ Flow 7 final delivery:
 Accepted Voice Production SHA256
 ```
 
-Semantic version is not an edit counter.
+Semantic version is not an edit counter. Both PRD and Voice acceptance parsing use `shared/acceptance.py`; do not recreate label/SHA regex logic elsewhere.
 
 ### Persisted paths
 
@@ -199,7 +211,7 @@ Generated HTML/context/index are derived. Never hand-patch them to hide an upstr
 
 The exact approved Golden bytes and component/page grammar stay protected. Adaptive semantic cardinality is allowed only inside existing approved component families.
 
-Historical reference-project markers are quarantined in `renderer/template_adapter.py`; generic code must not spread them again.
+Historical reference-project markers are quarantined in `renderer/template_adapter.py`; generic code must not spread them again. Production Assets may append derived 04 content only through `TemplateAdapter`, not by introducing another shell mutator.
 
 ## Context economy
 
