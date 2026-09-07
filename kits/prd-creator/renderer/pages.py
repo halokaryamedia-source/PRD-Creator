@@ -49,14 +49,12 @@ def overview(data: dict[str, Any]) -> str:
 
     facts = overview_data["facts"]
     facts_html = "".join(
-        f'<div class="fact"><b>{i18n(item["label"])}</b>'
-        f'<span>{i18n(item["value"])}</span></div>'
-        for item in facts
+        f"<div class=\"fact\"><b>{i18n(item['label'])}</b><span>{i18n(item['value'])}</span></div>" for item in facts
     )
     journey_items = overview_data["journey"]
     journey_html = "".join(
-        f'<article><small>{index:02d}</small><strong>{i18n(item["title"])}</strong>'
-        f'<p>{i18n(item["description"])}</p></article>'
+        f"<article><small>{index:02d}</small><strong>{i18n(item['title'])}</strong>"
+        f"<p>{i18n(item['description'])}</p></article>"
         for index, item in enumerate(journey_items, 1)
     )
     journey_columns = max(1, min(len(journey_items), 6))
@@ -64,18 +62,18 @@ def overview(data: dict[str, Any]) -> str:
 
     body = (
         '<div class="cover-rule"></div>'
-        f'<p class="eyebrow">{i18n(document["document_type"])}</p>'
-        f'<h1>{i18n(document["title"])}</h1>'
-        f'<p class="subtitle">{i18n(document.get("subtitle") or bi("Gameplay & Development Specification", "Spesifikasi Gameplay & Pengembangan"))}</p>'
-        f'<p class="lead">{i18n(overview_data["project_context"])}</p>'
+        f"<p class=\"eyebrow\">{i18n(document['document_type'])}</p>"
+        f"<h1>{i18n(document['title'])}</h1>"
+        f"<p class=\"subtitle\">{i18n(document.get('subtitle') or bi('Gameplay & Development Specification', 'Spesifikasi Gameplay & Pengembangan'))}</p>"
+        f"<p class=\"lead\">{i18n(overview_data['project_context'])}</p>"
         f'<div class="facts three">{facts_html}</div>'
         f'<h3>{i18n(bi("Complete Gameplay Journey", "Perjalanan Gameplay Lengkap"))}</h3>'
         f'<div class="journey"{journey_style}>{journey_html}</div>'
         + _summary_note(overview_data["main_systems"])
     )
     context = bi(
-        f'Production Development Document · v{document["version"]}',
-        f'Dokumen Pengembangan Produksi · v{document["version"]}',
+        f"Production Development Document · v{document['version']}",
+        f"Dokumen Pengembangan Produksi · v{document['version']}",
     )
     return page(
         "summary",
@@ -91,8 +89,7 @@ def overview(data: dict[str, Any]) -> str:
 
 def _summary_note(items: list[dict[str, Any]]) -> str:
     body = "".join(
-        f'<li>{i18n(join_text(item["title"], item["description"], sep=" — "))}</li>'
-        for item in items
+        f"<li>{i18n(join_text(item['title'], item['description'], sep=' — '))}</li>" for item in items
     )
     return (
         '<div class="summary-note">'
@@ -104,27 +101,27 @@ def _summary_note(items: list[dict[str, Any]]) -> str:
 def _story_flow(item: dict[str, Any]) -> str:
     body = ['<div class="story-flow">']
     for beat in item["beats"]:
-        body.append(f'<h3>{i18n(beat["title"])}</h3>')
+        body.append(f"<h3>{i18n(beat['title'])}</h3>")
         description = beat["description"]
         if isinstance(description, list):
-            body.extend(f'<p>{i18n(paragraph)}</p>' for paragraph in description)
+            body.extend(f"<p>{i18n(paragraph)}</p>" for paragraph in description)
         else:
-            body.append(f'<p>{i18n(description)}</p>')
+            body.append(f"<p>{i18n(description)}</p>")
     body.append(
         '<div class="story-transition">'
         f'<b>{i18n(bi("Transition", "Transisi"))}</b>'
-        f'<p>{i18n(join_text(bi("Next:", "Berikutnya:"), item["next_destination"]))}</p></div>'
+        f"<p>{i18n(join_text(bi('Next:', 'Berikutnya:'), item['next_destination']))}</p></div>"
     )
     body.append("</div>")
     return "".join(body)
 
 
 def flow_page_id(item: dict[str, Any], index: int) -> str:
-    return "flow-start" if index == 0 else f'flow-{item["id"]}'
+    return "flow-start" if index == 0 else f"flow-{item['id']}"
 
 
 def flow_phase(item: dict[str, Any], index: int) -> str:
-    return "dev-flow" if index == 0 else f'dev-{item["id"]}'
+    return "dev-flow" if index == 0 else f"dev-{item['id']}"
 
 
 def flow_pages(data: dict[str, Any]) -> list[str]:
@@ -134,10 +131,10 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
 
     for index, item in enumerate(data["gameplay_flow"]):
         page_id = flow_page_id(item, index)
-        body = f'<h2>{i18n(item["title"])}</h2>'
+        body = f"<h2>{i18n(item['title'])}</h2>"
         if item.get("eyebrow"):
-            body += f'<p class="eyebrow">{i18n(item["eyebrow"])}</p>'
-        body += f'<p class="section-intro">{i18n(item["narrative_context"])}</p>'
+            body += f"<p class=\"eyebrow\">{i18n(item['eyebrow'])}</p>"
+        body += f"<p class=\"section-intro\">{i18n(item['narrative_context'])}</p>"
         body += _story_flow(item)
 
         package = packages.get(item["id"])
@@ -146,7 +143,7 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
         pages.append(
             page(
                 page_id,
-                f'02{chr(65 + index)}',
+                f"02{chr(65 + index)}",
                 item["title"],
                 body,
                 context=item["title"],
@@ -184,7 +181,7 @@ def _global_tabs(items: list[dict[str, Any]], active_id: str) -> str:
         links.append(
             f'<a aria-label="Open {esc(txt(title)["en"])}" class="section-tab section-tab-link{active_class}" '
             f'data-section-target="{esc(target)}" href="#{esc(target)}"{current}>'
-            f'<b>{i18n(str(index))}</b><span>{i18n(title)}</span></a>'
+            f"<b>{i18n(str(index))}</b><span>{i18n(title)}</span></a>"
         )
     return (
         '<div aria-label="Development section navigation" class="section-tabs package-tabs">'
@@ -198,13 +195,13 @@ def _development_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
     for group_index, group in enumerate(groups, 1):
         rows.append(
             f'<tr class="quarry-group-row"><td><b>{group_index}</b></td>'
-            f'<td colspan="3"><b>{i18n(group["title"])}</b></td></tr>'
+            f"<td colspan=\"3\"><b>{i18n(group['title'])}</b></td></tr>"
         )
         for item_index, item in enumerate(group["items"]):
             code = item.get("code") or chr(65 + item_index)
             rows.append(
-                f'<tr><td><b>{i18n(code)}</b></td><td><b>{i18n(item["title"])}</b></td>'
-                f'<td>{cell_html(item["details"])}</td><td>{cell_html(item["result"])}</td></tr>'
+                f"<tr><td><b>{i18n(code)}</b></td><td><b>{i18n(item['title'])}</b></td>"
+                f"<td>{cell_html(item['details'])}</td><td>{cell_html(item['result'])}</td></tr>"
             )
     return rows
 
@@ -239,7 +236,7 @@ def global_pages(data: dict[str, Any]) -> list[str]:
         title = _golden_global_title(item)
         body = (
             f'<h2 class="development-package-title">{i18n(title)}</h2>'
-            f'<p class="development-package-subtitle">{i18n(item.get("subtitle") or bi("Project-wide development", "Pengembangan tingkat project"))}</p>'
+            f"<p class=\"development-package-subtitle\">{i18n(item.get('subtitle') or bi('Project-wide development', 'Pengembangan tingkat project'))}</p>"
             + _global_tabs(items, item["id"])
             + context_block(join_text(title, bi("Overview", "Gambaran Umum")), item["overview"])
             + heading(bi("Development Flow", "Alur Pengembangan"))
@@ -262,7 +259,7 @@ def global_pages(data: dict[str, Any]) -> list[str]:
         pages.append(
             page(
                 page_id,
-                f'03{chr(65 + index)}',
+                f"03{chr(65 + index)}",
                 title,
                 body,
                 context=title,
@@ -294,10 +291,7 @@ def _gameplay_info_rows(package: dict[str, Any]) -> list[str]:
         (bi("Fail Condition", "Kondisi Gagal"), gameplay["blocked_or_fail_condition"]),
         (result_label, result_model["summary"]),
     ]
-    return [
-        f'<tr><td><b>{i18n(label)}</b></td><td>{cell_html(value)}</td></tr>'
-        for label, value in pairs
-    ]
+    return [f"<tr><td><b>{i18n(label)}</b></td><td>{cell_html(value)}</td></tr>" for label, value in pairs]
 
 
 def _level_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
@@ -308,29 +302,29 @@ def _level_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
         if multiple_groups:
             rows.append(
                 f'<tr class="quarry-group-row"><td><b>{group_index}</b></td>'
-                f'<td colspan="4"><b>{i18n(group["title"])}</b></td></tr>'
+                f"<td colspan=\"4\"><b>{i18n(group['title'])}</b></td></tr>"
             )
         for item in group["items"]:
             code = item.get("code") or number
             number += 1
             subtitle = item.get("subtitle") or (group["title"] if not multiple_groups else "")
-            object_cell = f'<b>{i18n(item["object"])}</b>'
+            object_cell = f"<b>{i18n(item['object'])}</b>"
             if present(subtitle):
-                object_cell += f'<small>{i18n(subtitle)}</small>'
+                object_cell += f"<small>{i18n(subtitle)}</small>"
             rows.append(
-                f'<tr><td><b>{i18n(code)}</b></td><td>{object_cell}</td>'
-                f'<td>{cell_html(item["area_size"])}</td>'
-                f'<td>{cell_html(item["build_and_visual"])}</td>'
-                f'<td>{cell_html(item["gameplay_function"])}</td></tr>'
+                f"<tr><td><b>{i18n(code)}</b></td><td>{object_cell}</td>"
+                f"<td>{cell_html(item['area_size'])}</td>"
+                f"<td>{cell_html(item['build_and_visual'])}</td>"
+                f"<td>{cell_html(item['gameplay_function'])}</td></tr>"
             )
             for child_index, child in enumerate(item.get("children", [])):
                 child_code = child.get("code") or chr(65 + child_index)
                 rows.append(
                     f'<tr class="quarry-child-row"><td><b>{i18n(child_code)}</b></td>'
-                    f'<td><b>{i18n(child["object"])}</b></td>'
-                    f'<td>{cell_html(child["area_size"])}</td>'
-                    f'<td>{cell_html(child["build_and_visual"])}</td>'
-                    f'<td>{cell_html(child["gameplay_function"])}</td></tr>'
+                    f"<td><b>{i18n(child['object'])}</b></td>"
+                    f"<td>{cell_html(child['area_size'])}</td>"
+                    f"<td>{cell_html(child['build_and_visual'])}</td>"
+                    f"<td>{cell_html(child['gameplay_function'])}</td></tr>"
                 )
     return rows
 
@@ -346,9 +340,9 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
             f'<td colspan="3"><b>{i18n(bi("Scoring Setup", "Setup Scoring"))}</b></td></tr>'
         )
         rows.append(
-            f'<tr><td><b>A</b></td><td><b>{i18n(scoring["score_name"])}</b></td>'
-            f'<td>{score_html(scoring)}</td>'
-            f'<td>{cell_html(scoring["final_result_relationship"])}</td></tr>'
+            f"<tr><td><b>A</b></td><td><b>{i18n(scoring['score_name'])}</b></td>"
+            f"<td>{score_html(scoring)}</td>"
+            f"<td>{cell_html(scoring['final_result_relationship'])}</td></tr>"
         )
         group_number += 1
     else:
@@ -358,9 +352,9 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
             f'<td colspan="3"><b>{i18n(bi("Completion and Data", "Completion dan Data"))}</b></td></tr>'
         )
         rows.append(
-            f'<tr><td><b>A</b></td><td><b>{i18n(completion["completion_name"])}</b></td>'
-            f'<td>{completion_html(completion)}</td>'
-            f'<td>{cell_html(completion["handoff_result"])}</td></tr>'
+            f"<tr><td><b>A</b></td><td><b>{i18n(completion['completion_name'])}</b></td>"
+            f"<td>{completion_html(completion)}</td>"
+            f"<td>{cell_html(completion['handoff_result'])}</td></tr>"
         )
         group_number += 1
 
@@ -370,8 +364,7 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
     )
     rows.append(
         f'<tr><td><b>A</b></td><td><b>{i18n(bi("Reset", "Reset"))}</b></td>'
-        f'<td>{cell_html(developer["reset"])}</td>'
-        f'<td>{cell_html(developer["reset_result"])}</td></tr>'
+        f"<td>{cell_html(developer['reset'])}</td><td>{cell_html(developer['reset_result'])}</td></tr>"
     )
     return rows
 
@@ -408,7 +401,11 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             )
             + heading(bi("Player Flow", "Alur Player"))
             + sequence(gameplay["player_flow"])
-            + terms(package.get("terms", []), f"dev-{package_id}-requirement-terms-used-details", glossary_enabled=True)
+            + terms(
+                package.get("terms", []),
+                f"dev-{package_id}-requirement-terms-used-details",
+                glossary_enabled=True,
+            )
         )
         pages.append(
             page(
@@ -485,7 +482,11 @@ def package_pages(data: dict[str, Any]) -> list[str]:
             )
             + heading(bi("Important Development Notes", "Catatan Pengembangan Penting"))
             + note_grid(developer.get("notes", []))
-            + terms(package.get("terms", []), f"dev-{package_id}-developer-terms-used-details", glossary_enabled=True)
+            + terms(
+                package.get("terms", []),
+                f"dev-{package_id}-developer-terms-used-details",
+                glossary_enabled=True,
+            )
         )
         pages.append(
             page(
@@ -550,7 +551,7 @@ def navigation(data: dict[str, Any]) -> str:
         links.append(
             (
                 flow_page_id(item, index),
-                f'02{chr(65 + index)}',
+                f"02{chr(65 + index)}",
                 item["title"],
                 bi("Gameplay Flow", "Alur Gameplay"),
             )
@@ -559,11 +560,12 @@ def navigation(data: dict[str, Any]) -> str:
         links.append(
             (
                 global_page_id(item),
-                f'03{chr(65 + index)}',
+                f"03{chr(65 + index)}",
                 _golden_global_title(item),
                 bi("Development", "Development"),
             )
         )
+    role_order = ("requirement", "level", "developer")
     for package_index, package in enumerate(data["packages"], 1):
         for role_suffix, role_label in (
             ("requirement", bi("Gameplay Overview", "Gambaran Gameplay")),
@@ -572,8 +574,8 @@ def navigation(data: dict[str, Any]) -> str:
         ):
             links.append(
                 (
-                    f'dev-{package["id"]}-{role_suffix}',
-                    f"03{package_index}{'ABC'[('requirement', 'level', 'developer').index(role_suffix)]}",
+                    f"dev-{package['id']}-{role_suffix}",
+                    f"03{package_index}{'ABC'[role_order.index(role_suffix)]}",
                     package["package_label"],
                     role_label,
                 )
