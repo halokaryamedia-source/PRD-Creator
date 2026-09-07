@@ -4,105 +4,93 @@ Status: active Flow 5 policy
 
 ## Purpose
 
-Convert a Flow 4 accepted PRD revision into a traceable, minimal set of justified Voice moments that are **complete enough for Flow 6/SoundMaker to author without inventing project meaning**.
+Convert one accepted Flow 4 handoff revision into the minimal traceable Voice scope that Flow 6 can author without inventing project meaning.
 
-Flow 5 exists to prevent three failure modes:
+Detailed field/state procedure lives in `kits/prd-creator/voice/EXTRACTION.md`; this page owns durable boundaries only.
 
-1. Voice Production inventing upstream gameplay/story facts because the PRD/requirement is incomplete.
-2. Voice Production creating dialogue for every section simply because a reference project used Voice there.
-3. Flow 6 reopening the full PRD or guessing listener/timing context because `voice-requirements.md` is too vague.
+## Canonical owners
 
-## Entry boundary
+```text
+work/voice-requirements.md
+→ Voice scope + communication intent + Owner ID + Moment ID
 
-Normal entry requires `state/handoff-state.yaml: handoff_ready` for the same PRD revision being extracted.
-
-Before extraction, run:
-
-```bash
-python kits/prd-creator/validator/validate_handoff.py \
-  workspace/active/<project>/
+state/voice-state.yaml
+→ one Voice lifecycle status + current canonical refs + source PRD revision
 ```
 
-PASS proves the current accepted handoff/revision paths are coherent. It does not replace semantic PRD acceptance.
+## Entry
 
-If accepted PRD meaning changes later, reopen only affected Flow 5 Voice requirements before downstream production continues.
+Flow 5 starts only from current `handoff_ready` meaning. Before extraction run `validator/validate_handoff.py`.
 
-## Canonical owner
+If accepted PRD/04 meaning changes, reopen only affected Voice requirements.
 
-`work/voice-requirements.md` owns Flow 5 Voice meaning.
+## Stable placement identity
 
-`state/voice-state.yaml` owns lifecycle status/revision/next step only and must not duplicate the requirement content.
+Flow 5 defines placement because it is project meaning, not performance craft:
 
-Detailed extraction procedure lives in `kits/prd-creator/voice/EXTRACTION.md`.
+```text
+Owner ID
+  ↓
+Moment ID
+  ↓
+Voice ID
+```
 
-## Extraction principles
-
-- extract player-facing communication needs, not implementation events;
-- every included moment must have approved Speaker, Channel, Trigger, Purpose, and required communication;
-- preserve official names, sequence, outcomes, rewards, terminology, and authoritative timing truth when it materially constrains the asset;
-- Main Story and Radio Communication are roles, not quotas;
-- a gameplay package may have zero Voice moments;
-- Radio requires an approved remote communication channel;
-- avoid duplicating complete objective instructions in reminders/radio;
-- reject invented lore/mechanics/rewards/triggers;
-- return missing high-impact decisions upstream.
+Owner IDs are `package:<id>` for package-owned meaning and `journey:<id>` only for non-package journey nodes. `Moment ID` uses stable `MOM-...` identity. Display section/moment titles may change without changing those IDs.
 
 ## Flow 5 → Flow 6 interface
 
-A competent Flow 6 reader should be able to recover:
+Every included requirement defines:
 
 ```text
-communication job  ← Function + Purpose
-listener state     ← Trigger + Channel
-information load   ← Must communicate
-listener outcome   ← Purpose
-speaker owner      ← Speaker
-hard timing truth  ← optional Timing Constraint
-scope exclusions   ← Must not add/repeat
+Owner ID
+Moment ID + Moment
+Type
+Function
+Necessity
+Speaker
+Channel
+Trigger
+Purpose
+Must communicate
+Must not add/repeat
+Source refs
+Timing Constraint   # optional authoritative truth only
 ```
 
-Field quality requirements:
-
-- **Function** — primary communication job, not a performance tag.
-- **Trigger** — concrete gameplay/story event/state; include the relevant player/listener condition when it materially affects delivery.
-- **Purpose** — listener-facing result: what the player should know, do, understand, or acknowledge after the line.
-- **Must communicate** — separate independently actionable facts into concise bullets where practical.
-- **Must not add/repeat** — material scope, continuity, and anti-repetition guardrails.
-- **Timing Constraint** — optional and authoritative only; use when accepted project meaning defines a hard line/window/sync constraint. Omit when none exists.
-
-`Timing Constraint` is **not** Flow 6 `Estimated Duration`. Flow 5 must not invent production duration targets merely to make the interface look complete.
-
-Performance Shape, Landing, final wording, Audio Tags, CAPS/punctuation, Target Voice Profile, selected ElevenLabs voice, Stability, Surface, Enhance settings, and production-estimated duration remain Flow 6 responsibilities.
-
-## Standard Voice functions
-
-Common functions include:
-
-```text
-briefing | arrival | transition | reveal | warning | progress | urgency
-encouragement | reminder | setback_recovery | completion | reward | farewell
-```
-
-These are demonstrated communication patterns, not required quotas.
+Flow 6 still owns final wording, performance tags, punctuation/CAPS, Estimated Duration, voice/profile selection, Stability, Surface, and other production interpretation.
 
 ## Candidate/readiness rule
 
-Keep a Voice moment only when it is player-facing, source-supported, tied to an approved Speaker/Channel/Trigger, useful at that moment, and non-duplicative without a distinct gameplay reason.
+Keep a Voice moment only when it is player-facing, supported by accepted meaning, tied to approved Speaker/Channel/Trigger, useful at that point, and non-duplicative without a distinct reason. A package may legitimately have zero Voice moments.
 
-Set `voice_requirements_ready` only when each included moment is justified/traceable and the interface above is complete enough that SoundMaker can fill Voice Intent Completeness without making a product-level guess.
+Return upstream when a material Speaker, Channel, Trigger, Purpose, Owner/Moment identity, required fact, result/reward, sequence, or authoritative timing rule is unresolved.
 
-If a material Speaker/Channel/Trigger, listener state/outcome, required fact, result/reward, terminology/sequence, or authoritative timing rule remains unresolved and different answers would materially change the asset, return that issue upstream.
+## One Voice lifecycle schema
 
-## Completion statuses
+All Voice flows use the schema owned by `shared/lifecycle.py`:
 
-- `voice_requirements_ready` — justified/traceable requirements are ready for Flow 6;
-- `no_voice_required` — accepted upstream evidence justifies no Voice production for current scope;
-- `needs_upstream_decision` — a material project decision must return upstream;
-- `blocked` — required evidence is unavailable;
-- `pending_extraction` — extraction incomplete or stale after upstream revision.
+```yaml
+status: voice_requirements_ready
+source_handoff: state/handoff-state.yaml
+source_prd_revision: <accepted document.version>
+canonical_prd: work/content.md
+requirements: work/voice-requirements.md
+production: work/voice-production.md
+project_html: output/v<accepted document.version>/prd.html
+```
 
-## Output boundary
+Persisted refs are normalized project-relative POSIX paths. Unknown/retired lifecycle fields are invalid.
 
-Flow 5 defines **what must be communicated, by whom, through what approved channel, at what trigger/state, for what listener-facing purpose, and any authoritative Voice/timeline constraint**.
+## Mechanical boundary
 
-It does not define final spoken wording, performance direction, Estimated Duration, ElevenLabs settings, or voice selection.
+`validator/validate_voice.py` is lifecycle-aware. At `voice_requirements_ready` it validates handoff/revision identity, strict Flow 5 requirement fields, and Owner topology without requiring a production script yet.
+
+## Completion
+
+Flow 5 completes as either:
+
+- `voice_requirements_ready`; or
+- `no_voice_required` when accepted upstream meaning justifies no Voice.
+
+Stop before performance writing.

@@ -4,105 +4,84 @@ Status: active durable policy
 
 ## Purpose
 
-Separate generated project documentation from production-ready documentation and preserve only the minimum revision-specific acceptance/handoff evidence needed for continuation.
+Separate generated documentation from an accepted production reference and preserve only revision-specific evidence required for continuation.
+
+Detailed procedure and exact acceptance/state formats live in `kits/prd-creator/document/VALIDATION.md`. This page owns only durable boundaries.
 
 ## Canonical owners
 
-- mandatory PRD-core meaning + Golden composition → `kits/prd-creator/document/CONTENT-CONTRACT.md`;
-- bounded non-Voice 04 Production Asset requirement/writing contract → `kits/prd-creator/production-assets/CONTRACT.md`;
-- detailed Flow 4 procedure → `kits/prd-creator/document/VALIDATION.md`;
-- project handoff state → `state/handoff-state.yaml`;
-- compact document acceptance → `work/acceptance.md`;
-- stable handoff/resume navigator → `output/README.md`;
-- current versioned delivery bundle → `output/v<document.version>/{prd.html, context.md, index.json}`.
+- semantic PRD meaning → `document/CONTENT-CONTRACT.md`;
+- Golden page/component grammar → `document/DESIGN-CONTRACT.md`;
+- non-Voice 04 source → `production-assets/CONTRACT.md`;
+- mechanical PRD validation → `validator/api.py`;
+- handoff state → `state/handoff-state.yaml`;
+- acceptance → `work/acceptance.md`;
+- delivery → `output/README.md` + `output/v<version>/`.
 
-This foundation page does not maintain another Golden checklist, Production Asset checklist, or review matrix.
-
-## Flow 4 sequence
+## Sequence
 
 ```text
-current canonical PRD core + current 04 source when present + current deterministic HTML
-→ one mechanical validation
-→ one integrated Semantic Readiness review
+current Flow 2 approval
++ current content/projection
++ required current non-Voice 04 source
++ deterministic HTML
+→ canonical mechanical validation
+→ semantic reconciliation/readiness
 → Material Conservation
-→ targeted desktop visual sanity when the claim requires it
-→ Critical/Major?
-     yes → fix first wrong owner + recheck only invalidated scope
-     no  → development_ready / handoff_ready
+→ visual sanity when claimed
+→ bind exact reviewed bytes
+→ development_ready | handoff_ready
 ```
+
+There is one complete mechanical PRD validator. Handoff may not call a weaker validation subset.
 
 ## Proof boundaries
 
-Mechanical validation proves deterministic repository/render facts only. It does not prove source fidelity, production-role completeness, 04 production-readiness semantics, material conservation, or visual readability.
+Mechanical validation proves repository/state/schema/freshness/composition facts. It does not prove semantic fidelity or browser visual quality.
 
-`Semantic Readiness` is the single persisted result for the integrated semantic lenses:
+`Semantic Readiness` is one integrated decision across source fidelity, production-role completeness, cross-role consistency, 04 readiness, and appropriate design placement.
 
-```text
-New Reader
-Level Designer
-Developer
-Production Assets       # when 04 exists
-Content Purity
-Project Consistency
-Golden Placement
-```
+`Material Conservation` stays separate because readable output can still omit an independently actionable rule/resource.
 
-When 04 exists, apply the readiness gate owned by `kits/prd-creator/production-assets/CONTRACT.md` inside this same review. Do **not** add a separate Production Assets PASS field, review file, workflow, or approval layer.
+`Visual sanity` requires rendered/browser evidence when marked `PASS`.
 
-Production Assets readiness asks whether all real required resources are covered once, supported by authority, actionable, assigned to natural gameplay moments, free of disguised behavior/filler, exact where exact facts exist, readable by the production role, and additive without rewriting 01–03.
+## Exact acceptance identity
 
-Do not persist a separate PASS field for every lens. They are questions inside one review, not independent workflow gates.
-
-`Material Conservation` remains separate because a document can read clearly while accidentally omitting an independently actionable approved rule or required production resource.
-
-`Visual sanity` remains separate because browser/render evidence is a different proof channel. Static HTML inspection cannot claim visual PASS.
-
-A production role needing to reopen source to recover a material rule or required production resource that belongs in the document is a **Major** completeness failure.
-
-## Golden proof economy
-
-The approved Golden prototype is already owned by `kits/prd-creator/document/CONTENT-CONTRACT.md`, `kits/prd-creator/renderer/CONTRACT.md`, the exact reference bytes, and focused regression coverage.
-
-For ordinary content-only or 04-only production, do **not** repeat a full reverse Golden proof when Golden template/CSS/JS/PRD-core visible composition/semantic slot contract is unchanged. Validate the current project against the existing contract and inspect only representative/high-risk rendered pages.
-
-Escalate to broader every-page/reference proof only when the Golden/template/PRD-core composition contract changed, a targeted finding suggests a global defect, or the user explicitly requests broader proof.
-
-## Acceptance record
-
-Keep `work/acceptance.md` compact:
+`document.version` is release/project metadata, not an edit counter. `handoff_ready` binds both current machine sources:
 
 ```text
-# PRD Acceptance
-Status: needs_revision | development_ready | handoff_ready
-Mechanical: PASS | FAIL
-Semantic Readiness: PASS | FAIL
-Material Conservation: PASS | FAIL
-Visual sanity: PASS | FAIL | NOT PROVEN
-Critical: N
-Major: N
-Findings: <only when findings exist>
+Accepted Render Data SHA256: <current render-data SHA-256>
+Accepted Asset Requirements SHA256: <current asset-requirements SHA-256 | none>
 ```
 
-Do not duplicate checksum tables, CI transcripts, role-by-role PASS fields, a separate 04 PASS field, or review prose when Git state/validators/current review already own that evidence.
+Changing either source invalidates prior acceptance even if the semantic version remains unchanged.
+
+When no non-Voice 04 source exists, the second binding is exactly `none`.
 
 ## Handoff boundary
 
-Before Flow 5, `kits/prd-creator/validator/validate_handoff.py` confirms that current accepted revision, canonical inputs, acceptance state, `output/README.md`, versioned `prd.html` / `context.md` / `index.json`, handoff state, and `document.version` agree.
+Before Flow 5, `validator/validate_handoff.py` confirms:
 
-When 04 exists, `handoff_ready` also depends on the integrated Semantic Readiness review having applied the `kits/prd-creator/production-assets/CONTRACT.md` readiness gate. Mechanical source freshness alone does not prove that 04 is professionally actionable.
+- the canonical PRD validator still passes;
+- `handoff-state.yaml` uses the strict current schema and safe project-relative paths;
+- accepted semantic version matches current render-data and versioned delivery;
+- referenced delivery artifacts exist;
+- acceptance binds exact current render-data + non-Voice asset bytes.
 
-`handoff_ready` means only that the accepted project document may be used as the current production reference / downstream Voice input. It does not mean client approval, implementation completion, gameplay QA, release approval, or completed Voice Production.
+`handoff_ready` means the document may be used as the current production reference/downstream Voice input. It does not mean client sign-off, implementation completion, gameplay QA, release approval, or completed Voice production.
 
 ## Bounded revision
 
 ```text
 approved change
-→ affected truth/content/04 source/projection only
-→ one deterministic full-file rerender
-→ one mechanical check
-→ one integrated review of invalidated scope
+→ first wrong canonical owner
+→ affected projection/04 source
+→ deterministic rerender
+→ canonical validation
+→ review invalidated meaning only
+→ refresh exact-byte acceptance
 → visual check only where changed/high-risk
 → stop
 ```
 
-Do not replay unchanged intake, unrelated packages, full Golden reverse proof, Voice tests, mobile QA, or every-page visual inspection for ceremony.
+Do not replay unrelated intake/packages/Voice/Golden proof for ceremony.

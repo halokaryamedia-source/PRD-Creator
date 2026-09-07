@@ -15,8 +15,10 @@ def present(value: Any) -> bool:
 
 def txt(value: Any) -> dict[str, str]:
     if isinstance(value, dict):
-        en, ind = value.get("en"), value.get("id")
-        return {"en": "" if en is None else str(en), "id": "" if ind is None else str(ind)}
+        return {
+            "en": "" if value.get("en") is None else str(value["en"]),
+            "id": "" if value.get("id") is None else str(value["id"]),
+        }
     text = "" if value is None else str(value)
     return {"en": text, "id": text}
 
@@ -48,7 +50,11 @@ def slug(value: str) -> str:
 def ul(items: list[Any], cls: str = "clean-list") -> str:
     if not items:
         return ""
-    return f'<ul class="{esc(cls)}">' + "".join(f"<li>{i18n(item)}</li>" for item in items) + "</ul>"
+    return (
+        f'<ul class="{esc(cls)}">'
+        + "".join(f"<li>{i18n(item)}</li>" for item in items)
+        + "</ul>"
+    )
 
 
 def cell_html(value: Any) -> str:
@@ -62,7 +68,11 @@ def production_table(headers: list[Any], rows_html: list[str], cls: str) -> str:
         return ""
     head = ""
     if headers:
-        head = '<thead><tr>' + "".join(f"<th>{i18n(header)}</th>" for header in headers) + "</tr></thead>"
+        head = (
+            '<thead><tr>'
+            + "".join(f"<th>{i18n(header)}</th>" for header in headers)
+            + "</tr></thead>"
+        )
     return (
         f'<div class="production-table-wrap"><table class="production-table {esc(cls)}">'
         f'{head}<tbody>{"".join(rows_html)}</tbody></table></div>'
@@ -74,8 +84,8 @@ def terms(items: list[dict[str, Any]], panel_id: str, *, glossary_enabled: bool 
         return ""
     rows = "".join(
         '<div class="definition-item">'
-        f'<b>{i18n(item.get("label") or item.get("term") or item.get("key", ""))}</b>'
-        f'<p>{i18n(item.get("definition", ""))}</p></div>'
+        f'<b>{i18n(item["label"])}</b>'
+        f'<p>{i18n(item["definition"])}</p></div>'
         for item in items
     )
     definition_classes = "definition-list quarry-definition-list"
@@ -107,56 +117,43 @@ def cards(items: list[tuple[Any, Any]]) -> str:
 def context_block(label: Any, value: Any) -> str:
     if not present(value):
         return ""
-    return f'<div class="context-block section-context"><b>{i18n(label)}</b><p>{i18n(value)}</p></div>'
+    return (
+        f'<div class="context-block section-context"><b>{i18n(label)}</b>'
+        f'<p>{i18n(value)}</p></div>'
+    )
 
 
 def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
-    if not items:
-        return ""
     body = []
     for index, item in enumerate(items, 1):
         step = item.get("step", index)
-        title = item.get("title") or item.get("stage") or item.get("trigger") or ""
-        description = (
-            item.get("description")
-            or item.get("details")
-            or item.get("action")
-            or item.get("behavior")
-            or ""
-        )
         body.append(
-            f'<article><b>{i18n(str(step).zfill(2))}</b><strong>{i18n(title)}</strong>'
-            f'<p>{i18n(description)}</p></article>'
+            f'<article><b>{i18n(str(step).zfill(2))}</b>'
+            f'<strong>{i18n(item["title"])}</strong>'
+            f'<p>{i18n(item["description"])}</p></article>'
         )
-    return f'<div class="flow {esc(cls)}">{"".join(body)}</div>'
+    return f'<div class="flow {esc(cls)}">{"".join(body)}</div>' if body else ""
 
 
 def sequence(items: list[dict[str, Any]]) -> str:
-    if not items:
-        return ""
     body = []
     for item in items:
-        title = item.get("title") or item.get("stage") or ""
-        description = item.get("description") or item.get("action") or item.get("details") or ""
-        result = item.get("result")
-        text = join_text(description, result, sep=" — ") if present(result) else description
-        body.append(f'<div class="role-step"><div><strong>{i18n(title)}</strong><p>{i18n(text)}</p></div></div>')
-    return f'<div class="role-sequence quarry-sequence">{"".join(body)}</div>'
+        text = join_text(item["action"], item["result"], sep=" — ")
+        body.append(
+            f'<div class="role-step"><div><strong>{i18n(item["title"])}</strong>'
+            f'<p>{i18n(text)}</p></div></div>'
+        )
+    return f'<div class="role-sequence quarry-sequence">{"".join(body)}</div>' if body else ""
 
 
-def note_grid(items: list[Any]) -> str:
+def note_grid(items: list[dict[str, Any]]) -> str:
     if not items:
         return ""
-    body = []
-    for item in items:
-        if isinstance(item, dict):
-            title = item.get("title") or item.get("label") or bi("Important Note", "Catatan Penting")
-            description = item.get("description") or item.get("details") or item.get("note") or ""
-        else:
-            title = bi("Important Note", "Catatan Penting")
-            description = item
-        body.append(f'<article><b>{i18n(title)}</b><p>{i18n(description)}</p></article>')
-    return f'<div class="outcome quarry-note-grid">{"".join(body)}</div>'
+    body = "".join(
+        f'<article><b>{i18n(item["title"])}</b><p>{i18n(item["description"])}</p></article>'
+        for item in items
+    )
+    return f'<div class="outcome quarry-note-grid">{body}</div>'
 
 
 def page(
@@ -182,12 +179,15 @@ def page(
     if phase:
         attrs.append(f'data-phase="{esc(phase)}"')
     attrs.append(f'id="{esc(pid)}"')
-    header_value = header or bi("Gameplay & Development Specification", "Spesifikasi Gameplay & Pengembangan")
+    header_value = header or bi(
+        "Gameplay & Development Specification",
+        "Spesifikasi Gameplay & Pengembangan",
+    )
     footer_brand = brand or title
     footer_copy = footer_title or title
     return (
-        f'<section {" ".join(attrs)}><div class="page-head"><strong>{i18n(header_value)}</strong>'
-        f'<span>{i18n(context)}</span></div>{body}'
+        f'<section {" ".join(attrs)}><div class="page-head">'
+        f'<strong>{i18n(header_value)}</strong><span>{i18n(context)}</span></div>{body}'
         f'<div class="page-foot"><span class="footer-brand">{i18n(footer_brand)}</span>'
         f'<span class="footer-title">{i18n(footer_copy)}</span>'
         f'<span class="footer-code">{i18n(code)}</span></div></section>'
@@ -212,7 +212,8 @@ def tabs(pid: str, active: str) -> str:
             f'<b>{i18n(code)}</b><span>{i18n(label)}</span></a>'
         )
     return (
-        '<div aria-label="Current gameplay development section" class="section-tabs package-tabs">'
+        '<div aria-label="Current gameplay development section" '
+        'class="section-tabs package-tabs">'
         + "".join(links)
         + "</div>"
     )
@@ -226,107 +227,118 @@ def weight_text(value: Any) -> str:
     return f"{value}%"
 
 
-def _score_table(headers: list[Any], rows: list[str], classes: str = "score-table-wrap quarry-inline-score-table") -> str:
+def _score_table(
+    headers: list[Any],
+    rows: list[str],
+    classes: str = "score-table-wrap quarry-inline-score-table",
+) -> str:
     if not rows:
         return ""
     head = "".join(f"<th>{i18n(value)}</th>" for value in headers)
     return (
-        f'<div class="{esc(classes)}">'
-        f'<table class="score-table"><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
+        f'<div class="{esc(classes)}"><table class="score-table">'
+        f'<thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
     )
 
 
 def _result_context(data: dict[str, Any]) -> str:
     rows = []
-    for label, value in [
-        (bi("Final Result", "Hasil Akhir"), data.get("final_result_relationship")),
-        (bi("Player-Facing Result", "Hasil yang Ditampilkan ke Player"), data.get("player_facing_display")),
-        (bi("Telemetry / Export", "Telemetry / Export"), data.get("telemetry_export")),
-    ]:
-        if present(value):
-            rows.append(join_text(label, value, sep=": "))
-    return ul(rows, "compact-cell-list") if rows else ""
+    for label, field in (
+        (bi("Final Result", "Hasil Akhir"), "final_result_relationship"),
+        (bi("Player-Facing Result", "Hasil yang Ditampilkan ke Player"), "player_facing_display"),
+        (bi("Telemetry / Export", "Telemetry / Export"), "telemetry_export"),
+    ):
+        rows.append(join_text(label, data[field], sep=": "))
+    return ul(rows, "compact-cell-list")
 
 
 def score_html(data: dict[str, Any]) -> str:
-    if not data:
-        return ""
-    components = [item for item in data.get("components", []) if isinstance(item, dict)]
-    score_name = data.get("score_name", bi("Score", "Score"))
-    scale = data.get("scale") or data.get("score_scale") or ""
+    components = data.get("components", [])
+    summary = f'<div class="quarry-score-summary"><strong>{i18n(data["score_name"])}</strong>'
+    if data.get("scale"):
+        summary += f'<span>{i18n(data["scale"])}</span>'
     formula = data.get("formula") or data.get("summary")
-    if not present(formula) and components:
-        en_parts = [
-            f'{weight_text(item.get("weight"))} {txt(item.get("name", ""))["en"]}'.strip()
-            for item in components
-        ]
-        id_parts = [
-            f'{weight_text(item.get("weight"))} {txt(item.get("name", ""))["id"]}'.strip()
-            for item in components
-        ]
-        formula = {"en": " + ".join(en_parts), "id": " + ".join(id_parts)}
-    summary = f'<div class="quarry-score-summary"><strong>{i18n(score_name)}</strong>'
-    if present(scale):
-        summary += f'<span>{i18n(scale)}</span>'
-    if present(formula):
+    if formula:
         summary += f'<p>{i18n(formula)}</p>'
     summary += "</div>"
     rows = [
-        f'<tr><td><b>{i18n(item.get("name", ""))}</b></td>'
-        f'<td><b>{i18n(weight_text(item.get("weight")))}</b></td>'
-        f'<td>{i18n(item.get("rule", ""))}</td></tr>'
+        f'<tr><td><b>{i18n(item["name"])}</b></td>'
+        f'<td><b>{i18n(weight_text(item["weight"]))}</b></td>'
+        f'<td>{i18n(item["rule"])}</td></tr>'
         for item in components
     ]
-    extra = []
-    for label, value in [
-        (bi("Timer Start", "Timer Mulai"), data.get("timer_start")),
-        (bi("Timer Stop", "Timer Berhenti"), data.get("timer_stop")),
-        (bi("No-Score Condition", "Kondisi Tanpa Score"), data.get("no_score_condition")),
-        (bi("Duplicate Prevention", "Pencegahan Duplikasi"), data.get("duplicate_prevention")),
-    ]:
-        if present(value):
-            extra.append(join_text(label, value, sep=": "))
+    extra = [
+        join_text(bi("Timer Start", "Timer Mulai"), data["timer_start"], sep=": "),
+        join_text(bi("Timer Stop", "Timer Berhenti"), data["timer_stop"], sep=": "),
+        join_text(
+            bi("No-Score Condition", "Kondisi Tanpa Score"),
+            data["no_score_condition"],
+            sep=": ",
+        ),
+        join_text(
+            bi("Duplicate Prevention", "Pencegahan Duplikasi"),
+            data["duplicate_prevention"],
+            sep=": ",
+        ),
+    ]
     return (
         summary
         + _score_table(
-            [bi("Component", "Komponen"), bi("Weight", "Bobot"), bi("Required Rule", "Aturan Wajib")],
+            [
+                bi("Component", "Komponen"),
+                bi("Weight", "Bobot"),
+                bi("Required Rule", "Aturan Wajib"),
+            ],
             rows,
         )
-        + (ul(extra, "compact-cell-list") if extra else "")
+        + ul(extra, "compact-cell-list")
         + _result_context(data)
     )
 
 
 def completion_html(data: dict[str, Any]) -> str:
-    if not data:
-        return ""
-    name = data.get("completion_name", bi("Completion", "Penyelesaian"))
-    status = (
-        bi("Produces Score", "Menghasilkan Score")
-        if data.get("produces_score")
-        else bi("No Objective Score", "Tanpa Objective Score")
-    )
+    summary_text = data.get("summary") or data["handoff_result"]
     summary = (
-        f'<div class="quarry-score-summary phase-score-summary"><strong>{i18n(name)}</strong><span>{i18n(status)}</span>'
-        f'<p>{i18n(data.get("summary") or data.get("handoff_result") or "")}</p></div>'
+        f'<div class="quarry-score-summary phase-score-summary">'
+        f'<strong>{i18n(data["completion_name"])}</strong>'
+        f'<span>{i18n(bi("No Objective Score", "Tanpa Objective Score"))}</span>'
+        f'<p>{i18n(summary_text)}</p></div>'
     )
-    rows = []
     mapping = [
-        (bi("Completion", "Penyelesaian"), bi("Required", "Wajib"), data.get("valid_completion_condition")),
-        (bi("Recorded Data", "Data yang Dicatat"), bi("Completion", "Penyelesaian"), data.get("recorded_data")),
-        (bi("Incomplete Session", "Sesi Belum Selesai"), bi("No Result", "Tanpa Hasil"), data.get("interrupted_completion_behavior")),
-        (bi("Duplicate Prevention", "Pencegahan Duplikasi"), bi("Required", "Wajib"), data.get("duplicate_prevention")),
+        (
+            bi("Completion", "Penyelesaian"),
+            bi("Required", "Wajib"),
+            data["valid_completion_condition"],
+        ),
+        (
+            bi("Recorded Data", "Data yang Dicatat"),
+            bi("Completion", "Penyelesaian"),
+            data["recorded_data"],
+        ),
+        (
+            bi("Incomplete Session", "Sesi Belum Selesai"),
+            bi("No Result", "Tanpa Hasil"),
+            data["interrupted_completion_behavior"],
+        ),
+        (
+            bi("Duplicate Prevention", "Pencegahan Duplikasi"),
+            bi("Required", "Wajib"),
+            data["duplicate_prevention"],
+        ),
     ]
-    for component, row_status, rule in mapping:
-        if present(rule):
-            rows.append(
-                f'<tr><td><b>{i18n(component)}</b></td><td><b>{i18n(row_status)}</b></td>'
-                f'<td>{i18n(rule)}</td></tr>'
-            )
+    rows = [
+        f'<tr><td><b>{i18n(component)}</b></td><td><b>{i18n(status)}</b></td>'
+        f'<td>{i18n(rule)}</td></tr>'
+        for component, status, rule in mapping
+    ]
     return (
         summary
         + _score_table(
-            [bi("Component", "Komponen"), bi("Status", "Status"), bi("Required Rule", "Aturan Wajib")],
+            [
+                bi("Component", "Komponen"),
+                bi("Status", "Status"),
+                bi("Required Rule", "Aturan Wajib"),
+            ],
             rows,
             "score-table-wrap quarry-inline-score-table phase-inline-score-table",
         )

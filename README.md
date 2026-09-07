@@ -1,107 +1,139 @@
 # PRD-Creator
 
-PRD-Creator is an AI-assisted production system for turning game-project discussion and source material into an approved project model, a development-ready PRD, required Production Assets, and optional downstream Voice Production.
+PRD-Creator is an AI-assisted production system for turning game-project evidence and discussion into a revision-bound approved project model, a development-ready PRD, required Production Assets, and optional downstream Voice Production.
 
-## What Goes In / What Comes Out
+## Input → Output
 
-| Input | PRD-Creator | Output |
+| Input | Processing | Output |
 |---|---|---|
-| Project discussion and approved decisions | requirement recovery | structured project model |
-| Reference/source documents | authority-aware intake | development-ready PRD |
-| Approved gameplay/build requirements | production planning | 04 Production Assets |
-| Approved Voice needs | Voice extraction + writing | Eleven v3-ready Voice Production |
+| Project discussion / current instruction | authority-aware requirement recovery | approved requirement revision |
+| Authoritative/reference sources | provenance + integrated synthesis | canonical PRD meaning |
+| Approved gameplay/build needs | strict production-resource extraction | 04 Production Assets |
+| Approved Voice needs | Flow 5–7 extraction/writing/validation | Eleven v3-ready Voice Production |
 
-Normal versioned delivery:
+Normal delivery:
 
 ```text
 output/
 ├── README.md
 └── v<document.version>/
-    ├── prd.html       # human-facing project document
-    ├── context.md     # AI/development context
-    └── index.json     # compact navigation + line ranges
+    ├── prd.html
+    ├── context.md
+    └── index.json
 ```
 
-Generated delivery is never source of truth. Fix canonical project state first, then regenerate only the invalidated output.
+Generated delivery is never source of truth. Fix the first wrong canonical owner and regenerate.
 
 ## Branch Model
 
 ```text
-develop  → active repository development; working commits may be numerous
-Local    → clean approved integration history; one commit per approved update
-main     → stable repository history; tagged releases are feature-bearing publish points
+develop  → default active repository development
+Local    → clean verified integration baseline; one commit per approved update
+main     → stable repository history
 ```
 
-All three active branches share the same professional root baseline.
+This is the repository default. A current explicit user instruction may select a different working branch for a specific task; that instruction does not silently redefine permanent branch governance.
 
-Normal repository changes happen on `develop`.
+Normal `develop` → `Local` promotion uses a verified squash boundary. `Local` → `main` remains explicit stable promotion. Version tags/releases are created only for approved feature/capability releases, not maintenance-only changes.
 
-A coherent approved update is promoted from `develop` to `Local` through a dedicated pull request after the Local promotion gate passes. The promotion must use **squash merge**, so all working commits for that approved update become exactly one new commit on `Local`.
-
-After a successful squash promotion, synchronize `develop` back to the resulting `Local` HEAD before starting the next development cycle. Do not continue development from the pre-squash commit chain.
-
-```text
-Local #1 ───────────────┐
-                        ├─ develop: D1 → D2 → D3
-                        │              │
-                        │              └─ squash promotion
-                        ▼
-Local #2  approved update
-    │
-    └─ reset/sync develop to Local #2
-```
-
-An approved stable update is promoted from `Local` to `main` through a dedicated pull request after `Stable release gate` passes. Use a normal merge commit so `main` records the stable boundary while `Local` keeps its clean milestone sequence.
-
-A `main` promotion is not automatically a versioned release. Create a new protected `v*` tag and GitHub Release only when an approved PRD-Creator feature/capability changes. Governance, CI, ruleset, documentation, and other maintenance-only updates remain untagged.
-
-Repository behavior is routed by [AGENTS.md](AGENTS.md). GitHub execution is governed by [GITHUB_RULES.md](GITHUB_RULES.md). Stable product orientation lives in [CONTEXT.md](CONTEXT.md).
+Repository behavior is routed by [AGENTS.md](AGENTS.md); GitHub execution policy by [GITHUB_RULES.md](GITHUB_RULES.md).
 
 ## Developer Quick Start
 
-Prerequisite: **Python 3.11**. The current verification environment has no third-party Python runtime dependencies.
+Prerequisite: **Python 3.11**.
 
-Repository contract check:
+Install pinned runtime + verification dependencies:
+
+```bash
+python -m pip install \
+  -r requirements.lock.txt \
+  -r requirements-dev.lock.txt
+python -m pip check
+```
+
+Repository contracts:
 
 ```bash
 python tools/verify_repository.py
 ```
 
-PRD regression suite:
+Static source quality:
 
 ```bash
-python -m unittest \
-  tests.test_prd_contracts \
-  tests.test_prd_content_purity \
-  tests.test_prd_delivery \
-  tests.test_prd_voice_assets \
-  tests.test_prd_handoff_contracts \
-  tests.test_prd_flow2_state_contracts \
-  tests.test_prd_hierarchy_contracts \
-  tests.test_prd_golden_reference
+ruff format --check kits/prd-creator tests tools
+ruff check kits/prd-creator tests tools
+mypy \
+  kits/prd-creator/shared \
+  kits/prd-creator/renderer \
+  kits/prd-creator/validator
 ```
 
-Voice regression suite:
+PRD regression:
 
 ```bash
-python -m unittest tests.test_voice_contracts
+python -m unittest discover -s tests -p "test_prd_*.py" -v
 ```
 
-Generate the current delivery for a project package:
+Full regression + coverage:
+
+```bash
+coverage run -m unittest discover -s tests -p "test_*.py" -v
+coverage report
+```
+
+Generate a project delivery:
 
 ```bash
 python kits/prd-creator/renderer/delivery.py \
   workspace/active/<project>/
 ```
 
-Validate a project revision:
+Validate current PRD:
 
 ```bash
 python kits/prd-creator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Project packages under `workspace/active/` and `workspace/archive/` are **local/external production data and are not tracked by this public system repository**. Only the workspace guides are committed. See [workspace/README.md](workspace/README.md) and [SECURITY.md](SECURITY.md).
+Project packages under `workspace/active/` / `workspace/archive/` are local/external production data and are not tracked in this public system repository.
+
+## Package 3 Architecture
+
+```text
+kits/prd-creator/
+├─ intake/              Flow 2 semantic procedure
+├─ document/            PRD semantic/design/acceptance contracts
+├─ production-assets/   04 resource contract
+├─ voice/               Flow 5–7 semantic/craft/validation procedures
+├─ shared/              strict machine contracts
+├─ renderer/            deterministic rendering + transactional delivery
+│  ├─ template_adapter.py
+│  └─ static/
+├─ validator/           canonical PRD/handoff/Voice mechanical gates
+└─ template/            protected Golden/runtime bytes
+```
+
+Core machine invariants:
+
+```text
+requirement-register bytes
+→ approved_requirement_sha256
+
+content.md bytes
+→ render-data.canonical_content_sha256
+
+Owner ID
+→ Moment ID
+→ AST / VO resource identity
+
+Flow 4 acceptance
+→ exact render-data + asset-requirements SHA bindings
+
+Flow 7 acceptance
+→ exact voice-production SHA binding
+```
+
+Machine YAML is parsed by the shared duplicate-safe YAML loader. Persisted refs are normalized project-relative paths. Render data has one supported field vocabulary; renderer-side compatibility inference is retired.
 
 ## Repository Map
 
@@ -112,27 +144,23 @@ docs/knowledge/      continuation, ownership, decisions, evidence
 kits/prd-creator/    Flow 2–7 procedure + implementation
 tests/               executable regression contracts
 tools/               repository verification
-workspace/           local/external project-package mount points
-.github/             CI, ownership, and pull-request policy
+workspace/           local/external project-package mount convention
+.github/             CI / ownership / release policy
 ```
-
-For product history, see [CHANGELOG.md](CHANGELOG.md). For contribution and promotion rules, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Working Principle
 
 ```text
 identify mode
-→ find first changed owner
-→ read affected context only
-→ change canonical source
-→ regenerate only invalidated output
-→ run the cheapest relevant proof
+→ find first wrong/changed owner
+→ read only required context
+→ update canonical source
+→ regenerate derived output once
+→ run the proof that can falsify the changed claim
 → stop
 ```
 
-## Package Version
-
-The current package version is owned by [kits/prd-creator/README.md](kits/prd-creator/README.md). Repository hygiene, CI, documentation clarification, and branch-governance changes do not bump the package version by themselves and do not create a new repository release unless a feature/capability also changes.
+The current package version is owned by [kits/prd-creator/README.md](kits/prd-creator/README.md). See [CHANGELOG.md](CHANGELOG.md) for product history.
 
 ## License
 

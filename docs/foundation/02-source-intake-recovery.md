@@ -4,177 +4,103 @@ Status: active Flow 2 policy
 
 ## Purpose
 
-Turn uneven project material into a trustworthy, **complete reviewable project model** before PRD drafting. Flow 2 recovers explicit authority, project structure, exclusions, terminology, necessary production implications, material gaps/conflicts, and practical resolutions; it then presents the complete model through the Simple Chat Preview for user approval.
+Turn uneven project evidence into one coherent, reviewable, revision-bound requirement model before PRD authoring.
 
-Detailed procedure lives in `kits/prd-creator/intake/SOURCE-INTAKE.md`. This foundation page owns only durable policy.
+The exact machine schema and operational procedure live in `kits/prd-creator/intake/SOURCE-INTAKE.md` and `shared/intake.py`. This foundation file does not maintain another YAML contract.
 
-## Canonical sequence
+## Authority and provenance
+
+Every material requirement must remain traceable to current project authority or an explicitly approved AI Proposal.
+
+Authority remains:
 
 ```text
-inventory source/instruction evidence
-→ authority/relevance triage + sufficient inspection
-→ recover facts/rules/exclusions/topology/terminology
-→ one integrated production-completeness pass
-→ authority / Completion / concrete Proposal / Blocked
-→ propagate affected production meaning
-→ complete Simple Chat Preview
-→ user correction / approval
-→ promote represented pending proposals
-→ ready_for_prd
+current explicit user instruction
+→ approved decisions
+→ current authoritative source
+→ supporting evidence
+→ generated/reference material only as bounded evidence
 ```
 
-Flow 2 should **solve before asking**. It does not stop at listing gaps when a responsible coherent proposal can be formed.
-
-## Authority
-
-Precedence:
-
-1. current explicit user/creative-owner instruction;
-2. approved project decisions;
-3. current authoritative project source;
-4. normalized current requirement state;
-5. supporting/generated evidence for context only;
-6. Golden/reference material for demonstrated document structure/quality only.
-
-A polished filename such as `FINAL` does not override higher authority by itself. Same-authority material conflicts remain explicit until resolved; do not silently select the more convenient sentence.
-
-Material user instructions must be persisted even when no file exists.
+Reference or generated material never silently becomes project truth.
 
 ## Source retention
 
-Source identity/provenance is mandatory; **duplicating every source file into Git is not**.
+Retain source bytes in the project only when later direct inspection/reproduction materially benefits from them. Repository-retained sources are freshness-bound by SHA-256. External retention is valid only after relevant authority has been sufficiently inspected and recovered meaning is persisted.
 
-Keep a supplied original under `source/originals/` when later direct inspection/reproduction materially benefits from in-repo bytes. A large/static source may remain externally retained when:
+A current source whose necessary inspection is blocked prevents readiness.
 
-- relevant authority has already been inspected to sufficient depth;
-- source inventory records its exact identity/provenance and retention boundary;
-- filename and SHA-256 are recorded for file sources when available/useful for exact continuity;
-- recovered/approved production meaning is persisted in requirement/canonical state.
+## Requirement recovery
 
-External retention cannot be used to avoid reading material authority or to replace source with generated output.
+Recover material facts, constraints, exclusions, topology, terminology, quantitative rules, lifecycle behavior, build/spatial intent, approved technical constraints, and required production-resource implications.
 
-## Canonical PRD scope boundary
+Treat negative statements as first-class requirements.
 
-Technical or completed-map material is **evidence**, not automatically canonical PRD meaning. Flow 2 recovers what a competent production team must know to design, build, implement, and verify the intended project; it does not turn a finished implementation into a forensic specification of itself.
+Do not promote incidental as-built identifiers such as final coordinates, UUIDs, scoreboard names, function paths, or debug/setup residue unless current authority explicitly makes them production constraints.
 
-Preserve:
-
-- product/gameplay requirements;
-- build and production requirements;
-- approved dimensions, counts, timing, capacities, relative placement, spatial relationships, visibility/readability, route intent, and other design-owned constraints;
-- explicit approved technical constraints when production must obey them.
-
-Do not promote incidental implementation realization or map-instance setup merely because it appears in authoritative technical evidence. Keep that evidence available for provenance, but recover the underlying production meaning when one exists.
-
-**Exact world coordinates and other map-instance locators are outside canonical PRD scope.** This includes final spawn/teleport/checkpoint/trigger/ticking-area coordinates and authored bounding coordinates. Preserve the supported spatial intent instead: which area is involved, how areas relate, required dimensions when approved, relative/functional placement, route/boundary intent, visibility, checkpoint role, and gameplay function.
-
-This is a semantic authority decision, not a keyword blacklist. A non-coordinate technical detail that is explicitly required by the user/client or is necessary because another approved system depends on it remains a legitimate technical constraint at PRD abstraction level. The technical-constraint exception does **not** reopen the coordinate/map-instance-locator boundary; if exact locators are explicitly requested for an already built map, they belong to a separate as-built/technical setup artifact rather than canonical PRD meaning. A tag, scoreboard name, function path, runtime ID, UUID, or other identifier observed only as one finished implementation choice likewise does not become a PRD requirement by default.
-
-## Completion / Proposal / Blocked
-
-Use the smallest truthful recovery class:
+## Completion vs Proposal
 
 ```text
-Existing authority resolves it
-→ recover.
+existing authority settles the answer
+→ recover it
 
-One necessary evidence-backed answer exists
-→ Completion.
+one necessary evidence-backed implication exists
+→ Completion
 
-AI must choose among plausible product/design/development answers
-→ one concrete Proposal.
+multiple plausible material answers exist
+→ one concrete Proposal
 
-No responsible answer can be formed from authority + known constraints
-→ Blocked/direct decision.
+no responsible answer can be formed
+→ Blocked / direct decision
 ```
 
-A Proposal may choose material gameplay, quantities, timing, scoring/recovery behavior, naming, build expectations, runtime behavior, or implementation rules at PRD abstraction level. It is **not project truth until the user approves/corrects the relevant preview**.
+Proposal means an AI-chosen material project default, not ordinary wording/grouping/order craft.
 
-The objective is not to avoid AI decisions. It is to give the user one coherent model to approve without misrepresenting unsupported choices as source facts.
+## Integrated completeness
 
-## Production completeness
-
-Before preview, inspect only applicable material concerns:
-
-- topology: ordered packages/stages, global/local ownership, transitions, final result/handoff;
-- Gameplay: objective, start, player actions/feedback, completion, fail/retry/recovery, result;
-- Level Design: areas/objects/routes, relationships, spatial constraints, gameplay function;
-- Developer: activation, state/progression, timing/quantities, completion/result, data, interruption/reset, handoff;
-- Production Assets: concrete MODEL / ITEM / UI / TEXT / standalone AUDIO / standalone PARTICLE resources that are explicit, necessarily implied, or materially approved; shared vs local ownership; exact player-facing copy when known;
-- lifecycle: precondition → trigger → active → success/fail/interruption → result → retry/reset;
-- quantitative coherence: related timings/counts/capacities/scoring values can coexist;
-- global/local coherence: shared defaults and legitimate exceptions agree;
-- authoritative known constraints: no silent conflict with required behavior;
-- operational clarity: competent production roles should not reasonably build materially different behavior from the approved model.
-
-Optional/decorative detail is not a gap merely because it could be specified. Do not invent asset style, lore, dimensions, animations, VFX, or sound to make the project model look complete.
-
-Production Asset coverage is a meaning check, not another Flow or preview artifact. The Simple Chat Preview does not need to list every resource. It only needs to expose material AI-chosen decisions that require approval.
-
-## Golden-guided completeness
-
-The Reverse-derived Golden fill map in `kits/prd-creator/document/CONTENT-CONTRACT.md` is the finite guide for what the PRD core must eventually be able to answer.
-
-Golden supplies **questions, placement, page family, labels, and presentation behavior**. It never supplies another project's mechanics, counts, timings, lore, scoring values, implementation facts, or asset style.
-
-When a material Golden-required answer is absent, resolve it through current authority, Completion, Proposal, Explicit No / Not Applicable where truthful, or Blocked as last resort. Do not leave a material future slot empty merely because source is incomplete.
-
-## Propagation
-
-Every recovered Completion or proposed/approved decision must reconcile all actually affected meaning:
+Before preview, reason across the same model through:
 
 ```text
-requirement
-→ topology/global ownership
+player journey
 → Gameplay
 → Level Design
-→ Developer
+→ Developer state/lifecycle/data
 → Production Asset implications
-→ timing/quantities/scoring
-→ transition/handoff
-→ retry/interruption/reset
+→ result/transition/retry/reset
 ```
 
-Production Asset implications remain separate from Developer behavior: concrete resources go to the 04 model; runtime logic stays in Developer meaning.
-
-Do not create a dependency graph merely to record this propagation.
+Resolve cross-role contradictions before approval. Do not use downstream writing to hide upstream uncertainty.
 
 ## Simple Chat Preview
 
-The initial Flow 2 user checkpoint is one complete, objective-based **Simple Chat Preview**. It is chat output, not another file/Flow.
+The preview is the single user checkpoint inside Flow 2 and is not another artifact. Show a compact project/objective view and disclose each material AI Proposal once.
 
-Default information:
+Natural-language approval is sufficient only for the exact requirement revision represented by that preview.
+
+## Revision-bound approval
+
+Flow 2 readiness is not a loose boolean. `status: ready_for_prd` is valid only when:
 
 ```text
-Project Overview
-Objective N
-  Tujuan
-  Apa yang Player Lakukan
-  Hasil
-  Level Design
-  Developer
-  Saran AI       # required when material AI-chosen Proposals exist
+current requirement-register bytes
+→ shown coherent model
+→ user approval
+→ approved_requirement_sha256
 ```
 
-Keep internal SRC/REQ/YAML/provenance/Golden DOM jargon out of the user's way. Do not dump a production-asset inventory into the preview by default. `Perlu Konfirmasi` is reserved for the rare genuinely user/external-only blocker.
+Any later requirement-register edit changes the digest and makes the old approval stale.
 
-Every **material AI-chosen Proposal** must appear once in the preview's `Saran AI` block before approval. Material means a chosen default that changes gameplay behavior or scope, including timing, quantity, progression, scoring, fail/recovery, reward, build scope, runtime behavior, or a Production Asset choice that changes project meaning. State the chosen default concisely; do not turn this into a question-by-question approval flow. Omit `Saran AI` only when the reviewed slice contains no material AI-chosen Proposal.
+Do not maintain duplicate state such as `ready_for_prd: true`, `next_step`, or another approval flag beyond the canonical state contract.
 
-Approval of the complete preview promotes the represented pending Proposals unless the user corrects/rejects them. A bounded revision previews only the affected slice when interpretation changed; an unambiguous current user instruction may itself approve that slice.
+## Readiness boundary
 
-## Persistent readiness
+Flow 3 may start only when:
 
-Repository-backed Flow 2 keeps:
+- current material authority is sufficiently inspected;
+- retained source bytes/provenance are current;
+- no material requirement is blocked/pending/rejected-active;
+- topology/lifecycle/quantities/terminology/role ownership are coherent;
+- all material Proposals were represented and approved;
+- the approval digest matches exact current requirement-register bytes.
 
-- `state/source-inventory.yaml`;
-- `state/requirement-register.yaml`;
-- `state/intake-state.yaml`;
-- `work/review.md` only when useful.
-
-`ready_for_prd` requires real stable source/requirement evidence, sufficient inspection, approved preview meaning, production-complete implications including justified 04 resource needs, and no current unambiguous blocker such as `approval_status: pending`, `recovery_class: blocked`, or current authoritative source `inspection: blocked` affecting scope.
-
-After Flow 2 completes, do not preserve a stale Flow-2 `next_step` merely because the schema once allowed it; later continuation belongs to current canonical/handoff state and repository `next-action.md`.
-
-## Stop rule
-
-Once current scope is complete, approved, and truthfully `ready_for_prd`, stop. Flow 2 is not an endless redesign workshop and must not generate optional hardening, extra artifacts, or additional approval layers for ceremony.
+If any of these become stale, reopen only the affected Flow 2 slice and approve the updated requirement revision before downstream authoring continues.

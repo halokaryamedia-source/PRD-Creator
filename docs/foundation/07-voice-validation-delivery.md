@@ -4,113 +4,120 @@ Status: active Flow 7 policy
 
 ## Purpose
 
-Flow 7 decides whether the current `voice_script_ready` revision is safe to deliver for the requested Voice Production scope.
+Flow 7 decides whether the current Voice chain is safe to deliver. Default non-audio delivery is the same versioned project HTML containing PRD core + `04 Production Assets → Owner ID → Moment ID → AUDIO`.
 
-Default non-audio delivery is the **same project HTML** containing PRD core + `04 Production Assets → matching gameplay moment → AUDIO`. Audio is a separate optional evidence scope.
+Detailed operational validation lives in `kits/prd-creator/voice/VALIDATION.md`; this page owns durable boundaries.
 
 ## Canonical sequence
 
 ```text
 voice_script_ready
-↓
-mechanical Voice ID / Type / Speaker + project-HTML parity
-↓
-Communication Conservation
-↓
-one integrated Voice Script Readiness review
-↓
-Project HTML visual QA when claimed
-↓
-optional audio evidence
-↓
-voice_delivery_ready | needs_revision | blocked
+→ lifecycle-aware mechanical validation
+→ Communication Conservation
+→ integrated Voice Script Readiness
+→ current consolidated HTML
+→ visual evidence when claimed
+→ optional generated-audio evidence
+→ exact Voice acceptance
+→ voice_delivery_ready | needs_revision | blocked
 ```
 
-## Mechanical validation
+## Mechanical chain
 
-Run:
+`validator/validate_voice.py` proves, as applicable:
 
-```bash
-python kits/prd-creator/validator/validate_voice.py \
-  workspace/active/<project>/
+```text
+accepted PRD revision
+= voice-state source_prd_revision
+= render-data document.version
+= voice-requirements Source PRD revision
+= voice-production Source Voice Requirements revision
+
+voice-production Source Voice Requirements SHA
+= exact current requirements bytes
+
+Flow 5 Owner ID / Type / Speaker
+= Flow 6 Owner ID / Type / Speaker
+
+Flow 5 Owner ID + Moment ID
+= current 04 page + stable moment grouping
+
+HTML Voice requirement/production SHA bindings
+= exact current canonical bytes
 ```
 
-Mechanical validation always checks canonical requirements/script parity. It also proves current revision identity: `voice-state.yaml.source_prd_revision`, the current accepted PRD handoff, `render-data.document.version`, `voice-requirements.md` `Source PRD revision`, and the source revision declared by `voice-production.md` must agree. The canonical script's `Source Voice Requirements` SHA-256 must match the exact current `work/voice-requirements.md` bytes.
+At `voice_delivery_ready`, it additionally proves Voice acceptance binds exact current `voice-production.md` bytes.
 
-When consolidated `output/v<document.version>/prd.html` exists, it also checks current Production Assets Voice section/prompt identity and exact canonical performance text. Current visible AUDIO-field/layout behavior is owned by the shared `kits/prd-creator/` 04 compositor regression rather than duplicated as another Voice HTML schema.
+Mechanical PASS does not establish semantic or visual quality.
 
-Mechanical PASS cannot establish semantic readiness or visual quality.
+## One Voice state schema
+
+Flow 7 continues the same state owned by `shared/lifecycle.py`:
+
+```yaml
+status: voice_validation
+source_handoff: state/handoff-state.yaml
+source_prd_revision: <accepted document.version>
+canonical_prd: work/content.md
+requirements: work/voice-requirements.md
+production: work/voice-production.md
+project_html: output/v<accepted document.version>/prd.html
+```
+
+All refs are safe project-relative POSIX paths. Current state does not accept lifecycle aliases.
 
 ## Communication Conservation
 
-Compare each changed/current prepared line to its Flow 5 requirement.
-
-PASS only when every material `Must communicate` fact remains clear, `Must not add/repeat` remains respected, project meaning is intact, source timing truth remains honored when present, and production polish did not introduce or delete material meaning.
-
-Record:
+PASS only when all `Must communicate` meaning survives, `Must not add/repeat` remains respected, authoritative timing truth remains honored, and Flow 6 polish adds/deletes no project meaning.
 
 ```text
 Communication Conservation: PASS | FAIL
 ```
 
-Do not persist a requirement-to-sentence matrix.
-
 ## Integrated Voice Script Readiness
 
-Review once through Communication, Listener, Character, Performance, Timing, Continuity, and Operator lenses. Keep this as one integrated result rather than separate scorecards.
-
-Record:
+Review Communication, Listener, Character, Performance, Timing, Continuity, and Operator concerns once:
 
 ```text
 Voice Script Readiness: PASS | FAIL
 ```
 
+Do not persist per-lens scorecards.
+
 ## Production Assets HTML
 
-When project HTML visual readiness is claimed, inspect the Voice presentation for:
+When visual readiness is claimed, verify:
 
-- accepted PRD sidebar hierarchy/page identity remains intact;
-- gameplay/objective sections stay under `03 Development`;
-- `04 Production Assets` is additive and links matching gameplay/shared pages rather than a separate Voice category;
-- Voice appears as `AUDIO` inside the correct natural gameplay moment;
-- each dialogue resource title identifies `<Character> — <Line Title>`;
-- each dialogue resource visibly includes Function, Voice Preset, ElevenLabs Model = `Eleven v3`, Estimated Duration, and Prompt;
-- a separate visible Speaker row, Flow 5 Context/Trigger row, line-count summary, Primary Speaker summary, and Voice Setup block are absent unless a future approved contract explicitly reintroduces them;
-- performance-direction tags remain visually distinct without changing the copied canonical payload;
-- Flow 5 Purpose, Trigger, `Must communicate`, `Must not add/repeat`, source refs, reasoning, WPM math, QA, and other internal fields stay out of the visible 04 resource;
-- navigation labels wrap naturally and no clipping/overlap or obvious break from the PRD visual language exists at the desktop widths being claimed.
-
-Record:
+- accepted 01–03 page/navigation identity remains intact;
+- 04 is additive;
+- each Voice resource is on its accepted Owner page and `Moment ID` group;
+- resource title is `<Character> — <Line Title>`;
+- Function, Voice selection/profile, Eleven v3, Estimated Duration, and Prompt are readable;
+- Flow 5 internal fields/reasoning do not leak into reader-facing 04;
+- copied Prompt remains canonical;
+- claimed browser widths are readable.
 
 ```text
 Project HTML Visual: PASS | FAIL | NOT PROVEN
 ```
 
-Static inspection can prove structure/text parity but cannot establish visual PASS without actual rendered/browser evidence.
+Static validation cannot claim visual PASS.
+
+## Voice selection
+
+Preparation may use a clear target profile. `voice_delivery_ready` requires a non-empty Voice Cast selection/profile for every represented speaker. Actual Generation Mode requires the intended generation voice.
 
 ## Audio evidence
 
-Default non-audio delivery may use:
-
 ```text
-Audio Evidence: not_provided
+Audio Evidence: not_provided | partial_review | reviewed_passed | reviewed_with_findings
 ```
 
-Do not infer audio quality from script appearance, tags, or Estimated Duration.
+Do not infer audio quality or measured duration from script/HTML appearance.
 
-## First wrong owner
+## Exact Voice acceptance
 
-```text
-project/gameplay/story fact → PRD authority
-Voice moment/Speaker/Channel/Trigger/Purpose/required communication/source timing → Flow 5
-wording/performance/Estimated Duration/production selection → Flow 6
-correct canonical Voice + wrong Production Assets HTML → kits/prd-creator/ renderer/compositor owner
-audio-only issue → audio evidence scope
-```
-
-## Acceptance record
-
-Keep `work/voice-acceptance.md` compact:
+`work/voice-acceptance.md` authorizes the exact reviewed production source:
 
 ```text
 # Voice Acceptance
@@ -123,48 +130,45 @@ Audio Evidence: not_provided | partial_review | reviewed_passed | reviewed_with_
 Findings: <only when findings exist>
 Critical: N
 Major: N
+Accepted Voice Production SHA256: <exact current work/voice-production.md SHA-256>
 ```
 
-Critical and Major findings block delivery.
+The SHA binding is required for `voice_delivery_ready`. Editing wording, duration, Speaker metadata, section ownership, or Voice Cast after review invalidates the prior acceptance even when the PRD revision is unchanged.
 
-## State compatibility
+The production source already binds exact Flow 5 requirement bytes, so one production SHA provides the final Voice acceptance freshness boundary without another checksum registry.
 
-New/current default state may point to:
-
-```yaml
-project_html: output/v<document.version>/prd.html
-delivery_scope: project_html
-```
-
-Historical project metadata from retired export paths may remain in archived evidence. Do not create migration work for inactive historical state unless it affects current delivery.
-
-## Bounded revision
+## First wrong owner
 
 ```text
-change
-→ first wrong owner
-→ affected Voice/Speaker scope only
-→ Communication Conservation
-→ integrated readiness on affected scope
-→ rerender current versioned prd.html
-→ recheck affected 04 AUDIO view
-→ stop
-```
+project/gameplay/story fact
+→ PRD authority
 
-Voice-only production changes do not reopen PRD acceptance when PRD canonical meaning remains unchanged.
+Voice Owner/Moment identity, scope, Speaker, Channel, Trigger, Purpose, required communication, source timing
+→ Flow 5
+
+wording, performance, Estimated Duration, Voice Cast selection
+→ Flow 6
+
+correct canonical Voice but stale/wrong 04 HTML
+→ renderer/compositor
+
+generated-audio-only issue
+→ Generation Mode evidence/settings
+```
 
 ## Delivery gate
 
-For default non-audio Voice Production delivery, `voice_delivery_ready` requires:
+`voice_delivery_ready` requires:
 
-- Mechanical PASS;
+- Mechanical PASS across lifecycle/revision/identity/HTML freshness;
+- exact current Voice Acceptance SHA;
+- Voice Cast selection/profile for every represented speaker;
 - Communication Conservation PASS;
 - Voice Script Readiness PASS;
-- consolidated project HTML current;
+- current consolidated project HTML;
 - Project HTML Visual PASS when visual readiness is claimed;
-- Critical = 0;
-- Major = 0;
-- truthful evidence boundaries;
+- Critical = 0 and Major = 0;
+- truthful optional audio evidence;
 - no stale upstream PRD revision.
 
 It does not imply audio approval, client sign-off, implementation completion, or release.

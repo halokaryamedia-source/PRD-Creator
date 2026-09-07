@@ -4,72 +4,104 @@ Status: active durable policy
 
 ## Purpose
 
-Turn a Flow 2 project marked `ready_for_prd` into canonical **PRD core 01–03** content and the derived Golden HTML artifact.
+Turn the exact preview-approved Flow 2 requirement revision into canonical **PRD core 01–03** meaning, one strict render projection, and deterministic Golden-based HTML.
 
-Flow 3 does not own the 04 Production Assets writing contract. Real Production Asset needs have already been preserved in the approved project model during Flow 2 and are materialized later through the bounded 04 owner without redesigning 01–03.
+Flow 3 does not invent 04 resource meaning. Required non-Voice assets come from the same approved project model and are materialized through the 04 owner.
 
-## Single content owner
-
-The gameplay PRD core's mandatory blueprint, mandatory-slot states, Scoring / Result behavior, role completeness, and Humanize rules are owned only by:
+## Contracts
 
 ```text
-kits/prd-creator/document/CONTENT-CONTRACT.md
+CONTENT-CONTRACT.md
+→ semantic completeness / material conservation / strict projection meaning
+
+DESIGN-CONTRACT.md
+→ approved page/component grammar / Golden presentation
 ```
 
-This foundation page does not maintain a second Golden checklist.
+The executable render-data field contract lives in `shared/render_schema.py`; documentation must not create a second schema.
 
-## PRD-core authority chain
+## Authority chain
 
 ```text
-Original Source + Current Instruction + Approved Decisions
-→ Requirement State / ready_for_prd
-→ work/content.md                 canonical PRD-core meaning
-→ work/render-data.json           derived PRD-core projection
-→ Golden renderer/template
-→ output/v<document.version>/prd.html → 01–03 derived presentation
+current sources + instruction + approved decisions
+→ exact approved requirement-register bytes
+→ work/content.md                         canonical PRD meaning
+→ work/render-data.json                   strict projection + content SHA
+→ DESIGN-CONTRACT + Golden runtime
+→ output/v<document.version>/prd.html
 ```
 
 Authority decreases downstream. Rendering cannot introduce project meaning.
 
-The same approved project model may also feed `work/asset-requirements.md` through `kits/prd-creator/production-assets/CONTRACT.md`; that parallel 04 source does not change `content.md`, Golden bytes, or 01–03 authoring rules.
-
-## Flow 3 work sequence
+## Sequence
 
 ```text
-read resolved requirement state
-→ fill the fixed Golden mandatory shell
-→ preserve all material role-owned meaning
-→ apply one bounded Humanize pass
-→ derive render-data once
-→ render 01–03
+verify current Flow 2 approval hash
+→ author complete content.md
+→ preserve material role distinctions
+→ bounded Humanize pass
+→ derive one strict render-data projection
+→ bind canonical_content_sha256
+→ deterministic render
 → hand current revision to Flow 4
 ```
 
-The target is **minimum complete production detail**, not minimal-looking output.
+The target is minimum **complete** production detail, not minimal-looking output or sample-count fidelity.
 
-If drafting exposes a material unresolved project/design decision, return the affected requirement to Flow 2. Do not hide the gap with generic prose, guessed values, Golden example facts, renderer-friendly defaults, or downstream asset invention.
+## Adaptive cardinality
 
-## Projection boundary
+Existing approved Flow / Note / Sequence component families use however many children current meaning requires.
 
-`render-data.json` is a disposable projection of current canonical PRD-core meaning. It must satisfy the deterministic shell rules in `kits/prd-creator/renderer/CONTRACT.md` but is not a second semantic owner.
+```text
+three real stages → three rendered stages
+six real stages → six rendered stages
+```
 
-The renderer may organize approved meaning into the Golden surfaces. It may not decide whether a mandatory concern is applicable, invent project facts, or repair incomplete Flow 2 recovery.
+Do not create filler and do not merge independent meaning for layout convenience.
 
-Production Asset briefs do not belong in `render-data.json`; they use the separate bounded 04 source owned by `kits/prd-creator/production-assets/CONTRACT.md`.
+Stable semantic questions remain stable where explicitly owned by the contracts, including Overview facts, Gameplay Context/Main Objective/Result, Gameplay Information questions, table meanings, and page/navigation families.
+
+## Strict projection boundary
+
+`render-data.json` is disposable projection data with **one supported vocabulary**.
+
+It must:
+
+- contain `canonical_content_sha256` for exact current `content.md` bytes;
+- satisfy `shared/render_schema.py` without unknown/legacy aliases;
+- carry explicit package/result topology, including `gameplay.result_model`;
+- use explicit bilingual values when bilingual mode is enabled;
+- preserve material numeric/percentage/stable-ID invariants across languages.
+
+The renderer may only map, order, escape, wrap, localize, and mechanically present already-resolved data.
+
+It may **not**:
+
+- infer a missing semantic field from another role;
+- recover historical aliases;
+- synthesize Gameplay scoring/completion meaning from Developer data;
+- decide unresolved behavior;
+- copy Golden sample facts;
+- delete distinctions for layout convenience.
+
+If authoring exposes an unresolved material decision, return the affected requirement to Flow 2. If the meaning is correct but the approved design cannot represent it, the design/projection layer is the first wrong owner.
+
+Production Asset briefs remain outside render-data and use `production-assets/CONTRACT.md`.
 
 ## Completion
 
-Flow 3 completes when:
+Flow 3 completes only when:
 
-- Flow 2 truthfully remains `ready_for_prd`;
-- `content.md` satisfies `kits/prd-creator/document/CONTENT-CONTRACT.md`;
+- Flow 2 approval still matches exact current requirement-register bytes;
+- `content.md` satisfies `CONTENT-CONTRACT.md`;
+- `render-data.json` is a current strict projection of that content;
+- semantic cardinality is conserved;
+- current 01–03 HTML is rendered from the exact projection;
 - no material product decision was silently made during authoring;
-- render data satisfies the deterministic Golden shell;
-- `output/v<document.version>/prd.html` contains the current 01–03 projection;
 - no unresolved placeholder remains.
 
-Flow 4—not renderer success—decides production readiness.
+Flow 4—not renderer success—decides accepted production readiness.
 
 ## Economy
 
-Do not load full Golden HTML during normal authoring, recreate unchanged packages, add duplicate Golden checklists, move 04 rules into the PRD-core contract, or use word/row counts as quality proxies.
+Do not load full Golden HTML during ordinary authoring, maintain compatibility aliases, recreate unchanged packages, duplicate validation schemas in prose, move 04 rules into PRD core, or use word/card counts as quality proxies.

@@ -1,111 +1,117 @@
 # PRD Validation & Team Handoff
 
-`CONTENT-CONTRACT.md` owns PRD meaning and Golden composition. This file owns the minimum proof needed to accept the current revision.
+`CONTENT-CONTRACT.md` owns semantic completeness. `DESIGN-CONTRACT.md` owns approved page/component grammar. This file owns the proof required to accept one current PRD revision.
 
-## Default sequence
+## Sequence
 
 ```text
-current PRD revision + required current non-Voice 04 source when present
-→ one mechanical validation
-→ one integrated semantic-readiness review
-→ targeted desktop visual sanity when needed
-→ fix the first wrong owner
+current Flow 2 approval
++ content.md
++ strict render-data projection
++ required non-Voice 04 source when present
+→ canonical mechanical validation
+→ integrated semantic reconciliation/readiness
+→ Material Conservation
+→ targeted visual sanity when claimed
 → development_ready | handoff_ready
 ```
 
-Status meaning:
-
-```text
-development_ready
-→ current PRD + required non-Voice 04 scope is accepted for implementation
-→ formal downstream PRD handoff is not being claimed
-→ Flow 5 must not start from this status
-
-handoff_ready
-→ development-ready revision is also bound to the current versioned delivery
-→ work/acceptance.md + state/handoff-state.yaml + output/README.md + matching versioned bundle agree
-→ this is the required PRD state before Flow 5
-```
-
-Use `development_ready` when the requested outcome stops at a development-ready PRD/package. Promote to `handoff_ready` only when the current revision is intentionally crossing the downstream handoff boundary; do not treat the two statuses as synonyms.
-
-Do not create separate review passes for New Reader, Level Design, Developer, Content Purity, Project Consistency, Acceptance, or Golden Fidelity. They are lenses inside one review, not independent workflow gates.
+`development_ready` means the current PRD/required 04 meaning is accepted for implementation. `handoff_ready` additionally binds that accepted revision to the current versioned delivery and is required before Flow 5.
 
 ## 1. Mechanical validation
 
-Run once after the current projection/render is complete:
+Run:
 
 ```bash
 python kits/prd-creator/validator/validate.py \
   workspace/active/<project>/
 ```
 
-Mechanical validation owns deterministic facts: Flow 2 readiness, required current artifacts, canonical/projection/render bindings, non-Voice Production Asset source freshness when that source exists, page order/IDs/navigation, scoring arithmetic, required Golden markers, and the narrow observed content-purity regression set.
+`validator/api.py` is the one complete PRD validation API. Handoff validation calls the same API.
 
-Mechanical PASS does not prove source fidelity, semantic completeness, material conservation, or visual readability.
+Mechanical validation proves deterministic facts including:
 
-Content-purity checks stay narrow. They may reject concrete observed leakage such as generator/template/page narration, generic `Global Rule N`, or plain note strings that would render as generic `Important Note N`. Do not grow this into a prose score, word-count gate, broad keyword blacklist, coordinate detector, or technical-detail classifier.
+- Flow 2 approval hash still matches current requirement-register bytes;
+- retained source hashes/provenance remain coherent;
+- `content.md` has no unresolved placeholders;
+- `render-data.json` satisfies the one strict projection schema;
+- `canonical_content_sha256` matches exact current `content.md` bytes;
+- scored/completion result mode is explicit and coherent;
+- non-Voice 04 source is parseable and uses accepted Owner/Moment/Asset identity;
+- generated HTML is bound to exact render-data and asset-requirements bytes;
+- page order/IDs/navigation/component markers remain valid;
+- scoring arithmetic and duplicate HTML IDs remain valid.
+
+Mechanical PASS does not prove semantic fidelity or browser visual quality.
 
 ## 2. Integrated semantic readiness
 
-Review the current revision once. During that pass ask the relevant questions below; do not persist a PASS field for every lens.
+Review once through relevant lenses:
 
 | Lens | Ready when... |
 |---|---|
-| New Reader | journey, objective, result, setback/recovery, and transition are understandable without reopening source |
-| Level Designer | build-owned areas, objects, relationships, constraints, and gameplay functions are sufficient without depending on final world coordinates or other map-instance locators |
-| Developer | trigger/state/progression/timing/scoring/reset/handoff behavior and explicit approved technical constraints are sufficient without relying on incidental implementation identifiers from a finished source |
-| Content Purity | visible project copy explains the project, not PRD-Creator or document-production mechanics |
-| Project Consistency | terminology, timing, scoring, reset, and package handoff agree across the revision |
-| Golden Placement | project meaning is placed in the matching approved Golden component family without unapproved presentation invention |
+| Source Fidelity | material claims remain supported by current authority/approved Proposal |
+| Decision Completeness | implementation needs no new product decision |
+| New Reader | journey/objective/result/recovery/transition are understandable |
+| Level Designer | spaces/objects/relationships/constraints/functions are actionable |
+| Developer | trigger/state/timing/result/reset/handoff behavior is actionable |
+| Quantitative & Lifecycle | related values and lifecycle states agree |
+| Cross-role | Gameplay, Level Design, Developer and required 04 describe one system |
+| Content Purity | visible copy explains the project, not generator mechanics |
+| Design Placement | meaning uses the approved presentation grammar |
 
-Record one result: `Semantic Readiness: PASS | FAIL`.
-
-The scope check above is semantic, not vocabulary-based. Legitimate dimensions, relative/functional placement, spatial constraints, platform requirements, or other approved technical constraints must survive when material. Incidental as-built coordinates, tags, scoreboard names, function paths, runtime IDs, UUIDs, or setup identifiers do not become required PRD content merely because they exist in source evidence.
-
-When 04 exists, include the readiness questions owned by `../production-assets/CONTRACT.md` inside the same integrated review rather than creating another PASS surface. Required non-Voice 04 must already be materialized before Flow 4 acceptance; Flow 4 does not approve a PRD first and then discover or create missing 04 scope afterward.
-
-Return to Flow 2 only for a real unresolved project/design decision or authority conflict. Wording, placement, decomposition, and terminology corrections stay in the current semantic owner.
-
-## 3. Material conservation
-
-Material conservation remains a separate gate because a document can be clear yet accidentally omit an independent rule.
-
-For changed or regenerated scope, verify that resolved PRD-scope conditions, values, exceptions, recovery rules, result behavior, explicit technical constraints, and role-owned requirements still have an explicit readable representation. Do not use word count or row count as a proxy, and do not treat intentionally unpromoted implementation/as-built evidence as a conservation failure.
-
-Record one result: `Material Conservation: PASS | FAIL`.
-
-## 4. Golden reference economy
-
-The approved Golden is already locked by `CONTENT-CONTRACT.md` and focused static regression coverage. Normal project production does **not** reread/re-prove the entire reference from scratch when the Golden/template/renderer composition is unchanged.
-
-Re-run the reverse reference → contract proof only when the Golden artifact, template, visible page composition, or its semantic slot contract changes.
-
-For ordinary content-only production, prove the forward direction only: current project meaning fills the existing approved contract correctly.
-
-## 5. Targeted desktop visual sanity
-
-Visual PASS requires actual rendered/browser evidence. Static HTML inspection cannot claim visual PASS.
-
-For ordinary content-only work, inspect only representative/high-risk pages, normally:
+Record only:
 
 ```text
-Overview
-+ one Gameplay Flow
-+ one Gameplay Overview
-+ one Level Design
-+ one dense Developer page
+Semantic Readiness: PASS | FAIL
 ```
 
-Check readable summary density, wrapping/overflow, component order, semantic note titles, table/list readability, and obvious material thinning.
+Do not persist per-lens scores.
 
-Escalate to every-page or broader browser testing only when the template/CSS/JS/page-composition changed, a targeted finding suggests a global defect, a new component was approved, or the user explicitly asks for broader proof.
+## 3. Semantic reconciliation
 
-Do not routinely retest mobile, theme, localStorage, every link, or unrelated Voice behavior for a content-only revision.
+Compare material meaning across:
+
+```text
+approved requirement revision
+→ content.md
+→ strict render-data projection
+→ visible PRD / required 04
+```
+
+Look for:
+
+```text
+LOSS
+CONTRADICTION
+UNSUPPORTED
+AMBIGUOUS
+CROSS-ROLE DRIFT
+```
+
+This is semantic comparison, not string parity or a requirement-to-sentence matrix.
+
+## 4. Material Conservation
+
+A readable document may still omit an independent rule. Verify changed/regenerated scope retains explicit representation for every resolved material condition, value, exception, recovery rule, result behavior, technical constraint, and role-owned requirement.
+
+Record:
+
+```text
+Material Conservation: PASS | FAIL
+```
+
+Do not use word/card/row counts as a quality proxy.
+
+## 5. Visual sanity
+
+Visual `PASS` requires actual rendered/browser evidence. Static HTML inspection may only establish structure and freshness.
+
+For ordinary content changes inspect representative/high-risk pages. Broaden visual QA only for template/CSS/JS/global composition changes, evidence of global breakage, or explicit user request.
 
 ## 6. Acceptance record
 
-Keep `work/acceptance.md` compact:
+`work/acceptance.md` authorizes exact bytes, not merely a version number.
 
 ```text
 # PRD Acceptance
@@ -117,36 +123,70 @@ Visual sanity: PASS | FAIL | NOT PROVEN
 Findings: <only when findings exist>
 Critical: N
 Major: N
+Accepted Render Data SHA256: <exact current work/render-data.json SHA-256>
+Accepted Asset Requirements SHA256: <exact current work/asset-requirements.md SHA-256 | none>
 ```
 
-`Semantic Readiness` replaces duplicated persisted fields for reader, role, consistency, acceptance, content-purity semantics, and Golden placement. The review still considers those lenses; it simply records one integrated decision.
+Both binding lines are required for `handoff_ready`.
 
-`Material Conservation` stays explicit because omission risk is independent from readability. `Visual sanity` stays explicit because browser evidence is a different proof channel.
+If `asset-requirements.md` is absent, record exactly:
+
+```text
+Accepted Asset Requirements SHA256: none
+```
+
+Any edit to render-data or non-Voice 04 source after review invalidates acceptance even if `document.version` is unchanged.
+
+`document.version` is project/release metadata, not an edit counter.
 
 ## 7. Handoff
 
-Only `handoff_ready` crosses into Flow 5. Before Flow 5, run:
+Only `handoff_ready` crosses into Flow 5.
+
+Run:
 
 ```bash
 python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-Handoff must point to the current canonical content/projection, acceptance record, `output/README.md`, and the matching versioned `prd.html` / `context.md` / `index.json` bundle. The accepted PRD version must use semantic `X.Y.Z` and match `render-data.document.version` plus the version declared by the side documents.
+`state/handoff-state.yaml` is strict machine state. It contains only:
 
-`output/README.md` is the human/AI resume navigator, not a second project-status database. It identifies the current artifact set and reading route; implementation progress remains owned by the implementation repository. Do not duplicate checksum tables or internal validation transcripts when Git state and the validators already own those checks.
+```yaml
+status: handoff_ready
+accepted_prd_version: <X.Y.Z>
+content: work/content.md
+render_data: work/render-data.json
+html: output/v<X.Y.Z>/prd.html
+context: output/v<X.Y.Z>/context.md
+index: output/v<X.Y.Z>/index.json
+acceptance: work/acceptance.md
+handoff: output/README.md
+```
+
+All refs are canonical project-relative POSIX paths. Absolute paths, `..`, backslashes, aliases, and extra state fields are invalid.
+
+Handoff validation proves:
+
+- the canonical PRD validator still passes;
+- version identity agrees across projection and delivery;
+- all referenced artifacts exist at canonical paths;
+- acceptance binds exact current render-data + asset-requirements bytes.
+
+`output/README.md` is a resume navigator, not a second project-status database.
 
 ## Bounded revision
 
 ```text
 approved change
-→ affected truth/content only
-→ affected projection
-→ one full-file rerender
-→ one mechanical check
-→ one integrated review of invalidated scope
+→ first wrong owner
+→ affected canonical/projection/04 source
+→ full deterministic rerender
+→ mechanical validation
+→ integrated review only for invalidated meaning
 → visual check only where changed/high-risk
+→ new exact-byte acceptance
 → stop
 ```
 
-Do not replay unchanged intake, source review, packages, proof, mobile QA, every-page visual QA, or downstream Voice work for ceremony.
+Do not replay unaffected intake/packages/Voice/Golden review for ceremony.

@@ -1,123 +1,127 @@
 ---
 name: project-document-production
-description: Reusable semantic/product-contract specialist for PRD-Creator Flow 2–4 plus bounded non-Voice 04 Production Assets completion. Use when source recovery, project-model completion, canonical PRD meaning, 04 requirement meaning, Golden representation requirements, or PRD readiness/handoff semantics are the actual problem. Do not use as a generic HTML/Python/renderer/validator wrapper when semantics are already correct.
+description: Reusable semantic/product-contract specialist for PRD-Creator Flow 2–4 plus bounded non-Voice 04 Production Assets completion. Use when source recovery, project-model completion, canonical PRD meaning, 04 requirement meaning, or PRD readiness/handoff semantics are the actual problem. Presentation-only Golden questions route to the PRD design owner.
 ---
 
 # Project Document Production
 
-Own **semantic judgment**, not detailed production procedure or renderer mechanics.
-
-Detailed normal Production Execution lives in `kits/prd-creator/SKILL.md`. Exact contracts/procedures remain in their nearest categorized owners.
+Own **semantic judgment**, not detailed production procedure, visual design mechanics, or renderer implementation.
 
 ## Semantic authority shape
 
 ```text
 originals + current user instruction + approved decisions
 → recovered / approved project model
-   ├─ canonical PRD core meaning
+   ├─ canonical PRD semantic meaning
    └─ justified non-Voice 04 Production Asset requirements
 → acceptance / handoff
 ```
 
-Generated output never becomes project authority. Golden/reference material supplies approved representation/quality requirements within its recorded contract, not another project's facts.
+Generated output never becomes project authority. Golden/reference material supplies representation/quality evidence, not another project's facts.
 
 ## Use this specialist when
 
-The actual question requires reusable judgment about:
+The actual question requires judgment about:
 
-- whether source/requirements are complete and authoritative enough for production;
-- Completion vs Proposal vs Blocked for missing/conflicting material project meaning;
-- whether a material choice must return to user/project approval;
-- what belongs in canonical PRD-core meaning vs non-Voice Production Asset meaning;
-- whether 01–03 representation/readiness meaning is correct;
-- whether 04 requirement/readiness meaning is correct;
-- whether downstream work is trying to invent or repair upstream project truth;
-- whether PRD handoff semantics are actually satisfied.
+- source/requirement authority and completeness;
+- Completion vs Proposal vs Blocked;
+- whether a material choice needs user/project approval;
+- what belongs in canonical PRD meaning vs non-Voice Production Assets;
+- whether project meaning is actionable for Gameplay / Level Design / Developer;
+- whether PRD handoff semantics are satisfied;
+- whether a supposed presentation problem is actually missing meaning.
 
-Do not load this skill solely because a task mentions HTML, JSON, Python, renderer, validator, template, or a file under the PRD Creator package.
+Do not load this skill solely because a task mentions HTML, JSON, renderer, validator, or template.
 
 ## Canonical detailed owners
-
-Use only the smallest owner required:
 
 ```text
 Flow 2 source recovery / completion / preview
 → kits/prd-creator/intake/SOURCE-INTAKE.md
 
-PRD core 01–03 exact semantic + visible-composition contract
+PRD semantic completeness + material conservation
 → kits/prd-creator/document/CONTENT-CONTRACT.md
 
-non-Voice 04 exact resource/writing/readiness contract
+PRD Golden page/component grammar
+→ kits/prd-creator/document/DESIGN-CONTRACT.md
+
+non-Voice 04 meaning
 → kits/prd-creator/production-assets/CONTRACT.md
 
-renderer / projection / compositor contract
-→ kits/prd-creator/renderer/CONTRACT.md
-
-Flow 4 validation / handoff procedure
+Flow 4 semantic reconciliation / handoff
 → kits/prd-creator/document/VALIDATION.md
 
-normal end-to-end Production Execution
+renderer mechanics
+→ kits/prd-creator/renderer/CONTRACT.md
+
+normal end-to-end execution
 → kits/prd-creator/SKILL.md
 ```
 
-Do not recreate those contracts here.
-
 ## Semantic judgment rules
 
-### Source / project-model completion
+### Source / model completion
 
-Prefer this order:
+Prefer:
 
 ```text
 current authority
-→ safe Completion when one answer is implied
+→ safe Completion when one result is implied
 → concrete Proposal when AI must choose among plausible material options
 → Blocked only when no responsible proposal can be formed
 ```
 
-Material AI-chosen proposals remain pending until represented to and approved/corrected by the user through the existing Flow 2 preview boundary. Do not hide unsupported material choices inside polished PRD/04 wording.
+Material AI-chosen Proposals remain pending until represented and approved/corrected. Routine wording, grouping, ordering and decomposition are not project decisions.
 
-### PRD core
+### PRD semantic core
 
-Flow 3 must represent preview-approved project meaning without inventing new product decisions or deleting independently actionable rules for brevity. Exact PRD-core shape/Humanize/Golden contract belongs to `kits/prd-creator/document/CONTENT-CONTRACT.md`.
+Flow 3 must represent preview-approved meaning without inventing product decisions or deleting independently actionable rules.
 
-If authoring exposes missing material meaning, return only that affected slice to Flow 2.
+Semantic cardinality follows meaning. If the approved lifecycle has six distinct steps, preserve six; do not compress to a sample count. If it has three, do not add filler merely because the reference showed four or five.
+
+Stable semantic questions remain stable where the product needs them, such as Gameplay Context, Main Objective, Result and the six Gameplay Information concerns.
+
+### Design handoff
+
+When semantic meaning is complete but its visible placement/component behavior is wrong:
+
+```text
+→ kits/prd-creator/document/DESIGN-CONTRACT.md
+```
+
+Do not alter project truth to make the Golden surface easier to fill. Conversely, do not create a new component family merely because a semantic list has more children; existing flow/note/sequence families accept data-driven cardinality.
 
 ### Production Assets
 
-Non-Voice 04 requirements come from the **same approved project model** as 01–03. Do not use finished generated 01–03 as a second design pass to brainstorm extra assets.
+Non-Voice 04 requirements come from the same approved project model as the PRD. Do not use generated PRD pages as a second brainstorming source for extra assets.
 
-Only concrete required resources belong in 04. Exact resource types/fields/reader-first writing/readiness are owned by `kits/prd-creator/production-assets/CONTRACT.md`; do not duplicate them here.
-
-Voice scope/wording/actor/performance semantics remain downstream Voice ownership.
+Voice semantics remain downstream Voice ownership.
 
 ### Readiness / handoff
 
-Mechanical PASS does not establish semantic completeness or visual quality. Flow 4 semantics follow `kits/prd-creator/document/VALIDATION.md` and durable Flow 4 policy. A production role needing to reopen source for material meaning that belongs in the accepted document is a readiness defect.
+Mechanical PASS does not establish semantic completeness or visual quality. Flow 4 reconciles material meaning across approved evidence → canonical content → projection → visible PRD. A production role needing to reopen source for already-resolved PRD-scope meaning is a readiness defect.
 
 ## Semantic vs technical handoff
 
-When semantic owners are correct but executable behavior is wrong:
-
 ```text
-renderer/template/validator/compositor defect
-→ kits/prd-creator/AGENTS.md
-→ exact implementation owner
+semantic meaning wrong
+→ this specialist + semantic owner
+
+meaning correct; approved visual grammar wrong
+→ DESIGN-CONTRACT
+
+semantic + design contracts correct; executable behavior wrong
+→ kits/prd-creator/AGENTS.md → exact implementation owner
 ```
-
-Do not stay in the semantic specialist as a generic debugging wrapper.
-
-When a technical change would alter what the product/artifact is required to represent or accept, reopen the semantic owner first.
 
 ## Proof economy
 
-- inspect only the smallest current semantic owner/source needed;
-- do not load full Golden/generated HTML during normal semantic work;
-- do not reread unchanged project packages during bounded revisions;
-- do not rerun Voice checks for PRD-only semantic work unless shared code/contract changed;
-- do not add word-count, row-count, similarity, checksum, snapshot, or scoring machinery as a substitute for semantic review;
+- start with the smallest current semantic owner/source;
+- expand only for a real cross-cutting dependency;
+- do not load full Golden/generated HTML for ordinary semantic review;
+- do not use sample card counts, word counts, similarity scores, checksums or snapshots as a substitute for semantic judgment;
 - stop when the requested semantic boundary is correct and sufficiently proven.
 
 ## Boundary
 
-This skill owns PRD/source/04/readiness **semantic judgment** only. Detailed Flow procedure lives in the categorized `kits/prd-creator/` owners; executable mechanics stay with nearest package implementation owners; Voice stays downstream; derived `prd.html` is never edited as source truth.
+This skill owns PRD/source/04/readiness **semantic judgment** only. Visual/page grammar belongs to `document/DESIGN-CONTRACT.md`; detailed Flow procedure belongs to categorized package owners; executable mechanics belong to implementation owners; Voice remains downstream; generated `prd.html` is never source truth.

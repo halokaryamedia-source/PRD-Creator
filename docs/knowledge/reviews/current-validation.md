@@ -1,8 +1,8 @@
 # Current Validation Status
 
-Updated: 2026-08-31
+Updated: 2026-09-07
 
-This file records the current repository evidence state after the clean-history migration, branch-governance hardening, stable-routing alignment, and first published repository release.
+This file records current repository evidence after clean-history/governance professionalization, package 1.15 reasoning-quality improvements, package 1.16 semantic/design separation, and package 2.0 source-code/identity hardening.
 
 ## Current system state
 
@@ -11,17 +11,19 @@ Verified integration baseline: `Local`.
 Stable branch: `main`.  
 Latest published repository release: `v0.1`.
 
-PRD Creator package remains **v1.14.0**. Repository release versioning is separate from the product/package version rule; governance-only changes do not change PRD/Voice product semantics, Golden design, package behavior, or published repository version.
+PRD Creator package remains **v2.0.0** on `develop`. Repository release versioning is separate from package versioning; this package change does not itself publish a new repository tag/release.
 
-The current `main` contains later untagged repository-maintenance alignment after `v0.1`. No `v0.2` tag or GitHub Release exists. Historical commit/PR wording does not create a repository version; version publication requires the protected tag/GitHub Release action defined by the durable policy.
-
-Current project-document authority shape remains:
+Current authority/delivery shape:
 
 ```text
 project discussion + original source + approved decisions
-→ complete approved project model
-→ canonical PRD / Production Assets / optional Voice
-→ deterministic versioned delivery
+→ recovered project model + integrated cross-role synthesis
+→ material Proposal review / approved project model
+→ work/content.md semantic PRD truth
+→ work/render-data.json deterministic projection
+→ DESIGN-CONTRACT Golden component grammar
+→ canonical mechanical validation + semantic reconciliation
+→ exact render-data acceptance binding
 → output/README.md
 → output/v<document.version>/prd.html
 → output/v<document.version>/context.md
@@ -30,12 +32,47 @@ project discussion + original source + approved decisions
 
 Project package contents remain local/external production data rather than tracked public system-repository content.
 
+## Package 2.0 evidence boundary
+
+Package 2.0 hardens the software boundary without changing approved Golden/runtime bytes:
+
+- machine-owned `*.yaml` state is parsed with pinned PyYAML rather than regex/line emulation;
+- `validator/api.py` is the canonical complete PRD validator and handoff uses the same API;
+- Flow 4 acceptance binds the exact reviewed `work/render-data.json` SHA-256, preventing stale same-version acceptance reuse;
+- renderer/validator generic `_engine.py` names are retired in favor of domain-specific engine module names;
+- shared typed Voice parsing is centralized in `shared/voice.py` rather than duplicated across renderer/validator;
+- Production Assets sections use stable Owner IDs and non-Voice resources use stable `AST-...` IDs;
+- title-based Production Assets/Voice machine joins and silent duplicate collapse are rejected;
+- versioned delivery is staged before current outputs are replaced;
+- locked runtime dependencies are separated from locked dev-quality tooling;
+- Ruff, mypy, coverage reporting, compilation, and full regression remain CI evidence boundaries;
+- GitHub Actions references used by active workflows are pinned to immutable commit SHAs.
+
+This is a major package contract because current Production Asset/Voice source files must carry explicit machine identity instead of relying on display-title joins. Existing canonical project meaning remains upstream authority and can be regenerated into the new internal format.
+
+## Package 1.16 evidence retained
+
+- `document/CONTENT-CONTRACT.md` owns semantic completeness and Material Conservation;
+- `document/DESIGN-CONTRACT.md` owns stable Golden page/component grammar;
+- exact Golden/runtime template bytes remain unchanged;
+- repeatable Flow / Note / Sequence child counts are data-driven rather than fixed to AFTERSHOCK sample counts;
+- `tests/test_prd_adaptive_composition.py` protects non-sample cardinality;
+- Golden reference tests continue to protect exact retained artifact bytes.
+
+## Package 1.15 evidence retained
+
+- Flow 2 performs integrated provisional cross-role synthesis before approval;
+- routine reversible craft decisions do not become artificial approval gates;
+- material AI choices remain explicit Proposals;
+- context loading uses progressive expansion;
+- Flow 4 reconciles approved source/requirements → canonical content → projection → visible PRD;
+- semantic review remains one integrated judgment rather than a numeric scorecard.
+
 ## Clean history contract
 
 ```text
 develop
 → active working history
-→ may contain multiple implementation commits
 
 Local
 → approved milestone history
@@ -43,60 +80,29 @@ Local
 
 main
 → stable repository history
-→ receives explicit Local stable promotions through normal merge commits
+→ explicit Local stable promotions through normal merge commits
 ```
 
-After each successful `develop` → `Local` squash promotion, `develop` is synchronized/reset to the resulting `Local` HEAD before new development starts.
+After a successful `develop` → `Local` squash promotion, `develop` is resynchronized to the resulting `Local` HEAD before new development. A `Local` → `main` stable promotion uses the stable release gate. Protected `v*` tags are published only for approved stable capability releases.
 
-A `Local` → `main` stable promotion uses `Stable release gate` and a normal merge commit. That main-only stable marker remains on `main`; `Local` continues its clean milestone sequence independently.
+## Governance evidence
 
-A new protected `v*` tag/GitHub Release is published only when the stable state includes an approved PRD-Creator feature/capability change. Maintenance-only governance, CI, ruleset, documentation, and repository-hygiene changes remain untagged.
+Current repository policy keeps:
 
-## Current governance evidence
+- `develop` available for direct active development while protected from deletion;
+- `Local` PR/squash/linear-history promotion rules;
+- `main` PR/merge-only stable promotion rules;
+- protected release tags;
+- deterministic Repository / PRD / Voice / promotion verification boundaries;
+- public-repository project-data restrictions.
 
-Repository rules currently establish:
-
-- `develop` is protected from deletion only; normal direct development, working commits, and required post-squash synchronization remain available;
-- `Local` is protected from deletion and non-fast-forward updates, requires linear history, requires a pull request, permits **squash only**, requires `Local promotion gate`, and uses strict up-to-date status checks;
-- `main` is protected from deletion and non-fast-forward updates, requires a pull request, permits **merge only**, and requires `Stable release gate`;
-- `main` intentionally uses non-strict required status checks, so `Local` is not forced to absorb prior main-only stable-marker commits before a stable PR can merge;
-- Release Verify validates GitHub's pull-request merge candidate against the current `main` base;
-- tags matching `refs/tags/v*` are protected from deletion and update;
-- no configured ruleset bypass actor is present for these protected boundaries.
-
-Repository release `v0.1` remains the latest published version. The server-side governance state matches the durable branch/stable-history decision, so repository professionalization is considered complete.
-
-## Baseline evidence
-
-Clean root baseline:
-
-```text
-29aec52a2d78cabfedd3abb771c8a31d67979ce7
-```
-
-The root commit has no parent and was created from the verified prepared repository tree. Before activation, the baseline construction passed:
-
-- root-parent check;
-- exact prepared-tree equality check;
-- `python tools/verify_repository.py`;
-- full `python -m unittest discover -s tests -p "test_*.py" -v` regression suite.
-
-`Local` and `main` were then reset to that same root through explicit one-time user-authorized migrations. `develop` began from the same root and follows the normal working-history model from that baseline.
-
-Legacy recovery references are retained separately:
-
-```text
-legacy/pre-clean-local-2026-08-30
-legacy/pre-clean-main-2026-08-30
-```
-
-The active branch lineage does not depend on those legacy histories.
+Repository release `v0.1` remains the latest published version until a later stable feature release is explicitly published.
 
 ## Product evidence boundary
 
-Earlier browser/real-project evidence remains historical evidence for the exact project bytes tested before live project packages were removed from the tracked public system tree. This repository-governance work does not claim new browser, audio, or project QA.
+Repository/static CI proves source contracts, typed parser behavior, deterministic rendering/validation, and regression behavior. It does not establish browser visual PASS, generated-audio quality, or live-project semantic review unless those capabilities are actually exercised.
 
-RQ-09 remains closed: Golden marker adaptation happens in a temporary template passed to the existing engine instead of mutating `_engine.STORAGE_PREFIX_TOKEN` at module scope.
+RQ-09 remains closed: Golden marker adaptation uses a temporary template instead of mutating renderer module-global storage-prefix state.
 
 ## Current continuation
 
