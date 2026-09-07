@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -123,7 +124,9 @@ def _navigation(markdown: str, max_level: int = 4) -> list[dict[str, Any]]:
     for line_number, line in enumerate(lines, 1):
         match = HEADING_RE.match(line)
         if match:
-            headings.append({"level": len(match.group(1)), "title": match.group(2).strip(), "start_line": line_number})
+            headings.append(
+                {"level": len(match.group(1)), "title": match.group(2).strip(), "start_line": line_number}
+            )
     for index, heading in enumerate(headings):
         end_line = len(lines)
         for later in headings[index + 1 :]:
@@ -162,7 +165,11 @@ def _navigation(markdown: str, max_level: int = 4) -> list[dict[str, Any]]:
         stack.append(node)
 
     def compact(node: dict[str, Any]) -> dict[str, Any]:
-        result: dict[str, Any] = {"id": node["id"], "title": node["title"], "lines": node["lines"]}
+        result: dict[str, Any] = {
+            "id": node["id"],
+            "title": node["title"],
+            "lines": node["lines"],
+        }
         children = [compact(child) for child in node["_children"]]
         if children:
             result["children"] = children
@@ -173,7 +180,12 @@ def _navigation(markdown: str, max_level: int = 4) -> list[dict[str, Any]]:
 
 def build_index(project: Path, title: str, version: str, status: str, context: str) -> dict[str, Any]:
     return {
-        "project": {"id": project.name, "title": title, "prd_version": version, "status": status or "unknown"},
+        "project": {
+            "id": project.name,
+            "title": title,
+            "prd_version": version,
+            "status": status or "unknown",
+        },
         "documents": {
             "human_prd": "prd.html",
             "development_context": "context.md",
@@ -206,7 +218,10 @@ def build_readme(output_root: Path, title: str, version: str, status: str) -> st
     if current_name not in {name for _, name in versions}:
         versions.append((current_key, current_name))
     versions.sort(reverse=True)
-    version_lines = [f"- `{name}`{' — current' if name == current_name else ''}" for _, name in versions]
+    version_lines = [
+        f"- `{name}`{' — current' if name == current_name else ''}"
+        for _, name in versions
+    ]
     return "\n".join(
         [
             f"# {title}",
@@ -254,11 +269,46 @@ def _default_html_renderer(template: Path | None, render_data: Path, output: Pat
     html_renderer_module.render(template, render_data, output)
 
 
-def _publish(staged: dict[str, Path], targets: dict[str, Path]) -> None:
-    for target in targets.values():
-        target.parent.mkdir(parents=True, exist_ok=True)
-    for key in ("prd", "context", "index", "readme"):
-        os.replace(staged[key], targets[key])
+def _publish_bundle(
+    output_root: Path,
+    version_dir: Path,
+    staged_version: Path,
+    staged_readme: Path,
+) -> None:
+    """Publish a complete version directory and README with rollback on any failure."""
+
+    backup_root = staged_version.parent / "previous"
+    backup_version = backup_root / version_dir.name
+    backup_readme = backup_root / "README.md"
+    backup_root.mkdir(parents=True, exist_ok=True)
+    readme_target = output_root / "README.md"
+
+    moved_version = False
+    moved_readme = False
+    published_version = False
+    published_readme = False
+    try:
+        if version_dir.exists():
+            os.replace(version_dir, backup_version)
+            moved_version = True
+        if readme_target.exists():
+            os.replace(readme_target, backup_readme)
+            moved_readme = True
+
+        os.replace(staged_version, version_dir)
+        published_version = True
+        os.replace(staged_readme, readme_target)
+        published_readme = True
+    except Exception:
+        if published_readme and readme_target.exists():
+            readme_target.unlink()
+        if published_version and version_dir.exists():
+            shutil.rmtree(version_dir)
+        if moved_version and backup_version.exists():
+            os.replace(backup_version, version_dir)
+        if moved_readme and backup_readme.exists():
+            os.replace(backup_readme, readme_target)
+        raise
 
 
 def build_delivery(
@@ -293,23 +343,37 @@ def build_delivery(
     renderer = html_renderer or _default_html_renderer
 
     output_root.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="prd-delivery-", dir=output_root) as tmp:
-        staging = Path(tmp)
-        staged = {
-            "readme": staging / "README.md",
-            "prd": staging / "prd.html",
-            "context": staging / "context.md",
-            "index": staging / "index.json",
-        }
-        renderer(template, render_data_path, staged["prd"])
+    with tempfile.TemporaryDirectory(prefix=".prd-delivery-", dir=output_root) as tmp:
+        staging_root = Path(tmp)
+        staged_version = staging_root / f"v{version}"
+        staged_version.mkdir(parents=True)
+        staged_readme = staging_root / "README.md"
+        staged_prd = staged_version / "prd.html"
+        staged_context = staged_version / "context.md"
+        staged_index = staged_version / "index.json"
+
+        renderer(template, render_data_path, staged_prd)
         context = build_context(project, title, version, status)
-        staged["context"].write_text(context, encoding="utf-8")
-        staged["index"].write_text(
-            json.dumps(build_index(project, title, version, status, context), ensure_ascii=False, indent=2) + "\n",
+        staged_context.write_text(context, encoding="utf-8")
+        staged_index.write_text(
+            json.dumps(
+                build_index(project, title, version, status, context),
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
             encoding="utf-8",
         )
-        staged["readme"].write_text(build_readme(output_root, title, version, status), encoding="utf-8")
-        _publish(staged, targets)
+        staged_readme.write_text(
+            build_readme(output_root, title, version, status),
+            encoding="utf-8",
+        )
+
+        required = (staged_prd, staged_context, staged_index, staged_readme)
+        if any(not path.is_file() or path.stat().st_size == 0 for path in required):
+            raise ValueError("staged delivery is incomplete; current delivery was not modified")
+
+        _publish_bundle(output_root, version_dir, staged_version, staged_readme)
     return targets
 
 
