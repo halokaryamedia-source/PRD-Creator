@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import tempfile
@@ -31,6 +32,13 @@ def _load_projection(render_data: Path) -> dict:
     if not isinstance(data, dict):
         raise ValueError("render-data root must be an object")
     validate_projection_schema(data)
+    content_path = render_data.parent / "content.md"
+    if content_path.is_file():
+        actual_content_sha = hashlib.sha256(content_path.read_bytes()).hexdigest()
+        if data["canonical_content_sha256"] != actual_content_sha:
+            raise ValueError(
+                "render-data canonical_content_sha256 does not match current sibling work/content.md bytes"
+            )
     return data
 
 
