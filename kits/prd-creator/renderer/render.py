@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 import tempfile
 from pathlib import Path
@@ -16,25 +15,15 @@ if __package__ in (None, ""):
         sys.path.insert(0, str(KIT_ROOT))
     from renderer import prd_render_engine as engine
     from renderer import production_assets_compositor as production_assets
+    from renderer.core import slug, txt
+    from renderer.template_adapter import TemplateAdapter
 else:
     from . import prd_render_engine as engine
     from . import production_assets_compositor as production_assets
+    from .core import slug, txt
+    from .template_adapter import TemplateAdapter
 
 from shared.render_schema import validate_projection_schema
-
-GOLDEN_SPEC_MARKER = "aftershock-v0.2"
-SAMPLE_META_NAMES = (
-    "golden-sample-id",
-    "golden-sample-version",
-    "source-document",
-    "template-extraction-version",
-)
-STORAGE_KEYS = {
-    "aftershock-document-theme": "document-theme",
-    "aftershock-document-view": "document-view",
-    "aftershock-document-language": "document-language",
-    "aftershock-sidebar-collapsed": "sidebar-collapsed",
-}
 
 
 def _load_projection(render_data: Path) -> dict:
@@ -43,23 +32,6 @@ def _load_projection(render_data: Path) -> dict:
         raise ValueError("render-data root must be an object")
     validate_projection_schema(data)
     return data
-
-
-def _prepare_golden_template(template: Path, data: dict) -> str:
-    source = template.read_text(encoding="utf-8")
-    title = engine.txt(data.get("document", {}).get("title", ""))["en"]
-    namespace = engine.slug(title)
-
-    for meta_name in SAMPLE_META_NAMES:
-        source = re.sub(
-            rf'<meta\b[^>]*\bname=["\']{re.escape(meta_name)}["\'][^>]*>\s*',
-            "",
-            source,
-            flags=re.I,
-        )
-    for old_key, suffix in STORAGE_KEYS.items():
-        source = source.replace(old_key, f"prd-{namespace}-{suffix}")
-    return source
 
 
 def _augment_production_assets(render_data: Path, output: Path) -> None:
@@ -78,13 +50,15 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         _augment_production_assets(render_data, output)
         return
 
-    prepared = _prepare_golden_template(template, data)
-    if prepared.count(GOLDEN_SPEC_MARKER) != 1:
-        raise ValueError("Approved Golden template must contain exactly one canonical specification marker")
-    prepared = prepared.replace(GOLDEN_SPEC_MARKER, engine.STORAGE_PREFIX_TOKEN, 1)
+    namespace = slug(txt(data["document"]["title"])["en"])
+    adapter = TemplateAdapter.prepare_reference_shell(
+        source,
+        namespace=namespace,
+        runtime_token=engine.STORAGE_PREFIX_TOKEN,
+    )
     with tempfile.TemporaryDirectory(prefix="prd-golden-") as tmp:
         prepared_path = Path(tmp) / "runtime-template.html"
-        prepared_path.write_text(prepared, encoding="utf-8")
+        prepared_path.write_text(adapter.source, encoding="utf-8")
         engine.render(prepared_path, render_data, output)
     _augment_production_assets(render_data, output)
 
