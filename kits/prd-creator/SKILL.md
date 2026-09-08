@@ -42,6 +42,7 @@ source / instruction
 → deterministic 01–03 render
 → required non-Voice 04 source when justified
 → Flow 4 semantic/mechanical acceptance
+→ minimal handoff revision state
 → handoff_ready
 → Flow 5 Voice requirements when justified
 → Flow 6 canonical Voice Production
@@ -121,9 +122,18 @@ Display titles never perform machine joins.
 
 Flow 4 acceptance binds the exact current render-data and optional non-Voice asset source. Final Voice acceptance binds the exact Voice Production source. These hashes are implementation metadata, not project versions or operator bookkeeping.
 
+### Handoff state stays minimal
+
+```yaml
+status: handoff_ready
+accepted_prd_version: X.Y.Z
+```
+
+Do not persist deterministic artifact paths in `state/handoff-state.yaml`. Flow 4 derives canonical work/output locations from the accepted revision and verifies those artifacts directly.
+
 ### Persisted paths are project-relative
 
-Machine state accepts normalized POSIX project-relative refs only. Absolute paths, backslashes, `..`, and path escapes are invalid.
+Where machine state does contain path references, they use normalized POSIX project-relative refs only. Absolute paths, backslashes, `..`, and path escapes are invalid.
 
 ### Proof stays truthful
 
@@ -168,6 +178,8 @@ When `Visual sanity: PASS` is claimed, run:
 ```bash
 python tools/prd.py browser workspace/active/<project>/
 ```
+
+After acceptance, `state/handoff-state.yaml` stores only `status` and `accepted_prd_version`. The validator derives and checks canonical `work/` + `output/v<version>/` paths, delivery revision metadata, and exact acceptance bindings.
 
 Only `handoff_ready` crosses into Flow 5. Browser evidence is downstream proof and must never authorize stale or mechanically invalid PRD state.
 
@@ -242,7 +254,7 @@ work/asset-requirements.md
 
 Flow 4
 work/acceptance.md
-state/handoff-state.yaml
+state/handoff-state.yaml          # status + accepted_prd_version only
 
 Voice when used
 work/voice-requirements.md

@@ -410,15 +410,4 @@ def acceptance_text(project: Path, *, status: str = "handoff_ready") -> str:
 
 
 def handoff_state_text(version: str = "1.0.0") -> str:
-    base = f"output/v{version}"
-    return (
-        "status: handoff_ready\n"
-        f"accepted_prd_version: {version}\n"
-        "content: work/content.md\n"
-        "render_data: work/render-data.json\n"
-        f"html: {base}/prd.html\n"
-        f"context: {base}/context.md\n"
-        f"index: {base}/index.json\n"
-        "acceptance: work/acceptance.md\n"
-        "handoff: output/README.md\n"
-    )
+    return "status: handoff_ready\n" f"accepted_prd_version: {version}\n"

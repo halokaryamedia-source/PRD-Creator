@@ -14,14 +14,14 @@ Detailed procedure and exact acceptance/state formats live in `kits/prd-creator/
 - Golden page/component grammar → `document/DESIGN-CONTRACT.md`;
 - non-Voice 04 source → `production-assets/CONTRACT.md`;
 - mechanical PRD validation → `validator/api.py`;
-- handoff state → `state/handoff-state.yaml`;
+- minimal handoff identity → `state/handoff-state.yaml`;
 - acceptance → `work/acceptance.md`;
 - delivery → `output/README.md` + `output/v<version>/`.
 
 ## Sequence
 
 ```text
-current Flow 2 approval
+current Flow 2 requirement revision
 + current content/projection
 + required current non-Voice 04 source
 + deterministic HTML
@@ -58,14 +58,23 @@ Changing either source invalidates prior acceptance even if the semantic version
 
 When no non-Voice 04 source exists, the second binding is exactly `none`.
 
-## Handoff boundary
+## Minimal handoff state
+
+`state/handoff-state.yaml` stores only the status and accepted PRD revision:
+
+```yaml
+status: handoff_ready
+accepted_prd_version: <X.Y.Z>
+```
+
+Do not persist deterministic artifact paths in this state. The canonical paths are derived from project root + accepted revision, for example `work/render-data.json` and `output/v<X.Y.Z>/prd.html`.
 
 Before Flow 5, `validator/validate_handoff.py` confirms:
 
 - the canonical PRD validator still passes;
-- `handoff-state.yaml` uses the strict current schema and safe project-relative paths;
-- accepted semantic version matches current render-data and versioned delivery;
-- referenced delivery artifacts exist;
+- accepted semantic version matches current render-data;
+- canonical derived work/delivery artifacts for that revision exist;
+- delivery metadata identifies the same revision;
 - acceptance binds exact current render-data + non-Voice asset bytes.
 
 `handoff_ready` means the document may be used as the current production reference/downstream Voice input. It does not mean client sign-off, implementation completion, gameplay QA, release approval, or completed Voice production.

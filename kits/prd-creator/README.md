@@ -2,7 +2,7 @@
 
 **Version:** 3.0.0
 
-PRD Creator turns project evidence/discussion into one revision-bound approved project model, canonical PRD, required Production Assets, and optional Voice Production in one versioned delivery.
+PRD Creator turns project evidence/discussion into one revision-bound project model, canonical PRD, required Production Assets, and optional Voice Production in one versioned delivery.
 
 ## Version rule
 
@@ -13,21 +13,24 @@ MAJOR  incompatible product/machine contract change
 NO BUMP project-only revision, clarification, CI/repository hygiene, test-only work
 ```
 
-Package 3.0 is MAJOR because current machine formats intentionally reject older readiness aliases, title-based moment ordering, implicit result modeling, and acceptance records that do not bind all current canonical bytes.
+Package 3.0 is MAJOR because current machine formats intentionally reject older readiness aliases, title-based moment ordering, implicit result modeling, redundant handoff path state, and acceptance records that do not bind all current canonical bytes.
 
 ## Product flow
 
 ```text
 sources
-→ strict provenance + requirement recovery
+→ strict provenance + material requirement recovery
 → integrated cross-role model
-→ Simple Chat Preview
-→ exact requirement-revision approval
+→ material Proposal/conflict?
+   yes → compact Simple Chat Preview → approval/correction
+   no  → continue automatically
+→ exact requirement-revision binding
 → canonical content.md
 → strict render-data projection + approved-requirement SHA + content SHA
 → deterministic PRD core
 → non-Voice 04 when required
-→ exact-byte PRD/04 acceptance + handoff
+→ exact-byte PRD/04 acceptance
+→ minimal handoff revision state
 → Flow 5 Voice requirements when justified
 → Flow 6 Voice production
 → exact-byte Flow 7 acceptance
@@ -48,16 +51,21 @@ single truth
 Key contracts:
 
 ```text
-Flow 2 approval
+Flow 2 revision
 requirement-register bytes → approved_requirement_sha256
+Simple Chat Preview approval → required only for material AI Proposals
 
 PRD projection
-approved Flow 2 requirement SHA → render-data.approved_requirement_sha256
+Flow 2 requirement SHA → render-data.approved_requirement_sha256
 content.md bytes → render-data.canonical_content_sha256
 
 PRD acceptance
 Accepted Render Data SHA256
 Accepted Asset Requirements SHA256
+
+Handoff state
+status + accepted_prd_version
+(canonical work/output paths are derived, not persisted)
 
 04 identity
 Owner ID → Moment ID → AST/VO ID
@@ -69,7 +77,7 @@ Voice acceptance
 Accepted Voice Production SHA256
 ```
 
-Persisted state paths are normalized project-relative POSIX refs only.
+Where state does persist path references, they are normalized project-relative POSIX refs only.
 
 ## Package map
 
@@ -112,12 +120,12 @@ kits/prd-creator/
 
 | Meaning | Artifact | Owner |
 |---|---|---|
-| source / requirement approval | `state/source-inventory.yaml`, `requirement-register.yaml`, `intake-state.yaml` | `intake/SOURCE-INTAKE.md` |
+| source / requirement revision + conditional approval | `state/source-inventory.yaml`, `requirement-register.yaml`, `intake-state.yaml` | `intake/SOURCE-INTAKE.md` |
 | PRD semantic meaning | `work/content.md` | `document/CONTENT-CONTRACT.md` |
 | strict render projection | `work/render-data.json` | `shared/render_schema.py` + `renderer/CONTRACT.md` |
 | Golden grammar | derived presentation | `document/DESIGN-CONTRACT.md` |
 | non-Voice 04 | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
-| PRD acceptance/handoff | `work/acceptance.md`, `state/handoff-state.yaml` | `document/VALIDATION.md` |
+| PRD acceptance/handoff | `work/acceptance.md`, minimal `state/handoff-state.yaml` | `document/VALIDATION.md` |
 | Voice requirements | `work/voice-requirements.md` | `voice/EXTRACTION.md` |
 | Voice wording/performance | `work/voice-production.md` | `voice/PERFORMANCE-WRITING.md` |
 | Voice acceptance | `work/voice-acceptance.md`, `state/voice-state.yaml` | `voice/VALIDATION.md` |
@@ -127,15 +135,17 @@ Do not create parallel schemas or generic registries for these owners.
 ## Implementation boundaries
 
 - `shared/acceptance.py` owns reusable acceptance label/SHA parsing primitives; semantic acceptance meaning remains with Flow 4/7 owners.
+- `shared/handoff.py` owns only handoff status + accepted revision identity; artifact locations are deterministic and are not duplicated into handoff state.
 - `validator/prd_validation_engine.py` orchestrates PRD source/projection/business checks.
 - `validator/html_contract.py` owns derived HTML freshness/composition/navigation checks.
+- `validator/validate_handoff.py` derives canonical artifact paths from the accepted PRD version and proves current artifact/delivery/acceptance parity.
 - `validator/voice_validation.py` owns Flow 5–7 mechanical domain validation.
 - `validator/validate_voice.py` is only the Voice CLI/public entrypoint.
 
 ## Renderer boundaries
 
 - `render-data.json` accepts one field vocabulary; unknown/legacy keys fail.
-- Projection binds both the exact approved Flow 2 requirement revision and exact current `content.md` bytes.
+- Projection binds both the exact Flow 2 requirement revision and exact current `content.md` bytes.
 - Gameplay result mode is explicit: `scored | completion_only`.
 - Renderer never infers missing semantic meaning from another role.
 - `TemplateAdapter` is the only owner of Golden shell mutation/reference compatibility, including additive 04 insertion.
@@ -152,6 +162,7 @@ The package is model-agnostic and expects capable reasoning without forcing unne
 - Expand context only for material dependencies.
 - Let the model choose reversible wording/grouping/decomposition craft.
 - Keep product/design/runtime choices as explicit Proposals until approved.
+- Skip the preview checkpoint when current authority already settles all material choices.
 - Use strict machine contracts to fail early rather than guess compatibility.
 - Fix the first wrong owner rather than polishing downstream symptoms.
 

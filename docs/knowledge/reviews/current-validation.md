@@ -12,7 +12,7 @@ Stable branch: `main`.
 
 PRD Creator package candidate is **v3.0.0** on `develop`. Repository release versioning remains separate from package versioning.
 
-The current candidate simplifies Flow 2 production behavior without changing PRD visual grammar, render-data schema, delivery format, or Voice semantics.
+Package 3 keeps the same PRD visual grammar, render-data schema, delivery bundle, and Voice semantics while reducing production ceremony in Flow 2 and Flow 4.
 
 ## Current production chain
 
@@ -27,7 +27,8 @@ project discussion + authoritative source
 → strict render-data projection
 → deterministic PRD core
 → optional non-Voice 04
-→ Flow 4 acceptance / handoff
+→ Flow 4 acceptance
+→ minimal handoff revision state
 → optional Voice Flow 5–7
 ```
 
@@ -42,35 +43,49 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-## Efficiency simplification implemented
+## Efficiency simplification
 
-The current candidate changes Flow 2 so that:
+### Flow 2 — approval only when material
 
 - authoritative-only projects do **not** require a redundant Simple Chat Preview approval round-trip;
 - `preview_approved` may be omitted or `false` when no accepted material Proposal exists;
 - an approved material Proposal still requires explicit preview approval evidence;
-- the exact current requirement revision remains SHA-bound so stale same-version requirement edits are still rejected;
-- existing projects that retain `preview_approved: true` remain valid;
+- the exact current requirement revision remains SHA-bound so stale same-version edits are rejected;
 - requirement records are guidance-scoped to material rules that benefit from traceability rather than every descriptive detail;
-- production skills now route approval as an exception for material decisions instead of a default Flow 2 ceremony.
+- production skills route approval as an exception for material decisions instead of a default phase.
 
-No compatibility alias layer, second revision registry, or new approval system was introduced.
+This boundary passed Repository Verify, PRD Verify, Voice Verify, static quality, and the full Local regression gate on commit `441db051e116354c6d9c901e8538424a55918689`.
+
+### Flow 4 — minimal handoff state
+
+`state/handoff-state.yaml` now stores only:
+
+```yaml
+status: handoff_ready
+accepted_prd_version: <X.Y.Z>
+```
+
+The validator derives canonical work/output paths from the accepted version instead of persisting redundant `content`, `render_data`, `html`, `context`, `index`, `acceptance`, and `handoff` references.
+
+Safety remains unchanged in intent: the handoff validator still proves current PRD validity, semantic version identity, required artifact existence, delivery metadata parity, and exact acceptance bindings.
+
+No compatibility alias layer, second revision registry, derived-path registry, or new approval system was introduced.
 
 ## Unchanged boundaries
 
-This pass does not change:
+This efficiency cycle does not change:
 
 - Golden/reference visual grammar;
-- `render-data.json` schema or deterministic renderer behavior;
+- `render-data.json` vocabulary or deterministic renderer behavior;
 - non-Voice Owner → Moment → Asset identity;
-- Flow 4 exact acceptance bindings;
+- Flow 4 exact acceptance SHA bindings;
 - Voice Owner → Moment → Voice identity or Flow 5–7 semantics;
 - delivery bundle structure;
 - branch/promotion policy.
 
-## Verification required
+## Verification rule
 
-The exact final `develop` candidate must pass:
+The only readiness rule for the current candidate is the exact current `develop` HEAD evidence:
 
 ```text
 Repository Verify
@@ -81,13 +96,7 @@ Repository Verify
 → Voice Verify where routed
 ```
 
-The key new regression requirements are:
-
-1. authoritative-only Flow 2 can be `ready_for_prd` without preview approval;
-2. explicit `preview_approved: false` is valid when no Proposal exists;
-3. approved material Proposal without preview approval is rejected;
-4. stale requirement revision binding is still rejected;
-5. existing preview-approved projects remain valid.
+If all applicable gates are green on the exact current HEAD, this efficiency cycle is complete. If any gate fails, fix the first wrong owner and rerun the relevant proof. Do not add more machinery merely to make a theoretical audit item disappear.
 
 ## Evidence boundary
 
@@ -95,4 +104,4 @@ Static/repository verification can prove contracts, parser behavior, determinist
 
 ## Current continuation
 
-Keep this work on `develop`. If verification fails, fix the first wrong owner and rerun the smallest relevant proof. Do not promote to `Local` as part of this simplification unless explicitly requested after acceptance.
+Keep this work on `develop`. Do not promote to `Local` unless explicitly requested after current-HEAD verification. Once the current HEAD is green, stop this simplification cycle rather than automatically expanding into runtime-template, CI, or unrelated cleanup.

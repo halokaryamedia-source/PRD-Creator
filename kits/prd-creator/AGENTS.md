@@ -6,7 +6,7 @@ Root `AGENTS.md` owns repository mode, continuity, authority, proof, and branch 
 
 | Need | Owner |
 |---|---|
-| Flow 2 source/recovery/approval | `intake/SOURCE-INTAKE.md` |
+| Flow 2 source/recovery/conditional approval | `intake/SOURCE-INTAKE.md` |
 | PRD semantic completeness | `document/CONTENT-CONTRACT.md` |
 | Golden visual/component grammar | `document/DESIGN-CONTRACT.md` |
 | Flow 4 acceptance/handoff | `document/VALIDATION.md` |
@@ -25,7 +25,7 @@ Do not broad-read the kit. Expand only for a material cross-owner dependency.
 
 ```text
 shared/intake.py
-→ strict Flow 2 source / requirement / approval state
+→ strict Flow 2 source / requirement / conditional-approval state
 
 shared/state.py
 → duplicate-safe YAML loader + state source-line diagnostics
@@ -34,7 +34,7 @@ shared/paths.py
 → safe project-relative persisted path normalization/resolution
 
 shared/handoff.py
-→ strict Flow 4 handoff state
+→ minimal Flow 4 handoff status + accepted revision identity
 
 shared/acceptance.py
 → shared acceptance field + exact SHA parsing primitives
@@ -111,7 +111,7 @@ validator/validate.py
 → thin PRD CLI
 
 validator/validate_handoff.py
-→ strict Flow 4→5 state/path/version/exact-acceptance proof
+→ strict Flow 4→5 accepted-version / derived-artifact / exact-acceptance proof
 
 validator/voice_validation.py
 → lifecycle-aware Flow 5→7 Voice revision/identity/HTML/acceptance domain proof
@@ -128,11 +128,13 @@ Generic `_engine.py` sibling modules and path-order-dependent internal imports a
 
 ```text
 requirement-register bytes
-→ Simple Chat Preview approval
+→ material Proposal exists?
+   yes → Simple Chat Preview approval
+   no  → continue automatically
 → intake-state.approved_requirement_sha256
 ```
 
-`status` is the only readiness truth. Do not reintroduce `ready_for_prd: true`, `next_step`, or another readiness alias.
+`status` is the only readiness truth. `preview_approved` is conditional evidence for accepted material Proposals, not a default gate. Do not reintroduce `ready_for_prd: true`, `next_step`, or another readiness alias.
 
 ### Projection
 
@@ -186,14 +188,23 @@ Accepted Voice Production SHA256
 
 Semantic version is not an edit counter. Both PRD and Voice acceptance parsing use `shared/acceptance.py`; do not recreate label/SHA regex logic elsewhere.
 
+### Handoff state
+
+```text
+status: handoff_ready
+accepted_prd_version: X.Y.Z
+```
+
+Do not persist deterministic artifact paths in `handoff-state.yaml`. Flow 4 derives canonical `work/` and `output/v<X.Y.Z>/` paths from the accepted revision and proves those artifacts directly.
+
 ### Persisted paths
 
-State refs are normalized project-relative POSIX paths. Reject absolute paths, backslashes, `.`/`..`, and workspace escapes.
+Where machine state does persist path references, they are normalized project-relative POSIX paths. Reject absolute paths, backslashes, `.`/`..`, and workspace escapes.
 
 ## Canonical vs derived
 
 ```text
-approved requirement state
+current Flow 2 requirement state
 → work/content.md
 → work/render-data.json
 → output/v<version>/prd.html

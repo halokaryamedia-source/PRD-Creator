@@ -268,24 +268,18 @@ def validate(project: Path) -> dict[str, Any]:
         field="accepted_prd_version",
     )
 
-    refs_ok = True
-    ref_details: list[str] = []
     refs = expected_refs(current_version) if SEMVER_RE.fullmatch(current_version) else {}
+    refs_ok = bool(refs)
+    ref_details: list[str] = []
     if not refs:
-        refs_ok = False
         ref_details.append("cannot resolve versioned handoff paths until document.version uses X.Y.Z")
     else:
-        for field, expected in refs.items():
-            actual = state.refs.get(field, "")
-            if actual != expected:
-                refs_ok = False
-                ref_details.append(f"{field}={actual!r}, expected {expected!r}")
-                continue
+        for field, ref in refs.items():
             try:
                 resolve_project_path(
                     project,
-                    actual,
-                    owner=f"handoff-state.yaml.{field}",
+                    ref,
+                    owner=f"derived handoff artifact {field}",
                     must_exist=True,
                 )
             except ProjectPathError as exc:
@@ -294,7 +288,7 @@ def validate(project: Path) -> dict[str, Any]:
     check(
         "handoff_artifact_references_current",
         refs_ok,
-        "handoff-state uses canonical project-relative paths for the current PRD bundle"
+        "canonical handoff artifact paths are derived from the accepted PRD version and all artifacts exist"
         if refs_ok
         else "; ".join(ref_details),
         code="HANDOFF_REFERENCES_INVALID",

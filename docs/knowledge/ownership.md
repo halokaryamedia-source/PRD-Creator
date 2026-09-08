@@ -1,6 +1,6 @@
 # Repository Ownership
 
-Updated: 2026-09-07
+Updated: 2026-09-08
 
 Use this file only to answer **who owns what**. Exact field/schema/procedure contracts remain in the named owners; do not duplicate them here.
 
@@ -64,9 +64,9 @@ The public repository owns workspace guidance, not live project-package contents
 | Boundary | Owner |
 |---|---|
 | duplicate-safe YAML loading + YAML source-line diagnostics | `kits/prd-creator/shared/state.py` |
-| strict Flow 2 source/requirement/intake state + approval hash | `kits/prd-creator/shared/intake.py` |
+| strict Flow 2 source/requirement/intake state + requirement revision binding | `kits/prd-creator/shared/intake.py` |
 | normalized project-relative path safety | `kits/prd-creator/shared/paths.py` |
-| strict handoff-state shape | `kits/prd-creator/shared/handoff.py` |
+| minimal handoff status + accepted revision identity | `kits/prd-creator/shared/handoff.py` |
 | strict Voice lifecycle-state shape | `kits/prd-creator/shared/lifecycle.py` |
 | canonical render-data whitelist schema | `kits/prd-creator/shared/render_schema.py` |
 | bilingual presence + numeric/unit/dimension/coordinate/negation parity | `kits/prd-creator/shared/localization.py` |
@@ -105,7 +105,7 @@ Reference-project/Golden compatibility vocabulary belongs only in `TemplateAdapt
 | derived PRD HTML freshness/composition/navigation contract | `kits/prd-creator/validator/html_contract.py` |
 | one canonical complete PRD validation API | `kits/prd-creator/validator/api.py` |
 | PRD validation CLI | `kits/prd-creator/validator/validate.py` |
-| PRD → Voice handoff + exact render/asset acceptance bindings | `kits/prd-creator/validator/validate_handoff.py` |
+| PRD → Voice accepted-version + derived-artifact + exact acceptance proof | `kits/prd-creator/validator/validate_handoff.py` |
 | Flow 5–7 lifecycle / exact Voice source and acceptance domain validation | `kits/prd-creator/validator/voice_validation.py` |
 | Voice validation CLI / public entrypoint | `kits/prd-creator/validator/validate_voice.py` |
 | PRD regressions | `tests/test_prd_*` |
@@ -120,13 +120,13 @@ Paths below are relative to an authorized project package.
 | Boundary | Owner |
 |---|---|
 | source identity/provenance | `state/source-inventory.yaml` |
-| recovered/approved requirements | `state/requirement-register.yaml` |
-| Flow 2 status + exact approved requirement SHA | `state/intake-state.yaml` |
+| material recovered/approved requirements | `state/requirement-register.yaml` |
+| Flow 2 status + exact requirement revision binding + conditional preview evidence | `state/intake-state.yaml` |
 | canonical PRD-core meaning | `work/content.md` |
 | strict derived PRD projection + exact Flow 2/content SHA bindings | `work/render-data.json` |
 | canonical non-Voice 04 `Owner → Moment → AST` resources | `work/asset-requirements.md` |
 | PRD/04 acceptance + exact render-data/asset SHA bindings | `work/acceptance.md` |
-| PRD handoff refs/status | `state/handoff-state.yaml` |
+| PRD handoff status + accepted revision only | `state/handoff-state.yaml` |
 | canonical Voice `Owner → Moment → VO` requirements | `work/voice-requirements.md` |
 | canonical Voice wording/performance + exact requirement SHA | `work/voice-production.md` |
 | exact Voice Production acceptance | `work/voice-acceptance.md` |
@@ -135,6 +135,8 @@ Paths below are relative to an authorized project package.
 | human-facing consolidated document | `output/v<document.version>/prd.html` |
 | AI development-context projection | `output/v<document.version>/context.md` |
 | compact AI navigation/line-range index | `output/v<document.version>/index.json` |
+
+Deterministic PRD handoff paths are derived from project root + `accepted_prd_version`; they are not duplicated into handoff state.
 
 Derived output is never hand-patched to reconcile owners. Fix the first wrong canonical/contract owner and regenerate.
 

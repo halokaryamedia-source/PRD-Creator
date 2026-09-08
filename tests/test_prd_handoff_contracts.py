@@ -236,19 +236,17 @@ class PrdHandoffContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
         self.assertIn("Accepted Asset Requirements SHA256", validated.stdout)
 
-    def test_handoff_rejects_unsafe_project_path(self) -> None:
+    def test_handoff_rejects_redundant_derived_path_field(self) -> None:
         project = self.make_project()
         path = project / "state" / "handoff-state.yaml"
         path.write_text(
-            path.read_text(encoding="utf-8").replace(
-                "content: work/content.md",
-                "content: ../outside.md",
-            ),
+            path.read_text(encoding="utf-8") + "content: work/content.md\n",
             encoding="utf-8",
         )
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 1, validated.stderr or validated.stdout)
-        self.assertIn("non-canonical path segment", validated.stdout)
+        self.assertIn("unsupported field", validated.stdout)
+        self.assertIn("content", validated.stdout)
 
     def test_handoff_rejects_unknown_state_field(self) -> None:
         project = self.make_project()

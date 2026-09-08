@@ -2,9 +2,12 @@
 
 ## Current Status
 
-`FLOW2_EFFICIENCY_SIMPLIFICATION_PENDING_VERIFICATION`
+`EFFICIENCY_SIMPLIFICATION_CURRENT_HEAD`
 
-PRD-Creator Package 3 on `develop` now removes the default Flow 2 approval round-trip for authoritative-only projects while preserving explicit approval for material AI Proposals.
+PRD-Creator Package 3 on `develop` now has two targeted simplifications:
+
+1. Flow 2 approval is exception-driven: authoritative-only projects continue without a redundant preview round-trip, while material AI Proposals still require explicit approval.
+2. Flow 4 handoff state stores only `status` + `accepted_prd_version`; deterministic work/output paths are derived and verified instead of persisted as duplicate state.
 
 Branch roles remain:
 
@@ -12,23 +15,26 @@ Branch roles remain:
 - `Local` → protected verified integration baseline;
 - `main` → stable repository history.
 
-Do not promote to `Local` until this candidate is verified and explicitly accepted for promotion.
+Do not promote to `Local` until explicitly requested after exact-current-HEAD verification.
 
 ## Active Boundary
-
-Current Flow 2 behavior should be:
 
 ```text
 authority settles project model
 → bind exact requirement revision
-→ ready_for_prd
-→ continue directly to Flow 3
+→ Flow 3 automatically
 
 material AI Proposal exists
 → compact preview
-→ user approval/correction
+→ approval/correction
 → bind exact accepted requirement revision
-→ ready_for_prd
+→ Flow 3
+
+Flow 4 accepted revision
+→ state/handoff-state.yaml = status + accepted_prd_version
+→ validator derives canonical work/output paths
+→ prove artifact existence + delivery parity + exact acceptance
+→ Flow 5 when required
 ```
 
 Keep these boundaries intact:
@@ -37,12 +43,13 @@ Keep these boundaries intact:
 - no second approval/revision registry;
 - stale requirement bytes still invalidate the Flow 2 binding;
 - approved Proposals still require explicit review evidence;
-- existing `preview_approved: true` states remain valid;
-- Golden/render schema/Flow 4/Voice behavior remain unchanged by this pass.
+- no deterministic artifact-path fields in `handoff-state.yaml`;
+- exact Flow 4 acceptance bindings remain mandatory;
+- Golden/render schema/delivery bundle/Voice semantics remain unchanged.
 
 ## Next Step
 
-Run verification on the exact final `develop` HEAD:
+Use the exact current `develop` HEAD CI as the stop condition:
 
 1. Repository Verify;
 2. Ruff format + lint/import;
@@ -51,4 +58,6 @@ Run verification on the exact final `develop` HEAD:
 5. PRD Verify;
 6. Voice Verify where routed.
 
-If a gate fails, fix the first wrong owner and rerun the relevant proof. Do not widen this task into runtime-template, handoff-state, CI, or unrelated cleanup until this production-flow simplification is green.
+If all applicable gates are green, **STOP**: the current efficiency simplification is complete. If a gate fails, fix the first wrong owner and rerun the relevant proof.
+
+Do not automatically continue into runtime-template, CI deduplication, promotion, or unrelated cleanup after green verification; those are separate later scopes.

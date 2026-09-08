@@ -15,7 +15,7 @@ These implementation modules do not replace the semantic acceptance policy in th
 ## Sequence
 
 ```text
-current Flow 2 approval
+current Flow 2 requirement revision
 + content.md
 + strict render-data projection
 + required non-Voice 04 source when present
@@ -41,8 +41,8 @@ python kits/prd-creator/validator/validate.py \
 
 Mechanical validation proves deterministic facts including:
 
-- Flow 2 approval hash still matches current requirement-register bytes;
-- `render-data.approved_requirement_sha256` matches that exact approved Flow 2 revision;
+- Flow 2 requirement binding still matches current requirement-register bytes;
+- `render-data.approved_requirement_sha256` matches that exact Flow 2 revision;
 - retained source hashes/provenance remain coherent;
 - `content.md` has no unresolved placeholders;
 - `render-data.json` satisfies the one strict projection schema;
@@ -84,7 +84,7 @@ Do not persist per-lens scores.
 Compare material meaning across:
 
 ```text
-approved requirement revision
+current Flow 2 requirement revision
 → content.md
 → strict render-data projection
 → visible PRD / required 04
@@ -161,27 +161,21 @@ python kits/prd-creator/validator/validate_handoff.py \
   workspace/active/<project>/
 ```
 
-`state/handoff-state.yaml` is strict machine state. It contains only:
+`state/handoff-state.yaml` is intentionally minimal. It stores only facts that cannot be derived from the accepted PRD revision:
 
 ```yaml
 status: handoff_ready
 accepted_prd_version: <X.Y.Z>
-content: work/content.md
-render_data: work/render-data.json
-html: output/v<X.Y.Z>/prd.html
-context: output/v<X.Y.Z>/context.md
-index: output/v<X.Y.Z>/index.json
-acceptance: work/acceptance.md
-handoff: output/README.md
 ```
 
-All refs are canonical project-relative POSIX paths. Absolute paths, `..`, backslashes, aliases, and extra state fields are invalid.
+Do not persist `content`, `render_data`, `html`, `context`, `index`, `acceptance`, or `handoff` path fields. Those locations are deterministic from project root + `accepted_prd_version` and are resolved by the validator.
 
 Handoff validation proves:
 
 - the canonical PRD validator still passes;
-- version identity agrees across projection and delivery;
-- all referenced artifacts exist at canonical paths;
+- `accepted_prd_version` matches current `render-data.document.version`;
+- the canonical `work/` and versioned `output/` artifacts derived from that version exist;
+- `context.md`, `index.json`, and `output/README.md` identify that same revision;
 - acceptance binds exact current render-data + asset-requirements bytes.
 
 `output/README.md` is a resume navigator, not a second project-status database.
