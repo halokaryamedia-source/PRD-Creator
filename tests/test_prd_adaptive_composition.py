@@ -10,7 +10,6 @@ from pathlib import Path
 from tests.test_prd_contracts import (
     GOLDEN_TEMPLATE,
     RENDERER,
-    RUNTIME_TEMPLATE,
     VALIDATOR,
     render_data,
     run_cli,
@@ -146,7 +145,14 @@ class AdaptiveSemanticCompositionContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
 
     def test_adaptive_cardinality_does_not_modify_golden_artifact(self) -> None:
-        self.assertEqual(RUNTIME_TEMPLATE.read_bytes(), GOLDEN_TEMPLATE.read_bytes())
+        golden_before = GOLDEN_TEMPLATE.read_bytes()
+        data = render_data()
+        data["global_development"][0]["flow"] = data["global_development"][0]["flow"][:3]
+        project = self.make_project(data)
+        html_path = project / "output" / "v1.0.0" / "prd.html"
+        rendered = run_cli(RENDERER, project / "work" / "render-data.json", html_path)
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
+        self.assertEqual(GOLDEN_TEMPLATE.read_bytes(), golden_before)
 
 
 if __name__ == "__main__":
