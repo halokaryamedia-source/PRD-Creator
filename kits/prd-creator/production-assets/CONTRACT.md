@@ -14,7 +14,7 @@ approved project model
 
 Do not discover Production Assets by rereading finished HTML and brainstorming decoration. Keep a resource only when it is explicit authority, a necessary production implication, or an approved material choice.
 
-The generated project document may visually order sections as `01`–`04`; that number is presentation order only. The capability name remains **Production Assets** everywhere.
+The generated project document displays this capability simply as **Production Assets**. It does not use `04` or another workflow-number alias. Core PRD section ordinals remain a separate Golden document-layout concern.
 
 ## Resource boundary
 
