@@ -14,6 +14,7 @@ on:
       - "kits/prd-creator/validator/validate_handoff.py"
       - "kits/prd-creator/validator/voice_validation.py"
       - "kits/prd-creator/validator/validate_voice.py"
+      - "tests/prd_fixture.py"
       - "tests/test_voice_contracts.py"
       - "tests/test_prd_voice_assets.py"
       - "requirements.lock.txt"
@@ -64,9 +65,11 @@ jobs:
             kits/prd-creator/renderer/production_assets.py \
             kits/prd-creator/renderer/production_assets_compositor.py \
             kits/prd-creator/renderer/template_adapter.py \
+            tests/prd_fixture.py \
             tests/test_voice_contracts.py \
             tests/test_prd_voice_assets.py
 
       - name: Voice Production contracts
         run: |
-          python -m unittest tests.test_voice_contracts tests.test_prd_voice_assets -v
+          python -m unittest discover -s tests -p "test_voice_contracts.py" -v
+          python -m unittest discover -s tests -p "test_prd_voice_assets.py" -v
