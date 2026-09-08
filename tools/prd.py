@@ -111,11 +111,7 @@ def _issue_codes(result: dict[str, Any]) -> set[str]:
     issues = result.get("issues")
     if not isinstance(issues, list):
         return set()
-    return {
-        str(issue.get("code"))
-        for issue in issues
-        if isinstance(issue, dict) and issue.get("code")
-    }
+    return {str(issue.get("code")) for issue in issues if isinstance(issue, dict) and issue.get("code")}
 
 
 def _domain(result: dict[str, Any]) -> dict[str, Any]:
@@ -287,10 +283,15 @@ def impact_payload(changed_paths: list[str]) -> dict[str, Any]:
             checks.add("repository")
             owners.add("repository")
 
-        if path.startswith(PRD_REPO_PREFIXES) or path.startswith("tests/test_prd_") or path in {
-            "tests/prd_fixture.py",
-            "tools/prd.py",
-        }:
+        if (
+            path.startswith(PRD_REPO_PREFIXES)
+            or path.startswith("tests/test_prd_")
+            or path
+            in {
+                "tests/prd_fixture.py",
+                "tools/prd.py",
+            }
+        ):
             checks.add("prd")
             owners.add("prd_system")
 
