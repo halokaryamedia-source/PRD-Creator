@@ -78,7 +78,9 @@ Stable semantic/page questions remain governed by Content/Design contracts; adap
 
 ## Golden shell boundary
 
-`template/golden-reference.html` and `template/runtime-template.html` remain byte-identical to the approved reference artifact unless an explicit Golden contract change is approved.
+`template/golden-reference.html` is the single tracked Golden artifact and the default runtime source. Its approved bytes must not change unless an explicit Golden contract change is approved.
+
+The renderer prepares only a temporary project-specific copy during generation; no second checked-in runtime template is maintained.
 
 All shell mutation belongs to:
 

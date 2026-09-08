@@ -114,6 +114,7 @@ kits/prd-creator/
 │  ├─ validate_handoff.py
 │  └─ validate_voice.py
 └─ template/
+   └─ golden-reference.html
 ```
 
 ## Canonical owners
@@ -123,7 +124,7 @@ kits/prd-creator/
 | source / requirement revision + conditional approval | `state/source-inventory.yaml`, `requirement-register.yaml`, `intake-state.yaml` | `intake/SOURCE-INTAKE.md` |
 | PRD semantic meaning | `work/content.md` | `document/CONTENT-CONTRACT.md` |
 | strict render projection | `work/render-data.json` | `shared/render_schema.py` + `renderer/CONTRACT.md` |
-| Golden grammar | derived presentation | `document/DESIGN-CONTRACT.md` |
+| Golden grammar | `template/golden-reference.html` + derived presentation | `document/DESIGN-CONTRACT.md` |
 | non-Voice 04 | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
 | PRD acceptance/handoff | `work/acceptance.md`, minimal `state/handoff-state.yaml` | `document/VALIDATION.md` |
 | Voice requirements | `work/voice-requirements.md` | `voice/EXTRACTION.md` |
@@ -148,6 +149,7 @@ Do not create parallel schemas or generic registries for these owners.
 - Projection binds both the exact Flow 2 requirement revision and exact current `content.md` bytes.
 - Gameplay result mode is explicit: `scored | completion_only`.
 - Renderer never infers missing semantic meaning from another role.
+- `template/golden-reference.html` is the sole tracked Golden/runtime source; `TemplateAdapter` prepares project-specific runtime output without a second checked-in template.
 - `TemplateAdapter` is the only owner of Golden shell mutation/reference compatibility, including additive 04 insertion.
 - Production Assets CSS/JS live in `renderer/static/` and are inlined at render time.
 - 04 joins only through stable Owner/Moment/Resource identity.
@@ -195,7 +197,7 @@ output/v<document.version>/index.json
 
 ## Protected boundaries
 
-- Golden reference/runtime bytes stay protected and byte-identical unless an explicit design-contract change is approved.
+- The exact canonical Golden bytes stay protected unless an explicit design-contract change is approved; default rendering is regression-tested against explicit use of that same Golden source.
 - Adaptive cardinality is allowed only inside approved component families.
 - Machine YAML uses the shared duplicate-safe YAML loader and reports parse-line location when available.
 - Generic `_engine.py` imports and title-based machine joins are retired.

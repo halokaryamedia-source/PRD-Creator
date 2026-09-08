@@ -71,10 +71,10 @@ voice/              Flow 5–7 Voice procedure/craft/evidence
 shared/             strict machine schemas and shared primitives
 renderer/           deterministic PRD + 04 rendering/delivery
 validator/          PRD, HTML, handoff, and Voice mechanical gates
-template/           approved Golden/runtime representation
+template/           one approved canonical Golden source
 ```
 
-`shared/` centralizes machine behavior only; it does not become semantic authority.
+`shared/` centralizes machine behavior only; it does not become semantic authority. `template/golden-reference.html` is both approved Golden evidence and the default tracked runtime source; runtime preparation is derived temporarily through `TemplateAdapter`.
 
 ## Project-data boundary
 

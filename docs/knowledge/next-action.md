@@ -2,32 +2,31 @@
 
 ## Current Status
 
-`ASTRA_PROSE_VERIFIER_COMPLETE`
+`ASTRA_SINGLE_GOLDEN_COMPLETE`
 
-The Astra optimization on `develop` now keeps the agent/context kernel compact and removes prose wording from repository machine verification.
+Astra optimization on `develop` now has three proven simplifications:
 
-Behavior/output owners remain unchanged: PRD/Voice semantic contracts, render schema, renderer/compositor, validators, Golden/runtime template, tests, output lifecycle, and promotion/release gates.
+1. compact agent/context routing with no change to production semantics;
+2. repository verification checks durable mechanics instead of duplicated prose wording;
+3. `template/golden-reference.html` is the single tracked Golden/runtime source.
 
-Repository verification now checks durable mechanics instead of synchronizing duplicated wording across documentation:
+The removed `runtime-template.html` alias carried the same approved bytes and added a second apparent authority. Renderer and delivery now consume the canonical Golden directly; `TemplateAdapter` creates only temporary project-specific runtime preparation during generation.
 
-- required system entrypoints and domain shape;
-- canonical skill identity and package version metadata;
-- retired paths staying retired;
-- exact dependency pins;
-- relative Markdown navigation;
-- Python syntax.
+PRD regression proves:
 
-`docs/knowledge/work-routing.md` is now a compact human reference; root `AGENTS.md` remains its canonical authority.
+- canonical Golden Git blob remains `2050b965768489feda98373c2920bbee8c7093b3`;
+- default rendering is byte-identical to explicit rendering from `golden-reference.html`;
+- render, validation, delivery, adaptive composition, handoff, and 04 Production Assets contracts remain valid.
 
 ## Active Boundary
 
-All Astra simplification remains behavior-preserving.
+All work remains on `develop`.
 
 - Output quality and semantic completeness must not regress.
-- Golden/render behavior must not change unless handled as a separate parity-proven scope.
+- Golden bytes/design grammar remain unchanged unless separately approved with browser evidence.
 - Branch, promotion, release, validation, and proof semantics remain intact.
-- Do not reintroduce prose-string tests, duplicate routing registries, caches, compatibility layers, or extra approval systems.
+- Do not recreate a second Golden/runtime alias, prose-string verifier contracts, duplicate routing registries, caches, compatibility layers, or extra approval systems.
 
 ## Next Step
 
-Next highest-value scope: evaluate and, only if byte/output parity is provable, remove the duplicate `runtime-template.html` authority so the Golden template has one canonical source. Keep all work on `develop` until full promotion proof is complete.
+Modernize the pinned GitHub Actions runtime on `develop` to remove the current Node 20 deprecation boundary while preserving the same workflow behavior and immutable-SHA pinning. Verify Repository / PRD / Voice workflows after the change. Do not promote to `Local` yet.

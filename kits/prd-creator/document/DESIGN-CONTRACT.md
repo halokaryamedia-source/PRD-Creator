@@ -16,20 +16,21 @@ The approved Golden Reference remains the canonical design reference, but **refe
 
 ## Golden artifact identity
 
-The repository retains:
+The repository retains one canonical Golden artifact:
 
 ```text
 template/golden-reference.html
-template/runtime-template.html
 ```
 
-as byte-identical copies of the approved Golden artifact. Current approved Git blob remains:
+It is both approved design evidence and the default runtime source. Current approved Git blob remains:
 
 ```text
 2050b965768489feda98373c2920bbee8c7093b3
 ```
 
-Do not clean, reconstruct, normalize, or replace those bytes merely to make implementation easier.
+Do not clean, reconstruct, normalize, or replace those bytes merely to make implementation easier. A separate checked-in runtime-template alias is intentionally not maintained.
+
+The renderer may prepare a temporary project-specific runtime copy through `TemplateAdapter`; that temporary representation never becomes a second Golden authority.
 
 The Golden example remains evidence for visual language and component behavior. Its project facts never become another project's facts.
 
