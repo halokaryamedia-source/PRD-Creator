@@ -25,9 +25,34 @@ contracts correct, executable behavior wrong
 → package AGENTS.md → exact technical owner
 ```
 
+This is one production system, not separate fast/full paths. The same authority, invariants, acceptance, and quality requirements apply at every task size; only relevant context, execution, and proof scale with the affected scope.
+
 Start from the smallest owner that can settle the issue. Expand context only for a real dependency or contradiction.
 
+## Proportional execution
+
+For bounded current work, do not replay the end-to-end sequence unless the change actually invalidates it.
+
+```text
+explicit approved target or concrete failure
+→ exact current owner
+→ coherent canonical change
+→ only invalidated downstream work
+→ cheapest proof that can falsify the changed claim
+→ STOP
+```
+
+- Use `status` when the current mechanical stage or first structured wrong owner is unclear; skip it when the authoritative target is already known.
+- Use `impact` when changed paths span domains or the required proof set is unclear; skip it when one obvious targeted check already settles the change.
+- Load a semantic specialist only when semantic judgment is actually required.
+- Load adjacent owners only when an unresolved dependency can change the result.
+- Batch related canonical edits before regenerating derived output once.
+- Do not run unrelated cleanup, regeneration, approval, browser/audio proof, or full regression merely because those capabilities exist.
+- Full integration/promotion gates remain unchanged and are never replaced by proportional iteration proof.
+
 ## Canonical sequence
+
+Use the full sequence for new, materially uncertain, or genuinely end-to-end production work:
 
 ```text
 source / instruction
@@ -198,5 +223,5 @@ Derived output/README.md
 - Batch canonical edits before regeneration.
 - Prefer structured owner/state/schema errors over rereading unrelated context.
 - Do not load Golden HTML for ordinary semantic work.
-- Do not create duplicate schemas, registries, dashboards, approval layers, or speculative frameworks.
+- Do not create duplicate schemas, registries, dashboards, approval layers, speculative modes, or compatibility frameworks.
 - Stop when requested scope is complete and evidence supports the claim.

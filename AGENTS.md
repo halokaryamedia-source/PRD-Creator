@@ -7,11 +7,13 @@ PRD-Creator is repository-backed system memory. Current explicit user intent and
 | Intent | Mode | Start |
 |---|---|---|
 | Inspect, understand, recover, decide | Plan | current state + smallest owner; read-only unless change requested |
-| Create/revise project PRD or Voice deliverables | Production Execution | matching production skill + smallest active owner |
+| Create/revise project PRD or Voice deliverables | Production Execution | matching semantic specialist only when needed + smallest active owner |
 | Change PRD-Creator policy, workflow, renderer, validator, schema, tooling, repository mechanics | Development | `development-brief` + exact owner |
-| Fix bounded bug, regression, stale routing/docs, behavior-preserving defect | Maintenance | concrete failure → first wrong owner |
+| Fix bounded bug, regression, stale routing/docs, behavior-preserving defect | Maintenance | concrete failure or explicit target → first wrong owner |
 
 Production work does not become Development merely because tools or generated files are involved.
+
+All work uses one authority, quality, and proof system. Do not create separate fast/full modes, duplicate pipelines, or weaker quality paths. Scope changes only how much context, execution, and proof are relevant: minor work stays bounded; broader work expands only when evidence requires it.
 
 ## Boot
 
@@ -28,6 +30,20 @@ AGENTS.md
 
 Read `GITHUB_RULES.md` only when GitHub execution, mutation, history, CI, promotion, or transfer behavior can affect the task.
 
+### Maintenance / bounded change
+
+```text
+AGENTS.md
+→ concrete failure or explicit current target
+→ first wrong owner
+→ exact semantic / implementation owner
+→ GITHUB_RULES.md before material GitHub mutation
+→ smallest falsifiable proof
+→ STOP
+```
+
+Do not load `CONTEXT.md`, `next-action.md`, `development-brief`, adjacent owners, broad history, or full regression merely because they exist. Expand only when the current target cannot be settled responsibly without them.
+
 ### Development
 
 ```text
@@ -41,19 +57,56 @@ AGENTS.md
 
 ### Production Execution
 
+Use one adaptive production path; do not replay the full production stack for a bounded change.
+
 ```text
-PRD / non-Voice 04
+PRD / non-Voice 04 — new or materially uncertain meaning
 → project-document-production
 → kits/prd-creator/SKILL.md
 → smallest PRD owner
 
-Voice
+PRD / non-Voice 04 — bounded approved revision
+→ project-document-production only when semantic judgment is needed
+→ smallest changed canonical owner
+→ only invalidated downstream owners
+
+PRD presentation-only issue with correct meaning
+→ kits/prd-creator/document/DESIGN-CONTRACT.md
+→ exact implementation owner when required
+
+PRD technical issue with correct semantic/design contracts
+→ kits/prd-creator/AGENTS.md
+→ exact technical owner
+
+Voice — new or materially uncertain meaning
 → voice-production
 → kits/prd-creator/SKILL.md
 → smallest Voice owner
+
+Voice — bounded approved revision
+→ voice-production only when Voice semantic/performance judgment is needed
+→ smallest changed Voice owner
+→ only invalidated downstream owners
 ```
 
 Do not broad-read the repository or kit. Expand context only for a real unresolved dependency or contradiction.
+
+## Scope proportionality
+
+Use the same correctness standard at every task size, but perform only work that can change the current result or its proof.
+
+```text
+known target / reproduced failure
+→ smallest owner
+→ coherent bounded change
+→ direct cheapest proof when obvious
+→ `tools/prd.py impact` only when proof scope is unclear or cross-domain
+→ STOP
+```
+
+Use `tools/prd.py status` when current mechanical stage or first wrong owner is unclear; do not run it ceremonially when the authoritative target is already known.
+
+Do not perform adjacent cleanup, unrelated regeneration, broad repository scans, redundant approvals, speculative architecture, or full regression during routine iteration unless the changed contract actually requires them. Escalate context, owners, tools, or proof only when evidence shows the current bounded path is insufficient.
 
 ## Authority
 
