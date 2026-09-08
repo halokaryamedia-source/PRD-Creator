@@ -17,6 +17,46 @@ A repository tag/GitHub Release is created only when an approved feature/capabil
 
 The latest published repository release remains `v0.1` until a later approved capability release is promoted/published.
 
+## Package 3.1.3 — 2026-09-09
+
+Backward-compatible Voice preparation refinement completing the current pre-audio Eleven v3 workflow without changing Voice IDs, lifecycle state, accepted PRD meaning, or Golden presentation.
+
+### Actor / character continuity
+
+- add `v3-voice-casting-continuity.md` so recurring Speakers keep one stable actor baseline across many Voice IDs;
+- treat moment-specific emotion/projection/pacing as a performance delta from actor identity rather than a new personality;
+- add internal no-drift boundaries and project-envelope casting guidance without creating a cast database;
+- preserve actual ElevenLabs `voice_id` in generation evidence when reproducibility matters and record the current Default-voice expiry risk on 2026-12-31.
+
+### Language / pronunciation
+
+- add `v3-pronunciation-language.md` for names, project terminology, acronyms, numbers/dates/symbols, foreign/code-switched terms, and repeated critical vocabulary;
+- route pronunciation through spoken forms, IPA/phoneme control, dictionaries, and language/accent-compatible voice choice instead of emotional prompting;
+- add Character Continuity Conservation and Pronunciation Conservation as semantic/craft gates inside Voice Script Readiness, not new schema fields.
+
+### Candidate iteration
+
+- add `v3-candidate-iteration.md` for nondeterministic ElevenLabs generation;
+- compare same-content candidates/regenerations before rewriting a reviewed prompt after one weak take;
+- freeze text/tags/voice/settings/language/surface/context for initial comparison;
+- after a repeated defect is established, change one variable class at a time;
+- keep `seed` best-effort only and avoid ritual candidate counts.
+
+### Contract synchronization
+
+- synchronize package front-door version metadata to 3.1.3;
+- keep all new casting/pronunciation/candidate logic as Flow 6 craft/evidence context without adding manifests, scorecards, or approval layers.
+
+## Package 3.1.2 — 2026-09-08
+
+Backward-compatible Voice expression correction preserving Package 3.1.1 naturalness while restoring Audio Tags as first-class Eleven v3 acting controls.
+
+- add `v3-expression-direction.md` and an internal Expression Coverage Map;
+- require sufficient direction for material emotion, subtext, projection, pacing, reactions, and state transitions;
+- keep zero-tag prompts valid for true natural-baseline lines while rejecting both tag spam and `zero-tag-first` as universal rules;
+- re-anchor material acting state across new TTS request boundaries when needed;
+- add Expression Conservation inside Voice Script Readiness without a new persisted schema.
+
 ## Package 3.1.1 — 2026-09-08
 
 Backward-compatible Voice naturalness correction focused on reducing stiff, document-like, or over-directed Eleven v3 output without changing Voice IDs, lifecycle state, accepted PRD meaning, or the Golden presentation.
@@ -32,19 +72,18 @@ Backward-compatible Voice naturalness correction focused on reducing stiff, docu
 
 - retire the repository-only rule that every `performance` block must begin with an Audio Tag;
 - make zero-tag Eleven v3 prompts mechanically valid when voice fit, wording, punctuation, and context already imply the desired delivery;
-- treat Audio Tags as local interventions for a concrete audible state/reaction rather than mandatory prompt decoration;
-- reject over-direction conceptually through naturalness review instead of forcing `[calm]`, `[clear]`, `[natural]`, `[conversational]`, or synonymous tag stacks onto every line.
+- reject over-direction conceptually instead of forcing `[calm]`, `[clear]`, `[natural]`, `[conversational]`, or synonymous tag stacks onto every line.
 
 ### Narration and generation continuity
 
-- add current TTS `previous_text` / `next_text` and neighboring `previous_request_ids` / `next_request_ids` guidance for connected same-speaker narration that must be generated in separate clips;
-- preserve canonical `VO-...` wording while using generation-only context to improve prosodic continuity, especially when regenerating a middle segment;
-- route short connected lines toward relevant context rather than audible filler, and retain Text to Dialogue for response-dependent multi-speaker continuity.
+- add current TTS `previous_text` / `next_text` and neighboring `previous_request_ids` / `next_request_ids` guidance for connected same-speaker narration;
+- preserve canonical `VO-...` wording while using generation-only context to improve prosodic continuity;
+- route short connected lines toward relevant context rather than audible filler.
 
 ### Voice foundation and settings
 
-- deepen Voice Design guidance around language/dialect, timbre/persona, pacing, delivery, and preview-text alignment so the baseline actor is closer to the intended performance before per-line direction;
-- keep Stability at `Natural` by default and make Speed surface-aware with `1.0`/unchanged as the natural baseline when exposed;
+- deepen Voice Design guidance around language/dialect, timbre/persona, pacing, delivery, and preview-text alignment;
+- keep Stability at `Natural` by default and Speed surface-aware with `1.0`/unchanged as the natural baseline when exposed;
 - prioritize voice fit → spoken wording → thought groups → continuity → punctuation/tags before attempting to repair stiffness with Stability or Speed.
 
 ## Package 3.1.0 — 2026-09-08
@@ -57,8 +96,7 @@ Additive ElevenLabs production-quality update. Existing Asset/Voice machine sche
 - preserve every existing `VO-...` as canonical and keep Dialogue grouping ephemeral instead of introducing a parallel Dialogue schema;
 - add current Dialogue request-limit, candidate-selection, seed/language/pronunciation/normalization, and `with-timestamps` guidance;
 - prefer candidate comparison/same-content regeneration before rewriting otherwise-correct prompts after one nondeterministic weak take;
-- update long-form routing to current ElevenCreative Studio and retire deprecated Voiceover Studio Fixed Duration as current policy;
-- clarify standard Eleven v3 TTS Speed availability vs Studio-specific production controls.
+- update long-form routing to current ElevenCreative Studio and retire deprecated Voiceover Studio Fixed Duration as current policy.
 
 ### Sound Effects production
 

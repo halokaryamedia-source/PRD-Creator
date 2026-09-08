@@ -4,7 +4,7 @@ Status: active Flow 6 policy
 
 ## Purpose
 
-Flow 6 turns mechanically ready Flow 5 requirements into canonical Eleven v3 speech while preserving upstream meaning and intended acting.
+Flow 6 turns mechanically ready Flow 5 requirements into canonical Eleven v3 speech while preserving upstream meaning, recurring actor identity, intended acting, and critical spoken-form correctness.
 
 Detailed craft lives in `kits/prd-creator/voice/PERFORMANCE-WRITING.md`; this page owns lifecycle and authority boundaries.
 
@@ -15,7 +15,7 @@ accepted project meaning
 → work/voice-requirements.md
 → Flow 6 spoken/performance writing
 → work/voice-production.md
-   → natural spoken wording + expression direction + Estimated Duration + shared Voice Cast
+   → natural spoken wording + actor-consistent expression + Estimated Duration + shared Voice Cast
 → consolidated project HTML
 ```
 
@@ -38,16 +38,19 @@ Hard Timing Truth   ← optional Timing Constraint
 Scope Guardrails    ← Must not add/repeat
 ```
 
-Flow 6 may decide natural spoken wording, thought groups, expression direction/Audio Tags, Estimated Duration, voice/profile selection, settings, continuity context, and generation surface inside that boundary.
+Flow 6 may decide natural spoken wording, actor/profile fit, thought groups, expression direction/Audio Tags, pronunciation representation, Estimated Duration, settings, continuity context, and generation surface inside that boundary.
 
 ## Preparation Mode
 
 ```text
 voice_requirements_ready
 → Voice Intent Completeness
+→ Actor Baseline / Voice Fit
 → natural spoken-language pass
 → Expression Coverage
-→ Communication + Expression Conservation
+→ Language & Pronunciation pass
+→ continuity planning
+→ Communication + Expression + Character + Pronunciation Conservation
 → integrated Voice Script Readiness
 → canonical voice-production.md
 → voice_script_ready
@@ -64,7 +67,9 @@ Voice Cast:
 - <Speaker>: <selected ElevenLabs voice or explicit target profile>
 ```
 
-Voice fit is part of quality. A mismatched baseline voice must not be repaired through heavier tag stacks.
+Voice fit is part of quality. A recurring Speaker's local emotion is a delta from a stable actor baseline, not permission to reinvent the character. A mismatched voice must not be repaired through heavier tag stacks.
+
+When generation begins, retain actual ElevenLabs `voice_id` in evidence when reproducibility matters. Display names alone are not durable production identity.
 
 ## Exact Flow 5 binding
 
@@ -95,9 +100,23 @@ Flow 6 may reshape approved meaning into natural speech appropriate to the speak
 
 It may not remove required facts, invent lore/personality, or change established speaker identity.
 
-## Expression boundary
+## Actor / character continuity boundary
 
-Flow 6 must preserve material acting intent.
+For recurring Speakers, internally preserve:
+
+```text
+Identity / Timbre
+Native Cadence
+Baseline Energy / Projection
+Emotional / Projection Range
+Language / Accent
+Persona / Social Stance
+No-Drift Boundary
+```
+
+Each Moment is a performance delta from this actor baseline. A line fails if it sounds like a different character even when it is individually expressive.
+
+## Expression boundary
 
 Internally review:
 
@@ -117,7 +136,7 @@ Landing
 Policy:
 
 ```text
-baseline informational delivery sufficiently carried by voice + text
+baseline informational delivery sufficiently carried by actor + text
 → zero tag may be correct
 
 material performance state not sufficiently explicit
@@ -132,17 +151,23 @@ material reaction
 
 The goal is **Expression Coverage**, not tag count.
 
-Do not add generic `[calm]`, `[clear]`, `[natural]`, or `[conversational]` merely for formatting. Do not remove tags that carry meaningful acting direction merely to make the prompt look cleaner.
+## Language / pronunciation boundary
 
-## Generation-boundary expression rule
+Before generation, identify only material risks such as names, project terminology, acronyms, numbers/dates/symbols, foreign/code-switched terms, and repeated critical vocabulary.
+
+Use the smallest reliable strategy: normal text → explicit spoken form/alias → IPA/phoneme control → pronunciation dictionary when repeated/critical.
+
+Prefer a voice compatible with the target language/accent. Preparation may identify risk; heard evidence is required to approve pronunciation.
+
+## Generation-boundary rule
 
 Connected narration may use `previous_text` / `next_text` or neighboring request IDs for prosody.
 
-Each new TTS request can behave like a performance reset. If a material acting state must continue into the next clip, re-anchor that state explicitly at the new clip opening when necessary. Context helps continuity; it does not replace required acting direction.
+Each new TTS request can behave like a performance reset. If a material acting state must continue into the next clip, re-anchor that state explicitly when necessary.
 
 ## Scope guard
 
-Flow 6 may not silently change Owner/Moment identity, Voice scope, Speaker/Channel/Trigger/Purpose, required communication/exclusions, project facts, or authoritative timing truth.
+Flow 6 may not silently change Owner/Moment identity, Voice scope, Speaker/Channel/Trigger/Purpose, required communication/exclusions, project facts, established character identity, or authoritative timing truth.
 
 ## Flow 6 gate
 
@@ -153,19 +178,22 @@ Set `voice_script_ready` only when:
 - Owner ID, Type, and Speaker parity are exact;
 - every performance block is non-empty;
 - wording is natural for the speaker/register;
+- recurring Speaker actor identity/range/no-drift boundary is coherent when applicable;
 - thought-group rhythm/landing are deliberate;
-- **Expression Coverage is complete**;
+- Expression Coverage is complete;
 - material opening states, transitions, pacing/projection changes, and reactions are explicitly directed where needed;
-- tags are precise, audible, voice-compatible, and non-redundant;
+- critical pronunciation/language risks have an intentional strategy;
 - Estimated Duration exists and source timing truth remains respected;
 - connected narration has appropriate continuity/re-anchoring planning;
 - Communication Conservation = PASS;
 - Expression Conservation = PASS;
+- Character Continuity Conservation = PASS when applicable;
+- Pronunciation Conservation = PASS;
 - integrated Voice Script Readiness = PASS;
 - exact Source Voice Requirements SHA is current;
 - no unresolved upstream contradiction remains.
 
-Mechanical validation does not prove naturalness/expression; those remain semantic/craft judgments.
+Mechanical validation does not prove these craft qualities.
 
 ## Generation Mode
 
@@ -185,12 +213,12 @@ long-form editorial production
 
 Text to Dialogue grouping and continuity context are ephemeral production routing. They do not create parallel canonical schemas.
 
-For expression-heavy work, keep Stability on Natural or Creative when appropriate; Robust is less responsive to directional prompts and should be chosen only when consistency is the actual priority.
+For expression-heavy work, use Natural or Creative when appropriate; Robust is less responsive to directional prompts and should be chosen only when consistency is the actual priority.
 
-A weak isolated take should be compared with same-prompt candidates/regeneration before rewriting otherwise-correct canonical wording. Repeated expression failure at the same beat is stronger evidence of tag placement, voice fit, Stability, or surface issues.
+ElevenLabs generation is nondeterministic. A weak isolated take should be compared with same-content candidates/regeneration before rewriting otherwise-correct canonical wording. When a defect repeats, change one variable class at a time: wording, expression direction, actor, settings, pronunciation/language, or surface/context.
 
-Audio quality requires actual heard evidence.
+Audio quality and pronunciation approval require actual heard evidence.
 
 ## Stop rule
 
-Stop when requested scope is current. Do not add parallel Voice HTML, expression manifests, settings databases, scorecards, or duplicate acceptance layers without a concrete need.
+Stop when requested scope is current. Do not add parallel Voice HTML, actor databases, pronunciation manifests, candidate scorecards, settings databases, or duplicate acceptance layers without a concrete need.

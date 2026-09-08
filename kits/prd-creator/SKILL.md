@@ -1,7 +1,7 @@
 ---
 name: prd-creator
 description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover current project meaning, produce canonical PRD + justified Production Assets, validate handoff, then produce optional Voice without inventing upstream facts.
-version: 3.1.0
+version: 3.1.3
 ---
 
 # PRD Creator
@@ -168,7 +168,7 @@ meaning correct, page grammar wrong         → DESIGN-CONTRACT
 non-Voice 04 meaning/identity               → Production Assets owner
 non-Voice SFX craft/generation              → production-assets/SOUND-EFFECTS.md
 Voice scope/intent                          → Flow 5
-Voice wording/performance/surface            → Flow 6
+Voice wording/performance/surface           → Flow 6
 canonical sources correct, render wrong     → renderer/compositor
 mechanical parity wrong                     → validator/shared owner
 ```

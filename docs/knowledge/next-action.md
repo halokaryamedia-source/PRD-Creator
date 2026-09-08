@@ -2,40 +2,40 @@
 
 ## Current Status
 
-`VOICE_EXPRESSION_3_1_2_CANDIDATE_READY`
+`VOICE_PREAUDIO_3_1_3_CANDIDATE_READY`
 
-Package 3.1.2 corrects the Voice naturalness refinement so Eleven v3 expression remains fully directed without returning to mandatory boilerplate tags.
+Package 3.1.3 completes the current pre-audio Voice preparation model. The user has explicitly deferred real audio testing, so current readiness covers script/prompt/casting/pronunciation/generation-method quality and mechanical verification only.
 
 Completed high-value changes:
 
-1. preserve Package 3.1.1 speechification, register-aware naturalness, thought groups, and narration continuity;
-2. elevate Audio Tags back to **first-class acting controls** rather than treating them as last-resort decoration;
-3. add `v3-expression-direction.md` with an internal Expression Coverage Map for Baseline State, Emotion, Attitude/Subtext, Projection, Pace/Rhythm, Intensity/Energy, Cognitive State, Reaction, Transitions, and Landing;
-4. replace `minimum tags` thinking with **complete expression coverage without redundant direction**;
-5. require explicit direction when material emotion/subtext/projection/pacing/reaction/transition would otherwise be ambiguous or under-directed;
-6. keep zero-tag prompts valid only for true natural-baseline lines with no material acting requirement beyond voice/text context;
-7. require material opening states to be anchored, material state changes to be directed near transitions, and reactions to be placed at their event point;
-8. keep 1 tag preferred when sufficient, allow 2 compatible dimensions, and reserve 3+ simultaneous tags for concrete/calibrated need;
-9. treat every new TTS request as a possible acting reset: previous/next context preserves prosody, while critical continuing expression is re-anchored at the new clip opening when necessary;
-10. apply the same Expression Coverage principle per Text-to-Dialogue turn, including interruption/overlap/reaction dynamics;
-11. align Stability policy with current ElevenLabs guidance: Natural baseline, Creative for intentional extra range, Robust only when consistency outweighs directional responsiveness;
-12. retain no new expression schema/manifest/scorecard; Expression Conservation remains part of Voice Script Readiness.
+1. preserve 3.1.1 speechification, register-aware naturalness, thought groups, and TTS continuity;
+2. preserve 3.1.2 Expression Coverage and first-class Audio Tag acting direction;
+3. add actor-level continuity so every recurring Speaker has an internal baseline/range/no-drift boundary and each Moment is treated as a performance delta rather than a new personality;
+4. make voice casting choose for the broadest required project envelope instead of one impressive isolated line;
+5. add production reproducibility guidance around actual ElevenLabs `voice_id` and current Default-voice expiry on 2026-12-31;
+6. add a pre-generation Language & Pronunciation pass for critical names, project terms, acronyms, numbers/dates/symbols, foreign/code-switched terms, and repeated technical vocabulary;
+7. route pronunciation problems through spoken form / IPA / dictionary / voice-language fit instead of emotional prompt changes;
+8. add Character Continuity Conservation and Pronunciation Conservation as semantic/craft gates inside Voice Script Readiness without new persisted schema;
+9. add candidate-first Generation Mode discipline for ElevenLabs nondeterminism;
+10. freeze text/tags/voice/settings/language/surface/context for initial candidate comparison, then change one variable class at a time only after a repeated defect is established;
+11. preserve seed as best-effort consistency only and avoid ritual candidate counts;
+12. synchronize package version ownership to 3.1.3.
 
-The user has explicitly deferred real audio testing. No generated-audio quality claim is made.
+No audio generation, browser proof, branch promotion, or heard-audio quality claim has been made.
 
 ## Active Boundary
 
 Keep current work on `develop`.
 
 - `work/voice-production.md` remains the sole canonical Voice wording/performance source.
-- Audio Tags are not mandatory syntax, but material acting direction is mandatory by craft.
-- Do not remove expression-bearing tags solely to make prompts cleaner.
-- Do not add tags solely to satisfy a template.
-- Naturalness and expression are separate complementary goals.
-- Generation continuity context remains ephemeral; do not duplicate it into canonical schema.
+- Actor maps, no-drift boundaries, pronunciation reasoning, and candidate histories remain reasoning/evidence context, not new canonical schemas.
+- Audio Tags are not mandatory syntax, but material acting direction remains mandatory by craft.
+- Recurring Speaker emotion is a delta from actor baseline, not permission for character drift.
+- Critical pronunciation must have an intentional production strategy before generation when risk is material.
+- One weak nondeterministic take must not trigger an immediate canonical rewrite.
 - Current Golden design/machine identities remain unchanged.
 - Do not promote to `Local` until explicitly requested.
 
 ## Next Step
 
-Use Package 3.1.2 as the current preparation policy. Further Voice changes should be driven by a concrete prompt/production defect or, when the user later permits it, actual generated-audio evidence.
+For pre-audio preparation, Package 3.1.3 is the stop point. Do not add more Voice theory without a concrete new defect. When the user later permits generation, apply the candidate-first workflow and record only defects that are actually heard.
