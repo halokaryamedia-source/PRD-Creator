@@ -212,6 +212,22 @@ mechanical parity defect
 → matching validator/shared schema owner
 ```
 
+## Mechanical operator shortcut
+
+For routine build/status/validation work, prefer the thin repository facade instead of memorizing individual renderer/validator script paths:
+
+```bash
+python tools/prd.py status workspace/active/<project>/
+python tools/prd.py build workspace/active/<project>/
+python tools/prd.py validate workspace/active/<project>/
+python tools/prd.py handoff workspace/active/<project>/
+python tools/prd.py voice workspace/active/<project>/
+```
+
+Use `status --json` when an agent needs a compact machine-readable result. It reports only mechanical state and the first structured wrong owner; it does not create another authority or prove semantic, visual, audio, or approval readiness.
+
+When `status` identifies a first issue, open that exact owner/path first. Do not broad-read the kit merely because a downstream stage is blocked.
+
 ## Artifact lifecycle
 
 ```text
@@ -250,6 +266,7 @@ Do not create parallel schemas, registries, dashboards, extra approval layers, a
 ## Context economy
 
 - Start narrow and expand progressively.
+- Use `tools/prd.py status` first when the task is mechanical status/debug routing.
 - Do not load the large Golden HTML unless template/DOM/runtime/visual evidence is required.
 - Batch canonical edits before regeneration.
 - Use exact owner/state/schema errors to avoid rereading unrelated context.
