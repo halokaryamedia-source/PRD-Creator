@@ -3,11 +3,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from shared.voice import PERFORMANCE_TAG_LINE_RE
-
 from .core import esc
 
 PERFORMANCE_TAG_RE = re.compile(r"\[[^\[\]\r\n]+\]")
+PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
 STYLE_MARKER = 'id="production-assets-style"'
 SCRIPT_MARKER = 'id="production-assets-script"'
 STATIC_ROOT = Path(__file__).resolve().parent / "static"
