@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from shared.localization import document_languages, validate_bilingual_values
-from shared.render_schema import validate_projection_schema
+from shared.render_schema import RenderData, validated_render_data
 
 from .core import esc, i18n, slug, txt
 from .pages import flow_pages, global_pages, glossary, navigation, overview, package_pages
@@ -40,19 +40,24 @@ def script_safe_json(value: Any) -> str:
     )
 
 
-def validate(data: dict[str, Any]) -> list[str]:
-    validate_projection_schema(data)
+def _validated(data: dict[str, Any]) -> tuple[RenderData, list[str]]:
+    typed = validated_render_data(data)
     languages = document_languages(data)
     if "id" in languages:
         validate_bilingual_values(data)
-    _validate_design_invariants(data)
-    _validate_terms(data)
+    _validate_design_invariants(typed)
+    _validate_terms(typed)
     if OPEN_RE.search(json.dumps(data, ensure_ascii=False)):
         raise ValueError("Render data contains unresolved placeholder text")
+    return typed, languages
+
+
+def validate(data: dict[str, Any]) -> list[str]:
+    _, languages = _validated(data)
     return languages
 
 
-def _validate_design_invariants(data: dict[str, Any]) -> None:
+def _validate_design_invariants(data: RenderData) -> None:
     facts = data["overview"]["facts"]
     fact_keys = tuple(str(item["key"]) for item in facts)
     if fact_keys != REQUIRED_OVERVIEW_FACT_KEYS:
@@ -89,20 +94,20 @@ def _validate_design_invariants(data: dict[str, Any]) -> None:
             raise ValueError(f'{section_id}.title must be "{title}"')
 
     for package in packages:
-        result_mode = str(package["gameplay"]["result_model"]["mode"])
+        result_mode = package["gameplay"]["result_model"]["mode"]
         developer = package["developer"]
-        if result_mode == "scored" and not isinstance(developer.get("scoring"), dict):
+        if result_mode == "scored" and developer.get("scoring") is None:
             raise ValueError(f"package {package['id']} scored result requires developer.scoring")
-        if result_mode == "completion_only" and not isinstance(developer.get("completion_data"), dict):
+        if result_mode == "completion_only" and developer.get("completion_data") is None:
             raise ValueError(f"package {package['id']} completion_only result requires developer.completion_data")
 
 
-def _validate_terms(data: dict[str, Any]) -> None:
-    groups: list[tuple[str, Any]] = []
+def _validate_terms(data: RenderData) -> None:
+    groups: list[tuple[str, list[Any]]] = []
     if data["gameplay_flow"]:
-        groups.append(("gameplay_flow[0].terms", data["gameplay_flow"][0].get("terms", [])))
+        groups.append(("gameplay_flow[0].terms", list(data["gameplay_flow"][0].get("terms", []))))
     for index, package in enumerate(data["packages"]):
-        groups.append((f"packages[{index}].terms", package.get("terms", [])))
+        groups.append((f"packages[{index}].terms", list(package.get("terms", []))))
     for context, terms in groups:
         for index, term in enumerate(terms):
             aliases = term.get("aliases")
@@ -151,11 +156,11 @@ def render(template: Path, render_data: Path, output: Path) -> None:
         raise FileNotFoundError(f"Approved template not found: {template}")
 
     render_data_bytes = render_data.read_bytes()
-    data = json.loads(render_data_bytes.decode("utf-8"))
-    if not isinstance(data, dict):
+    raw = json.loads(render_data_bytes.decode("utf-8"))
+    if not isinstance(raw, dict):
         raise ValueError("render-data root must be an object")
+    data, languages = _validated(raw)
     render_data_sha = hashlib.sha256(render_data_bytes).hexdigest()
-    languages = validate(data)
 
     adapter = TemplateAdapter(template.read_text(encoding="utf-8"))
     adapter.require_once(STORAGE_PREFIX_TOKEN, "storage-prefix template token")
