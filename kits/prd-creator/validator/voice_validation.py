@@ -30,7 +30,7 @@ SOURCE_PRD_REVISION_RE = re.compile(r"(?mi)^\s*Source PRD revision:\s*(\S+)\s*$"
 SOURCE_REQUIREMENTS_RE = re.compile(
     r"(?mi)^\s*Source Voice Requirements:\s*(\S+)\s*/\s*(.+?)\s*\|\s*sha256:([0-9a-f]{64})\s*$"
 )
-META_RE_TEMPLATE = r'<meta\s+content="([0-9a-f]{64})"\s+name="{name}"\s*/?>'
+META_RE_TEMPLATE = r'<meta\s+content="([0-9a-f]{{64}})"\s+name="{name}"\s*/?>'
 REQUIREMENTS_READY_STATUSES = {"voice_requirements_ready"}
 SCRIPT_STATUSES = {"voice_script_ready", "voice_validation", "needs_revision", "voice_delivery_ready"}
 VALIDATABLE_STATUSES = REQUIREMENTS_READY_STATUSES | SCRIPT_STATUSES | {"no_voice_required"}
