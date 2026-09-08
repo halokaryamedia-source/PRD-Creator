@@ -1,136 +1,136 @@
-# Canonical Production Flow
+# Canonical Production Workflow
 
-Status: active architecture
+Status: active policy
 
-```text
-Flow 1  Repository Boot & Project Memory
-Flow 2  Source Intake, Project Completion & Conditional Review
-Flow 3  Project Document / PRD Generation
-Flow 4  PRD Validation & Team Handoff
-Flow 5  Voice Requirement Extraction
-Flow 6  ElevenLabs Performance Script Production
-Flow 7  Voice Validation & Delivery
-```
+## Naming contract
 
-There is no canonical Flow 8. A Simple Chat Preview is used inside Flow 2 only when a material AI Proposal/conflict actually needs user review.
-
-## End-to-end authority and revision chain
+PRD-Creator uses one human workflow vocabulary:
 
 ```text
-current instruction + approved decisions + source evidence
-→ source-inventory.yaml
-→ material requirement-register.yaml
-→ material Proposal/conflict?
-   yes → compact Simple Chat Preview → approval/correction
-   no  → continue automatically
-→ approved_requirement_sha256 revision binding
-→ work/content.md
-→ render-data.canonical_content_sha256
-→ strict render-data projection
-→ deterministic PRD core
-→ work/asset-requirements.md when required
-→ exact render-data + asset-requirements acceptance
-→ development_ready | handoff_ready
-→ Flow 5 only from handoff_ready
-→ work/voice-requirements.md + stable Owner/Moment/VO identity
-→ work/voice-production.md + exact Voice Requirements SHA
-→ consolidated project HTML + exact Voice source SHA metadata
-→ work/voice-acceptance.md + exact Voice Production SHA
-→ voice_delivery_ready
+Project Setup
+→ Project Requirements
+→ PRD Production
+   └─ Production Assets when required
+→ PRD Handoff
+→ Voice Requirements when Voice is justified
+→ Voice Production
+→ Voice Delivery
 ```
 
-Authority decreases downstream. Generated HTML/delivery may represent canonical meaning but never become source truth.
+Rules:
 
-## Flow ownership
+- numbered stage aliases are not workflow names;
+- numeric prefixes on files in `docs/foundation/` are ordering only;
+- numeric markers in generated PRD navigation are document-section ordinals only;
+- machine statuses such as `ready_for_prd`, `handoff_ready`, `voice_requirements_ready`, and `voice_delivery_ready` remain unchanged because they are state vocabulary, not human stage names.
 
-- **Flow 1** — recover current repository/project continuity without asking the user to reconstruct known state.
-- **Flow 2** — inspect current evidence, recover material requirements/provenance, complete material gaps/conflicts through evidence-backed Completion or explicit Proposal, propagate one coherent cross-role model including real 04 needs, review only material AI choices that require approval, then bind the exact current requirement-register revision.
-- **Flow 3** — author canonical `work/content.md`, derive one strict render-data projection bound to those exact content bytes, and render the approved 01–03 design grammar without adding project meaning.
-- **Flow 4** — validate Flow 2 revision freshness, content→projection fidelity, deterministic HTML, required non-Voice 04, semantic readiness, Material Conservation, and exact-byte acceptance. `development_ready` accepts implementation meaning; only `handoff_ready` may enter Flow 5.
-- **Flow 5** — derive only justified player-facing Voice requirements from the current accepted handoff. Flow 5 owns Voice scope/context and stable Owner/Moment identity; it does not write final performance wording.
-- **Flow 6** — preserve Flow 5 identity/scope while producing canonical Eleven v3 wording/performance. The production source binds the exact current Voice Requirements bytes.
-- **Flow 7** — validate revision identity, requirement→production parity, consolidated HTML freshness, communication/readiness evidence, and final exact Voice Production acceptance. Audio quality is separate evidence and is reviewed only when actual audio is in scope.
+## Project Setup
 
-## 04 Production Assets boundary
+Recover repository/project continuity and choose the smallest current owner. This is repository/session setup, not project meaning authoring.
 
-04 is a normal PRD-Creator capability, not a separate numbered Flow.
+## Project Requirements
 
 ```text
-current Flow 2 project model
-├─ PRD core 01–03 meaning
-└─ concrete Production Asset needs
+sources + current instruction + approved decisions
+→ authority/provenance recovery
+→ material requirements
+→ Completion | Proposal | Blocked resolution
+→ exact requirement revision binding
 ```
 
-When non-Voice assets are required:
+Output authority: `state/source-inventory.yaml`, `state/requirement-register.yaml`, `state/intake-state.yaml`.
+
+## PRD Production
 
 ```text
-Flow 2 current model
-→ Flow 3 content + projection + PRD core
-→ materialize work/asset-requirements.md from the same model
-→ Flow 4 validates/accepts PRD + 04 together
+approved Project Requirements
+→ canonical work/content.md
+→ strict work/render-data.json
+→ deterministic PRD rendering
 ```
 
-Do not use generated 01–03 as a brainstorming source for new 04 scope. Resource meaning must already follow from the project model.
+PRD Production preserves approved meaning; it does not invent missing product decisions.
 
-Machine identity for 04 is:
+## Production Assets
+
+Production Assets is optional and bounded:
 
 ```text
-Owner ID
-→ Moment ID
-→ AST-... / VO-... resource ID
+approved project model
+→ concrete resources somebody must prepare
+→ work/asset-requirements.md when non-Voice resources exist
 ```
 
-Display titles are presentation, never primary machine identity.
+Voice resources join the same Production Assets presentation later through stable Owner ID + Moment ID + Voice ID.
 
-## Proposal boundary
-
-Flow 2 may choose concrete project-consistent defaults when evidence does not settle a material question, but those choices remain Proposals until represented in a compact review and approved/corrected by the user.
-
-When current authority already settles the model, Flow 2 must not create a redundant approval checkpoint. Routine reversible wording/grouping/decomposition is authoring craft and does not create approval ceremony.
-
-Golden/reference material supplies representation questions/grammar only. It never supplies another project's gameplay facts, counts, lore, timings, assets, or implementation details.
-
-## Revision rule
-
-A version number alone never proves freshness.
-
-Current machine transitions are bound by exact source bytes where stale reuse would be unsafe:
+## PRD Handoff
 
 ```text
-Flow 2 requirement revision → requirement-register SHA
-projection                  → content.md SHA
-Flow 4 acceptance           → render-data + asset-requirements SHA
-Flow 6 source               → voice-requirements SHA
-Flow 7 acceptance           → voice-production SHA
+current Project Requirements
++ PRD Production
++ Production Assets when present
+→ mechanical validation
+→ semantic reconciliation
+→ exact-byte acceptance
+→ handoff_ready
 ```
 
-If bound upstream bytes change, downstream state becomes stale even when the semantic version string is unchanged.
+Only an accepted PRD Handoff may enter Voice Requirements.
 
-## First-wrong-owner rule
+## Voice Requirements
 
 ```text
-wrong project fact / scope
-→ Flow 2 / PRD authority
-
-correct meaning + invalid projection
-→ Flow 3 projection owner
-
-correct PRD + wrong non-Voice resource contract/presentation
-→ 04 owner
-
-wrong Voice scope/context/Owner/Moment identity
-→ Flow 5
-
-correct Voice requirement + weak wording/performance
-→ Flow 6
-
-correct canonical sources + stale/wrong derived HTML/delivery
-→ renderer/delivery owner
-
-actual generated-audio-only defect
-→ audio evidence/generation scope
+accepted PRD Handoff
+→ justified player-facing Voice moments
+→ stable Owner/Moment/Voice identity
+→ communication intent + required facts + timing truth
+→ voice_requirements_ready | no_voice_required
 ```
 
-Fix the earliest owner that is actually wrong. Do not use downstream polish or compatibility fallback to hide upstream drift.
+Voice Requirements owns what must be communicated, not final performance wording.
 
-Detailed policy/procedure lives in the matching `docs/foundation/`, `kits/prd-creator/`, and shared machine-contract owner. This file owns only the canonical sequence.
+## Voice Production
+
+```text
+Voice Requirements
+→ Actor Baseline / Voice Fit
+→ natural spoken wording
+→ Expression Coverage / Audio Tags
+→ pronunciation/language strategy
+→ continuity + duration planning
+→ Voice Script Readiness
+→ voice_script_ready
+```
+
+Canonical output: `work/voice-production.md`.
+
+## Voice Delivery
+
+```text
+current PRD Handoff
++ Voice Requirements
++ Voice Production
+→ mechanical parity
+→ semantic/craft readiness
+→ current consolidated project HTML
+→ exact Voice acceptance
+→ voice_delivery_ready | needs_revision
+```
+
+Actual audio quality or pronunciation approval requires heard evidence.
+
+## First wrong owner
+
+```text
+source / project decision → Project Requirements
+PRD meaning / projection → PRD Production
+resource requirement → Production Assets
+PRD acceptance / freshness → PRD Handoff
+Voice scope / communication intent → Voice Requirements
+Voice wording / acting / pronunciation / generation strategy → Voice Production
+Voice acceptance / delivery evidence → Voice Delivery
+```
+
+## Stop rule
+
+Do not create parallel workflow names, aliases, compatibility terminology, or duplicate status systems. Use the canonical names above and stop when the current owner is correct and sufficiently proven.

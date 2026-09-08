@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Static checks for durable PRD-Creator repository mechanics.
-
-This verifier intentionally avoids treating prose wording as a machine contract.
-Semantic quality, project readiness, rendered/browser quality, and audio quality are
-proved by their owning production validators and regression gates.
-"""
+"""Static checks for durable PRD-Creator repository mechanics."""
 
 from __future__ import annotations
 
@@ -154,6 +149,32 @@ CURRENT_PATH_REFERENCE_ROOTS = [
     KIT_ROOT / "renderer" / "CONTRACT.md",
 ]
 
+CURRENT_WORKFLOW_NAMING_ROOTS = [
+    ROOT / "AGENTS.md",
+    ROOT / "CONTEXT.md",
+    ROOT / "README.md",
+    ROOT / ".agents" / "skills",
+    ROOT / "docs" / "foundation",
+    ROOT / "docs" / "knowledge" / "README.md",
+    ROOT / "docs" / "knowledge" / "next-action.md",
+    ROOT / "docs" / "knowledge" / "ownership.md",
+    ROOT / "docs" / "knowledge" / "source-authority.md",
+    ROOT / "docs" / "knowledge" / "work-routing.md",
+    ROOT / "docs" / "knowledge" / "skills",
+    ROOT / "docs" / "knowledge" / "operations" / "boot-baseline.md",
+    KIT_ROOT / "README.md",
+    KIT_ROOT / "AGENTS.md",
+    KIT_ROOT / "SKILL.md",
+    KIT_ROOT / "intake" / "SOURCE-INTAKE.md",
+    KIT_ROOT / "document" / "CONTENT-CONTRACT.md",
+    KIT_ROOT / "document" / "VALIDATION.md",
+    KIT_ROOT / "production-assets",
+    KIT_ROOT / "renderer" / "CONTRACT.md",
+    KIT_ROOT / "voice" / "EXTRACTION.md",
+    KIT_ROOT / "voice" / "PERFORMANCE-WRITING.md",
+    KIT_ROOT / "voice" / "VALIDATION.md",
+]
+
 PATH_REFERENCE_PREFIXES = (
     ".agents/",
     ".github/",
@@ -171,6 +192,10 @@ IMMUTABLE_ACTION_REF_RE = re.compile(r"^[0-9a-f]{40}$")
 NAME_RE = re.compile(r"(?m)^name:\s*([^\s]+)\s*$")
 VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
+LEGACY_WORKFLOW_NAME_RE = re.compile(
+    r"\bFlow\s+[1-7](?:\s*[\u2013\u2014-]\s*[1-7])?\b|\bnon-Voice\s+`?04\b|\b04\s+Production\s+Assets\b",
+    flags=re.IGNORECASE,
+)
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -316,11 +341,7 @@ def normalize_link_target(source: Path, raw: str) -> Path | None:
     if not target:
         return None
     lower = target.lower()
-    if (
-        target.startswith("#")
-        or "://" in target
-        or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:"))
-    ):
+    if target.startswith("#") or "://" in target or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:")):
         return None
     target = unquote(target.split("#", 1)[0].split("?", 1)[0]).strip()
     if not target:
@@ -353,13 +374,6 @@ def normalize_code_path(raw: str) -> str:
 
 
 def check_explicit_repository_paths(errors: list[str]) -> None:
-    """Reject stale concrete repo paths in current operational/canonical docs only.
-
-    Historical decisions/reviews are intentionally excluded because they may truthfully
-    mention retired paths. This checks path existence only; prose meaning is not a
-    machine contract.
-    """
-
     for source in iter_markdown_under(CURRENT_PATH_REFERENCE_ROOTS):
         text = source.read_text(encoding="utf-8")
         for raw in CODE_PATH_RE.findall(text):
@@ -369,6 +383,23 @@ def check_explicit_repository_paths(errors: list[str]) -> None:
             if (ROOT / rel).exists():
                 continue
             fail(errors, f"stale repository path reference in {source.relative_to(ROOT)}: {rel}")
+
+
+def check_canonical_workflow_naming(errors: list[str]) -> None:
+    """Keep current policy on one semantic workflow vocabulary.
+
+    Historical decisions, reviews, and changelog records are intentionally outside
+    this check because they may truthfully quote superseded terminology.
+    """
+
+    for source in iter_markdown_under(CURRENT_WORKFLOW_NAMING_ROOTS):
+        text = source.read_text(encoding="utf-8")
+        match = LEGACY_WORKFLOW_NAME_RE.search(text)
+        if match:
+            fail(
+                errors,
+                f"legacy workflow name in current policy {source.relative_to(ROOT)}: {match.group(0)!r}",
+            )
 
 
 def check_python_syntax(errors: list[str]) -> None:
@@ -393,6 +424,7 @@ def main() -> int:
     check_workflow_action_pins(errors)
     check_markdown_links(errors)
     check_explicit_repository_paths(errors)
+    check_canonical_workflow_naming(errors)
     check_python_syntax(errors)
 
     if errors:
@@ -409,9 +441,10 @@ def main() -> int:
     print("- external GitHub Actions: immutable commit-SHA pinned")
     print(f"- relative Markdown links checked: {len(iter_markdown_files())} files")
     print("- current explicit repository path references: valid")
+    print("- canonical workflow naming: valid")
     print("- runtime/dev dependency pins: valid")
     print("- Python kits/tools/tests: syntax valid")
-    print("- prose wording is not a machine contract")
+    print("- historical prose is not rewritten as a machine contract")
     return 0
 
 

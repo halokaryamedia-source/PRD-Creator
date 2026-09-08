@@ -1,14 +1,14 @@
-# SoundMaker — Eleven v3 Execution Mode
+# Voice Production — Eleven v3 Execution
 
-Status: active Flow 6 execution procedure  
+Status: active Voice Production procedure  
 Model scope: **Eleven v3 only**
 
 ## Purpose
 
-SoundMaker turns approved Voice Requirements into production-ready Eleven v3 speech while preserving **communication, naturalness, actor identity, expression, pronunciation, and continuity**.
+Voice Production turns approved Voice Requirements into production-ready Eleven v3 speech while preserving **communication, naturalness, actor identity, expression, pronunciation, and continuity**.
 
 ```text
-Voice Requirement
+Voice Requirements
 → recover communication + performance intent
 → Actor Baseline / Voice Fit
 → natural spoken-language rewrite
@@ -71,11 +71,11 @@ Voice Cast:
 - <Speaker>: <selected voice or target profile>
 
 ## <Gameplay Section>
-Owner ID: <Flow 5 Owner ID>
+Owner ID: <Voice Requirements Owner ID>
 
 ### VO-... — <Title>
-Type: <Flow 5 Type>
-Speaker: <Flow 5 Speaker>
+Type: <Voice Requirements Type>
+Speaker: <Voice Requirements Speaker>
 Estimated Duration: <range>
 
 ```performance
@@ -95,9 +95,9 @@ Recover current facts in this order:
 4. approved same-project voice/performance/pronunciation evidence;
 5. current ElevenLabs references for production technique.
 
-SoundMaker may decide reversible craft: spoken phrasing, thought groups, expression tags, Estimated Duration, actor-fit assessment, pronunciation representation, generation surface/context, and settings.
+Voice Production may decide reversible craft: spoken phrasing, thought groups, expression tags, Estimated Duration, actor-fit assessment, pronunciation representation, generation surface/context, and settings.
 
-Return upstream for changes to established character identity, material accent/relationship/lore, Voice scope, Speaker, Channel, Trigger, Purpose, mechanic, result, reward, or authoritative timing truth.
+Return upstream to Voice Requirements or project authority for changes to established character identity, material accent/relationship/lore, Voice scope, Speaker, Channel, Trigger, Purpose, mechanic, result, reward, or authoritative timing truth.
 
 # Eleven v3 baseline
 
@@ -105,7 +105,7 @@ Return upstream for changes to established character identity, material accent/r
 Model: Eleven v3
 Stability: Natural
 Speed: 1.0 / unchanged when exposed
-Enhance: OFF on SoundMaker-reviewed prompts
+Enhance: OFF on reviewed prompts
 Surface: TTS for independent speech
 Audio Tags: deliberate acting controls
 ```
@@ -116,7 +116,7 @@ Use Creative only when greater expressive variance is intentionally useful after
 
 ## 1. Voice Intent Completeness
 
-Map Flow 5 into one internal performance picture:
+Map Voice Requirements into one internal performance picture:
 
 ```text
 Communication Job   ← Function + Purpose
@@ -192,7 +192,7 @@ Detailed owner: `references/elevenlabs/v3-naturalness.md`.
 
 ## 4. Expression Coverage
 
-Preserve acting deliberately after the wording is natural.
+Preserve acting deliberately after wording is natural.
 
 ```text
 Baseline State
@@ -245,7 +245,7 @@ Punctuation shapes linguistic rhythm; Audio Tags direct acting state. Do not use
 
 ## 6. Duration planning
 
-Honor an authoritative Flow 5 Timing Constraint first, then plan `Estimated Duration`.
+Honor an authoritative Voice Requirements Timing Constraint first, then plan `Estimated Duration`.
 
 ```text
 target range | hard maximum | fixed-sync
@@ -271,20 +271,11 @@ repeated technical vocabulary
 Use the smallest reliable control:
 
 ```text
-ordinary word
-→ normal text
-
-ambiguous number/date/symbol/acronym
-→ explicit spoken form / alias
-
-unusual proper noun
-→ IPA/phoneme control when needed
-
-repeated critical term
-→ pronunciation dictionary
-
-heard + approved
-→ project calibration
+ordinary word → normal text
+ambiguous number/date/symbol/acronym → explicit spoken form / alias
+unusual proper noun → IPA/phoneme control when needed
+repeated critical term → pronunciation dictionary
+heard + approved → project calibration
 ```
 
 Prefer a voice trained in the target language/accent. Website TTS auto-detects language from prompt context; mixed-language prompts can be ambiguous. API `language_code` may be used when short/ambiguous input or normalization needs a dominant language.
@@ -296,28 +287,17 @@ Detailed owner: `references/elevenlabs/v3-pronunciation-language.md`.
 ## 8. Continuity planning
 
 ### Independent line
-
 Generate standalone when genuinely standalone.
 
 ### Connected same-speaker narration
-
-Use relevant:
-
-```text
-previous_text / next_text
-or neighboring request IDs
-```
-
-for contextual prosody continuity.
+Use relevant `previous_text / next_text` or neighboring request IDs for contextual prosody continuity.
 
 Treat each new TTS request as a possible acting reset. If a material state must continue at the next clip opening, re-anchor that state explicitly.
 
 ### Cross-speaker interaction
-
 Use Text to Dialogue when later turns materially react to earlier speakers in the same approved Moment. Each turn keeps its own exact canonical payload and actor-relative expression direction.
 
 ### Long-form
-
 Split at semantic/emotional boundaries, not equal character counts. Use current Studio when paragraph-level editing/continuity is the real need.
 
 # Conservation gates
@@ -352,7 +332,7 @@ These are semantic/craft gates inside Voice Script Readiness, not persisted sche
 A line is ready when:
 
 - Voice Intent Completeness is sufficient;
-- Owner/Type/Speaker remain exact;
+- Owner/Type/Speaker remain exact to Voice Requirements;
 - actor baseline/fit is clear enough for preparation;
 - wording is natural for register;
 - thought-group rhythm/landing are deliberate;
@@ -442,7 +422,7 @@ OR pronunciation/language
 OR surface/context
 ```
 
-Do not require a ritual number of takes. Current dashboard rules may allow up to two free same-parameter regenerations; API billing differs. `seed` is best-effort consistency, not guaranteed determinism.
+Do not require a ritual number of takes. `seed` is best-effort consistency, not guaranteed determinism.
 
 Detailed owner: `references/elevenlabs/v3-candidate-iteration.md`.
 
@@ -484,7 +464,7 @@ Pronunciation Conservation = PASS
 Voice Script Readiness = PASS
 ```
 
-Do not add schemas, manifests, scorecards, approval layers, or more theory after the requested scope is ready.
+Do not add schemas, manifests, scorecards, approval layers, alternate workflow names, or more theory after the requested scope is ready.
 
 # References
 

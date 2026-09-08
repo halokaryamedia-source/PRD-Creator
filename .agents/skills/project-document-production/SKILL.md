@@ -1,125 +1,86 @@
 ---
 name: project-document-production
-description: Semantic/product-contract specialist for PRD-Creator Flow 2–4 plus bounded non-Voice 04 Production Assets. Use when source recovery, project-model completion, canonical PRD meaning, 04 requirement meaning, or PRD readiness/handoff semantics are the actual problem. Presentation-only Golden questions route to the design owner.
+description: Semantic/product-contract specialist for Project Requirements, PRD Production, Production Assets, and PRD Handoff. Use when source recovery, project-model completion, canonical PRD meaning, resource requirement meaning, or PRD readiness/handoff semantics are the actual problem. Presentation-only Golden questions route to the design owner.
 ---
 
 # Project Document Production
 
-Own **semantic judgment**. Detailed procedure, visual mechanics, and executable routing stay with the nearest package owner.
+Own semantic judgment for the Project/PRD domain. Detailed procedure, visual mechanics, and executable routing stay with the nearest package owner.
 
 ## Authority
 
 ```text
 originals + current user instruction + approved decisions
-→ recovered current project model
-   ├─ canonical PRD meaning
-   └─ justified non-Voice 04 requirements
-→ acceptance / handoff
+→ Project Requirements
+→ PRD Production
+   └─ Production Assets when required
+→ PRD Handoff
 ```
 
 Generated output never becomes project authority. Golden/reference material supplies representation/quality evidence, not another project's facts.
 
-## Use when
-
-Semantic judgment is required for:
-
-- source/requirement authority or completeness;
-- Completion vs Proposal vs Blocked;
-- whether a material choice genuinely needs user approval;
-- canonical PRD meaning vs non-Voice 04 meaning;
-- production-role actionability;
-- PRD readiness/handoff;
-- distinguishing missing meaning from a presentation defect.
-
-Do not load this skill merely because a task mentions HTML, JSON, renderer, validator, ElevenLabs, or template.
-
 ## Detailed owners
 
 ```text
-Flow 2 source recovery / completion / conditional review
+Project Requirements
 → kits/prd-creator/intake/SOURCE-INTAKE.md
 
-PRD semantic completeness
+PRD Production semantics
 → kits/prd-creator/document/CONTENT-CONTRACT.md
 
 Golden page/component grammar
 → kits/prd-creator/document/DESIGN-CONTRACT.md
 
-non-Voice 04 meaning
+Production Assets
 → kits/prd-creator/production-assets/CONTRACT.md
 
-ElevenLabs non-dialogue Sound Effects craft / generation
+ElevenLabs non-dialogue Sound Effects craft
 → kits/prd-creator/production-assets/SOUND-EFFECTS.md
 
-Flow 4 semantic reconciliation / handoff
+PRD Handoff
 → kits/prd-creator/document/VALIDATION.md
 
-normal end-to-end execution
+end-to-end execution
 → kits/prd-creator/SKILL.md
 ```
 
 ## Judgment rules
 
-### Source / model completion
+### Project Requirements
 
 ```text
-current authority settles it
-→ recover and continue
-
-one necessary evidence-backed result exists
-→ Completion and continue
-
-multiple plausible material answers exist
-→ one concrete Proposal → user review
-
-no responsible proposal can be formed
-→ Blocked / direct decision
+current authority settles it → recover and continue
+one necessary evidence-backed result exists → Completion and continue
+multiple plausible material answers exist → one concrete Proposal → user review
+no responsible proposal can be formed → Blocked / direct decision
 ```
 
-Material AI Proposals require approval. Authoritative facts and evidence-backed Completions do not require a redundant review round-trip. Routine wording, grouping, ordering, decomposition, and production prompting are not project decisions.
+Material AI Proposals require approval. Authoritative facts and evidence-backed Completions do not require redundant approval.
 
-### Canonical PRD
+### PRD Production
 
-Flow 3 preserves current Flow 2 meaning without inventing product decisions or deleting independently actionable rules.
+Preserve current Project Requirements meaning without inventing product decisions or deleting independently actionable rules. Semantic cardinality follows meaning; do not add filler or compress distinct rules to imitate a reference.
 
-Semantic cardinality follows meaning. Preserve the actual number of distinct steps/items; do not compress or add filler to imitate a reference.
+### Production Assets / PRD Handoff
 
-Stable product questions remain represented where required, including Gameplay Context, Main Objective, Result, and the six Gameplay Information concerns.
-
-### Design / 04 / readiness
-
-- If meaning is correct but visible Golden grammar is wrong, route to `document/DESIGN-CONTRACT.md`; do not alter project truth to fit presentation.
-- Non-Voice 04 requirements come from the same current project model as the PRD; generated PRD pages are not a second brainstorming source.
-- Non-dialogue `AUDIO` remains a normal 04 asset. ElevenLabs SFX prompt/settings decisions may interpret an approved Audio Brief but may not invent a new sound event, source, timing rule, or gameplay meaning.
-- Voice semantics remain downstream Voice ownership. Do not put spoken dialogue into the SFX lane merely because an SFX model can emit voice-like audio.
-- Mechanical PASS does not prove semantic completeness or visual/audio quality. Flow 4 reconciles current Flow 2 meaning → canonical content → projection → visible PRD.
-- If a production role must reopen source for already-resolved PRD-scope meaning, readiness is defective.
+- Production Assets come from the same approved project model as the PRD; generated pages are not a second brainstorming source.
+- Non-dialogue `AUDIO` stays in Production Assets; Voice stays in its own domain.
+- Mechanical PASS does not prove semantic completeness or visual/audio quality.
+- PRD Handoff reconciles current Project Requirements → canonical content → projection → visible PRD + Production Assets.
 
 ## Routing boundary
 
 ```text
-semantic meaning wrong
-→ this specialist + nearest semantic owner
-
-approved non-dialogue AUDIO meaning correct; ElevenLabs SFX craft/generation weak
-→ production-assets/SOUND-EFFECTS.md
-
-meaning correct; approved visual grammar wrong
-→ document/DESIGN-CONTRACT.md
-
-semantic + design contracts correct; executable behavior wrong
-→ kits/prd-creator/AGENTS.md → exact implementation owner
+project/resource meaning wrong → this specialist + nearest semantic owner
+approved non-dialogue AUDIO meaning correct; SFX craft weak → production-assets/SOUND-EFFECTS.md
+meaning correct; approved visual grammar wrong → document/DESIGN-CONTRACT.md
+semantic + design contracts correct; executable behavior wrong → kits/prd-creator/AGENTS.md
 ```
 
 ## Proof economy
 
-- start with the smallest current semantic owner/source;
-- expand only for a dependency that can change the result;
-- do not load full Golden/generated HTML for ordinary semantic review;
-- do not substitute sample counts, word counts, similarity scores, checksums, or snapshots for semantic judgment;
-- do not reconfirm already-authoritative facts;
-- stop when the requested semantic boundary is correct and sufficiently proven.
+Start with the smallest current semantic owner/source, expand only for a dependency that can change the result, do not reconfirm already-authoritative facts, and stop when the requested semantic boundary is correct and sufficiently proven.
 
 ## Boundary
 
-This skill owns PRD/source/04/readiness **semantic judgment** only. Detailed procedure and executable mechanics stay with package owners; Voice stays downstream; generated `prd.html` is never source truth.
+This skill owns Project Requirements / PRD Production / Production Assets / PRD Handoff semantic judgment only. Voice remains downstream.

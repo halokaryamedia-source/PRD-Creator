@@ -1,26 +1,25 @@
-# Voice Requirement Extraction
+# Voice Requirements
 
-Flow 5 converts one accepted `handoff_ready` PRD state into justified player-facing Voice requirements. It owns Voice scope, stable placement identity, communication intent, and authoritative timing truth. It does **not** write final performance text.
+Voice Requirements converts one accepted `handoff_ready` PRD state into justified player-facing Voice requirements. It owns Voice scope, stable placement identity, communication intent, and authoritative timing truth. It does **not** write final performance text.
 
 ## Entry gate
 
-Before extraction run:
+Run:
 
 ```bash
-python kits/prd-creator/validator/validate_handoff.py \
-  workspace/active/<project>/
+python kits/prd-creator/validator/validate_handoff.py workspace/active/<project>/
 ```
 
-Start only when the current handoff, exact accepted render-data/04 revision, canonical PRD, and versioned delivery agree.
+Start only when PRD Handoff, exact accepted Render Data / Production Assets revision, canonical PRD, and versioned delivery agree.
 
-Capture both accepted PRD identifiers in `voice-state.yaml`:
+Capture:
 
 ```text
 source_prd_revision
 source_prd_sha256
 ```
 
-The version is human/project revision identity. The SHA is exact `work/render-data.json` byte identity. Both must remain current for every downstream Voice status, including `no_voice_required`.
+Both must remain current for every downstream Voice status, including `no_voice_required`.
 
 ## Authority
 
@@ -35,43 +34,35 @@ Reference projects never supply new project facts, speakers, channels, triggers,
 
 ## Stable placement identity
 
-Flow 5 owns both placement keys used later by 04:
+Voice Requirements owns placement keys used by Production Assets presentation:
 
 ```text
 Owner ID
-  ↓
-Moment ID
-  ↓
-Voice ID
+→ Moment ID
+→ Voice ID
 ```
 
 ### Owner ID
 
-Use exactly one topology owner:
-
 ```text
 Owner ID: journey:<gameplay-flow-id>   # non-package journey node only
-Owner ID: package:<package-id>         # package + its matching gameplay-flow meaning
+Owner ID: package:<package-id>         # package + matching gameplay meaning
 ```
 
-A package never uses `journey:<package-id>`.
-
 ### Moment ID
-
-Every Voice requirement defines:
 
 ```text
 Moment ID: MOM-<STABLE-ID>
 Moment: <reader-facing moment title>
 ```
 
-`Moment ID` is machine identity; `Moment` is presentation. Multiple Voice/non-Voice resources may share one Owner + Moment ID. Rename the display title without changing Moment ID when the production moment is still the same.
+`Moment ID` is machine identity; `Moment` is presentation. Multiple Voice/non-Voice resources may share one Owner + Moment ID.
 
 ## Extraction sequence
 
 ```text
-current handoff guard PASS
-→ capture accepted render-data SHA
+current PRD Handoff PASS
+→ capture accepted Render Data SHA
 → identify player-facing communication system
 → identify justified Voice moments
 → remove UI-only / redundant / unsupported moments
@@ -80,7 +71,7 @@ current handoff guard PASS
 → preserve required communication / exclusions / source refs
 → record authoritative Timing Constraint only when one exists
 → mechanically validate voice_requirements_ready
-→ Flow 6
+→ Voice Production
 ```
 
 ## Candidate rule
@@ -89,7 +80,7 @@ Keep a candidate only when it is player-facing, source-supported, tied to an app
 
 Reject telemetry, hidden implementation state, decorative unsupported narration, duplicate UI reading, invented lore/mechanics/rewards/triggers, and symmetry added merely because another package has Voice.
 
-## Canonical Flow 5 interface
+## Canonical interface
 
 Every included Voice ID defines:
 
@@ -105,10 +96,10 @@ Every included Voice ID defines:
 - **Purpose** — what the listener must know/do/understand afterward;
 - **Must communicate** — one or more material facts/actions;
 - **Must not add/repeat** — one or more scope/continuity guardrails;
-- **Source refs** — one or more accepted requirement/content references;
+- **Source refs** — accepted requirement/content references;
 - **Timing Constraint** — optional authoritative hard window/sync truth only.
 
-`Timing Constraint` is not Flow 6 `Estimated Duration`.
+`Timing Constraint` is not Voice Production `Estimated Duration`.
 
 ## Canonical output
 
@@ -140,11 +131,11 @@ Owner ID: package:<id> | journey:<id>
   - <accepted requirement/content reference>
 ```
 
-Do not include final wording, performance tags, Estimated Duration, commercial voice selection, Stability, Surface, or other Flow 6 craft.
+Do not include final wording, performance tags, Estimated Duration, commercial voice selection, Stability, Surface, or other Voice Production craft.
 
 ## Canonical Voice state
 
-`state/voice-state.yaml` uses one schema across Flow 5–7:
+`state/voice-state.yaml` uses one schema across Voice Requirements, Voice Production, and Voice Delivery:
 
 ```yaml
 status: voice_requirements_ready
@@ -157,9 +148,7 @@ production: work/voice-production.md
 project_html: output/v<accepted document.version>/prd.html
 ```
 
-All persisted refs are canonical project-relative POSIX paths. Absolute paths, backslashes, `..`, unknown fields, and lifecycle aliases are invalid.
-
-Lifecycle statuses:
+Lifecycle statuses remain unchanged:
 
 ```text
 pending_extraction
@@ -173,27 +162,24 @@ needs_revision
 voice_delivery_ready
 ```
 
-Do not reintroduce `source_revision`, `flow`, `next_step`, `unresolved_upstream`, or `delivery_scope`.
+These are machine state names, not alternate workflow-stage names.
 
-## Flow 5 mechanical gate
+## Mechanical gate
 
-After requirements are written and before Flow 6:
+After requirements are written:
 
 ```bash
-python kits/prd-creator/validator/validate_voice.py \
-  workspace/active/<project>/
+python kits/prd-creator/validator/validate_voice.py workspace/active/<project>/
 ```
 
-At every validatable state, Voice validation reruns canonical PRD handoff validation and checks `source_prd_revision + source_prd_sha256`. At `voice_requirements_ready`, it then validates strict Flow 5 fields and Owner topology without requiring `voice-production.md` yet.
-
-`no_voice_required` is valid only for the exact accepted PRD bytes from which that decision was made.
+At `voice_requirements_ready`, validation checks current PRD Handoff, source PRD identity, strict Voice Requirements fields, and Owner topology without requiring `voice-production.md` yet.
 
 ## Upstream return rule
 
 Use `needs_upstream_decision` when Speaker, Channel, Trigger, Purpose, Owner/Moment identity, required communication, result/reward, terminology/sequence, or authoritative timing truth remains materially unresolved.
 
-Do not hide those decisions inside Flow 6 wording.
+Do not hide those decisions inside Voice Production wording.
 
 ## Completion
 
-Flow 5 is complete only when `voice_requirements_ready` mechanically passes, or accepted evidence supports `no_voice_required`. Stop before performance writing.
+Voice Requirements is complete only when `voice_requirements_ready` mechanically passes, or accepted evidence supports `no_voice_required`. Stop before Voice Production.

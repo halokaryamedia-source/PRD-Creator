@@ -1,32 +1,31 @@
 # Repository Knowledge
 
-Updated: 2026-08-30
+Updated: 2026-09-09
 
 This directory is the navigation and operating-memory layer for PRD-Creator. It does not define a second boot policy or duplicate contracts owned by root/foundation/kits.
 
-## Boot ownership
+## Canonical workflow language
 
-Root `../../AGENTS.md` owns how a session boots.
+Current project-production references use:
 
 ```text
-observe / recover repository context
-→ read-only recovery + report
-
-non-trivial Development
-→ full continuity recovery before edit
-
-bounded mechanical Maintenance
-→ smaller boot only when wider context cannot change the decision
+Project Requirements
+→ PRD Production
+   └─ Production Assets when required
+→ PRD Handoff
+→ Voice Requirements
+→ Voice Production
+→ Voice Delivery
 ```
 
-Do not use this directory index as a reason to broad-read every knowledge file.
+Use the same boundary names in routing, ownership, continuation, and operator communication.
 
 ## Current owners
 
 | Need | Owner |
 |---|---|
 | Active continuation / resume checkpoint | `next-action.md` |
-| Detailed work-routing explanation | `work-routing.md` |
+| Work routing | `work-routing.md` |
 | Repository/code/procedure ownership | `ownership.md` |
 | Source/state authority | `source-authority.md` |
 | Development lifecycle overview | `work-modes/development.md` |
@@ -39,23 +38,7 @@ Do not use this directory index as a reason to broad-read every knowledge file.
 | Future/non-active work | `operations/backlog.md` |
 | Boot/routing regression scenarios | `operations/boot-baseline.md` |
 
-Top-level work modes/session boot remain owned by root `AGENTS.md`. GitHub execution remains owned by root `GITHUB_RULES.md`.
-
-## Directory structure
-
-```text
-docs/knowledge/
-├── README.md
-├── next-action.md
-├── work-routing.md
-├── ownership.md
-├── source-authority.md
-├── work-modes/
-├── skills/
-├── decisions/
-├── reviews/
-└── operations/
-```
+Root `../../AGENTS.md` owns boot/work modes/naming. GitHub execution remains owned by root `GITHUB_RULES.md`.
 
 ## Separation rule
 
@@ -66,7 +49,7 @@ current proof             → reviews/current-validation.md
 historical proof          → reviews/history/
 future/non-active work    → operations/backlog.md
 production policy         → ../foundation/
-project-specific state    → external/local project package, normally mounted under ../../workspace/
+project-specific state    → external/local project package
 ```
 
-Historical reviews/decisions are evidence and rationale, not automatic current work. Current execution follows root routing plus the nearest current owner.
+Historical reviews/decisions are evidence and rationale, not automatic current work.
