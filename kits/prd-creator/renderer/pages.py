@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal, NotRequired, TypedDict, cast
 
 from .core import (
     bi,
@@ -36,6 +36,23 @@ GOLDEN_GLOBAL_PAGE_IDS = {
     "data-reset": "shared-data-reset",
     "gameplay-development": "phase-development",
 }
+
+
+class PackageRenderData(TypedDict):
+    id: str
+    package_label: Any
+    title: Any
+    gameplay: dict[str, Any]
+    level_design: dict[str, Any]
+    developer: dict[str, Any]
+    terms: NotRequired[list[dict[str, Any]]]
+
+
+PackageTab = Literal["requirement", "level", "developer"]
+
+
+def _package_tabs(package_id: str, active: PackageTab) -> str:
+    return tabs(package_id, active)
 
 
 def heading(value: Any) -> str:
@@ -272,7 +289,7 @@ def global_pages(data: dict[str, Any]) -> list[str]:
     return pages
 
 
-def _gameplay_info_rows(package: dict[str, Any]) -> list[str]:
+def _gameplay_info_rows(package: PackageRenderData) -> list[str]:
     gameplay = package["gameplay"]
     result_model = gameplay["result_model"]
     result_label = (
@@ -368,7 +385,7 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
 
 def package_pages(data: dict[str, Any]) -> list[str]:
     pages: list[str] = []
-    packages = data["packages"]
+    packages = cast(list[PackageRenderData], data["packages"])
     brand = data["document"].get("brand") or data["document"]["title"]
     for package_index, package in enumerate(packages, 1):
         package_id = package["id"]
@@ -377,7 +394,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         gameplay = package["gameplay"]
         level = package["level_design"]
         developer = package["developer"]
-        package_tabs = tabs(package_id, "gameplay")
+        package_tabs = _package_tabs(package_id, "requirement")
 
         gameplay_body = (
             f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
@@ -423,7 +440,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         level_body = (
             f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
-            + tabs(package_id, "level")
+            + _package_tabs(package_id, "level")
             + context_block(bi("Level Design Context", "Konteks Level Design"), level["overview"])
             + heading(bi("Level Design Flow", "Alur Level Design"))
             + flow_cards(level["flow"], "quarry-design-flow")
@@ -462,7 +479,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         developer_body = (
             f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
-            + tabs(package_id, "developer")
+            + _package_tabs(package_id, "developer")
             + context_block(bi("Developer Context", "Konteks Developer"), developer["overview"])
             + heading(bi("Development Flow", "Alur Pengembangan"))
             + flow_cards(developer["flow"], "quarry-development-flow")
