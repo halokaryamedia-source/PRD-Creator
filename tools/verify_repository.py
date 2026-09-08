@@ -167,7 +167,10 @@ def check_kit_shape(errors: list[str]) -> None:
 
     actual_root_md = {path.name for path in KIT_ROOT.glob("*.md")}
     if actual_root_md != KIT_ROOT_MARKDOWN:
-        fail(errors, f"prd-creator root Markdown drift: expected {sorted(KIT_ROOT_MARKDOWN)}, got {sorted(actual_root_md)}")
+        fail(
+            errors,
+            f"prd-creator root Markdown drift: expected {sorted(KIT_ROOT_MARKDOWN)}, got {sorted(actual_root_md)}",
+        )
 
 
 def parse_skill_metadata(path: Path, errors: list[str]) -> tuple[str | None, str | None]:
@@ -248,7 +251,11 @@ def normalize_link_target(source: Path, raw: str) -> Path | None:
     if not target:
         return None
     lower = target.lower()
-    if target.startswith("#") or "://" in target or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:")):
+    if (
+        target.startswith("#")
+        or "://" in target
+        or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:"))
+    ):
         return None
     target = unquote(target.split("#", 1)[0].split("?", 1)[0]).strip()
     if not target:
