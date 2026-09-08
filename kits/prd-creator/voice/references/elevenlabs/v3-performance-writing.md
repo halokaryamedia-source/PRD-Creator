@@ -2,56 +2,42 @@
 
 Last verified: **2026-09-08**
 
-Purpose: explain how the **spoken text itself** directs Eleven v3. This is a deep reference for `../PERFORMANCE-WRITING.md`, not a second execution workflow.
-
-Naturalness/stiffness diagnosis lives in `v3-naturalness.md`.
+Purpose: explain how spoken text, punctuation, and Audio Tags cooperate in Eleven v3. Expression architecture lives in `v3-expression-direction.md`; stiffness/narration craft lives in `v3-naturalness.md`.
 
 ## Core order
 
 ```text
 meaning/context
-→ suitable voice baseline
+→ suitable voice
 → spoken wording
-→ thought-group / beat architecture
-→ continuity context when needed
+→ thought-group architecture
+→ Expression Coverage
 → punctuation / line structure
-→ selective emphasis
-→ Audio Tags only when needed
+→ precise Audio Tags
+→ continuity context / generation
 ```
 
-A flat or stiff script should not be repaired by tag stacking.
+Do not repair flatness with tag spam, and do not repair over-direction by deleting expression-critical tags.
 
 # 1. Spoken wording
 
-Write what a person would naturally say at the approved trigger, not what a PRD would document.
+Write what the approved speaker would plausibly say at the approved trigger.
 
 Prefer:
 
 - one main idea/action per thought group;
 - active spoken verbs;
-- progressive, listener-first information order;
-- context-aware references where the listener already knows the subject/location;
-- sentence-length variation driven by thought complexity;
-- enough context for emotional changes to make sense;
-- short enough phrases for important thoughts to land;
-- exact approved terminology only where needed.
+- listener-first information order;
+- context-aware references;
+- sentence-length variation;
+- exact approved terminology where needed;
+- a clear final landing.
 
-Avoid:
+The text should remain understandable with tags removed. That does **not** mean the intended acting must remain fully specified without tags.
 
-- specification sentences with several critical instructions;
-- repeated trigger/context exposition;
-- hidden implementation detail;
-- repeated full objective briefings;
-- filler added only to consume duration or imitate humanity;
-- mechanically formal connective language unless it belongs to the character.
+# 2. Thought-group architecture
 
-The script should remain understandable and performable with all Audio Tags removed.
-
-# 2. Thought-group / beat architecture
-
-A beat is a short unit with one dominant communication/performance purpose.
-
-Possible functions:
+Possible beat functions:
 
 ```text
 establish
@@ -67,225 +53,135 @@ payoff
 farewell
 ```
 
-Useful checks:
+Use scene/thought changes—not sentence count—to decide performance changes.
 
-- important instructions are not buried in one long sentence;
-- adjacent beats do not all use the same sentence shape;
-- setup, escalation, and landing have audible contrast only when the scene contains those phases;
-- the final important thought has a clean landing;
-- calm explanatory content is not forced into artificial excitement;
-- direct dialogue responds to the current situation rather than narrating it back to the listener.
+# 3. Text controls
 
-For long-form performance, let story/scene changes create performance changes. Do not assign a new emotion simply because a new sentence begins.
+## Punctuation
 
-# 3. Natural spoken irregularity
-
-Natural speech does not mean deliberately adding mistakes.
-
-Optional devices include:
-
-- contractions;
-- sentence fragments;
-- restart/repetition;
-- hesitation;
-- discourse markers;
-- stretched words;
-- asymmetric sentence lengths.
-
-Use them only when they fit the speaker, language, and moment.
-
-Bad heuristic:
-
-```text
-every line must contain filler / hesitation / ellipses to sound human
-```
-
-Better rule:
-
-```text
-use the smallest amount of spoken irregularity that naturally follows the speaker's thought
-```
-
-A polished narrator or concise radio operator may sound highly controlled and still fully human.
-
-# 4. Non-tag controls
-
-ElevenLabs documents text structure, punctuation, capitalization, and emotional context as material v3 controls.
-
-## Standard punctuation
-
-Use punctuation semantically, not as exact milliseconds:
-
-- `,` — keep related material in one thought;
-- `.` — complete thought / reset;
-- `?` — real or rhetorical questioning contour;
-- `!` — textual intensity/assertiveness;
-- `—` — hard pivot/interruption/dramatic break;
-- `...` / `…` — hesitation, suspense, weight, trailing thought.
-
-Repeated punctuation reduces contrast and can make performance stylized rather than natural.
+- `,` keeps related material moving;
+- `.` completes a thought/reset;
+- `?` creates questioning contour;
+- `!` increases textual intensity;
+- `—` creates pivot/interruption;
+- `…` creates hesitation/suspense/trailing weight.
 
 ## CAPS
 
-Capitalization can increase emphasis.
+Use sparingly for contrast.
 
-Good:
+## Line/paragraph structure
 
-```text
-We need it NOW.
-DO NOT touch that switch.
-```
+Use line breaks for readable thought groups. A newline is not an exact pause timer.
 
-Avoid whole paragraphs or many adjacent key words in CAPS. Contrast disappears when everything is stressed.
+## Natural irregularity
 
-## Line / paragraph structure
+Contractions, fragments, restarts, repetition, hesitation, discourse markers, or stretched words are optional expressive writing devices, not a checklist.
 
-Use line breaks to make thought groups legible. A newline is not an exact-duration pause command.
+# 4. Audio Tags are first-class acting direction
 
-For narration, preserve meaningful paragraph structure when possible instead of converting every sentence into an isolated clip.
+Current Eleven v3 guidance explicitly uses Audio Tags for emotional control, delivery, pacing, reactions, and other vocal behavior.
 
-## Repetition / restart
-
-Sparse repeated wording can communicate panic, disbelief, correction, or hesitation:
+Core categories:
 
 ```text
-No. No, no—MOVE!
+Emotion
+→ [sad] [angry] [excited] [curious] ...
 
-I... I don't know.
+Attitude / subtext
+→ [sarcastic] [mischievously] [matter-of-fact] ...
+
+Projection / delivery
+→ [whispers] [shouts] [softly] ...
+
+Pace / rhythm
+→ [rushed] [slowly] [drawn out] [pause] ...
+
+Human reactions
+→ [laughs] [sighs] [exhales] [gulps] ...
+
+Character/accent candidates
+→ use only when approved and voice-compatible
 ```
 
-Treat this as expressive writing, not a universal control.
+Tags are natural-language instructions, not a closed enum. Prefer concise audible directions.
 
-## Letter stretching
+# 5. Tag authority levels
 
-Forms such as `Sooo...` can produce drawn-out speech on some voices. Treat them as voice-dependent expressive spelling and prefer project-calibrated use.
+## Official/documented-style
 
-# 5. Audio Tag status
+Prefer known current patterns when sufficient.
 
-Do not treat every plausible bracketed phrase as equally established.
+## Descriptive candidate
 
-## A. Documented / official examples
+The vocabulary is non-exhaustive. Concise cues such as `[restrained excitement]`, `[building urgency]`, or `[guarded]` may be used when they describe an audible state and are supported by scene/character context.
 
-Examples demonstrated in current ElevenLabs v3 guidance include patterns such as:
+## Project-calibrated
 
-```text
-[laughs]
-[whispers]
-[sighs]
-[exhales]
-[sarcastic]
-[curious]
-[excited]
-[crying]
-[snorts]
-[mischievously]
-```
-
-These are safer starting vocabulary when they match the voice and scene.
-
-## B. Descriptive candidate
-
-ElevenLabs says the tag vocabulary is non-exhaustive and allows natural-language direction. Cues such as:
-
-```text
-[building urgency]
-[guarded]
-[restrained excitement]
-```
-
-may be useful, but they are **candidates**, not guaranteed exact commands. Keep them simple and audible.
-
-## C. Project-calibrated
-
-A custom direction that repeatedly works for the same project/voice/settings becomes stronger local evidence for that production.
+A cue repeatedly proven with the same project/voice/settings becomes stronger local evidence.
 
 Priority:
 
 ```text
-no tag when voice + text already carry the delivery
-→ simple documented cue when needed
-→ descriptive candidate when needed
-→ project-calibrated behavior for repeated production
+simple reliable cue
+→ concise descriptive cue
+→ project calibration
 ```
 
-Never claim a descriptive candidate is an official exact tag unless the source actually documents it.
+# 6. Opening direction
 
-# 6. Tag dimensions
+There is no syntax rule requiring every prompt to start with a tag.
 
-| Dimension | Examples | Purpose |
-|---|---|---|
-| Emotion | `[nervous]`, `[excited]` | dominant feeling |
-| Tone / attitude | `[sarcastic]`, `[mischievously]` | stance/subtext |
-| Projection | `[whispers]`, `[shouts]` | vocal presence |
-| Pace / rhythm | descriptive or calibrated pacing cues | local tempo/landing |
-| Cognitive beat | `[hesitates]`, pause-like cues | thought/rhythm event |
-| Human reaction | `[sighs]`, `[laughs]`, `[gulps]` | non-verbal event |
-| Character / accent | voice-dependent descriptive cue | presentation/identity |
-
-Do not use non-auditory stage directions such as `[standing]` or `[looking worried]` as voice-performance instructions.
-
-# 7. Optional opening direction
-
-A standalone Voice Production prompt is **not required** to begin with an Audio Tag.
-
-Use a tag at the opening only when the intended opening delivery is materially under-specified by:
+Craft rule:
 
 ```text
-selected voice baseline
-+ spoken wording
-+ punctuation/structure
-+ immediate context
+material opening acting state
+→ anchor with explicit direction
+
+no material opening state beyond voice/text baseline
+→ zero-tag opening valid
 ```
 
-Zero-tag examples are valid when the line naturally carries its own performance:
-
-```text
-The door's open. Go.
-
-You made it. I wasn't sure you would.
-```
-
-A tag can still be appropriate when an otherwise neutral line must begin in a specific audible state:
+Examples:
 
 ```text
 [whispers]
 Don't turn around.
 ```
 
-Do not prepend generic tags such as `[calm]`, `[clear]`, `[natural]`, or `[conversational]` merely to satisfy a template.
-
-# 8. Tag placement and persistence
-
-Current v3 guidance supports moment-to-moment/mid-delivery direction and strategic placement near the dialogue it affects.
-
-Standard v3 documentation does **not** define a fixed persistence rule such as:
+versus:
 
 ```text
-one tag = exactly N words
-one tag = active until next tag
+The chamber's open. Go in.
 ```
 
-Therefore:
+# 7. Placement and transitions
 
-- place a direction directly near the beat it should shape;
-- add a new direction only when performance state materially changes;
-- do not repeat the same tag every sentence without reason;
-- do not transfer tag-scope numbers from another ElevenLabs product surface into normal Speech Synthesis.
-
-# 9. Tag stacking
-
-ElevenLabs allows combinations but does not publish an ideal simultaneous count.
-
-Repository naturalness heuristic:
+Place direction close to the beat it affects.
 
 ```text
-0 tags               → valid natural baseline
-1 local tag          → normal when one audible dimension/event needs direction
-2 simultaneous tags  → valid when dimensions differ and are compatible
-3+ simultaneous tags → exception / preferably project-calibrated
+[reflective]
+I thought this place was empty.
+
+[uneasy]
+Then I heard someone breathing.
 ```
 
-Good when truly needed:
+Do not assume a documented fixed tag persistence window. Re-anchor when a material state changes or when a new generation request must reliably start in a particular state.
+
+# 8. Tag combinations
+
+ElevenLabs permits combinations.
+
+Repository heuristic:
+
+```text
+1 tag               → preferred when sufficient
+2 simultaneous tags → compatible independent dimensions
+3+                  → exceptional / calibrated / concrete need
+```
+
+Good:
 
 ```text
 [nervous][quietly]
@@ -299,126 +195,117 @@ Weak:
 Let's go!
 ```
 
-Do not use contradictory direction stacks unless an intentionally unusual result has already been approved for the project.
-
-# 10. Reactions are timeline events
-
-Prefer sequencing a reaction where it actually occurs:
+# 9. Reactions are events
 
 ```text
-I think something is coming...
-
-[gulps]
-
-Don't move.
+I thought we'd lost it.
+[sighs]
+Okay. It's still responding.
 ```
 
-rather than placing every reaction inside one large opening tag cluster.
+Do not front-load all reactions as one tag cluster.
 
-# 11. Emotional context from text
+# 10. Narration direction
 
-ElevenLabs documents that textual emotional context affects delivery. Use this before adding directions that merely restate obvious meaning.
-
-Natural urgency can come from:
-
-- shorter clauses;
-- direct verbs;
-- cut-offs/interruption structure;
-- information order;
-- contrast;
-- an isolated landing.
-
-Example:
+Design the narrative performance arc first:
 
 ```text
-Move. Now.
-```
-
-may already provide enough urgency for a suitable voice. Add a tag only if a more specific performance state is genuinely needed.
-
-Do not insert spoken prose such as `she said sadly` into a game line merely to steer emotion unless those words are intended to be heard.
-
-# 12. Narration
-
-For long narration, use meaningful prose movement instead of one direction tag per sentence.
-
-A possible shape:
-
-```text
-reflective setup
-→ concrete observation
+orientation
+→ curiosity
 → reveal
-→ implication
-→ emotional turn
-→ clean landing
+→ unease
+→ urgency
+→ resolution
 ```
 
-Guidance:
+Then place tags at meaningful state anchors/transitions.
 
-- keep the narrator's baseline voice stable;
-- vary sentence length according to the thought;
-- use fewer, more meaningful local directions;
-- avoid ellipses at every reflective beat;
-- do not convert every sentence into a separate emotional state;
-- preserve paragraph/scene context during generation when continuity matters.
-
-The exact tags are secondary. Performance movement should follow narrative movement.
-
-# 13. Connected speech context
-
-When separate same-speaker TTS generations form one continuous narration, keep canonical prompts separate but provide generation context when supported:
+Too many tags:
 
 ```text
-previous_text / next_text
-→ surrounding canonical spoken text
-
-previous_request_ids / next_request_ids
-→ adjacent generated clips, especially for regeneration
+tag every sentence
 ```
 
-This improves continuity without adding filler or duplicate audible wording.
-
-For multi-speaker response-dependent scenes, use Text to Dialogue instead.
-
-# 14. Pauses: v3-specific rule
-
-Eleven v3 does **not** support SSML `<break>` tags.
-
-For v3, use:
-
-- natural punctuation;
-- ellipses sparingly;
-- em dashes for real pivots/cut-offs;
-- line/text structure;
-- appropriate pause/reaction tags only when the pause/reaction is itself a real performance event.
-
-# 15. Numbers, acronyms, symbols, spelling
-
-For predictable production speech, write ambiguous items the way they should be spoken:
+Too few tags:
 
 ```text
-50% → fifty percent
-$100 → one hundred dollars
-15 sec → fifteen seconds
+important emotional arc left entirely to inference
 ```
 
-Proofread. Misspellings may be pronounced rather than silently corrected.
+Target:
 
-For material proper nouns, route to `v3-production-reference.md` for IPA/dictionary guidance.
+```text
+natural prose
++ explicit state anchors
++ explicit transitions
++ sparse justified reactions
+```
 
-# 16. Pre-generation writing check
+# 11. Dialogue direction
+
+Text to Dialogue accepts tags inside each turn's text. Keep the tag in the turn it affects.
+
+```text
+[annoyed] You knew about this?
+[defensive] I only found out this morning.
+[interrupting] Then why didn't you tell me?
+```
+
+Use dialogue tags for emotional interplay, interruption, overlap, whispering, reactions, and turn-specific acting—not as a substitute for distinct Voice IDs.
+
+# 12. Pauses and pacing
+
+Eleven v3 does not support SSML `<break>`.
+
+Use:
+
+- punctuation;
+- ellipses;
+- em dashes;
+- line structure;
+- `[pause]`, `[rushed]`, `[slowly]`, `[drawn out]`, or other appropriate Audio Tags when explicit pacing direction matters.
+
+Do not invent exact milliseconds from tags.
+
+# 13. Pronunciation
+
+```text
+ordinary word → normal text
+ambiguous token → explicit spoken form
+unusual proper noun → native v3 IPA when needed
+repeated project term → pronunciation dictionary/note when useful
+```
+
+# 14. Voice matching
+
+Tag effectiveness is voice-dependent.
+
+Before increasing direction complexity, confirm the voice can plausibly perform the required emotional/projection/pacing range.
+
+A serious restrained voice may not respond well to playful cues; a soft voice may not become a convincing shout actor solely through `[shouts]`.
+
+# 15. Stability interaction
+
+For maximum expression with Audio Tags, current ElevenLabs guidance favors Creative or Natural. Robust is less responsive to directional prompts.
+
+Repository default remains Natural.
+
+# 16. Enhance
+
+ElevenLabs Enhance can automatically add Audio Tags and emphasis. SoundMaker-reviewed prompts keep Enhance OFF by default because SoundMaker already owns communication + expression direction. Any Enhance rewrite becomes a new draft requiring review.
+
+# 17. Pre-generation check
 
 Before returning to SoundMaker:
 
-- spoken wording is natural for the speaker/register;
-- every important thought group has a clear function;
-- adjacent beats are not mechanically identical;
-- context is not needlessly repeated;
-- contractions/fragments/filler are used only when justified;
-- emotional changes have a scene reason;
-- punctuation/CAPS are intentional and not dense;
-- tags are optional, audible, compatible, and minimal;
-- the prompt does not rely on an invented tag-persistence rule;
-- connected narration has a continuity plan when separate generation would otherwise sound detached;
+- spoken wording is natural;
+- thought groups are clear;
+- material expression is identified;
+- expression-critical states have sufficient explicit direction;
+- opening state is anchored when needed;
+- transitions/reactions are placed at the correct beat;
+- tag combinations are compatible/non-redundant;
+- punctuation/CAPS cooperate with, rather than duplicate, tag intent;
+- the chosen voice can perform the requested range;
 - no SSML `<break>` exists;
-- the line remains clear when all optional Audio Tags are mentally removed.
+- no invented tag persistence rule is assumed.

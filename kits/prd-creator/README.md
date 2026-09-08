@@ -1,6 +1,6 @@
 # PRD Creator
 
-**Version:** 3.1.1
+**Version:** 3.1.2
 
 PRD Creator turns project evidence/discussion into one revision-bound project model, canonical PRD, required Production Assets, and optional Voice Production in one versioned delivery.
 
@@ -13,11 +13,11 @@ MAJOR  incompatible product/machine contract change
 NO BUMP project-only revision, clarification, CI/repository hygiene, test-only work
 ```
 
-Package 3.0 is MAJOR because current machine formats intentionally reject older readiness aliases, title-based moment ordering, implicit result modeling, redundant handoff path state, and acceptance records that do not bind all current canonical bytes.
+Package 3.1 adds current ElevenLabs TTS/Text-to-Dialogue routing and non-dialogue Sound Effects production while preserving existing Asset/Voice machine formats.
 
-Package 3.1 is additive and backward-compatible: it keeps the same Asset/Voice machine formats while adding current ElevenLabs production routing for **Text to Speech vs Text to Dialogue** and a dedicated non-dialogue **Sound Effects** execution owner.
+Package 3.1.1 removes stiff document-like Voice writing and the repository-only mandatory opening-tag syntax rule.
 
-Package 3.1.1 is a backward-compatible Voice naturalness correction: it removes the repository-only mandatory opening Audio Tag rule and makes **voice fit, natural spoken wording, thought-group prosody, and relevant generation context** the primary path to non-stiff narration/dialogue. Existing `VO-...`/`AST-...` formats and lifecycle state remain valid.
+Package 3.1.2 corrects the opposite risk: **Audio Tags remain first-class Eleven v3 acting controls**. SoundMaker now requires Expression Coverage for material emotion, subtext, projection, pacing, reactions, and state transitions while still allowing true baseline lines to remain zero-tag. Existing `VO-...` / `AST-...` formats and lifecycle state remain backward-compatible.
 
 ## Product flow
 
@@ -25,20 +25,20 @@ Package 3.1.1 is a backward-compatible Voice naturalness correction: it removes 
 sources
 → strict provenance + material requirement recovery
 → integrated cross-role model
-→ material Proposal/conflict?
-   yes → compact Simple Chat Preview → approval/correction
-   no  → continue automatically
+→ conditional Proposal approval
 → exact requirement-revision binding
 → canonical content.md
-→ strict render-data projection + approved-requirement SHA + content SHA
+→ strict render projection
 → deterministic PRD core
 → non-Voice 04 when required
-   └─ AUDIO may use ElevenLabs SFX production without another canonical schema
+   └─ AUDIO may use ElevenLabs SFX production
 → exact-byte PRD/04 acceptance
-→ minimal handoff revision state
+→ minimal handoff state
 → Flow 5 Voice requirements when justified
 → Flow 6 Voice production
-   └─ natural spoken wording → independent/contextual TTS | same-Moment dependent Text to Dialogue | current Studio when useful
+   ├─ natural spoken wording
+   ├─ Expression Coverage / Audio Tag direction
+   └─ TTS | contextual TTS | Text to Dialogue | Studio
 → exact-byte Flow 7 acceptance
 → one current project HTML
 ```
@@ -54,24 +54,18 @@ single truth
 → transactional publication
 ```
 
-Key contracts:
+## Key contracts
 
 ```text
-Flow 2 revision
+Flow 2
 requirement-register bytes → approved_requirement_sha256
-Simple Chat Preview approval → required only for material AI Proposals
 
 PRD projection
-Flow 2 requirement SHA → render-data.approved_requirement_sha256
-content.md bytes → render-data.canonical_content_sha256
+requirement SHA + content.md bytes → render-data bindings
 
 PRD acceptance
 Accepted Render Data SHA256
 Accepted Asset Requirements SHA256
-
-Handoff state
-status + accepted_prd_version
-(canonical work/output paths are derived, not persisted)
 
 04 identity
 Owner ID → Moment ID → AST/VO ID
@@ -82,8 +76,6 @@ voice-production → exact Voice Requirements SHA
 Voice acceptance
 Accepted Voice Production SHA256
 ```
-
-Where state does persist path references, they are normalized project-relative POSIX refs only.
 
 ## Package map
 
@@ -103,34 +95,15 @@ kits/prd-creator/
 │  ├─ VALIDATION.md
 │  └─ references/elevenlabs/
 │     ├─ v3-naturalness.md
+│     ├─ v3-expression-direction.md
 │     ├─ v3-performance-writing.md
 │     ├─ v3-duration-planning.md
 │     ├─ v3-dialogue-generation.md
 │     ├─ v3-production-reference.md
 │     └─ source-register.md
 ├─ shared/
-│  ├─ intake.py
-│  ├─ state.py
-│  ├─ paths.py
-│  ├─ handoff.py
-│  ├─ acceptance.py
-│  ├─ render_schema.py
-│  ├─ localization.py
-│  ├─ assets.py
-│  ├─ voice.py
-│  ├─ lifecycle.py
-│  ├─ topology.py
-│  └─ issues.py
 ├─ renderer/
-│  ├─ template_adapter.py
-│  └─ static/
 ├─ validator/
-│  ├─ prd_validation_engine.py
-│  ├─ html_contract.py
-│  ├─ voice_validation.py
-│  ├─ validate.py
-│  ├─ validate_handoff.py
-│  └─ validate_voice.py
 └─ template/
    └─ golden-reference.html
 ```
@@ -139,86 +112,112 @@ kits/prd-creator/
 
 | Meaning | Artifact | Owner |
 |---|---|---|
-| source / requirement revision + conditional approval | `state/source-inventory.yaml`, `requirement-register.yaml`, `intake-state.yaml` | `intake/SOURCE-INTAKE.md` |
+| source / requirement revision | `state/source-inventory.yaml`, `requirement-register.yaml`, `intake-state.yaml` | `intake/SOURCE-INTAKE.md` |
 | PRD semantic meaning | `work/content.md` | `document/CONTENT-CONTRACT.md` |
 | strict render projection | `work/render-data.json` | `shared/render_schema.py` + `renderer/CONTRACT.md` |
-| Golden grammar | `template/golden-reference.html` + derived presentation | `document/DESIGN-CONTRACT.md` |
+| Golden grammar | `template/golden-reference.html` | `document/DESIGN-CONTRACT.md` |
 | non-Voice 04 | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
-| ElevenLabs non-dialogue SFX production | derived prompt/settings/audio evidence | `production-assets/SOUND-EFFECTS.md` |
-| PRD acceptance/handoff | `work/acceptance.md`, minimal `state/handoff-state.yaml` | `document/VALIDATION.md` |
+| ElevenLabs non-dialogue SFX | derived production context | `production-assets/SOUND-EFFECTS.md` |
+| PRD acceptance/handoff | `work/acceptance.md`, `state/handoff-state.yaml` | `document/VALIDATION.md` |
 | Voice requirements | `work/voice-requirements.md` | `voice/EXTRACTION.md` |
 | Voice wording/performance | `work/voice-production.md` | `voice/PERFORMANCE-WRITING.md` |
 | Voice acceptance | `work/voice-acceptance.md`, `state/voice-state.yaml` | `voice/VALIDATION.md` |
 
-Do not create parallel schemas or generic registries for these owners.
+Do not create parallel schemas for these owners.
 
-## Implementation boundaries
+## ElevenLabs Voice model
 
-- `shared/acceptance.py` owns reusable acceptance label/SHA parsing primitives; semantic acceptance meaning remains with Flow 4/7 owners.
-- `shared/handoff.py` owns only handoff status + accepted revision identity; artifact locations are deterministic and are not duplicated into handoff state.
-- `validator/prd_validation_engine.py` orchestrates PRD source/projection/business checks.
-- `validator/html_contract.py` owns derived HTML freshness/composition/navigation checks.
-- `validator/validate_handoff.py` derives canonical artifact paths from the accepted PRD version and proves current artifact/delivery/acceptance parity.
-- `validator/voice_validation.py` owns Flow 5–7 mechanical domain validation.
-- `validator/validate_voice.py` is only the Voice CLI/public entrypoint.
-
-## Renderer boundaries
-
-- `render-data.json` accepts one field vocabulary; unknown/legacy keys fail.
-- Projection binds both the exact Flow 2 requirement revision and exact current `content.md` bytes.
-- Gameplay result mode is explicit: `scored | completion_only`.
-- Renderer never infers missing semantic meaning from another role.
-- `template/golden-reference.html` is the sole tracked Golden/runtime source; `TemplateAdapter` prepares project-specific runtime output without a second checked-in template.
-- `TemplateAdapter` is the only owner of Golden shell mutation/reference compatibility, including additive 04 insertion.
-- Production Assets CSS/JS live in `renderer/static/` and are inlined at render time.
-- 04 joins only through stable Owner/Moment/Resource identity.
-- Preparation Mode may show pending Voice selection; `voice_delivery_ready` may not render unresolved cast selection/profile.
-- Delivery publishes complete version directories transactionally with rollback.
-
-## ElevenLabs production boundaries
-
-- non-dialogue `AUDIO` keeps its canonical `AST-...` requirement and derives SFX prompts/settings only during production;
-- independent speech uses Eleven v3 TTS by default;
-- connected same-speaker narration may use `previous_text`/`next_text` or neighboring request context to preserve prosody while keeping canonical Voice IDs separate;
-- conversationally dependent multi-speaker Voice IDs in the same approved Moment may be generated together through Text to Dialogue while retaining every original `VO-...` identity;
-- current ElevenCreative Studio may be used for long-form/editorial production; deprecated Voiceover Studio controls are not current policy;
-- Audio Tags are optional: zero-tag Voice payloads are mechanically valid and preferred when voice + wording + context already imply the delivery;
-- Stability remains `Natural` by default; supported Speed stays at `1.0`/unchanged by default and is secondary to correct spoken wording;
-- generated audio/timestamps prove only the actual take reviewed;
-- candidate variance should be checked before rewriting otherwise-correct prompts.
-
-## Naturalness model
-
-SoundMaker uses this order for stiff/robotic Voice prevention:
+### Naturalness foundation
 
 ```text
 voice fit
-→ speakable wording instead of PRD prose
-→ natural thought groups / sentence rhythm
-→ relevant continuity context
-→ punctuation / selective emphasis
-→ Audio Tags only when needed
-→ Stability / supported Speed only when needed
+→ natural spoken wording
+→ thought-group prosody
 ```
 
-Naturalness is register-specific. Do not inject filler, slang, fragments, hesitations, or casualness into a narrator/tutorial/radio speaker unless that behavior fits the approved speaker and moment.
+This removes document-like stiffness without forcing all speakers into casual dialogue.
+
+### Expression Coverage
+
+SoundMaker then preserves material acting:
+
+```text
+Baseline State
+Emotion
+Attitude / Subtext
+Projection
+Pace / Rhythm
+Intensity / Energy
+Cognitive State
+Reaction Event
+Transition Points
+Landing
+```
+
+Policy:
+
+```text
+no material acting state beyond voice/text baseline
+→ zero-tag payload may be correct
+
+material emotion/subtext/projection/pacing/reaction/transition
+→ explicit direction must be sufficient
+→ use precise Audio Tag(s) when needed
+```
+
+The quality goal is **complete expression coverage without redundant direction**, not `minimum tags` or `maximum tags`.
+
+### Generation boundaries
+
+Connected same-speaker narration may use `previous_text` / `next_text` or neighboring request IDs for prosodic continuity. Each new TTS request can reset acting state; when a specific expression must continue, re-anchor that state at the new clip opening when necessary.
+
+### Dialogue
+
+Conversationally dependent multi-speaker Voice IDs in one approved Moment use Text to Dialogue. Each turn keeps its own `VO-...` identity and its own expression tags where required.
+
+### Settings
+
+```text
+Stability: Natural baseline
+Creative: when greater expressive range is intentionally needed
+Robust: when consistency outweighs directional responsiveness
+Enhance: OFF on SoundMaker-reviewed prompts by default
+```
+
+## Voice readiness
+
+Preparation establishes:
+
+```text
+Communication Conservation
+Naturalness
+Expression Conservation
+Voice Script Readiness
+```
+
+Expression Conservation is a semantic/craft gate inside Voice Script Readiness, not a new persisted schema field.
+
+Actual generated-audio quality still requires heard evidence.
+
+## Renderer boundaries
+
+- one strict render-data vocabulary;
+- renderer does not invent missing semantics;
+- Golden template remains protected;
+- 04 joins only through stable Owner/Moment/Resource identity;
+- delivery publishes complete version directories transactionally.
 
 ## Model behavior
 
-The package is model-agnostic and expects capable reasoning without forcing unnecessary approval loops.
-
-- Start from the smallest authoritative owner/source.
-- Expand context only for material dependencies.
-- Let the model choose reversible wording/grouping/decomposition craft.
-- Preserve project meaning, not accidental PRD sentence syntax, when converting requirements into speech.
-- Keep product/design/runtime choices as explicit Proposals until approved.
-- Skip the preview checkpoint when current authority already settles all material choices.
-- Use strict machine contracts to fail early rather than guess compatibility.
-- Fix the first wrong owner rather than polishing downstream symptoms.
+- start from the smallest authoritative owner;
+- preserve approved meaning, not accidental PRD syntax;
+- preserve material expression, not arbitrary tag count;
+- use explicit acting direction when performance would otherwise be ambiguous;
+- do not invent personality/lore merely to make Voice more dramatic;
+- fix the first wrong owner;
+- stop when requested scope is correct and sufficiently proven.
 
 ## Operator CLI
-
-Use the thin operator facade for routine mechanical execution instead of remembering individual renderer/validator script paths:
 
 ```bash
 python tools/prd.py status workspace/active/<project>/
@@ -228,9 +227,7 @@ python tools/prd.py handoff workspace/active/<project>/
 python tools/prd.py voice workspace/active/<project>/
 ```
 
-`status` is intentionally compact and mechanical. It reports the current PRD / handoff / Voice validation state, the first structured issue/owner when blocked, and the smallest next repair target. Use `--json` for agent/machine consumption.
-
-The facade does not create another authority, schema, validator, or lifecycle. It delegates to the existing canonical delivery and validation owners. A clear mechanical status does not establish semantic readiness, browser visual quality, audio quality, or user approval.
+Mechanical PASS does not establish semantic, visual, naturalness, expression, or audio-quality proof.
 
 ## Derived delivery
 
@@ -241,15 +238,6 @@ output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-`prd.html` is the single human-facing project document. Derived files never outrank canonical `work/`/`state/` sources and should never be hand-patched to hide an upstream defect.
-
-## Protected boundaries
-
-- The exact canonical Golden bytes stay protected unless an explicit design-contract change is approved; default rendering is regression-tested against explicit use of that same Golden source.
-- Adaptive cardinality is allowed only inside approved component families.
-- Machine YAML uses the shared duplicate-safe YAML loader and reports parse-line location when available.
-- Generic `_engine.py` imports and title-based machine joins are retired.
-- Browser visual PASS requires browser evidence.
-- Generated-audio quality requires audio evidence.
+Derived files never outrank canonical `work/` / `state/` sources.
 
 For production use start from `SKILL.md`. For implementation defects start from `AGENTS.md` and the smallest exact technical owner.

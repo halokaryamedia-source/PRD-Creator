@@ -2,34 +2,24 @@
 
 Last verified: **2026-09-08**
 
-Purpose: current production reference for generating conversationally dependent multi-speaker Voice moments without changing PRD-Creator's canonical `VO-...` identity model.
+Purpose: generate conversationally dependent multi-speaker Voice moments while preserving canonical `VO-...` identity and turn-specific expression.
 
 ## 1. When to use Text to Dialogue
 
-Use Eleven v3 Text to Dialogue when **multiple speakers participate in the same approved Moment and the delivery of later turns materially depends on the preceding turns**.
+Use when multiple speakers participate in the same approved Moment and later delivery materially depends on preceding turns.
 
 Examples:
 
 - question → answer;
-- interruption or overlap;
-- tension/reaction/escalation between characters;
-- conversational timing where generating each line independently would lose context.
+- interruption/overlap;
+- tension/reaction/escalation;
+- conversational timing that isolated TTS would lose.
 
-Prefer normal Text to Speech when a Voice ID is effectively standalone even if other speakers exist elsewhere in the project.
+Standalone lines remain normal TTS.
 
-```text
-same speaker / independent line
-→ TTS
+## 2. Canonical identity
 
-multiple speakers + same Moment + response dependency
-→ Text to Dialogue
-```
-
-Do not route to Dialogue merely because two Voice IDs are adjacent in a document.
-
-## 2. Canonical identity stays unchanged
-
-PRD-Creator does not create a persistent Dialogue ID or duplicate Dialogue script.
+No persistent Dialogue ID or duplicate script.
 
 ```text
 MOM-...
@@ -41,140 +31,167 @@ MOM-...
 ordered Text to Dialogue inputs
 ```
 
-Each `inputs[]` turn is derived from one existing canonical Voice entry:
+Each turn derives from one canonical Voice entry:
 
 ```text
-voice_id ← intentionally selected ElevenLabs voice for that Speaker
-text     ← exact reviewed performance payload for that VO ID
+voice_id ← selected ElevenLabs voice for Speaker
+text     ← exact canonical performance payload for that VO ID
 ```
-
-The ordered generation group is temporary operator context. If wording changes after review, update the affected canonical `VO-...` entry first.
 
 ## 3. Current API facts
 
-Text to Dialogue:
+Current Text to Dialogue:
 
 - uses Eleven v3;
-- accepts ordered inputs containing `text` + `voice_id`;
+- accepts ordered `text` + `voice_id` inputs;
 - supports Audio Tags inside each turn's text;
 - is nondeterministic;
-- supports optional `seed` as best-effort consistency, not guaranteed determinism;
-- supports `language_code`, pronunciation dictionaries, and text-normalization controls on current API surfaces;
-- should keep total `inputs[].text` at or below roughly 2,000 characters per request for reliable generation;
-- the current API endpoint accepts at most 10 unique voice IDs per request.
+- supports optional seed as best-effort consistency;
+- supports language/pronunciation/normalization controls on current API surfaces;
+- should keep total input text around current reliable request guidance (roughly 2,000 characters);
+- currently supports up to 10 unique voice IDs per request.
 
-If a scene exceeds current request limits, split only at semantic/conversational boundaries. Do not cut inside one important response beat merely to equalize chunk size.
+Split large scenes only at semantic/conversational boundaries.
 
-## 4. Audio Tags inside Dialogue
+## 4. Expression Coverage per turn
 
-Keep the same SoundMaker discipline used by standalone Voice:
+Do not reduce Dialogue direction to `minimal tags`. Each turn must preserve its material acting intent.
+
+For every turn, review:
 
 ```text
-spoken wording
-→ beat structure
-→ punctuation / line structure
-→ selective emphasis
-→ minimal Audio Tags
+Emotion
+Attitude / Subtext
+Projection
+Pace / Rhythm
+Intensity
+Reaction
+Transition from prior turn
+Landing into next turn
 ```
 
-Tags belong inside the turn they should affect. Do not add a global tag cluster outside the turn list and do not use environmental SFX instructions as a substitute for the separate SFX lane.
-
-## 5. Candidate generation
-
-ElevenLabs explicitly notes that several Dialogue generations may be needed to get the desired result.
-
-Production rule:
+Policy:
 
 ```text
-reviewed canonical turns + selected voices/settings
+baseline response with no material special acting
+→ zero tag may be valid
+
+material response state
+→ explicit direction when needed
+
+interruption / overlap / whisper / reaction / state shift
+→ tag near the affected beat
+```
+
+Examples:
+
+```text
+[annoyed] You knew about this?
+[defensive] I only found out this morning.
+[interrupting] Then why didn't you tell me?
+```
+
+Tags stay inside the turn they affect. Do not create a Dialogue-level direction schema.
+
+## 5. Conversational expression arc
+
+Review the exchange as one performance, not isolated lines.
+
+```text
+Speaker A state
+→ Speaker B reacts
+→ A changes/holds state
+→ B escalates/releases
+```
+
+A later turn should not mechanically repeat the same opening tag if its state has changed. Conversely, do not omit a critical reaction merely because the preceding turn provides context.
+
+Text to Dialogue context helps interaction, but explicit acting cues are still appropriate when a turn must land in a specific way.
+
+## 6. Candidate generation
+
+Several generations may be needed.
+
+```text
+reviewed canonical turns + voices/settings
 → generate candidate
-→ first result clearly acceptable?
-   yes → continue review/approval
-   no  → compare available same-content candidate/regeneration first
+→ acceptable?
+   yes → continue review
+   no  → compare same-content candidate/regeneration first
 → same defect repeats?
-   yes → diagnose prompt/settings/voice/surface
-   no  → prefer best take without unnecessary rewrite
+   yes → diagnose Expression Coverage / tag placement / settings / voice fit
 ```
 
-Do not churn canonical wording because one nondeterministic take was merely weaker.
+Do not churn canonical wording because one nondeterministic take is weaker.
 
-## 6. Dialogue review
+## 7. Dialogue review
 
-Evaluate the complete exchange and each constituent VO ID:
+Evaluate:
 
 - required meaning/intelligibility;
-- speaker identity and voice fit;
+- speaker identity/voice fit;
 - turn-to-turn reaction/timing;
+- expression accuracy per turn;
 - emotional progression;
-- interruption/overlap behavior when intended;
+- interruption/overlap when intended;
 - pronunciation;
-- pacing and landing;
-- artifacts or unintended drift;
-- compatibility with any authoritative timing constraint.
+- pacing/landing;
+- artifacts/drift;
+- authoritative timing compatibility.
 
-A strong overall conversation does not excuse a constituent line dropping required communication.
+A strong overall conversation does not excuse a constituent line losing required meaning or expression.
 
-## 7. Timestamps
+## 8. Timestamps
 
-Use `POST /v1/text-to-dialogue/with-timestamps` when generated timing materially helps subtitles, animation, scripted events, or measurement.
+Use the current timestamps endpoint when timing materially helps subtitles, animation, scripted events, or measurement.
 
-Current response evidence may include:
+Generated segment/character timing is evidence for that take, not source-level timing authority.
 
-- `voice_segments` with `voice_id`, start/end times, and dialogue input index;
-- character-level alignment;
-- normalized alignment when available.
+## 9. Generation identity
 
-Use generated timestamps as evidence of **that take**. Do not treat them as a source-level timing requirement, and do not persist them into canonical Voice wording unless another owner genuinely needs generated implementation data.
-
-## 8. Generation identity
-
-When audio approval/reproducibility matters, retain enough operator/evidence context to identify the selected take:
+When approval/reproducibility matters, retain useful operator/evidence context:
 
 ```text
 Moment ID
-ordered constituent VO IDs
+ordered VO IDs
 model_id
-actual ElevenLabs voice_id per Speaker
+voice_id per Speaker
 surface / endpoint
 Stability/settings
-language_code when used
-pronunciation dictionary version(s) when used
-text-normalization mode when material
+language/pronunciation/normalization when used
 seed when used
 selected candidate/take
-actual generated duration/timestamps when measured
+actual duration/timestamps when measured
 ```
 
-Do not add these as mandatory fields to every `voice-production.md` line. Canonical script stays compact; generation identity belongs to actual generation evidence/operator context.
+Do not add these as mandatory canonical line fields.
 
-## 9. Failure routing
+## 10. Failure routing
 
 ```text
-wrong fact / wrong turn meaning
-→ Flow 5 / upstream project authority
+wrong fact / turn meaning
+→ Flow 5 / project authority
 
-correct meaning but weak spoken performance
-→ Flow 6 canonical prompt
+correct meaning but weak wording/expression
+→ Flow 6 SoundMaker
 
-individual turns good but interaction flat/unnatural
-→ Dialogue surface + candidate/settings/voice-fit review
+individual turns good but interaction disconnected
+→ Dialogue surface / candidate / voice-fit review
 
-one speaker repeatedly ignores required range
-→ voice fit before tag stacking
+repeated ignored expression
+→ voice fit + Stability + tag placement before more tag stacking
 
 timing evidence needed
-→ with-timestamps generation
+→ timestamps generation
 
-non-dialogue environmental sound needed
+non-dialogue environmental sound
 → production-assets/SOUND-EFFECTS.md
 ```
 
-## 10. Current official sources
+## Official sources
 
 - `https://elevenlabs.io/docs/overview/capabilities/text-to-dialogue`
 - `https://elevenlabs.io/docs/eleven-api/guides/cookbooks/text-to-dialogue`
 - `https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert`
 - `https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-with-timestamps`
 - `https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices`
-
-Re-check when live/API behavior conflicts with this reference or when request limits/settings change materially.
