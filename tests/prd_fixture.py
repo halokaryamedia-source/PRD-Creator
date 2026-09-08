@@ -410,4 +410,4 @@ def acceptance_text(project: Path, *, status: str = "handoff_ready") -> str:
 
 
 def handoff_state_text(version: str = "1.0.0") -> str:
-    return "status: handoff_ready\n" f"accepted_prd_version: {version}\n"
+    return f"status: handoff_ready\naccepted_prd_version: {version}\n"
