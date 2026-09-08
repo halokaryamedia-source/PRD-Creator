@@ -4,31 +4,34 @@
 
 `ASTRA_CONTEXT_KERNEL_COMPLETE`
 
-The first GPT-6 Astra optimization pass on `develop` simplifies only agent/context routing. Product semantics, render schema, renderer, validators, Golden/runtime template, Production Assets, Voice contracts, and output lifecycle remain unchanged.
+GPT-6 Astra context optimization on `develop` has simplified the always/commonly loaded routing layer while preserving production behavior.
 
-Current efficiency baseline retained:
+Changed context-only owners:
 
-- material AI Proposal approval remains exception-driven;
-- handoff state remains minimal;
-- `tools/prd.py status` reuses downstream proof;
-- `tools/prd.py impact` selects the smallest proof domains;
-- routine `develop` CI stays selective;
-- Local/stable promotion retains full regression and browser proof.
+- root `AGENTS.md`;
+- `CONTEXT.md`;
+- `GITHUB_RULES.md`;
+- `development-brief`;
+- package `AGENTS.md`;
+- package `SKILL.md`;
+- this continuation file.
+
+Unchanged product/output owners include PRD/Voice semantic contracts, render schema, renderer/compositor, validators, Golden/runtime template, tests, output lifecycle, and promotion/release gates.
+
+Existing efficiency behavior remains: conditional Proposal approval, minimal handoff state, `status` proof reuse, `impact` selective verification, selective routine CI, and full promotion/release regression.
 
 ## Active Boundary
 
-No product/output behavior change is authorized by this context simplification.
+Context simplification must be behavior-preserving.
 
-Keep these constraints:
-
-- do not alter PRD/Voice semantics merely to shorten instructions;
-- do not change Golden/render output in this pass;
-- do not weaken promotion/release gates;
-- do not add routing registries, caches, compatibility layers, or new framework abstractions;
-- treat any unexpected artifact/output drift as a regression to fix, not an acceptable simplification cost.
+- Do not change project/PRD/Voice meaning merely to shorten instructions.
+- Do not change Golden/render output in this scope.
+- Do not weaken branch, promotion, release, or proof semantics.
+- Treat unexpected output drift as regression.
+- Do not add replacement routing frameworks, registries, caches, compatibility layers, or extra approval systems.
 
 ## Next Step
 
 **STOP after repository verification passes.**
 
-Future simplification of `GITHUB_RULES.md`, prose-coupled repository checks, CI routing duplication, or duplicate Golden/runtime-template paths is separate scope and must preserve output parity.
+Future prose-verifier decoupling, routine CI topology consolidation, or Golden/runtime-template deduplication are separate implementation scopes and require their own output-parity proof.
