@@ -15,9 +15,11 @@ Project Setup
 → Voice Delivery
 ```
 
-These names are used consistently in repository policy, package docs, and operator communication. Numbered stage aliases are not part of the current workflow vocabulary.
+These names are used consistently in repository policy, package docs, operator communication, and generated Production Assets navigation. Numbered stage aliases are not part of the current workflow vocabulary.
 
-The generated PRD can still use numbered document navigation for Overview, Gameplay Flow, Development, and Production Assets; those numbers are layout order only.
+The generated PRD keeps `01 Overview`, `02 Gameplay Flow`, and `03 Development` only as document-section ordinals from the approved Golden design. **Production Assets is displayed by name, without a workflow number.**
+
+Machine lifecycle states such as `handoff_ready`, `voice_requirements_ready`, `voice_script_ready`, and `voice_delivery_ready` are implementation state values only; they do not create alternate human workflow names.
 
 ## Input → Output
 
