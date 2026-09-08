@@ -2,21 +2,18 @@
 
 ## Current Status
 
-`ASTRA_SINGLE_GOLDEN_COMPLETE`
+`ASTRA_CI_RUNTIME_COMPLETE`
 
-Astra optimization on `develop` now has three proven simplifications:
+The Astra optimization candidate on `develop` has completed four behavior-preserving improvements:
 
-1. compact agent/context routing with no change to production semantics;
-2. repository verification checks durable mechanics instead of duplicated prose wording;
-3. `template/golden-reference.html` is the single tracked Golden/runtime source.
+1. compact agent/context routing;
+2. repository verification decoupled from duplicated prose wording;
+3. one tracked canonical Golden/runtime source with byte-parity proof;
+4. GitHub Actions modernized to Node-24-capable v7 releases while retaining immutable commit-SHA pinning.
 
-The removed `runtime-template.html` alias carried the same approved bytes and added a second apparent authority. Renderer and delivery now consume the canonical Golden directly; `TemplateAdapter` creates only temporary project-specific runtime preparation during generation.
+Candidate commit `3789a3cc115ff3468329627f4c1a87daf961cc98` passed Repository Verify, PRD Verify, Voice Verify, and the full Local Promotion Verify suite including browser proof. No promotion to `Local` has been performed.
 
-PRD regression proves:
-
-- canonical Golden Git blob remains `2050b965768489feda98373c2920bbee8c7093b3`;
-- default rendering is byte-identical to explicit rendering from `golden-reference.html`;
-- render, validation, delivery, adaptive composition, handoff, and 04 Production Assets contracts remain valid.
+`docs/knowledge/reviews/current-validation.md` is now intentionally a compact current proof snapshot rather than a repeated implementation report.
 
 ## Active Boundary
 
@@ -24,9 +21,10 @@ All work remains on `develop`.
 
 - Output quality and semantic completeness must not regress.
 - Golden bytes/design grammar remain unchanged unless separately approved with browser evidence.
-- Branch, promotion, release, validation, and proof semantics remain intact.
-- Do not recreate a second Golden/runtime alias, prose-string verifier contracts, duplicate routing registries, caches, compatibility layers, or extra approval systems.
+- PRD/Voice selective CI remains targeted during ordinary iteration.
+- Full regression/browser proof remains the integration/promotion boundary.
+- Do not add a second Golden alias, prose-string verifier contracts, duplicate routing registries, caches, compatibility layers, or extra approval systems.
 
 ## Next Step
 
-Modernize the pinned GitHub Actions runtime on `develop` to remove the current Node 20 deprecation boundary while preserving the same workflow behavior and immutable-SHA pinning. Verify Repository / PRD / Voice workflows after the change. Do not promote to `Local` yet.
+Make the existing lightweight `Repository Verify` run on every `develop`/`Local` push so each branch HEAD always has a repository-health signal, while leaving PRD/Voice checks path-selective and keeping the full Local promotion gate unchanged. Do not add another CI workflow or promote branches.
