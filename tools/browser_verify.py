@@ -18,6 +18,8 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+VIEWPORTS = ((1440, 1200), (1024, 900))
+
 
 class BrowserVerifyError(RuntimeError):
     """Raised when the real-browser verification contract cannot be proven."""
@@ -139,6 +141,7 @@ const unnamedInteractive = [...document.querySelectorAll('a,button,input,select,
 }).map(node => node.outerHTML.slice(0, 160));
 const docWidth = Math.max(document.documentElement.scrollWidth, document.body ? document.body.scrollWidth : 0);
 const viewportWidth = window.innerWidth;
+const viewportHeight = window.innerHeight;
 const i18nNodes = [...document.querySelectorAll('.i18n-text')];
 const emptyI18n = i18nNodes.filter(node => !(node.textContent || '').trim()).length;
 return {
@@ -150,6 +153,8 @@ return {
   missingTargets,
   invalidTabGroups,
   unnamedInteractive,
+  viewportWidth,
+  viewportHeight,
   horizontalOverflowPx: Math.max(0, docWidth - viewportWidth),
   i18nNodeCount: i18nNodes.length,
   emptyI18n,
@@ -177,6 +182,29 @@ for (const control of controls) {
 }
 return {testedHashLinks: Math.min(links.length, 24), hashFailures: failures, languageControls: controls.length, languageFailures};
 """
+
+
+def _dom_errors(dom: dict[str, Any], label: str) -> list[str]:
+    errors: list[str] = []
+    if dom.get("readyState") != "complete":
+        errors.append(f"{label}: document did not finish loading")
+    if not str(dom.get("title") or "").strip():
+        errors.append(f"{label}: document title is empty")
+    if int(dom.get("sheetCount") or 0) < 1:
+        errors.append(f"{label}: no rendered .sheet pages found")
+    if dom.get("duplicateIds"):
+        errors.append(f"{label}: duplicate DOM ids: {dom['duplicateIds']}")
+    if dom.get("missingTargets"):
+        errors.append(f"{label}: missing hash navigation targets: {dom['missingTargets']}")
+    if dom.get("invalidTabGroups"):
+        errors.append(f"{label}: package tab groups lack exactly one matching active/current tab: {dom['invalidTabGroups']}")
+    if dom.get("unnamedInteractive"):
+        errors.append(f"{label}: interactive controls without accessible names: {dom['unnamedInteractive'][:5]}")
+    if int(dom.get("horizontalOverflowPx") or 0) > 2:
+        errors.append(f"{label}: document has horizontal viewport overflow: {dom['horizontalOverflowPx']}px")
+    if int(dom.get("emptyI18n") or 0) > 0:
+        errors.append(f"{label}: empty localized text nodes: {dom['emptyI18n']}")
+    return errors
 
 
 def verify(html_path: Path, screenshot_path: Path | None = None) -> dict[str, Any]:
@@ -209,7 +237,6 @@ def verify(html_path: Path, screenshot_path: Path | None = None) -> dict[str, An
                                 "--no-sandbox",
                                 "--disable-gpu",
                                 "--allow-file-access-from-files",
-                                "--window-size=1440,1200",
                             ]
                         },
                         "goog:loggingPrefs": {"browser": "ALL"},
@@ -232,57 +259,76 @@ def verify(html_path: Path, screenshot_path: Path | None = None) -> dict[str, An
         if not ready:
             raise BrowserVerifyError("Rendered PRD did not reach document.readyState=complete")
 
-        dom = _execute(base, session_id, DOM_AUDIT)
-        interaction = _execute(base, session_id, INTERACTION_AUDIT)
-        if not isinstance(dom, dict) or not isinstance(interaction, dict):
-            raise BrowserVerifyError("Browser audit scripts did not return structured results")
-
-        severe_logs = [
-            item for item in _browser_logs(base, session_id) if str(item.get("level", "")).upper() == "SEVERE"
-        ]
-        screenshot = _snapshot(base, session_id)
-        if screenshot_path is not None:
-            screenshot_path.parent.mkdir(parents=True, exist_ok=True)
-            screenshot_path.write_bytes(screenshot)
-
         errors: list[str] = []
-        if dom.get("readyState") != "complete":
-            errors.append("document did not finish loading")
-        if not str(dom.get("title") or "").strip():
-            errors.append("document title is empty")
-        if int(dom.get("sheetCount") or 0) < 1:
-            errors.append("no rendered .sheet pages found")
-        if dom.get("duplicateIds"):
-            errors.append(f"duplicate DOM ids: {dom['duplicateIds']}")
-        if dom.get("missingTargets"):
-            errors.append(f"missing hash navigation targets: {dom['missingTargets']}")
-        if dom.get("invalidTabGroups"):
-            errors.append(f"package tab groups lack exactly one matching active/current tab: {dom['invalidTabGroups']}")
-        if dom.get("unnamedInteractive"):
-            errors.append(f"interactive controls without accessible names: {dom['unnamedInteractive'][:5]}")
-        if int(dom.get("horizontalOverflowPx") or 0) > 2:
-            errors.append(f"document has horizontal viewport overflow: {dom['horizontalOverflowPx']}px")
-        if int(dom.get("emptyI18n") or 0) > 0:
-            errors.append(f"empty localized text nodes: {dom['emptyI18n']}")
+        viewport_evidence: list[dict[str, Any]] = []
+        primary_dom: dict[str, Any] | None = None
+        primary_screenshot: bytes | None = None
+
+        for width, height in VIEWPORTS:
+            rect = _request(
+                base,
+                "POST",
+                f"/session/{session_id}/window/rect",
+                {"x": 0, "y": 0, "width": width, "height": height},
+            )
+            if not isinstance(rect, dict):
+                raise BrowserVerifyError("ChromeDriver did not return a window rectangle")
+            time.sleep(0.05)
+            dom = _execute(base, session_id, DOM_AUDIT)
+            if not isinstance(dom, dict):
+                raise BrowserVerifyError("Browser DOM audit did not return a structured result")
+            screenshot = _snapshot(base, session_id)
+            label = f"viewport {width}x{height}"
+            errors.extend(_dom_errors(dom, label))
+            viewport_evidence.append(
+                {
+                    "requested_width": width,
+                    "requested_height": height,
+                    "actual_width": dom.get("viewportWidth"),
+                    "actual_height": dom.get("viewportHeight"),
+                    "horizontal_overflow_px": dom.get("horizontalOverflowPx"),
+                    "screenshot_sha256": hashlib.sha256(screenshot).hexdigest(),
+                    "screenshot_bytes": len(screenshot),
+                }
+            )
+            if primary_dom is None:
+                primary_dom = dom
+                primary_screenshot = screenshot
+
+        if primary_dom is None or primary_screenshot is None:
+            raise BrowserVerifyError("No viewport evidence was produced")
+
+        interaction = _execute(base, session_id, INTERACTION_AUDIT)
+        if not isinstance(interaction, dict):
+            raise BrowserVerifyError("Browser interaction audit did not return a structured result")
         if interaction.get("hashFailures"):
             errors.append(f"hash navigation interaction failed: {interaction['hashFailures']}")
         if interaction.get("languageFailures"):
             errors.append(f"language controls failed to update document language: {interaction['languageFailures']}")
+
+        severe_logs = [
+            item for item in _browser_logs(base, session_id) if str(item.get("level", "")).upper() == "SEVERE"
+        ]
         if severe_logs:
             errors.append(
                 "browser console contains SEVERE entries: "
                 + "; ".join(str(item.get("message") or "")[:240] for item in severe_logs[:5])
             )
 
+        if screenshot_path is not None:
+            screenshot_path.parent.mkdir(parents=True, exist_ok=True)
+            screenshot_path.write_bytes(primary_screenshot)
+
         return {
             "status": "pass" if not errors else "fail",
             "errors": errors,
             "html": html_path.as_posix(),
-            "dom": dom,
+            "dom": primary_dom,
+            "viewports": viewport_evidence,
             "interaction": interaction,
             "severe_console_count": len(severe_logs),
-            "screenshot_sha256": hashlib.sha256(screenshot).hexdigest(),
-            "screenshot_bytes": len(screenshot),
+            "screenshot_sha256": hashlib.sha256(primary_screenshot).hexdigest(),
+            "screenshot_bytes": len(primary_screenshot),
         }
     finally:
         if session_id:
