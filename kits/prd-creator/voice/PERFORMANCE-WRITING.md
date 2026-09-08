@@ -44,15 +44,24 @@ Preparation Mode:
 
 Use only when actual ElevenLabs generation, heard-take revision, or audio approval is requested.
 
+Choose the smallest correct generation unit:
+
 ```text
-one active Voice ID
-→ one exact reviewed prompt
-→ generate
-→ feedback / APPROVED
-→ canonical sync or bounded revision
+independent Voice ID
+→ exact reviewed prompt
+→ Eleven v3 Text to Speech
+
+same Moment + multiple speakers + conversational response dependency
+→ ordered existing Voice IDs
+→ Eleven v3 Text to Dialogue
+
+long-form editorial/timeline work
+→ current ElevenCreative Studio when useful
 ```
 
-One-at-a-time applies to Generation Mode only.
+Text to Dialogue grouping exists only for generation. It does **not** create a Dialogue ID, duplicate canonical script, or replace the constituent `VO-...` entries.
+
+One-at-a-time remains the default for independent TTS generation. It does not require conversationally dependent turns to be generated separately.
 
 # Output contract
 
@@ -71,23 +80,25 @@ Estimated Duration: <range>
 ```
 ```
 
-`Type` and `Speaker` must match Flow 5. The performance block is the exact generation payload, not commentary about it.
+`Type` and `Speaker` must match Flow 5. The performance block is the exact generation payload for that Voice ID, not commentary about it.
 
-Keep Channel, Trigger, Purpose, requirement bullets, source refs, reasoning, WPM math, voice-fit ratings, and QA notes in their owning/internal context rather than duplicating them into every entry.
+Keep Channel, Trigger, Purpose, requirement bullets, source refs, reasoning, WPM math, voice-fit ratings, generation-group metadata, and QA notes in their owning/internal context rather than duplicating them into every entry.
 
 ## Operator handoff
 
 State shared setup once when useful:
 
 ```text
-Speaker: <character>
-Voice: <selected voice | target voice profile during preparation>
 Model: Eleven v3
+Surface: Text to Speech | Text to Dialogue | ElevenCreative Studio
 Stability: Natural | project-calibrated
-Surface: Speech Synthesis | Studio when applicable
 ```
 
-Then show each active line with Voice ID/Title, Speaker, Estimated Duration, and one exact prompt block. Add an external production note only when the operator must take an extra action such as pronunciation setup, Fixed Duration, or Studio routing.
+For TTS, show the active Voice ID/Title, Speaker, selected voice, Estimated Duration, and one exact prompt block.
+
+For Text to Dialogue, show the approved Moment, ordered constituent Voice IDs, exact Speaker → actual ElevenLabs voice mapping, and each exact canonical prompt as one Dialogue turn. Do not concatenate/rewrite the conversation into a second canonical script.
+
+Add an external production note only when the operator must take an extra action such as pronunciation dictionary setup, timestamps, or current Studio routing.
 
 Never place internal reasoning or operator instructions inside the Eleven v3 prompt.
 
@@ -115,7 +126,8 @@ Examples:
 - Audio Tag choice/placement;
 - performance pacing within the approved communication intent;
 - duration-conscious compression that preserves required meaning;
-- Performance Shape and final Landing when upstream meaning does not prescribe them.
+- Performance Shape and final Landing when upstream meaning does not prescribe them;
+- TTS vs Text to Dialogue vs current Studio generation routing when approved semantics remain unchanged.
 
 These do not need a new user approval step merely because the AI made a craft decision.
 
@@ -138,11 +150,11 @@ Unless stronger approved project evidence exists:
 ```text
 Model: Eleven v3
 Stability: Natural
-Surface: Speech Synthesis
+Surface: Text to Speech for independent speech
 Enhance on directed SoundMaker prompt: OFF
 ```
 
-Use Studio with Eleven v3 only when long-form Speech Synthesis develops material continuity problems such as unintended whispering, volume/tone drift, accent drift, or breaking/distortion.
+Route same-Moment multi-speaker exchanges with real response dependency to Text to Dialogue. Use current ElevenCreative Studio for long-form/editorial production when it materially improves continuity or timeline work.
 
 Enhance may help untreated text as a drafting aid. An already-directed SoundMaker prompt keeps Enhance OFF by default; any UI rewrite becomes a new draft requiring review.
 
@@ -321,6 +333,8 @@ Detailed tag knowledge stays in `references/elevenlabs/v3-performance-writing.md
 
 Place direction close to the beat it affects. Do not assume a fixed tag-persistence window. Reactions are timeline events, not decoration.
 
+In Text to Dialogue, the same exact performance payload is placed inside the turn for that Voice ID. Do not move tags into a separate Dialogue-level direction layer.
+
 ### Pronunciation
 
 Use the smallest reliable control:
@@ -410,7 +424,7 @@ correct canonical script but wrong Production Assets HTML
 → kits/prd-creator/renderer/ shared 04 compositor owner
 
 correct script but actual generated-audio-only issue
-→ Generation Mode evidence/settings/voice
+→ Generation Mode evidence/settings/voice/surface
 ```
 
 Do not repair an upstream problem by making the prompt more complicated.
@@ -444,23 +458,48 @@ Preparation is complete when:
 
 Stop. Do not continue adding optional tags, schemas, artifacts, proof layers, or speculative hardening after current preparation scope is ready.
 
+# Generation surface selection
+
+Before generation, inspect only the relevant approved Moment relationships.
+
+### Text to Speech
+
+Use for an independent Voice ID whose performance does not materially require a preceding/following speaker turn.
+
+### Text to Dialogue
+
+Use when all are true:
+
+- two or more speakers are involved;
+- the Voice IDs belong to the same approved Moment;
+- turn order matters;
+- later delivery materially responds to earlier turns.
+
+Preserve each canonical prompt exactly as one Dialogue turn. Use `references/elevenlabs/v3-dialogue-generation.md` for request limits, candidates, timestamps, and evidence.
+
+### ElevenCreative Studio
+
+Use for long-form/editorial/timeline production when section-level regeneration, locking/history, captions, or timeline assembly materially helps. Do not treat legacy Voiceover Studio controls as current policy.
+
 # Generation Mode handoff
 
 Before generation, know:
 
 ```text
 Model: Eleven v3
-Surface: Speech Synthesis | Studio
-Speaker: exact project speaker
-Voice: actual voice selected intentionally
+Surface: Text to Speech | Text to Dialogue | ElevenCreative Studio
+Speaker(s): exact project speaker(s)
+Voice(s): actual ElevenLabs voice selection(s)
 Voice fit: reviewed
-Stability: Natural | project-calibrated
-Prompt: exact reviewed revision
+Stability/settings: Natural | project-calibrated
+Prompt(s): exact reviewed canonical revision(s)
 Timing: none | target range | hard max | fixed-sync
 Authoritative timing constraint: none | known
 Pronunciation: normal | special setup required
 Enhance: OFF unless rewritten output was explicitly re-reviewed
 ```
+
+For Dialogue, also know the exact ordered constituent Voice IDs and keep the request within the current reliable endpoint limits. Use the timestamps endpoint only when generated synchronization evidence materially helps.
 
 Use the operator handoff contract above. Do not create a second handoff file by default.
 
@@ -468,20 +507,21 @@ Use the operator handoff contract above. Do not create a second handoff file by 
 
 Use this section only when actual audio work is requested.
 
-Evaluate the heard result for meaning/intelligibility, voice identity, emotional movement, pacing/breath, emphasis/landing, naturalness, pronunciation, and requested duration.
+Evaluate the heard result for meaning/intelligibility, voice identity, emotional movement, pacing/breath, emphasis/landing, naturalness, pronunciation, and requested duration. For Dialogue, also evaluate turn-to-turn reaction/timing and the complete exchange.
 
 | Heard problem | First action |
 |---|---|
 | one isolated glitch/distortion | review alternate take / eligible same-prompt regeneration |
 | clean but flat | fix spoken beats/textual directing; then consider Stability toward Creative |
 | chaotic / overacted / erratic | inspect Stability and over-direction first |
-| whisper / volume / tone / accent drift | inspect Stability + voice fit; long-form may route to Studio v3 |
+| whisper / volume / tone / accent drift | inspect Stability + voice fit; long-form may route to current Studio/sectioned production |
 | same emotional cue repeatedly ignored | treat as voice-fit problem before adding tags |
+| individual lines sound fine but conversation feels disconnected | use/review Text to Dialogue surface before rewriting all turns |
 | wrong pronunciation | pronunciation control, not emotional rewrite |
 | too long | reduce spoken load / word budget first |
 | too short but natural | do not add filler unless external timing requires it |
 
-A single odd take does not prove the prompt is wrong.
+A single odd take does not prove the prompt is wrong. For both TTS and Dialogue, compare available same-content candidates/regenerations before changing correct wording solely because of one nondeterministic result.
 
 ## Revision discipline
 
@@ -495,7 +535,8 @@ meaning
 → Audio Tags
 → pronunciation
 → Stability
-→ voice fit / production surface
+→ voice fit
+→ generation surface / candidate variance
 ```
 
 Resolve known issues coherently instead of producing many tiny revisions.
@@ -509,7 +550,8 @@ When the user says **APPROVED**:
 3. synchronize it into `work/voice-production.md`;
 4. rebuild/reopen only affected derived scope when wording changed;
 5. record actual duration/pronunciation/settings only when evidence exists;
-6. reuse approved behavior as project calibration, never as new project facts.
+6. for an approved Dialogue take, keep each constituent `VO-...` prompt canonical and retain generation-group/timestamp evidence only where useful;
+7. reuse approved behavior as project calibration, never as new project facts.
 
 # References
 
@@ -517,5 +559,6 @@ Open only when needed:
 
 - writing/tags/non-tag controls → `references/elevenlabs/v3-performance-writing.md`;
 - target duration → `references/elevenlabs/v3-duration-planning.md`;
+- Text to Dialogue / candidate selection / timestamps → `references/elevenlabs/v3-dialogue-generation.md`;
 - voice/Stability/Enhance/Studio/troubleshooting/pronunciation → `references/elevenlabs/v3-production-reference.md`;
 - evidence provenance → `references/elevenlabs/source-register.md`.

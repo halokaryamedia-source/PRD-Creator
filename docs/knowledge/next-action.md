@@ -2,47 +2,36 @@
 
 ## Current Status
 
-`ASTRA_DEVELOP_CANDIDATE_READY`
+`AUDIO_PRODUCTION_3_1_CANDIDATE_READY`
 
-The Astra optimization candidate is complete on `develop` and remains behavior/output preserving.
+The ElevenLabs production-quality improvement is complete as an additive Package 3.1 candidate on `develop`. Existing machine schemas, stable Asset/Voice IDs, Flow 2–7 lifecycle, and approved Golden UI remain unchanged.
 
 Completed high-value changes:
 
-1. compact agent/context routing with the same authority and first-wrong-owner boundaries;
-2. compact GitHub execution rules without weakening branch/write/verification safety;
-3. repository verification owns durable machine invariants instead of duplicated prose wording;
-4. one tracked canonical Golden/runtime source; the redundant runtime-template alias is retired;
-5. default render is regression-proven byte-identical to explicit canonical Golden rendering;
-6. GitHub Actions use current Node-24-capable v7 releases pinned by immutable commit SHA;
-7. the verifier enforces immutable external Action refs;
-8. Repository Verify runs on every `develop`/`Local` push and owns the repository-health contract;
-9. changes to the repository verifier automatically trigger the full Local Promotion regression on `develop`;
-10. one adaptive scope-proportional routing system keeps bounded Maintenance and Production work on the smallest relevant owner/proof path without creating separate fast/full modes or weaker quality paths;
-11. Golden/design-system evolution now uses the same Development system: one canonical Golden, smallest representative browser prototype during iteration, user visual approval only for subjective design changes, then proportional post-approval regression based on actual design reach.
+1. keep independent Voice IDs on Eleven v3 Text to Speech by default;
+2. route conversationally dependent multi-speaker Voice IDs in the same approved Moment through Eleven v3 Text to Dialogue without introducing a Dialogue schema;
+3. add candidate-selection discipline so one nondeterministic weak take does not trigger unnecessary prompt churn;
+4. add current Dialogue request-limit, voice mapping, seed/language/pronunciation/normalization, and `with-timestamps` guidance for actual generation evidence;
+5. replace deprecated Voiceover Studio assumptions with current ElevenCreative Studio routing;
+6. add a dedicated `production-assets/SOUND-EFFECTS.md` execution owner for existing non-dialogue `AUDIO` requirements using `eleven_text_to_sound_v2`;
+7. add SFX prompt construction, complex-effect layering, duration/loop/prompt-influence controls, candidate review, troubleshooting, and evidence rules without creating a new Flow or manifest;
+8. refresh ElevenLabs Voice source authority to current documentation verified 2026-09-08;
+9. make Voice Verify react to Voice skill/foundation/reference procedure changes instead of Python-only Voice paths;
+10. preserve the earlier Astra efficiency/routing improvements and the same scope-proportional working model.
 
-Baseline commit `40f50bf72ef9be03c2ec058552670f3ee8b24325` passed Repository Verify and Local Promotion Verify, including repository contracts, Ruff, Mypy, the complete `test_*.py` suite, coverage threshold enforcement, and browser proof.
-
-Routing commit `b3efc93836a24c1b63dfcf9aacf781965f9b3b3a` passed Repository Verify. Later routing-alignment changes remain procedure-only and preserve the same semantic/output contracts.
-
-No branch promotion was performed.
+No branch promotion or stable release/tag was performed.
 
 ## Active Boundary
 
 Keep all current work on `develop`.
 
-- Use one system and one quality standard; never introduce parallel fast/full workflows.
-- Minor or bounded work must touch only the context, owner, downstream scope, tools, and proof that can affect the requested result.
-- Expand context or verification only when evidence shows the bounded path is insufficient.
-- `status` and `impact` are conditional routing aids, not mandatory ceremony.
-- PRD/Voice semantic contracts remain unchanged.
-- Render-data schema and machine identity contracts remain unchanged.
-- Current Golden approved bytes/design grammar remain unchanged by the Astra efficiency work unless the user explicitly requests a redesign or browser evidence proves a real design-system defect.
-- Golden visual exploration stays temporary; do not create alternate tracked templates or visual profiles.
-- A subjective Golden redesign uses one representative prototype and one visual approval boundary before expensive regression.
-- Production Assets and Voice output contracts remain unchanged.
+- Package 3.1 is backward-compatible with Package 3.0 machine-authored project state/artifacts.
+- `work/asset-requirements.md` remains the sole canonical non-Voice AUDIO meaning source; SFX prompts/settings are execution context.
+- `work/voice-production.md` remains the sole canonical Voice wording source; Text to Dialogue grouping is generation-only context.
+- Do not add Dialogue IDs, SFX manifests, audio scorecard databases, duplicate handoff files, or model-specific state schemas without a reproduced need.
+- Current Golden bytes/design grammar remain unchanged.
 - Full regression/browser proof remains mandatory before any eventual `develop → Local` promotion.
-- Do not add more abstraction, duplicate routing, compatibility layers, caches, or model-specific ceremony without a reproduced defect.
 
 ## Next Step
 
-Continue real PRD-Creator production testing with GPT-6 Astra Extra High using the approved Golden UI as the output target. Record only concrete defects or friction that actually appear. Keep fixes bounded to the first wrong owner, avoid unrelated work, and do not promote to `Local` until the user explicitly requests promotion after the pilot.
+Run one representative real production test containing **(a) a same-Moment two-speaker conversation and (b) one non-dialogue SFX asset**, then record only concrete quality/friction defects. Keep fixes bounded to the first wrong owner and do not promote to `Local` until the user explicitly requests promotion after the pilot.

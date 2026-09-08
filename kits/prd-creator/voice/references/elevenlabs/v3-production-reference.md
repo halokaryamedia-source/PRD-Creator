@@ -1,10 +1,10 @@
 # Eleven v3 Production Reference
 
-Last verified: 2026-08-13
+Last verified: 2026-09-08
 
-Purpose: store current Eleven v3 product facts that SoundMaker may need for voice choice, Stability, Enhance, long-form surface selection, regeneration, pronunciation, and troubleshooting.
+Purpose: store current Eleven v3 product facts that SoundMaker may need for generation-surface choice, voice choice, Stability, Enhance, long-form production, regeneration, pronunciation, and troubleshooting.
 
-See `source-register.md` for evidence provenance.
+See `source-register.md` for evidence provenance. Multi-speaker details live in `v3-dialogue-generation.md`.
 
 ## 1. Model scope
 
@@ -14,11 +14,32 @@ Operational scope in this repository:
 Eleven v3 only
 ```
 
-Current ElevenLabs documentation positions v3 as its emotionally rich / expressive TTS model with 70+ languages and a 5,000-character model input limit.
+Current ElevenLabs documentation positions v3 as its emotionally rich / expressive TTS model with 70+ languages and a 5,000-character standard TTS input limit.
 
 Do not use this reference to auto-fallback to another model family.
 
-## 2. Voice selection
+## 2. Generation surface routing
+
+Choose the surface from the communication shape instead of using one surface for every Voice ID:
+
+```text
+independent single-speaker line
+→ Text to Speech / Speech Synthesis
+
+same approved Moment
++ multiple speakers
++ conversational response dependency
+→ Text to Dialogue
+
+long-form editorial production / timeline work
+→ current ElevenCreative Studio when useful
+```
+
+Text to Dialogue is a generation surface, not a new canonical identity. Preserve existing `VO-...` entries and derive ordered Dialogue inputs only at generation time.
+
+Use `v3-dialogue-generation.md` for current request limits, candidate selection, timestamps, and evidence details.
+
+## 3. Voice selection
 
 **OFFICIAL-CURRENT:** ElevenLabs identifies voice choice as the most important v3 parameter.
 
@@ -48,7 +69,7 @@ Current ElevenLabs material can warn that some Professional Voice Clone behavior
 
 Voice Design can be considered when no existing voice has the required identity/performance range. Do not redesign a voice merely because one nondeterministic take was weak.
 
-## 3. Stability
+## 4. Stability
 
 **OFFICIAL-CURRENT:** Stability is the major v3 setting.
 
@@ -64,17 +85,19 @@ Natural
 
 Move toward Creative only after voice fit and prompt architecture are already sound. Use Robust when consistency is actually more important than directional responsiveness.
 
-## 4. Speed
+## 5. Speed
 
-Current v3-specific Text to Speech product guidance states the Speed setting is **not available for Eleven v3**. Some broader ElevenLabs pages describe Speed as a general TTS control, so v3-specific guidance takes precedence for this workflow.
+Current v3-specific Text to Speech product guidance states the Speed setting is **not available for standard Eleven v3 Text to Speech**.
+
+Current ElevenCreative Studio can expose its own production speed control. Treat that as a Studio editing control, not as evidence that standard v3 Speech Synthesis has a Speed slider.
 
 Rule:
 
-- do not make a Speed slider part of SoundMaker's required v3 path;
+- do not make Speed a required SoundMaker v3 TTS mechanism;
 - use word budget, spoken architecture, punctuation, and local pacing direction first;
-- if the live UI exposes a control that current v3-specific docs do not describe, treat the live UI as the current surface and re-verify before turning it into repository policy.
+- if the active Studio/live surface exposes a control, treat that live surface as current for that production without generalizing it into standard TTS policy.
 
-## 5. Enhance
+## 6. Enhance
 
 Current ElevenLabs Best Practices exposes Enhance behavior that can add context-appropriate Audio Tags plus CAPS, question/exclamation marks, ellipses, and other vocal-performance cues while preserving dialogue meaning.
 
@@ -92,25 +115,30 @@ SoundMaker-directed prompt
 
 Any Enhance/UI rewrite of an already-directed prompt becomes a **new draft** and must be reviewed again before generation.
 
-## 6. Speech Synthesis vs Studio
+## 7. Speech Synthesis vs ElevenCreative Studio
 
-Normal one-line / manageable narration production uses **Speech Synthesis / Text to Speech**.
+Normal isolated line / manageable narration production uses **Text to Speech / Speech Synthesis**.
 
-ElevenLabs troubleshooting recommends **Studio** for longer text when the voice begins to whisper unexpectedly, lose volume, change accent/tone, or break/distort; Studio is less prone to these issues and allows paragraph-level regeneration.
+Current ElevenCreative Studio is the long-form/editorial production environment with paragraph/selection regeneration, generation history, locking, timeline/caption support, and separate SFX/music tracks.
+
+The former Voiceover Studio product was sunset on **2026-05-15**. Do not route new work to the deprecated Voiceover Studio as if its legacy controls were the current canonical production surface.
 
 Repository routing:
 
 ```text
-normal v3 line / stable narration
+normal independent v3 line
 → Speech Synthesis
 
-long-form + continuity/drift/whisper/accent/tone problem
-→ Studio using Eleven v3
+same-Moment conversational multi-speaker exchange
+→ Text to Dialogue
+
+long-form / editorial timeline / repeated section-level refinement
+→ ElevenCreative Studio when useful
 ```
 
-Do not treat Studio as a different model. Do not move to Studio merely because a line crosses an arbitrary character count if Speech Synthesis is already stable.
+If a long standard TTS generation develops whispering, volume/tone drift, accent drift, or distortion, first inspect voice fit/settings and consider a current Studio/sectioned workflow rather than extending one unstable generation.
 
-## 7. Text structure and Audio Tags
+## 8. Text structure and Audio Tags
 
 **OFFICIAL-CURRENT:** v3 is materially influenced by natural speech patterns, emotional context, text structure, punctuation, capitalization, Audio Tags, and voice matching.
 
@@ -125,54 +153,58 @@ ElevenLabs documents that:
 
 Detailed writing rules live in `v3-performance-writing.md`.
 
-## 8. Audio Tag scope
+## 9. Audio Tag scope
 
-Standard Speech Synthesis v3 supports moment-to-moment / mid-delivery direction.
+Standard Speech Synthesis v3 supports moment-to-moment / mid-delivery direction. Text to Dialogue also accepts Audio Tags inside each turn's text.
 
 **UNKNOWN:** no current standard-v3 documentation defines a fixed tag persistence window such as "exactly N words" or "until the next tag".
 
 Place direction close to the intended beat instead of depending on an invented persistence rule.
 
-## 9. Generation variance and regeneration
+## 10. Generation variance and candidate selection
 
-**OFFICIAL-CURRENT:** ElevenLabs TTS is nondeterministic.
+**OFFICIAL-CURRENT:** ElevenLabs generation is nondeterministic.
 
-For identical text/settings, current ElevenLabs guidance allows up to two free regenerations per piece of content, subject to the current product conditions. Changing text or settings creates a new paid generation.
+For standard TTS, current guidance allows up to two free same-content regenerations under product conditions. Text to Dialogue guidance explicitly notes that several generations may be required and recommends candidate selection.
 
 Production implication:
 
 ```text
 one isolated weak/glitched take
 + prompt/settings otherwise correct
-→ review another available take / eligible same-prompt regeneration first
-```
+→ compare available same-content take/regeneration first
 
-Repeated failure at the same point is stronger evidence of a prompt, Stability, or voice-fit problem.
+same defect repeats at the same beat
+→ prompt / Stability / voice-fit / surface diagnosis
+```
 
 API `seed` is a best-effort consistency aid; determinism is not guaranteed.
 
-## 10. Troubleshooting map
+## 11. Troubleshooting map
 
 | Symptom | Most relevant causes/actions |
 |---|---|
 | flat but clean | spoken architecture / direction first; then consider lower Stability toward Creative |
 | chaotic / overacted | Stability too loose and/or over-direction |
-| whisper / volume drop / tone break | Stability or voice issue; long-form instability may justify Studio |
+| whisper / volume drop / tone break | Stability or voice issue; long-form workflow may benefit from Studio/sectioning |
 | accent drift | voice/language compatibility; long-form instability may contribute |
 | repeated ignored emotional cue | voice-fit problem before adding more tags |
-| isolated corruption/distortion | regenerate same prompt before rewriting |
+| isolated corruption/distortion | compare/regenerate same prompt before rewriting |
+| multi-speaker interaction feels disconnected | route same-Moment dependent turns through Text to Dialogue |
 | pronunciation error | spoken normalization / IPA / dictionary |
-| duration miss | word budget / script architecture |
+| duration miss | word budget / script architecture, then current production surface controls if needed |
 
 Do not diagnose from waveform screenshots alone; heard audio is the evidence.
 
-## 11. Long-form continuity
+## 12. Long-form continuity
 
-For API workflows that must split content, ElevenLabs supports context mechanisms such as `previous_text`, `next_text`, and related request-context fields to improve continuity/prosody across chunks.
+For API workflows that must split standard TTS content, ElevenLabs supports context mechanisms such as `previous_text`, `next_text`, and related request-context fields to improve continuity/prosody across chunks.
 
-For manual web production, split only at semantic boundaries such as scene, paragraph, or major emotional transitions. Do not cut inside one important performance beat merely for equal chunk sizes.
+For manual/Studio production, split only at semantic boundaries such as scene, paragraph, or major emotional transitions. Do not cut inside one important performance beat merely for equal chunk sizes.
 
-## 12. Pronunciation
+For conversational multi-speaker content, use Text to Dialogue when the turn-to-turn interaction is itself the continuity problem.
+
+## 13. Pronunciation
 
 Use the smallest control that solves the risk:
 
@@ -187,35 +219,41 @@ repeated project terminology
 → project pronunciation note / dictionary when appropriate
 ```
 
-Current ElevenLabs Best Practices reports native v3 IPA at roughly 80–90% consistency, not guaranteed 100%. Different voices can still interpret pronunciation controls differently.
+Current ElevenLabs guidance supports native v3 IPA but does not make pronunciation perfectly deterministic. Different voices can still interpret controls differently.
 
 Approve pronunciation only after actual evidence exists.
 
-## 13. Language / accent
+## 14. Language / accent
 
 Text strongly determines language, while the selected voice strongly influences accent/pronunciation. Prefer a voice compatible with the target language/accent.
 
-If the live product surface exposes a Language Override, treat that live control as the current UI behavior; do not invent a setting not present in the operator's current surface.
+Current Dialogue API may accept `language_code`; use it only when it improves a real language/normalization need and the selected model supports it.
 
-## 14. Text normalization
+If live product controls differ from older help text, current UI/API owns control availability while current official language/accent principles remain the semantic reference.
+
+## 15. Text normalization
 
 For production-critical numbers, dates, symbols, and acronyms, explicit spoken wording is safer than depending on normalization to infer intent.
 
-## 15. Duration
+Current Dialogue API also exposes text-normalization control. Treat it as generation configuration, not a substitute for production-ready wording.
 
-Normal v3 TTS duration is dynamic; text alone does not guarantee an exact second count.
+## 16. Timing
 
-Use `v3-duration-planning.md` whenever timing matters.
+Normal v3 TTS/Dialogue duration is dynamic; text alone does not guarantee an exact second count.
 
-## 16. Output format
+Use `v3-duration-planning.md` whenever timing matters. Use Dialogue `with-timestamps` only when generated synchronization evidence is actually useful.
+
+## 17. Output format
 
 Encoding quality does not fix acting quality. MP3 44.1 kHz / 128 kbps is adequate for review/general delivery. Prefer a less-compressed source when downstream editing requires it and the current ElevenLabs surface exposes one.
 
-## 17. Voice vs SFX
+## 18. Voice vs SFX
 
-Keep doors, machinery, impacts, ambience, explosions, wind, and other environmental effects in the separate Sound Effects lane. Even when v3 recognizes some non-speech tags, SoundMaker's default is voice-performance control only.
+Keep doors, machinery, impacts, ambience, explosions, wind, and other environmental effects in the separate non-Voice Sound Effects lane: `production-assets/SOUND-EFFECTS.md`.
 
-## 18. Non-rules
+Even when v3 Dialogue documentation demonstrates audio-event tags, SoundMaker's default remains voice-performance control only. Do not merge canonical SFX requirements into Voice prompts.
+
+## 19. Non-rules
 
 Do not hard-code these without actual evidence:
 
@@ -225,4 +263,6 @@ Do not hard-code these without actual evidence:
 - one bad take proves the prompt is bad;
 - Enhance always improves a directed prompt;
 - Speech Synthesis guarantees exact duration;
-- a voice can be forced outside its natural performance envelope by adding enough tags.
+- a voice can be forced outside its natural performance envelope by adding enough tags;
+- every adjacent pair of speakers should be generated with Text to Dialogue;
+- legacy Voiceover Studio controls define current ElevenCreative Studio behavior.

@@ -40,7 +40,7 @@ Flow 5 scope/context extraction
 Flow 6 durable policy
 → docs/foundation/06-elevenlabs-script-production.md
 
-Eleven v3 performance craft
+Eleven v3 performance craft + generation-surface routing
 → kits/prd-creator/voice/PERFORMANCE-WRITING.md
 
 Flow 7 validation/evidence
@@ -66,13 +66,15 @@ Canonical Voice Production owns final wording/performance and production decisio
 
 Communication polish cannot remove required information or add unsupported lore, mechanics, rewards, or outcomes.
 
+Generation surface is a production decision, not a new semantic identity. Independent speech normally uses Text to Speech; conversationally dependent multi-speaker Voice IDs in the same approved Moment may be generated together with Eleven v3 Text to Dialogue. The existing `VO-...` entries remain canonical and no Dialogue ID/source file is introduced merely for generation.
+
 ### Shared 04 presentation
 
 Canonical Voice may appear as `AUDIO` inside the matching 04 gameplay moment, but presentation fields/layout belong to the shared Production Assets/rendering owners. Do not redefine Voice semantics to fit a presentation defect.
 
 ### Flow 7
 
-Mechanical parity alone does not prove communication, visual, or generated-audio quality. Visual claims require rendered/browser evidence; audio quality requires actual audio evidence.
+Mechanical parity alone does not prove communication, visual, or generated-audio quality. Visual claims require rendered/browser evidence; audio quality requires actual audio evidence. A reviewed Text to Dialogue take may prove several constituent Voice IDs when all remain traceable to the same ordered Moment and exact canonical prompts.
 
 ## Routing boundary
 
@@ -82,6 +84,9 @@ Voice meaning / communication contract wrong
 
 Voice meaning correct; presentation / validator / CLI mechanics wrong
 → kits/prd-creator/AGENTS.md → exact implementation owner
+
+non-dialogue SFX
+→ project-document-production / production-assets/SOUND-EFFECTS.md
 
 shared dependency / test / CI wrong
 → repository engineering

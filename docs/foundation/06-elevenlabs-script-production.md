@@ -39,7 +39,7 @@ Hard Timing Truth   ← optional Timing Constraint
 Scope Guardrails    ← Must not add/repeat
 ```
 
-Flow 6 may decide wording, beat shape, punctuation/CAPS/tags, Estimated Duration, Target Voice Profile or actor selection, Stability, Surface, and other production interpretation inside that boundary.
+Flow 6 may decide wording, beat shape, punctuation/CAPS/tags, Estimated Duration, Target Voice Profile or actor selection, Stability, generation surface, and other production interpretation inside that boundary.
 
 ## Preparation Mode
 
@@ -121,7 +121,7 @@ Derived HTML embeds exact SHA bindings for current Voice requirements and produc
 
 Flow 6 may not silently change Owner/Moment identity, Voice scope, Speaker/Channel/Trigger/Purpose, required communication/exclusions, gameplay/lore/reward/result, or authoritative timing truth.
 
-If those are wrong, return to Flow 5/project authority. Wording/performance/Estimated Duration/selection remain Flow 6.
+If those are wrong, return to Flow 5/project authority. Wording/performance/Estimated Duration/selection/generation surface remain Flow 6.
 
 ## Flow 6 gate
 
@@ -141,19 +141,28 @@ Run the lifecycle-aware Voice validator again after setting `voice_script_ready`
 
 ## Generation Mode
 
-Actual ElevenLabs generation is entered only when requested:
+Actual ElevenLabs generation is entered only when requested. Generation surface is selected from the approved Moment and communication relationship:
 
 ```text
-one active Voice ID
-→ actual actor voice selected
-→ exact reviewed prompt
-→ generate / hear / revise or approve
-→ canonical sync
-→ rerender current project HTML when source changed
+independent single-speaker Voice ID
+→ Eleven v3 Text to Speech
+
+multiple speakers in the same Moment
++ later turns materially respond to earlier turns
+→ Eleven v3 Text to Dialogue using the existing ordered VO IDs
+
+long-form editorial production / continuity work
+→ current ElevenCreative Studio when useful
 ```
+
+Text to Dialogue grouping is **ephemeral production routing**. It does not create a Dialogue ID, duplicate canonical script, or change Flow 5/6 identity. Each constituent `VO-...` prompt remains canonical in `voice-production.md`.
+
+When timing/subtitle synchronization is materially required, the current Text to Dialogue timestamps endpoint may provide generated segment/character timing evidence. Generated timing never replaces authoritative upstream timing truth.
+
+A weak isolated take should normally be compared with available same-prompt variants/regenerations before rewriting correct canonical wording. Repeated failure at the same beat is stronger evidence that prompt, settings, surface, or voice fit needs revision.
 
 Audio quality requires actual audio evidence and remains separate from script readiness.
 
 ## Stop rule
 
-Stop when requested preparation/generation scope is current. Do not add parallel Voice HTML, settings databases, manifests, scorecards, or approval layers without a concrete need.
+Stop when requested preparation/generation scope is current. Do not add parallel Voice HTML, settings databases, manifests, Dialogue schemas, scorecards, or approval layers without a concrete need.

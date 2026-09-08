@@ -1,6 +1,6 @@
 # PRD Creator
 
-**Version:** 3.0.0
+**Version:** 3.1.0
 
 PRD Creator turns project evidence/discussion into one revision-bound project model, canonical PRD, required Production Assets, and optional Voice Production in one versioned delivery.
 
@@ -14,6 +14,8 @@ NO BUMP project-only revision, clarification, CI/repository hygiene, test-only w
 ```
 
 Package 3.0 is MAJOR because current machine formats intentionally reject older readiness aliases, title-based moment ordering, implicit result modeling, redundant handoff path state, and acceptance records that do not bind all current canonical bytes.
+
+Package 3.1 is additive and backward-compatible: it keeps the same Asset/Voice machine formats while adding current ElevenLabs production routing for **Text to Speech vs Text to Dialogue** and a dedicated non-dialogue **Sound Effects** execution owner.
 
 ## Product flow
 
@@ -29,10 +31,12 @@ sources
 → strict render-data projection + approved-requirement SHA + content SHA
 → deterministic PRD core
 → non-Voice 04 when required
+   └─ AUDIO may use ElevenLabs SFX production without another canonical schema
 → exact-byte PRD/04 acceptance
 → minimal handoff revision state
 → Flow 5 Voice requirements when justified
 → Flow 6 Voice production
+   └─ independent TTS | same-Moment dependent Text to Dialogue | current Studio when useful
 → exact-byte Flow 7 acceptance
 → one current project HTML
 ```
@@ -89,6 +93,8 @@ kits/prd-creator/
 ├─ intake/
 ├─ document/
 ├─ production-assets/
+│  ├─ CONTRACT.md
+│  └─ SOUND-EFFECTS.md
 ├─ voice/
 ├─ shared/
 │  ├─ intake.py
@@ -126,6 +132,7 @@ kits/prd-creator/
 | strict render projection | `work/render-data.json` | `shared/render_schema.py` + `renderer/CONTRACT.md` |
 | Golden grammar | `template/golden-reference.html` + derived presentation | `document/DESIGN-CONTRACT.md` |
 | non-Voice 04 | `work/asset-requirements.md` | `production-assets/CONTRACT.md` |
+| ElevenLabs non-dialogue SFX production | derived prompt/settings/audio evidence | `production-assets/SOUND-EFFECTS.md` |
 | PRD acceptance/handoff | `work/acceptance.md`, minimal `state/handoff-state.yaml` | `document/VALIDATION.md` |
 | Voice requirements | `work/voice-requirements.md` | `voice/EXTRACTION.md` |
 | Voice wording/performance | `work/voice-production.md` | `voice/PERFORMANCE-WRITING.md` |
@@ -155,6 +162,15 @@ Do not create parallel schemas or generic registries for these owners.
 - 04 joins only through stable Owner/Moment/Resource identity.
 - Preparation Mode may show pending Voice selection; `voice_delivery_ready` may not render unresolved cast selection/profile.
 - Delivery publishes complete version directories transactionally with rollback.
+
+## ElevenLabs production boundaries
+
+- non-dialogue `AUDIO` keeps its canonical `AST-...` requirement and derives SFX prompts/settings only during production;
+- independent speech uses Eleven v3 TTS by default;
+- conversationally dependent multi-speaker Voice IDs in the same approved Moment may be generated together through Text to Dialogue while retaining every original `VO-...` identity;
+- current ElevenCreative Studio may be used for long-form/editorial production; deprecated Voiceover Studio controls are not current policy;
+- generated audio/timestamps prove only the actual take reviewed;
+- candidate variance should be checked before rewriting otherwise-correct prompts.
 
 ## Model behavior
 

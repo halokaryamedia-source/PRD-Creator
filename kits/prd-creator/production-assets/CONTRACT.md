@@ -182,6 +182,8 @@ Audio Brief
 <what sound must be produced>
 ```
 
+The canonical `Audio Brief` owns the required sound meaning. When ElevenLabs Sound Effects production is requested, use `SOUND-EFFECTS.md` to derive the smallest effective generation prompt/settings from this brief and accepted context. Do **not** add model settings, candidate ratings, generation history, or final audio filenames to `asset-requirements.md` merely because generation occurred.
+
 ### AUDIO — dialogue
 
 Dialogue scope and wording remain owned by Voice. 04 presents canonical Voice data only:
@@ -195,6 +197,8 @@ ElevenLabs Model: Eleven v3
 Estimated Duration
 Prompt
 ```
+
+Conversational multi-speaker generation may use Eleven v3 Text to Dialogue, but presentation and canonical identity remain the existing ordered `VO-...` resources under their approved Moment.
 
 ## Canonical authoring example
 
@@ -301,6 +305,7 @@ Changing 04 source after acceptance makes handoff stale even when PRD semantic v
 - no compatibility field aliases;
 - no behavior disguised as assets;
 - no duplicated canonical Voice wording in `asset-requirements.md`;
+- no ElevenLabs generation-settings database or SFX manifest by default;
 - no filler resource for visual symmetry;
 - no ordinary 04 change that silently rewrites accepted 01–03 meaning;
 - stop when every real resource has stable Owner/Moment/Resource identity and an actionable source-supported brief.

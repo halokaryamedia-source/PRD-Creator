@@ -11,9 +11,10 @@ Root `AGENTS.md` owns repository routing, authority, continuity, branch policy, 
 | Golden visual/component grammar | `document/DESIGN-CONTRACT.md` |
 | Flow 4 acceptance/handoff | `document/VALIDATION.md` |
 | non-Voice 04 meaning | `production-assets/CONTRACT.md` |
+| ElevenLabs non-dialogue SFX craft/generation | `production-assets/SOUND-EFFECTS.md` |
 | renderer/compositor/delivery | `renderer/CONTRACT.md` |
 | Flow 5 Voice extraction | `voice/EXTRACTION.md` |
-| Flow 6 performance craft | `voice/PERFORMANCE-WRITING.md` |
+| Flow 6 performance craft / TTS-vs-Dialogue routing | `voice/PERFORMANCE-WRITING.md` |
 | Flow 7 validation/delivery | `voice/VALIDATION.md` |
 | end-to-end Flow 2–7 | `SKILL.md` |
 
@@ -124,6 +125,8 @@ Flow 2 state
 optional work/asset-requirements.md → same HTML 04
 optional Voice sources             → same HTML 04 AUDIO
 ```
+
+ElevenLabs generation prompts/settings derived from a non-dialogue `AUDIO` brief do not create another canonical asset file. Same-Moment Text to Dialogue grouping likewise does not replace canonical `VO-...` entries.
 
 Generated HTML/context/index are derived. Repair upstream owners and regenerate instead of hand-patching output.
 

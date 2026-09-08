@@ -6,8 +6,13 @@ on:
       - develop
       - Local
     paths:
+      - ".agents/skills/voice-production/**"
+      - "docs/foundation/05-voice-requirement-extraction.md"
+      - "docs/foundation/06-elevenlabs-script-production.md"
+      - "docs/foundation/07-voice-validation-delivery.md"
+      - "kits/prd-creator/SKILL.md"
+      - "kits/prd-creator/voice/**"
       - "kits/prd-creator/shared/**/*.py"
-      - "kits/prd-creator/voice/**/*.py"
       - "kits/prd-creator/renderer/production_assets.py"
       - "kits/prd-creator/renderer/production_assets_compositor.py"
       - "kits/prd-creator/renderer/template_adapter.py"

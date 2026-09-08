@@ -17,6 +17,31 @@ A repository tag/GitHub Release is created only when an approved feature/capabil
 
 The latest published repository release remains `v0.1` until a later approved capability release is promoted/published.
 
+## Package 3.1.0 — 2026-09-08
+
+Additive ElevenLabs production-quality update. Existing Asset/Voice machine schemas, stable IDs, accepted Golden presentation, and Flow 2–7 lifecycle remain backward-compatible.
+
+### Voice generation quality
+
+- route independent Voice IDs to Eleven v3 Text to Speech and conversationally dependent multi-speaker Voice IDs in the same approved Moment to Eleven v3 Text to Dialogue;
+- preserve every existing `VO-...` as canonical and keep Dialogue grouping ephemeral instead of introducing a parallel Dialogue schema;
+- add current Dialogue request-limit, candidate-selection, seed/language/pronunciation/normalization, and `with-timestamps` guidance;
+- prefer candidate comparison/same-content regeneration before rewriting otherwise-correct prompts after one nondeterministic weak take;
+- update long-form routing to current ElevenCreative Studio and retire deprecated Voiceover Studio Fixed Duration as current policy;
+- clarify standard Eleven v3 TTS Speed availability vs Studio-specific production controls.
+
+### Sound Effects production
+
+- add `production-assets/SOUND-EFFECTS.md` as the detailed ElevenLabs `eleven_text_to_sound_v2` execution owner for existing non-dialogue `AUDIO` requirements;
+- keep `work/asset-requirements.md` as the only canonical SFX meaning source while deriving prompt/settings/candidate evidence during production;
+- add prompt construction, layering, duration/loop/prompt-influence, candidate review, troubleshooting, output, and approval discipline without creating a new numbered Flow or SFX manifest;
+- maintain a hard boundary between non-dialogue SFX and Voice dialogue/narration.
+
+### Source and verification freshness
+
+- refresh Eleven v3 source authority to current Text to Dialogue, timestamps, and ElevenCreative Studio documentation as of 2026-09-08;
+- make Voice Verify trigger on Voice skill/foundation/procedure/reference changes rather than Python-only Voice paths.
+
 ## Package 3.0.0 — 2026-09-07
 
 End-to-end contract synchronization. Package 3 removes the remaining parallel machine vocabularies and makes readiness/identity/freshness explicit from Flow 2 through Flow 7.

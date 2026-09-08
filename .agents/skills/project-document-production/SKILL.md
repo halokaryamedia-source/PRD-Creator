@@ -31,7 +31,7 @@ Semantic judgment is required for:
 - PRD readiness/handoff;
 - distinguishing missing meaning from a presentation defect.
 
-Do not load this skill merely because a task mentions HTML, JSON, renderer, validator, or template.
+Do not load this skill merely because a task mentions HTML, JSON, renderer, validator, ElevenLabs, or template.
 
 ## Detailed owners
 
@@ -47,6 +47,9 @@ Golden page/component grammar
 
 non-Voice 04 meaning
 → kits/prd-creator/production-assets/CONTRACT.md
+
+ElevenLabs non-dialogue Sound Effects craft / generation
+→ kits/prd-creator/production-assets/SOUND-EFFECTS.md
 
 Flow 4 semantic reconciliation / handoff
 → kits/prd-creator/document/VALIDATION.md
@@ -73,7 +76,7 @@ no responsible proposal can be formed
 → Blocked / direct decision
 ```
 
-Material AI Proposals require approval. Authoritative facts and evidence-backed Completions do not require a redundant review round-trip. Routine wording, grouping, ordering, and decomposition are not project decisions.
+Material AI Proposals require approval. Authoritative facts and evidence-backed Completions do not require a redundant review round-trip. Routine wording, grouping, ordering, decomposition, and production prompting are not project decisions.
 
 ### Canonical PRD
 
@@ -87,8 +90,9 @@ Stable product questions remain represented where required, including Gameplay C
 
 - If meaning is correct but visible Golden grammar is wrong, route to `document/DESIGN-CONTRACT.md`; do not alter project truth to fit presentation.
 - Non-Voice 04 requirements come from the same current project model as the PRD; generated PRD pages are not a second brainstorming source.
-- Voice semantics remain downstream Voice ownership.
-- Mechanical PASS does not prove semantic completeness or visual quality. Flow 4 reconciles current Flow 2 meaning → canonical content → projection → visible PRD.
+- Non-dialogue `AUDIO` remains a normal 04 asset. ElevenLabs SFX prompt/settings decisions may interpret an approved Audio Brief but may not invent a new sound event, source, timing rule, or gameplay meaning.
+- Voice semantics remain downstream Voice ownership. Do not put spoken dialogue into the SFX lane merely because an SFX model can emit voice-like audio.
+- Mechanical PASS does not prove semantic completeness or visual/audio quality. Flow 4 reconciles current Flow 2 meaning → canonical content → projection → visible PRD.
 - If a production role must reopen source for already-resolved PRD-scope meaning, readiness is defective.
 
 ## Routing boundary
@@ -96,6 +100,9 @@ Stable product questions remain represented where required, including Gameplay C
 ```text
 semantic meaning wrong
 → this specialist + nearest semantic owner
+
+approved non-dialogue AUDIO meaning correct; ElevenLabs SFX craft/generation weak
+→ production-assets/SOUND-EFFECTS.md
 
 meaning correct; approved visual grammar wrong
 → document/DESIGN-CONTRACT.md

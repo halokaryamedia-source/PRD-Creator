@@ -1,6 +1,6 @@
 # Eleven v3 Duration Planning
 
-Purpose: make duration a design input before script writing while staying honest that normal Eleven v3 TTS duration is dynamic.
+Purpose: make duration a design input before script writing while staying honest that normal Eleven v3 TTS/Dialogue duration is dynamic.
 
 ## 1. Duration classes
 
@@ -10,7 +10,9 @@ Resolve timing before final wording:
 - **hard maximum** — must remain below a cap;
 - **fixed-sync** — must fit an externally fixed timeline.
 
-Normal Speech Synthesis does not guarantee exact seconds from text alone. Voiceover Studio has product-specific Fixed Duration, but forcing speech too far from its natural length can sound unnaturally fast or slow.
+Standard Eleven v3 generation does not guarantee exact seconds from text alone. The former Voiceover Studio exposed a legacy Fixed Duration workflow, but that product was sunset on 2026-05-15; do not depend on that legacy control as current production policy.
+
+For current production, plan the script near the natural target first, generate/measure the actual take, then use current ElevenCreative Studio/timeline controls only when the live surface genuinely supports the needed adjustment.
 
 ## 2. Evidence hierarchy
 
@@ -102,6 +104,8 @@ Before finalizing a timed line, note whether it contains:
 
 More of these usually requires more timing reserve. Do not invent an exact seconds-per-pause formula.
 
+For a same-Moment Text to Dialogue group, also reserve for turn-taking, reactions, interruption/overlap behavior, and the fact that each turn influences the surrounding conversational rhythm.
+
 ## 6. Practical examples
 
 ### Maximum 10 seconds
@@ -150,6 +154,8 @@ urgent / warning
 
 Do not populate categories with guessed values.
 
+For Text to Dialogue, prefer generated segment/take timing from actual audio or the current `with-timestamps` endpoint over inferring each speaker's timing from a project-wide WPM.
+
 ## 8. Hard maximum strategy
 
 For `max N seconds`:
@@ -161,7 +167,8 @@ For `max N seconds`:
 5. reserve expressive margin;
 6. write within the resulting spoken-word budget;
 7. preserve required meaning and landing;
-8. do not add filler merely to use the full slot.
+8. generate and measure when the hard cap matters operationally;
+9. do not add filler merely to use the full slot.
 
 A line safely under the cap is preferable to one that only fits if the model rushes unnaturally.
 
@@ -172,22 +179,26 @@ For exact external timing:
 ```text
 write near natural word budget
 → preserve required meaning
-→ use a fixed-duration-capable workflow only when exact sync is truly required
+→ choose correct generation surface
+→ generate
+→ measure actual take / use timestamps when available
+→ revise wording first if materially off target
+→ use current Studio/timeline controls only when they are appropriate and verified on the live surface
 ```
 
 Do not force a line that naturally needs much longer into a short slot. Rewrite the communication load first when possible.
 
+Generated timestamps are evidence for that take, not upstream timing authority.
+
 ## 10. Speed caveat
 
-Current official ElevenLabs documentation has shown conflicting information on Speed availability for v3.
-
-Status: **UI-DEPENDENT**.
+Current v3-specific Text to Speech product guidance states standard Eleven v3 TTS does **not** expose Speed. Current ElevenCreative Studio may expose a production speed control.
 
 Rules:
 
-- do not make Speed a required duration mechanism;
-- use the live ElevenLabs UI as authority for availability;
+- do not make Speed a required standard-v3 duration mechanism;
 - word budget + spoken architecture remain primary;
+- use live Studio controls only within that surface when needed;
 - extreme speed adjustment is not a substitute for a correctly sized script.
 
 ## 11. Evidence labels
@@ -195,7 +206,7 @@ Rules:
 Use truthful labels:
 
 - **Estimated Duration** — planning only; no audio required;
-- **Generated Duration** — actual generated file duration measured;
+- **Generated Duration** — actual generated file/take duration measured;
 - **Approved Duration** — generated audio reviewed/accepted for its use case.
 
 Preparation Mode can stop at Estimated Duration. Never promote an estimate to generated/approved evidence without actual audio.

@@ -1,7 +1,7 @@
 ---
 name: prd-creator
 description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover current project meaning, produce canonical PRD + justified Production Assets, validate handoff, then produce optional Voice without inventing upstream facts.
-version: 3.0.0
+version: 3.1.0
 ---
 
 # PRD Creator
@@ -71,7 +71,7 @@ source / instruction
 → Flow 7 Voice acceptance/delivery
 ```
 
-`04 Production Assets` is a bounded capability, not another numbered Flow. Voice begins only from `handoff_ready`.
+`04 Production Assets` is a bounded capability, not another numbered Flow. Non-dialogue `AUDIO` can use `production-assets/SOUND-EFFECTS.md` for ElevenLabs SFX execution. Voice begins only from `handoff_ready`.
 
 ## Owners
 
@@ -82,7 +82,8 @@ source / instruction
 | Golden page/component grammar | `document/DESIGN-CONTRACT.md` |
 | render-data schema | `shared/render_schema.py` |
 | Flow 4 acceptance/handoff | `document/VALIDATION.md` |
-| non-Voice 04 | `production-assets/CONTRACT.md` + `shared/assets.py` |
+| non-Voice 04 meaning | `production-assets/CONTRACT.md` + `shared/assets.py` |
+| ElevenLabs non-dialogue SFX craft/generation | `production-assets/SOUND-EFFECTS.md` |
 | rendering/delivery | `renderer/CONTRACT.md` |
 | Voice Flow 5 | `voice/EXTRACTION.md` |
 | Voice Flow 6 | `voice/PERFORMANCE-WRITING.md` |
@@ -127,7 +128,7 @@ No historical aliases or renderer-side semantic recovery. Gameplay result mode i
 Owner ID → Moment ID → Asset ID | Voice ID
 ```
 
-Display titles never perform machine joins.
+Display titles never perform machine joins. ElevenLabs SFX generation settings and same-Moment Dialogue grouping are execution context, not new machine identities.
 
 ### Acceptance stays exact
 
@@ -154,7 +155,9 @@ Flow 3 produces canonical `content.md` and strict `render-data.json`, preserving
 
 Flow 4 validates current PRD state, semantic readiness, exact acceptance bindings, delivery parity, and browser evidence only when claimed/required. Only `handoff_ready` crosses to Voice.
 
-Flow 5 owns Voice scope/context/communication intent. Flow 6 owns final wording/performance within that contract. Flow 7 proves revision/identity/source/HTML parity. Voice-only changes do not reopen accepted PRD meaning when upstream scope is unchanged.
+Non-dialogue `AUDIO` remains 04 ownership: its Audio Brief defines what sound is needed; ElevenLabs SFX craft may derive prompt/settings without creating another canonical asset source.
+
+Flow 5 owns Voice scope/context/communication intent. Flow 6 owns final wording/performance within that contract and chooses the appropriate Eleven v3 generation surface without changing Voice identity. Same-Moment multi-speaker turns with real conversational dependency may use Text to Dialogue; independent lines remain TTS by default. Flow 7 proves revision/identity/source/HTML parity. Voice-only changes do not reopen accepted PRD meaning when upstream scope is unchanged.
 
 ## First wrong owner
 
@@ -163,8 +166,9 @@ project fact/gameplay/story/production choice → Flow 2 / project authority
 canonical PRD meaning                       → content owner
 meaning correct, page grammar wrong         → DESIGN-CONTRACT
 non-Voice 04 meaning/identity               → Production Assets owner
+non-Voice SFX craft/generation              → production-assets/SOUND-EFFECTS.md
 Voice scope/intent                          → Flow 5
-Voice wording/performance                   → Flow 6
+Voice wording/performance/surface            → Flow 6
 canonical sources correct, render wrong     → renderer/compositor
 mechanical parity wrong                     → validator/shared owner
 ```
@@ -216,6 +220,8 @@ Derived output/README.md
         output/v<version>/context.md
         output/v<version>/index.json
 ```
+
+SFX prompts/settings and Dialogue generation groups remain ephemeral production/evidence context unless another existing owner requires a concrete generated file. Do not add a parallel manifest by default.
 
 ## Context and stop
 
