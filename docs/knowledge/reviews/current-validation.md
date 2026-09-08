@@ -47,7 +47,7 @@ output/v<document.version>/index.json
 
 ### Flow 2 — approval only when material
 
-- authoritative-only projects no longer require a redundant Simple Chat Preview approval round-trip;
+- authoritative-only projects do not require a redundant Simple Chat Preview approval round-trip;
 - `preview_approved` may be omitted or `false` when no accepted material Proposal exists;
 - an approved material Proposal still requires explicit preview approval evidence;
 - exact current requirement bytes remain revision-bound so stale same-version edits are rejected;
@@ -56,7 +56,7 @@ output/v<document.version>/index.json
 
 ### Flow 4 — minimal handoff state
 
-`state/handoff-state.yaml` now stores only:
+`state/handoff-state.yaml` stores only:
 
 ```yaml
 status: handoff_ready
@@ -67,22 +67,70 @@ The validator derives canonical work/output paths from the accepted version inst
 
 Safety remains intact: the handoff validator still proves current PRD validity, semantic version identity, required artifact existence, delivery metadata parity, and exact acceptance bindings.
 
-No compatibility alias layer, second revision registry, derived-path registry, or new approval system was introduced.
+### Operator — reuse downstream proof
+
+`tools/prd.py status` now starts from the deepest present mechanical stage:
+
+```text
+Voice present   → Voice validation → reuse proven handoff/PRD result
+Handoff present → Handoff validation → reuse proven PRD result
+PRD only        → PRD validation
+```
+
+A failed downstream proof still falls back only far enough to identify the first wrong upstream owner. Healthy project status no longer replays PRD validation merely because handoff/Voice also needs the same proof.
+
+### Change-impact routing
+
+`tools/prd.py impact` accepts explicit changed paths or `--git-base <ref>` and returns the smallest relevant proof set across:
+
+```text
+repository
+prd
+handoff
+voice
+browser
+full_regression
+```
+
+Direct edits under `output/` are flagged as derived-output edits and routed back to canonical ownership rather than treated as legitimate source changes.
+
+This is routing in the existing operator facade, not a second dependency registry or validation engine.
+
+### CI — selective iteration, full promotion proof
+
+Routine `develop` pushes use the existing path-scoped Repository / PRD / Voice workflows. `Local Promotion Verify` no longer runs the full suite after every ordinary `develop` commit.
+
+The full suite remains mandatory for:
+
+- `develop → Local` pull requests;
+- explicit Local promotion workflow dispatch;
+- changes to the promotion/browser proof harness itself;
+- stable release verification.
+
+Chrome proof is disabled in routine CI unless the gate explicitly sets `PRD_BROWSER_TEST=1`. Local promotion and stable release gates set that flag, so visual/runtime proof remains part of the integration boundary without slowing unrelated iteration.
+
+No compatibility alias layer, second revision registry, derived-path registry, validation cache, or new CI layer was introduced.
 
 ## Verification evidence
 
-The implementation candidate at commit `e6f6884fb9f0d02f371e5886c8aaa8ef2d1805fc` passed:
+Before changing CI frequency, the status/impact implementation candidate at commit `a3fa4603544af7300fe2befb0fbe8e9d6be555af` passed:
 
 ```text
-Ruff format + lint/import
-mypy shared + renderer + validator
+Repository Verify
 PRD Verify
-Voice Verify
 full Local promotion regression suite
-browser proof inside the full regression suite
 ```
 
-The preceding repository-contract verification for the handoff refactor also passed, and the final full Local gate re-ran repository contracts on the exact implementation candidate.
+The new browser/CI boundary was then exercised at commit `16ab76176dab224b843989b416e4870e6ea68993`:
+
+```text
+PRD Verify                    PASS
+Local Promotion Verify       PASS
+full test_*.py regression    PASS
+Chrome browser proof         forced by PRD_BROWSER_TEST=1
+```
+
+This proves both sides of the change: routine PRD CI can skip browser work, while the full integration gate still executes and passes the complete regression/browser boundary.
 
 ## Unchanged boundaries
 
@@ -102,4 +150,4 @@ Static/repository verification proves contracts, parser behavior, deterministic 
 
 ## Current continuation
 
-No further development step is active from this efficiency cycle. Keep the result on `develop`. Do not promote to `Local` or start runtime-template/CI cleanup unless explicitly requested as a separate scope.
+No further development step is active from this efficiency cycle. Keep the result on `develop`. Do not promote to `Local` or start runtime-template cleanup unless explicitly requested as a separate scope.
