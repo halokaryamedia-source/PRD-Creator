@@ -14,6 +14,7 @@ on:
       - "kits/prd-creator/template/**"
       - "kits/prd-creator/validator/**/*.py"
       - "tools/prd.py"
+      - "tools/browser_verify.py"
       - "tests/prd_fixture.py"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
@@ -55,7 +56,7 @@ jobs:
           mypy kits/prd-creator/shared kits/prd-creator/renderer kits/prd-creator/validator
 
       - name: Compile PRD sources
-        run: python -m compileall -q kits/prd-creator tests tools/prd.py
+        run: python -m compileall -q kits/prd-creator tests tools/prd.py tools/browser_verify.py
 
       - name: Project Document contracts
         run: |

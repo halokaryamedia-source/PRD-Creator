@@ -14,6 +14,7 @@ KIT_ROOT = ROOT / "kits" / "prd-creator"
 if str(KIT_ROOT) not in sys.path:
     sys.path.insert(0, str(KIT_ROOT))
 
+from browser_verify import BrowserVerifyError, verify as verify_browser  # noqa: E402
 from renderer.delivery import build_delivery  # noqa: E402
 from shared.state import StateError  # noqa: E402
 from validator import api as prd_api  # noqa: E402
@@ -158,6 +159,20 @@ def _result_exit(result: dict[str, Any]) -> int:
     return 0 if result.get("status") == "pass" else 1
 
 
+def _current_prd_html(project: Path) -> Path:
+    data_path = project / "work" / "render-data.json"
+    raw = json.loads(data_path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError("render-data root must be an object")
+    document = raw.get("document")
+    if not isinstance(document, dict):
+        raise ValueError("render-data.document must be an object")
+    version = str(document.get("version") or "").strip()
+    if not version:
+        raise ValueError("render-data.document.version is required")
+    return project / "output" / f"v{version}" / "prd.html"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -165,6 +180,13 @@ def main() -> int:
     status_parser = subparsers.add_parser("status", help="show compact mechanical project status and first wrong owner")
     status_parser.add_argument("project", type=Path)
     status_parser.add_argument("--json", action="store_true", dest="as_json")
+
+    browser_parser = subparsers.add_parser(
+        "browser",
+        help="verify the current validated PRD in real Chrome and emit visual/runtime evidence",
+    )
+    browser_parser.add_argument("project", type=Path)
+    browser_parser.add_argument("--screenshot", type=Path, help="optional PNG evidence path")
 
     for command, help_text in (
         ("build", "build the canonical versioned delivery bundle"),
@@ -192,11 +214,17 @@ def main() -> int:
             return 0
         if args.command == "validate":
             return _result_exit(prd_api.validate(project))
+        if args.command == "browser":
+            current_prd = prd_api.validate(project)
+            if current_prd.get("status") != "pass":
+                return _result_exit(current_prd)
+            screenshot = args.screenshot.resolve() if args.screenshot is not None else None
+            return _result_exit(verify_browser(_current_prd_html(project), screenshot))
         if args.command == "handoff":
             return _result_exit(handoff_validator.validate(project))
         if args.command == "voice":
             return _result_exit(voice_validation.validate(project))
-    except (OSError, StateError, ValueError, json.JSONDecodeError) as exc:
+    except (BrowserVerifyError, OSError, StateError, ValueError, json.JSONDecodeError) as exc:
         print(f"PRD OPERATOR FAILED: {exc}", file=sys.stderr)
         return 2
 

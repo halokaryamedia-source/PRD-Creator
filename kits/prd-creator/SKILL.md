@@ -138,7 +138,7 @@ Machine state accepts normalized POSIX project-relative refs only. Absolute path
 
 ### 7. Proof stays truthful
 
-Mechanical checks prove mechanical contracts. Semantic review proves reviewed meaning. Visual PASS requires rendered/browser evidence. Audio quality requires actual audio evidence.
+Mechanical checks prove mechanical contracts. Semantic review proves reviewed meaning. Visual PASS requires rendered/browser evidence. `tools/prd.py browser` proves real-Chrome structural, layout, navigation, language-control, and console sanity at the supported desktop viewports; it does not prove subjective aesthetics or semantic correctness. Audio quality requires actual audio evidence.
 
 ## Flow 2 → Flow 3
 
@@ -171,6 +171,8 @@ Materialize `work/asset-requirements.md` before Flow 4 when approved meaning req
 ## Flow 4 handoff
 
 Use one canonical mechanical validator, one integrated semantic readiness/reconciliation review, Material Conservation, and visual evidence only when claimed.
+
+When `Visual sanity: PASS` is claimed, run `python tools/prd.py browser workspace/active/<project>/` against the current validated delivery. Browser evidence is downstream proof and must never authorize a stale or mechanically invalid PRD.
 
 Only `handoff_ready` crosses into Flow 5. `state/handoff-state.yaml` uses its strict canonical paths and acceptance must bind exact current render-data + asset-requirements bytes.
 
@@ -220,11 +222,14 @@ For routine build/status/validation work, prefer the thin repository facade inst
 python tools/prd.py status workspace/active/<project>/
 python tools/prd.py build workspace/active/<project>/
 python tools/prd.py validate workspace/active/<project>/
+python tools/prd.py browser workspace/active/<project>/
 python tools/prd.py handoff workspace/active/<project>/
 python tools/prd.py voice workspace/active/<project>/
 ```
 
 Use `status --json` when an agent needs a compact machine-readable result. It reports only mechanical state and the first structured wrong owner; it does not create another authority or prove semantic, visual, audio, or approval readiness.
+
+Use `browser` only after the current canonical PRD mechanically validates. It inspects the current versioned `prd.html` without rebuilding it, tests 1440×1200 and 1024×900 desktop layouts in real Chrome, exercises navigation/language controls, checks console errors and DOM/accessibility invariants, and returns screenshot SHA evidence. Optional `--screenshot <path>` persists the primary PNG evidence.
 
 When `status` identifies a first issue, open that exact owner/path first. Do not broad-read the kit merely because a downstream stage is blocked.
 
@@ -267,6 +272,7 @@ Do not create parallel schemas, registries, dashboards, extra approval layers, a
 
 - Start narrow and expand progressively.
 - Use `tools/prd.py status` first when the task is mechanical status/debug routing.
+- Use `tools/prd.py browser` only when browser/visual evidence is actually required; do not load or inspect the full rendered HTML manually first unless browser evidence reports a defect that needs owner diagnosis.
 - Do not load the large Golden HTML unless template/DOM/runtime/visual evidence is required.
 - Batch canonical edits before regeneration.
 - Use exact owner/state/schema errors to avoid rereading unrelated context.

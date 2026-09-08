@@ -69,6 +69,15 @@ class PrdOperatorCliContracts(unittest.TestCase):
         payload = json.loads(validated.stdout)
         self.assertEqual(payload["status"], "pass")
 
+    def test_browser_refuses_visual_proof_until_current_prd_validates(self) -> None:
+        project = self.make_project()
+        browser = run_operator("browser", project)
+        self.assertEqual(browser.returncode, 1, browser.stderr or browser.stdout)
+        payload = json.loads(browser.stdout)
+        self.assertEqual(payload["status"], "fail")
+        self.assertEqual(payload["issues"][0]["code"], "PRD_HTML_MISSING")
+        self.assertEqual(payload["issues"][0]["owner"], "flow3.renderer")
+
 
 if __name__ == "__main__":
     unittest.main()
