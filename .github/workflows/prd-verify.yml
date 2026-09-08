@@ -13,6 +13,8 @@ on:
       - "kits/prd-creator/shared/**/*.py"
       - "kits/prd-creator/template/**"
       - "kits/prd-creator/validator/**/*.py"
+      - "tools/prd.py"
+      - "tests/prd_fixture.py"
       - "tests/test_prd_*.py"
       - "requirements.lock.txt"
       - "requirements-dev.lock.txt"
@@ -53,7 +55,7 @@ jobs:
           mypy kits/prd-creator/shared kits/prd-creator/renderer kits/prd-creator/validator
 
       - name: Compile PRD sources
-        run: python -m compileall -q kits/prd-creator tests
+        run: python -m compileall -q kits/prd-creator tests tools/prd.py
 
       - name: Project Document contracts
         run: |

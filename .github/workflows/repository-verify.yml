@@ -45,7 +45,7 @@ on:
       - "workspace/README.md"
       - "workspace/active/README.md"
       - "workspace/archive/README.md"
-      - "tools/verify_repository.py"
+      - "tools/**/*.py"
       - "requirements.lock.txt"
       - "requirements-dev.lock.txt"
       - "pyproject.toml"

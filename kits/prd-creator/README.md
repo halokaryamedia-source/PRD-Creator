@@ -155,6 +155,22 @@ The package is model-agnostic and expects capable reasoning without forcing unne
 - Use strict machine contracts to fail early rather than guess compatibility.
 - Fix the first wrong owner rather than polishing downstream symptoms.
 
+## Operator CLI
+
+Use the thin operator facade for routine mechanical execution instead of remembering individual renderer/validator script paths:
+
+```bash
+python tools/prd.py status workspace/active/<project>/
+python tools/prd.py build workspace/active/<project>/
+python tools/prd.py validate workspace/active/<project>/
+python tools/prd.py handoff workspace/active/<project>/
+python tools/prd.py voice workspace/active/<project>/
+```
+
+`status` is intentionally compact and mechanical. It reports the current PRD / handoff / Voice validation state, the first structured issue/owner when blocked, and the smallest next repair target. Use `--json` for agent/machine consumption.
+
+The facade does not create another authority, schema, validator, or lifecycle. It delegates to the existing canonical delivery and validation owners. A clear mechanical status does not establish semantic readiness, browser visual quality, audio quality, or user approval.
+
 ## Derived delivery
 
 ```text
