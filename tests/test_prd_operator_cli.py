@@ -6,8 +6,10 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from prd_fixture import write_base_project
+from prd_fixture import acceptance_text, handoff_state_text, write_base_project
+from tools import prd as prd_operator
 
 ROOT = Path(__file__).resolve().parents[1]
 OPERATOR = ROOT / "tools" / "prd.py"
@@ -60,6 +62,41 @@ class PrdOperatorCliContracts(unittest.TestCase):
         self.assertEqual(payload["voice"]["status"], "not_present")
         self.assertIsNone(payload["first_issue"])
         self.assertIn("no handoff readiness is claimed", payload["next_action"])
+
+    def test_status_reuses_handoff_prd_proof(self) -> None:
+        project = self.make_project()
+        self.assertEqual(run_operator("build", project).returncode, 0)
+        (project / "work" / "acceptance.md").write_text(acceptance_text(project), encoding="utf-8")
+        (project / "state" / "handoff-state.yaml").write_text(handoff_state_text(), encoding="utf-8")
+
+        original_validate = prd_operator.prd_api.validate
+        with patch.object(prd_operator.prd_api, "validate", wraps=original_validate) as validate_prd:
+            payload = prd_operator.status_payload(project)
+
+        self.assertEqual(payload["mechanical_status"], "clear")
+        self.assertEqual(payload["prd"]["status"], "pass")
+        self.assertEqual(payload["handoff"]["status"], "pass")
+        self.assertEqual(validate_prd.call_count, 1)
+
+    def test_impact_routes_only_affected_domains(self) -> None:
+        impact = run_operator(
+            "impact",
+            "work/voice-production.md",
+            "kits/prd-creator/renderer/static/production-assets.css",
+            "--json",
+        )
+        self.assertEqual(impact.returncode, 0, impact.stderr or impact.stdout)
+        payload = json.loads(impact.stdout)
+        self.assertEqual(payload["recommended_checks"], ["repository", "prd", "voice", "browser"])
+        self.assertTrue(payload["browser_required"])
+        self.assertFalse(payload["full_regression_required"])
+
+    def test_impact_rejects_direct_derived_output_as_work_owner(self) -> None:
+        impact = run_operator("impact", "output/v1.0.0/prd.html", "--json")
+        self.assertEqual(impact.returncode, 0, impact.stderr or impact.stdout)
+        payload = json.loads(impact.stdout)
+        self.assertEqual(payload["derived_edits"], ["output/v1.0.0/prd.html"])
+        self.assertIn("canonical owner", payload["next_action"])
 
     def test_validate_command_preserves_canonical_validator_exit(self) -> None:
         project = self.make_project()
