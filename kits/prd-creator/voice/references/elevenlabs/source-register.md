@@ -50,7 +50,7 @@ Examples:
 
 | Source | Use |
 |---|---|
-| `https://elevenlabs.io/blog/v3-audiotags` | current Audio Tag guide: emotion, pacing, delivery, reactions, accents, placement, combinations; updated 2026-07-28 |
+| `https://elevenlabs.io/blog/v3-audiotags` | current Audio Tag guide: emotion, pacing, delivery, reactions, accents, placement, combinations; updated 2026-09-06 |
 | `https://elevenlabs.io/blog/eleven-v3-audio-tags-expressing-emotional-context-in-speech` | emotional beats and moment-to-moment direction |
 | `https://elevenlabs.io/blog/eleven-v3-audio-tags-precision-delivery-control-for-ai-speech` | pacing/rhythm/emphasis direction |
 | `https://elevenlabs.io/blog/eleven-v3-audio-tags-enabling-narrative-intelligence-in-speech` | narration arcs / narrative performance |
