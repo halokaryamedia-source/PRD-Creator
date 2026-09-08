@@ -237,11 +237,7 @@ def verify(html_path: Path, screenshot_path: Path | None = None) -> dict[str, An
         if not isinstance(dom, dict) or not isinstance(interaction, dict):
             raise BrowserVerifyError("Browser audit scripts did not return structured results")
 
-        severe_logs = [
-            item
-            for item in _browser_logs(base, session_id)
-            if str(item.get("level", "")).upper() == "SEVERE"
-        ]
+        severe_logs = [item for item in _browser_logs(base, session_id) if str(item.get("level", "")).upper() == "SEVERE"]
         screenshot = _snapshot(base, session_id)
         if screenshot_path is not None:
             screenshot_path.parent.mkdir(parents=True, exist_ok=True)
