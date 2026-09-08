@@ -197,7 +197,9 @@ def _dom_errors(dom: dict[str, Any], label: str) -> list[str]:
     if dom.get("missingTargets"):
         errors.append(f"{label}: missing hash navigation targets: {dom['missingTargets']}")
     if dom.get("invalidTabGroups"):
-        errors.append(f"{label}: package tab groups lack exactly one matching active/current tab: {dom['invalidTabGroups']}")
+        errors.append(
+            f"{label}: package tab groups lack exactly one matching active/current tab: {dom['invalidTabGroups']}"
+        )
     if dom.get("unnamedInteractive"):
         errors.append(f"{label}: interactive controls without accessible names: {dom['unnamedInteractive'][:5]}")
     if int(dom.get("horizontalOverflowPx") or 0) > 2:
