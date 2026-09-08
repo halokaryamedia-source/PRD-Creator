@@ -38,7 +38,7 @@ class PrdBrowserVerificationContracts(unittest.TestCase):
             )
             self.assertEqual(build.returncode, 0, build.stderr or build.stdout)
             build_result = json.loads(build.stdout)
-            html = project / build_result["outputs"]["html"]
+            html = project / build_result["outputs"]["prd"]
             screenshot = project / "work" / "browser-evidence.png"
 
             verify = subprocess.run(
