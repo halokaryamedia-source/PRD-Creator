@@ -58,7 +58,7 @@ jobs:
       - name: Run full regression suite
         run: |
           coverage run -m unittest discover -s tests -p "test_*.py" -v
-          coverage report
+          coverage report --fail-under=84
 
       - name: Promotion policy reminder
         if: github.event_name == 'pull_request'
