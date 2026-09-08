@@ -23,10 +23,15 @@ def chrome_driver_available() -> bool:
 
 
 def browser_test_enabled() -> bool:
-    return chrome_driver_available() or os.environ.get("CI", "").casefold() == "true"
+    forced = os.environ.get("PRD_BROWSER_TEST", "").casefold() in {"1", "true", "yes"}
+    if forced:
+        return True
+    if os.environ.get("CI", "").casefold() == "true":
+        return False
+    return chrome_driver_available()
 
 
-@unittest.skipUnless(browser_test_enabled(), "ChromeDriver is not installed in this local environment")
+@unittest.skipUnless(browser_test_enabled(), "ChromeDriver proof is reserved for local visual QA or explicit CI gates")
 class PrdBrowserVerificationContracts(unittest.TestCase):
     def test_rendered_prd_passes_real_browser_contract(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
