@@ -115,6 +115,7 @@ RETIRED_PATHS = {
     "kits/prd-creator/voice/LICENSE",
     "kits/prd-creator/voice/CHANGELOG.md",
     "kits/prd-creator/voice/HISTORICAL-CHANGELOG.md",
+    "kits/prd-creator/template/runtime-template.html",
 }
 
 MARKDOWN_ROOTS = [
@@ -129,7 +130,41 @@ MARKDOWN_ROOTS = [
     KIT_ROOT,
 ]
 
+CURRENT_PATH_REFERENCE_ROOTS = [
+    ROOT / "AGENTS.md",
+    ROOT / "GITHUB_RULES.md",
+    ROOT / "CONTEXT.md",
+    ROOT / "README.md",
+    ROOT / "CONTRIBUTING.md",
+    ROOT / ".agents" / "skills",
+    ROOT / "docs" / "foundation",
+    ROOT / "docs" / "knowledge" / "README.md",
+    ROOT / "docs" / "knowledge" / "next-action.md",
+    ROOT / "docs" / "knowledge" / "ownership.md",
+    ROOT / "docs" / "knowledge" / "source-authority.md",
+    ROOT / "docs" / "knowledge" / "work-routing.md",
+    ROOT / "docs" / "knowledge" / "skills",
+    KIT_ROOT / "README.md",
+    KIT_ROOT / "AGENTS.md",
+    KIT_ROOT / "SKILL.md",
+    KIT_ROOT / "intake",
+    KIT_ROOT / "document",
+    KIT_ROOT / "production-assets",
+    KIT_ROOT / "voice",
+    KIT_ROOT / "renderer" / "CONTRACT.md",
+]
+
+PATH_REFERENCE_PREFIXES = (
+    ".agents/",
+    ".github/",
+    "docs/",
+    "kits/",
+    "tests/",
+    "tools/",
+)
+
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+CODE_PATH_RE = re.compile(r"`((?:\.agents|\.github|docs|kits|tests|tools)/[^`\s]+)`")
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s=]+)$")
 ACTION_USE_RE = re.compile(r"(?m)^\s*uses:\s*([^@\s]+)@([^\s#]+)")
 IMMUTABLE_ACTION_REF_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -142,14 +177,18 @@ def fail(errors: list[str], message: str) -> None:
     errors.append(message)
 
 
-def iter_markdown_files() -> list[Path]:
+def iter_markdown_under(items: list[Path]) -> list[Path]:
     files: list[Path] = []
-    for item in MARKDOWN_ROOTS:
-        if item.is_file():
+    for item in items:
+        if item.is_file() and item.suffix.lower() == ".md":
             files.append(item)
         elif item.is_dir():
             files.extend(item.rglob("*.md"))
     return sorted(set(files))
+
+
+def iter_markdown_files() -> list[Path]:
+    return iter_markdown_under(MARKDOWN_ROOTS)
 
 
 def check_required_surfaces(errors: list[str]) -> None:
@@ -306,6 +345,32 @@ def check_markdown_links(errors: list[str]) -> None:
                 fail(errors, f"broken relative link in {path.relative_to(ROOT)}: {raw}")
 
 
+def normalize_code_path(raw: str) -> str:
+    value = raw.rstrip(".,;:)")
+    if "<" in value or ">" in value or "*" in value or "{" in value or "}" in value:
+        return ""
+    return value
+
+
+def check_explicit_repository_paths(errors: list[str]) -> None:
+    """Reject stale concrete repo paths in current operational/canonical docs only.
+
+    Historical decisions/reviews are intentionally excluded because they may truthfully
+    mention retired paths. This checks path existence only; prose meaning is not a
+    machine contract.
+    """
+
+    for source in iter_markdown_under(CURRENT_PATH_REFERENCE_ROOTS):
+        text = source.read_text(encoding="utf-8")
+        for raw in CODE_PATH_RE.findall(text):
+            rel = normalize_code_path(raw)
+            if not rel or not rel.startswith(PATH_REFERENCE_PREFIXES):
+                continue
+            if (ROOT / rel).exists():
+                continue
+            fail(errors, f"stale repository path reference in {source.relative_to(ROOT)}: {rel}")
+
+
 def check_python_syntax(errors: list[str]) -> None:
     for root in (ROOT / "kits", ROOT / "tools", ROOT / "tests"):
         if not root.is_dir():
@@ -327,6 +392,7 @@ def main() -> int:
     check_dependency_locks(errors)
     check_workflow_action_pins(errors)
     check_markdown_links(errors)
+    check_explicit_repository_paths(errors)
     check_python_syntax(errors)
 
     if errors:
@@ -342,6 +408,7 @@ def main() -> int:
     print("- retired repository paths: absent")
     print("- external GitHub Actions: immutable commit-SHA pinned")
     print(f"- relative Markdown links checked: {len(iter_markdown_files())} files")
+    print("- current explicit repository path references: valid")
     print("- runtime/dev dependency pins: valid")
     print("- Python kits/tools/tests: syntax valid")
     print("- prose wording is not a machine contract")

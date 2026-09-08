@@ -2,116 +2,77 @@
 
 Updated: 2026-09-08
 
-Use this file only to answer **who owns what**. Exact field/schema/procedure contracts remain in the named owners; do not duplicate them here.
+Use only to answer **who owns what**. Exact field/schema/procedure contracts remain in the named owners; do not duplicate them here.
 
-## Root operating owners
+## Root owners
 
 | Boundary | Owner |
 |---|---|
-| Top-level boot, work modes, continuity, authority, skill budget | `AGENTS.md` |
-| GitHub branch/ref, write/history, CI/API/safety | `GITHUB_RULES.md` |
+| Work modes, boot, authority, continuity, skill budget | `AGENTS.md` |
+| GitHub mutation/history/CI/safety | `GITHUB_RULES.md` |
 | Stable repository/product orientation | `CONTEXT.md` |
-| Contribution and promotion procedure | `CONTRIBUTING.md` |
-| Public-repository data handling | `SECURITY.md` |
 | Active continuation | `docs/knowledge/next-action.md` |
 | Source/state precedence | `docs/knowledge/source-authority.md` |
-| Current validation evidence | `docs/knowledge/reviews/current-validation.md` |
 | Durable decisions/rationale | `docs/knowledge/decisions/` |
-| Future/non-active work | `docs/knowledge/operations/backlog.md` |
+| Current validation evidence | `docs/knowledge/reviews/current-validation.md` |
 
-## Repository areas
-
-| Area | Responsibility |
-|---|---|
-| `.agents/skills/` | reusable semantic judgment |
-| `docs/foundation/` | durable Flow 1–7 policy |
-| `docs/knowledge/` | continuation, routing, ownership, decisions, evidence |
-| `kits/prd-creator/` | Flow 2–7 procedure and implementation |
-| `tests/`, `tools/`, `.github/`, dependency locks | engineering verification and promotion |
-| `workspace/active/`, `workspace/archive/` | ignored local/external project-package mount points |
-
-The public repository owns workspace guidance, not live project-package contents.
-
-## Package root owners
+## Product/package owners
 
 | Boundary | Owner |
 |---|---|
-| Package orientation / architecture map | `kits/prd-creator/README.md` |
-| Package technical/file routing | `kits/prd-creator/AGENTS.md` |
-| End-to-end Flow 2–7 execution router | `kits/prd-creator/SKILL.md` |
-
-## Semantic / design / procedure owners
-
-| Boundary | Owner |
-|---|---|
-| Reusable source/PRD/04/readiness semantic judgment | `.agents/skills/project-document-production/SKILL.md` |
-| End-to-end production sequence | `docs/foundation/01-production-flow.md` |
-| Flow 2 durable policy | `docs/foundation/02-source-intake-recovery.md` |
-| Flow 2 exact procedure/state contract | `kits/prd-creator/intake/SOURCE-INTAKE.md` |
-| PRD-core semantic completeness + Material Conservation | `kits/prd-creator/document/CONTENT-CONTRACT.md` |
+| Reusable PRD/source/04/readiness semantic judgment | `.agents/skills/project-document-production/SKILL.md` |
+| Reusable Voice semantic/performance judgment | `.agents/skills/voice-production/SKILL.md` |
+| Package file/mechanical routing | `kits/prd-creator/AGENTS.md` |
+| End-to-end Production Execution | `kits/prd-creator/SKILL.md` |
+| Flow 2 source/recovery procedure | `kits/prd-creator/intake/SOURCE-INTAKE.md` |
+| PRD semantic completeness | `kits/prd-creator/document/CONTENT-CONTRACT.md` |
 | Golden page/component grammar | `kits/prd-creator/document/DESIGN-CONTRACT.md` |
-| non-Voice 04 exact resource contract | `kits/prd-creator/production-assets/CONTRACT.md` |
-| Flow 4 durable policy | `docs/foundation/04-prd-validation-handoff.md` |
-| Flow 4 acceptance/handoff procedure | `kits/prd-creator/document/VALIDATION.md` |
-| Flow 5 Voice extraction | `kits/prd-creator/voice/EXTRACTION.md` |
-| Flow 6 Eleven v3 craft | `kits/prd-creator/voice/PERFORMANCE-WRITING.md` |
-| Flow 7 acceptance/evidence | `kits/prd-creator/voice/VALIDATION.md` |
+| non-Voice 04 contract | `kits/prd-creator/production-assets/CONTRACT.md` |
+| Flow 4 acceptance/handoff | `kits/prd-creator/document/VALIDATION.md` |
+| Renderer/delivery contract | `kits/prd-creator/renderer/CONTRACT.md` |
+| Voice Flow 5 extraction | `kits/prd-creator/voice/EXTRACTION.md` |
+| Voice Flow 6 performance craft | `kits/prd-creator/voice/PERFORMANCE-WRITING.md` |
+| Voice Flow 7 acceptance/evidence | `kits/prd-creator/voice/VALIDATION.md` |
 
-`CONTENT-CONTRACT.md` owns **what meaning survives**. `DESIGN-CONTRACT.md` owns **where/how accepted meaning is presented**. Machine schemas do not own product meaning.
+`CONTENT-CONTRACT.md` owns **what meaning survives**. `DESIGN-CONTRACT.md` owns **how accepted meaning is represented**. Machine schemas do not own product meaning.
 
-## Shared machine-contract owners
-
-| Boundary | Owner |
-|---|---|
-| duplicate-safe YAML loading + YAML source-line diagnostics | `kits/prd-creator/shared/state.py` |
-| strict Flow 2 source/requirement/intake state + requirement revision binding | `kits/prd-creator/shared/intake.py` |
-| normalized project-relative path safety | `kits/prd-creator/shared/paths.py` |
-| minimal handoff status + accepted revision identity | `kits/prd-creator/shared/handoff.py` |
-| strict Voice lifecycle-state shape | `kits/prd-creator/shared/lifecycle.py` |
-| canonical render-data whitelist schema | `kits/prd-creator/shared/render_schema.py` |
-| bilingual presence + numeric/unit/dimension/coordinate/negation parity | `kits/prd-creator/shared/localization.py` |
-| stable non-Voice 04 parsing (`Owner → Moment → AST`) | `kits/prd-creator/shared/assets.py` |
-| stable Voice requirement/production parsing (`Owner → Moment → VO`) | `kits/prd-creator/shared/voice.py` |
-| canonical PRD owner topology | `kits/prd-creator/shared/topology.py` |
-| structured machine issues/source diagnostics | `kits/prd-creator/shared/issues.py` |
-| shared acceptance-field and exact-SHA parsing primitives | `kits/prd-creator/shared/acceptance.py` |
-
-These modules centralize machine behavior only. They never outrank canonical project sources.
-
-## Renderer owners
+## Machine owners
 
 | Boundary | Owner |
 |---|---|
-| PRD/04 projection contract | `kits/prd-creator/renderer/CONTRACT.md` |
-| transactional version-directory delivery + rollback | `kits/prd-creator/renderer/delivery.py` |
-| PRD page projection / adaptive cardinality | `kits/prd-creator/renderer/pages.py` |
-| renderer CLI / orchestration | `kits/prd-creator/renderer/render.py` |
-| lower-level deterministic PRD engine | `kits/prd-creator/renderer/prd_render_engine.py` |
+| Flow 2 machine state | `kits/prd-creator/shared/intake.py` |
+| YAML loading/diagnostics | `kits/prd-creator/shared/state.py` |
+| safe persisted paths | `kits/prd-creator/shared/paths.py` |
+| acceptance/SHA primitives | `kits/prd-creator/shared/acceptance.py` |
+| handoff state | `kits/prd-creator/shared/handoff.py` |
+| render-data vocabulary | `kits/prd-creator/shared/render_schema.py` |
+| localization invariants | `kits/prd-creator/shared/localization.py` |
+| non-Voice 04 identity/parser | `kits/prd-creator/shared/assets.py` |
+| Voice identity/parser | `kits/prd-creator/shared/voice.py` |
+| Voice lifecycle state | `kits/prd-creator/shared/lifecycle.py` |
+| canonical 04 topology | `kits/prd-creator/shared/topology.py` |
+| structured validation issues | `kits/prd-creator/shared/issues.py` |
+
+## Renderer / validator owners
+
+| Boundary | Owner |
+|---|---|
 | reusable HTML primitives | `kits/prd-creator/renderer/core.py` |
-| sole Golden-shell mutation/reference adapter, including additive 04 injection | `kits/prd-creator/renderer/template_adapter.py` |
-| stable Owner/Moment/Resource 04 composition | `kits/prd-creator/renderer/production_assets_compositor.py` |
+| render-data → page families | `kits/prd-creator/renderer/pages.py` |
+| deterministic PRD composition | `kits/prd-creator/renderer/prd_render_engine.py` |
+| sole Golden shell adapter | `kits/prd-creator/renderer/template_adapter.py` |
+| 04 Asset/Voice composition | `kits/prd-creator/renderer/production_assets_compositor.py` |
 | Voice presentation formatting | `kits/prd-creator/renderer/production_assets.py` |
-| 04 static presentation resources | `kits/prd-creator/renderer/static/` |
-| canonical Golden bytes | `kits/prd-creator/template/golden-reference.html` |
-| byte-identical runtime Golden alias | `kits/prd-creator/template/runtime-template.html` |
+| transactional delivery | `kits/prd-creator/renderer/delivery.py` |
+| canonical Golden source | `kits/prd-creator/template/golden-reference.html` |
+| PRD validation orchestration | `kits/prd-creator/validator/prd_validation_engine.py` |
+| derived HTML contract | `kits/prd-creator/validator/html_contract.py` |
+| canonical PRD validation API | `kits/prd-creator/validator/api.py` |
+| Flow 4→5 proof | `kits/prd-creator/validator/validate_handoff.py` |
+| Voice mechanical validation | `kits/prd-creator/validator/voice_validation.py` |
+| Voice validation CLI | `kits/prd-creator/validator/validate_voice.py` |
 
-Reference-project/Golden compatibility vocabulary belongs only in `TemplateAdapter`, not generic business logic.
-
-## Validator owners
-
-| Boundary | Owner |
-|---|---|
-| PRD source/projection validation orchestration | `kits/prd-creator/validator/prd_validation_engine.py` |
-| derived PRD HTML freshness/composition/navigation contract | `kits/prd-creator/validator/html_contract.py` |
-| one canonical complete PRD validation API | `kits/prd-creator/validator/api.py` |
-| PRD validation CLI | `kits/prd-creator/validator/validate.py` |
-| PRD → Voice accepted-version + derived-artifact + exact acceptance proof | `kits/prd-creator/validator/validate_handoff.py` |
-| Flow 5–7 lifecycle / exact Voice source and acceptance domain validation | `kits/prd-creator/validator/voice_validation.py` |
-| Voice validation CLI / public entrypoint | `kits/prd-creator/validator/validate_voice.py` |
-| PRD regressions | `tests/test_prd_*` |
-| Voice regressions | `tests/test_voice_contracts.py` |
-
-Generic `_engine.py` module names and title-based machine joins are retired.
+There is one tracked Golden/runtime source: `golden-reference.html`. Do not reintroduce a runtime-template alias.
 
 ## Project-package owners
 
@@ -120,43 +81,29 @@ Paths below are relative to an authorized project package.
 | Boundary | Owner |
 |---|---|
 | source identity/provenance | `state/source-inventory.yaml` |
-| material recovered/approved requirements | `state/requirement-register.yaml` |
-| Flow 2 status + exact requirement revision binding + conditional preview evidence | `state/intake-state.yaml` |
-| canonical PRD-core meaning | `work/content.md` |
-| strict derived PRD projection + exact Flow 2/content SHA bindings | `work/render-data.json` |
-| canonical non-Voice 04 `Owner → Moment → AST` resources | `work/asset-requirements.md` |
-| PRD/04 acceptance + exact render-data/asset SHA bindings | `work/acceptance.md` |
-| PRD handoff status + accepted revision only | `state/handoff-state.yaml` |
-| canonical Voice `Owner → Moment → VO` requirements | `work/voice-requirements.md` |
-| canonical Voice wording/performance + exact requirement SHA | `work/voice-production.md` |
-| exact Voice Production acceptance | `work/voice-acceptance.md` |
-| Voice lifecycle refs/status | `state/voice-state.yaml` |
-| stable resume navigator | `output/README.md` |
-| human-facing consolidated document | `output/v<document.version>/prd.html` |
-| AI development-context projection | `output/v<document.version>/context.md` |
-| compact AI navigation/line-range index | `output/v<document.version>/index.json` |
-
-Deterministic PRD handoff paths are derived from project root + `accepted_prd_version`; they are not duplicated into handoff state.
+| material requirements | `state/requirement-register.yaml` |
+| Flow 2 status/revision binding | `state/intake-state.yaml` |
+| canonical PRD meaning | `work/content.md` |
+| strict PRD projection | `work/render-data.json` |
+| canonical non-Voice 04 resources | `work/asset-requirements.md` |
+| PRD/04 acceptance | `work/acceptance.md` |
+| PRD handoff state | `state/handoff-state.yaml` |
+| canonical Voice requirements | `work/voice-requirements.md` |
+| canonical Voice production | `work/voice-production.md` |
+| Voice acceptance | `work/voice-acceptance.md` |
+| Voice lifecycle state | `state/voice-state.yaml` |
+| derived delivery | `output/README.md` + `output/v<document.version>/...` |
 
 Derived output is never hand-patched to reconcile owners. Fix the first wrong canonical/contract owner and regenerate.
 
 ## Routing rule
 
 ```text
-Who owns this?
-→ ownership.md
-
-What meaning must exist?
-→ semantic owner
-
-What machine shape is legal?
-→ shared/* exact machine owner
-
-How is accepted meaning presented?
-→ DESIGN-CONTRACT / renderer owner
-
-Which source/state outranks another?
-→ source-authority.md
+who owns this? → ownership.md
+what meaning must exist? → semantic owner
+what machine shape is legal? → shared/* owner
+how is accepted meaning presented? → DESIGN-CONTRACT / renderer owner
+which source outranks another? → source-authority.md
 ```
 
 Create a new owner only when responsibility is genuinely different. Do not create parallel registries or duplicate schemas for convenience.

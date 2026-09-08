@@ -1,44 +1,44 @@
 # Work Routing
 
-This file is a compact human reference. Root `AGENTS.md` is the canonical work-mode and boot authority; do not duplicate its full procedure here.
+Compact human reference only. Root `AGENTS.md` is the canonical work-mode, boot, authority, and skill-budget owner. Use this file only when a short routing reminder is useful.
 
 ## Mode map
 
 | User intent | Mode | Primary route |
 |---|---|---|
 | Inspect, understand, decide, or recover context | Plan | current authority + smallest relevant owner |
-| Create/revise project PRD or non-Voice 04 | Production Execution | `project-document-production` + exact PRD owner |
-| Create/revise accepted Voice work | Production Execution | `voice-production` + exact Voice owner |
+| Create/revise project PRD or non-Voice 04 | Production Execution | smallest PRD owner; add `project-document-production` only when semantic judgment is needed |
+| Create/revise accepted Voice work | Production Execution | smallest Voice owner; add `voice-production` only when semantic/performance judgment is needed |
 | Change PRD-Creator itself | Development | `development-brief` + first wrong owner |
-| Fix bounded defect/regression/stale behavior | Maintenance | concrete failure + first wrong owner |
+| Fix bounded defect/regression/stale behavior | Maintenance | concrete failure or explicit target + first wrong owner |
 
-Production Flow and agent mode are separate layers. A Maintenance task can repair one Flow without replaying upstream production, and Development changes the system rather than producing a project.
+Production Flow and agent mode are separate layers. Bounded work does not replay the full production stack unless the change invalidates it.
 
 ## Owner rule
 
 Route by what is wrong, not by file type:
 
 ```text
-project/PRD meaning wrong
-→ project-document-production / semantic owner
+project / PRD meaning wrong
+→ project-document-production + nearest semantic owner
 
-Voice meaning wrong
-→ voice-production / semantic owner
+Voice meaning / communication contract wrong
+→ voice-production + nearest Voice semantic owner
 
-meaning correct; renderer/template/validator behavior wrong
-→ kits/prd-creator/AGENTS.md / exact implementation owner
+meaning correct; renderer / template / validator / CLI behavior wrong
+→ kits/prd-creator/AGENTS.md → exact implementation owner
 
-shared dependency, test, or CI wrong
+shared dependency / test / CI wrong
 → repository engineering owner
 ```
 
-Use `ownership.md`, `source-authority.md`, or `skills/activation-matrix.md` only when the direct route remains genuinely ambiguous.
+If the owner is already obvious, use it directly. Consult `ownership.md`, `source-authority.md`, or `skills/activation-matrix.md` only when the direct route remains genuinely ambiguous.
 
 ## Continuity
 
 ```text
 current continuation → next-action.md
-future/non-active work → operations/backlog.md
+future / non-active work → operations/backlog.md
 historical evidence → reviews/history/
 durable rationale → decisions/
 ```
