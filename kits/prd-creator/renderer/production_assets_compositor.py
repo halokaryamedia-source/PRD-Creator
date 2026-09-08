@@ -314,7 +314,7 @@ def _pages_and_nav(
     nav = (
         '<div class="nav-group is-open professional-nav production-assets-nav">'
         '<button aria-expanded="true" class="nav-group-toggle" type="button">'
-        '<span class="nav-index" data-full-index="04" data-overview-index="">04</span>'
+        '<span aria-hidden="true" class="nav-index" data-full-index="" data-overview-index=""></span>'
         f'<span class="nav-copy">{i18n(bi("Production Assets", "Aset Produksi"))}</span>'
         '<span aria-hidden="true" class="group-chevron"></span></button><div class="nav-submenu">'
         + "".join(links)
