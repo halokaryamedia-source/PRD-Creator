@@ -122,6 +122,8 @@ MARKDOWN_ROOTS = [
 
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s=]+)$")
+ACTION_USE_RE = re.compile(r"(?m)^\s*uses:\s*([^@\s]+)@([^\s#]+)")
+IMMUTABLE_ACTION_REF_RE = re.compile(r"^[0-9a-f]{40}$")
 NAME_RE = re.compile(r"(?m)^name:\s*([^\s]+)\s*$")
 VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
@@ -246,6 +248,21 @@ def check_dependency_locks(errors: list[str]) -> None:
         fail(errors, "unexpected kit requirements.txt; root lockfiles own Python dependency pins")
 
 
+def check_workflow_action_pins(errors: list[str]) -> None:
+    workflows = ROOT / ".github" / "workflows"
+    for path in sorted(workflows.glob("*.yml")):
+        text = path.read_text(encoding="utf-8")
+        for target, ref in ACTION_USE_RE.findall(text):
+            if target.startswith("./") or target.startswith("docker://"):
+                continue
+            if not IMMUTABLE_ACTION_REF_RE.fullmatch(ref):
+                fail(
+                    errors,
+                    f"workflow action must use immutable 40-character commit SHA in {path.relative_to(ROOT)}: "
+                    f"{target}@{ref}",
+                )
+
+
 def normalize_link_target(source: Path, raw: str) -> Path | None:
     target = raw.strip().strip("<>")
     if not target:
@@ -299,6 +316,7 @@ def main() -> int:
     check_skill_metadata(errors)
     check_retired_paths(errors)
     check_dependency_locks(errors)
+    check_workflow_action_pins(errors)
     check_markdown_links(errors)
     check_python_syntax(errors)
 
@@ -313,6 +331,7 @@ def main() -> int:
     print("- active production kit and entrypoints: present")
     print("- package skill metadata: valid")
     print("- retired repository paths: absent")
+    print("- external GitHub Actions: immutable commit-SHA pinned")
     print(f"- relative Markdown links checked: {len(iter_markdown_files())} files")
     print("- runtime/dev dependency pins: valid")
     print("- Python kits/tools/tests: syntax valid")
