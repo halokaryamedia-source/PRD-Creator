@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "kits" / "prd-creator"
 GOLDEN = KIT / "template" / "golden-reference.html"
+RETIRED_RUNTIME = KIT / "template" / "runtime-template.html"
 APPROVED_GIT_BLOB = "2050b965768489feda98373c2920bbee8c7093b3"
 PACKAGES = ("docks", "quarry", "ascent", "beacon", "relay", "ending")
 GLOBAL_PAGES = ("development-overview", "shared-systems", "shared-data-reset", "phase-development")
@@ -157,6 +158,7 @@ class GoldenReferenceArtifactTests(unittest.TestCase):
 
     def test_canonical_golden_is_exact_approved_artifact(self) -> None:
         golden = GOLDEN.read_bytes()
+        self.assertFalse(RETIRED_RUNTIME.exists())
         self.assertNotIn(b"__PRD_STORAGE_PREFIX__", golden)
 
         digest = hashlib.sha1(f"blob {len(golden)}\0".encode("ascii") + golden).hexdigest()
