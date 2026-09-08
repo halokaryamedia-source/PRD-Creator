@@ -1,10 +1,212 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal, NotRequired, TypedDict, cast
 
 
 class ProjectionError(ValueError):
     """Raised when render-data does not match the canonical projection schema."""
+
+
+class TitleDescriptionData(TypedDict):
+    title: Any
+    description: Any
+
+
+class SimpleFlowData(TypedDict):
+    title: Any
+    description: Any
+    step: NotRequired[Any]
+
+
+class PlayerFlowData(TypedDict):
+    title: Any
+    action: Any
+    result: Any
+    step: NotRequired[Any]
+
+
+class TermData(TypedDict):
+    key: str
+    label: Any
+    definition: Any
+    aliases: NotRequired[list[str] | dict[str, list[str]]]
+    roles: NotRequired[list[str]]
+
+
+class OverviewFactData(TypedDict):
+    key: str
+    label: Any
+    value: Any
+
+
+class GameplayFlowData(TypedDict):
+    id: str
+    title: Any
+    narrative_context: Any
+    beats: list[TitleDescriptionData]
+    next_destination: Any
+    eyebrow: NotRequired[Any]
+    terms: NotRequired[list[TermData]]
+
+
+class DevelopmentRequirementData(TypedDict):
+    title: Any
+    details: Any
+    result: Any
+    code: NotRequired[Any]
+
+
+class DevelopmentRequirementGroupData(TypedDict):
+    title: Any
+    items: list[DevelopmentRequirementData]
+
+
+class LevelRequirementChildData(TypedDict):
+    object: Any
+    area_size: Any
+    build_and_visual: Any
+    gameplay_function: Any
+    code: NotRequired[Any]
+
+
+class LevelRequirementData(TypedDict):
+    object: Any
+    area_size: Any
+    build_and_visual: Any
+    gameplay_function: Any
+    code: NotRequired[Any]
+    subtitle: NotRequired[Any]
+    children: NotRequired[list[LevelRequirementChildData]]
+
+
+class LevelRequirementGroupData(TypedDict):
+    title: Any
+    items: list[LevelRequirementData]
+
+
+class ResultModelData(TypedDict):
+    mode: Literal["scored", "completion_only"]
+    summary: Any
+
+
+class ScoringComponentData(TypedDict):
+    name: Any
+    weight: Any
+    rule: Any
+
+
+class ScoringData(TypedDict):
+    produces_score: Literal[True]
+    score_name: Any
+    timer_start: Any
+    timer_stop: Any
+    no_score_condition: Any
+    duplicate_prevention: Any
+    final_result_relationship: Any
+    player_facing_display: Any
+    telemetry_export: Any
+    scale: NotRequired[Any]
+    components: NotRequired[list[ScoringComponentData]]
+    formula: NotRequired[Any]
+    summary: NotRequired[Any]
+
+
+class CompletionData(TypedDict):
+    produces_score: Literal[False]
+    completion_name: Any
+    valid_completion_condition: Any
+    recorded_data: Any
+    interrupted_completion_behavior: Any
+    duplicate_prevention: Any
+    handoff_result: Any
+    final_result_relationship: Any
+    player_facing_display: Any
+    telemetry_export: Any
+    summary: NotRequired[Any]
+
+
+class GameplayData(TypedDict):
+    context: Any
+    main_objective: Any
+    result: Any
+    purpose: Any
+    gameplay_time: Any
+    start_condition: Any
+    end_condition: Any
+    blocked_or_fail_condition: Any
+    result_model: ResultModelData
+    player_flow: list[PlayerFlowData]
+
+
+class LevelDesignData(TypedDict):
+    overview: Any
+    flow: list[SimpleFlowData]
+    requirements: list[LevelRequirementGroupData]
+    notes: NotRequired[list[TitleDescriptionData]]
+
+
+class DeveloperData(TypedDict):
+    overview: Any
+    flow: list[SimpleFlowData]
+    requirements: list[DevelopmentRequirementGroupData]
+    reset: Any
+    reset_result: Any
+    scoring: NotRequired[ScoringData | None]
+    completion_data: NotRequired[CompletionData | None]
+    notes: NotRequired[list[TitleDescriptionData]]
+
+
+class PackageData(TypedDict):
+    id: str
+    package_label: Any
+    title: Any
+    acceptance: list[Any]
+    gameplay: GameplayData
+    level_design: LevelDesignData
+    developer: DeveloperData
+    terms: NotRequired[list[TermData]]
+
+
+class GlobalDevelopmentData(TypedDict):
+    id: str
+    title: Any
+    overview: Any
+    flow: list[SimpleFlowData]
+    requirements: list[DevelopmentRequirementGroupData]
+    subtitle: NotRequired[Any]
+    notes: NotRequired[list[TitleDescriptionData]]
+    terms: NotRequired[list[TermData]]
+
+
+class DocumentData(TypedDict):
+    title: Any
+    document_type: Any
+    version: str
+    subtitle: NotRequired[Any]
+    description: NotRequired[Any]
+    brand: NotRequired[Any]
+    brand_mark: NotRequired[Any]
+    languages: NotRequired[list[str]]
+
+
+class OverviewData(TypedDict):
+    project_context: Any
+    main_experience: Any
+    document_scope: Any
+    intended_use: Any
+    facts: list[OverviewFactData]
+    journey: list[SimpleFlowData]
+    main_systems: list[TitleDescriptionData]
+
+
+class RenderData(TypedDict):
+    approved_requirement_sha256: str
+    canonical_content_sha256: str
+    document: DocumentData
+    overview: OverviewData
+    gameplay_flow: list[GameplayFlowData]
+    global_development: list[GlobalDevelopmentData]
+    packages: list[PackageData]
 
 
 TOP_LEVEL_FIELDS = {
@@ -216,6 +418,13 @@ def validate_projection_schema(data: dict[str, Any]) -> None:
         _validate_notes(developer.get("notes", []), f"{context}.developer.notes")
         _validate_result_contract(developer, mode, f"{context}.developer")
         _validate_terms(current.get("terms", []), f"{context}.terms")
+
+
+def validated_render_data(data: dict[str, Any]) -> RenderData:
+    """Return the canonical static projection type only after runtime schema validation."""
+
+    validate_projection_schema(data)
+    return cast(RenderData, data)
 
 
 def _validate_result_contract(developer: dict[str, Any], mode: str, context: str) -> None:
