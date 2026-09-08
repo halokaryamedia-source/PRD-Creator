@@ -15,7 +15,7 @@ if str(KIT_ROOT) not in sys.path:
     sys.path.insert(0, str(KIT_ROOT))
 
 from browser_verify import BrowserVerifyError  # noqa: E402
-from browser_verify import verify as verify_browser
+from browser_verify import verify as verify_browser  # noqa: E402
 from renderer.delivery import build_delivery  # noqa: E402
 from shared.state import StateError  # noqa: E402
 from validator import api as prd_api  # noqa: E402
