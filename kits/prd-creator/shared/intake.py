@@ -204,7 +204,9 @@ def load_intake_state(path: Path) -> IntakeState:
     status = require_scalar(state, "status", owner="intake-state.yaml").casefold()
     if status not in INTAKE_STATUSES:
         raise StateError(f"intake-state.yaml.status={status!r} is unsupported")
-    preview = require_bool(state, "preview_approved", owner="intake-state.yaml") if "preview_approved" in state else False
+    preview = (
+        require_bool(state, "preview_approved", owner="intake-state.yaml") if "preview_approved" in state else False
+    )
     approved_sha = str(state.get("approved_requirement_sha256") or "").strip().casefold()
     if approved_sha and SHA256_RE.fullmatch(approved_sha) is None:
         raise StateError("intake-state.yaml.approved_requirement_sha256 must be a lowercase SHA-256 digest")
