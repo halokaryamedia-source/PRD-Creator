@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from prd_fixture import acceptance_text, handoff_state_text, write_base_project
+
 from tools import prd as prd_operator
 
 ROOT = Path(__file__).resolve().parents[1]
