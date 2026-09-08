@@ -1,6 +1,6 @@
 # PRD Creator Kit Agent Rules
 
-Root `AGENTS.md` owns repository routing, authority, continuity, branch policy, and proof boundaries. This file owns package-level file/mechanical routing and context economy. Normal Production Execution starts from `SKILL.md`.
+Root `AGENTS.md` owns repository routing, authority, continuity, branch policy, and proof boundaries. This file owns package-level file/mechanical routing and context economy. End-to-end Production Execution starts from `SKILL.md`; bounded work may enter through the exact owner selected by root `AGENTS.md` or package routing.
 
 ## Open the smallest owner
 
@@ -148,7 +148,7 @@ Structured failures should expose code/owner/path/field/line when available so r
 
 ## Verification
 
-During iteration use `tools/prd.py impact` and only affected proof domains. Final integration/promotion retains repository checks, full PRD + Voice regression, Ruff, type checking, coverage, and browser/audio evidence when claimed or required by the gate.
+During iteration, use direct targeted proof when one obvious check can settle the change; use `tools/prd.py impact` when affected proof domains are unclear or cross-domain. Final integration/promotion retains repository checks, full PRD + Voice regression, Ruff, type checking, coverage, and browser/audio evidence when claimed or required by the gate.
 
 ## Anti-overdevelopment
 
