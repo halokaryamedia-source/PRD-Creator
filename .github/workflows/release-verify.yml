@@ -52,6 +52,8 @@ jobs:
           mypy kits/prd-creator/shared kits/prd-creator/renderer kits/prd-creator/validator
 
       - name: Run full regression suite
+        env:
+          PRD_BROWSER_TEST: "1"
         run: |
           coverage run -m unittest discover -s tests -p "test_*.py" -v
           coverage report --fail-under=84
