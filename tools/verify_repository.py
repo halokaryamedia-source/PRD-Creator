@@ -341,7 +341,11 @@ def normalize_link_target(source: Path, raw: str) -> Path | None:
     if not target:
         return None
     lower = target.lower()
-    if target.startswith("#") or "://" in target or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:")):
+    if (
+        target.startswith("#")
+        or "://" in target
+        or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:"))
+    ):
         return None
     target = unquote(target.split("#", 1)[0].split("?", 1)[0]).strip()
     if not target:
