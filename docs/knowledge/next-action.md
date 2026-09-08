@@ -2,64 +2,53 @@
 
 ## Current Status
 
-`PACKAGE_3_SOURCE_CLEANUP_COMPLETE`
+`FLOW2_EFFICIENCY_SIMPLIFICATION_PENDING_VERIFICATION`
 
-PRD-Creator Package 3.0 source/contract synchronization is complete on `develop`. Final verification has not yet been claimed.
+PRD-Creator Package 3 on `develop` now removes the default Flow 2 approval round-trip for authoritative-only projects while preserving explicit approval for material AI Proposals.
 
-Current relevant branch roles:
+Branch roles remain:
 
-- `develop` → exact Package 3 candidate and next verification target;
-- `Local` → protected verified integration baseline; unchanged during the current task;
+- `develop` → active candidate and verification target;
+- `Local` → protected verified integration baseline;
 - `main` → stable repository history.
 
-The previous Local-targeted PR was closed without merge. Do not open or merge a Local promotion until explicitly requested after final verification and development acceptance.
+Do not promote to `Local` until this candidate is verified and explicitly accepted for promotion.
 
 ## Active Boundary
 
-Package 3 now uses one synchronized production chain:
+Current Flow 2 behavior should be:
 
 ```text
-Flow 2 exact requirement approval
-→ Flow 3 canonical content + strict projection
-→ deterministic renderer
-→ non-Voice 04 stable identity
-→ Flow 4 exact-byte acceptance/handoff
-→ Flow 5 Voice requirements
-→ Flow 6 Voice production
-→ Flow 7 exact-byte Voice acceptance/delivery
+authority settles project model
+→ bind exact requirement revision
+→ ready_for_prd
+→ continue directly to Flow 3
+
+material AI Proposal exists
+→ compact preview
+→ user approval/correction
+→ bind exact accepted requirement revision
+→ ready_for_prd
 ```
 
 Keep these boundaries intact:
 
-- strict source/provenance state and revision-bound preview approval;
-- exact Flow 2 requirement SHA + canonical content SHA projection bindings;
-- safe project-relative persisted paths;
-- one whitelist render projection vocabulary;
-- explicit `scored | completion_only` result model;
-- stable Owner → Moment → Resource identity;
-- exact PRD/asset/Voice acceptance bindings;
-- package-relative business-module imports with CLI-only bootstrap;
-- one Golden `TemplateAdapter` mutation boundary;
-- transactional version-directory publication;
-- structured machine diagnostics with source location where mechanically available;
-- one owner for each validation responsibility;
-- one static-quality contract across development/promotion/release gates;
-- protected Golden reference/runtime bytes.
-
-Do not reintroduce compatibility aliases or duplicate checks merely to preserve old internal project-state formats. Package 3.0 is intentionally a major machine-contract boundary.
+- no duplicate readiness aliases;
+- no second approval/revision registry;
+- stale requirement bytes still invalidate the Flow 2 binding;
+- approved Proposals still require explicit review evidence;
+- existing `preview_approved: true` states remain valid;
+- Golden/render schema/Flow 4/Voice behavior remain unchanged by this pass.
 
 ## Next Step
 
-**Final verification on the exact current `develop` HEAD, when explicitly requested.**
-
-Run one evidence pass:
+Run verification on the exact final `develop` HEAD:
 
 1. Repository Verify;
-2. Ruff format check;
-3. Ruff lint/import check;
-4. mypy for shared + renderer + validator;
-5. full `test_*.py` regression + coverage;
-6. PRD Verify;
-7. Voice Verify.
+2. Ruff format + lint/import;
+3. mypy shared + renderer + validator;
+4. full `test_*.py` regression + coverage;
+5. PRD Verify;
+6. Voice Verify where routed.
 
-If any gate fails, fix the first wrong owner on `develop` and rerun the final pass. Do not merge or otherwise update `Local` until a later explicit promotion request.
+If a gate fails, fix the first wrong owner and rerun the relevant proof. Do not widen this task into runtime-template, handoff-state, CI, or unrelated cleanup until this production-flow simplification is green.

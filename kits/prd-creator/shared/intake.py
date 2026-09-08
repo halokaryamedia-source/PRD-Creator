@@ -204,13 +204,11 @@ def load_intake_state(path: Path) -> IntakeState:
     status = require_scalar(state, "status", owner="intake-state.yaml").casefold()
     if status not in INTAKE_STATUSES:
         raise StateError(f"intake-state.yaml.status={status!r} is unsupported")
-    preview = require_bool(state, "preview_approved", owner="intake-state.yaml")
+    preview = require_bool(state, "preview_approved", owner="intake-state.yaml") if "preview_approved" in state else False
     approved_sha = str(state.get("approved_requirement_sha256") or "").strip().casefold()
     if approved_sha and SHA256_RE.fullmatch(approved_sha) is None:
         raise StateError("intake-state.yaml.approved_requirement_sha256 must be a lowercase SHA-256 digest")
     if status == "ready_for_prd":
-        if not preview:
-            raise StateError("ready_for_prd requires preview_approved: true")
         if not approved_sha:
             raise StateError("ready_for_prd requires approved_requirement_sha256")
     elif preview or approved_sha:
@@ -300,6 +298,10 @@ def validate_flow2_state(project: Path) -> list[Issue]:
                 )
             )
 
+    requires_preview_approval = any(
+        requirement.recovery_class == "proposal" and requirement.approval_status == "approved"
+        for requirement in requirements
+    )
     actual_requirement_sha = sha256_file(requirement_path)
     if intake.status != "ready_for_prd":
         issues.append(
@@ -311,12 +313,22 @@ def validate_flow2_state(project: Path) -> list[Issue]:
                 field="status",
             )
         )
+    elif requires_preview_approval and not intake.preview_approved:
+        issues.append(
+            Issue(
+                "FLOW2_PROPOSAL_APPROVAL_REQUIRED",
+                "flow2.approval",
+                "approved material Proposal requires Simple Chat Preview approval evidence",
+                path="state/intake-state.yaml",
+                field="preview_approved",
+            )
+        )
     elif intake.approved_requirement_sha256 != actual_requirement_sha:
         issues.append(
             Issue(
                 "FLOW2_APPROVAL_STALE",
                 "flow2.approval",
-                "Simple Chat Preview approval does not bind the current requirement-register bytes",
+                "Flow 2 requirement revision binding does not match current requirement-register bytes",
                 path="state/intake-state.yaml",
                 field="approved_requirement_sha256",
             )

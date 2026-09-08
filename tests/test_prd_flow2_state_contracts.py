@@ -44,14 +44,15 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         self.assertIn("flow2_state_current", joined)
         self.assertIn(needle, joined)
 
-    def test_ready_rejects_missing_preview_approval_evidence(self) -> None:
+    def test_ready_allows_authoritative_only_without_preview_approval(self) -> None:
         project = self.make_project()
         state = project / "state" / "intake-state.yaml"
         state.write_text(
             state.read_text(encoding="utf-8").replace("preview_approved: true\n", "", 1),
             encoding="utf-8",
         )
-        self.assert_flow2_failure(project, "preview_approved")
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
 
     def test_ready_rejects_duplicate_preview_approval_key(self) -> None:
         project = self.make_project()
@@ -66,13 +67,38 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         )
         self.assert_flow2_failure(project, "duplicate YAML mapping key")
 
-    def test_ready_rejects_explicit_preview_not_approved(self) -> None:
+    def test_ready_allows_explicit_preview_not_approved_without_proposal(self) -> None:
         project = self.make_project()
+        requirement_path = project / "state" / "requirement-register.yaml"
+        digest = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
         (project / "state" / "intake-state.yaml").write_text(
-            "status: ready_for_prd\npreview_approved: false\napproved_requirement_sha256: " + "0" * 64 + "\n",
+            f"status: ready_for_prd\npreview_approved: false\napproved_requirement_sha256: {digest}\n",
             encoding="utf-8",
         )
-        self.assert_flow2_failure(project, "preview_approved")
+        validated = self.validate(project)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+
+    def test_ready_rejects_approved_proposal_without_preview_approval(self) -> None:
+        project = self.make_project()
+        requirement_path = project / "state" / "requirement-register.yaml"
+        requirement_path.write_text(
+            "requirements:\n"
+            "  - id: REQ-001\n"
+            "    area: gameplay\n"
+            "    statement: Approved fixture decision.\n"
+            "    provenance: [SRC-001]\n"
+            "    impact: high\n"
+            "    recovery_class: proposal\n"
+            "    approval_status: approved\n"
+            "    resolution: User approval is required for this material choice.\n",
+            encoding="utf-8",
+        )
+        digest = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
+        (project / "state" / "intake-state.yaml").write_text(
+            f"status: ready_for_prd\napproved_requirement_sha256: {digest}\n",
+            encoding="utf-8",
+        )
+        self.assert_flow2_failure(project, "FLOW2_PROPOSAL_APPROVAL_REQUIRED")
 
     def test_ready_rejects_stale_requirement_approval_hash(self) -> None:
         project = self.make_project()

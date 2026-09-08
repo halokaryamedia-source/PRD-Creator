@@ -11,7 +11,7 @@ Own **semantic judgment**, not detailed production procedure, visual design mech
 
 ```text
 originals + current user instruction + approved decisions
-→ recovered / approved project model
+→ recovered current project model
    ├─ canonical PRD semantic meaning
    └─ justified non-Voice 04 Production Asset requirements
 → acceptance / handoff
@@ -25,7 +25,7 @@ The actual question requires judgment about:
 
 - source/requirement authority and completeness;
 - Completion vs Proposal vs Blocked;
-- whether a material choice needs user/project approval;
+- whether a material choice genuinely needs user approval;
 - what belongs in canonical PRD meaning vs non-Voice Production Assets;
 - whether project meaning is actionable for Gameplay / Level Design / Developer;
 - whether PRD handoff semantics are satisfied;
@@ -36,7 +36,7 @@ Do not load this skill solely because a task mentions HTML, JSON, renderer, vali
 ## Canonical detailed owners
 
 ```text
-Flow 2 source recovery / completion / preview
+Flow 2 source recovery / completion / conditional review
 → kits/prd-creator/intake/SOURCE-INTAKE.md
 
 PRD semantic completeness + material conservation
@@ -65,41 +65,52 @@ normal end-to-end execution
 Prefer:
 
 ```text
-current authority
-→ safe Completion when one result is implied
-→ concrete Proposal when AI must choose among plausible material options
-→ Blocked only when no responsible proposal can be formed
+current authority settles it
+→ recover and continue
+
+one necessary evidence-backed result exists
+→ Completion and continue
+
+multiple plausible material answers exist
+→ one concrete Proposal → user review
+
+no responsible proposal can be formed
+→ Blocked / direct decision
 ```
 
-Material AI-chosen Proposals remain pending until represented and approved/corrected. Routine wording, grouping, ordering and decomposition are not project decisions.
+Do **not** request approval merely because Flow 2 exists. Material AI Proposals require approval; authoritative facts and evidence-backed Completions do not require a redundant preview round-trip.
+
+Routine wording, grouping, ordering and decomposition are not project decisions.
 
 ### PRD semantic core
 
-Flow 3 must represent preview-approved meaning without inventing product decisions or deleting independently actionable rules.
+Flow 3 must represent current Flow 2 meaning without inventing product decisions or deleting independently actionable rules.
 
-Semantic cardinality follows meaning. If the approved lifecycle has six distinct steps, preserve six; do not compress to a sample count. If it has three, do not add filler merely because the reference showed four or five.
+Semantic cardinality follows meaning. If the approved lifecycle has six distinct steps, preserve six; if it has three, do not add filler merely because the reference showed more.
 
 Stable semantic questions remain stable where the product needs them, such as Gameplay Context, Main Objective, Result and the six Gameplay Information concerns.
 
 ### Design handoff
 
-When semantic meaning is complete but its visible placement/component behavior is wrong:
+When meaning is complete but visible placement/component behavior is wrong:
 
 ```text
 → kits/prd-creator/document/DESIGN-CONTRACT.md
 ```
 
-Do not alter project truth to make the Golden surface easier to fill. Conversely, do not create a new component family merely because a semantic list has more children; existing flow/note/sequence families accept data-driven cardinality.
+Do not alter project truth to make the Golden surface easier to fill. Existing flow/note/sequence families accept data-driven cardinality.
 
 ### Production Assets
 
-Non-Voice 04 requirements come from the same approved project model as the PRD. Do not use generated PRD pages as a second brainstorming source for extra assets.
+Non-Voice 04 requirements come from the same current project model as the PRD. Do not use generated PRD pages as a second brainstorming source for extra assets.
 
 Voice semantics remain downstream Voice ownership.
 
 ### Readiness / handoff
 
-Mechanical PASS does not establish semantic completeness or visual quality. Flow 4 reconciles material meaning across approved evidence → canonical content → projection → visible PRD. A production role needing to reopen source for already-resolved PRD-scope meaning is a readiness defect.
+Mechanical PASS does not establish semantic completeness or visual quality. Flow 4 reconciles material meaning across current Flow 2 state → canonical content → projection → visible PRD.
+
+A production role needing to reopen source for already-resolved PRD-scope meaning is a readiness defect.
 
 ## Semantic vs technical handoff
 
@@ -119,7 +130,8 @@ semantic + design contracts correct; executable behavior wrong
 - start with the smallest current semantic owner/source;
 - expand only for a real cross-cutting dependency;
 - do not load full Golden/generated HTML for ordinary semantic review;
-- do not use sample card counts, word counts, similarity scores, checksums or snapshots as a substitute for semantic judgment;
+- do not use sample card counts, word counts, similarity scores, checksums or snapshots as substitutes for semantic judgment;
+- do not require user confirmation for already-authoritative facts;
 - stop when the requested semantic boundary is correct and sufficiently proven.
 
 ## Boundary

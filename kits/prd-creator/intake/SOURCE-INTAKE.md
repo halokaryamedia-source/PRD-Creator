@@ -1,10 +1,10 @@
 # Source Intake & Requirement Recovery
 
-Flow 2 converts uneven project evidence into one approved requirement state before Flow 3 writes the canonical PRD. It owns source provenance, material requirement recovery, AI proposals, cross-role coherence, and the Simple Chat Preview approval boundary.
+Flow 2 converts project evidence into one production-ready requirement state before Flow 3 writes the canonical PRD. It owns source authority, material requirement recovery, unresolved material choices, cross-role coherence, and the approval boundary only when a real Proposal requires it.
 
 ## Canonical state
 
-Only these files are machine-owned Flow 2 truth:
+Machine-owned Flow 2 truth is limited to:
 
 ```text
 state/source-inventory.yaml
@@ -12,13 +12,13 @@ state/requirement-register.yaml
 state/intake-state.yaml
 ```
 
-`work/review.md` is optional human-readable support. The Simple Chat Preview stays in chat and is never another canonical artifact.
+`work/review.md` is optional human-readable support. A Simple Chat Preview is conditional review material, not another canonical artifact.
 
-The machine contract is implemented by `shared/intake.py`. Do not create alternate state fields or compatibility aliases in documentation or generated projects.
+The machine contract is implemented by `shared/intake.py`. Do not add compatibility aliases, duplicate readiness fields, or a second approval registry.
 
 ## 1. Source inventory
 
-Every material source/instruction receives one stable `SRC-###` identity.
+Give every material source/instruction one stable `SRC-###` identity.
 
 ```yaml
 sources:
@@ -40,15 +40,6 @@ Supported roles:
 authoritative | supporting | reference | generated
 ```
 
-Role meaning is strict:
-
-- `authoritative` — may ground current project truth;
-- `supporting` — corroborates/explains authority but does not become authority by itself;
-- `reference` — structural/comparative evidence only;
-- `generated` — derived evidence/output only.
-
-A `current` status means the record is current evidence, **not** that its role is authoritative.
-
 Supported source status:
 
 ```text
@@ -69,13 +60,22 @@ Retention is either:
 repository | external
 ```
 
-When `retention: repository`, `path` is project-relative, the retained file must exist, and its current SHA-256 must match the recorded digest. External retention is valid only after the relevant authority has been inspected sufficiently and its production meaning is persisted.
+Repository-retained sources must use project-relative paths and matching SHA-256 bytes. External retention is valid after the relevant authority has been inspected sufficiently and its production meaning is preserved upstream.
 
-Do not ask the user for SRC IDs, file paths, YAML, or workspace mechanics.
+Do not ask the user for SRC IDs, YAML, hashes, or workspace mechanics.
 
 ## 2. Requirement register
 
-Create one `REQ-###` for each material production rule, constraint, exclusion, topology rule, conflict resolution, completion, or proposal that must survive into PRD/acceptance.
+Create `REQ-###` entries only for **material rules that benefit from explicit traceability**. Typical examples:
+
+- high-impact gameplay or production constraints;
+- exclusions / negative requirements;
+- quantitative invariants;
+- topology/lifecycle rules that must survive handoff;
+- conflict resolutions;
+- AI Completion or Proposal decisions.
+
+Do **not** turn ordinary descriptive detail, wording, grouping, or every sentence from the source into separate requirement records. Those details can live in the canonical project model/content once their authority is clear.
 
 Source-backed requirement:
 
@@ -88,7 +88,7 @@ requirements:
     impact: high
 ```
 
-Material AI proposal:
+Material AI Proposal:
 
 ```yaml
   - id: REQ-014
@@ -98,18 +98,14 @@ Material AI proposal:
     impact: high
     recovery_class: proposal
     approval_status: pending
-    resolution: Recommended preview default that preserves experiment-before-explanation.
+    resolution: Recommended default preserving experiment-before-explanation.
 ```
 
-Every requirement must have at least one valid `SRC-###` provenance reference. Dangling provenance is invalid.
+Every requirement needs valid source provenance. A normal source-backed/Completion requirement must retain current authoritative grounding. An explicitly approved Proposal may cross that authority boundary through user approval.
 
-At readiness, a normal source-backed/completion requirement must retain at least one **current authoritative** provenance source. A `supporting`, `reference`, or `generated` source may remain attached as evidence but cannot independently establish project truth.
+Use `recovery_class: proposal` only when the AI chooses among materially different project answers. Use `recovery_class: blocked` only when no responsible answer can be formed.
 
-The one exception is an explicit `recovery_class: proposal` with `approval_status: approved`: user approval is the authority boundary for that proposed material choice. Before approval, it remains non-authoritative.
-
-Use `recovery_class: proposal` when the AI chooses among materially different project answers. Proposal requirements require an explicit `approval_status`. Use `recovery_class: blocked` only when no responsible answer can be formed; blocked requirements prevent readiness.
-
-Optional fields such as `affects` and `evidence_locator` are allowed only when they materially improve propagation or later source verification. Do not create a separate dependency graph.
+Optional fields such as `affects` and `evidence_locator` are allowed only when they materially improve propagation or source verification. Do not build a dependency graph merely for symmetry.
 
 ## 3. Recover meaning before filling gaps
 
@@ -134,11 +130,11 @@ incidental coordinate/tag/UUID/function path/debug setup
 → evidence only unless explicitly promoted by authority
 ```
 
-Preserve approved spatial intent such as dimensions, relationships, route constraints, readability, and functional placement; do not promote final map-instance coordinates into PRD meaning.
+Preserve approved spatial intent such as dimensions, relationships, route constraints, readability, and functional placement; do not promote final map-instance coordinates into general PRD meaning.
 
 ## 4. Integrated completeness pass
 
-Before preview, reason once across the complete model:
+Before Flow 3, reason once across the complete applicable model:
 
 ```text
 player journey
@@ -149,9 +145,7 @@ player journey
 → success/fail/interruption/retry/reset/result/handoff
 ```
 
-Check only applicable concerns, especially package/topology order, objective lifecycle, build relationships, runtime state/data/reset, required resources, quantitative consistency, terminology, and role ownership.
-
-Routine grouping, wording, ordering, and decomposition are downstream craft. Escalate only materially different product/design/runtime/scope choices as Proposals.
+Check only concerns that can materially affect implementation. Routine wording, grouping, ordering, and decomposition remain downstream craft.
 
 ## 5. Resolution ladder
 
@@ -165,17 +159,17 @@ one necessary evidence-backed result exists
 → Completion
 
 multiple plausible material answers exist
-→ choose one concrete Proposal for preview
+→ choose one concrete Proposal
 
 no responsible proposal is possible
 → Blocked / direct user decision
 ```
 
-Do not minimize AI decisions artificially, but never present a Proposal as source truth.
+Do not present a Proposal as source truth.
 
 ## 6. Propagation rule
 
-Every recovered Completion or Proposal must be coherent across every affected owner:
+Every recovered Completion or approved Proposal must remain coherent across affected owners:
 
 ```text
 requirement
@@ -190,9 +184,35 @@ requirement
 
 Do not compensate for an upstream inconsistency with downstream prose.
 
-## 7. Simple Chat Preview
+## 7. Conditional Simple Chat Preview
 
-Use one compact objective-based preview:
+A preview is required **only when material user review is actually needed**.
+
+### No material Proposal or unresolved conflict
+
+If current authority already settles the project model and no material AI Proposal remains:
+
+```text
+recover requirements
+→ bind the current requirement revision
+→ status: ready_for_prd
+→ continue directly to Flow 3
+```
+
+Do not stop merely to ask the user to approve information they already supplied or previously approved.
+
+Minimal ready state:
+
+```yaml
+status: ready_for_prd
+approved_requirement_sha256: <sha256 of exact current state/requirement-register.yaml bytes>
+```
+
+`preview_approved` may be omitted (or remain `false`) in this authoritative-only path.
+
+### Material Proposal exists
+
+When the AI has selected among materially different answers, show one compact objective-based preview containing the decision under `Saran AI` and request approval/correction once.
 
 ```text
 Project Overview
@@ -203,25 +223,10 @@ Apa yang Player Lakukan
 Hasil
 Level Design
 Developer
-Saran AI        # only when material Proposals exist
+Saran AI        # only for material Proposals
 ```
 
-Show each material AI Proposal once in `Saran AI`. Do not expose SRC/REQ IDs, YAML, Golden internals, or a duplicate full PRD by default.
-
-Natural-language user approval is sufficient. After approval, promote the represented pending Proposals to approved requirement state unless the user corrected/rejected them.
-
-## 8. Revision-bound approval
-
-`intake-state.yaml` has exactly one readiness truth: `status`.
-
-Before approval:
-
-```yaml
-status: audit_in_progress
-preview_approved: false
-```
-
-After the requirement register has been updated to the exact approved model:
+After the represented Proposal is approved/corrected, update the requirement register to the exact accepted state and record:
 
 ```yaml
 status: ready_for_prd
@@ -229,24 +234,22 @@ preview_approved: true
 approved_requirement_sha256: <sha256 of exact current state/requirement-register.yaml bytes>
 ```
 
-Do **not** add redundant fields such as:
+Do not expose SRC/REQ IDs, YAML, hashes, or Golden internals to the user during normal production.
 
-```text
-ready_for_prd
-next_step
-flow
-```
+## 8. Revision binding
 
-The approval hash is mandatory. If `requirement-register.yaml` changes after approval:
+`approved_requirement_sha256` is a machine-owned freshness binding for the exact Flow 2 requirement revision consumed by Flow 3. It is not a second project version and operators should not maintain it manually.
+
+If `requirement-register.yaml` changes after readiness:
 
 ```text
 requirement bytes change
 → SHA changes
-→ prior preview approval is stale
-→ Flow 3 must not start until affected meaning is reviewed/approved again
+→ prior Flow 2 revision binding is stale
+→ affected meaning must be reconciled before Flow 3 continues
 ```
 
-This prevents blanket approval from surviving a later hidden requirement edit.
+If the changed requirement includes a material Proposal, the affected Proposal must also cross the review/approval boundary again.
 
 ## 9. Readiness
 
@@ -254,14 +257,13 @@ This prevents blanket approval from surviving a later hidden requirement edit.
 
 - current material sources are sufficiently inspected;
 - repository-retained source bytes still match recorded hashes;
-- every requirement ID and provenance link is valid;
-- every non-Proposal requirement has current authoritative grounding;
-- every accepted Proposal crossed the explicit approval boundary;
+- requirement IDs/provenance are valid;
+- normal requirements have current authoritative grounding;
+- material Proposals are explicitly approved;
 - no current blocked source/requirement remains;
 - no Proposal remains pending or rejected-active;
 - topology, lifecycle, quantities, terminology, and role ownership are coherent;
-- the Simple Chat Preview represents every material Proposal;
-- the user approved the represented model;
-- `approved_requirement_sha256` matches the exact current requirement-register bytes.
+- `approved_requirement_sha256` matches the exact current requirement-register bytes;
+- `preview_approved: true` only when approval evidence is required for an accepted material Proposal.
 
-Flow 3 consumes this approved requirement revision. It must not create new project meaning to repair an incomplete Flow 2 state.
+Flow 3 consumes this exact ready requirement revision. It must not invent new project meaning to repair incomplete Flow 2 state.
