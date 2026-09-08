@@ -8,7 +8,7 @@ PRD-Creator is repository-backed system memory. Current explicit user intent and
 |---|---|---|
 | Inspect, understand, recover, decide | Plan | current state + smallest owner; read-only unless change requested |
 | Create/revise project PRD or Voice deliverables | Production Execution | matching semantic specialist only when needed + smallest active owner |
-| Change PRD-Creator policy, workflow, renderer, validator, schema, tooling, repository mechanics | Development | `development-brief` + exact owner |
+| Change PRD-Creator policy, workflow, approved Golden/design system, renderer, validator, schema, tooling, repository mechanics | Development | `development-brief` + exact owner |
 | Fix bounded bug, regression, stale routing/docs, behavior-preserving defect | Maintenance | concrete failure or explicit target → first wrong owner |
 
 Production work does not become Development merely because tools or generated files are involved.
@@ -54,6 +54,25 @@ AGENTS.md
 → exact owner
 → GITHUB_RULES.md before material GitHub mutation
 ```
+
+### Golden / design-system evolution
+
+Changing the approved PRD visual language is Development, not ordinary project Production. Keep one canonical Golden; do not create alternate templates, visual profiles, or parallel style pipelines.
+
+Enter this path only when the user explicitly requests a redesign or actual browser evidence proves a design-system defect that cannot be solved inside the current approved component behavior.
+
+```text
+current approved Golden
+→ kits/prd-creator/document/DESIGN-CONTRACT.md
+→ exact affected component / page family / runtime owner
+→ smallest representative browser prototype
+→ user visual review when subjective design/taste changes
+→ only after approval: coherent canonical update
+→ regression proportional to design reach
+→ STOP
+```
+
+During visual exploration, keep experiments temporary and bounded; the current approved Golden remains canonical until the replacement direction is approved and sufficiently verified. Do not run the expensive cross-mode/global regression on every visual iteration. The design contract owns which post-approval proof is required for local component changes versus shared/global shell changes.
 
 ### Production Execution
 

@@ -34,6 +34,66 @@ The renderer may prepare a temporary project-specific runtime copy through `Temp
 
 The Golden example remains evidence for visual language and component behavior. Its project facts never become another project's facts.
 
+## Golden design evolution
+
+The existing approved Golden remains the only design authority until an explicitly requested redesign or a browser-proven design-system defect justifies changing it. Do not create a second template, visual profile, experimental Golden branch, or per-project design system.
+
+### Entry boundary
+
+A Golden/design-system change is justified only when one of these is true:
+
+```text
+user explicitly requests a visual/design-system change
+→ Development
+
+actual browser evidence shows the approved component/page family cannot present valid meaning acceptably
+→ Development
+```
+
+Ordinary project-specific density, wording, or content variation does not by itself justify redesign. First use the current component family, adaptive cardinality, wording/grouping, and natural wrapping behavior.
+
+### Efficient design loop
+
+Use the smallest visual surface that can settle the design decision:
+
+```text
+current approved Golden
+→ define exact visual problem + affected component/page family
+→ edit the smallest design/runtime owner needed for a temporary prototype
+→ render one representative/high-risk page
+→ user visual review when subjective style/taste changes
+→ revise the same bounded prototype if needed
+→ approval
+→ apply the coherent canonical Golden/design/renderer/test change
+→ post-approval regression proportional to design reach
+→ STOP
+```
+
+Do not regenerate or manually inspect the whole document on every visual iteration. Do not run full desktop/dark/mobile/print regression before the visual direction is accepted unless the reported defect itself only reproduces in one of those modes.
+
+Exploration output is temporary evidence only. It does not become a tracked alternate template or project authority. The current approved Golden remains canonical until the replacement direction is approved and the canonical change is sufficiently proven.
+
+### Visual approval boundary
+
+User review is required when the change alters subjective design choices such as hierarchy, spacing language, visual density, typography feel, component appearance, or interaction presentation. This approval applies to the design-system change, not to every downstream PRD that reuses the approved Golden.
+
+No extra approval is needed for a behavior-preserving technical repair when the intended approved visual result is already unambiguous and browser evidence can prove it.
+
+### Post-approval proof economy
+
+After visual approval, proof scales with the actual reach of the design change:
+
+| Change reach | Required browser/design proof before claiming the design change complete |
+|---|---|
+| one local component or one page family | affected representative page(s) + relevant short/long/dense content case; only directly affected modes |
+| shared component used by several page families | representative affected page families + directly affected responsive/theme/print modes |
+| shared typography, spacing tokens, sidebar, global CSS, shell, navigation, theme/language/runtime behavior | representative cross-family pages + desktop light/dark + mobile + print as applicable |
+| canonical Golden shell/JS/global composition change | Golden regression + representative cross-family browser matrix + repository/integration proof required by the changed contract |
+
+A mode is directly affected when the changed CSS/JS/component behavior can alter that mode. Do not run unrelated modes merely for ceremony, but do not claim a global visual change from one desktop screenshot.
+
+When the canonical Golden itself changes, update the Golden artifact, this design contract when its grammar changes, affected renderer/runtime owners, and required tests as one coherent logical change. Do not promote a new Golden while tests or docs still describe the old approved grammar.
+
 ## Fixed design system
 
 The following remain stable unless explicitly redesigned:
@@ -284,4 +344,4 @@ Design proof
 → is that meaning projected into the approved component/page grammar here?
 ```
 
-Browser-level claims require actual rendered/browser evidence. Static tests prove structure and projection behavior only.
+Browser-level claims require actual rendered/browser evidence. Static tests prove structure and projection behavior only. Golden evolution additionally follows the bounded prototype → approval → proportional post-approval proof contract above.
