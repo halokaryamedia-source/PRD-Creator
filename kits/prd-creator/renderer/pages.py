@@ -563,21 +563,21 @@ def navigation(data: RenderData) -> str:
             "",
         )
     ]
-    for index, item in enumerate(data["gameplay_flow"]):
+    for index, flow_item in enumerate(data["gameplay_flow"]):
         links.append(
             (
-                flow_page_id(item, index),
+                flow_page_id(flow_item, index),
                 f"02{chr(65 + index)}",
-                item["title"],
+                flow_item["title"],
                 bi("Gameplay Flow", "Alur Gameplay"),
             )
         )
-    for index, item in enumerate(data["global_development"]):
+    for index, global_item in enumerate(data["global_development"]):
         links.append(
             (
-                global_page_id(item),
+                global_page_id(global_item),
                 f"03{chr(65 + index)}",
-                _golden_global_title(item),
+                _golden_global_title(global_item),
                 bi("Development", "Development"),
             )
         )
