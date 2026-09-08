@@ -83,11 +83,7 @@ def status_payload(project: Path) -> dict[str, Any]:
             voice = _not_present()
 
     first_issue = next(
-        (
-            stage["first_issue"]
-            for stage in (prd, handoff, voice)
-            if isinstance(stage.get("first_issue"), dict)
-        ),
+        (stage["first_issue"] for stage in (prd, handoff, voice) if isinstance(stage.get("first_issue"), dict)),
         None,
     )
     blocked = first_issue is not None or any(
