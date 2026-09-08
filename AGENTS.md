@@ -36,7 +36,7 @@ Read `GITHUB_RULES.md` only when GitHub execution, mutation, history, CI, promot
 AGENTS.md
 → concrete failure or explicit current target
 → first wrong owner
-→ exact semantic / implementation owner
+→ exact owner
 → GITHUB_RULES.md before material GitHub mutation
 → smallest falsifiable proof
 → STOP
@@ -51,7 +51,7 @@ AGENTS.md
 → CONTEXT.md
 → docs/knowledge/next-action.md
 → development-brief
-→ exact semantic / implementation owner
+→ exact owner
 → GITHUB_RULES.md before material GitHub mutation
 ```
 
