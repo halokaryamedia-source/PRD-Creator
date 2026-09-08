@@ -16,8 +16,9 @@ class RepositoryVerifyContracts(unittest.TestCase):
             note.write_text("Owner: `kits/prd-creator/template/runtime-template.html`\n", encoding="utf-8")
 
             errors: list[str] = []
-            with patch.object(verify_repository, "ROOT", root), patch.object(
-                verify_repository, "CURRENT_PATH_REFERENCE_ROOTS", [note]
+            with (
+                patch.object(verify_repository, "ROOT", root),
+                patch.object(verify_repository, "CURRENT_PATH_REFERENCE_ROOTS", [note]),
             ):
                 verify_repository.check_explicit_repository_paths(errors)
 
@@ -34,14 +35,14 @@ class RepositoryVerifyContracts(unittest.TestCase):
             existing.write_text("ok\n", encoding="utf-8")
             note = root / "note.md"
             note.write_text(
-                "Existing: `kits/prd-creator/AGENTS.md`\n"
-                "Illustrative: `tools/<name>.py`\n",
+                "Existing: `kits/prd-creator/AGENTS.md`\nIllustrative: `tools/<name>.py`\n",
                 encoding="utf-8",
             )
 
             errors: list[str] = []
-            with patch.object(verify_repository, "ROOT", root), patch.object(
-                verify_repository, "CURRENT_PATH_REFERENCE_ROOTS", [note]
+            with (
+                patch.object(verify_repository, "ROOT", root),
+                patch.object(verify_repository, "CURRENT_PATH_REFERENCE_ROOTS", [note]),
             ):
                 verify_repository.check_explicit_repository_paths(errors)
 
@@ -60,8 +61,9 @@ class RepositoryVerifyContracts(unittest.TestCase):
             active.write_text("ok\n", encoding="utf-8")
 
             errors: list[str] = []
-            with patch.object(verify_repository, "ROOT", root), patch.object(
-                verify_repository, "CURRENT_PATH_REFERENCE_ROOTS", [current]
+            with (
+                patch.object(verify_repository, "ROOT", root),
+                patch.object(verify_repository, "CURRENT_PATH_REFERENCE_ROOTS", [current]),
             ):
                 verify_repository.check_explicit_repository_paths(errors)
 
