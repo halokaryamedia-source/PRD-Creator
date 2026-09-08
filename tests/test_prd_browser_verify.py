@@ -79,11 +79,7 @@ class PrdBrowserVerificationContracts(unittest.TestCase):
                 f"{item['requested_width']}x{item['requested_height']}:{item['screenshot_sha256']}"
                 for item in result["viewports"]
             )
-            print(
-                "BROWSER VERIFY PASSED "
-                f"viewports={viewport_proof} "
-                f"primary_bytes={result['screenshot_bytes']}"
-            )
+            print(f"BROWSER VERIFY PASSED viewports={viewport_proof} primary_bytes={result['screenshot_bytes']}")
 
 
 if __name__ == "__main__":
