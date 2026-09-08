@@ -387,12 +387,12 @@ class VoiceProductionContracts(unittest.TestCase):
         self.assertEqual(validated.returncode, 1)
         self.assertIn("VOICE_OWNER_DUPLICATE", validated.stdout)
 
-    def test_validator_rejects_voice_without_initial_performance_tag(self) -> None:
+    def test_validator_accepts_natural_baseline_without_initial_performance_tag(self) -> None:
         script = SCRIPT.replace("[calm]\nBegin the trial.", "Begin the trial.", 1)
         project = self.make_project(script_text=script)
         validated = run_cli(VALIDATOR, project)
-        self.assertEqual(validated.returncode, 1)
-        self.assertIn("VOICE_PERFORMANCE_DIRECTION_MISSING", validated.stdout)
+        self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
+        self.assertIn("VOICE VALIDATION PASS", validated.stdout)
 
     def test_voice_delivery_ready_requires_current_acceptance(self) -> None:
         project = self.make_project(

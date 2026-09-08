@@ -1,6 +1,6 @@
 # PRD Creator
 
-**Version:** 3.1.0
+**Version:** 3.1.1
 
 PRD Creator turns project evidence/discussion into one revision-bound project model, canonical PRD, required Production Assets, and optional Voice Production in one versioned delivery.
 
@@ -16,6 +16,8 @@ NO BUMP project-only revision, clarification, CI/repository hygiene, test-only w
 Package 3.0 is MAJOR because current machine formats intentionally reject older readiness aliases, title-based moment ordering, implicit result modeling, redundant handoff path state, and acceptance records that do not bind all current canonical bytes.
 
 Package 3.1 is additive and backward-compatible: it keeps the same Asset/Voice machine formats while adding current ElevenLabs production routing for **Text to Speech vs Text to Dialogue** and a dedicated non-dialogue **Sound Effects** execution owner.
+
+Package 3.1.1 is a backward-compatible Voice naturalness correction: it removes the repository-only mandatory opening Audio Tag rule and makes **voice fit, natural spoken wording, thought-group prosody, and relevant generation context** the primary path to non-stiff narration/dialogue. Existing `VO-...`/`AST-...` formats and lifecycle state remain valid.
 
 ## Product flow
 
@@ -36,7 +38,7 @@ sources
 → minimal handoff revision state
 → Flow 5 Voice requirements when justified
 → Flow 6 Voice production
-   └─ independent TTS | same-Moment dependent Text to Dialogue | current Studio when useful
+   └─ natural spoken wording → independent/contextual TTS | same-Moment dependent Text to Dialogue | current Studio when useful
 → exact-byte Flow 7 acceptance
 → one current project HTML
 ```
@@ -96,6 +98,16 @@ kits/prd-creator/
 │  ├─ CONTRACT.md
 │  └─ SOUND-EFFECTS.md
 ├─ voice/
+│  ├─ EXTRACTION.md
+│  ├─ PERFORMANCE-WRITING.md
+│  ├─ VALIDATION.md
+│  └─ references/elevenlabs/
+│     ├─ v3-naturalness.md
+│     ├─ v3-performance-writing.md
+│     ├─ v3-duration-planning.md
+│     ├─ v3-dialogue-generation.md
+│     ├─ v3-production-reference.md
+│     └─ source-register.md
 ├─ shared/
 │  ├─ intake.py
 │  ├─ state.py
@@ -167,10 +179,29 @@ Do not create parallel schemas or generic registries for these owners.
 
 - non-dialogue `AUDIO` keeps its canonical `AST-...` requirement and derives SFX prompts/settings only during production;
 - independent speech uses Eleven v3 TTS by default;
+- connected same-speaker narration may use `previous_text`/`next_text` or neighboring request context to preserve prosody while keeping canonical Voice IDs separate;
 - conversationally dependent multi-speaker Voice IDs in the same approved Moment may be generated together through Text to Dialogue while retaining every original `VO-...` identity;
 - current ElevenCreative Studio may be used for long-form/editorial production; deprecated Voiceover Studio controls are not current policy;
+- Audio Tags are optional: zero-tag Voice payloads are mechanically valid and preferred when voice + wording + context already imply the delivery;
+- Stability remains `Natural` by default; supported Speed stays at `1.0`/unchanged by default and is secondary to correct spoken wording;
 - generated audio/timestamps prove only the actual take reviewed;
 - candidate variance should be checked before rewriting otherwise-correct prompts.
+
+## Naturalness model
+
+SoundMaker uses this order for stiff/robotic Voice prevention:
+
+```text
+voice fit
+→ speakable wording instead of PRD prose
+→ natural thought groups / sentence rhythm
+→ relevant continuity context
+→ punctuation / selective emphasis
+→ Audio Tags only when needed
+→ Stability / supported Speed only when needed
+```
+
+Naturalness is register-specific. Do not inject filler, slang, fragments, hesitations, or casualness into a narrator/tutorial/radio speaker unless that behavior fits the approved speaker and moment.
 
 ## Model behavior
 
@@ -179,6 +210,7 @@ The package is model-agnostic and expects capable reasoning without forcing unne
 - Start from the smallest authoritative owner/source.
 - Expand context only for material dependencies.
 - Let the model choose reversible wording/grouping/decomposition craft.
+- Preserve project meaning, not accidental PRD sentence syntax, when converting requirements into speech.
 - Keep product/design/runtime choices as explicit Proposals until approved.
 - Skip the preview checkpoint when current authority already settles all material choices.
 - Use strict machine contracts to fail early rather than guess compatibility.

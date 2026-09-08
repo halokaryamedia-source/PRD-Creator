@@ -17,6 +17,36 @@ A repository tag/GitHub Release is created only when an approved feature/capabil
 
 The latest published repository release remains `v0.1` until a later approved capability release is promoted/published.
 
+## Package 3.1.1 — 2026-09-08
+
+Backward-compatible Voice naturalness correction focused on reducing stiff, document-like, or over-directed Eleven v3 output without changing Voice IDs, lifecycle state, accepted PRD meaning, or the Golden presentation.
+
+### Natural spoken-language craft
+
+- add a dedicated `v3-naturalness.md` craft reference for speechification, register-aware dialogue/narration, thought-group prosody, natural sentence variation, and stiffness diagnosis;
+- make Flow 6 explicitly preserve approved communication meaning rather than accidental PRD sentence syntax, allowing context-aware compression, contractions, sentence regrouping, and listener-first wording when appropriate;
+- add a text-only Naturalness gate so a prepared line must sound plausibly speakable for its Speaker/Trigger/register before generation is considered ready;
+- clarify that naturalness does not mean automatic casualness, filler words, slang, fragments, or manufactured hesitation.
+
+### Optional direction instead of tag boilerplate
+
+- retire the repository-only rule that every `performance` block must begin with an Audio Tag;
+- make zero-tag Eleven v3 prompts mechanically valid when voice fit, wording, punctuation, and context already imply the desired delivery;
+- treat Audio Tags as local interventions for a concrete audible state/reaction rather than mandatory prompt decoration;
+- reject over-direction conceptually through naturalness review instead of forcing `[calm]`, `[clear]`, `[natural]`, `[conversational]`, or synonymous tag stacks onto every line.
+
+### Narration and generation continuity
+
+- add current TTS `previous_text` / `next_text` and neighboring `previous_request_ids` / `next_request_ids` guidance for connected same-speaker narration that must be generated in separate clips;
+- preserve canonical `VO-...` wording while using generation-only context to improve prosodic continuity, especially when regenerating a middle segment;
+- route short connected lines toward relevant context rather than audible filler, and retain Text to Dialogue for response-dependent multi-speaker continuity.
+
+### Voice foundation and settings
+
+- deepen Voice Design guidance around language/dialect, timbre/persona, pacing, delivery, and preview-text alignment so the baseline actor is closer to the intended performance before per-line direction;
+- keep Stability at `Natural` by default and make Speed surface-aware with `1.0`/unchanged as the natural baseline when exposed;
+- prioritize voice fit → spoken wording → thought groups → continuity → punctuation/tags before attempting to repair stiffness with Stability or Speed.
+
 ## Package 3.1.0 — 2026-09-08
 
 Additive ElevenLabs production-quality update. Existing Asset/Voice machine schemas, stable IDs, accepted Golden presentation, and Flow 2–7 lifecycle remain backward-compatible.

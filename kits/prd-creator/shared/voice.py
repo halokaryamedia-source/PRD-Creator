@@ -10,7 +10,6 @@ ENTRY_RE = re.compile(r"^###\s+([A-Za-z0-9][A-Za-z0-9-]*)\s+[—-]\s+(.+?)\s*$")
 VOICE_ID_RE = re.compile(r"^VO-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
 MOMENT_ID_RE = re.compile(r"^MOM-[A-Z0-9]+(?:-[A-Z0-9]+)*$")
 PLACEHOLDER_RE = re.compile(r"\b(?:TBD|TODO|FIXME)\b|\[OPEN\]", re.I)
-PERFORMANCE_TAG_LINE_RE = re.compile(r"^(?:\[[^\[\]\r\n]+\]\s*)+$")
 SECTION_PREFIX_RE = re.compile(r"^\s*\d+\.\s*")
 OWNER_RE = re.compile(r"^Owner ID:\s*(\S+)\s*$", re.I)
 REQUIREMENT_LIST_FIELDS = {"Must communicate", "Must not add/repeat", "Source refs"}
@@ -74,11 +73,6 @@ class VoiceProduction:
 
 def _error(path: Path, line: int | None, code: str, owner: str, message: str, *, field: str = "") -> SourceParseError:
     return SourceParseError(code, owner, message, path=path.as_posix(), line=line, field=field)
-
-
-def has_initial_performance_tag(performance: str) -> bool:
-    first = next((line.strip() for line in performance.splitlines() if line.strip()), "")
-    return bool(first and PERFORMANCE_TAG_LINE_RE.fullmatch(first))
 
 
 def plain_section_title(value: str) -> str:
@@ -610,15 +604,6 @@ def parse_production(path: Path) -> VoiceProduction:
                     "flow6.voice_production",
                     f"{voice_id} is missing {', '.join(missing)}",
                     field=missing[0],
-                )
-            if not has_initial_performance_tag(performance):
-                raise _error(
-                    path,
-                    entry_line,
-                    "VOICE_PERFORMANCE_DIRECTION_MISSING",
-                    "flow6.voice_production",
-                    f"{voice_id} performance must begin with at least one initial [performance direction] tag",
-                    field="Performance Script",
                 )
             section_entries[current_section].append(
                 VoiceEntry(

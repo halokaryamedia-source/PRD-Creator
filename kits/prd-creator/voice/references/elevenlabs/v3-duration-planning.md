@@ -12,7 +12,7 @@ Resolve timing before final wording:
 
 Standard Eleven v3 generation does not guarantee exact seconds from text alone. The former Voiceover Studio exposed a legacy Fixed Duration workflow, but that product was sunset on 2026-05-15; do not depend on that legacy control as current production policy.
 
-For current production, plan the script near the natural target first, generate/measure the actual take, then use current ElevenCreative Studio/timeline controls only when the live surface genuinely supports the needed adjustment.
+For current production, plan the script near the natural target first, generate/measure the actual take, then use current supported surface controls only when they genuinely help without degrading naturalness.
 
 ## 2. Evidence hierarchy
 
@@ -183,7 +183,7 @@ write near natural word budget
 → generate
 → measure actual take / use timestamps when available
 → revise wording first if materially off target
-→ use current Studio/timeline controls only when they are appropriate and verified on the live surface
+→ use current supported speed/timeline controls only when appropriate
 ```
 
 Do not force a line that naturally needs much longer into a short slot. Rewrite the communication load first when possible.
@@ -192,14 +192,17 @@ Generated timestamps are evidence for that take, not upstream timing authority.
 
 ## 10. Speed caveat
 
-Current v3-specific Text to Speech product guidance states standard Eleven v3 TTS does **not** expose Speed. Current ElevenCreative Studio may expose a production speed control.
+Current official ElevenLabs guidance is surface-dependent and has changed over time. Current consolidated Best Practices describes a Text to Speech/API Speed setting with `1.0` as unchanged, while older/surface-specific v3 pages may differ.
 
-Rules:
+Repository rules:
 
-- do not make Speed a required standard-v3 duration mechanism;
-- word budget + spoken architecture remain primary;
-- use live Studio controls only within that surface when needed;
-- extreme speed adjustment is not a substitute for a correctly sized script.
+- use the **active current surface/API** as authority for whether Speed is available;
+- when exposed, keep `1.0` / unchanged as the natural baseline;
+- word budget + natural spoken architecture remain primary;
+- use only small bounded Speed changes after the wording already fits the intended duration reasonably well;
+- current guidance warns extreme Speed values can reduce quality;
+- do not make Speed a required mechanism or invent it on a surface that does not expose it;
+- Speed is never a substitute for correctly sized, naturally phrased speech.
 
 ## 11. Evidence labels
 

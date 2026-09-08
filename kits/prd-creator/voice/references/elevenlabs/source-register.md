@@ -24,16 +24,20 @@ Examples:
 
 - generic SSML pause guidance does not override the v3-specific rule that Eleven v3 does not support SSML `<break>`;
 - generic warnings about square brackets do not invalidate documented v3 Audio Tags;
-- generic Speed guidance does not override current v3-specific Text to Speech guidance that standard v3 TTS has no Speed setting;
-- product overview statements do not override a stricter current API endpoint request limit for that endpoint.
+- when Speed guidance differs across historical/current product pages, use the active current surface/API and current consolidated Best Practices; SoundMaker keeps Speed optional/surface-aware with `1.0` as the natural baseline when exposed;
+- product overview statements do not override a stricter current API endpoint request limit for that endpoint;
+- a repository heuristic such as mandatory opening tags must yield when current official guidance and quality reasoning support a less directive natural baseline.
 
 ## A — Current official sources
 
 | Source | Use |
 |---|---|
-| `https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices` | v3 voice selection, Stability, punctuation/CAPS, Audio Tags, Enhance behavior, v3 pause rule, native IPA, multi-speaker examples |
-| `https://elevenlabs.io/docs/eleven-creative/playground/text-to-speech` | current TTS UI/model behavior, standard v3 Speed availability, Stability behavior, output/settings context |
-| `https://elevenlabs.io/docs/overview/capabilities/text-to-speech` | nondeterminism, same-content regeneration behavior, seed/context mechanisms, large-text guidance |
+| `https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices` | v3 voice selection, Stability, Speed baseline/range, natural speech/pacing, punctuation/CAPS, Audio Tags, Enhance, v3 pause rule, native IPA, multi-speaker examples |
+| `https://elevenlabs.io/docs/eleven-creative/playground/text-to-speech` | current TTS UI/model behavior and active surface settings |
+| `https://elevenlabs.io/docs/overview/capabilities/text-to-speech` | nondeterminism, same-content regeneration, seed, large-text segmentation, previous/next context guidance |
+| `https://elevenlabs.io/docs/api-reference/text-to-speech/convert` | seed, text normalization, `previous_text`/`next_text`, `previous_request_ids`/`next_request_ids`, continuity precedence/limits |
+| `https://elevenlabs.io/docs/api-reference/text-to-speech/convert-with-timestamps` | TTS timing plus the same request-context mechanisms |
+| `https://elevenlabs.io/docs/eleven-creative/voices/voice-design/` | current Voice Design prompt structure, language/dialect, timbre/persona/pacing, preview-text naturalness guidance |
 | `https://elevenlabs.io/docs/overview/capabilities/text-to-dialogue` | Text to Dialogue purpose, per-turn voice/text behavior, candidate generation guidance, request-size guidance |
 | `https://elevenlabs.io/docs/eleven-api/guides/cookbooks/text-to-dialogue` | current Dialogue API generation pattern and reliable request-size guidance |
 | `https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert` | Dialogue endpoint settings, unique-voice/request contract, language/normalization/dictionary/seed controls |
@@ -42,8 +46,6 @@ Examples:
 | `https://elevenlabs.io/docs/help-center/troubleshooting/why-does-my-voice-start-whispering-change-accent-change-tone-or-break` | Stability/voice drift diagnosis |
 | `https://elevenlabs.io/docs/help-center/troubleshooting/why-does-my-voice-change-accent-or-language` | voice/language/accent compatibility |
 | `https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries` | pronunciation dictionary behavior |
-| `https://elevenlabs.io/docs/api-reference/text-to-speech/convert` | seed, text normalization, previous/next context |
-| `https://elevenlabs.io/docs/api-reference/text-to-speech/convert-with-timestamps` | timing + request-context support |
 | `https://elevenlabs.io/docs/eleven-creative/products/studio` | current ElevenCreative Studio generation history, paragraph/selection regeneration, locking, timeline, SFX/music integration |
 | `https://elevenlabs.io/docs/help-center/product/core-capabilities/text-to-speech/why-are-numbers-dates-symbols-and-acronyms-not-properly-pronounced-or-spoken-in-the-correct-language` | explicit spoken-form normalization guidance |
 
@@ -68,6 +70,8 @@ Old v3 Alpha-era prompting pages may contain superseded guidance such as minimum
 
 The former Voiceover Studio product was sunset on **2026-05-15**. Its legacy Fixed Duration behavior may explain historical projects but must not be treated as the current ElevenCreative Studio contract.
 
+Do not preserve old repository heuristics merely because they were previously validated mechanically. A mechanical rule such as mandatory initial Audio Tags is removable when it conflicts with current naturalness goals and is not an ElevenLabs requirement.
+
 ## C — Creator/community material
 
 Creator sources may suggest experiments but cannot establish product truth.
@@ -89,7 +93,8 @@ project / Voice ID or same-Moment Dialogue group
 exact generated prompt(s)
 actual ElevenLabs voice ID(s)
 Eleven v3 surface / endpoint
-visible settings / Stability
+visible settings / Stability / Speed when used
+continuity context or neighboring request IDs when materially used
 seed when materially used
 actual duration / generated timestamps when relevant
 approved pronunciation
@@ -101,9 +106,17 @@ Do not promote one project's behavior into a universal v3 rule.
 
 ## Current product caveats
 
+### Naturalness / Audio Tags
+
+Current v3 guidance makes voice selection, natural speech/text structure, emotional context, punctuation, and Audio Tags all meaningful controls. Audio Tags are not a syntax requirement. SoundMaker therefore uses a natural baseline first and adds tags only when they solve a concrete audible need.
+
 ### Enhance
 
-Enhance can add tags, capitalization, punctuation, and performance cues. SoundMaker-directed prompts keep Enhance **OFF by default**; any Enhance rewrite becomes a new draft requiring review.
+Enhance can add tags, capitalization, punctuation, and performance cues. SoundMaker naturalness/performance-reviewed prompts keep Enhance **OFF by default**; any Enhance rewrite becomes a new draft requiring review.
+
+### Text to Speech continuity
+
+For connected same-speaker generations, use current `previous_text`/`next_text` or neighboring request-ID context when it materially improves prosody. Preserve canonical VO wording; do not add audible filler merely to provide context.
 
 ### Text to Speech vs Text to Dialogue
 
@@ -115,7 +128,7 @@ Use the current Studio for long-form/editorial timeline work when useful. Do not
 
 ### PVC / v3
 
-Treat current compatibility warnings as a voice-fit risk requiring actual output evidence; do not silently approve or silently switch model families.
+Treat current compatibility warnings as a voice-fit risk requiring current verification and actual output evidence; do not silently approve or silently switch model families.
 
 ### Language controls
 
