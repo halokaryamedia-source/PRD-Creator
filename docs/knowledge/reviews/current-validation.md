@@ -10,7 +10,9 @@ Working branch: `develop`.
 Verified integration baseline: `Local`.  
 Stable branch: `main`.
 
-Package 3 remains the current major machine-contract boundary. The current `develop` candidate simplifies Flow 2 production behavior without changing PRD visual grammar, render-data schema, delivery format, or Voice semantics.
+PRD Creator package candidate is **v3.0.0** on `develop`. Repository release versioning remains separate from package versioning.
+
+The current candidate simplifies Flow 2 production behavior without changing PRD visual grammar, render-data schema, delivery format, or Voice semantics.
 
 ## Current production chain
 
@@ -30,6 +32,15 @@ project discussion + authoritative source
 ```
 
 Generated output never outranks canonical `state/` or `work/` sources.
+
+Derived delivery remains:
+
+```text
+output/README.md
+output/v<document.version>/prd.html
+output/v<document.version>/context.md
+output/v<document.version>/index.json
+```
 
 ## Efficiency simplification implemented
 
