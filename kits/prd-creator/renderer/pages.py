@@ -1,6 +1,18 @@
 from __future__ import annotations
 
-from typing import Any, Literal, NotRequired, TypedDict, cast
+from typing import Any, Literal
+
+from shared.render_schema import (
+    DeveloperData,
+    DevelopmentRequirementGroupData,
+    GameplayFlowData,
+    GlobalDevelopmentData,
+    LevelRequirementGroupData,
+    PackageData,
+    RenderData,
+    TermData,
+    TitleDescriptionData,
+)
 
 from .core import (
     bi,
@@ -37,17 +49,6 @@ GOLDEN_GLOBAL_PAGE_IDS = {
     "gameplay-development": "phase-development",
 }
 
-
-class PackageRenderData(TypedDict):
-    id: str
-    package_label: Any
-    title: Any
-    gameplay: dict[str, Any]
-    level_design: dict[str, Any]
-    developer: dict[str, Any]
-    terms: NotRequired[list[dict[str, Any]]]
-
-
 PackageTab = Literal["requirement", "level", "developer"]
 
 
@@ -59,7 +60,7 @@ def heading(value: Any) -> str:
     return f'<h3 class="package-section-heading">{i18n(value)}</h3>'
 
 
-def overview(data: dict[str, Any]) -> str:
+def overview(data: RenderData) -> str:
     document = data["document"]
     overview_data = data["overview"]
     brand = document.get("brand") or document["title"]
@@ -103,7 +104,7 @@ def overview(data: dict[str, Any]) -> str:
     )
 
 
-def _summary_note(items: list[dict[str, Any]]) -> str:
+def _summary_note(items: list[TitleDescriptionData]) -> str:
     body = "".join(f"<li>{i18n(join_text(item['title'], item['description'], sep=' — '))}</li>" for item in items)
     return (
         '<div class="summary-note">'
@@ -112,7 +113,7 @@ def _summary_note(items: list[dict[str, Any]]) -> str:
     )
 
 
-def _story_flow(item: dict[str, Any]) -> str:
+def _story_flow(item: GameplayFlowData) -> str:
     body = ['<div class="story-flow">']
     for beat in item["beats"]:
         body.append(f"<h3>{i18n(beat['title'])}</h3>")
@@ -130,15 +131,15 @@ def _story_flow(item: dict[str, Any]) -> str:
     return "".join(body)
 
 
-def flow_page_id(item: dict[str, Any], index: int) -> str:
+def flow_page_id(item: GameplayFlowData, index: int) -> str:
     return "flow-start" if index == 0 else f"flow-{item['id']}"
 
 
-def flow_phase(item: dict[str, Any], index: int) -> str:
+def flow_phase(item: GameplayFlowData, index: int) -> str:
     return "dev-flow" if index == 0 else f"dev-{item['id']}"
 
 
-def flow_pages(data: dict[str, Any]) -> list[str]:
+def flow_pages(data: RenderData) -> list[str]:
     pages: list[str] = []
     brand = data["document"].get("brand") or data["document"]["title"]
     packages = {package["id"]: package for package in data["packages"]}
@@ -176,15 +177,15 @@ def flow_pages(data: dict[str, Any]) -> list[str]:
     return pages
 
 
-def _golden_global_title(item: dict[str, Any]) -> Any:
+def _golden_global_title(item: GlobalDevelopmentData) -> Any:
     return GOLDEN_GLOBAL_TITLES[item["id"]]
 
 
-def global_page_id(item: dict[str, Any]) -> str:
+def global_page_id(item: GlobalDevelopmentData) -> str:
     return GOLDEN_GLOBAL_PAGE_IDS[item["id"]]
 
 
-def _global_tabs(items: list[dict[str, Any]], active_id: str) -> str:
+def _global_tabs(items: list[GlobalDevelopmentData], active_id: str) -> str:
     links = []
     for index, item in enumerate(items, 1):
         target = global_page_id(item)
@@ -204,7 +205,7 @@ def _global_tabs(items: list[dict[str, Any]], active_id: str) -> str:
     )
 
 
-def _development_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
+def _development_requirement_rows(groups: list[DevelopmentRequirementGroupData]) -> list[str]:
     rows: list[str] = []
     for group_index, group in enumerate(groups, 1):
         rows.append(
@@ -220,8 +221,8 @@ def _development_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
     return rows
 
 
-def _dedupe_terms(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    output: list[dict[str, Any]] = []
+def _dedupe_terms(items: list[TermData]) -> list[TermData]:
+    output: list[TermData] = []
     seen: set[str] = set()
     for item in items:
         key = str(item["key"]).casefold()
@@ -232,14 +233,14 @@ def _dedupe_terms(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return output
 
 
-def _global_terms(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    output: list[dict[str, Any]] = []
+def _global_terms(items: list[GlobalDevelopmentData]) -> list[TermData]:
+    output: list[TermData] = []
     for item in items:
         output.extend(item.get("terms", []))
     return _dedupe_terms(output)
 
 
-def global_pages(data: dict[str, Any]) -> list[str]:
+def global_pages(data: RenderData) -> list[str]:
     pages: list[str] = []
     items = data["global_development"]
     brand = data["document"].get("brand") or data["document"]["title"]
@@ -289,7 +290,7 @@ def global_pages(data: dict[str, Any]) -> list[str]:
     return pages
 
 
-def _gameplay_info_rows(package: PackageRenderData) -> list[str]:
+def _gameplay_info_rows(package: PackageData) -> list[str]:
     gameplay = package["gameplay"]
     result_model = gameplay["result_model"]
     result_label = (
@@ -308,7 +309,7 @@ def _gameplay_info_rows(package: PackageRenderData) -> list[str]:
     return [f"<tr><td><b>{i18n(label)}</b></td><td>{cell_html(value)}</td></tr>" for label, value in pairs]
 
 
-def _level_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
+def _level_requirement_rows(groups: list[LevelRequirementGroupData]) -> list[str]:
     rows: list[str] = []
     number = 1
     multiple_groups = len(groups) > 1
@@ -343,12 +344,12 @@ def _level_requirement_rows(groups: list[dict[str, Any]]) -> list[str]:
     return rows
 
 
-def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
+def _developer_requirement_rows(developer: DeveloperData) -> list[str]:
     rows = _development_requirement_rows(developer["requirements"])
     group_number = len(developer["requirements"]) + 1
 
     scoring = developer.get("scoring")
-    if isinstance(scoring, dict):
+    if scoring is not None:
         rows.append(
             f'<tr class="quarry-group-row"><td><b>{group_number}</b></td>'
             f'<td colspan="3"><b>{i18n(bi("Scoring Setup", "Setup Scoring"))}</b></td></tr>'
@@ -360,7 +361,9 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
         )
         group_number += 1
     else:
-        completion = developer["completion_data"]
+        completion = developer.get("completion_data")
+        if completion is None:
+            raise ValueError("validated completion-only developer is missing completion_data")
         rows.append(
             f'<tr class="quarry-group-row"><td><b>{group_number}</b></td>'
             f'<td colspan="3"><b>{i18n(bi("Completion and Data", "Completion dan Data"))}</b></td></tr>'
@@ -383,9 +386,9 @@ def _developer_requirement_rows(developer: dict[str, Any]) -> list[str]:
     return rows
 
 
-def package_pages(data: dict[str, Any]) -> list[str]:
+def package_pages(data: RenderData) -> list[str]:
     pages: list[str] = []
-    packages = cast(list[PackageRenderData], data["packages"])
+    packages = data["packages"]
     brand = data["document"].get("brand") or data["document"]["title"]
     for package_index, package in enumerate(packages, 1):
         package_id = package["id"]
@@ -520,9 +523,9 @@ def package_pages(data: dict[str, Any]) -> list[str]:
     return pages
 
 
-def glossary(data: dict[str, Any]) -> dict[str, dict[str, str]]:
+def glossary(data: RenderData) -> dict[str, dict[str, str]]:
     glossary_data: dict[str, dict[str, str]] = {}
-    terms_by_role: dict[str, list[dict[str, Any]]] = {
+    terms_by_role: dict[str, list[TermData]] = {
         "gameplay": [],
         "level_design": [],
         "developer": [],
@@ -537,7 +540,7 @@ def glossary(data: dict[str, Any]) -> dict[str, dict[str, str]]:
             for role in roles:
                 terms_by_role[role].append(term)
 
-    for role, items in terms_by_role.items():
+    for items in terms_by_role.values():
         for term in _dedupe_terms(items):
             definition = txt(term["definition"])
             for language in ("en", "id"):
@@ -551,7 +554,7 @@ def glossary(data: dict[str, Any]) -> dict[str, dict[str, str]]:
     return glossary_data
 
 
-def navigation(data: dict[str, Any]) -> str:
+def navigation(data: RenderData) -> str:
     links: list[tuple[str, str, Any, Any]] = [
         (
             "summary",
