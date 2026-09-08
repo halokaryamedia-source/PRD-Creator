@@ -91,7 +91,7 @@ def render(template: Path, render_data: Path, output: Path) -> None:
 
 
 def main() -> int:
-    default_template = KIT_ROOT / "template" / "runtime-template.html"
+    default_template = KIT_ROOT / "template" / "golden-reference.html"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("render_data", type=Path)
     parser.add_argument("output", type=Path)

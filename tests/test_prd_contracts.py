@@ -20,7 +20,6 @@ ROOT = Path(__file__).resolve().parents[1]
 RENDERER = ROOT / "kits" / "prd-creator" / "renderer" / "render.py"
 DELIVERY = ROOT / "kits" / "prd-creator" / "renderer" / "delivery.py"
 VALIDATOR = ROOT / "kits" / "prd-creator" / "validator" / "validate.py"
-RUNTIME_TEMPLATE = ROOT / "kits" / "prd-creator" / "template" / "runtime-template.html"
 GOLDEN_TEMPLATE = ROOT / "kits" / "prd-creator" / "template" / "golden-reference.html"
 
 BILINGUAL_SCALARS = {
@@ -121,11 +120,16 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertEqual(result["status"], "pass")
         self.assertEqual(len(result["expected_pages"]), 10)
 
-    def test_runtime_template_is_the_exact_golden_artifact(self) -> None:
-        self.assertEqual(RUNTIME_TEMPLATE.read_bytes(), GOLDEN_TEMPLATE.read_bytes())
-        template = RUNTIME_TEMPLATE.read_text(encoding="utf-8")
-        self.assertIn('name="golden-sample-id" content="aftershock"', template)
-        self.assertNotIn("__PRD_STORAGE_PREFIX__", template)
+    def test_default_render_is_byte_identical_to_explicit_canonical_golden(self) -> None:
+        default_project = self.make_project()
+        explicit_project = self.make_project()
+        default_render = self.render(default_project)
+        explicit_render = self.render(explicit_project, GOLDEN_TEMPLATE)
+        self.assertEqual(default_render.returncode, 0, default_render.stderr or default_render.stdout)
+        self.assertEqual(explicit_render.returncode, 0, explicit_render.stderr or explicit_render.stdout)
+        default_html = default_project / "output" / "v1.0.0" / "prd.html"
+        explicit_html = explicit_project / "output" / "v1.0.0" / "prd.html"
+        self.assertEqual(default_html.read_bytes(), explicit_html.read_bytes())
 
     def test_renderer_rejects_missing_mandatory_functions(self) -> None:
         variants = {
@@ -259,7 +263,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         self.assertNotIn(payload, html)
         self.assertIn(r"\u003c/script\u003e", html)
 
-    def test_default_runtime_strips_sample_identity_but_keeps_golden_runtime(self) -> None:
+    def test_default_golden_strips_sample_identity_but_keeps_golden_runtime(self) -> None:
         project = self.make_project()
         self.assertEqual(self.render(project).returncode, 0)
         html = (project / "output" / "v1.0.0" / "prd.html").read_text(encoding="utf-8")
@@ -271,7 +275,7 @@ class ProjectDocumentContracts(unittest.TestCase):
         project = self.make_project()
         broken = project / "broken-template.html"
         broken.write_text(
-            RUNTIME_TEMPLATE.read_text(encoding="utf-8").replace(
+            GOLDEN_TEMPLATE.read_text(encoding="utf-8").replace(
                 '<nav class="sidebar-nav">',
                 '<nav class="sidebar-nav-broken">',
                 1,

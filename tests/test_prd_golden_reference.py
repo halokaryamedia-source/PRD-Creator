@@ -8,7 +8,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "kits" / "prd-creator"
 GOLDEN = KIT / "template" / "golden-reference.html"
-RUNTIME = KIT / "template" / "runtime-template.html"
 APPROVED_GIT_BLOB = "2050b965768489feda98373c2920bbee8c7093b3"
 PACKAGES = ("docks", "quarry", "ascent", "beacon", "relay", "ending")
 GLOBAL_PAGES = ("development-overview", "shared-systems", "shared-data-reset", "phase-development")
@@ -156,11 +155,9 @@ class GoldenReferenceArtifactTests(unittest.TestCase):
         self.assertEqual(html.count('class="outcome quarry-note-grid"'), 16)
         self.assertEqual(html.count('class="terms-used-collapsible"'), 17)
 
-    def test_runtime_template_is_byte_identical_to_canonical_golden(self) -> None:
+    def test_canonical_golden_is_exact_approved_artifact(self) -> None:
         golden = GOLDEN.read_bytes()
-        runtime = RUNTIME.read_bytes()
-        self.assertEqual(golden, runtime)
-        self.assertNotIn(b"__PRD_STORAGE_PREFIX__", runtime)
+        self.assertNotIn(b"__PRD_STORAGE_PREFIX__", golden)
 
         digest = hashlib.sha1(f"blob {len(golden)}\0".encode("ascii") + golden).hexdigest()
         self.assertEqual(digest, APPROVED_GIT_BLOB)

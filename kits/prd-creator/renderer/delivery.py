@@ -267,7 +267,7 @@ def build_readme(output_root: Path, title: str, version: str, status: str) -> st
 
 def _default_html_renderer(template: Path | None, render_data: Path, output: Path) -> None:
     if template is None:
-        template = KIT_ROOT / "template" / "runtime-template.html"
+        template = KIT_ROOT / "template" / "golden-reference.html"
     html_renderer_module.render(template, render_data, output)
 
 

@@ -64,7 +64,6 @@ REQUIRED_FILES = {
     "kits/prd-creator/voice/PERFORMANCE-WRITING.md",
     "kits/prd-creator/voice/VALIDATION.md",
     "kits/prd-creator/template/golden-reference.html",
-    "kits/prd-creator/template/runtime-template.html",
 }
 
 REQUIRED_DIRS = {
