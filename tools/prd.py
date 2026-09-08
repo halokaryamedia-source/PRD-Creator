@@ -5,22 +5,86 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 KIT_ROOT = ROOT / "kits" / "prd-creator"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 if str(KIT_ROOT) not in sys.path:
     sys.path.insert(0, str(KIT_ROOT))
 
-from browser_verify import BrowserVerifyError  # noqa: E402
-from browser_verify import verify as verify_browser  # noqa: E402
+from tools.browser_verify import BrowserVerifyError  # noqa: E402
+from tools.browser_verify import verify as verify_browser  # noqa: E402
 from renderer.delivery import build_delivery  # noqa: E402
 from shared.state import StateError  # noqa: E402
 from validator import api as prd_api  # noqa: E402
 from validator import validate_handoff as handoff_validator  # noqa: E402
 from validator import voice_validation  # noqa: E402
+
+VOICE_PRE_UPSTREAM_CODES = {
+    "VOICE_STATE_INVALID",
+    "VOICE_STATUS_NOT_VALIDATABLE",
+    "VOICE_RENDER_DATA_MISSING",
+    "VOICE_RENDER_DATA_JSON_INVALID",
+    "VOICE_RENDER_DATA_INVALID",
+}
+
+PROJECT_PRD_PATHS = {
+    "state/source-inventory.yaml",
+    "state/requirement-register.yaml",
+    "state/intake-state.yaml",
+    "work/content.md",
+    "work/render-data.json",
+    "work/asset-requirements.md",
+}
+PROJECT_HANDOFF_PATHS = {
+    "work/acceptance.md",
+    "state/handoff-state.yaml",
+}
+PROJECT_VOICE_PATHS = {
+    "work/voice-requirements.md",
+    "work/voice-production.md",
+    "work/voice-acceptance.md",
+    "state/voice-state.yaml",
+}
+VISUAL_REPO_PREFIXES = (
+    "kits/prd-creator/template/",
+    "kits/prd-creator/renderer/static/",
+)
+VISUAL_REPO_PATHS = {
+    "kits/prd-creator/renderer/core.py",
+    "kits/prd-creator/renderer/pages.py",
+    "kits/prd-creator/renderer/prd_render_engine.py",
+    "kits/prd-creator/renderer/template_adapter.py",
+    "tools/browser_verify.py",
+    "tests/test_prd_browser_verify.py",
+}
+VOICE_REPO_PREFIXES = ("kits/prd-creator/voice/",)
+VOICE_REPO_PATHS = {
+    "kits/prd-creator/renderer/production_assets.py",
+    "kits/prd-creator/renderer/production_assets_compositor.py",
+    "kits/prd-creator/validator/voice_validation.py",
+    "kits/prd-creator/validator/validate_voice.py",
+    "tests/test_voice_contracts.py",
+    "tests/test_prd_voice_assets.py",
+}
+PRD_REPO_PREFIXES = (
+    "kits/prd-creator/intake/",
+    "kits/prd-creator/document/",
+    "kits/prd-creator/production-assets/",
+    "kits/prd-creator/renderer/",
+    "kits/prd-creator/shared/",
+    "kits/prd-creator/validator/",
+    "kits/prd-creator/template/",
+)
+FULL_REGRESSION_PATHS = {
+    ".github/workflows/local-promotion-verify.yml",
+    ".github/workflows/release-verify.yml",
+}
 
 
 def _first_issue(result: dict[str, Any]) -> dict[str, Any] | None:
@@ -43,6 +107,17 @@ def _first_issue(result: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
+def _issue_codes(result: dict[str, Any]) -> set[str]:
+    issues = result.get("issues")
+    if not isinstance(issues, list):
+        return set()
+    return {
+        str(issue.get("code"))
+        for issue in issues
+        if isinstance(issue, dict) and issue.get("code")
+    }
+
+
 def _domain(result: dict[str, Any]) -> dict[str, Any]:
     return {
         "status": str(result.get("status") or "fail"),
@@ -50,47 +125,72 @@ def _domain(result: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _passed() -> dict[str, Any]:
+    return {"status": "pass", "first_issue": None}
+
+
 def _not_present() -> dict[str, Any]:
     return {"status": "not_present", "first_issue": None}
 
 
-def _blocked_by(upstream: str) -> dict[str, Any]:
-    return {"status": f"blocked_by_{upstream}", "first_issue": None}
+def _handoff_proves_prd(result: dict[str, Any]) -> bool:
+    checks = result.get("checks")
+    if not isinstance(checks, list):
+        return False
+    return any(
+        isinstance(check, dict)
+        and check.get("check") == "current_prd_complete_validation"
+        and check.get("status") == "pass"
+        for check in checks
+    )
+
+
+def _prd_from_handoff(project: Path, handoff_result: dict[str, Any]) -> dict[str, Any]:
+    if _handoff_proves_prd(handoff_result):
+        return _passed()
+    return _domain(prd_api.validate(project))
+
+
+def _voice_proves_upstream(result: dict[str, Any]) -> bool:
+    codes = _issue_codes(result)
+    return not (codes & VOICE_PRE_UPSTREAM_CODES) and "VOICE_UPSTREAM_HANDOFF_INVALID" not in codes
 
 
 def status_payload(project: Path) -> dict[str, Any]:
     project = project.resolve()
-    prd_result = prd_api.validate(project)
-    prd = _domain(prd_result)
-
     handoff_state = project / "state" / "handoff-state.yaml"
     voice_state = project / "state" / "voice-state.yaml"
 
-    if prd["status"] != "pass":
-        handoff = _blocked_by("prd") if handoff_state.is_file() else _not_present()
-        voice = _blocked_by("prd") if voice_state.is_file() else _not_present()
-    else:
-        if handoff_state.is_file():
+    # Start from the deepest present stage. A healthy downstream validator already
+    # proves its upstream chain, so status does not replay the same proof.
+    if voice_state.is_file():
+        voice_result = voice_validation.validate(project)
+        voice = _domain(voice_result)
+        if handoff_state.is_file() and _voice_proves_upstream(voice_result):
+            prd = _passed()
+            handoff = _passed()
+        elif handoff_state.is_file():
             handoff_result = handoff_validator.validate(project)
             handoff = _domain(handoff_result)
+            prd = _prd_from_handoff(project, handoff_result)
         else:
+            prd = _domain(prd_api.validate(project))
             handoff = _not_present()
-
-        if voice_state.is_file():
-            if handoff["status"] == "fail":
-                voice = _blocked_by("handoff")
-            else:
-                voice = _domain(voice_validation.validate(project))
-        else:
-            voice = _not_present()
+    elif handoff_state.is_file():
+        handoff_result = handoff_validator.validate(project)
+        handoff = _domain(handoff_result)
+        prd = _prd_from_handoff(project, handoff_result)
+        voice = _not_present()
+    else:
+        prd = _domain(prd_api.validate(project))
+        handoff = _not_present()
+        voice = _not_present()
 
     first_issue = next(
         (stage["first_issue"] for stage in (prd, handoff, voice) if isinstance(stage.get("first_issue"), dict)),
         None,
     )
-    blocked = first_issue is not None or any(
-        str(stage["status"]).startswith("blocked_by_") for stage in (prd, handoff, voice)
-    )
+    blocked = first_issue is not None
 
     if first_issue is not None:
         owner = str(first_issue.get("owner") or "unknown")
@@ -119,6 +219,130 @@ def status_payload(project: Path) -> dict[str, Any]:
     }
 
 
+def _normalize_changed_path(raw: str) -> str:
+    value = raw.strip().replace("\\", "/")
+    while value.startswith("./"):
+        value = value[2:]
+    return value.strip("/")
+
+
+def _git_changed_paths(base: str | None) -> list[str]:
+    command = ["git", "diff", "--name-only"]
+    if base:
+        command.append(base)
+    command.append("--")
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
+    if result.returncode != 0:
+        raise ValueError(result.stderr.strip() or "git diff failed")
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def impact_payload(changed_paths: list[str]) -> dict[str, Any]:
+    changed = sorted({_normalize_changed_path(path) for path in changed_paths if _normalize_changed_path(path)})
+    checks: set[str] = set()
+    owners: set[str] = set()
+    derived_edits: list[str] = []
+    browser_required = False
+    full_regression_required = False
+
+    for path in changed:
+        if path.startswith("output/"):
+            derived_edits.append(path)
+            owners.add("derived_output")
+            continue
+
+        if path in PROJECT_PRD_PATHS:
+            checks.add("prd")
+            owners.add("project_prd")
+            continue
+        if path in PROJECT_HANDOFF_PATHS:
+            checks.add("handoff")
+            owners.add("project_handoff")
+            continue
+        if path in PROJECT_VOICE_PATHS:
+            checks.add("voice")
+            owners.add("project_voice")
+            if path in {"work/voice-requirements.md", "work/voice-production.md"}:
+                checks.add("prd")
+            continue
+
+        is_repo_path = (
+            path.startswith("kits/")
+            or path.startswith("tests/")
+            or path.startswith("tools/")
+            or path.startswith(".github/")
+            or path.startswith("docs/")
+            or path.startswith(".agents/")
+            or path
+            in {
+                "AGENTS.md",
+                "GITHUB_RULES.md",
+                "CONTEXT.md",
+                "README.md",
+                "CONTRIBUTING.md",
+                "pyproject.toml",
+            }
+        )
+        if is_repo_path:
+            checks.add("repository")
+            owners.add("repository")
+
+        if path.startswith(PRD_REPO_PREFIXES) or path.startswith("tests/test_prd_") or path in {
+            "tests/prd_fixture.py",
+            "tools/prd.py",
+        }:
+            checks.add("prd")
+            owners.add("prd_system")
+
+        if path.startswith(VOICE_REPO_PREFIXES) or path in VOICE_REPO_PATHS:
+            checks.add("voice")
+            owners.add("voice_system")
+
+        if path.startswith("kits/prd-creator/shared/"):
+            checks.add("voice")
+
+        if path.startswith(VISUAL_REPO_PREFIXES) or path in VISUAL_REPO_PATHS:
+            browser_required = True
+            owners.add("visual_runtime")
+
+        if path in FULL_REGRESSION_PATHS:
+            full_regression_required = True
+
+        if not is_repo_path:
+            owners.add("unknown")
+            checks.add("repository")
+
+    if browser_required:
+        checks.add("browser")
+    if full_regression_required:
+        checks.add("full_regression")
+
+    order = ["repository", "prd", "handoff", "voice", "browser", "full_regression"]
+    recommended_checks = [item for item in order if item in checks]
+
+    if derived_edits:
+        next_action = (
+            "Do not keep direct derived-output edits. Repair the canonical owner and regenerate, "
+            "then run only the checks listed for the canonical change."
+        )
+    elif not changed:
+        next_action = "No changed paths were provided or detected."
+    elif recommended_checks:
+        next_action = "Run only the recommended checks in order; promotion still requires the full Local gate."
+    else:
+        next_action = "No production validation domain is affected."
+
+    return {
+        "changed": changed,
+        "owners": sorted(owners),
+        "recommended_checks": recommended_checks,
+        "browser_required": browser_required,
+        "full_regression_required": full_regression_required,
+        "derived_edits": derived_edits,
+        "next_action": next_action,
+    }
+
+
 def _print_json(value: Any) -> None:
     print(json.dumps(value, ensure_ascii=False, indent=2))
 
@@ -140,6 +364,18 @@ def _print_status(payload: dict[str, Any]) -> None:
         if location or field:
             suffix = f":{field}" if field else ""
             print(f"Location: {location}{suffix}")
+    print(f"Next: {payload['next_action']}")
+
+
+def _print_impact(payload: dict[str, Any]) -> None:
+    changed = payload["changed"]
+    print(f"Changed: {len(changed)}")
+    for path in changed:
+        print(f"- {path}")
+    checks = payload["recommended_checks"]
+    print("Checks: " + (", ".join(checks) if checks else "none"))
+    if payload["derived_edits"]:
+        print("Derived edits: regenerate from canonical source")
     print(f"Next: {payload['next_action']}")
 
 
@@ -178,6 +414,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    impact_parser = subparsers.add_parser(
+        "impact",
+        help="route changed paths to the smallest sufficient validation domains",
+    )
+    impact_parser.add_argument("changed", nargs="*", help="changed project/repository paths")
+    impact_parser.add_argument("--git-base", help="read changed paths from git diff against this ref")
+    impact_parser.add_argument("--json", action="store_true", dest="as_json")
+
     status_parser = subparsers.add_parser("status", help="show compact mechanical project status and first wrong owner")
     status_parser.add_argument("project", type=Path)
     status_parser.add_argument("--json", action="store_true", dest="as_json")
@@ -199,9 +443,22 @@ def main() -> int:
         command_parser.add_argument("project", type=Path)
 
     args = parser.parse_args()
-    project = args.project.resolve()
 
     try:
+        if args.command == "impact":
+            changed = list(args.changed)
+            if args.git_base is not None:
+                changed.extend(_git_changed_paths(args.git_base))
+            elif not changed:
+                changed.extend(_git_changed_paths(None))
+            payload = impact_payload(changed)
+            if args.as_json:
+                _print_json(payload)
+            else:
+                _print_impact(payload)
+            return 0
+
+        project = args.project.resolve()
         if args.command == "status":
             payload = status_payload(project)
             if args.as_json:
