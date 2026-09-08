@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Static repository contract checks for PRD-Creator.
+"""Static checks for durable PRD-Creator repository mechanics.
 
-This gate checks stable repository invariants that are useful on every commit.
-It does not replace production contract execution, project semantic validation,
-HTML visual QA, or generated-audio review.
+This verifier intentionally avoids treating prose wording as a machine contract.
+Semantic quality, project readiness, rendered/browser quality, and audio quality are
+proved by their owning production validators and regression gates.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
+KIT_ROOT = ROOT / "kits" / "prd-creator"
 
 CANONICAL_SKILLS = {
     "development-brief",
@@ -21,8 +22,7 @@ CANONICAL_SKILLS = {
     "voice-production",
 }
 
-UNIFIED_KIT = ROOT / "kits" / "prd-creator"
-UNIFIED_KIT_DIRS = {
+KIT_DIRS = {
     "intake",
     "document",
     "production-assets",
@@ -32,9 +32,9 @@ UNIFIED_KIT_DIRS = {
     "validator",
     "template",
 }
-UNIFIED_ROOT_MARKDOWN = {"README.md", "AGENTS.md", "SKILL.md"}
+KIT_ROOT_MARKDOWN = {"README.md", "AGENTS.md", "SKILL.md"}
 
-REQUIRED_PATHS = [
+REQUIRED_FILES = {
     ".github/workflows/local-promotion-verify.yml",
     ".github/workflows/repository-verify.yml",
     ".github/workflows/prd-verify.yml",
@@ -43,81 +43,71 @@ REQUIRED_PATHS = [
     "AGENTS.md",
     "GITHUB_RULES.md",
     "CONTEXT.md",
-    "CONTRIBUTING.md",
-    "LICENSE",
     "pyproject.toml",
     "requirements.lock.txt",
     "requirements-dev.lock.txt",
-    "tests/test_prd_contracts.py",
-    "tests/test_prd_content_purity.py",
-    "tests/test_prd_delivery.py",
-    "tests/test_prd_flow2_state_contracts.py",
-    "tests/test_prd_handoff_contracts.py",
-    "tests/test_prd_voice_assets.py",
+    "tools/prd.py",
+    "tools/browser_verify.py",
+    "tools/verify_repository.py",
+    "tests/test_prd_golden_reference.py",
+    "tests/test_prd_browser_verify.py",
     "tests/test_voice_contracts.py",
-    "docs/knowledge/README.md",
-    "docs/knowledge/next-action.md",
-    "docs/knowledge/work-routing.md",
-    "docs/knowledge/work-modes/development.md",
-    "docs/knowledge/work-modes/maintenance.md",
-    "docs/knowledge/work-modes/maintenance-note-template.md",
-    "docs/knowledge/ownership.md",
-    "docs/knowledge/source-authority.md",
-    "docs/knowledge/reviews/README.md",
-    "docs/knowledge/reviews/current-validation.md",
-    "docs/knowledge/reviews/audit-template.md",
-    "docs/knowledge/decisions/README.md",
-    "docs/knowledge/decisions/recording-policy.md",
-    "docs/knowledge/skills/activation-matrix.md",
-    "docs/knowledge/skills/README.md",
-    "docs/knowledge/operations/boot-baseline.md",
-    "docs/knowledge/operations/backlog.md",
-    "kits/prd-creator/README.md",
     "kits/prd-creator/AGENTS.md",
     "kits/prd-creator/SKILL.md",
     "kits/prd-creator/intake/SOURCE-INTAKE.md",
     "kits/prd-creator/document/CONTENT-CONTRACT.md",
     "kits/prd-creator/document/DESIGN-CONTRACT.md",
-    "kits/prd-creator/document/GLOSSARY.md",
     "kits/prd-creator/document/VALIDATION.md",
     "kits/prd-creator/production-assets/CONTRACT.md",
-    "kits/prd-creator/shared/__init__.py",
-    "kits/prd-creator/shared/state.py",
-    "kits/prd-creator/shared/intake.py",
-    "kits/prd-creator/shared/paths.py",
-    "kits/prd-creator/shared/handoff.py",
-    "kits/prd-creator/shared/acceptance.py",
-    "kits/prd-creator/shared/lifecycle.py",
-    "kits/prd-creator/shared/render_schema.py",
-    "kits/prd-creator/shared/localization.py",
-    "kits/prd-creator/shared/assets.py",
-    "kits/prd-creator/shared/voice.py",
-    "kits/prd-creator/shared/topology.py",
-    "kits/prd-creator/shared/issues.py",
-    "kits/prd-creator/renderer/__init__.py",
     "kits/prd-creator/renderer/CONTRACT.md",
-    "kits/prd-creator/renderer/template_adapter.py",
-    "kits/prd-creator/renderer/static/production-assets.css",
-    "kits/prd-creator/renderer/static/production-assets.js",
-    "kits/prd-creator/renderer/delivery.py",
-    "kits/prd-creator/renderer/prd_render_engine.py",
-    "kits/prd-creator/validator/__init__.py",
-    "kits/prd-creator/validator/api.py",
-    "kits/prd-creator/validator/prd_validation_engine.py",
-    "kits/prd-creator/validator/html_contract.py",
-    "kits/prd-creator/validator/voice_validation.py",
-    "kits/prd-creator/validator/validate.py",
-    "kits/prd-creator/validator/validate_handoff.py",
-    "kits/prd-creator/validator/validate_voice.py",
-    "kits/prd-creator/template/golden-reference.html",
-    "kits/prd-creator/template/runtime-template.html",
     "kits/prd-creator/voice/EXTRACTION.md",
     "kits/prd-creator/voice/PERFORMANCE-WRITING.md",
     "kits/prd-creator/voice/VALIDATION.md",
-    "kits/prd-creator/voice/references/aftershock/README.md",
-    "workspace/README.md",
-    "workspace/archive/README.md",
-]
+    "kits/prd-creator/template/golden-reference.html",
+    "kits/prd-creator/template/runtime-template.html",
+}
+
+REQUIRED_DIRS = {
+    ".agents/skills",
+    "docs/foundation",
+    "docs/knowledge",
+    "tests",
+    "workspace",
+}
+
+RETIRED_PATHS = {
+    ".github/workflows/production-verify.yml",
+    "docs/knowledge/index.md",
+    "docs/knowledge/minimal-nav.md",
+    "docs/knowledge/workspace-map.md",
+    "docs/knowledge/flow.md",
+    "docs/knowledge/flows",
+    "docs/knowledge/maintenance",
+    "docs/knowledge/modules",
+    "docs/knowledge/sources",
+    "docs/knowledge/implementation-map.md",
+    "docs/knowledge/decision-log.md",
+    "docs/knowledge/decisions/change-decision-guide.md",
+    "docs/knowledge/decisions/history-2026-08-29.md",
+    "docs/knowledge/workflows",
+    "docs/knowledge/reviews/review-graph.md",
+    "docs/knowledge/reviews/review-template.md",
+    "docs/knowledge/reviews/template.md",
+    "docs/knowledge/operations/context-boot-baseline.md",
+    "docs/knowledge/operations/task-board.md",
+    "docs/foundation/validation-report.md",
+    "workspace/saved",
+    "kits/project-document-generator",
+    "kits/voice-production-kit",
+    "kits/prd-creator/renderer/_engine.py",
+    "kits/prd-creator/validator/_engine.py",
+    "kits/prd-creator/renderer/production_assets_objective.py",
+    "kits/prd-creator/renderer/voice_assets.py",
+    "kits/prd-creator/voice/SOUNDMAKER.md",
+    "kits/prd-creator/voice/LICENSE",
+    "kits/prd-creator/voice/CHANGELOG.md",
+    "kits/prd-creator/voice/HISTORICAL-CHANGELOG.md",
+}
 
 MARKDOWN_ROOTS = [
     ROOT / "AGENTS.md",
@@ -128,60 +118,14 @@ MARKDOWN_ROOTS = [
     ROOT / ".agents" / "skills",
     ROOT / "docs" / "foundation",
     ROOT / "docs" / "knowledge",
-    UNIFIED_KIT,
+    KIT_ROOT,
 ]
-
-CURRENT_DELIVERY_OWNER_PATHS = [
-    "CONTEXT.md",
-    "docs/foundation/01-production-flow.md",
-    "docs/foundation/03-prd-generation.md",
-    "docs/foundation/04-prd-validation-handoff.md",
-    "docs/foundation/05-voice-requirement-extraction.md",
-    "docs/foundation/06-elevenlabs-script-production.md",
-    "docs/foundation/07-voice-validation-delivery.md",
-    "docs/knowledge/ownership.md",
-    "docs/knowledge/work-modes/maintenance.md",
-    "docs/knowledge/reviews/current-validation.md",
-    "kits/prd-creator/README.md",
-    "kits/prd-creator/AGENTS.md",
-    "kits/prd-creator/SKILL.md",
-    "kits/prd-creator/intake/SOURCE-INTAKE.md",
-    "kits/prd-creator/document/CONTENT-CONTRACT.md",
-    "kits/prd-creator/document/VALIDATION.md",
-    "kits/prd-creator/production-assets/CONTRACT.md",
-    "kits/prd-creator/renderer/CONTRACT.md",
-    "kits/prd-creator/voice/EXTRACTION.md",
-    "kits/prd-creator/voice/PERFORMANCE-WRITING.md",
-    "kits/prd-creator/voice/VALIDATION.md",
-    "workspace/README.md",
-    "docs/knowledge/decisions/recording-policy.md",
-    ".agents/skills/project-document-production/SKILL.md",
-    ".agents/skills/voice-production/SKILL.md",
-]
-
-RETIRED_CURRENT_DELIVERY_TERMS = (
-    "output/final.html",
-    "final.html",
-    "output/team-handoff.md",
-    "Cinematic & Presentation",
-    "kits/project-document-generator",
-    "kits/voice-production-kit",
-    "voice/SOUNDMAKER.md",
-    "optional DOCX",
-    "optional DOCX /",
-)
-
-AGENT_REQUIRED_HEADINGS = {
-    "## Execution channel",
-    "## User-facing communication",
-    "## Product boundaries",
-}
 
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s=]+)$")
-SKILL_VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
-README_VERSION_RE = re.compile(r"(?m)^\*\*Version:\*\*\s*([^\s]+)\s*$")
-CURRENT_VALIDATION_VERSION_RE = re.compile(r"PRD Creator package (?:candidate is|remains) \*\*v([^*]+)\*\*")
+NAME_RE = re.compile(r"(?m)^name:\s*([^\s]+)\s*$")
+VERSION_RE = re.compile(r"(?m)^version:\s*([^\s]+)\s*$")
+SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -198,243 +142,80 @@ def iter_markdown_files() -> list[Path]:
     return sorted(set(files))
 
 
-def check_required_paths(errors: list[str]) -> None:
-    for rel in REQUIRED_PATHS:
-        if not (ROOT / rel).exists():
-            fail(errors, f"missing required owner: {rel}")
+def check_required_surfaces(errors: list[str]) -> None:
+    for rel in sorted(REQUIRED_FILES):
+        if not (ROOT / rel).is_file():
+            fail(errors, f"missing required repository surface: {rel}")
+    for rel in sorted(REQUIRED_DIRS):
+        if not (ROOT / rel).is_dir():
+            fail(errors, f"missing required repository directory: {rel}")
 
 
-def check_unified_kit_shape(errors: list[str]) -> None:
+def check_kit_shape(errors: list[str]) -> None:
     kits_root = ROOT / "kits"
     if not kits_root.is_dir():
         fail(errors, "missing kits/ root")
         return
 
-    actual_kits = {path.name for path in kits_root.iterdir() if path.is_dir() and not path.name.startswith(".")}
-    if actual_kits != {"prd-creator"}:
-        fail(
-            errors,
-            f"active production kit set drift: expected ['prd-creator'], got {sorted(actual_kits)}",
-        )
-
-    if not UNIFIED_KIT.is_dir():
-        fail(errors, "missing unified production kit: kits/prd-creator")
+    active_kits = {path.name for path in kits_root.iterdir() if path.is_dir() and not path.name.startswith(".")}
+    if active_kits != {"prd-creator"}:
+        fail(errors, f"active production kit drift: expected ['prd-creator'], got {sorted(active_kits)}")
         return
 
-    actual_dirs = {path.name for path in UNIFIED_KIT.iterdir() if path.is_dir() and not path.name.startswith(".")}
-    missing_dirs = sorted(UNIFIED_KIT_DIRS - actual_dirs)
-    if missing_dirs:
-        fail(errors, f"kits/prd-creator missing domain directories: {missing_dirs}")
+    actual_dirs = {path.name for path in KIT_ROOT.iterdir() if path.is_dir() and not path.name.startswith(".")}
+    if actual_dirs != KIT_DIRS:
+        fail(errors, f"prd-creator domain drift: expected {sorted(KIT_DIRS)}, got {sorted(actual_dirs)}")
 
-    actual_root_md = {path.name for path in UNIFIED_KIT.glob("*.md")}
-    if actual_root_md != UNIFIED_ROOT_MARKDOWN:
-        fail(
-            errors,
-            "kits/prd-creator root Markdown owners drift: "
-            f"expected {sorted(UNIFIED_ROOT_MARKDOWN)}, got {sorted(actual_root_md)}",
-        )
+    actual_root_md = {path.name for path in KIT_ROOT.glob("*.md")}
+    if actual_root_md != KIT_ROOT_MARKDOWN:
+        fail(errors, f"prd-creator root Markdown drift: expected {sorted(KIT_ROOT_MARKDOWN)}, got {sorted(actual_root_md)}")
 
 
-def check_skill_root(errors: list[str]) -> None:
+def parse_skill_metadata(path: Path, errors: list[str]) -> tuple[str | None, str | None]:
+    if not path.is_file():
+        return None, None
+    text = path.read_text(encoding="utf-8")
+    name_match = NAME_RE.search(text)
+    version_match = VERSION_RE.search(text)
+    return (name_match.group(1) if name_match else None, version_match.group(1) if version_match else None)
+
+
+def check_skill_metadata(errors: list[str]) -> None:
     skill_root = ROOT / ".agents" / "skills"
-    if not skill_root.is_dir():
-        fail(errors, "missing canonical .agents/skills root")
-        return
-
     actual = {path.name for path in skill_root.iterdir() if path.is_dir() and not path.name.startswith(".")}
     if actual != CANONICAL_SKILLS:
-        fail(
-            errors,
-            f"canonical skill set drift: expected {sorted(CANONICAL_SKILLS)}, got {sorted(actual)}",
-        )
+        fail(errors, f"canonical skill set drift: expected {sorted(CANONICAL_SKILLS)}, got {sorted(actual)}")
 
     for skill in sorted(CANONICAL_SKILLS):
-        if not (skill_root / skill / "SKILL.md").is_file():
+        path = skill_root / skill / "SKILL.md"
+        if not path.is_file():
             fail(errors, f"missing SKILL.md for canonical skill: {skill}")
+            continue
+        name, _ = parse_skill_metadata(path, errors)
+        if name != skill:
+            fail(errors, f"skill metadata mismatch in {path.relative_to(ROOT)}: expected name {skill!r}, got {name!r}")
 
     nested = list((ROOT / "kits").glob("**/.agents/skills")) if (ROOT / "kits").exists() else []
     for path in nested:
         fail(errors, f"unexpected nested repository skill root: {path.relative_to(ROOT)}")
 
+    package_skill = KIT_ROOT / "SKILL.md"
+    name, version = parse_skill_metadata(package_skill, errors)
+    if name != "prd-creator":
+        fail(errors, f"package SKILL name must be 'prd-creator', got {name!r}")
+    if not version or not SEMVER_RE.fullmatch(version):
+        fail(errors, f"package SKILL version must be semantic version metadata, got {version!r}")
 
-def check_retired_boundaries(errors: list[str]) -> None:
-    retired = [
-        "Production Document Builder",
-        ".github/workflows/production-verify.yml",
-        "docs/knowledge/index.md",
-        "docs/knowledge/minimal-nav.md",
-        "docs/knowledge/workspace-map.md",
-        "docs/knowledge/flow.md",
-        "docs/knowledge/flows",
-        "docs/knowledge/maintenance",
-        "docs/knowledge/modules",
-        "docs/knowledge/sources",
-        "docs/knowledge/implementation-map.md",
-        "docs/knowledge/decision-log.md",
-        "docs/knowledge/decisions/change-decision-guide.md",
-        "docs/knowledge/decisions/history-2026-08-29.md",
-        "docs/knowledge/workflows",
-        "docs/knowledge/reviews/review-graph.md",
-        "docs/knowledge/reviews/review-template.md",
-        "docs/knowledge/reviews/template.md",
-        "docs/knowledge/operations/context-boot-baseline.md",
-        "docs/knowledge/operations/task-board.md",
-        "docs/foundation/validation-report.md",
-        "workspace/saved",
-        "kits/project-document-generator",
-        "kits/voice-production-kit",
-        "kits/prd-creator/renderer/_engine.py",
-        "kits/prd-creator/validator/_engine.py",
-        "kits/prd-creator/renderer/production_assets_objective.py",
-        "kits/prd-creator/renderer/voice_assets.py",
-        "kits/prd-creator/voice/SOUNDMAKER.md",
-        "kits/prd-creator/voice/LICENSE",
-        "kits/prd-creator/voice/CHANGELOG.md",
-        "kits/prd-creator/voice/HISTORICAL-CHANGELOG.md",
-    ]
-    for rel in retired:
+
+def check_retired_paths(errors: list[str]) -> None:
+    for rel in sorted(RETIRED_PATHS):
         if (ROOT / rel).exists():
             fail(errors, f"retired repository path must not return: {rel}")
 
     operations = ROOT / "docs" / "knowledge" / "operations"
     if operations.is_dir():
         for path in sorted(operations.glob("unified-prd-creator-kit-*.md")):
-            fail(
-                errors,
-                "completed unified-kit migration artifact must not remain in live operations: "
-                f"{path.relative_to(ROOT)}",
-            )
-
-
-def check_current_delivery_routing(errors: list[str]) -> None:
-    for rel in CURRENT_DELIVERY_OWNER_PATHS:
-        path = ROOT / rel
-        if not path.is_file():
-            fail(errors, f"missing current delivery owner: {rel}")
-            continue
-        text = path.read_text(encoding="utf-8")
-        for retired in RETIRED_CURRENT_DELIVERY_TERMS:
-            if retired in text:
-                fail(errors, f"stale current delivery reference in {rel}: {retired}")
-
-    ownership = ROOT / "docs" / "knowledge" / "ownership.md"
-    if ownership.is_file():
-        text = ownership.read_text(encoding="utf-8")
-        required_markers = (
-            "kits/prd-creator/renderer/delivery.py",
-            "kits/prd-creator/renderer/template_adapter.py",
-            "kits/prd-creator/shared/acceptance.py",
-            "kits/prd-creator/shared/render_schema.py",
-            "kits/prd-creator/validator/html_contract.py",
-            "kits/prd-creator/validator/voice_validation.py",
-            "kits/prd-creator/validator/validate_voice.py",
-            "output/README.md",
-            "output/v<document.version>/prd.html",
-            "output/v<document.version>/context.md",
-            "output/v<document.version>/index.json",
-        )
-        for marker in required_markers:
-            if marker not in text:
-                fail(errors, f"ownership.md missing current delivery routing marker: {marker}")
-
-    workspace = ROOT / "workspace" / "README.md"
-    if workspace.is_file():
-        text = workspace.read_text(encoding="utf-8")
-        required_markers = (
-            "kits/prd-creator/renderer/delivery.py",
-            "kits/prd-creator/validator/validate_voice.py",
-            "output/README.md",
-            "output/v<document.version>/prd.html",
-            "output/v<document.version>/context.md",
-            "output/v<document.version>/index.json",
-        )
-        for marker in required_markers:
-            if marker not in text:
-                fail(errors, f"workspace/README.md missing current delivery marker: {marker}")
-
-    current_validation = ROOT / "docs" / "knowledge" / "reviews" / "current-validation.md"
-    skill_path = UNIFIED_KIT / "SKILL.md"
-    if current_validation.is_file():
-        text = current_validation.read_text(encoding="utf-8")
-        required_markers = (
-            "output/README.md",
-            "output/v<document.version>/prd.html",
-            "output/v<document.version>/context.md",
-            "output/v<document.version>/index.json",
-        )
-        for marker in required_markers:
-            if marker not in text:
-                fail(errors, f"current-validation.md missing current delivery marker: {marker}")
-
-        if skill_path.is_file():
-            version_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
-            current_validation_match = CURRENT_VALIDATION_VERSION_RE.search(text)
-            if version_match and (
-                not current_validation_match or current_validation_match.group(1) != version_match.group(1)
-            ):
-                fail(errors, "current-validation.md PRD Creator version does not match current SKILL version")
-
-    voice_docs = [
-        ROOT / "docs" / "foundation" / "06-elevenlabs-script-production.md",
-        ROOT / "docs" / "foundation" / "07-voice-validation-delivery.md",
-        UNIFIED_KIT / "AGENTS.md",
-        UNIFIED_KIT / "voice" / "VALIDATION.md",
-    ]
-    retired_voice_nav = "04 Production Assets\n   VOICE"
-    for path in voice_docs:
-        if path.is_file() and retired_voice_nav in path.read_text(encoding="utf-8"):
-            fail(errors, f"stale Voice sidebar category routing in {path.relative_to(ROOT)}")
-
-    decision_policy = ROOT / "docs" / "knowledge" / "decisions" / "recording-policy.md"
-    if decision_policy.is_file():
-        policy_text = decision_policy.read_text(encoding="utf-8")
-        for retired in ("implementation-map.md", "`modules/`"):
-            if retired in policy_text:
-                fail(errors, f"stale current decision-routing reference in recording-policy.md: {retired}")
-
-
-def check_next_action(errors: list[str]) -> None:
-    path = ROOT / "docs" / "knowledge" / "next-action.md"
-    if not path.is_file():
-        return
-    text = path.read_text(encoding="utf-8")
-    if text.count("## Next Step") != 1:
-        fail(errors, "next-action.md must contain exactly one '## Next Step'")
-    if "## Current Status" not in text:
-        fail(errors, "next-action.md is missing '## Current Status'")
-    if "## Active Boundary" not in text:
-        fail(errors, "next-action.md is missing '## Active Boundary'")
-
-
-def check_agent_contract(errors: list[str]) -> None:
-    path = ROOT / "AGENTS.md"
-    if not path.is_file():
-        return
-    text = path.read_text(encoding="utf-8")
-    for heading in sorted(AGENT_REQUIRED_HEADINGS):
-        if heading not in text:
-            fail(errors, f"AGENTS.md missing required section: {heading}")
-
-
-def check_prd_creator_version(errors: list[str]) -> None:
-    skill_path = UNIFIED_KIT / "SKILL.md"
-    readme_path = UNIFIED_KIT / "README.md"
-    if not skill_path.is_file() or not readme_path.is_file():
-        return
-
-    skill_match = SKILL_VERSION_RE.search(skill_path.read_text(encoding="utf-8"))
-    readme_match = README_VERSION_RE.search(readme_path.read_text(encoding="utf-8"))
-    if not skill_match:
-        fail(errors, "PRD Creator SKILL.md is missing version front matter")
-        return
-    if not readme_match:
-        fail(errors, "PRD Creator README.md is missing Version")
-        return
-    if skill_match.group(1) != readme_match.group(1):
-        fail(
-            errors,
-            f"PRD Creator version drift: SKILL {skill_match.group(1)} != README {readme_match.group(1)}",
-        )
+            fail(errors, f"completed migration artifact must not remain active: {path.relative_to(ROOT)}")
 
 
 def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
@@ -447,7 +228,7 @@ def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
             continue
         match = PIN_RE.fullmatch(line)
         if not match:
-            fail(errors, f"{path.relative_to(ROOT)}:{lineno} must use an exact 'name==version' pin")
+            fail(errors, f"{path.relative_to(ROOT)}:{lineno} must use exact 'name==version' pinning")
             continue
         name = match.group(1).replace("_", "-").lower()
         if name in pins:
@@ -456,34 +237,23 @@ def requirement_pins(path: Path, errors: list[str]) -> dict[str, str]:
     return pins
 
 
-def check_dependency_lock(errors: list[str]) -> None:
+def check_dependency_locks(errors: list[str]) -> None:
     requirement_pins(ROOT / "requirements.lock.txt", errors)
     requirement_pins(ROOT / "requirements-dev.lock.txt", errors)
-    direct = UNIFIED_KIT / "requirements.txt"
-    if direct.exists():
-        fail(
-            errors,
-            "unexpected direct kit requirements.txt; root requirements.lock.txt owns current runtime Python pins",
-        )
+    if (KIT_ROOT / "requirements.txt").exists():
+        fail(errors, "unexpected kit requirements.txt; root lockfiles own Python dependency pins")
 
 
 def normalize_link_target(source: Path, raw: str) -> Path | None:
     target = raw.strip().strip("<>")
     if not target:
         return None
-
     lower = target.lower()
-    if (
-        target.startswith("#")
-        or "://" in target
-        or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:"))
-    ):
+    if target.startswith("#") or "://" in target or lower.startswith(("mailto:", "tel:", "data:", "skills:", "sandbox:")):
         return None
-
     target = unquote(target.split("#", 1)[0].split("?", 1)[0]).strip()
     if not target:
         return None
-
     if target.startswith("/"):
         return ROOT / target.lstrip("/")
     return source.parent / target
@@ -501,13 +271,11 @@ def check_markdown_links(errors: list[str]) -> None:
             except OSError:
                 exists = target.exists()
             if not exists:
-                rel_source = path.relative_to(ROOT)
-                fail(errors, f"broken relative link in {rel_source}: {raw}")
+                fail(errors, f"broken relative link in {path.relative_to(ROOT)}: {raw}")
 
 
 def check_python_syntax(errors: list[str]) -> None:
-    roots = [ROOT / "kits", ROOT / "tools", ROOT / "tests"]
-    for root in roots:
+    for root in (ROOT / "kits", ROOT / "tools", ROOT / "tests"):
         if not root.is_dir():
             continue
         for path in sorted(root.rglob("*.py")):
@@ -520,15 +288,11 @@ def check_python_syntax(errors: list[str]) -> None:
 def main() -> int:
     errors: list[str] = []
 
-    check_required_paths(errors)
-    check_unified_kit_shape(errors)
-    check_skill_root(errors)
-    check_retired_boundaries(errors)
-    check_current_delivery_routing(errors)
-    check_next_action(errors)
-    check_agent_contract(errors)
-    check_prd_creator_version(errors)
-    check_dependency_lock(errors)
+    check_required_surfaces(errors)
+    check_kit_shape(errors)
+    check_skill_metadata(errors)
+    check_retired_paths(errors)
+    check_dependency_locks(errors)
     check_markdown_links(errors)
     check_python_syntax(errors)
 
@@ -540,17 +304,13 @@ def main() -> int:
 
     print("REPOSITORY VERIFY PASSED")
     print(f"- canonical skills: {', '.join(sorted(CANONICAL_SKILLS))}")
-    print("- active production kit: prd-creator")
-    print(f"- markdown files checked: {len(iter_markdown_files())}")
-    print("- root AGENTS contract sections: present")
-    print("- PRD Creator skill/README/current-validation version: aligned")
-    print("- Package 3 architecture owners: present")
-    print("- current versioned delivery routing: aligned")
-    print("- workspace/current-validation delivery routing: aligned")
-    print("- relative navigation: valid")
-    print("- runtime/dev dependency lock format: valid")
+    print("- active production kit and entrypoints: present")
+    print("- package skill metadata: valid")
+    print("- retired repository paths: absent")
+    print(f"- relative Markdown links checked: {len(iter_markdown_files())} files")
+    print("- runtime/dev dependency pins: valid")
     print("- Python kits/tools/tests: syntax valid")
-    print("- retired package/migration/license/routing boundaries: preserved")
+    print("- prose wording is not a machine contract")
     return 0
 
 

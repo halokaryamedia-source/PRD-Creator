@@ -2,36 +2,32 @@
 
 ## Current Status
 
-`ASTRA_CONTEXT_KERNEL_COMPLETE`
+`ASTRA_PROSE_VERIFIER_COMPLETE`
 
-GPT-6 Astra context optimization on `develop` has simplified the always/commonly loaded routing layer while preserving production behavior.
+The Astra optimization on `develop` now keeps the agent/context kernel compact and removes prose wording from repository machine verification.
 
-Changed context-only owners:
+Behavior/output owners remain unchanged: PRD/Voice semantic contracts, render schema, renderer/compositor, validators, Golden/runtime template, tests, output lifecycle, and promotion/release gates.
 
-- root `AGENTS.md`;
-- `CONTEXT.md`;
-- `GITHUB_RULES.md`;
-- `development-brief`;
-- package `AGENTS.md`;
-- package `SKILL.md`;
-- this continuation file.
+Repository verification now checks durable mechanics instead of synchronizing duplicated wording across documentation:
 
-Unchanged product/output owners include PRD/Voice semantic contracts, render schema, renderer/compositor, validators, Golden/runtime template, tests, output lifecycle, and promotion/release gates.
+- required system entrypoints and domain shape;
+- canonical skill identity and package version metadata;
+- retired paths staying retired;
+- exact dependency pins;
+- relative Markdown navigation;
+- Python syntax.
 
-Existing efficiency behavior remains: conditional Proposal approval, minimal handoff state, `status` proof reuse, `impact` selective verification, selective routine CI, and full promotion/release regression.
+`docs/knowledge/work-routing.md` is now a compact human reference; root `AGENTS.md` remains its canonical authority.
 
 ## Active Boundary
 
-Context simplification must be behavior-preserving.
+All Astra simplification remains behavior-preserving.
 
-- Do not change project/PRD/Voice meaning merely to shorten instructions.
-- Do not change Golden/render output in this scope.
-- Do not weaken branch, promotion, release, or proof semantics.
-- Treat unexpected output drift as regression.
-- Do not add replacement routing frameworks, registries, caches, compatibility layers, or extra approval systems.
+- Output quality and semantic completeness must not regress.
+- Golden/render behavior must not change unless handled as a separate parity-proven scope.
+- Branch, promotion, release, validation, and proof semantics remain intact.
+- Do not reintroduce prose-string tests, duplicate routing registries, caches, compatibility layers, or extra approval systems.
 
 ## Next Step
 
-**STOP after repository verification passes.**
-
-Future prose-verifier decoupling, routine CI topology consolidation, or Golden/runtime-template deduplication are separate implementation scopes and require their own output-parity proof.
+Next highest-value scope: evaluate and, only if byte/output parity is provable, remove the duplicate `runtime-template.html` authority so the Golden template has one canonical source. Keep all work on `develop` until full promotion proof is complete.
