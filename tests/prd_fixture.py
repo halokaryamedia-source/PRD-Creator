@@ -346,7 +346,9 @@ def write_base_project(project: Path, data: dict | None = None) -> dict:
 
 
 def write_render_data(project: Path, data: dict) -> None:
+    requirement_path = project / "state" / "requirement-register.yaml"
     content_path = project / "work" / "content.md"
+    data["approved_requirement_sha256"] = hashlib.sha256(requirement_path.read_bytes()).hexdigest()
     data["canonical_content_sha256"] = hashlib.sha256(content_path.read_bytes()).hexdigest()
     (project / "work" / "render-data.json").write_text(
         json.dumps(data, ensure_ascii=False, indent=2) + "\n",

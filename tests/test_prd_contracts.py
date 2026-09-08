@@ -60,7 +60,8 @@ def bilingual_render_data() -> dict:
         if isinstance(value, list):
             return [localized(child, field) for child in value]
         if isinstance(value, str) and value and field not in BILINGUAL_SCALARS:
-            return {"en": value, "id": f"ID · {value}"}
+            indonesian = f"ID · {value}".replace("without", "tanpa")
+            return {"en": value, "id": indonesian}
         return value
 
     data = localized(render_data())

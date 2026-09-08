@@ -181,6 +181,15 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
             encoding="utf-8",
         )
         self.refresh_approval(project)
+        render_data_path = project / "work" / "render-data.json"
+        current_data = json.loads(render_data_path.read_text(encoding="utf-8"))
+        write_render_data(project, current_data)
+        rendered = run_cli(
+            RENDERER,
+            render_data_path,
+            project / "output" / "v1.0.0" / "prd.html",
+        )
+        self.assertEqual(rendered.returncode, 0, rendered.stderr or rendered.stdout)
         validated = self.validate(project)
         self.assertEqual(validated.returncode, 0, validated.stderr or validated.stdout)
 
@@ -190,7 +199,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
         source_dir.mkdir(parents=True)
         retained = source_dir / "brief.txt"
         retained.write_text("current source bytes\n", encoding="utf-8")
-        wrong_sha = "0" * 64
+        wrong_sha = "f" * 64
         (project / "state" / "source-inventory.yaml").write_text(
             "sources:\n"
             "  - id: SRC-001\n"
@@ -220,7 +229,7 @@ class Flow2StateConsistencyContracts(unittest.TestCase):
             "    inspection: full\n"
             "    retention: repository\n"
             "    path: ../outside.txt\n"
-            "    sha256: " + "0" * 64 + "\n",
+            "    sha256: " + "f" * 64 + "\n",
             encoding="utf-8",
         )
         self.assert_flow2_failure(project, "non-canonical path segment")

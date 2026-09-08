@@ -377,7 +377,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         gameplay = package["gameplay"]
         level = package["level_design"]
         developer = package["developer"]
-        package_tabs = tabs(package, "gameplay")
+        package_tabs = tabs(package_id, "gameplay")
 
         gameplay_body = (
             f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
@@ -423,7 +423,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         level_body = (
             f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
-            + tabs(package, "level")
+            + tabs(package_id, "level")
             + context_block(bi("Level Design Context", "Konteks Level Design"), level["overview"])
             + heading(bi("Level Design Flow", "Alur Level Design"))
             + flow_cards(level["flow"], "quarry-design-flow")
@@ -462,7 +462,7 @@ def package_pages(data: dict[str, Any]) -> list[str]:
         developer_body = (
             f'<h2 class="development-package-title">{i18n(package_title)}</h2>'
             f'<p class="development-package-subtitle">{i18n(package_label)}</p>'
-            + tabs(package, "developer")
+            + tabs(package_id, "developer")
             + context_block(bi("Developer Context", "Konteks Developer"), developer["overview"])
             + heading(bi("Development Flow", "Alur Pengembangan"))
             + flow_cards(developer["flow"], "quarry-development-flow")
