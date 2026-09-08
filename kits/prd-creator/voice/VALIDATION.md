@@ -60,9 +60,13 @@ Mechanical validation proves:
 - Prompt bytes match canonical performance text;
 - final Voice acceptance binds exact current production bytes.
 
-Mechanical PASS does not prove semantic or visual quality.
+Mechanical PASS does not prove semantic, naturalness, actor-continuity, expression, pronunciation, visual, or generated-audio quality.
 
-## Communication Conservation
+## Semantic / craft readiness
+
+Flow 7 consumes the Flow 6 craft result; it does not create another schema for it.
+
+### Communication Conservation
 
 PASS only when required communication remains present, exclusions are respected, project meaning is intact, source timing truth remains honored, and production polish introduced/deleted no material meaning.
 
@@ -70,15 +74,42 @@ PASS only when required communication remains present, exclusions are respected,
 Communication Conservation: PASS | FAIL
 ```
 
-## Integrated Voice Script Readiness
+### Voice Script Readiness
 
-Review Communication, Listener, Character, Performance, Timing, Continuity, and Operator concerns once:
+`Voice Script Readiness` is the single persisted semantic/craft decision. Internally it must cover the current preparation model:
+
+```text
+Communication Conservation
++ Naturalness
++ Expression Conservation
++ Character Continuity Conservation when applicable
++ Pronunciation Conservation
++ timing / continuity / operator readiness
+→ Voice Script Readiness
+```
+
+Do **not** add separate persisted acceptance fields for Expression, Character Continuity, Pronunciation, or candidate history merely to mirror Flow 6 reasoning.
+
+Review the following concerns once, proportionally to the represented Voice scope:
+
+- **Communication** — required meaning survives and unsupported meaning was not added;
+- **Listener** — wording fits the player's state and communication job;
+- **Naturalness** — speech is speakable and register-correct rather than accidental PRD prose;
+- **Actor / Character Continuity** — recurring Speakers remain inside the established actor baseline/range/no-drift boundary;
+- **Expression** — material emotion, subtext, projection, pacing, reactions, and transitions have sufficient direction;
+- **Pronunciation / Language** — critical names, project terms, acronyms, numbers, symbols, and code-switched material have an intentional strategy when risk is material;
+- **Performance** — thought groups, punctuation, Audio Tags, and landings serve the approved moment;
+- **Timing** — density/duration planning respects source timing truth without sacrificing communication or acting;
+- **Continuity** — narrative/dialogue and acting arcs survive clip/turn boundaries;
+- **Operator** — exact prompt, cast/voice, duration, surface, pronunciation setup, and special generation context are usable without guessing.
 
 ```text
 Voice Script Readiness: PASS | FAIL
 ```
 
 Do not persist per-lens scorecards.
+
+Preparation may establish semantic/craft readiness from text and current production planning. Actual pronunciation approval and generated-audio quality still require heard evidence.
 
 ## Project HTML review
 
@@ -100,7 +131,7 @@ Static inspection cannot establish visual PASS.
 
 ## Acceptance record
 
-`work/voice-acceptance.md`:
+`work/voice-acceptance.md` remains intentionally compact:
 
 ```text
 # Voice Acceptance
@@ -118,6 +149,8 @@ Accepted Voice Production SHA256: <exact current work/voice-production.md SHA-25
 
 The production SHA is required for `voice_delivery_ready`. Any canonical production edit after review invalidates final acceptance.
 
+Expression/character/pronunciation readiness remains contained inside the one `Voice Script Readiness` result rather than expanding the machine acceptance format.
+
 ## First wrong owner
 
 ```text
@@ -127,14 +160,17 @@ project/gameplay/story fact or stale PRD handoff
 Voice scope / Owner ID / Moment ID / Speaker / Channel / Trigger / Purpose / required communication / source timing
 → Flow 5
 
-wording / performance / Estimated Duration / cast selection
+wording / actor fit / expression direction / pronunciation strategy / Estimated Duration / cast selection
 → Flow 6
+
+one weak generated take with otherwise-correct canonical production
+→ candidate variance review before canonical rewrite
 
 correct canonical Voice + stale/wrong 04
 → renderer/compositor
 
 generated-audio-only issue
-→ Generation Mode evidence/settings
+→ Generation Mode evidence/settings/voice/surface/context
 ```
 
 ## Delivery gate
@@ -145,7 +181,7 @@ Default non-audio `voice_delivery_ready` requires:
 - exact Voice source PRD revision + render-data SHA match;
 - lifecycle Mechanical PASS;
 - Communication Conservation PASS;
-- Voice Script Readiness PASS;
+- Voice Script Readiness PASS, including all applicable naturalness/expression/character/pronunciation concerns above;
 - current consolidated project HTML;
 - cast selection/profile for every represented speaker;
 - exact accepted Voice Production SHA;
@@ -153,4 +189,4 @@ Default non-audio `voice_delivery_ready` requires:
 - Critical = 0 and Major = 0;
 - truthful optional audio evidence.
 
-It does not imply client sign-off, implementation completion, generated-audio approval, or release.
+It does not imply client sign-off, implementation completion, generated-audio approval, pronunciation approval, or release.
