@@ -10,7 +10,7 @@ class WorkflowNamingContracts(unittest.TestCase):
     def test_production_assets_navigation_has_no_numeric_workflow_alias(self) -> None:
         source = (ROOT / "kits/prd-creator/renderer/production_assets_compositor.py").read_text(encoding="utf-8")
         self.assertNotIn('data-full-index="04"', source)
-        self.assertNotIn('>04</span>', source)
+        self.assertNotIn(">04</span>", source)
 
     def test_root_readme_uses_canonical_human_workflow_names(self) -> None:
         source = (ROOT / "README.md").read_text(encoding="utf-8")
