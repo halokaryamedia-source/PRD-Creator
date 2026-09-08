@@ -1,238 +1,145 @@
 # Workspace Agent Routing
 
-This repository is PRD-Creator system memory. Current repository/project sources are authority for repository state; chat history is supporting context only.
+PRD-Creator is repository-backed system memory. Current explicit user intent and current repository/project authority outrank chat history. Use the smallest owner and proof set that can settle the task.
 
-## Branch and boot
+## Core routing
 
-```text
-develop  → active repository development; working commits may be numerous
-Local    → verified integration / stable working baseline; one commit per approved update
-main     → clean stable repository history
-```
+| Intent | Mode | Start |
+|---|---|---|
+| Inspect, understand, recover, decide | Plan | current state + smallest owner; read-only unless change requested |
+| Create/revise project PRD or Voice deliverables | Production Execution | matching production skill + smallest active owner |
+| Change PRD-Creator policy, workflow, renderer, validator, schema, tooling, repository mechanics | Development | `development-brief` + exact owner |
+| Fix bounded bug, regression, stale routing/docs, behavior-preserving defect | Maintenance | concrete failure → first wrong owner |
 
-- Normal repository Development happens on `develop`.
-- `Local` is not a routine edit target. Promote `develop` to `Local` only through the verified integration boundary.
-- Every `develop` → `Local` promotion must use **squash merge** so one approved update adds exactly one commit to `Local`.
-- After a squash promotion, synchronize/reset `develop` to the resulting `Local` HEAD before starting the next development cycle.
-- `main` is stable-only. Promote `Local` to `main` only through an explicitly approved stable PR after `Stable release gate` passes.
-- A resulting `main` stable merge commit is a main-only marker and is not synchronized back into `Local` or `develop`.
-- A `main` promotion is not automatically a versioned release. Create a new protected `v*` tag/GitHub Release only when an approved PRD-Creator feature/capability changes.
-- Governance, CI, ruleset, documentation, and maintenance-only stable promotions remain untagged.
+Production work does not become Development merely because tools or generated files are involved.
 
-Choose the smallest sufficient boot for the task.
+## Boot
 
-### Observe / recover context
-
-When the user only asks to inspect, understand, study, or recover repository context:
+### Observe / recover
 
 ```text
 AGENTS.md
-→ GITHUB_RULES.md Core Rules when GitHub work is material
 → CONTEXT.md
 → docs/knowledge/next-action.md
-→ smallest owner needed to explain current state
-→ report understanding
+→ smallest owner needed
+→ report current understanding
 → STOP
 ```
 
-This is read-only Plan behavior. Do not edit, advance `next-action`, promote backlog work, or start the recorded next step unless the user also asks to continue.
+Read `GITHUB_RULES.md` only when GitHub execution, mutation, history, CI, promotion, or transfer behavior can affect the task.
 
-### Non-trivial Development
-
-Before changing PRD-Creator itself:
+### Development
 
 ```text
 AGENTS.md
-→ GITHUB_RULES.md Core Rules
 → CONTEXT.md
 → docs/knowledge/next-action.md
 → development-brief
-→ smallest relevant owner/source
+→ exact semantic / implementation owner
+→ GITHUB_RULES.md before material GitHub mutation
 ```
 
-### Bounded Maintenance
-
-A clearly bounded defect may start from the exact failing owner when wider product context cannot change the decision. Do not turn Maintenance into a repository-wide redesign.
-
-## Work modes
-
-| Intent | Mode | Front door |
-|---|---|---|
-| Understand/decide/recover before editing | Plan | inspect evidence + owner; no edit until requested |
-| Create/revise project PRD or Voice deliverables | Production Execution | matching production owner |
-| Change PRD-Creator policy/workflow/renderer/validator/repository mechanics | Development | `development-brief` + at most one useful specialist |
-| Bug/regression/cleanup/stale docs/behavior-preserving correction | Maintenance | concrete failure → first wrong owner |
-
-Creating project artifacts during normal production does not make the task Development.
-
-## Action intent and steering
-
-An explicit user request to **create, change, fix, continue, apply, or otherwise perform work** is authorization to carry that requested reversible scope through completion. Do not stop at capability acknowledgement, a plan, an offer to continue, or an extra confirmation step that no authoritative owner actually requires.
-
-Ask the user only when one of these boundaries is real:
-
-- a material project/product decision cannot be resolved responsibly from current authority or the existing Completion / Proposal / Blocked boundary;
-- a high-impact, destructive, irreversible, security-sensitive, publishing, promotion, or other repository action explicitly requires approval;
-- the actual target/scope cannot be recovered from current conversation, project state, repository authority, or connected source.
-
-When approval is genuinely required, complete all already-authorized reversible preparation first so the user reviews a concrete result or final action, not an abstract plan.
-
-When the user changes direction or adds a requirement while work is in progress:
+### Production Execution
 
 ```text
-new explicit instruction
-→ becomes current task authority
-→ preserve completed work that still satisfies it
-→ invalidate only affected scope/dependencies
-→ continue from the resulting actual state
-```
-
-Do not restart unrelated work merely because the instruction changed mid-turn. Do not ask the user to reconfirm work they already explicitly requested unless one of the material boundaries above is reached.
-
-A skill or procedure may narrow execution for safety, branch governance, product authority, or an explicit acceptance gate. It must not override clear current user intent with additional permission ceremony of its own.
-
-## Production front doors
-
-```text
-new/revised PRD
+PRD / non-Voice 04
 → project-document-production
-→ smallest active Project/PRD owner in kits/prd-creator/
+→ kits/prd-creator/SKILL.md
+→ smallest PRD owner
 
-accepted PRD → Voice production
+Voice
 → voice-production
-→ smallest active Voice owner in kits/prd-creator/
+→ kits/prd-creator/SKILL.md
+→ smallest Voice owner
 ```
 
-### Project package resolution
+Do not broad-read the repository or kit. Expand context only for a real unresolved dependency or contradiction.
 
-Project packages are production data, not system-repository content. They may be mounted or copied locally under ignored `workspace/active/<project>/` paths, or retained in a separate authorized repository/location.
+## Authority
 
-```text
-user names a project
-→ use that exact package
+Use the nearest authority for each claim:
 
-current conversation unambiguously establishes one project
-→ continue that project
-
-multiple available projects + request is ambiguous
-→ ask which project before changing project state
-```
-
-Never infer project focus from directory order, recency, or whichever package is easiest to open.
-
-## Authority and conflict
-
-Use the nearest authoritative owner for each claim:
-
-1. current explicit user instruction for task intent;
+1. current explicit user instruction;
 2. approved project-specific decisions;
 3. authoritative project source;
-4. normalized requirement/project state;
-5. accepted canonical PRD;
-6. accepted Voice requirements / canonical Voice production for downstream scope;
-7. durable repository/foundation policy;
-8. active `kits/prd-creator/` domain procedure;
-9. Golden/reference material for demonstrated structure/quality only;
-10. generated output, prior review, or chat/history as supporting evidence only.
+4. normalized current project/requirement state;
+5. accepted canonical PRD / Voice source for downstream scope;
+6. durable repository/foundation policy;
+7. active package procedure;
+8. Golden/reference material for demonstrated representation/quality only;
+9. generated output, reviews, Git history, and chat as supporting evidence.
 
-Material conflicts remain `UNKNOWN` until reconciled. Golden/reference samples never supply another project's mechanics, counts, story, scoring, speakers, or implementation facts unless explicitly approved.
+Material conflicts remain `UNKNOWN` until reconciled. Golden/reference material never supplies another project's facts.
 
-### Continuity reconciliation
+## Action and steering
 
-`next-action.md` owns active continuation while current source/state owns actual implementation state.
+An explicit request to create, change, fix, continue, or apply work authorizes the requested reversible scope through completion. Ask only when a material decision cannot be recovered responsibly, the target is genuinely ambiguous, or a destructive/security/publishing/promotion boundary requires approval.
 
-```text
-detect mismatch
-→ inspect current source/owner
-→ identify stale continuity vs stale implementation
-→ reconcile the correct owner
-→ continue from actual state
-```
+When the user changes direction mid-task, preserve completed work that still satisfies the new instruction, invalidate only affected scope, and continue from actual state.
 
-Historical TODOs, audits, backlog entries, and Git history are not active work unless current user intent or `next-action` promotes them.
-
-## Evidence boundary
-
-Use evidence labels only when material uncertainty remains:
+## First wrong owner
 
 ```text
-CURRENT-PROJECT VERIFIED
-AUTHORITATIVE-SOURCE VERIFIED
-LOCAL PROOF REQUIRED
-UNSUPPORTED
-UNKNOWN
+meaning / requirement wrong       → semantic owner
+meaning correct, implementation wrong → implementation owner
+implementation correct, test stale    → test
+implementation/test correct, CI wrong → workflow / repository policy
+derived artifact wrong            → upstream canonical owner
 ```
 
-Static inspection cannot upgrade browser/audio/runtime claims to current-project verified.
+Do not repair upstream defects with renderer defaults, generated-file patches, or extra compatibility layers.
 
-## Derived-artifact rule
+## Canonical and derived state
 
 Preserve the authority chain:
 
 ```text
-original source / approved decisions
+source / approved decisions
 → normalized state
 → canonical work
-→ derived projection/artifact
+→ derived artifact
 → acceptance evidence
 ```
 
-Never patch generated `prd.html`, `context.md`, or `index.json` to hide an upstream defect.
+Never hand-patch generated `prd.html`, `context.md`, or `index.json` to hide an upstream defect.
 
 ## Repository continuity
 
-Canonical current-state owners:
+- `CONTEXT.md` → stable product/repository orientation.
+- `docs/knowledge/next-action.md` → active continuation only.
+- `docs/knowledge/decisions/` → durable rationale.
+- `docs/foundation/` → durable production policy.
+- `kits/prd-creator/` → detailed production procedure and implementation.
+- project package → project facts/state/output.
+- reviews/history → evidence only when needed.
 
-- stable product/repository orientation → `CONTEXT.md`;
-- active continuation → `docs/knowledge/next-action.md`;
-- durable decisions → `docs/knowledge/decisions/`;
-- durable production policy → `docs/foundation/`;
-- detailed production procedure/mechanics → affected `kits/prd-creator/` owner;
-- project facts/state/output → current external/local project package;
-- historical reviews → review files / Git history only when needed.
+If `next-action.md` disagrees with current implementation, inspect the current owner, correct the stale side, then continue from actual state. Historical TODOs/audits/backlog are inactive unless current user intent promotes them.
 
-Update `next-action.md` only when status, active boundary, blocker, deferred boundary, or next meaningful step actually changes.
-
-## Skill budget
-
-Canonical root skills remain:
+## Branches
 
 ```text
-.agents/skills/development-brief
-.agents/skills/project-document-production
-.agents/skills/voice-production
+develop  → active repository development
+Local    → verified integration baseline; develop→Local uses squash
+main     → stable history; Local→main requires explicit stable promotion
 ```
 
-- Production Execution → one matching production specialist + smallest kit procedure.
-- Development → mandatory `development-brief` + at most one useful semantic specialist.
-- Maintenance → specialist optional.
-- Plan → no specialist by default.
-
-Do not create renderer/validator/Python/research/evidence-gate skills merely because those surfaces exist.
+After an approved `develop → Local` squash, synchronize `develop` to the resulting `Local` HEAD before new development. Version tags/releases are separate publishing actions for approved feature/capability changes.
 
 ## Execution channel
 
-[GITHUB_RULES.md](GITHUB_RULES.md) owns GitHub tool selection, transfer safety, write/commit/history discipline, verification, retries, recovery, and STOP behavior.
+`GITHUB_RULES.md` owns GitHub tool fit, transfer safety, write/commit discipline, verification, retries, recovery, and STOP behavior. Repository-specific branch narrowing remains:
 
-Repository branch-specific narrowing:
-
-- `develop` CI is the active regression safety net for repository development.
-- `develop` → `Local` requires the Local promotion gate before integration.
-- A successful `develop` → `Local` promotion uses squash merge and adds exactly one Local commit.
-- After promotion, `develop` must be synchronized/reset to the resulting `Local` HEAD before new development begins.
-- `Local` → `main` requires `Stable release gate` and explicit stable-promotion approval.
-- A resulting `main` stable merge commit remains on `main`; do not reset lower branches to it.
-- Protected version tags/GitHub Releases are separate publishing actions and are created only for approved feature/capability changes.
-- Do not bypass a failed gate by editing another branch directly.
-- Browser, audio, and runtime claims require the actual matching capability; GitHub/static checks prove only repository/static contracts.
+- routine `develop` iteration uses selective proof;
+- `develop → Local` requires the full Local promotion gate;
+- `Local → main` requires the stable release gate;
+- browser/audio/runtime claims require the matching capability;
+- never bypass a failed gate by editing another branch directly.
 
 ## User-facing communication
 
-Normal Production Execution should expose the requested artifact, material changes/decisions, and real attention items—not repository machinery.
+Default to concise result-first reporting. Expose repository machinery only when it explains a real decision, limitation, risk, or next action.
 
-Default to concise, direct language. State the result or decision early. Use lists or tables when information is genuinely parallel, sequential, or comparative; do not repeat repository architecture or process detail unless it helps the user understand a real decision, limitation, or next action.
-
-For repository/system Development, expose a compact brief only when it materially helps the user understand scope or tradeoffs:
+For repository/system work, a compact brief is sufficient when useful:
 
 ```text
 Tujuan:
@@ -241,7 +148,7 @@ Tidak diubah:
 Cara memastikan benar:
 ```
 
-Final repository/system report:
+Final system report:
 
 ```text
 Status: Selesai | Perlu pemeriksaan | Terhenti
@@ -251,14 +158,16 @@ Batasan:
 Next step:
 ```
 
-Use one next step. Explain decisions rather than internal scratch work.
+Use one next step. Do not expose scratch reasoning.
 
 ## Product boundaries
 
-- `kits/prd-creator/` is the single product package for Flow 2–7 plus bounded 04 Production Assets completion.
-- Project/PRD and Voice remain separate semantic domains inside that package.
-- Root skills own reusable semantic judgment, not detailed package procedure.
-- `kits/prd-creator/AGENTS.md` owns package module/file routing and pure technical Maintenance.
-- Repository engineering owns shared dependency/regression/CI contracts.
-- Live project packages are not tracked in the public PRD-Creator system repository; `workspace/` is a local/external mount convention only.
-- Production Flows and agent work modes are separate layers.
+- `kits/prd-creator/` is the single product package for Flow 2–7 plus bounded non-Voice `04 Production Assets`.
+- Project/PRD and Voice remain separate semantic domains.
+- Root skills own reusable semantic judgment; package owners hold detailed procedure.
+- `kits/prd-creator/AGENTS.md` owns package file/mechanical routing.
+- Repository engineering owns shared dependency, regression, CI, and governance contracts.
+- Live project packages are not tracked in the public system repository; `workspace/` is a local/external mount convention.
+- Production Flow and agent work mode are separate layers.
+
+Stop when requested scope is complete and the cheapest sufficient evidence supports the claim.

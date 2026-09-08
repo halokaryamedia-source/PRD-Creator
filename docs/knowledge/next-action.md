@@ -2,48 +2,33 @@
 
 ## Current Status
 
-`EFFICIENCY_ROUTING_COMPLETE`
+`ASTRA_CONTEXT_KERNEL_COMPLETE`
 
-PRD-Creator Package 3 on `develop` now uses the smallest sufficient proof during iteration while preserving the full integration gate before promotion.
+The first GPT-6 Astra optimization pass on `develop` simplifies only agent/context routing. Product semantics, render schema, renderer, validators, Golden/runtime template, Production Assets, Voice contracts, and output lifecycle remain unchanged.
 
-Completed efficiency boundaries:
+Current efficiency baseline retained:
 
-1. Flow 2 approval is exception-driven: authoritative-only projects continue without a redundant preview round-trip, while material AI Proposals still require explicit approval.
-2. Flow 4 handoff state stores only `status` + `accepted_prd_version`; deterministic work/output paths are derived and verified instead of persisted as duplicate state.
-3. `tools/prd.py status` starts from the deepest present validator and reuses its upstream PRD/handoff proof instead of replaying the same validation chain.
-4. `tools/prd.py impact` maps changed paths to the smallest relevant repository / PRD / handoff / Voice / browser proof set.
-5. Routine `develop` work uses selective path-scoped CI. Full `test_*.py` regression plus Chrome proof remains mandatory at the `develop → Local` promotion boundary and at stable release verification.
-6. Temporary implementation-only placeholder files were removed; the tracked tree contains only durable owners, tests, workflows, and documentation.
-
-Branch roles remain:
-
-- `develop` → completed development candidate;
-- `Local` → protected verified integration baseline;
-- `main` → stable repository history.
+- material AI Proposal approval remains exception-driven;
+- handoff state remains minimal;
+- `tools/prd.py status` reuses downstream proof;
+- `tools/prd.py impact` selects the smallest proof domains;
+- routine `develop` CI stays selective;
+- Local/stable promotion retains full regression and browser proof.
 
 ## Active Boundary
 
-There is no active development task from this efficiency cycle.
+No product/output behavior change is authorized by this context simplification.
 
-Keep these boundaries intact:
+Keep these constraints:
 
-- do not replay full regression after every ordinary `develop` edit;
-- use change impact / first-wrong-owner routing for bounded iteration;
-- do not treat selective iteration proof as promotion proof;
-- Local promotion still requires the full regression suite with explicit browser proof;
-- browser proof stays required for visual claims and promotion/release gates;
-- no duplicate validator, cache, routing registry, or secondary lifecycle was introduced;
-- Golden/runtime-template behavior remains unchanged.
+- do not alter PRD/Voice semantics merely to shorten instructions;
+- do not change Golden/render output in this pass;
+- do not weaken promotion/release gates;
+- do not add routing registries, caches, compatibility layers, or new framework abstractions;
+- treat any unexpected artifact/output drift as a regression to fix, not an acceptable simplification cost.
 
 ## Next Step
 
-**STOP. Await an explicit next scope.**
+**STOP after repository verification passes.**
 
-Do not automatically:
-
-- promote `develop` to `Local`;
-- change Golden/runtime-template behavior;
-- add more CI layers or validation registries;
-- perform unrelated cleanup.
-
-Those remain separate decisions and should begin only when explicitly requested.
+Future simplification of `GITHUB_RULES.md`, prose-coupled repository checks, CI routing duplication, or duplicate Golden/runtime-template paths is separate scope and must preserve output parity.

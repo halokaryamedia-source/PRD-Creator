@@ -1,8 +1,8 @@
 # PRD Creator Kit Agent Rules
 
-Root `AGENTS.md` owns repository mode, continuity, authority, proof, and branch policy. This file owns package-level file/mechanical routing and context economy. Normal Production Execution starts from `SKILL.md`; exact semantic/design schemas stay with their named owners.
+Root `AGENTS.md` owns repository routing, authority, continuity, branch policy, and proof boundaries. This file owns package-level file/mechanical routing and context economy. Normal Production Execution starts from `SKILL.md`.
 
-## Open the smallest active owner
+## Open the smallest owner
 
 | Need | Owner |
 |---|---|
@@ -15,259 +15,143 @@ Root `AGENTS.md` owns repository mode, continuity, authority, proof, and branch 
 | Flow 5 Voice extraction | `voice/EXTRACTION.md` |
 | Flow 6 performance craft | `voice/PERFORMANCE-WRITING.md` |
 | Flow 7 validation/delivery | `voice/VALIDATION.md` |
-| end-to-end Flow 2–7 routing | `SKILL.md` |
+| end-to-end Flow 2–7 | `SKILL.md` |
 
-Do not broad-read the kit. Expand only for a material cross-owner dependency.
+Do not broad-read the kit. Open an adjacent owner only when an unresolved dependency can change the decision.
 
 ## Technical ownership
 
-### Shared machine contracts
-
 ```text
-shared/intake.py
-→ strict Flow 2 source / requirement / conditional-approval state
+shared/intake.py          Flow 2 machine state
+shared/state.py           strict YAML loading + diagnostics
+shared/paths.py           safe project-relative paths
+shared/acceptance.py      exact acceptance/SHA primitives
+shared/handoff.py         minimal handoff state
+shared/render_schema.py   one render-data vocabulary
+shared/localization.py    language/numeric invariants
+shared/assets.py          Owner/Moment/Asset grammar
+shared/voice.py           Flow 5/6 Voice grammar
+shared/lifecycle.py       Voice state vocabulary
+shared/topology.py        accepted 04 topology
+shared/issues.py          structured validation issues
 
-shared/state.py
-→ duplicate-safe YAML loader + state source-line diagnostics
+renderer/core.py                     presentation primitives
+renderer/pages.py                    render-data → approved page families
+renderer/prd_render_engine.py        deterministic PRD composition
+renderer/template_adapter.py         only Golden shell mutation owner
+renderer/production_assets_compositor.py  04 Asset/Voice merge
+renderer/delivery.py                 transactional versioned delivery
+renderer/render.py                   thin CLI/orchestration
 
-shared/paths.py
-→ safe project-relative persisted path normalization/resolution
-
-shared/handoff.py
-→ minimal Flow 4 handoff status + accepted revision identity
-
-shared/acceptance.py
-→ shared acceptance field + exact SHA parsing primitives
-
-shared/render_schema.py
-→ one supported render-data vocabulary + explicit result model
-
-shared/localization.py
-→ language mode + bilingual numeric/unit/dimension/coordinate/negation invariants
-
-shared/assets.py
-→ strict Owner ID / Moment ID / AST resource grammar
-
-shared/voice.py
-→ strict Flow 5 requirement + Flow 6 production grammar
-
-shared/lifecycle.py
-→ one Voice state vocabulary
-
-shared/topology.py
-→ accepted 04 Owner topology / page identity
-
-shared/issues.py
-→ structured validation/parser issue model
+validator/prd_validation_engine.py   PRD validation orchestration
+validator/html_contract.py           derived HTML contract
+validator/api.py                     canonical PRD validation API
+validator/validate_handoff.py        Flow 4→5 proof
+validator/voice_validation.py        Flow 5→7 proof
+validator/validate.py                thin PRD CLI
+validator/validate_voice.py          thin Voice CLI
 ```
 
-Do not create a second parser/schema in a renderer, validator, or doc helper.
+Do not create a second parser/schema/acceptance implementation inside renderer, validator, or helpers.
 
-### Renderer
-
-```text
-renderer/core.py
-→ presentation primitives only
-
-renderer/pages.py
-→ canonical render-data fields → approved page/component families
-
-renderer/prd_render_engine.py
-→ strict deterministic PRD-core composition
-
-renderer/template_adapter.py
-→ the only Golden shell mutation / retained reference compatibility owner,
-   including additive 04 navigation/pages/head/body injection
-
-renderer/production_assets_compositor.py
-→ merge strict Asset + Voice sources by Owner ID + Moment ID
-
-renderer/production_assets.py
-→ small 04 presentation helpers / static resource loading
-
-renderer/static/
-→ Production Assets CSS/JavaScript inlined at render time
-
-renderer/render.py
-→ thin CLI + Golden/reference-shell orchestration
-
-renderer/delivery.py
-→ transactional complete-bundle publication + context/index/README
-```
-
-### Validators
-
-```text
-validator/prd_validation_engine.py
-→ PRD source/projection/business-check orchestration
-
-validator/html_contract.py
-→ derived HTML freshness/composition/navigation contract
-
-validator/api.py
-→ canonical complete PRD validation API + content purity
-
-validator/validate.py
-→ thin PRD CLI
-
-validator/validate_handoff.py
-→ strict Flow 4→5 accepted-version / derived-artifact / exact-acceptance proof
-
-validator/voice_validation.py
-→ lifecycle-aware Flow 5→7 Voice revision/identity/HTML/acceptance domain proof
-
-validator/validate_voice.py
-→ thin Voice CLI / public validation entrypoint
-```
-
-Generic `_engine.py` sibling modules and path-order-dependent internal imports are retired.
-
-## Machine-contract invariants
+## Machine invariants
 
 ### Flow 2
 
 ```text
 requirement-register bytes
 → material Proposal exists?
-   yes → Simple Chat Preview approval
-   no  → continue automatically
+   yes → review/approval required
+   no  → continue
 → intake-state.approved_requirement_sha256
 ```
 
-`status` is the only readiness truth. `preview_approved` is conditional evidence for accepted material Proposals, not a default gate. Do not reintroduce `ready_for_prd: true`, `next_step`, or another readiness alias.
+`status` is readiness truth. `preview_approved` is conditional evidence only; do not add readiness aliases.
 
 ### Projection
 
 ```text
-intake-state.approved_requirement_sha256
-+ content.md bytes
-→ render-data.approved_requirement_sha256
-+ render-data.canonical_content_sha256
+approved requirement SHA
++ canonical content SHA
 → strict render schema
-→ renderer
+→ deterministic renderer
 ```
 
-Unknown/legacy projection fields fail. Renderer code does not infer semantic data from another role.
+Unknown/legacy projection fields fail. Renderer never reconstructs missing semantics.
 
 ### Result model
 
 ```text
-gameplay.result_model.mode=scored
-↔ developer.scoring
-
-gameplay.result_model.mode=completion_only
-↔ developer.completion_data
+result_model.mode=scored          ↔ developer.scoring
+result_model.mode=completion_only ↔ developer.completion_data
 ```
 
-Gameplay summary is explicit upstream; renderer never constructs it from Developer fields. Visible Gameplay/Developer presentation must use the same mode.
+Gameplay and Developer presentation must agree on the same mode.
 
 ### 04 identity
 
 ```text
-Owner ID
-→ Moment ID: MOM-...
-→ Asset ID: AST-... | Voice ID: VO-...
+Owner ID → MOM-... → AST-... | VO-...
 ```
 
-Display titles never join machine data. A package uses `package:<id>`; `journey:<id>` is reserved for non-package journey nodes.
+Display titles never join machine data.
 
-### Exact acceptance
+### Acceptance and handoff
 
-Flow 4:
+Flow 4 binds exact current Render Data and optional Asset Requirement SHA. Final Voice delivery binds exact Voice Production SHA.
 
-```text
-Accepted Render Data SHA256
-Accepted Asset Requirements SHA256
-```
+Handoff state stays:
 
-Flow 7 final delivery:
-
-```text
-Accepted Voice Production SHA256
-```
-
-Semantic version is not an edit counter. Both PRD and Voice acceptance parsing use `shared/acceptance.py`; do not recreate label/SHA regex logic elsewhere.
-
-### Handoff state
-
-```text
+```yaml
 status: handoff_ready
 accepted_prd_version: X.Y.Z
 ```
 
-Do not persist deterministic artifact paths in `handoff-state.yaml`. Flow 4 derives canonical `work/` and `output/v<X.Y.Z>/` paths from the accepted revision and proves those artifacts directly.
+Deterministic artifact paths are derived, not persisted as duplicate state.
 
-### Persisted paths
+### Paths
 
-Where machine state does persist path references, they are normalized project-relative POSIX paths. Reject absolute paths, backslashes, `.`/`..`, and workspace escapes.
+Persisted project paths are normalized project-relative POSIX refs. Reject absolute paths, backslashes, `.`/`..`, and workspace escapes.
 
 ## Canonical vs derived
 
 ```text
-current Flow 2 requirement state
+Flow 2 state
 → work/content.md
 → work/render-data.json
 → output/v<version>/prd.html
 
-optional work/asset-requirements.md
-→ same HTML 04
-
-optional Voice requirements / production
-→ same HTML 04 AUDIO
+optional work/asset-requirements.md → same HTML 04
+optional Voice sources             → same HTML 04 AUDIO
 ```
 
-Generated HTML/context/index are derived. Never hand-patch them to hide an upstream defect.
+Generated HTML/context/index are derived. Repair upstream owners and regenerate instead of hand-patching output.
 
 ## Golden boundary
 
-The exact approved Golden bytes and component/page grammar stay protected. Adaptive semantic cardinality is allowed only inside existing approved component families.
+Approved Golden bytes and page/component grammar remain protected. Adaptive cardinality is allowed only inside approved component families. Historical reference-project markers stay quarantined in `renderer/template_adapter.py`.
 
-Historical reference-project markers are quarantined in `renderer/template_adapter.py`; generic code must not spread them again. Production Assets may append derived 04 content only through `TemplateAdapter`, not by introducing another shell mutator.
+Do not load the large Golden HTML unless DOM/runtime/visual evidence is materially required.
 
-## Context economy
-
-```text
-smallest owner/source
-→ unresolved material dependency?
-   no → continue
-   yes → open the smallest adjacent owner
-→ stop when grounded
-```
-
-Do not load the large Golden HTML unless DOM/runtime/visual evidence requires it. Deep Voice references load only for active Voice craft/evidence work.
-
-Structured validation issues should identify code/owner/path/field (and line when available) so a model can repair the smallest scope without rereading unrelated context.
-
-## Bounded technical changes
+## Bounded technical change
 
 ```text
-observe drift
-→ identify first wrong semantic/design/technical owner
+observe failure
+→ first wrong owner
 → smallest complete correction
 → regenerate invalidated derived output once
-→ use the cheapest proof that can falsify the correction
-→ stop
+→ cheapest proof that can falsify the correction
+→ STOP
 ```
 
-Do not solve an upstream contract defect with renderer defaults or polished copy.
+Structured failures should expose code/owner/path/field/line when available so repair stays narrow.
 
-## Verification routing
+## Verification
 
-Final verification should exercise:
-
-- repository contracts/routing;
-- full PRD regression;
-- full Voice regression;
-- full Local promotion regression;
-- Ruff over the maintained Python tree;
-- type checking over shared/renderer/validator boundaries;
-- coverage reporting;
-- browser/audio evidence only when those claims are made.
-
-During broad contract refactors, finish source/docs/fixtures first; run the final verification pass only after the tree is internally coherent.
+During iteration use `tools/prd.py impact` and only affected proof domains. Final integration/promotion retains repository checks, full PRD + Voice regression, Ruff, type checking, coverage, and browser/audio evidence when claimed or required by the gate.
 
 ## Anti-overdevelopment
 
-Do not add databases, generic registries, dependency-injection frameworks, alternate PRD exports, page caches, renderer profiles, scorecard systems, or compatibility alias layers without a concrete product defect.
+Do not add databases, dependency-injection frameworks, alternate PRD exports, caches, generic registries, renderer profiles, scorecards, or compatibility layers without a concrete product defect.
 
-The desired package is small, explicit, deterministic, easy to test, and hard to misuse.
+The desired package is explicit, deterministic, testable, and hard to misuse.

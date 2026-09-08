@@ -1,6 +1,6 @@
 ---
 name: prd-creator
-description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover project requirements, resolve only material uncertainty, produce canonical PRD meaning and deterministic projection, materialize 04 Production Assets, validate handoff, then produce Voice when required without inventing upstream facts.
+description: End-to-end Production Execution router for PRD-Creator Flow 2–7: recover current project meaning, produce canonical PRD + justified Production Assets, validate handoff, then produce optional Voice without inventing upstream facts.
 version: 3.0.0
 ---
 
@@ -14,219 +14,144 @@ Use for normal project Production Execution and bounded production revisions. Ch
 new / materially uncertain project meaning
 → Flow 2
 
-approved bounded change
+bounded approved revision
 → first changed canonical owner
-→ only actually invalidated downstream owners
+→ only invalidated downstream owners
 
-meaning complete but presentation grammar wrong
+meaning complete, presentation grammar wrong
 → document/DESIGN-CONTRACT.md
 
-contracts correct but implementation wrong
-→ package AGENTS.md → technical owner
+contracts correct, executable behavior wrong
+→ package AGENTS.md → exact technical owner
 ```
 
-Start with the smallest owner that can settle the issue. Expand context only for a real dependency or contradiction.
+Start from the smallest owner that can settle the issue. Expand context only for a real dependency or contradiction.
 
 ## Canonical sequence
 
 ```text
 source / instruction
-→ Flow 2 source + material requirement recovery
-→ integrated cross-role synthesis
+→ Flow 2 recover material requirements
 → material Proposal/conflict?
-   yes → compact preview → approval/correction
-   no  → continue automatically
+   yes → compact review → approval/correction
+   no  → continue
 → exact requirement-revision binding
-→ Flow 3 canonical content.md
-→ strict render-data projection + content freshness binding
+→ Flow 3 work/content.md
+→ strict render-data + content freshness binding
 → deterministic 01–03 render
-→ required non-Voice 04 source when justified
-→ Flow 4 semantic/mechanical acceptance
-→ minimal handoff revision state
-→ handoff_ready
-→ Flow 5 Voice requirements when justified
+→ justified non-Voice 04 source when required
+→ Flow 4 acceptance + minimal handoff state
+→ optional Flow 5 Voice requirements
 → Flow 6 canonical Voice Production
 → Flow 7 Voice acceptance/delivery
 ```
 
-04 is a bounded capability, not another numbered Flow. Voice is optional and starts only from `handoff_ready`.
+`04 Production Assets` is a bounded capability, not another numbered Flow. Voice begins only from `handoff_ready`.
 
-## Canonical owners
+## Owners
 
 | Boundary | Owner |
 |---|---|
-| Flow 2 procedure/state | `intake/SOURCE-INTAKE.md` + `shared/intake.py` |
-| PRD semantic meaning | `document/CONTENT-CONTRACT.md` |
+| Flow 2 source/requirement state | `intake/SOURCE-INTAKE.md` + `shared/intake.py` |
+| canonical PRD meaning | `document/CONTENT-CONTRACT.md` |
 | Golden page/component grammar | `document/DESIGN-CONTRACT.md` |
-| strict render-data schema | `shared/render_schema.py` |
-| Flow 4 validation/handoff | `document/VALIDATION.md` |
+| render-data schema | `shared/render_schema.py` |
+| Flow 4 acceptance/handoff | `document/VALIDATION.md` |
 | non-Voice 04 | `production-assets/CONTRACT.md` + `shared/assets.py` |
-| rendering/composition/delivery | `renderer/CONTRACT.md` |
-| Voice lifecycle/state | `voice/EXTRACTION.md` + `shared/lifecycle.py` |
-| Flow 6 performance craft | `voice/PERFORMANCE-WRITING.md` |
-| Flow 7 validation | `voice/VALIDATION.md` |
-| technical/file routing | `AGENTS.md` |
+| rendering/delivery | `renderer/CONTRACT.md` |
+| Voice Flow 5 | `voice/EXTRACTION.md` |
+| Voice Flow 6 | `voice/PERFORMANCE-WRITING.md` |
+| Voice Flow 7 | `voice/VALIDATION.md` |
+| file/mechanical routing | `AGENTS.md` |
 
 Do not redefine machine schemas elsewhere.
 
-## Cross-flow invariants
+## Non-negotiable invariants
 
 ### Authority decreases downstream
 
 ```text
-current user instruction
-→ approved decisions
-→ current authoritative evidence
-→ current Flow 2 requirement revision
-→ canonical content / asset / Voice sources
+user instruction / approved decisions / authoritative source
+→ current requirement state
+→ canonical PRD / Asset / Voice sources
 → derived render/context/index/HTML/evidence
 ```
 
-Derived output never repairs or outranks its canonical owner.
+Derived output never repairs or outranks canonical meaning.
 
 ### Approval is exception-driven
 
-Flow 2 always binds the exact requirement revision consumed by Flow 3:
+Flow 2 always binds exact current requirement bytes to `approved_requirement_sha256`. User review is required only for a material AI Proposal/conflict; authoritative facts and evidence-backed Completions continue without redundant approval.
 
-```text
-requirement-register bytes
-→ intake-state.approved_requirement_sha256
-```
-
-A Simple Chat Preview and `preview_approved: true` are required only when a **material AI Proposal** needs user approval. When current authority already settles the model, Flow 2 may become `ready_for_prd` directly without a preview round-trip.
-
-Any later requirement edit invalidates the revision binding. If the changed scope contains a material Proposal, only that affected decision must be reviewed again.
+A later material requirement edit invalidates the revision binding. Reopen only affected scope.
 
 ### Projection is strict
 
 ```text
 content.md bytes
-→ render-data.canonical_content_sha256
-→ one supported field vocabulary
+→ canonical_content_sha256
+→ one supported render-data vocabulary
 → deterministic renderer
 ```
 
-No historical aliases, unknown keys, or renderer-side semantic recovery. Gameplay result meaning is explicit through `gameplay.result_model.mode = scored | completion_only` and must agree with Developer scoring/completion data.
+No historical aliases or renderer-side semantic recovery. Gameplay result mode is explicit: `scored | completion_only`, and Developer data must agree.
 
-### Stable Production Assets identity
+### Stable 04 identity
 
 ```text
-Owner ID
-→ Moment ID: MOM-...
-→ Asset ID: AST-... | Voice ID: VO-...
+Owner ID → Moment ID → Asset ID | Voice ID
 ```
 
 Display titles never perform machine joins.
 
-### Freshness bindings stay machine-owned
+### Acceptance stays exact
 
-Flow 4 acceptance binds the exact current render-data and optional non-Voice asset source. Final Voice acceptance binds the exact Voice Production source. These hashes are implementation metadata, not project versions or operator bookkeeping.
+Flow 4 binds current Render Data and optional Asset Requirements. Final Voice acceptance binds current Voice Production. These hashes are freshness metadata, not user-managed project versions.
 
-### Handoff state stays minimal
+### Handoff stays minimal
 
 ```yaml
 status: handoff_ready
 accepted_prd_version: X.Y.Z
 ```
 
-Do not persist deterministic artifact paths in `state/handoff-state.yaml`. Flow 4 derives canonical work/output locations from the accepted revision and verifies those artifacts directly.
-
-### Persisted paths are project-relative
-
-Where machine state does contain path references, they use normalized POSIX project-relative refs only. Absolute paths, backslashes, `..`, and path escapes are invalid.
+Canonical work/output paths are derived and verified, not persisted redundantly.
 
 ### Proof stays truthful
 
-Mechanical checks prove mechanical contracts. Semantic review proves reviewed meaning. Visual PASS requires rendered/browser evidence. Audio quality requires actual audio evidence.
+Mechanical checks prove mechanical contracts. Semantic review proves meaning. Visual PASS requires actual browser/render evidence. Audio quality requires actual audio evidence.
 
-## Flow 2 → Flow 3
+## Flow boundaries
 
-Flow 2 owns source/provenance, material Completion/Proposal/Blocked judgment, cross-role coherence, Production Asset implications, and conditional review.
+Flow 2 owns source/provenance, material Completion/Proposal/Blocked judgment, cross-role coherence, and requirement revision binding. Flow 3 must not invent missing project meaning.
 
-`ready_for_prd` requires:
+Flow 3 produces canonical `content.md` and strict `render-data.json`, preserving semantic cardinality instead of filling sample counts. Materialize `work/asset-requirements.md` only when approved meaning requires non-Voice resources.
 
-- current authority sufficiently inspected;
-- retained source hashes/provenance valid;
-- no current blocker/pending/rejected-active Proposal;
-- every material Proposal approved/corrected when one exists;
-- `approved_requirement_sha256` equals exact current requirement-register bytes.
+Flow 4 validates current PRD state, semantic readiness, exact acceptance bindings, delivery parity, and browser evidence only when claimed/required. Only `handoff_ready` crosses to Voice.
 
-Do not create a review stop merely because Flow 2 exists. If authoritative evidence already settles the project model, continue directly to Flow 3.
-
-Flow 3 must return upstream rather than silently invent missing meaning.
-
-## Flow 3 → Flow 4
-
-```text
-current Flow 2 requirement revision
-→ work/content.md
-→ strict work/render-data.json + content freshness binding
-→ DESIGN-CONTRACT grammar
-→ deterministic PRD-core render
-```
-
-Preserve semantic cardinality. Do not fill or compress content to sample counts.
-
-Materialize `work/asset-requirements.md` before Flow 4 when approved meaning requires non-Voice resources.
-
-## Flow 4 handoff
-
-Use one canonical mechanical validator, one integrated semantic readiness/reconciliation review, Material Conservation, and visual evidence only when claimed.
-
-When `Visual sanity: PASS` is claimed, run:
-
-```bash
-python tools/prd.py browser workspace/active/<project>/
-```
-
-After acceptance, `state/handoff-state.yaml` stores only `status` and `accepted_prd_version`. The validator derives and checks canonical `work/` + `output/v<version>/` paths, delivery revision metadata, and exact acceptance bindings.
-
-Only `handoff_ready` crosses into Flow 5. Browser evidence is downstream proof and must never authorize stale or mechanically invalid PRD state.
-
-## Flow 5–7
-
-Flow 5 owns Voice scope, Owner ID, Moment ID, Speaker/Channel/Trigger/Purpose, communication payload/exclusions, and authoritative timing truth.
-
-Flow 6 preserves that identity and owns wording, performance, Estimated Duration, and voice/profile selection.
-
-Flow 7 validates revision/identity/source/HTML parity. Voice-only changes do not reopen PRD acceptance when upstream PRD/04 meaning is unchanged.
+Flow 5 owns Voice scope/context/communication intent. Flow 6 owns final wording/performance within that contract. Flow 7 proves revision/identity/source/HTML parity. Voice-only changes do not reopen accepted PRD meaning when upstream scope is unchanged.
 
 ## First wrong owner
 
 ```text
-project fact / gameplay / story / project-level production choice
-→ Flow 2 / PRD authority
-
-canonical PRD meaning wrong
-→ CONTENT-CONTRACT / content.md
-
-meaning correct; page grammar wrong
-→ DESIGN-CONTRACT
-
-non-Voice resource meaning / Owner-Moment-Asset identity
-→ production-assets / asset-requirements.md
-
-Voice scope / communication intent
-→ Flow 5 / voice-requirements.md
-
-Voice wording / performance / duration / cast selection
-→ Flow 6 / voice-production.md
-
-canonical sources correct; generated presentation wrong
-→ renderer/compositor
-
-mechanical parity defect
-→ matching validator/shared schema owner
+project fact/gameplay/story/production choice → Flow 2 / project authority
+canonical PRD meaning                       → content owner
+meaning correct, page grammar wrong         → DESIGN-CONTRACT
+non-Voice 04 meaning/identity               → Production Assets owner
+Voice scope/intent                          → Flow 5
+Voice wording/performance                   → Flow 6
+canonical sources correct, render wrong     → renderer/compositor
+mechanical parity wrong                     → validator/shared owner
 ```
 
-## Mechanical operator shortcut
+## Operator facade
 
-Prefer the repository facade for routine mechanical work:
+Prefer:
 
 ```bash
 python tools/prd.py impact <changed-path> ... --json
 python tools/prd.py impact --git-base <ref> --json
-python tools/prd.py status workspace/active/<project>/
+python tools/prd.py status workspace/active/<project>/ --json
 python tools/prd.py build workspace/active/<project>/
 python tools/prd.py validate workspace/active/<project>/
 python tools/prd.py browser workspace/active/<project>/
@@ -234,59 +159,44 @@ python tools/prd.py handoff workspace/active/<project>/
 python tools/prd.py voice workspace/active/<project>/
 ```
 
-Use `impact` before broad verification when the changed paths are known. It maps the changed owner to the smallest sufficient `repository`, `prd`, `handoff`, `voice`, and browser proof set, and flags direct edits to derived `output/` files. It does not replace the full `develop → Local` promotion gate.
+`impact` selects the smallest proof domains for iteration and flags direct derived-output edits. It does not replace the full `develop → Local` promotion gate.
 
-Use `status --json` when an agent needs compact machine-readable project routing. Status starts from the deepest present validator and reuses its upstream proof instead of replaying the same PRD/handoff validation chain. It reports mechanical state and the first structured wrong owner; it does not prove semantic, visual, audio, or approval quality.
+`status` starts from the deepest present validator and reuses upstream proof. It reports mechanical state and the first structured wrong owner; it does not prove semantic, visual, audio, or approval quality.
 
-Use `browser` only after current canonical PRD validation passes and only when browser/visual evidence is required. Routine `develop` CI does not run Chrome for nonvisual changes; Local promotion and stable release gates force browser proof as part of the full regression suite.
+Use `browser` only after canonical PRD validation passes and when browser/visual evidence is required.
 
 ## Artifact lifecycle
 
 ```text
-Flow 2
-state/source-inventory.yaml
-state/requirement-register.yaml
-state/intake-state.yaml
-work/review.md                    # optional
+Flow 2  state/source-inventory.yaml
+        state/requirement-register.yaml
+        state/intake-state.yaml
+        work/review.md                 # optional
 
-Flow 3
-work/content.md
-work/render-data.json
+Flow 3  work/content.md
+        work/render-data.json
 
-04 when required
-work/asset-requirements.md
+04      work/asset-requirements.md     # when required
 
-Flow 4
-work/acceptance.md
-state/handoff-state.yaml          # status + accepted_prd_version only
+Flow 4  work/acceptance.md
+        state/handoff-state.yaml
 
-Voice when used
-work/voice-requirements.md
-work/voice-production.md
-work/voice-acceptance.md
-state/voice-state.yaml
+Voice   work/voice-requirements.md
+        work/voice-production.md
+        work/voice-acceptance.md
+        state/voice-state.yaml
 
-Derived
-output/README.md
-output/v<version>/prd.html
-output/v<version>/context.md
-output/v<version>/index.json
+Derived output/README.md
+        output/v<version>/prd.html
+        output/v<version>/context.md
+        output/v<version>/index.json
 ```
 
-Do not create parallel schemas, registries, dashboards, extra approval layers, alternate default HTML, or speculative frameworks.
+## Context and stop
 
-## Context and proof economy
-
-- Start narrow and expand progressively.
-- Use `tools/prd.py impact` when changed paths are known; run only its affected proof domains during iteration.
-- Use `tools/prd.py status` for project mechanical status/debug routing; downstream proof is reused rather than replayed.
-- Do not load the large Golden HTML unless template/DOM/runtime/visual evidence requires it.
+- Start narrow; expand progressively.
 - Batch canonical edits before regeneration.
-- Use exact owner/state/schema errors instead of rereading unrelated context.
-- Do not turn semantic review into word-count, similarity, scorecard, or checksum ceremony.
-- Do not ask the user to repeat recoverable state or reapprove already-authoritative facts.
-- Full regression remains an integration/promotion proof, not an every-edit ritual.
-
-## Stop condition
-
-Stop when requested scope is complete and evidence supports the claim. Do not continue into unrelated cleanup or speculative abstraction merely because more work is possible.
+- Prefer structured owner/state/schema errors over rereading unrelated context.
+- Do not load Golden HTML for ordinary semantic work.
+- Do not create duplicate schemas, registries, dashboards, approval layers, or speculative frameworks.
+- Stop when requested scope is complete and evidence supports the claim.

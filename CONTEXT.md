@@ -5,13 +5,11 @@ Development branch: `develop`
 Verified integration baseline: `Local`  
 Stable branch: `main`
 
-This file is the stable orientation layer for new sessions and repository Development. It explains what PRD-Creator is, its major authority boundaries, and where detailed owners live.
+PRD-Creator converts uneven project discussion/source material into one approved project model, development-ready PRD documentation, bounded Production Assets, and optional downstream Voice Production.
 
-## Product
+## Production model
 
-PRD-Creator turns uneven project discussion and source material into one approved project model, then produces development-ready documentation and production resources needed to build that same project.
-
-The normal human-facing document may contain:
+Human-facing PRD structure:
 
 ```text
 01 Overview
@@ -20,11 +18,7 @@ The normal human-facing document may contain:
 04 Production Assets
 ```
 
-01–03 use the approved PRD-core/Golden system. `04 Production Assets` is additive and comes from the same approved project model, not from a second design pass over generated 01–03.
-
-Voice Production is downstream from accepted project/PRD meaning. It does not create a second source-intake authority.
-
-## Canonical production sequence
+Canonical production sequence:
 
 ```text
 Flow 1  Repository Boot & Project Memory
@@ -36,49 +30,9 @@ Flow 6  Eleven v3 Performance Script Production
 Flow 7  Voice Validation & Delivery
 ```
 
-There is no canonical Flow 8. Non-Voice Production Assets are a bounded capability inside the same PRD-Creator package.
+There is no canonical Flow 8. Non-Voice `04 Production Assets` is a bounded capability of the same PRD-Creator package. Voice begins only from accepted upstream PRD meaning.
 
-## Branch authority
-
-All active branches share the same clean professional root baseline.
-
-```text
-develop
-→ active repository Development
-→ working commits may be numerous
-
-Local
-→ verified integration / stable working baseline
-→ exactly one squash commit per approved update
-
-main
-→ stable repository history
-→ receives explicit Local stable promotions
-→ protected `v*` tags mark feature-bearing published releases
-```
-
-Promotion contract:
-
-```text
-develop working commits
-→ Local Promotion Verify
-→ squash merge
-→ exactly +1 Local commit
-→ synchronize/reset develop to resulting Local HEAD
-
-Local approved milestones
-→ Stable release gate
-→ merge stable PR to main
-→ main records explicit stable boundary
-```
-
-A `main` stable boundary is not automatically a versioned release. A new `v*` tag/GitHub Release is published only when an approved PRD-Creator feature/capability changes. Governance, CI, ruleset, documentation, and other maintenance-only stable updates remain untagged.
-
-Do not continue development from a pre-squash `develop` chain after promotion. Do not reset `Local` to a `main` stable merge commit; `Local` remains the clean milestone sequence while `main` records stable boundaries.
-
-Detailed GitHub execution remains owned by `GITHUB_RULES.md`; the durable branch decision is recorded under `docs/knowledge/decisions/clean-local-squash-history.md`.
-
-## Stable authority shape
+## Authority shape
 
 ```text
 current user instruction
@@ -86,95 +40,89 @@ current user instruction
 + authoritative project source
 → approved project model
    ├─ canonical PRD core 01–03
-   └─ justified non-Voice 04 Production Asset requirements
+   └─ justified non-Voice 04 requirements
 → accepted PRD / handoff
 → optional Voice requirements
 → canonical Voice Production
-→ derived project HTML / evidence
+→ derived HTML / context / evidence
 ```
 
-Authority decreases downstream. Generated HTML, render projections, reviews, and other derived artifacts do not repair or outrank canonical source.
+Authority decreases downstream. Generated artifacts never repair or outrank canonical source. If a downstream step exposes missing upstream meaning, reopen only the affected owner.
 
-If a downstream step exposes missing or contradictory upstream meaning, return only the affected decision to the correct upstream owner.
+## Branch model
 
-## Product boundaries
+```text
+develop → active repository Development
+Local   → verified integration baseline; one squash commit per approved update
+main    → stable repository history
+```
 
-`kits/prd-creator/` is the single implementation/procedure package for Flow 2–7 plus bounded `04 Production Assets` completion.
+`develop → Local` requires Local Promotion Verify and squash. After promotion, synchronize `develop` to the resulting `Local` HEAD. `Local → main` requires explicit stable promotion and the Stable release gate. A stable main promotion is not automatically a versioned release; protected `v*` tags/releases are reserved for approved feature/capability changes.
+
+## Product package
+
+`kits/prd-creator/` owns Flow 2–7 plus bounded 04 execution:
 
 ```text
 intake/             Flow 2 source + requirement recovery
-document/           PRD core 01–03 contract + Flow 4 validation
-production-assets/  exact non-Voice 04 resource/writing contract
+document/           PRD meaning/design/Flow 4 acceptance
+production-assets/  non-Voice 04 contract
 voice/              Flow 5–7 Voice procedure/craft/evidence
-shared/             strict machine schemas, identity, path, acceptance, localization, issue primitives
-renderer/           deterministic PRD + shared 04 presentation
-validator/          PRD, derived-HTML, handoff, and Voice mechanical gates
-template/           approved Golden/runtime bytes
+shared/             strict machine schemas and shared primitives
+renderer/           deterministic PRD + 04 rendering/delivery
+validator/          PRD, HTML, handoff, and Voice mechanical gates
+template/           approved Golden/runtime representation
 ```
 
-`shared/` centralizes machine behavior only; it does not become a new semantic authority. Project/PRD semantics and Voice semantics remain separate responsibilities even though they live in one product package.
+`shared/` centralizes machine behavior only; it does not become semantic authority.
 
 ## Project-data boundary
 
-The public PRD-Creator repository owns the **system**, not live project/client production data.
+The public repository owns the system, not live client/project production data. `workspace/active/` and `workspace/archive/` are ignored local/external mount conventions. Project packages may live locally or in another authorized location.
 
-`workspace/active/` and `workspace/archive/` are local/external mount conventions. Their project subdirectories are ignored by Git; only workspace guidance is tracked.
+Do not commit credentials, private client material, live requirement state, or generated client output to this public repository without an explicit visibility decision.
 
-Project packages may live locally under ignored workspace paths, in a separate private/authorized repository, or in another approved storage location.
+## Golden boundary
 
-Do not commit credentials, private client/source material, live requirement registers, project outputs, or other project-specific production state into this public system repository unless an explicit visibility decision authorizes it.
+The approved Golden artifact is binding for PRD-core representation until explicitly changed. It supplies structure/quality evidence only and never another project's gameplay facts, counts, timings, lore, scoring, speakers, or implementation decisions.
 
-The active branch history is clean. Legacy pre-reset history is retained only through dedicated safety branches for recovery/audit.
-
-## Golden / reference boundary
-
-The approved Golden PRD artifact is binding for the PRD-core representation contract until the user approves a new design. Golden/reference material does not supply another project's gameplay facts, counts, timings, lore, scoring, speakers, or implementation decisions.
-
-## Operating direction
-
-- recover repository/project context before asking the user to repeat it;
-- triage source by authority/relevance before deep reading;
-- solve supported meaning before asking for decisions;
-- preserve information completeness;
-- use bounded revisions;
-- prefer existing owners before creating files, skills, schemas, workflows, compatibility layers, or frameworks;
-- use the cheapest proof that can falsify the active claim;
-- historical audits/backlog/TODOs are not active work unless promoted by current continuation;
-- `No change required` is valid;
-- stop when requested scope is complete and sufficiently proven.
-
-## Repository map
+## Canonical output lifecycle
 
 ```text
-AGENTS.md            top-level repository routing / continuity rules
-GITHUB_RULES.md      GitHub execution, commit/history, CI/API/safety discipline
-CONTEXT.md           stable product/repository orientation
-docs/foundation/     durable Flow 1–7 production policy
-docs/knowledge/      continuation, routing, ownership, decisions, evidence, backlog
-.agents/skills/      reusable semantic judgment
-kits/prd-creator/    categorized Flow 2–7 + bounded 04 procedure/implementation
-workspace/           ignored local/external project-package mount points
-tests/ + tools/      repository engineering / repeatable verification
-.github/             CI and promotion gates
-```
-
-## Project package principle
-
-Canonical work stays upstream; derived delivery can be regenerated.
-
-```text
+state/source-inventory.yaml
+state/requirement-register.yaml
+state/intake-state.yaml
+        ↓
+work/content.md
+work/render-data.json
+work/asset-requirements.md       # when required
+        ↓
+work/acceptance.md
+state/handoff-state.yaml
+        ↓
+optional Voice work/state
+        ↓
 output/README.md
 output/v<document.version>/prd.html
 output/v<document.version>/context.md
 output/v<document.version>/index.json
 ```
 
-`prd.html` is the human-facing project document. `context.md` and `index.json` are AI reading/navigation projections, not a second PRD authority.
+Generated output is replaceable projection; canonical state/work remains upstream.
 
-`document.version` is project/release metadata, not an edit counter.
+## Repository map
 
-## Continuation
+```text
+AGENTS.md            routing, authority, continuity, branch kernel
+GITHUB_RULES.md      GitHub execution and repository mutation discipline
+CONTEXT.md           this stable orientation
+next-action.md       active continuation only
+docs/foundation/     durable Flow policy
+docs/knowledge/      decisions, ownership, evidence, historical context
+.agents/skills/      reusable semantic judgment
+kits/prd-creator/    product procedure + implementation
+tests/ + tools/      deterministic verification/operator facade
+.github/             CI and promotion gates
+```
 
-For new-chat context recovery and non-trivial Development, read `docs/knowledge/next-action.md` after this file.
-
-`next-action.md` owns the active continuation boundary; current source/state owns actual implementation truth. If they disagree, reconcile the stale owner before continuing.
+For a new Development session, read `docs/knowledge/next-action.md` after this file. For normal Production Execution, use the matching production skill and smallest project owner instead of broad-reading repository context.
