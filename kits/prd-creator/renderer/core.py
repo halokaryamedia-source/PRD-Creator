@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import html
 import re
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 
@@ -44,7 +45,7 @@ def slug(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-") or "project"
 
 
-def ul(items: list[Any], cls: str = "clean-list") -> str:
+def ul(items: Sequence[Any], cls: str = "clean-list") -> str:
     if not items:
         return ""
     return f'<ul class="{esc(cls)}">' + "".join(f"<li>{i18n(item)}</li>" for item in items) + "</ul>"
@@ -56,7 +57,7 @@ def cell_html(value: Any) -> str:
     return i18n(value) if present(value) else ""
 
 
-def production_table(headers: list[Any], rows_html: list[str], cls: str) -> str:
+def production_table(headers: Sequence[Any], rows_html: Sequence[str], cls: str) -> str:
     if not rows_html:
         return ""
     head = ""
@@ -68,7 +69,7 @@ def production_table(headers: list[Any], rows_html: list[str], cls: str) -> str:
     )
 
 
-def terms(items: list[dict[str, Any]], panel_id: str, *, glossary_enabled: bool = True) -> str:
+def terms(items: Sequence[Mapping[str, Any]], panel_id: str, *, glossary_enabled: bool = True) -> str:
     if not items:
         return ""
     rows = "".join(
@@ -92,7 +93,7 @@ def terms(items: list[dict[str, Any]], panel_id: str, *, glossary_enabled: bool 
     )
 
 
-def cards(items: list[tuple[Any, Any]]) -> str:
+def cards(items: Sequence[tuple[Any, Any]]) -> str:
     body = "".join(
         f"<article><b>{i18n(label)}</b><p>{i18n(value)}</p></article>" for label, value in items if present(value)
     )
@@ -105,7 +106,7 @@ def context_block(label: Any, value: Any) -> str:
     return f'<div class="context-block section-context"><b>{i18n(label)}</b><p>{i18n(value)}</p></div>'
 
 
-def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
+def flow_cards(items: Sequence[Mapping[str, Any]], cls: str) -> str:
     body = []
     for index, item in enumerate(items, 1):
         step = item.get("step", index)
@@ -117,7 +118,7 @@ def flow_cards(items: list[dict[str, Any]], cls: str) -> str:
     return f'<div class="flow {esc(cls)}">{"".join(body)}</div>' if body else ""
 
 
-def sequence(items: list[dict[str, Any]]) -> str:
+def sequence(items: Sequence[Mapping[str, Any]]) -> str:
     body = []
     for item in items:
         text = join_text(item["action"], item["result"], sep=" — ")
@@ -127,7 +128,7 @@ def sequence(items: list[dict[str, Any]]) -> str:
     return f'<div class="role-sequence quarry-sequence">{"".join(body)}</div>' if body else ""
 
 
-def note_grid(items: list[dict[str, Any]]) -> str:
+def note_grid(items: Sequence[Mapping[str, Any]]) -> str:
     if not items:
         return ""
     body = "".join(
@@ -206,8 +207,8 @@ def weight_text(value: Any) -> str:
 
 
 def _score_table(
-    headers: list[Any],
-    rows: list[str],
+    headers: Sequence[Any],
+    rows: Sequence[str],
     classes: str = "score-table-wrap quarry-inline-score-table",
 ) -> str:
     if not rows:
@@ -219,7 +220,7 @@ def _score_table(
     )
 
 
-def _result_context(data: dict[str, Any]) -> str:
+def _result_context(data: Mapping[str, Any]) -> str:
     rows = []
     for label, field in (
         (bi("Final Result", "Hasil Akhir"), "final_result_relationship"),
@@ -230,7 +231,7 @@ def _result_context(data: dict[str, Any]) -> str:
     return ul(rows, "compact-cell-list")
 
 
-def score_html(data: dict[str, Any]) -> str:
+def score_html(data: Mapping[str, Any]) -> str:
     components = data.get("components", [])
     summary = f'<div class="quarry-score-summary"><strong>{i18n(data["score_name"])}</strong>'
     if data.get("scale"):
@@ -274,7 +275,7 @@ def score_html(data: dict[str, Any]) -> str:
     )
 
 
-def completion_html(data: dict[str, Any]) -> str:
+def completion_html(data: Mapping[str, Any]) -> str:
     summary_text = data.get("summary") or data["handoff_result"]
     summary = (
         f'<div class="quarry-score-summary phase-score-summary">'
