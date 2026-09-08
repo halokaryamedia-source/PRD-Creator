@@ -224,6 +224,8 @@ mechanical parity defect
 Prefer the repository facade for routine mechanical work:
 
 ```bash
+python tools/prd.py impact <changed-path> ... --json
+python tools/prd.py impact --git-base <ref> --json
 python tools/prd.py status workspace/active/<project>/
 python tools/prd.py build workspace/active/<project>/
 python tools/prd.py validate workspace/active/<project>/
@@ -232,9 +234,11 @@ python tools/prd.py handoff workspace/active/<project>/
 python tools/prd.py voice workspace/active/<project>/
 ```
 
-Use `status --json` when an agent needs compact machine-readable routing. It reports mechanical state and the first structured wrong owner; it does not prove semantic, visual, audio, or approval quality.
+Use `impact` before broad verification when the changed paths are known. It maps the changed owner to the smallest sufficient `repository`, `prd`, `handoff`, `voice`, and browser proof set, and flags direct edits to derived `output/` files. It does not replace the full `develop → Local` promotion gate.
 
-Use `browser` only after current canonical PRD validation passes and only when browser/visual evidence is required.
+Use `status --json` when an agent needs compact machine-readable project routing. Status starts from the deepest present validator and reuses its upstream proof instead of replaying the same PRD/handoff validation chain. It reports mechanical state and the first structured wrong owner; it does not prove semantic, visual, audio, or approval quality.
+
+Use `browser` only after current canonical PRD validation passes and only when browser/visual evidence is required. Routine `develop` CI does not run Chrome for nonvisual changes; Local promotion and stable release gates force browser proof as part of the full regression suite.
 
 ## Artifact lifecycle
 
@@ -274,12 +278,14 @@ Do not create parallel schemas, registries, dashboards, extra approval layers, a
 ## Context and proof economy
 
 - Start narrow and expand progressively.
-- Use `tools/prd.py status` first for mechanical status/debug routing.
+- Use `tools/prd.py impact` when changed paths are known; run only its affected proof domains during iteration.
+- Use `tools/prd.py status` for project mechanical status/debug routing; downstream proof is reused rather than replayed.
 - Do not load the large Golden HTML unless template/DOM/runtime/visual evidence requires it.
 - Batch canonical edits before regeneration.
 - Use exact owner/state/schema errors instead of rereading unrelated context.
 - Do not turn semantic review into word-count, similarity, scorecard, or checksum ceremony.
 - Do not ask the user to repeat recoverable state or reapprove already-authoritative facts.
+- Full regression remains an integration/promotion proof, not an every-edit ritual.
 
 ## Stop condition
 
