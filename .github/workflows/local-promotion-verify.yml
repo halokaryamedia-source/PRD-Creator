@@ -9,6 +9,7 @@ on:
       - ".github/workflows/release-verify.yml"
       - "tests/test_prd_browser_verify.py"
       - "tools/browser_verify.py"
+      - "tools/verify_repository.py"
   pull_request:
     branches:
       - Local
