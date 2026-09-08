@@ -13,6 +13,7 @@ Completed efficiency boundaries:
 3. `tools/prd.py status` starts from the deepest present validator and reuses its upstream PRD/handoff proof instead of replaying the same validation chain.
 4. `tools/prd.py impact` maps changed paths to the smallest relevant repository / PRD / handoff / Voice / browser proof set.
 5. Routine `develop` work uses selective path-scoped CI. Full `test_*.py` regression plus Chrome proof remains mandatory at the `develop → Local` promotion boundary and at stable release verification.
+6. Temporary implementation-only placeholder files were removed; the tracked tree contains only durable owners, tests, workflows, and documentation.
 
 Branch roles remain:
 
