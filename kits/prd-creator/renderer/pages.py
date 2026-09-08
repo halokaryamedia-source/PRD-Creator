@@ -598,10 +598,10 @@ def navigation(data: RenderData) -> str:
             )
     groups: list[str] = []
     for target, nav_index, label, small in links:
+        small_html = f"<small>{i18n(small)}</small>" if present(small) else ""
         groups.append(
             f'<a data-target="{esc(target)}" href="#{esc(target)}">'
             f'<span class="nav-index">{esc(nav_index)}</span>'
-            f'<span class="nav-copy"><strong>{i18n(label)}</strong>'
-            f"<small>{i18n(small)}</small></span></a>"
+            f'<span class="nav-copy"><strong>{i18n(label)}</strong>{small_html}</span></a>'
         )
     return "".join(groups)
