@@ -2,28 +2,27 @@
 
 ## Current Status
 
-`SFX_RESEARCH_PROCEDURE_READY`
+`SFX_OFFLINE_PREFLIGHT_IMPLEMENTED`
 
-ElevenLabs non-dialogue SFX remains a bounded Production Assets capability. The coordinator now loads focused references for contracts/sources, archetype prompting, families/variation, timing/loops/layers, execution/cost control and validation/delivery. Minecraft Bedrock guidance is optional and target-specific.
+Non-dialogue SFX remains inside Production Assets. The researched coordinator and seven selectively loaded references remain in use. An executable, read-only request preflight now complements the operator policy; no ElevenLabs generation adapter or billing service was added.
 
 ## Implemented Boundary
 
-- `kits/prd-creator/production-assets/SOUND-EFFECTS.md` is the short entrypoint; detailed knowledge is read only when relevant.
-- Temporal form, family relationship and layering are independent decisions rather than mutually exclusive modes.
-- Preparation/implementation/tests use zero paid requests. Generation requires explicit scope and finite approved limits; attempts, retries and unknown outcomes consume/reserve allowance without session resets.
-- Reuse, existing-candidate review, representative-family approval and bounded editing precede unnecessary generation. An accepted candidate stops the search even when allowance remains.
-- Unknown billing units, unsafe hidden retries, missing review capability and unbounded charges have explicit stop/handoff rules. The procedure is not an executable provider-side spending firewall.
-- Official facts, repository craft recommendations and heard project calibration stay distinct. No fixed price, unsupported endpoint control or guaranteed savings is asserted.
-- Static SFX knowledge tests are included in Repository Verify; tests make no external API requests and cannot prove acoustic quality.
+- `tools/prd.py sfx-check` reads one native SFX-v2 API request and an explicit operator-supplied batch snapshot.
+- `kits/prd-creator/shared/sfx.py` owns strict JSON/body checks and next-attempt request/duration checks. It reuses shared structured issues, not a second canonical asset parser.
+- Reject duplicate/unsupported request fields, invalid numeric/boolean values, invalid model, exhausted allowance, and unresolved earlier outcomes. Auto duration is checked against the documented 30-second maximum.
+- The result contains the exact request-file SHA256, compact settings, blockers and explicit unchecked boundaries. It never reads credentials, calls an API, rewrites a prompt, writes project state, or reserves allowance.
+- Used includes every dispatched attempt; unresolved is a subset, not a second debit. Snapshot freshness, consent, concurrency, format entitlement, monetary limits and actual audio remain outside mechanical proof.
+- Existing six preparation examples are checked by the same native-request validator. Dedicated offline tests exercise invalid input, budget boundaries, no-network/read-only behavior and CLI success/failure.
 
 ## Preserved
 
-Current canonical workflow names remain Project Setup → Project Requirements → PRD Production (Production Assets when required) → PRD Handoff → optional Voice Requirements → Voice Production → Voice Delivery.
+Canonical workflow names, existing project/Voice data and acceptance schemas, Owner/Moment/AST/VO identity, Golden UI and runtime dependencies are unchanged. Package authoring-contract version remains **3.1.3**; this additive mechanical check changes no project contract. No root skill, SFX database, paid execution, promotion or release is implied.
 
-Package version remains **3.1.3**: this is procedure/reference hardening, not a runtime/schema release. Voice behavior, Golden UI, Owner/Moment/AST/VO identity, strict parsers, SHA acceptance and runtime dependencies are unchanged. `work/asset-requirements.md` and `work/voice-production.md` retain their existing canonical roles. No root skill, SFX database or generation wrapper was added.
+The preflight is not an executable billing firewall. Its PASS is not SFX Production Readiness, semantic acceptance, generation permission, a budget reservation, or heard evidence. The existing execution/cost-control policy still applies.
 
 ## Next Step
 
-Use the SFX coordinator for the next approved production request. Before an actual paid trial, recover the user's finite batch allowance and active executor/account terms; prepare the matching prompt and acceptance criteria without spending first. Run only the smallest relevant listening calibration after generation authorization. No paid synthesis or listening/Bedrock proof is implied by implementation or static test success.
+For a real approved SFX target, prepare the exact request and recover current limits/counters from the existing execution record. Run the offline check, resolve blockers, then separately verify the remaining production/authorization gates. Reserve in the shared record before any explicitly authorized paid call. Never reset counters to obtain PASS.
 
-Keep work on `develop`. `Local` and `main` remain untouched until explicitly promoted under their existing gates.
+No further paid calibration is authorized by this implementation. Keep work on `develop`; `Local` and `main` remain untouched until explicitly promoted under existing gates.

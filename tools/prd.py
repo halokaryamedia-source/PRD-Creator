@@ -18,6 +18,7 @@ if str(KIT_ROOT) not in sys.path:
     sys.path.insert(0, str(KIT_ROOT))
 
 from renderer.delivery import build_delivery  # noqa: E402
+from shared.sfx import preflight as sfx_preflight  # noqa: E402
 from shared.state import StateError  # noqa: E402
 from validator import api as prd_api  # noqa: E402
 from validator import validate_handoff as handoff_validator  # noqa: E402
@@ -444,9 +445,32 @@ def main() -> int:
         command_parser = subparsers.add_parser(command, help=help_text)
         command_parser.add_argument("project", type=Path)
 
+    sfx_parser = subparsers.add_parser(
+        "sfx-check", help="offline SFX request and budget snapshot check; never generates"
+    )
+    sfx_parser.add_argument("request", type=Path, help="native ElevenLabs SFX-v2 JSON body, not a project manifest")
+    sfx_parser.add_argument(
+        "--request-limit", type=int, required=True, help="finite API-attempt cap from execution notes"
+    )
+    sfx_parser.add_argument(
+        "--requests-used", type=int, required=True, help="all dispatched attempts, including unresolved"
+    )
+    sfx_parser.add_argument("--unresolved-requests", type=int, required=True, help="unresolved subset of requests-used")
+    sfx_parser.add_argument("--max-duration-seconds", type=float, required=True, help="per-attempt duration cap")
+
     args = parser.parse_args()
 
     try:
+        if args.command == "sfx-check":
+            return _result_exit(
+                sfx_preflight(
+                    args.request,
+                    request_limit=args.request_limit,
+                    requests_used=args.requests_used,
+                    unresolved_requests=args.unresolved_requests,
+                    max_duration_seconds=args.max_duration_seconds,
+                )
+            )
         if args.command == "impact":
             changed = list(args.changed)
             if args.git_base is not None:

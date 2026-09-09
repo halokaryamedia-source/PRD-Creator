@@ -73,6 +73,20 @@ Website exploration, direct API automation, and timeline composition are differe
 
 Useful metric after an actual batch: verified generation expenditure / accepted deliverables, with unit and review scope. Keep editing effort separate. Do not report an improvement percentage without comparable measured batches. Report prepared prompts, paid attempts, accepted assets, unresolved charges and remaining allowance only as evidenced; omit invented precision.
 
+## Offline request check
+
+From the repository root, use the existing operator CLI with a native SFX-v2 JSON body (one example body from the prompting reference may be saved as `request.json`):
+
+```bash
+python tools/prd.py sfx-check request.json --request-limit 3 --requests-used 0 --unresolved-requests 0 --max-duration-seconds 2
+```
+
+These numbers are illustrative, not authorization. Supply actual current limits and counters from the existing execution record. `requests-used` includes every dispatched retry and unresolved attempt; `unresolved-requests` is its subset. Convert the table above as used = Attempted + Reserved, unresolved = unresolved portion; never reset either to zero merely to pass.
+
+The checker rejects duplicate/unsupported fields, invalid types/ranges, exhausted slots and any unresolved outcome. Auto duration is evaluated at the API's 30-second upper bound. It does not impose the website's 450-character limit on API text. Its 64 KiB file and 32-bit counter bounds are local parser safeguards, not provider limits.
+
+Exit 0 means only mechanical PASS; exit 1 means a request/snapshot blocker; exit 2 means invalid CLI arguments. No network, credential read, file write or reservation occurs. The report omits full prompts and returns an exact request-file SHA256. A changed request or snapshot needs another check. Query format/entitlement, accepted AST meaning, ledger freshness, consent, concurrency and monetary limits still require the checks above. **Do not use this stateless preview as a spending lock.**
+
 ## Operator-ready handoff
 
 Return the target AST IDs, exact prompts, intended surface/model, duration/loop/influence, output choice, review criteria and proposed finite budget. Clearly separate proposal from approval. One worked suggestion may be up to three API attempts of at most two seconds each for a short cue; this is an example ceiling, not a default entitlement. A first accepted take stops at one. Resume from the existing record before any later call.

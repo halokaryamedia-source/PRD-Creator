@@ -45,6 +45,8 @@ Choose these dimensions independently, not as mutually exclusive modes:
 
 A machine idle can be a loop, a family state, and a layered effect simultaneously. Keep these as reasoning context, not schema fields. Separate required timing from a reversible production duration choice.
 
+Before API execution, use `tools/prd.py sfx-check` on the exact native request and current batch counters; command details are in the execution reference. It is offline and read-only. Its PASS does not reserve allowance, authorize spending, or replace semantic/audio review.
+
 ## Generation Mode
 
 **No paid request without explicit generation authorization and a finite approved batch budget.** Prompt approval is not spend approval. Do not renew the budget after a context reset or quality approval.

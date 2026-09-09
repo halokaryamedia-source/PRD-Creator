@@ -31,6 +31,7 @@ shared/handoff.py         minimal PRD Handoff state
 shared/render_schema.py   one render-data vocabulary
 shared/localization.py    language/numeric invariants
 shared/assets.py          Production Assets Owner/Moment/Asset grammar
+shared/sfx.py             offline native SFX request + budget snapshot preflight
 shared/voice.py           Voice Requirements/Production grammar
 shared/lifecycle.py       Voice state vocabulary
 shared/topology.py        accepted Production Assets topology
@@ -54,6 +55,8 @@ validator/validate_voice.py          thin Voice CLI
 ```
 
 Do not create a second parser/schema/acceptance implementation inside renderer, validator, or helpers.
+
+`tools/prd.py sfx-check` is a read-only adapter to `shared/sfx.py`; it validates a native provider request, not canonical project meaning or generation consent. It never invokes ElevenLabs, reserves budget, or writes project state.
 
 ## Machine invariants
 

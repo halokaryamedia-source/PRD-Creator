@@ -5,11 +5,18 @@ from __future__ import annotations
 import json
 import math
 import re
+import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ROOT / "kits" / "prd-creator" / "production-assets"
+KIT_ROOT = ROOT / "kits" / "prd-creator"
+if str(KIT_ROOT) not in sys.path:
+    sys.path.insert(0, str(KIT_ROOT))
+
+from shared.sfx import validate_request  # noqa: E402
+
+ASSETS = KIT_ROOT / "production-assets"
 COORDINATOR = ASSETS / "SOUND-EFFECTS.md"
 REFERENCES = ASSETS / "sfx" / "references"
 REFERENCE_NAMES = {
@@ -70,6 +77,7 @@ class SfxKnowledgeContracts(unittest.TestCase):
         for index, raw in enumerate(examples):
             with self.subTest(example=index):
                 request = json.loads(raw)
+                self.assertEqual(validate_request(request), [])
                 self.assertEqual(set(request), allowed)
                 self.assertIsInstance(request["text"], str)
                 self.assertTrue(request["text"].strip())
