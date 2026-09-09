@@ -1,6 +1,6 @@
 # Eleven v3 Naturalness & Narration Craft
 
-Last verified: **2026-09-08**
+Last verified: **2026-09-09**
 
 Purpose: reduce stiff, synthetic, document-like Voice output **without flattening expression**. Naturalness craft and expression direction are complementary: this file owns speakability/prosody; `v3-expression-direction.md` owns explicit acting coverage.
 
@@ -63,6 +63,35 @@ Stay inside the marked area until calibration finishes.
 
 This is not automatically casual; it is easier to speak and hear.
 
+## 2A. Spoken economy and listener load
+
+Treat every Voice line as an **auditory interface**, not a spoken copy of the design document.
+
+Preserve every `Must communicate` fact, but communicate only what the listener needs **at this Moment**. Do not verbalize the entire mechanic tree merely because the PRD contains it.
+
+Warning signs that exposition is still too document-like:
+
+- several consecutive sentences repeat the same subject (`Kopi...`, `Kayu manis...`, `Sawit...`) with parallel specification syntax;
+- a character explains implementation detail that is already visible or belongs to a later Moment;
+- the same reward, instruction, or premise is restated in multiple ways;
+- a simple invitation or tutorial becomes a checklist read aloud;
+- the script reaches the top of its Estimated Duration range before expressive pauses/reactions are considered.
+
+Rewrite in this order:
+
+```text
+required facts
+→ listener-relevant grouping
+→ remove duplicated framing
+→ compress repeated syntax
+→ keep character point of view
+→ preserve a clear final landing
+```
+
+For tutorial/expository NPC dialogue, prefer a short setup plus grouped rules over one sentence per database field. When the accepted project already provides multiple Moments, distribute information to the correct Moment rather than front-loading everything into the first line.
+
+Do not delete required gameplay truth merely to make a script shorter. If all facts genuinely belong in one Moment, keep them and use an honest longer Estimated Duration.
+
 # 3. Register-correct naturalness
 
 | Voice job | Natural baseline |
@@ -75,6 +104,26 @@ This is not automatically casual; it is easier to speak and hear.
 | Completion / success | acknowledge result without replaying briefing |
 
 Do not force tutorial speech into casual banter or solemn narration into slang.
+
+## 3A. Speaker register continuity
+
+For recurring direct dialogue, keep a small internal register baseline so the same character does not drift randomly between speech identities.
+
+For Indonesian material, pay particular attention to:
+
+```text
+self-reference   → saya | aku | gue | other established form
+listener address → Anda | kamu | elu/lu | Kak | other established form
+negation         → tidak | enggak | nggak
+softener         → saja | aja
+social stance    → formal | everyday | intimate | sales-like | authoritative | regional/character-specific
+```
+
+Natural variation is allowed. The goal is not rigid vocabulary uniformity; the goal is **recognizable social voice**.
+
+A shift is valid when the approved character or Moment motivates it—for example, a controlled speaker becoming briefly blunt under pressure. Randomly mixing formal and highly colloquial forms without a character reason weakens actor continuity even when each sentence sounds natural in isolation.
+
+Do not normalize every character into the same Indonesian register. Distinct characters may intentionally use different pronouns, slang density, cadence, or politeness.
 
 # 4. Thought groups
 
@@ -212,6 +261,8 @@ Naturalness passes when:
 
 - wording is plausibly spoken for the speaker/register;
 - thought groups follow meaning rather than document syntax;
+- listener load is appropriate to the current Moment and required facts are not expanded into checklist-like exposition;
+- speaker register remains coherent unless an intentional character/moment shift explains the change;
 - cadence is not mechanically uniform;
 - filler/hesitation/reactions are justified rather than decorative;
 - continuity planning prevents detached narration;
