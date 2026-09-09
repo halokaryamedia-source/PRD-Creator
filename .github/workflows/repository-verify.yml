@@ -29,3 +29,6 @@ jobs:
 
       - name: Verify repository
         run: python tools/verify_repository.py
+
+      - name: Verify SFX knowledge contracts (offline)
+        run: python -m unittest discover -s tests -p "test_prd_sfx_knowledge.py" -v

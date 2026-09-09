@@ -2,46 +2,28 @@
 
 ## Current Status
 
-`WORKFLOW_NAMING_3_1_3_READY`
+`SFX_RESEARCH_PROCEDURE_READY`
 
-The active PRD-Creator workflow now uses one canonical human naming system across routing, policy, package owners, operator communication, and generated Production Assets navigation.
+ElevenLabs non-dialogue SFX remains a bounded Production Assets capability. The coordinator now loads focused references for contracts/sources, archetype prompting, families/variation, timing/loops/layers, execution/cost control and validation/delivery. Minecraft Bedrock guidance is optional and target-specific.
 
-```text
-Project Setup
-→ Project Requirements
-→ PRD Production
-   └─ Production Assets when required
-→ PRD Handoff
-→ Voice Requirements when Voice is justified
-→ Voice Production
-→ Voice Delivery
-```
+## Implemented Boundary
 
-Completed:
+- `kits/prd-creator/production-assets/SOUND-EFFECTS.md` is the short entrypoint; detailed knowledge is read only when relevant.
+- Temporal form, family relationship and layering are independent decisions rather than mutually exclusive modes.
+- Preparation/implementation/tests use zero paid requests. Generation requires explicit scope and finite approved limits; attempts, retries and unknown outcomes consume/reserve allowance without session resets.
+- Reuse, existing-candidate review, representative-family approval and bounded editing precede unnecessary generation. An accepted candidate stops the search even when allowance remains.
+- Unknown billing units, unsafe hidden retries, missing review capability and unbounded charges have explicit stop/handoff rules. The procedure is not an executable provider-side spending firewall.
+- Official facts, repository craft recommendations and heard project calibration stay distinct. No fixed price, unsupported endpoint control or guaranteed savings is asserted.
+- Static SFX knowledge tests are included in Repository Verify; tests make no external API requests and cannot prove acoustic quality.
 
-1. retired numbered `Flow N` terminology from current operating language;
-2. retired `04` as a capability/process/presentation alias; the capability is displayed and discussed only as **Production Assets**;
-3. kept `01 Overview`, `02 Gameplay Flow`, and `03 Development` only as Golden document-section ordinals, not workflow-stage names;
-4. kept all machine statuses, IDs, SHA bindings, artifact paths, schemas, parsers, renderer identity, and lifecycle behavior unchanged;
-5. kept Package 3.1.3 Voice preparation architecture intact: naturalness, Expression Coverage, actor continuity, pronunciation/language strategy, and candidate iteration;
-6. aligned Project Requirements → PRD Production → Production Assets → PRD Handoff ownership;
-7. aligned Voice Requirements → Voice Production → Voice Delivery ownership;
-8. added repository verification protection against reintroducing legacy numbered stage names in current policy surfaces;
-9. removed the visible `04` index from generated Production Assets navigation while preserving layout structure and stable page/resource identity.
+## Preserved
 
-## Active Boundary
+Current canonical workflow names remain Project Setup → Project Requirements → PRD Production (Production Assets when required) → PRD Handoff → optional Voice Requirements → Voice Production → Voice Delivery.
 
-Keep current work on `develop`.
-
-- Package version remains **3.1.3** because this is a naming/clarity cleanup with no machine-contract change.
-- The same canonical workflow names are used in documentation and reader-facing Production Assets navigation; there is no separate internal/external stage vocabulary.
-- `work/voice-production.md` remains the sole canonical Voice wording/performance source.
-- `work/asset-requirements.md` remains the canonical non-Voice Production Assets source when required.
-- `handoff_ready`, `voice_requirements_ready`, `voice_script_ready`, and `voice_delivery_ready` remain technical lifecycle values only, not alternate workflow names.
-- Owner ID / Moment ID / AST / VO identity remains unchanged.
-- Golden core visual grammar remains unchanged.
-- `Local` and `main` remain untouched until explicitly promoted.
+Package version remains **3.1.3**: this is procedure/reference hardening, not a runtime/schema release. Voice behavior, Golden UI, Owner/Moment/AST/VO identity, strict parsers, SHA acceptance and runtime dependencies are unchanged. `work/asset-requirements.md` and `work/voice-production.md` retain their existing canonical roles. No root skill, SFX database or generation wrapper was added.
 
 ## Next Step
 
-Use the canonical workflow names above for all future project work. Do not add aliases unless a real product boundary requires a genuinely different meaning.
+Use the SFX coordinator for the next approved production request. Before an actual paid trial, recover the user's finite batch allowance and active executor/account terms; prepare the matching prompt and acceptance criteria without spending first. Run only the smallest relevant listening calibration after generation authorization. No paid synthesis or listening/Bedrock proof is implied by implementation or static test success.
+
+Keep work on `develop`. `Local` and `main` remain untouched until explicitly promoted under their existing gates.
